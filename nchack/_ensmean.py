@@ -22,7 +22,7 @@ def ensemble_mean(self):
    # log the full path of the file
     global nc_created
     nc_created.append(self.target)
-    nco_command = ("ncea -y max " + str_flatten(ff_ensemble, " ") + " " + self.target) 
+    nco_command = ("ncea -y mean " + str_flatten(ff_ensemble, " ") + " " + self.target) 
     self.history.append(nco_command)
     os.system(nco_command) 
     self.current = self.target 
