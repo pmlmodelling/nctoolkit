@@ -6,6 +6,7 @@ from ._generate_grid import generate_grid
 from ._variables import variables
 from ._filetracker import nc_created
 from ._cleanup import cleanup
+import copy
 
 class NCTracker:
     """A tracker/log for manipulating netcdf files"""
@@ -18,8 +19,14 @@ class NCTracker:
     # todo
     # make it impossible to delete the start point
 
-    def copy(self):
-        new = None
+    def restart(self):
+        new = copy.copy(self)
+        new.history = []
+        new.start = self.current
+        new.current = new.start
+        new.target = None
+        return(new)
+
 
     def str_flatten(L, sep = ","):
         result = sep.join(str(x) for x in L)
