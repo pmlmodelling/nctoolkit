@@ -12,8 +12,8 @@ from ._variables import variables
 from ._filetracker import nc_created
 from ._cleanup import cleanup
 
-def ensemble_max(self):
-    """Function to calculate an ensemble mean from a list of files"""
+def ensemble_min(self):
+    """Function to calculate an ensemble min from a list of files"""
     ff_ensemble = self.current
     if type(ff_ensemble) is not list:
         raise ValueError("The current state of the tracker is not a list")
@@ -22,7 +22,7 @@ def ensemble_max(self):
    # log the full path of the file
     global nc_created
     nc_created.append(self.target)
-    nco_command = ("ncea -y max " + str_flatten(ff_ensemble, " ") + " " + self.target) 
+    nco_command = ("ncea -y min " + str_flatten(ff_ensemble, " ") + " " + self.target) 
     self.history.append(nco_command)
     os.system(nco_command) 
     self.current = self.target 
