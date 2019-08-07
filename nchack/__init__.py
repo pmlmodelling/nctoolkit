@@ -18,29 +18,38 @@ class NCTracker:
         self.target = None
     # todo
     # make it impossible to delete the start point
-
-    def restart(self):
-        new = copy.copy(self)
-        new.history = []
-        new.start = self.current
-        new.current = new.start
-        new.target = None
-        return(new)
-
-
-    def str_flatten(L, sep = ","):
-        result = sep.join(str(x) for x in L)
-        return(result)
     
     @property
     def start(self):
         return self._start
     @start.setter
     def start(self, value):
-        if os.path.exists(value):
+        if type(value) is str:
+            if os.path.exists(value):
+                self._start = value
+            else:
+                raise TypeError("File does not exist")
+        print(type(value))
+        if isinstance(value,list):
             self._start = value
-        else:
-            raise TypeError("File does not exist")
+
+
+    def restart(self):
+        """A function for creating a new tracker using an existing one as the starting point"""
+        return NCTracker(self.current)
+       # new = copy.copy(self)
+       # new.history = []
+       # new.start = self.current
+       # new.current = new.start
+       # new.target = None
+       # return(new)
+
+
+    def str_flatten(L, sep = ","):
+        result = sep.join(str(x) for x in L)
+        return(result)
+
+
     @start.deleter
     def start(self):
         raise AttributeError("You cannot delete the start point")
@@ -58,5 +67,8 @@ class NCTracker:
     from ._remap import remap
     from ._surface import surface
     from ._vertint import vertint
+    from ._ensmean import ensemble_mean
+    from ._ensmax import ensemble_max
+    from ._ensmin import ensemble_min
     from ._clip import clip
 
