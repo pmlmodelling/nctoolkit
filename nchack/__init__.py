@@ -16,6 +16,11 @@ class NCTracker:
         self.start = start
         self.current = start
         self.target = None
+
+    def __repr__(self):
+        return "<nchack.NCTracker>:\nstart: "+self.start + "\ncurrent: " + self.current + "\noperations: " + str(len(self.history))
+
+
     # todo
     # make it impossible to delete the start point
     
@@ -53,6 +58,11 @@ class NCTracker:
     @start.deleter
     def start(self):
         raise AttributeError("You cannot delete the start point")
+
+    def __del__(self):
+        if self.current != self.start:
+            os.remove(self.current)
+        del self
 
     def del_current(self):
         if self.current != self.start:
