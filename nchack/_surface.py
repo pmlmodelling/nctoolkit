@@ -21,6 +21,7 @@ def surface(self, vars = None, remove = True):
 
     cdo_command = "cdo sellevidx,1 " + self.current + " " + self.target
     os.system(cdo_command)
+    self.history.append(cdo_command)
 
     self.target
     if self.current != self.start and remove:
