@@ -85,5 +85,6 @@ class NCTracker:
     from ._ensmean import ensemble_mean
     from ._ensmax import ensemble_max
     from ._ensmin import ensemble_min
+    from ._ensrange import ensemble_range
     from ._clip import clip
 
