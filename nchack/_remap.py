@@ -12,7 +12,7 @@ from ._cleanup import cleanup
 from ._filetracker import nc_created
 
 
-def remap(self, vars = None, coords = None, method = "bil", weights_file = None, remove = True):
+def regrid(self, vars = None, coords = None, method = "bil", weights_file = None, remove = True):
     owd = os.getcwd()
    # log the full path of the file
     ff_orig = os.path.abspath(self.current)
