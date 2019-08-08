@@ -18,7 +18,13 @@ class NCTracker:
         self.target = None
 
     def __repr__(self):
-        return "<nchack.NCTracker>:\nstart: "+self.start + "\ncurrent: " + self.current + "\noperations: " + str(len(self.history))
+        if isinstance(self.start,list):
+            if len(self.start) > 10:
+                return "<nchack.NCTracker>:\nstart: " + ">10 member ensemble" + "\ncurrent: " + ">10 member ensemble" + "\noperations: " + str(len(self.history))
+            else:
+                return "<nchack.NCTracker>:\nstart: " + str_flatten(self.start) + "\ncurrent: " + str_flatten(self.current) + "\noperations: " + str(len(self.history))
+        else:
+            return "<nchack.NCTracker>:\nstart: "+self.start + "\ncurrent: " + self.current + "\noperations: " + str(len(self.history))
 
 
     # todo
@@ -34,7 +40,6 @@ class NCTracker:
                 self._start = value
             else:
                 raise TypeError("File does not exist")
-        print(type(value))
         if isinstance(value,list):
             self._start = value
 
