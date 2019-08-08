@@ -59,15 +59,21 @@ class NCTracker:
         result = sep.join(str(x) for x in L)
         return(result)
 
+    def __del__(self):
+        if isinstance(self.start,list):
+            if isinstance(self.current, list) == False:
+                if os.path.exists(self.current):
+                    os.remove(self.current)
+        else: 
+            if self.current != self.start:
+                if os.path.exists(self.current):
+                    os.remove(self.current)
+            del self
 
     @start.deleter
     def start(self):
         raise AttributeError("You cannot delete the start point")
 
-    def __del__(self):
-        if self.current != self.start:
-            os.remove(self.current)
-        del self
 
     def del_current(self):
         if self.current != self.start:
