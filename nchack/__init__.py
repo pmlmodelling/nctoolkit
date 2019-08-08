@@ -85,7 +85,7 @@ class NCTracker:
     from ._toxarray import to_xarray
     from ._cellareas import cellareas
     from ._expr import expr
-    from ._remap import remap
+    from ._remap import regrid
     from ._surface import surface
     from ._vertint import vertint
     from ._ensmean import ensemble_mean
@@ -93,4 +93,5 @@ class NCTracker:
     from ._ensmin import ensemble_min
     from ._ensrange import ensemble_range
     from ._clip import clip
+    from ._selname import select_variables
 
