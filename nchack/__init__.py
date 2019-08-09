@@ -1,5 +1,6 @@
 import os
 import xarray as xr
+import sys
 import tempfile
 from .flatten import str_flatten
 from ._generate_grid import generate_grid
@@ -51,6 +52,13 @@ class NCTracker:
             self._start = value
 
 
+    def update(self, current):
+        """A function for creating a new tracker using an existing one as the starting point"""
+        self.current = current
+        if self.start == "":
+            self.start = current
+        return(self)
+
     def restart(self, start = None):
         """A function for creating a new tracker using an existing one as the starting point"""
         new = copy.copy(self)
@@ -78,7 +86,31 @@ class NCTracker:
             if self.current != self.start:
                 if os.path.exists(self.current):
                     os.remove(self.current)
-            del self
+
+                if self.grid is not None or self.weights is not None:
+                # We do not want to delete the weights and grid if they are in use by another tracker
+                    valid_grid = 0 
+                    valid_weights = 0 
+                    objects = dir(sys.modules["__main__"])
+                    for i in ([v for v in objects if not v.startswith('_')]):
+                        i_class = str(eval("type(sys.modules['__main__']." +i + ")"))
+                        if "NCTracker" in i_class:
+                            i_grid = eval("sys.modules['__main__']." +i + ".grid")
+                            i_weights = eval("sys.modules['__main__']." +i + ".weights")
+                            if self.grid is not None:
+                                valid_grid += i_grid == self.grid
+                    
+                            if self.weights is not None:
+                                valid_weights += i_weights == self.weights
+                    if valid_weights == 0 and os.path.exists(self.weights):
+                        os.remove(self.weights)
+
+                    if valid_grid == 0 and os.path.exists(self.grid):
+                        os.remove(self.grid)
+                    
+
+
+                               ## del self
 
     @start.deleter
     def start(self):
