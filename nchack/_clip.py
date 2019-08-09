@@ -13,7 +13,10 @@ from ._filetracker import nc_created
 from ._cleanup import cleanup
 
 def clip(self, vars = None, lon_range = [-180, 180], lat_range = [-90, 90], vert_range = None, months = None, years = None,  cdo_output = False, remove = True):
+    """ Function to clip netcdf files, spatially and temporally"""
     ff = self.current
+    if type(ff) is not str:
+        raise ValueError("The current state of the tracker is not a string")
     self.target = tempfile.NamedTemporaryFile().name + ".nc"
     owd = os.getcwd()
    # log the full path of the file
