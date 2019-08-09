@@ -40,10 +40,18 @@ def cleanup(keep = None):
             i_start =eval("sys.modules['__main__']." +i + ".start")
             if i_current != i_start:
                 valid_files.append(i_current)
+
+            i_grid = eval("sys.modules['__main__']." +i + ".grid")
+            i_weights = eval("sys.modules['__main__']." +i + ".weights")
+            if i_grid is not None:
+                valid_files.append(i_grid)
+                valid_files.append(i_weights)
     
     delete_these = [v for v in candidates if v not in valid_files]            
     if keep is not None:
-        delete_these = [v for v in delete_these if v != keep]            
+        if type(keep) is str:
+            keep = (keep)
+        delete_these = [v for v in delete_these if v not in keep]            
 
     delete_these = set(delete_these)
     delete_these = list(delete_these)
