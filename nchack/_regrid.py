@@ -68,17 +68,17 @@ def regrid(self, vars = None, coords = None, method = "bil", weights_file = None
                 
             # first we need to generate the weights for remapping
             # and add this to the files created list and self.weights
-            if weights is None:
+            if self.weights is None:
                 weights_nc = tempfile.NamedTemporaryFile().name + ".nc"
                 nc_created.append(weights_nc)
                 self.weights = weights_nc
                 
 
-            weights_nc = self.weights
+                weights_nc = self.weights
 
-            cdo_call = ("cdo gen" + method + ","+ self.grid+ " " + holding_nc + " " + weights_nc)
-            os.system(cdo_call)
-            self.history.append(cdo_call)
+                cdo_call = ("cdo gen" + method + ","+ self.grid+ " " + holding_nc + " " + weights_nc)
+                os.system(cdo_call)
+                self.history.append(cdo_call)
 
             cdo_call = ("cdo remap"+ method + "," + self.grid + " " + holding_nc + " " + dummy_nc)
             self.history.append(cdo_call)
@@ -91,15 +91,13 @@ def regrid(self, vars = None, coords = None, method = "bil", weights_file = None
 
             os.rename(dummy_nc, holding_nc)
             
-        os.remove(weights_nc)                    
-        os.remove("mygrid")
         os.rename(holding_nc, self.target)
 
         if self.current != self.start and remove:
             os.remove(self.current)
         self.current = self.target 
 
-        cleanup(keep = self.current)
+        cleanup(keep = [self.current, self.weights, self.grid])
 
         return(self)
 
