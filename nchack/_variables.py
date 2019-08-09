@@ -14,9 +14,3 @@ def variables(self, detailed = False):
     cdo_result = cdo_result.split()
   #  if detailed == False:
     return(cdo_result)
-
-  #  from netCDF4 import Dataset
-  #  dataset = Dataset(self.current)
-  #  ff_units = [dataset.variables[x].units for x in cdo_result]
-  #  output = pd.DataFrame({"variable": cdo_result, "unit":ff_units})
-  #  return(output)
