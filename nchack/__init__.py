@@ -3,7 +3,6 @@ import xarray as xr
 import tempfile
 from .flatten import str_flatten
 from ._generate_grid import generate_grid
-from ._variables import variables
 from ._filetracker import nc_created
 from ._cleanup import cleanup
 import copy
@@ -82,6 +81,7 @@ class NCTracker:
             print("Current file is the same as the start file. Not deleted!")
 
  
+    from ._variables import variables
     from ._toxarray import to_xarray
     from ._cellareas import cellareas
     from ._expr import expr
