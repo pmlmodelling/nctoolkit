@@ -10,6 +10,7 @@ from .flatten import str_flatten
 
 def generate_grid(coords):
     grid_type = None
+    grid_file = tempfile.NamedTemporaryFile().name
     lon_unique = np.unique(coords.iloc[:,0])
     lat_unique = np.unique(coords.iloc[:,1])
     lon_step = (max(lon_unique) - min(lon_unique)) / (len(lon_unique) - 1)
@@ -38,7 +39,7 @@ def generate_grid(coords):
         x_size = len(coords)
         x_values = str_flatten(coords.values[:,0], sep = " ")
         y_values = str_flatten(coords.values[:,1], sep = " ")
-        f = open('mygrid', 'w')
+        f = open(grid_file, 'w')
         f.write("gridtype = unstructured\n")
         f.write("gridsize = " + str(x_size) + "\n")
         f.write("xvals = " + x_values + "\n")
@@ -58,4 +59,5 @@ def generate_grid(coords):
         f.write("xinc = " + str(lon_step) +"\n")
         f.write("yinc = " + str(lat_step) +  "\n")
         f.close()
+    return(grid_file)
 
