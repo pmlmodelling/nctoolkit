@@ -113,7 +113,7 @@ def clip(self, vars = None, lon_range = [-180, 180], lat_range = [-90, 90], vert
                 vars = {vars}
         
         if (vars is None) == False:
-            ff_variables = variables(self)
+            ff_variables = self.variables()
             for vv in vars:
                  if (vv in ff_variables) == False:
                      raise ValueError("variable " + vv + " is not available in the netcdf file")

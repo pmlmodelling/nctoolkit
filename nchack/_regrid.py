@@ -33,7 +33,7 @@ def regrid(self, vars = None, coords = None, method = "bil", weights_file = None
                 vars = {vars}
         
         if (vars is None) == False:
-            ff_variables = nc_variables(ff_orig)
+            ff_variables = self.variables()
             for vv in vars:
                  if (vv in ff_variables) == False:
                      raise ValueError("variable " + vv + " is not available in the netcdf file")
