@@ -94,4 +94,7 @@ class NCTracker:
     from ._ensrange import ensemble_range
     from ._clip import clip
     from ._selname import select_variables
+    from ._cdo_command import cdo_command
+    from ._mutate import mutate 
+    from ._transmute import transmute
 
