@@ -9,11 +9,13 @@ import copy
 
 class NCTracker:
     """A tracker/log for manipulating netcdf files"""
-    def __init__(self, start):
+    def __init__(self, start = ""):
         """Initialize the starting file name etc"""
         self.history = []
         self.start = start
         self.current = start
+        self.weights = ""
+        self.grid = ""
         self.target = None
 
     def __repr__(self):
@@ -23,7 +25,10 @@ class NCTracker:
             else:
                 return "<nchack.NCTracker>:\nstart: " + str_flatten(self.start) + "\ncurrent: " + str_flatten(self.current) + "\noperations: " + str(len(self.history))
         else:
-            return "<nchack.NCTracker>:\nstart: "+self.start + "\ncurrent: " + self.current + "\noperations: " + str(len(self.history))
+            if self.start is None:
+                return "<nchack.NCTracker>:\nstart: "+ str(self.start) + "\ncurrent: " + str(self.current) + "\noperations: " + str(len(self.history))
+            else:
+                return "<nchack.NCTracker>:\nstart: "+self.start + "\ncurrent: " + self.current + "\noperations: " + str(len(self.history))
 
 
     # todo
@@ -35,23 +40,29 @@ class NCTracker:
     @start.setter
     def start(self, value):
         if type(value) is str:
-            if os.path.exists(value):
+            if value == "":
                 self._start = value
             else:
-                raise TypeError("File does not exist")
+                if os.path.exists(value):
+                    self._start = value
+                else:
+                    raise TypeError("File does not exist")
         if isinstance(value,list):
             self._start = value
 
 
-    def restart(self):
+    def restart(self, start = None):
         """A function for creating a new tracker using an existing one as the starting point"""
-        return NCTracker(self.current)
-       # new = copy.copy(self)
-       # new.history = []
-       # new.start = self.current
-       # new.current = new.start
-       # new.target = None
-       # return(new)
+        new = copy.copy(self)
+        new.history = []
+        if start is None:
+            new.start = self.current
+            new.current = new.start
+        else:
+            new.start = start
+            new.current = start
+        new.target = None
+        return(new)
 
 
     def str_flatten(L, sep = ","):
