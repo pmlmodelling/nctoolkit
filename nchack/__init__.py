@@ -14,8 +14,8 @@ class NCTracker:
         self.history = []
         self.start = start
         self.current = start
-        self.weights = ""
-        self.grid = ""
+        self.weights = None 
+        self.grid = None 
         self.target = None
 
     def __repr__(self):
