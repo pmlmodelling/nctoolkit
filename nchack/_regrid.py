@@ -62,14 +62,25 @@ def regrid(self, vars = None, coords = None, method = "bil", weights_file = None
        
         if coords is not None:
                        # first generate the grid
-            generate_grid(coords)
+            if self.grid is None:
+                self.grid = generate_grid(coords)
+                nc_created.append(self.grid)
+                
             # first we need to generate the weights for remapping
-            weights_nc = tempfile.NamedTemporaryFile().name + ".nc"
-            cdo_call = ("cdo gen" + method + ",mygrid " + holding_nc + " " + weights_nc)
+            # and add this to the files created list and self.weights
+            if weights is None:
+                weights_nc = tempfile.NamedTemporaryFile().name + ".nc"
+                nc_created.append(weights_nc)
+                self.weights = weights_nc
+                
+
+            weights_nc = self.weights
+
+            cdo_call = ("cdo gen" + method + ","+ self.grid+ " " + holding_nc + " " + weights_nc)
             os.system(cdo_call)
             self.history.append(cdo_call)
 
-            cdo_call = ("cdo remap"+ method + ",mygrid " + holding_nc + " " + dummy_nc)
+            cdo_call = ("cdo remap"+ method + "," + self.grid + " " + holding_nc + " " + dummy_nc)
             self.history.append(cdo_call)
             os.system(cdo_call)
             if os.path.isfile(dummy_nc) == False:
