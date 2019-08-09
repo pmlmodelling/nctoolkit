@@ -19,7 +19,7 @@ def surface(self, vars = None, remove = True):
     self.target = tempfile.NamedTemporaryFile().name + ".nc"
     nc_created.append(self.target)
 
-    cdo_command = "cdo sellevidx,1 " + self.current + " " + self.target
+    cdo_command = "cdo --reduce_dim -sellevidx,1 " + self.current + " " + self.target
     os.system(cdo_command)
     self.history.append(cdo_command)
 
