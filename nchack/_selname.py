@@ -11,7 +11,7 @@ from ._cleanup import cleanup
 from ._filetracker import nc_created
 
 
-def select_variables(self, vars = None, remove = True):
+def select_variables(self, vars = None):
 
     self.target  = tempfile.NamedTemporaryFile().name + ".nc"
     nc_created.append(self.target)
@@ -26,9 +26,6 @@ def select_variables(self, vars = None, remove = True):
     self.history.append(cdo_command)
     os.system(cdo_command)
     
-    
-    if self.current != self.start and remove:
-        os.remove(self.current)
     self.current = self.target 
     
     cleanup(keep = self.current)

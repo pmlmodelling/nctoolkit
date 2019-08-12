@@ -12,7 +12,7 @@ from ._variables import variables
 from ._filetracker import nc_created
 from ._cleanup import cleanup
 
-def clip(self, vars = None, lon_range = [-180, 180], lat_range = [-90, 90], vert_range = None, months = None, years = None,  cdo_output = False, remove = True):
+def clip(self, vars = None, lon_range = [-180, 180], lat_range = [-90, 90], vert_range = None, months = None, years = None,  cdo_output = False):
     """ Function to clip netcdf files, spatially and temporally"""
     ff = self.current
     if type(ff) is not str:
@@ -235,8 +235,6 @@ def clip(self, vars = None, lon_range = [-180, 180], lat_range = [-90, 90], vert
 
         os.rename(holding_nc, self.target)
 
-        if self.current != self.start and remove:
-            os.remove(self.current)
         self.current = self.target 
 
         # clean up the directory

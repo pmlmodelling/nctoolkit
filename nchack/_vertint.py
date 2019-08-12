@@ -12,7 +12,7 @@ from ._cleanup import cleanup
 from ._filetracker import nc_created
 
 
-def vertint(self, vars = None, vert_depths = None, remove = True):
+def vertint(self, vars = None, vert_depths = None):
     owd = os.getcwd()
    # log the full path of the file
     ff_orig = os.path.abspath(self.current)
@@ -89,9 +89,7 @@ def vertint(self, vars = None, vert_depths = None, remove = True):
         
             os.rename(dummy_nc, holding_nc)
         if vertical_remap:
-
-            if self.current != self.start and remove:
-                os.remove(self.current)
+            
             self.current = self.target 
         
         cleanup(keep = self.current)

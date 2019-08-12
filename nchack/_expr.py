@@ -9,7 +9,7 @@ import itertools
 from ._cleanup import cleanup
 from ._filetracker import nc_created
 
-def expr(self, expr = None, remove = True):
+def expr(self, expr = None):
 
     if expr is None:
         raise ValueError("No expression was provided")
@@ -31,8 +31,6 @@ def expr(self, expr = None, remove = True):
     if os.path.isfile(self.target) == False:
         raise ValueError("Application of expr did not work. Check output")
 
-    if self.current != self.start and remove:
-        os.remove(self.current)
     self.current = self.target
     
     cleanup(keep = self.current)    

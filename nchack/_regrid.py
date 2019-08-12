@@ -12,7 +12,7 @@ from ._cleanup import cleanup
 from ._filetracker import nc_created
 
 
-def regrid(self, vars = None, coords = None, method = "bil", weights_file = None, remove = True):
+def regrid(self, vars = None, coords = None, method = "bil", weights_file = None):
     owd = os.getcwd()
    # log the full path of the file
     ff_orig = os.path.abspath(self.current)
@@ -93,8 +93,6 @@ def regrid(self, vars = None, coords = None, method = "bil", weights_file = None
             
         os.rename(holding_nc, self.target)
 
-        if self.current != self.start and remove:
-            os.remove(self.current)
         self.current = self.target 
 
         cleanup(keep = [self.current, self.weights, self.grid])

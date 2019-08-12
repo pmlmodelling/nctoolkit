@@ -9,7 +9,7 @@ import itertools
 from ._cleanup import cleanup
 from ._filetracker import nc_created
 
-def mutate(self, operations = None, remove = True):
+def mutate(self, operations = None):
     """Function to mutate a netcdf file using expr"""
 
     
@@ -39,8 +39,6 @@ def mutate(self, operations = None, remove = True):
     if os.path.isfile(self.target) == False:
         raise ValueError("Application of expr did not work. Check output")
 
-    if self.current != self.start and remove:
-        os.remove(self.current)
     self.current = self.target
     
     cleanup(keep = self.current)    

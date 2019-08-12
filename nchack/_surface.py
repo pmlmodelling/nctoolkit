@@ -11,7 +11,7 @@ from ._clip import clip
 from ._filetracker import nc_created
 from ._cleanup import cleanup 
 
-def surface(self, vars = None, remove = True):
+def surface(self, vars = None):
    # if nc_valid(self.current) == False:
         #raise ValueError("File is invalid")
 
@@ -24,8 +24,7 @@ def surface(self, vars = None, remove = True):
     self.history.append(cdo_command)
 
     self.target
-    if self.current != self.start and remove:
-        os.remove(self.current)
+
     self.current = self.target
 
     cleanup(keep = self.current)
