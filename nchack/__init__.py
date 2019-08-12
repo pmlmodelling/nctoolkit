@@ -76,38 +76,41 @@ class NCTracker:
     def str_flatten(L, sep = ","):
         result = sep.join(str(x) for x in L)
         return(result)
-
     def __del__(self):
-        if isinstance(self.start,list):
-            if isinstance(self.current, list) == False:
-                if os.path.exists(self.current):
-                    os.remove(self.current)
-        else: 
-            if self.current != self.start:
-                if os.path.exists(self.current):
-                    os.remove(self.current)
+        print("deleted")
+        cleanup()
 
-                if self.grid is not None or self.weights is not None:
-                # We do not want to delete the weights and grid if they are in use by another tracker
-                    valid_grid = 0 
-                    valid_weights = 0 
-                    objects = dir(sys.modules["__main__"])
-                    for i in ([v for v in objects if not v.startswith('_')]):
-                        i_class = str(eval("type(sys.modules['__main__']." +i + ")"))
-                        if "NCTracker" in i_class:
-                            i_grid = eval("sys.modules['__main__']." +i + ".grid")
-                            i_weights = eval("sys.modules['__main__']." +i + ".weights")
-                            if self.grid is not None:
-                                valid_grid += i_grid == self.grid
-                    
-                            if self.weights is not None:
-                                valid_weights += i_weights == self.weights
-                    if valid_weights == 0 and os.path.exists(self.weights):
-                        os.remove(self.weights)
-
-                    if valid_grid == 0 and os.path.exists(self.grid):
-                        os.remove(self.grid)
-                    
+#    def __del__(self):
+#        if isinstance(self.start,list):
+#            if isinstance(self.current, list) == False:
+#                if os.path.exists(self.current):
+#                    os.remove(self.current)
+#        else: 
+#            if self.current != self.start:
+#                if os.path.exists(self.current):
+#                    os.remove(self.current)
+#
+#                if self.grid is not None or self.weights is not None:
+#                # We do not want to delete the weights and grid if they are in use by another tracker
+#                    valid_grid = 0 
+#                    valid_weights = 0 
+#                    objects = dir(sys.modules["__main__"])
+#                    for i in ([v for v in objects if not v.startswith('_')]):
+#                        i_class = str(eval("type(sys.modules['__main__']." +i + ")"))
+#                        if "NCTracker" in i_class:
+#                            i_grid = eval("sys.modules['__main__']." +i + ".grid")
+#                            i_weights = eval("sys.modules['__main__']." +i + ".weights")
+#                            if self.grid is not None:
+#                                valid_grid += i_grid == self.grid
+#                    
+#                            if self.weights is not None:
+#                                valid_weights += i_weights == self.weights
+#                    if valid_weights == 0 and os.path.exists(self.weights):
+#                        os.remove(self.weights)
+#
+#                    if valid_grid == 0 and os.path.exists(self.grid):
+#                        os.remove(self.grid)
+#                    
 
 
                                ## del self
@@ -115,14 +118,6 @@ class NCTracker:
     @start.deleter
     def start(self):
         raise AttributeError("You cannot delete the start point")
-
-
-    def del_current(self):
-        if self.current != self.start:
-            os.remove(self.current)
-        if self.current == self.start:
-            print("Current file is the same as the start file. Not deleted!")
-
  
     from ._variables import variables
     from ._toxarray import to_xarray
@@ -142,3 +137,22 @@ class NCTracker:
     from ._transmute import transmute
     from ._times import times
 
+
+
+#class NCTrackerList:
+#    def __init__(self, start):
+#        """Initialize the starting file name etc"""
+#        self.ensemble = [start]
+#        cleanup(keep = start)
+#
+#    def add(self, new):
+#        """A function for adding a new variable to an ensemble"""
+#        self.ensemble.append(new.current)
+#        cleanup(keep = new.current)
+#        return(self)
+#
+#
+#    def __del__(self):
+#        print("deleted")
+#        cleanup()
+#
