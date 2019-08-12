@@ -35,9 +35,9 @@ def cleanup(keep = None):
     objects = dir(sys.modules["__main__"])
     for i in ([v for v in objects if not v.startswith('_')]):
         i_class = str(eval("type(sys.modules['__main__']." +i + ")"))
-        if "NCTracker" in i_class:
+        if "NCTracker" in i_class and "List" not in i_class:
             i_current =eval("sys.modules['__main__']." +i + ".current")
-            i_start =eval("sys.modules['__main__']." +i + ".start")
+            i_start = eval("sys.modules['__main__']." +i + ".start")
             if i_current != i_start:
                 valid_files.append(i_current)
 
@@ -47,6 +47,13 @@ def cleanup(keep = None):
                 valid_files.append(i_grid)
                 valid_files.append(i_weights)
     
+  #      if "NCTracker" in i_class and "List" in i_class:
+  #          i_files =eval("sys.modules['__main__']." +i + ".ensemble")
+  #          valid_files += i_files
+  #          
+
+
+
     delete_these = [v for v in candidates if v not in valid_files]            
     if keep is not None:
         if type(keep) is str:
@@ -56,7 +63,12 @@ def cleanup(keep = None):
     delete_these = set(delete_these)
     delete_these = list(delete_these)
 
+    # finally, to be ultra-safe, we will make sure all of the files to be deleted are in the temporary folder
+
+    delete_these = [v for v in delete_these  if v.startswith("/tmp")]
+
     
     for dd in delete_these:
+        print(dd)
         os.remove(dd)
     
