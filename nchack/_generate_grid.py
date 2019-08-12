@@ -37,8 +37,8 @@ def generate_grid(coords):
     
     if grid_type == "unstructured":
         x_size = len(coords)
-        x_values = str_flatten(coords.values[:,0], sep = " ")
-        y_values = str_flatten(coords.values[:,1], sep = " ")
+        x_values = str_flatten(coords.iloc[:,0], sep = " ")
+        y_values = str_flatten(coords.iloc[:,1], sep = " ")
         f = open(grid_file, 'w')
         f.write("gridtype = unstructured\n")
         f.write("gridsize = " + str(x_size) + "\n")
@@ -48,8 +48,8 @@ def generate_grid(coords):
 
     if grid_type == "lonlat":
         x_size = len(coords)
-        x_values = str_flatten(coords.values[:,0], sep = " ")
-        y_values = str_flatten(coords.values[:,1], sep = " ")
+        x_values = str_flatten(coords.iloc[:,0], sep = " ")
+        y_values = str_flatten(coords.iloc[:,1], sep = " ")
         f = open('mygrid', 'w')
         f.write("gridtype = lonlat\n")
         f.write("xsize = " + str(len(x)) + "\n")
