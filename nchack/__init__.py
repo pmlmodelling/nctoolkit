@@ -77,7 +77,7 @@ class NCTracker:
         result = sep.join(str(x) for x in L)
         return(result)
     def __del__(self):
-        print("deleted")
+##        print("deleted")
         cleanup()
 
 #    def __del__(self):
