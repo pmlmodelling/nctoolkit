@@ -29,7 +29,6 @@ def cleanup(keep = None):
     candidates = [x for x in candidates if os.path.exists(x)]
     candidates
 
-    
     # Step 2 is to find the trackers in the locals
     
     valid_files = []
@@ -39,21 +38,26 @@ def cleanup(keep = None):
         if "NCTracker" in i_class and "List" not in i_class:
             i_current =eval("sys.modules['__main__']." +i + ".current")
             i_start = eval("sys.modules['__main__']." +i + ".start")
-            if i_current != i_start:
+            # add the current files to valid_files
+            if type(i_current) is str:
                 valid_files.append(i_current)
+            else:
+                for ff in i_current:
+                    valid_files.append(ff)
+
+            # add the start files to valid_files
+            if type(i_start) is str:
+                valid_files.append(i_start)
+            else:
+                for ff in i_start:
+                    valid_files.append(ff)
 
             i_grid = eval("sys.modules['__main__']." +i + ".grid")
             i_weights = eval("sys.modules['__main__']." +i + ".weights")
             if i_grid is not None:
                 valid_files.append(i_grid)
                 valid_files.append(i_weights)
-    
-  #      if "NCTracker" in i_class and "List" in i_class:
-  #          i_files =eval("sys.modules['__main__']." +i + ".ensemble")
-  #          valid_files += i_files
-  #          
-
-
+    valid_files = list(set(valid_files))
 
     delete_these = [v for v in candidates if v not in valid_files]            
     if keep is not None:
@@ -70,6 +74,5 @@ def cleanup(keep = None):
 
     
     for dd in delete_these:
-        print(dd)
         nc_remove(dd)
     
