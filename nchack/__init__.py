@@ -27,9 +27,9 @@ class NCTracker:
                 return "<nchack.NCTracker>:\nstart: " + str_flatten(self.start) + "\ncurrent: " + str_flatten(self.current) + "\noperations: " + str(len(self.history))
         else:
             if self.start is None:
-                return "<nchack.NCTracker>:\nstart: "+ str(self.start) + "\ncurrent: " + str(self.current) + "\noperations: " + str(len(self.history))
+                return "<nchack.NCTracker>:\nstart: "+ str(self.start) + "\ncurrent: " + str_flatten(self.current) + "\noperations: " + str(len(self.history))
             else:
-                return "<nchack.NCTracker>:\nstart: "+self.start + "\ncurrent: " + self.current + "\noperations: " + str(len(self.history))
+                return "<nchack.NCTracker>:\nstart: "+self.start + "\ncurrent: " + str_flatten(self.current) + "\noperations: " + str(len(self.history))
 
 
     # todo
@@ -51,6 +51,17 @@ class NCTracker:
         if isinstance(value,list):
             self._start = value
 
+    def append(self, x):
+        """A function for creating a new tracker using an existing one as the starting point"""
+        
+        # 1st, current needs to be convert to a list if we are able to append something to it
+        if type(self.current) is str:
+            self.current = [self.current]
+        if type(x) is str:
+            self.current.append(x)
+        else:
+            self.current = self.current + x
+        return(self)
 
     def update(self, current):
         """A function for creating a new tracker using an existing one as the starting point"""
@@ -77,43 +88,7 @@ class NCTracker:
         result = sep.join(str(x) for x in L)
         return(result)
     def __del__(self):
-##        print("deleted")
         cleanup()
-
-#    def __del__(self):
-#        if isinstance(self.start,list):
-#            if isinstance(self.current, list) == False:
-#                if os.path.exists(self.current):
-#                    os.remove(self.current)
-#        else: 
-#            if self.current != self.start:
-#                if os.path.exists(self.current):
-#                    os.remove(self.current)
-#
-#                if self.grid is not None or self.weights is not None:
-#                # We do not want to delete the weights and grid if they are in use by another tracker
-#                    valid_grid = 0 
-#                    valid_weights = 0 
-#                    objects = dir(sys.modules["__main__"])
-#                    for i in ([v for v in objects if not v.startswith('_')]):
-#                        i_class = str(eval("type(sys.modules['__main__']." +i + ")"))
-#                        if "NCTracker" in i_class:
-#                            i_grid = eval("sys.modules['__main__']." +i + ".grid")
-#                            i_weights = eval("sys.modules['__main__']." +i + ".weights")
-#                            if self.grid is not None:
-#                                valid_grid += i_grid == self.grid
-#                    
-#                            if self.weights is not None:
-#                                valid_weights += i_weights == self.weights
-#                    if valid_weights == 0 and os.path.exists(self.weights):
-#                        os.remove(self.weights)
-#
-#                    if valid_grid == 0 and os.path.exists(self.grid):
-#                        os.remove(self.grid)
-#                    
-
-
-                               ## del self
 
     @start.deleter
     def start(self):
@@ -137,22 +112,3 @@ class NCTracker:
     from ._transmute import transmute
     from ._times import times
 
-
-
-#class NCTrackerList:
-#    def __init__(self, start):
-#        """Initialize the starting file name etc"""
-#        self.ensemble = [start]
-#        cleanup(keep = start)
-#
-#    def add(self, new):
-#        """A function for adding a new variable to an ensemble"""
-#        self.ensemble.append(new.current)
-#        cleanup(keep = new.current)
-#        return(self)
-#
-#
-#    def __del__(self):
-#        print("deleted")
-#        cleanup()
-#
