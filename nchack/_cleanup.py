@@ -4,6 +4,7 @@ import glob
 import sys
 
 from ._filetracker import nc_created
+from ._remove import nc_remove
 
 # keep is a file you do not want to delete
 
@@ -70,5 +71,5 @@ def cleanup(keep = None):
     
     for dd in delete_these:
         print(dd)
-        os.remove(dd)
+        nc_remove(dd)
     
