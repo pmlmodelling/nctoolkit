@@ -44,4 +44,7 @@ def vertmean(self, vars = None):
 
 def vertmin(self, vars = None):
     return vertstat(self, vars = vars, stat = "min")
+
+def vertmax(self, vars = None):
+    return vertstat(self, vars = vars, stat = "max")
     
