@@ -133,4 +133,11 @@ class NCTracker:
     from ._seasclim import seasonal_range_climatology
 
 
+    from ._yearlystat import yearly_mean 
+    from ._yearlystat import yearly_min
+    from ._yearlystat import yearly_max 
+    from ._yearlystat import yearly_range
+
+
+
 
