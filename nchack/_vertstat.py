@@ -48,3 +48,5 @@ def vertmin(self, vars = None):
 def vertmax(self, vars = None):
     return vertstat(self, vars = vars, stat = "max")
     
+def vertrange(self, vars = None):
+    return vertstat(self, vars = vars, stat = "range")
