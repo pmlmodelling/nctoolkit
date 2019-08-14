@@ -111,4 +111,5 @@ class NCTracker:
     from ._mutate import mutate 
     from ._transmute import transmute
     from ._times import times
+    from ._ensemble_check import ensemble_check
 
