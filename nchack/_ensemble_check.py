@@ -40,4 +40,3 @@ def ensemble_check(self):
 
 
 
-    return grid or parameters
