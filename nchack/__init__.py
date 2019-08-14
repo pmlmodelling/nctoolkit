@@ -7,6 +7,7 @@ from ._generate_grid import generate_grid
 from ._filetracker import nc_created
 from ._cleanup import cleanup
 import copy
+from ._create_ensemble import create_ensemble 
 
 class NCTracker:
     """A tracker/log for manipulating netcdf files"""
