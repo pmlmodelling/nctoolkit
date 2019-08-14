@@ -122,4 +122,8 @@ class NCTracker:
     from ._vertstat import vertmax
     from ._vertstat import vertrange
 
+    from ._seasstat import seasonal_mean 
+    from ._seasstat import seasonal_min
+    from ._seasstat import seasonal_max 
+    from ._seasstat import seasonal_range
 
