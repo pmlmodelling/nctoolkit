@@ -119,5 +119,6 @@ class NCTracker:
     from ._ensemble_percentile import ensemble_percentile
     from ._vertstat import vertmean 
     from ._vertstat import vertmin
+    from ._vertstat import vertmax
 
 
