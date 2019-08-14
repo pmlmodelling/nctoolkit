@@ -120,5 +120,6 @@ class NCTracker:
     from ._vertstat import vertmean 
     from ._vertstat import vertmin
     from ._vertstat import vertmax
+    from ._vertstat import vertrange
 
 
