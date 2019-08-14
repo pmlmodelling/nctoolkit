@@ -11,7 +11,14 @@ import itertools
 
 def create_ensemble(path = "", var = None, recursive = True):
     "A function to create an ensemble is valid"
-    # First make sure the path ends with "/" if it is not empty
+
+    # make sure the path exists
+
+    if os.path.exists(path) == False:
+        raise ValueError("The path provided does not exist!")
+# check that the remapping method is valid
+
+    # make sure the path ends with "/" if it is not empty
 
     if path != "":
         if path.endswith("/") == False:
