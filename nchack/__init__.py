@@ -113,4 +113,5 @@ class NCTracker:
     from ._transmute import transmute
     from ._times import times
     from ._ensemble_check import ensemble_check
+    from ._mean import mean 
 
