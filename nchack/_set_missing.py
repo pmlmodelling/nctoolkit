@@ -1,0 +1,45 @@
+
+import xarray as xr
+import pandas as pd
+import numpy as np
+import os
+import tempfile
+import itertools
+
+from .flatten import str_flatten
+from ._depths import nc_depths 
+from ._variables import variables
+from ._filetracker import nc_created
+from ._cleanup import cleanup
+
+def set_missing(self, value):
+    """Function to set the missing values"""
+    """This is either a range or a single value"""
+
+    ff = self.current
+
+    self.target = tempfile.NamedTemporaryFile().name + ".nc"
+    owd = os.getcwd()
+   # log the full path of the file
+    global nc_created
+    nc_created.append(self.target)
+    if type(value) is int:
+        value = float(value)
+
+    if type(value) is float:
+        cdo_command = ("cdo setctomiss," + str(value) + " " +  ff + " " + self.target) 
+    if type(value) is list:
+        cdo_command = ("cdo setrtomiss," + str(value[0]) + "," + str(value[1]) + " " +  ff + " " + self.target) 
+
+
+    self.history.append(cdo_command)
+    os.system(cdo_command) 
+    self.current = self.target 
+
+    # clean up the directory
+    cleanup(keep = self.current)
+
+    return(self)
+    
+
+    
