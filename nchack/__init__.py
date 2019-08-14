@@ -116,4 +116,5 @@ class NCTracker:
     from ._mean import mean 
     from ._set_missing import set_missing
     from ._select_season import select_season
+    from ._ensemble_percentile import ensemble_percentile
 
