@@ -16,8 +16,8 @@ from ._variables import variables
 from ._filetracker import nc_created
 from ._cleanup import cleanup
 
-def ensemble_percentile(self, p, vars = None):
-    """Function to calculate an ensemble range from a list of files"""
+def ensemble_percentile(self, p = 50, vars = None):
+    """Function to calculate an ensemble percentile from a list of files"""
     ff_ensemble = self.current
 
     if type(ff_ensemble) is not list:
