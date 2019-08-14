@@ -114,4 +114,5 @@ class NCTracker:
     from ._times import times
     from ._ensemble_check import ensemble_check
     from ._mean import mean 
+    from ._set_missing import set_missing
 
