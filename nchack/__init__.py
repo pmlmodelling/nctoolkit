@@ -154,6 +154,6 @@ class NCTracker:
     from ._monthlyclim import monthly_max_climatology
     from ._monthlyclim import monthly_range_climatology
 
-    from ._to_nc import to_nc 
+    from ._to_nc import to_netcdf
 
 
