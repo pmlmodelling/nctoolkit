@@ -15,6 +15,15 @@ from ._runcommand import run_command
 
 def regrid(self, vars = None, grid = None, method = "bil", weights_file = None):
     owd = os.getcwd()
+
+    # find the grid type
+    if isinstance(grid, pd.DataFrame):
+        grid_type = "df"
+    else:
+        grid_type = "nc"
+        
+
+
    # log the full path of the file
     ff_orig = os.path.abspath(self.current)
     os.chdir("/tmp")
@@ -64,8 +73,11 @@ def regrid(self, vars = None, grid = None, method = "bil", weights_file = None):
         if grid is not None:
                        # first generate the grid
             if self.grid is None:
-                self.grid = generate_grid(grid)
-                nc_created.append(self.grid)
+                if grid_type == "df":
+                    self.grid = generate_grid(grid)
+                    nc_created.append(self.grid)
+                else:
+                    self.grid = grid
                 
             # first we need to generate the weights for remapping
             # and add this to the files created list and self.weights
