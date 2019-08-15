@@ -19,10 +19,11 @@ def regrid(self, vars = None, grid = None, method = "bil", weights_file = None):
     # find the grid type
     if isinstance(grid, pd.DataFrame):
         grid_type = "df"
-    else:
-        grid_type = "nc"
-        
 
+    if type(grid) is str:
+        if os.path.exists(grid) == False:
+            raise ValueError("grid file supplied does not exist")
+        grid_type = "nc"
 
    # log the full path of the file
     ff_orig = os.path.abspath(self.current)
