@@ -50,7 +50,7 @@ def generate_grid(coords):
         x_size = len(coords)
         x_values = str_flatten(coords.iloc[:,0], sep = " ")
         y_values = str_flatten(coords.iloc[:,1], sep = " ")
-        f = open('mygrid', 'w')
+        f = open(grid_file, 'w')
         f.write("gridtype = lonlat\n")
         f.write("xsize = " + str(len(x)) + "\n")
         f.write("ysize = " + str(len(y)) + "\n")
