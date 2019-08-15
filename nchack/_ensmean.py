@@ -12,6 +12,8 @@ from ._variables import variables
 from ._filetracker import nc_created
 from ._cleanup import cleanup
 
+from ._runcommand import run_command
+
 def ensemble_mean(self, vars = None):
     """Function to calculate an ensemble mean from a list of files"""
     ff_ensemble = self.current
@@ -33,7 +35,7 @@ def ensemble_mean(self, vars = None):
 
 
     self.history.append(nco_command)
-    os.system(nco_command) 
+    run_command(nco_command) 
     self.current = self.target 
 
     # clean up the directory
