@@ -12,6 +12,7 @@ from ._depths import nc_depths
 from ._variables import variables
 from ._filetracker import nc_created
 from ._cleanup import cleanup
+from ._runcommand import run_command
 
 def to_nc(self, out, zip = True, overwrite = False):
     """ Function to save the current file to netcdf"""
@@ -27,7 +28,7 @@ def to_nc(self, out, zip = True, overwrite = False):
     if os.path.exists(out) and overwrite == False: 
         raise ValueError("The out file exists and overwrite is set to false")
     if zip:
-        os.system("cdo -f nc4 -z zip_9 copy " + ff + " " + out)
+        run_command("cdo -f nc4 -z zip_9 copy " + ff + " " + out)
     else:
         shutil.copy(ff, out)
 
