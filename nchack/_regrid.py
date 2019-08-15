@@ -80,8 +80,10 @@ def regrid(self, vars = None, grid = None, method = "bil", weights_file = None):
                 cdo_call = ("cdo gen" + method + ","+ self.grid+ " " + holding_nc + " " + weights_nc)
                 run_command(cdo_call)
                 self.history.append(cdo_call)
+            else:
+                weights_nc = self.weights
 
-            cdo_call = ("cdo remap"+ method + "," + self.grid + " " + holding_nc + " " + dummy_nc)
+            cdo_call = ("cdo remap," + self.grid + "," + weights_nc +  " " + holding_nc + " " + dummy_nc)
             self.history.append(cdo_call)
             run_command(cdo_call)
             if os.path.isfile(dummy_nc) == False:
