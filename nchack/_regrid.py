@@ -1,4 +1,3 @@
-
 import xarray as xr
 import pandas as pd
 import numpy as np
@@ -12,9 +11,7 @@ from ._cleanup import cleanup
 from ._filetracker import nc_created
 from ._runcommand import run_command
 
-
 def regrid(self, vars = None, grid = None, method = "bil", weights_file = None):
-    owd = os.getcwd()
 
     grid_type = None
 
@@ -22,10 +19,9 @@ def regrid(self, vars = None, grid = None, method = "bil", weights_file = None):
     if isinstance(grid, pd.DataFrame):
         grid_type = "df"
 
+    # If the grid is an xarray object, we need to convert it to .nc
     if isinstance(grid, xr.Dataset):
         grid_type = "xr"
-
-        # if the datset is an xarray object, we need to convert it to .nc
         temp_nc = tempfile.NamedTemporaryFile().name + ".nc"
         nc_created.append(temp_nc)
         grid.to_netcdf(temp_nc)
@@ -40,93 +36,90 @@ def regrid(self, vars = None, grid = None, method = "bil", weights_file = None):
         raise ValueError("grid supplied is not valid")
 
    # log the full path of the file
-    ff_orig = os.path.abspath(self.current)
-    os.chdir("/tmp")
-    try:
+    ##ff_orig = os.path.abspath(self.current)
+
     # need a check at this point for file validity     
-        holding_nc = ff_orig
-        self.target  = tempfile.NamedTemporaryFile().name + ".nc"
-        temp_nc = tempfile.NamedTemporaryFile().name + ".nc"
-        dummy_nc = tempfile.NamedTemporaryFile().name + ".nc"
-        nc_created.append(self.target)
-        nc_created.append(temp_nc)
-        nc_created.append(dummy_nc)
-#    # check if variables are included
-         # first, a hack to make sure vars is something we can iterate over
-        if vars != None:
-            if type(vars) is str:
-                vars = {vars}
-        
-        if (vars is None) == False:
-            ff_variables = self.variables()
-            for vv in vars:
-                 if (vv in ff_variables) == False:
-                     raise ValueError("variable " + vv + " is not available in the netcdf file")
-# check that the remapping method is valid
-        if (method in {"bil", "dis", "nn"}) == False:
-            raise ValueError("remapping method is invalid. Please check")
-         
-         # need code at this point to add missing grid if it's needed
-         
-         # same with na_value stuff. But maybe that isn't really needed
-         # a distraction?
-         
-         # check the number of grids in the file
+    holding_nc = self.current 
+    self.target  = tempfile.NamedTemporaryFile().name + ".nc"
+    temp_nc = tempfile.NamedTemporaryFile().name + ".nc"
+    dummy_nc = tempfile.NamedTemporaryFile().name + ".nc"
+    nc_created.append(self.target)
+    nc_created.append(temp_nc)
+    nc_created.append(dummy_nc)
+     # check if variables are included
+     # first, a hack to make sure vars is something we can iterate over
+    if vars != None:
+        if type(vars) is str:
+            vars = {vars}
+    
+    if (vars is None) == False:
+        ff_variables = self.variables()
+        for vv in vars:
+             if (vv in ff_variables) == False:
+                 raise ValueError("variable " + vv + " is not available in the netcdf file")
+    # check that the remapping method is valid
+    if (method in {"bil", "dis", "nn"}) == False:
+        raise ValueError("remapping method is invalid. Please check")
+     
+     # need code at this point to add missing grid if it's needed
+     
+     # same with na_value stuff. But maybe that isn't really needed
+     # a distraction?
+     
+     # check the number of grids in the file
 
-        if vars != None:
-            cdo_call = ("cdo selname," + str_flatten(vars) + " " + holding_nc + " " + dummy_nc)
-            self.history.append(cdo_call)
-            run_command(cdo_call)
-            if holding_nc == ff_orig:
-               holding_nc = temp_nc
-          # throw error if selecting vars fails
-            if os.path.isfile(dummy_nc) == False:
-               raise ValueError("variable selection did not work. Check output")
-            os.rename(dummy_nc, holding_nc)
-   # Do do the horizontal regridding
-       
-        if grid is not None:
-                       # first generate the grid
-            if self.grid is None:
-                if grid_type == "df":
-                    self.grid = generate_grid(grid)
-                    nc_created.append(self.grid)
-                else:
-                    self.grid = grid
-                
-            # first we need to generate the weights for remapping
-            # and add this to the files created list and self.weights
-            if self.weights is None:
-                weights_nc = tempfile.NamedTemporaryFile().name + ".nc"
-                nc_created.append(weights_nc)
-                self.weights = weights_nc
-                
-                weights_nc = self.weights
-
-                cdo_call = ("cdo gen" + method + ","+ self.grid+ " " + holding_nc + " " + weights_nc)
-                self.history.append(cdo_call)
-                run_command(cdo_call)
+    if vars != None:
+        cdo_call = ("cdo selname," + str_flatten(vars) + " " + holding_nc + " " + dummy_nc)
+        self.history.append(cdo_call)
+        run_command(cdo_call)
+        if holding_nc == self.current:
+           holding_nc = temp_nc
+      # throw error if selecting vars fails
+        if os.path.isfile(dummy_nc) == False:
+           raise ValueError("variable selection did not work. Check output")
+        os.rename(dummy_nc, holding_nc)
+    # Do do the horizontal regridding
+   
+    if grid is not None:
+                   # first generate the grid
+        if self.grid is None:
+            if grid_type == "df":
+                self.grid = generate_grid(grid)
+                nc_created.append(self.grid)
             else:
-                weights_nc = self.weights
+                self.grid = grid
+            
+        # first we need to generate the weights for remapping
+        # and add this to the files created list and self.weights
+        if self.weights is None:
+            weights_nc = tempfile.NamedTemporaryFile().name + ".nc"
+            nc_created.append(weights_nc)
+            self.weights = weights_nc
+            
+            weights_nc = self.weights
 
-            cdo_call = ("cdo remap," + self.grid + "," + weights_nc +  " " + holding_nc + " " + dummy_nc)
+            cdo_call = ("cdo gen" + method + ","+ self.grid+ " " + holding_nc + " " + weights_nc)
             self.history.append(cdo_call)
             run_command(cdo_call)
-            if os.path.isfile(dummy_nc) == False:
-                raise ValueError("horizontal remapping did not work. Check output")
-       
-            if holding_nc == ff_orig:
-                holding_nc = temp_nc
+        else:
+            weights_nc = self.weights
 
-            os.rename(dummy_nc, holding_nc)
-            
-        os.rename(holding_nc, self.target)
+        cdo_call = ("cdo remap," + self.grid + "," + weights_nc +  " " + holding_nc + " " + dummy_nc)
+        self.history.append(cdo_call)
+        run_command(cdo_call)
+        if os.path.isfile(dummy_nc) == False:
+            raise ValueError("horizontal remapping did not work. Check output")
+   
+        if holding_nc == self.current:
+            holding_nc = temp_nc
 
-        self.current = self.target 
+        os.rename(dummy_nc, holding_nc)
+        
+    os.rename(holding_nc, self.target)
 
-        cleanup(keep = [self.current, self.weights, self.grid])
+    self.current = self.target 
 
-        return(self)
+    cleanup(keep = [self.current, self.weights, self.grid])
 
-    finally:
-         os.chdir(owd)
+    return(self)
+
