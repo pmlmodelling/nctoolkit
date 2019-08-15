@@ -97,7 +97,7 @@ class NCTracker:
  
     from ._variables import variables
     from ._toxarray import to_xarray
-    from ._cellareas import cellareas
+    from ._cellareas import cell_areas
     from ._expr import expr
     from ._regrid import regrid
     from ._surface import surface
