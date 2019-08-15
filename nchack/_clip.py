@@ -6,13 +6,13 @@ import os
 import tempfile
 import itertools
 
+from ._runcommand import run_command
 from .flatten import str_flatten
 from ._depths import nc_depths 
 from ._variables import variables
 from ._filetracker import nc_created
 from ._cleanup import cleanup
 from ._cleanup import cleanup
-from ._runcommand import run_command
 
 def clip(self, vars = None, lon_range = [-180, 180], lat_range = [-90, 90], vert_range = None, months = None, years = None,  cdo_output = False):
     """ Function to clip netcdf files, spatially and temporally"""
