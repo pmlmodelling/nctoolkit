@@ -74,12 +74,11 @@ def regrid(self, vars = None, grid = None, method = "bil", weights_file = None):
                 nc_created.append(weights_nc)
                 self.weights = weights_nc
                 
-
                 weights_nc = self.weights
 
                 cdo_call = ("cdo gen" + method + ","+ self.grid+ " " + holding_nc + " " + weights_nc)
-                run_command(cdo_call)
                 self.history.append(cdo_call)
+                run_command(cdo_call)
             else:
                 weights_nc = self.weights
 
