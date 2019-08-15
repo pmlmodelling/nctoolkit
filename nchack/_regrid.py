@@ -20,10 +20,23 @@ def regrid(self, vars = None, grid = None, method = "bil", weights_file = None):
     if isinstance(grid, pd.DataFrame):
         grid_type = "df"
 
+    if isinstance(grid, xr.Dataset):
+        grid_type = "xr"
+
+        # if the datset is an xarray object, we need to convert it to .nc
+        temp_nc = tempfile.NamedTemporaryFile().name + ".nc"
+        nc_created.append(temp_nc)
+        grid.to_netcdf(temp_nc)
+        grid = temp_nc
+        
+
     if type(grid) is str:
         if os.path.exists(grid) == False:
             raise ValueError("grid file supplied does not exist")
         grid_type = "nc"
+
+
+
 
    # log the full path of the file
     ff_orig = os.path.abspath(self.current)
