@@ -11,6 +11,7 @@ from ._depths import nc_depths
 from ._variables import variables
 from ._filetracker import nc_created
 from ._cleanup import cleanup
+from ._runcommand import run_command
 
 def seasstat(self, vars = None, stat = "mean"):
     """Function to calculate the seasonal statistic from a function""" 
@@ -30,7 +31,7 @@ def seasstat(self, vars = None, stat = "mean"):
         cdo_command = ("cdo -yseas" + stat + " -selname," +  vars_list + " " + ff + " " + self.target) 
 
     self.history.append(cdo_command)
-    os.system(cdo_command) 
+    run_command(cdo_command) 
     self.current = self.target 
 
     # clean up the directory
