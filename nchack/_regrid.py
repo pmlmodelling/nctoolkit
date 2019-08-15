@@ -30,6 +30,8 @@ def regrid(self, vars = None, grid = None, method = "bil", weights_file = None):
     if type(grid) is str:
         if os.path.exists(grid) == False:
             raise ValueError("grid file supplied does not exist")
+        if grid.endswith(".nc") == False:
+            raise ValueError("grid file supplied is not a netcdf file!")
         grid_type = "nc"
 
     if grid_type is None:
