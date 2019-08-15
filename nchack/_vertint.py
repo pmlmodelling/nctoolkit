@@ -10,6 +10,7 @@ from ._depths import nc_depths
 from .flatten import str_flatten
 from ._cleanup import cleanup
 from ._filetracker import nc_created
+from ._runcommand import run_command
 
 
 def vertint(self, vars = None, vert_depths = None):
@@ -41,7 +42,7 @@ def vertint(self, vars = None, vert_depths = None):
         vertical_remap = False
 
         if vars != None:
-            os.system("cdo selname," + str_flatten(vars) + " " + holding_nc + " " + dummy_nc)
+            run_command("cdo selname," + str_flatten(vars) + " " + holding_nc + " " + dummy_nc)
             if holding_nc == ff_orig:
                holding_nc = temp_nc
           # throw error if selecting vars fails
@@ -78,7 +79,7 @@ def vertint(self, vars = None, vert_depths = None):
                  raise ValueError("error: maximum depth supplied is too low")
 
             vert_depths = str_flatten(vert_depths, ",")
-            os.system("cdo intlevel," + vert_depths + " " + holding_nc + " " + dummy_nc)
+            run_command("cdo intlevel," + vert_depths + " " + holding_nc + " " + dummy_nc)
 
             if holding_nc == ff_orig:
                 holding_nc = temp_nc
