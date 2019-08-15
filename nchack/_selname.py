@@ -9,6 +9,7 @@ import itertools
 from .flatten import str_flatten
 from ._cleanup import cleanup
 from ._filetracker import nc_created
+from ._runcommand import run_command
 
 
 def select_variables(self, vars = None):
@@ -24,7 +25,7 @@ def select_variables(self, vars = None):
     
     cdo_command = "cdo selname," + vars_list + " " + self.current + " " + self.target
     self.history.append(cdo_command)
-    os.system(cdo_command)
+    run_command(cdo_command)
     
     self.current = self.target 
     
