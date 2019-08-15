@@ -13,7 +13,7 @@ from ._filetracker import nc_created
 from ._runcommand import run_command
 
 
-def regrid(self, vars = None, coords = None, method = "bil", weights_file = None):
+def regrid(self, vars = None, grid = None, method = "bil", weights_file = None):
     owd = os.getcwd()
    # log the full path of the file
     ff_orig = os.path.abspath(self.current)
@@ -61,10 +61,10 @@ def regrid(self, vars = None, coords = None, method = "bil", weights_file = None
             os.rename(dummy_nc, holding_nc)
    # Do do the horizontal regridding
        
-        if coords is not None:
+        if grid is not None:
                        # first generate the grid
             if self.grid is None:
-                self.grid = generate_grid(coords)
+                self.grid = generate_grid(grid)
                 nc_created.append(self.grid)
                 
             # first we need to generate the weights for remapping
