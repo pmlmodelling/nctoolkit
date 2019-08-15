@@ -15,6 +15,7 @@ from ._depths import nc_depths
 from ._variables import variables
 from ._filetracker import nc_created
 from ._cleanup import cleanup
+from ._runcommand import run_command
 
 def ensemble_percentile(self, p = 50, vars = None):
     """Function to calculate an ensemble percentile from a list of files"""
@@ -42,7 +43,7 @@ def ensemble_percentile(self, p = 50, vars = None):
         cdo_command = ("cdo -enspctl," + str(p) + " " + "selname," + vars_list + " " + str_flatten(ff_ensemble, " ") + " " + self.target) 
 
     self.history.append(cdo_command)
-    cdo_result = os.system(cdo_command) 
+    run_command(cdo_command) 
     self.current = self.target 
 
     # clean up the directory
