@@ -11,6 +11,8 @@ from ._depths import nc_depths
 from ._variables import variables
 from ._filetracker import nc_created
 from ._cleanup import cleanup
+from ._cleanup import cleanup
+from ._runcommand import run_command
 
 def clip(self, vars = None, lon_range = [-180, 180], lat_range = [-90, 90], vert_range = None, months = None, years = None,  cdo_output = False):
     """ Function to clip netcdf files, spatially and temporally"""
@@ -122,7 +124,7 @@ def clip(self, vars = None, lon_range = [-180, 180], lat_range = [-90, 90], vert
         if vars != None:
             cdo_call = ("cdo selname," + str_flatten(vars) + " " + holding_nc + " " + dummy_nc)
             self.history.append(cdo_call)
-            os.system(cdo_call)
+            run_command(cdo_call)
             if holding_nc == ff_orig:
                holding_nc = temp_nc
 
@@ -139,7 +141,7 @@ def clip(self, vars = None, lon_range = [-180, 180], lat_range = [-90, 90], vert
             lat_box = str_flatten(lon_range + lat_range)
             cdo_call = ("cdo sellonlatbox," + lat_box + " " + holding_nc + " " + dummy_nc)
             self.history.append(cdo_call)
-            os.system(cdo_call)
+            run_command(cdo_call)
 
             if os.path.isfile(dummy_nc) == False:
                 raise ValueError("horizontal remapping did not work. Check output")
@@ -162,7 +164,7 @@ def clip(self, vars = None, lon_range = [-180, 180], lat_range = [-90, 90], vert
 
             cdo_call = ("cdo sellevel," + levels_selected + " " + holding_nc + " " + dummy_nc)
             self.history.append(cdo_call)
-            os.system(cdo_call)
+            run_command(cdo_call)
 
             if os.path.isfile(dummy_nc) == False:
                 raise ValueError("horizontal remapping did not work. Check output")
@@ -191,7 +193,7 @@ def clip(self, vars = None, lon_range = [-180, 180], lat_range = [-90, 90], vert
                 month_choice = str_flatten(months)
                 cdo_call = ("cdo selmonth," + month_choice + " " + holding_nc + " " + dummy_nc)
                 self.history.append(cdo_call)
-                os.system(cdo_call)
+                run_command(cdo_call)
 
                 if os.path.isfile(dummy_nc) == False:
                     raise ValueError("monthly clipping did not work. Check output")
@@ -223,7 +225,7 @@ def clip(self, vars = None, lon_range = [-180, 180], lat_range = [-90, 90], vert
                 year_choice = str_flatten(years)
                 cdo_call = ("cdo selyear," + year_choice + " " + holding_nc + " " + dummy_nc)
                 self.history.append(cdo_call)
-                os.system(cdo_call)
+                run_command(cdo_call)
 
                 if os.path.isfile(dummy_nc) == False:
                     raise ValueError("yearly clipping did not work. Check output")
