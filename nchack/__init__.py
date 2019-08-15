@@ -147,6 +147,10 @@ class NCTracker:
     from ._yearlystat import yearly_range
 
 
+    from ._monstat import monthly_mean
+    from ._monstat import monthly_min
+    from ._monstat import monthly_max
+    from ._monstat import monthly_range
 
 
     from ._monthlyclim import monthly_mean_climatology
