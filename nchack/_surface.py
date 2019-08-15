@@ -10,6 +10,7 @@ from ._depths import nc_depths
 from ._clip import clip
 from ._filetracker import nc_created
 from ._cleanup import cleanup 
+from ._runcommand import run_command
 
 def surface(self, vars = None):
    # if nc_valid(self.current) == False:
@@ -20,7 +21,7 @@ def surface(self, vars = None):
     nc_created.append(self.target)
 
     cdo_command = "cdo --reduce_dim -sellevidx,1 " + self.current + " " + self.target
-    os.system(cdo_command)
+    run_command(cdo_command)
     self.history.append(cdo_command)
 
     self.target
