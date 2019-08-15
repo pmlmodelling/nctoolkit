@@ -40,14 +40,14 @@ def vertstat(self, vars = None, stat = "mean"):
     return(self)
     
 
-def vertmean(self, vars = None):
+def vertical_mean(self, vars = None):
     return vertstat(self, vars = vars, stat = "mean")
 
-def vertmin(self, vars = None):
+def vertical_min(self, vars = None):
     return vertstat(self, vars = vars, stat = "min")
 
-def vertmax(self, vars = None):
+def vertical_max(self, vars = None):
     return vertstat(self, vars = vars, stat = "max")
     
-def vertrange(self, vars = None):
+def vertical_range(self, vars = None):
     return vertstat(self, vars = vars, stat = "range")

@@ -117,10 +117,10 @@ class NCTracker:
     from ._set_missing import set_missing
     from ._select_season import select_season
     from ._ensemble_percentile import ensemble_percentile
-    from ._vertstat import vertmean 
-    from ._vertstat import vertmin
-    from ._vertstat import vertmax
-    from ._vertstat import vertrange
+    from ._vertstat import vertical_mean 
+    from ._vertstat import vertical_min
+    from ._vertstat import vertical_max
+    from ._vertstat import vertical_range
 
     from ._seasstat import seasonal_mean 
     from ._seasstat import seasonal_min
