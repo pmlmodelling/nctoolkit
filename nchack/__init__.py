@@ -21,16 +21,24 @@ class NCTracker:
         self.target = None
 
     def __repr__(self):
+        # tidy up the output first
         if isinstance(self.start,list):
             if len(self.start) > 10:
-                return "<nchack.NCTracker>:\nstart: " + ">10 member ensemble" + "\ncurrent: " + ">10 member ensemble" + "\noperations: " + str(len(self.history))
+                start = ">10 ensemble member"
             else:
-                return "<nchack.NCTracker>:\nstart: " + str_flatten(self.start) + "\ncurrent: " + str_flatten(self.current) + "\noperations: " + str(len(self.history))
-        else:
-            if self.start is None:
-                return "<nchack.NCTracker>:\nstart: "+ str(self.start) + "\ncurrent: " + str_flatten(self.current) + "\noperations: " + str(len(self.history))
+                start = str_flatten(self.start)
+        if type(self.start) == str:
+            start = self.start
+
+        if isinstance(self.current,list):
+            if len(self.current) > 10:
+                current = ">10 ensemble member"
             else:
-                return "<nchack.NCTracker>:\nstart: "+self.start + "\ncurrent: " + str_flatten(self.current) + "\noperations: " + str(len(self.history))
+                current = str_flatten(self.current)
+        if type(self.current) == str:
+            current = self.current
+
+        return "<nchack.NCTracker>:\nstart: " + start + "\ncurrent: " + current + "\noperations: " + str(len(self.history))
 
 
     # todo
