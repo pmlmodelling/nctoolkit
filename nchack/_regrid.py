@@ -13,6 +13,9 @@ from ._runcommand import run_command
 
 def regrid(self, vars = None, grid = None, method = "bil", weights_file = None):
 
+    if grid is None:
+        raise ValueError("No grid was supplied")
+
     grid_type = None
 
     # find the grid type
