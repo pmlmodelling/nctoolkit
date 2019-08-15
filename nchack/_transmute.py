@@ -8,6 +8,7 @@ import itertools
 
 from ._cleanup import cleanup
 from ._filetracker import nc_created
+from ._runcommand import run_command
 
 def transmute(self, operations = None):
     """Function to transmute a netcdf file using expr"""
@@ -34,7 +35,7 @@ def transmute(self, operations = None):
 
     cdo_call = ("cdo expr," + expr + " " + self.current  + " " + self.target)
     self.history.append(cdo_call)
-    os.system(cdo_call)
+    run_command(cdo_call)
 
     if os.path.isfile(self.target) == False:
         raise ValueError("Application of expr did not work. Check output")
