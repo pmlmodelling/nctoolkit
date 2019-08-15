@@ -16,6 +16,8 @@ from ._runcommand import run_command
 def regrid(self, vars = None, grid = None, method = "bil", weights_file = None):
     owd = os.getcwd()
 
+    grid_type = None
+
     # find the grid type
     if isinstance(grid, pd.DataFrame):
         grid_type = "df"
@@ -28,15 +30,14 @@ def regrid(self, vars = None, grid = None, method = "bil", weights_file = None):
         nc_created.append(temp_nc)
         grid.to_netcdf(temp_nc)
         grid = temp_nc
-        
 
     if type(grid) is str:
         if os.path.exists(grid) == False:
             raise ValueError("grid file supplied does not exist")
         grid_type = "nc"
 
-
-
+    if grid_type is None:
+        raise ValueError("grid supplied is not valid")
 
    # log the full path of the file
     ff_orig = os.path.abspath(self.current)
