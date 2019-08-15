@@ -11,6 +11,7 @@ from ._depths import nc_depths
 from ._variables import variables
 from ._filetracker import nc_created
 from ._cleanup import cleanup
+from ._runcommand import run_command
 
 def set_missing(self, value):
     """Function to set the missing values"""
@@ -33,7 +34,7 @@ def set_missing(self, value):
 
 
     self.history.append(cdo_command)
-    os.system(cdo_command) 
+    run_command(cdo_command) 
     self.current = self.target 
 
     # clean up the directory

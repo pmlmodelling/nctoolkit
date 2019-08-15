@@ -10,6 +10,7 @@ from ._generate_grid import generate_grid
 from .flatten import str_flatten
 from ._cleanup import cleanup
 from ._filetracker import nc_created
+from ._runcommand import run_command
 
 
 def regrid(self, vars = None, coords = None, method = "bil", weights_file = None):
@@ -51,7 +52,7 @@ def regrid(self, vars = None, coords = None, method = "bil", weights_file = None
         if vars != None:
             cdo_call = ("cdo selname," + str_flatten(vars) + " " + holding_nc + " " + dummy_nc)
             self.history.append(cdo_call)
-            os.system(cdo_call)
+            run_command(cdo_call)
             if holding_nc == ff_orig:
                holding_nc = temp_nc
           # throw error if selecting vars fails
@@ -77,12 +78,12 @@ def regrid(self, vars = None, coords = None, method = "bil", weights_file = None
                 weights_nc = self.weights
 
                 cdo_call = ("cdo gen" + method + ","+ self.grid+ " " + holding_nc + " " + weights_nc)
-                os.system(cdo_call)
+                run_command(cdo_call)
                 self.history.append(cdo_call)
 
             cdo_call = ("cdo remap"+ method + "," + self.grid + " " + holding_nc + " " + dummy_nc)
             self.history.append(cdo_call)
-            os.system(cdo_call)
+            run_command(cdo_call)
             if os.path.isfile(dummy_nc) == False:
                 raise ValueError("horizontal remapping did not work. Check output")
        
