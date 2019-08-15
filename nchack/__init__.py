@@ -101,7 +101,7 @@ class NCTracker:
     from ._expr import expr
     from ._regrid import regrid
     from ._surface import surface
-    from ._vertint import vertint
+    from ._vertint import vertical_interp
     from ._ensmean import ensemble_mean
     from ._ensmax import ensemble_max
     from ._ensmin import ensemble_min

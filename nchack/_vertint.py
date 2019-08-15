@@ -13,7 +13,7 @@ from ._filetracker import nc_created
 from ._runcommand import run_command
 
 
-def vertint(self, vars = None, vert_depths = None):
+def vertical_interp(self, vars = None, vert_depths = None):
     owd = os.getcwd()
    # log the full path of the file
     ff_orig = os.path.abspath(self.current)
