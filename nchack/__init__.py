@@ -116,8 +116,11 @@ class NCTracker:
     from ._clip import clip
     from ._selname import select_variables
     from ._cdo_command import cdo_command
-    from ._mutate import mutate 
     from ._transmute import transmute
+
+    from ._expr import mutate 
+
+
     from ._times import times
     from ._ensemble_check import ensemble_check
     from ._mean import mean 

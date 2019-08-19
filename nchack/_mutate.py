@@ -10,7 +10,7 @@ from ._cleanup import cleanup
 from ._filetracker import nc_created
 from ._runcommand import run_command
 
-def mutate(self, operations = None):
+def mutate(self, operations = None, check = False):
     """Function to mutate a netcdf file using expr"""
 
     
@@ -46,4 +46,7 @@ def mutate(self, operations = None):
     
 
     return(self)
+
+
+
 
