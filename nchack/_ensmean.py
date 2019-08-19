@@ -14,11 +14,26 @@ from ._cleanup import cleanup
 
 from ._runcommand import run_command
 
-def ensemble_mean(self, vars = None):
+def ensemble_mean(self, vars = None, check = False):
     """Function to calculate an ensemble mean from a list of files"""
     ff_ensemble = self.current
     if type(ff_ensemble) is not list:
         raise ValueError("The current state of the tracker is not a list")
+    
+    if check:
+        all_grid = []
+        for ff in self.current:
+            all_grid.append("cdo griddes " + ff)
+        if len(set(all_grid)) > 1:
+            raise ValueError("grids are incompatible")
+
+    if check:
+        all_names = []
+        for ff in self.current:
+            all_names.append("cdo showname " + ff)
+        if len(set(all_grid)) > 1:
+            raise ValueError("Files have different variables")
+
     self.target = tempfile.NamedTemporaryFile().name + ".nc"
     owd = os.getcwd()
    # log the full path of the file
