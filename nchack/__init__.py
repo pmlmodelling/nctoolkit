@@ -123,7 +123,7 @@ class NCTracker:
 
     from ._times import times
     from ._ensemble_check import ensemble_check
-    from ._mean import mean 
+    ##from ._mean import mean 
     from ._set_missing import set_missing
     from ._select_season import select_season
     from ._ensemble_percentile import ensemble_percentile
