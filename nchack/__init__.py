@@ -159,4 +159,6 @@ class NCTracker:
 
     from ._to_nc import to_netcdf
 
+    from ._rename import rename 
+
 
