@@ -160,5 +160,6 @@ class NCTracker:
     from ._to_nc import to_netcdf
 
     from ._rename import rename 
+    from ._set_date import set_date 
 
 
