@@ -20,6 +20,7 @@ class NCTracker:
         self.grid = None 
         self.target = None
         self.mode = "execute"
+        self.hold_history = []
 
     def __repr__(self):
         # tidy up the output first
@@ -60,6 +61,13 @@ class NCTracker:
                     raise TypeError("File does not exist")
         if isinstance(value,list):
             self._start = value
+    def hold(self):
+        """A method to set the mode to hold"""
+        self.mode = "hold"
+        self.hold_history = self.history
+        
+        return(self)
+
 
     def append(self, x):
         """A function for creating a new tracker using an existing one as the starting point"""
