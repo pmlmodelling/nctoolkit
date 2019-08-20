@@ -19,6 +19,7 @@ class NCTracker:
         self.weights = None 
         self.grid = None 
         self.target = None
+        self.mode = "execute"
 
     def __repr__(self):
         # tidy up the output first
@@ -38,7 +39,7 @@ class NCTracker:
         if type(self.current) == str:
             current = self.current
 
-        return "<nchack.NCTracker>:\nstart: " + start + "\ncurrent: " + current + "\noperations: " + str(len(self.history))
+        return "<nchack.NCTracker>:\nstart: " + start + "\ncurrent: " + current + "\noperations: " + str(len(self.history)) + "\nmode: "+ self.mode
 
 
     # todo
@@ -164,5 +165,11 @@ class NCTracker:
 
     from ._rename import rename 
     from ._set_date import set_date 
+
+    from ._time_stat import time_mean 
+    from ._time_stat import time_max
+    from ._time_stat import time_min
+    from ._time_stat import time_range
+    from ._time_stat import time_var
 
 
