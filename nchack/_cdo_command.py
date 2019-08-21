@@ -26,7 +26,8 @@ def cdo_command(self, command):
     cdo_command = "cdo " + command + " " + infile + " " + self.target
 
     self.history.append(cdo_command)
-    self.hold and run_command(cdo_command)
+    run_command(cdo_command)
+    #self.terminate and run_command(cdo_command)
 
     self.current = self.target
 
