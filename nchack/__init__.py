@@ -19,7 +19,7 @@ class NCTracker:
         self.weights = None 
         self.grid = None 
         self.target = None
-        self.mode = "execute"
+        self.hold = False
         self.hold_history = []
 
     def __repr__(self):
@@ -40,7 +40,7 @@ class NCTracker:
         if type(self.current) == str:
             current = self.current
 
-        return "<nchack.NCTracker>:\nstart: " + start + "\ncurrent: " + current + "\noperations: " + str(len(self.history)) + "\nmode: "+ self.mode
+        return "<nchack.NCTracker>:\nstart: " + start + "\ncurrent: " + current + "\noperations: " + str(len(self.history))
 
 
     # todo
@@ -63,10 +63,22 @@ class NCTracker:
             self._start = value
     def hold(self):
         """A method to set the mode to hold"""
-        self.mode = "hold"
+        self.hold= True 
         self.hold_history = self.history
         
         return(self)
+
+#    def hold(self):
+#
+#        """A method to set the mode to hold"""
+#        self.mode = "hold"
+#        self.hold_history = self.history
+#        
+#        return(self)
+#
+
+
+
 
 
     def append(self, x):
