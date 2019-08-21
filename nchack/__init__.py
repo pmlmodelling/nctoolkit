@@ -6,6 +6,7 @@ from .flatten import str_flatten
 from ._generate_grid import generate_grid
 from ._filetracker import nc_created
 from ._cleanup import cleanup
+from ._cleanup import clean_all
 import copy
 from ._create_ensemble import create_ensemble 
 
@@ -19,7 +20,7 @@ class NCTracker:
         self.weights = None 
         self.grid = None 
         self.target = None
-        self.hold = False
+        self.execute = True
         self.hold_history = []
 
     def __repr__(self):
@@ -63,19 +64,22 @@ class NCTracker:
             self._start = value
     def hold(self):
         """A method to set the mode to hold"""
-        self.hold= True 
+        self.terminate = False 
         self.hold_history = self.history
         
         return(self)
 
-#    def hold(self):
-#
-#        """A method to set the mode to hold"""
-#        self.mode = "hold"
-#        self.hold_history = self.history
-#        
-#        return(self)
-#
+   # def execute(self):
+   #     """A method to execute the heldover commands"""
+   #     self.hold = True
+   #     # now, we need to chain together the held over commands
+   #     # step one
+   #     self.hold_history = self.history
+   #     
+   #     return(self)
+   # read = os.popen("cdo --operators").read()
+
+    #[x.split(" ")[0] for x in read.split("\n")]
 
 
 
