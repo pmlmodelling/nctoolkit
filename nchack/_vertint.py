@@ -95,7 +95,7 @@ def vertical_interp(self, vars = None, vert_depths = None):
             os.rename(dummy_nc, holding_nc)
         if vertical_remap:
             
-            self.current = self.target 
+            if self.run: self.current = self.target 
         
         cleanup(keep = self.current)
         
