@@ -13,7 +13,7 @@ from ._filetracker import nc_created
 from ._runcommand import run_command
 
 
-def vertical_interp(self, vars = None, vert_depths = None):
+def vertical_interp(self, vert_depths = None):
     owd = os.getcwd()
    # log the full path of the file
     ff_orig = os.path.abspath(self.current)
@@ -27,28 +27,9 @@ def vertical_interp(self, vars = None, vert_depths = None):
         nc_created.append(self.target)
         nc_created.append(dummy_nc)
         nc_created.append(self.target)
-#    # check if variables are included
-         # first, a hack to make sure vars is something we can iterate over
-        if vars != None:
-            if type(vars) is str:
-                vars = {vars}
-        
-        if (vars is None) == False:
-            ff_variables = self.variables()
-            for vv in vars:
-                 if (vv in ff_variables) == False:
-                     raise ValueError("variable " + vv + " is not available in the netcdf file")
          
         vertical_remap = False
 
-        if vars != None:
-            cdo_command = "cdo selname," + str_flatten(vars) + " " + holding_nc + " " + dummy_nc
-            self.history(cdo_command)
-            run_command(cdo_command, self)
-            if holding_nc == ff_orig:
-               holding_nc = temp_nc
-          # throw error if selecting vars fails
-            os.rename(dummy_nc, holding_nc)
 
     #  now, do the vertical remapping if necessary
     #  it is possible there are no vertical depths in the file. In this case we throw a warning message
