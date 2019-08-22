@@ -141,7 +141,7 @@ class NCTracker:
     from ._ensmax import ensemble_max
     from ._ensmin import ensemble_min
     from ._ensrange import ensemble_range
-    ##from ._clip import clip
+    from ._clip import clip
     from ._selname import select_variables
     from ._cdo_command import cdo_command
 
