@@ -34,8 +34,8 @@ def ensemble_min(self, vars = None):
 
 
     self.history.append(nco_command)
-    run_command(nco_command) 
-    self.current = self.target 
+    run_command(nco_command, self) 
+    if self.run: self.current = self.target 
 
     # clean up the directory
     cleanup(keep = self.current)

@@ -50,8 +50,8 @@ def ensemble_mean(self, vars = None, check = False):
 
 
     self.history.append(nco_command)
-    run_command(nco_command) 
-    self.current = self.target 
+    run_command(nco_command, self) 
+    if self.run: self.current = self.target 
 
     # clean up the directory
     cleanup(keep = self.current)
