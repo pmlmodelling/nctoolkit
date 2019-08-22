@@ -208,5 +208,6 @@ class NCTracker:
     from ._delete import remove_variable 
 
     from ._show import show_years 
+    from ._show import show_months
 
 
