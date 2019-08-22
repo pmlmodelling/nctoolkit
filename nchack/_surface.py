@@ -12,7 +12,7 @@ from ._filetracker import nc_created
 from ._cleanup import cleanup 
 from ._runcommand import run_command
 
-def surface(self, vars = None):
+def surface(self):
    # if nc_valid(self.current) == False:
         #raise ValueError("File is invalid")
 
