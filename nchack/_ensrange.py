@@ -17,7 +17,7 @@ from ._filetracker import nc_created
 from ._cleanup import cleanup
 from ._runcommand import run_command
 
-def ensemble_range(self, vars = None):
+def ensemble_range(self):
     """Function to calculate an ensemble range from a list of files"""
     ff_ensemble = self.current
 
@@ -31,16 +31,7 @@ def ensemble_range(self, vars = None):
     global nc_created
     nc_created.append(self.target)
 
-    if vars is None:
-        cdo_command = ("cdo ensrange " + str_flatten(ff_ensemble, " ") + " " + self.target) 
-    else:
-        if type(vars) is str:
-            vars = [vars]
-
-        vars_list = str_flatten(vars, ",")
-    #    vars_list = vars_list.replace("_", "\_")
-
-        cdo_command = ("cdo selname," + vars_list + " -ensrange " + str_flatten(ff_ensemble, " ") + " " + self.target) 
+    cdo_command = ("cdo ensrange " + str_flatten(ff_ensemble, " ") + " " + self.target) 
 
     self.history.append(cdo_command)
     run_command(cdo_command, self) 
