@@ -11,7 +11,7 @@ from ._cleanup import cleanup
 from ._filetracker import nc_created
 from ._runcommand import run_command
 
-def regrid(self, vars = None, grid = None, method = "bil"):
+def regrid(self, grid = None, method = "bil"):
 
     if grid is None:
         raise ValueError("No grid was supplied")
@@ -51,17 +51,7 @@ def regrid(self, vars = None, grid = None, method = "bil"):
     nc_created.append(self.target)
     nc_created.append(temp_nc)
     nc_created.append(dummy_nc)
-     # check if variables are included
-     # first, a hack to make sure vars is something we can iterate over
-    if vars != None:
-        if type(vars) is str:
-            vars = {vars}
-    
-    if (vars is None) == False:
-        ff_variables = self.variables()
-        for vv in vars:
-             if (vv in ff_variables) == False:
-                 raise ValueError("variable " + vv + " is not available in the netcdf file")
+
     # check that the remapping method is valid
     if (method in {"bil", "dis", "nn"}) == False:
         raise ValueError("remapping method is invalid. Please check")
@@ -73,14 +63,6 @@ def regrid(self, vars = None, grid = None, method = "bil"):
      
      # check the number of grids in the file
 
-    if vars != None:
-        cdo_command = ("cdo selname," + str_flatten(vars) + " " + holding_nc + " " + dummy_nc)
-        self.history.append(cdo_command)
-        run_command(cdo_command, self)
-        if holding_nc == self.current:
-           holding_nc = temp_nc
-
-        os.rename(dummy_nc, holding_nc)
     # Do do the horizontal regridding
    
     if grid is not None:
