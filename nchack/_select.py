@@ -1,0 +1,55 @@
+
+import xarray as xr
+import pandas as pd
+import numpy as np
+import os
+import tempfile
+import itertools
+
+from .flatten import str_flatten
+from ._cleanup import cleanup
+from ._filetracker import nc_created
+from ._runcommand import run_command
+
+
+def select_season(self, season):
+    """Function to select the season"""
+
+    self.target  = tempfile.NamedTemporaryFile().name + ".nc"
+    nc_created.append(self.target)
+    
+    cdo_command = "cdo select,season=" + season + " " + self.current + " " + self.target
+    self.history.append(cdo_command)
+    run_command(cdo_command, self)
+    
+    self.current = self.target 
+    
+    cleanup(keep = self.current)
+    
+    return(self)
+
+
+
+#def select_months(self, months):
+#    """Function to select the season"""
+#
+#    self.target  = tempfile.NamedTemporaryFile().name + ".nc"
+#    nc_created.append(self.target)
+#    
+#    months = str_flatten(months, ",") 
+#
+#    cdo_command = "cdo selmonth," + months + " " + self.current + " " + self.target
+#    self.history.append(cdo_command)
+#    run_command(cdo_command, self)
+#    
+#    self.current = self.target 
+#    
+#    cleanup(keep = self.current)
+#    
+#    return(self)
+#
+
+
+
+
+
