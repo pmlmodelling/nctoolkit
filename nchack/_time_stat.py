@@ -23,7 +23,7 @@ def time_stat(self, stat = "mean"):
     global nc_created
     nc_created.append(self.target)
 
-    cdo_command = ("cdo tim" + stat + " " + ff + " " + self.target) 
+    cdo_command = ("cdo --reduce_dim tim" + stat + " " + ff + " " + self.target) 
 
     self.history.append(cdo_command)
     run_command(cdo_command, self) 
