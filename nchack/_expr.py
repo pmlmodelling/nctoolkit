@@ -32,14 +32,11 @@ def expression(self, operations = None, method = "expr"):
     
     nc_created.append(self.target)
 
-    cdo_call = ("cdo " + method + "," + expr + " " + self.current  + " " + self.target)
-    self.history.append(cdo_call)
-    run_command(cdo_call)
+    cdo_command = ("cdo " + method + "," + expr + " " + self.current  + " " + self.target)
+    self.history.append(cdo_command)
+    run_command(cdo_command, self)
 
-    if os.path.isfile(self.target) == False:
-        raise ValueError("Application of expr did not work. Check output")
-
-    self.current = self.target
+    if self.run: self.current = self.target
     
     cleanup(keep = self.current)    
     
