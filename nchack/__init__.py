@@ -55,13 +55,14 @@ class NCTracker:
     @start.setter
     def start(self, value):
         if type(value) is str:
-            if value == "":
-                self._start = value
-            else:
-                if os.path.exists(value):
-                    self._start = value
-                else:
-                    raise TypeError("File does not exist")
+            self._start = value
+            #if value == "":
+            #    self._start = value
+            #else:
+            #    if os.path.exists(value):
+            #        self._start = value
+            #    else:
+            #        raise TypeError("File does not exist")
         if isinstance(value,list):
             self._start = value
     def hold(self):
@@ -204,5 +205,6 @@ class NCTracker:
     from ._time_stat import time_range
     from ._time_stat import time_var
     from ._release import release 
+    from ._delete import remove_variable 
 
 
