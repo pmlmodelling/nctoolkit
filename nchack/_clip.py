@@ -14,7 +14,7 @@ from ._filetracker import nc_created
 from ._cleanup import cleanup
 from ._cleanup import cleanup
 
-def clip(self, vars = None, lon_range = [-180, 180], lat_range = [-90, 90], vert_range = None, months = None, years = None,  cdo_output = False):
+def clip(self, lon_range = [-180, 180], lat_range = [-90, 90], vert_range = None, months = None, years = None,  cdo_output = False):
     """ Function to clip netcdf files, spatially and temporally"""
     ff = self.current
     if type(ff) is not str:
@@ -108,31 +108,7 @@ def clip(self, vars = None, lon_range = [-180, 180], lat_range = [-90, 90], vert
         dummy_nc = tempfile.NamedTemporaryFile().name + ".nc"
         nc_created.append(temp_nc)
         nc_created.append(dummy_nc)
-#    # check if variables are included
-         # first, a hack to make sure vars is something we can iterate over
-        if vars != None:
-            if type(vars) is str:
-                vars = {vars}
-        
-        if (vars is None) == False:
-            ff_variables = self.variables()
-            for vv in vars:
-                 if (vv in ff_variables) == False:
-                     raise ValueError("variable " + vv + " is not available in the netcdf file")
-         
-         # Now, we need to select the variables we are interested in....
-        if vars != None:
-            cdo_command = ("cdo selname," + str_flatten(vars) + " " + holding_nc + " " + dummy_nc)
-            self.history.append(cdo_command)
-            run_command(cdo_command, self)
-            if holding_nc == ff_orig:
-               holding_nc = temp_nc
 
-         # throw error if selecting vars fails
-            if os.path.isfile(dummy_nc) == False:
-                raise ValueError("variable selection did not work. Check output")
-             
-            os.rename(dummy_nc, holding_nc)
 
         # now, clip to the lonlat box we need
 
