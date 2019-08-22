@@ -42,7 +42,9 @@ def vertical_interp(self, vars = None, vert_depths = None):
         vertical_remap = False
 
         if vars != None:
-            run_command("cdo selname," + str_flatten(vars) + " " + holding_nc + " " + dummy_nc)
+            cdo_command = "cdo selname," + str_flatten(vars) + " " + holding_nc + " " + dummy_nc
+            self.history(cdo_command)
+            run_command(cdo_command, self)
             if holding_nc == ff_orig:
                holding_nc = temp_nc
           # throw error if selecting vars fails
@@ -79,7 +81,9 @@ def vertical_interp(self, vars = None, vert_depths = None):
                  raise ValueError("error: maximum depth supplied is too low")
 
             vert_depths = str_flatten(vert_depths, ",")
-            run_command("cdo intlevel," + vert_depths + " " + holding_nc + " " + dummy_nc)
+            cdo_command = ("cdo intlevel," + vert_depths + " " + holding_nc + " " + dummy_nc)
+            self.history(cdo_command)
+            run_command(cdo_command, self)
 
             if holding_nc == ff_orig:
                 holding_nc = temp_nc
