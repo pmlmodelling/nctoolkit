@@ -31,8 +31,8 @@ def monstat(self, vars = None, stat = "mean"):
         cdo_command = ("cdo -mon" + stat + " -selname," +  vars_list + " " + ff + " " + self.target) 
 
     self.history.append(cdo_command)
-    run_command(cdo_command) 
-    self.current = self.target 
+    run_command(cdo_command, self) 
+    if self.run: self.current = self.target 
 
     # clean up the directory
     cleanup(keep = self.current)
