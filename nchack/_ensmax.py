@@ -14,8 +14,7 @@ from ._cleanup import cleanup
 
 from ._runcommand import run_command
 
-
-def ensemble_max(self, vars = None):
+def ensemble_max(self):
     """Function to calculate an ensemble max from a list of files"""
     ff_ensemble = self.current
     if type(ff_ensemble) is not list:
@@ -26,14 +25,7 @@ def ensemble_max(self, vars = None):
     global nc_created
     nc_created.append(self.target)
 
-    if vars is None:
-        nco_command = ("ncea -y max " + str_flatten(ff_ensemble, " ") + " " + self.target) 
-    else:
-        if type(vars) is str:
-            vars = [vars]
-        vars_list = str_flatten(vars)
-        nco_command = ("ncea -y max -v " + vars_list + " " + str_flatten(ff_ensemble, " ") + " " + self.target) 
-
+    nco_command = ("ncea -y max " + str_flatten(ff_ensemble, " ") + " " + self.target) 
 
     self.history.append(nco_command)
     run_command(nco_command, self) 
