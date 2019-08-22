@@ -8,7 +8,6 @@ def run_command(os_command, target):
 
     out_file = os_command.split(" ")
     out_file = out_file[-1]
-    print(out_file)
 
     # Step 2: run the system command
 
@@ -30,7 +29,7 @@ def run_command(os_command, target):
         commas = [x for x in os_command.split(" ") if "," in x]
         commas = "".join(commas)
         if "gen" in commas:
-            raise ValueError("You can generate weights as part of a chain!")
+            raise ValueError("You cannot generate weights as part of a chain!")
 
 
 
