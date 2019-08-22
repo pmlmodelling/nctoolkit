@@ -10,6 +10,8 @@ from ._cleanup import clean_all
 import copy
 from ._create_ensemble import create_ensemble 
 
+print("Tip: include atexit.register(nchack.clean_all) after loading nchack")
+
 class NCTracker:
     """A tracker/log for manipulating netcdf files"""
     def __init__(self, start = ""):
@@ -20,7 +22,7 @@ class NCTracker:
         self.weights = None 
         self.grid = None 
         self.target = None
-        self.execute = True
+        self.release = True
         self.hold_history = []
 
     def __repr__(self):
@@ -64,8 +66,8 @@ class NCTracker:
             self._start = value
     def hold(self):
         """A method to set the mode to hold"""
-        self.terminate = False 
-        self.hold_history = self.history
+        self.release = False 
+        self.hold_history = copy.deepcopy(self.history)
         
         return(self)
 
@@ -138,7 +140,7 @@ class NCTracker:
     from ._ensmax import ensemble_max
     from ._ensmin import ensemble_min
     from ._ensrange import ensemble_range
-    from ._clip import clip
+    ##from ._clip import clip
     from ._selname import select_variables
     from ._cdo_command import cdo_command
 
@@ -150,7 +152,13 @@ class NCTracker:
     from ._ensemble_check import ensemble_check
     ##from ._mean import mean 
     from ._set_missing import set_missing
-    from ._select_season import select_season
+
+    from ._select import select_season
+    from ._select import select_months
+    from ._select import select_years
+
+
+
     from ._ensemble_percentile import ensemble_percentile
     from ._vertstat import vertical_mean 
     from ._vertstat import vertical_min

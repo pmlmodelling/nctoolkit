@@ -31,7 +31,7 @@ def select_season(self, season):
 
 
 def select_months(self, months):
-    """Function to select the season"""
+    """Function to select months"""
 
     self.target  = tempfile.NamedTemporaryFile().name + ".nc"
     nc_created.append(self.target)
@@ -49,6 +49,30 @@ def select_months(self, months):
     cleanup(keep = self.current)
     
     return(self)
+
+
+def select_years(self, years):
+    """Function to select years"""
+
+    self.target  = tempfile.NamedTemporaryFile().name + ".nc"
+    nc_created.append(self.target)
+    if type(years) is not list:
+        years = [years]
+    
+    years = str_flatten(years, ",") 
+
+    cdo_command = "cdo selyear," + years + " " + self.current + " " + self.target
+    self.history.append(cdo_command)
+    run_command(cdo_command, self)
+    
+    self.current = self.target 
+    
+    cleanup(keep = self.current)
+    
+    return(self)
+
+
+
 
 
 
