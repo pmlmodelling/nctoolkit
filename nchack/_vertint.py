@@ -48,8 +48,6 @@ def vertical_interp(self, vars = None, vert_depths = None):
             if holding_nc == ff_orig:
                holding_nc = temp_nc
           # throw error if selecting vars fails
-            if os.path.isfile(dummy_nc) == False:
-               raise ValueError("variable selection did not work. Check output")
             os.rename(dummy_nc, holding_nc)
 
     #  now, do the vertical remapping if necessary
@@ -89,8 +87,6 @@ def vertical_interp(self, vars = None, vert_depths = None):
                 holding_nc = temp_nc
 
          # throw error if cdo fails at this point
-            if os.path.isfile(dummy_nc) == False:
-                raise ValueError("vertical remapping did not work. Check output")
         
             os.rename(dummy_nc, holding_nc)
         if vertical_remap:
