@@ -79,9 +79,7 @@ def regrid(self, vars = None, grid = None, method = "bil"):
         run_command(cdo_command, self)
         if holding_nc == self.current:
            holding_nc = temp_nc
-      # throw error if selecting vars fails
-        if os.path.isfile(dummy_nc) == False:
-           raise ValueError("variable selection did not work. Check output")
+
         os.rename(dummy_nc, holding_nc)
     # Do do the horizontal regridding
    
@@ -112,8 +110,6 @@ def regrid(self, vars = None, grid = None, method = "bil"):
         cdo_command= ("cdo remap," + self.grid + "," + weights_nc +  " " + holding_nc + " " + dummy_nc)
         self.history.append(cdo_command)
         run_command(cdo_command, self)
-        if os.path.isfile(dummy_nc) == False:
-            raise ValueError("horizontal remapping did not work. Check output")
    
         if holding_nc == self.current:
             holding_nc = temp_nc
