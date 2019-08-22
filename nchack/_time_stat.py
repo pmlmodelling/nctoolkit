@@ -13,7 +13,7 @@ from ._filetracker import nc_created
 from ._cleanup import cleanup
 from ._runcommand import run_command
 
-def time_stat(self, vars = None, stat = "mean"):
+def time_stat(self, stat = "mean"):
     """Function to calculate the mean from from a single file"""
     ff = self.current
 
@@ -23,14 +23,7 @@ def time_stat(self, vars = None, stat = "mean"):
     global nc_created
     nc_created.append(self.target)
 
-    if vars is None:
-        cdo_command = ("cdo tim" + stat + " " + ff + " " + self.target) 
-    else:
-        if type(vars) is str:
-            vars = [vars]
-        vars_list = str_flatten(vars)
-        cdo_command = ("cdo -tim" + stat + " -selname," + vars_list + " " + ff + " " + self.target) 
-
+    cdo_command = ("cdo tim" + stat + " " + ff + " " + self.target) 
 
     self.history.append(cdo_command)
     run_command(cdo_command, self) 
@@ -42,21 +35,21 @@ def time_stat(self, vars = None, stat = "mean"):
     return(self)
     
 
-def time_mean(self, vars = None):
-    return(time_stat(self, vars = vars, stat = "mean"))
+def time_mean(self):
+    return(time_stat(self, stat = "mean"))
 
-def time_min(self, vars = None):
-    return(time_stat(self, vars = vars, stat = "min"))
+def time_min(self):
+    return(time_stat(self, stat = "min"))
 
-def time_max(self, vars = None):
-    return(time_stat(self, vars = vars, stat = "max"))
+def time_max(self):
+    return(time_stat(self, stat = "max"))
 
 
-def time_range(self, vars = None):
-    return(time_stat(self, vars = vars, stat = "range"))
+def time_range(self):
+    return(time_stat(self,jstat = "range"))
 
-def time_var(self, vars = None):
-    return(time_stat(self, vars = vars, stat = "var"))
+def time_var(self):
+    return(time_stat(self, stat = "var"))
 
 
 
