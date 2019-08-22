@@ -74,9 +74,9 @@ def regrid(self, vars = None, grid = None, method = "bil"):
      # check the number of grids in the file
 
     if vars != None:
-        cdo_call = ("cdo selname," + str_flatten(vars) + " " + holding_nc + " " + dummy_nc)
-        self.history.append(cdo_call)
-        run_command(cdo_call)
+        cdo_command = ("cdo selname," + str_flatten(vars) + " " + holding_nc + " " + dummy_nc)
+        self.history.append(cdo_command)
+        run_command(cdo_command, self)
         if holding_nc == self.current:
            holding_nc = temp_nc
       # throw error if selecting vars fails
@@ -103,15 +103,15 @@ def regrid(self, vars = None, grid = None, method = "bil"):
             
             weights_nc = self.weights
 
-            cdo_call = ("cdo gen" + method + ","+ self.grid+ " " + holding_nc + " " + weights_nc)
-            self.history.append(cdo_call)
-            run_command(cdo_call)
+            cdo_command = ("cdo gen" + method + ","+ self.grid+ " " + holding_nc + " " + weights_nc)
+            self.history.append(cdo_command)
+            run_command(cdo_command, self)
         else:
             weights_nc = self.weights
 
-        cdo_call = ("cdo remap," + self.grid + "," + weights_nc +  " " + holding_nc + " " + dummy_nc)
-        self.history.append(cdo_call)
-        run_command(cdo_call)
+        cdo_command= ("cdo remap," + self.grid + "," + weights_nc +  " " + holding_nc + " " + dummy_nc)
+        self.history.append(cdo_command)
+        run_command(cdo_command, self)
         if os.path.isfile(dummy_nc) == False:
             raise ValueError("horizontal remapping did not work. Check output")
    
@@ -122,7 +122,7 @@ def regrid(self, vars = None, grid = None, method = "bil"):
         
     os.rename(holding_nc, self.target)
 
-    self.current = self.target 
+    if self.run: self.current = self.target 
 
     cleanup(keep = [self.current, self.weights, self.grid])
 
