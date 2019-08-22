@@ -22,7 +22,7 @@ def select_season(self, season):
     self.history.append(cdo_command)
     run_command(cdo_command, self)
     
-    self.current = self.target 
+    if self.run: self.current = self.target 
     
     cleanup(keep = self.current)
     
@@ -44,7 +44,7 @@ def select_months(self, months):
     self.history.append(cdo_command)
     run_command(cdo_command, self)
     
-    self.current = self.target 
+    if self.run: self.current = self.target 
     
     cleanup(keep = self.current)
     
@@ -65,7 +65,7 @@ def select_years(self, years):
     self.history.append(cdo_command)
     run_command(cdo_command, self)
     
-    self.current = self.target 
+    if self.run: self.current = self.target 
     
     cleanup(keep = self.current)
     
