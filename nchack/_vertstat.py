@@ -22,7 +22,7 @@ def vertstat(self, stat = "mean"):
     global nc_created
     nc_created.append(self.target)
 
-    cdo_command = ("cdo -vert" + stat + " " + ff + " " + self.target) 
+    cdo_command = ("cdo --reduce_dim -vert" + stat + " " + ff + " " + self.target) 
 
     self.history.append(cdo_command)
     run_command(cdo_command, self) 
