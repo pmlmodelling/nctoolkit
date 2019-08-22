@@ -14,7 +14,7 @@ from ._cleanup import cleanup
 
 from ._runcommand import run_command
 
-def yearlystat(self, vars = None, stat = "mean"):
+def yearlystat(self, stat = "mean"):
     """Function to calculate the seasonal statistic from a function""" 
     ff = self.current
 
@@ -23,13 +23,7 @@ def yearlystat(self, vars = None, stat = "mean"):
     global nc_created
     nc_created.append(self.target)
 
-    if vars is None:
-        cdo_command = ("cdo -year" + stat + " " + ff + " " + self.target) 
-    else:
-        if type(vars) is str:
-            vars = [vars]
-        vars_list = str_flatten(vars)
-        cdo_command = ("cdo -year" + stat + " -selname," +  vars_list + " " + ff + " " + self.target) 
+    cdo_command = ("cdo -year" + stat + " " + ff + " " + self.target) 
 
     self.history.append(cdo_command)
     run_command(cdo_command, self) 
@@ -41,14 +35,14 @@ def yearlystat(self, vars = None, stat = "mean"):
     return(self)
     
 
-def yearly_mean(self, vars = None):
-    return yearlystat(self, vars = vars, stat = "mean")
+def yearly_mean(self):
+    return yearlystat(self, stat = "mean")
 
-def yearly_min(self, vars = None):
-    return yearlystat(self, vars = vars, stat = "min")
+def yearly_min(self):
+    return yearlystat(self, stat = "min")
 
-def yearly_max(self, vars = None):
-    return yearlystat(self, vars = vars, stat = "max")
+def yearly_max(self):
+    return yearlystat(self, stat = "max")
     
-def yearly_range(self, vars = None):
-    return yearlystat(self, vars = vars, stat = "range")
+def yearly_range(self):
+    return yearlystat(self, stat = "range")
