@@ -13,7 +13,7 @@ from ._filetracker import nc_created
 from ._cleanup import cleanup
 from ._runcommand import run_command
 
-def ensemble_min(self, vars = None):
+def ensemble_min(self):
     """Function to calculate an ensemble min from a list of files"""
     ff_ensemble = self.current
     if type(ff_ensemble) is not list:
@@ -24,14 +24,7 @@ def ensemble_min(self, vars = None):
     global nc_created
     nc_created.append(self.target)
 
-    if vars is None:
-        nco_command = ("ncea -y min " + str_flatten(ff_ensemble, " ") + " " + self.target) 
-    else:
-        if type(vars) is str:
-            vars = [vars]
-        vars_list = str_flatten(vars)
-        nco_command = ("ncea -y min -v " + vars_list + " " + str_flatten(ff_ensemble, " ") + " " + self.target) 
-
+    nco_command = ("ncea -y min " + str_flatten(ff_ensemble, " ") + " " + self.target) 
 
     self.history.append(nco_command)
     run_command(nco_command, self) 
