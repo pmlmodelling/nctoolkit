@@ -13,7 +13,7 @@ from ._filetracker import nc_created
 from ._cleanup import cleanup
 from ._runcommand import run_command
 
-def ymonstat(self, vars = None, stat = "mean"):
+def ymonstat(self, stat = "mean"):
     """Function to calculate the seasonal statistic from a function""" 
     ff = self.current
 
@@ -22,13 +22,7 @@ def ymonstat(self, vars = None, stat = "mean"):
     global nc_created
     nc_created.append(self.target)
 
-    if vars is None:
-        cdo_command = ("cdo -ymon" + stat + " " + ff + " " + self.target) 
-    else:
-        if type(vars) is str:
-            vars = [vars]
-        vars_list = str_flatten(vars)
-        cdo_command = ("cdo -ymon" + stat + " -selname," +  vars_list + " " + ff + " " + self.target) 
+    cdo_command = ("cdo -ymon" + stat + " " + ff + " " + self.target) 
 
     self.history.append(cdo_command)
     run_command(cdo_command, self) 
@@ -40,14 +34,14 @@ def ymonstat(self, vars = None, stat = "mean"):
     return(self)
     
 
-def monthly_mean_climatology(self, vars = None):
-    return ymonstat(self, vars = vars, stat = "mean")
+def monthly_mean_climatology(self):
+    return ymonstat(self, stat = "mean")
 
-def monthly_min_climatology(self, vars = None):
-    return ymonstat(self, vars = vars, stat = "min")
+def monthly_min_climatology(self):
+    return ymonstat(self, stat = "min")
 
-def monthly_max_climatology(self, vars = None):
-    return ymonstat(self, vars = vars, stat = "max")
+def monthly_max_climatology(self):
+    return ymonstat(self,  stat = "max")
     
-def monthly_range_climatology(self, vars = None):
-    return ymonstat(self, vars = vars, stat = "range")
+def monthly_range_climatology(self):
+    return ymonstat(self, stat = "range")
