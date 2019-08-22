@@ -13,7 +13,7 @@ from ._filetracker import nc_created
 from ._cleanup import cleanup
 from ._runcommand import run_command
 
-def monstat(self, vars = None, stat = "mean"):
+def monstat(self,  stat = "mean"):
     """Function to calculate the monthly statistic from a netcdf file""" 
     ff = self.current
 
@@ -22,13 +22,7 @@ def monstat(self, vars = None, stat = "mean"):
     global nc_created
     nc_created.append(self.target)
 
-    if vars is None:
-        cdo_command = ("cdo -mon" + stat + " " + ff + " " + self.target) 
-    else:
-        if type(vars) is str:
-            vars = [vars]
-        vars_list = str_flatten(vars)
-        cdo_command = ("cdo -mon" + stat + " -selname," +  vars_list + " " + ff + " " + self.target) 
+    cdo_command = ("cdo -mon" + stat + " " + ff + " " + self.target) 
 
     self.history.append(cdo_command)
     run_command(cdo_command, self) 
@@ -40,14 +34,14 @@ def monstat(self, vars = None, stat = "mean"):
     return(self)
     
 
-def monthly_mean(self, vars = None):
-    return monstat(self, vars = vars, stat = "mean")
+def monthly_mean(self):
+    return monstat(self, stat = "mean")
 
-def monthly_min(self, vars = None):
-    return monstat(self, vars = vars, stat = "min")
+def monthly_min(self):
+    return monstat(self, stat = "min")
 
-def monthly_max(self, vars = None):
-    return monstat(self, vars = vars, stat = "max")
+def monthly_max(self):
+    return monstat(self, stat = "max")
     
-def monthly_range(self, vars = None):
-    return monstat(self, vars = vars, stat = "range")
+def monthly_range(self):
+    return monstat(self, stat = "range")
