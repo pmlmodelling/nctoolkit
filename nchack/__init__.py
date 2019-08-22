@@ -22,7 +22,7 @@ class NCTracker:
         self.weights = None 
         self.grid = None 
         self.target = None
-        self.release = True
+        self.run = True
         self.hold_history = []
 
     def __repr__(self):
@@ -66,7 +66,7 @@ class NCTracker:
             self._start = value
     def hold(self):
         """A method to set the mode to hold"""
-        self.release = False 
+        self.run = False 
         self.hold_history = copy.deepcopy(self.history)
         
         return(self)
@@ -203,5 +203,6 @@ class NCTracker:
     from ._time_stat import time_min
     from ._time_stat import time_range
     from ._time_stat import time_var
+    from ._release import release 
 
 
