@@ -59,12 +59,18 @@ def release(self):
     for mm in cdo_methods:
         old_history = the_history
         the_history = the_history.replace(" " + mm, " -"+mm)
-        if "--" in the_history:
-            break
     
     temp_nc = tempfile.NamedTemporaryFile().name + ".nc"
     nc_created.append(temp_nc)
-    run_this = "cdo -L " + the_history + " " +  start_point + " " + temp_nc
+    run_this = "cdo " + the_history + " " +  start_point + " " + temp_nc
+    run_this = run_this.replace("  ", " ")
+
+    # OK. We might have reduced dimensions at one point. This needs to be handled.
+    if "--reduce_dim" in run_this:
+        run_this = run_this.replace("--reduce_dim", "")
+        run_this = run_this.replace("cdo","cdo --reduce_dim")
+
+    run_this = run_this.replace("cdo","cdo -L ")
     run_this = run_this.replace("  ", " ")
     run_command(run_this, self)
     # Now we need to modify the history
