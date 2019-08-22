@@ -13,7 +13,7 @@ from ._filetracker import nc_created
 from ._cleanup import cleanup
 from ._runcommand import run_command
 
-def seasstat(self, vars = None, stat = "mean"):
+def seasstat(self, stat = "mean"):
     """Function to calculate the seasonal statistic from a function""" 
     ff = self.current
 
@@ -22,13 +22,7 @@ def seasstat(self, vars = None, stat = "mean"):
     global nc_created
     nc_created.append(self.target)
 
-    if vars is None:
-        cdo_command = ("cdo -seas" + stat + " " + ff + " " + self.target) 
-    else:
-        if type(vars) is str:
-            vars = [vars]
-        vars_list = str_flatten(vars)
-        cdo_command = ("cdo -seas" + stat + " -selname," +  vars_list + " " + ff + " " + self.target) 
+    cdo_command = ("cdo -seas" + stat + " " + ff + " " + self.target) 
 
     self.history.append(cdo_command)
     run_command(cdo_command, self) 
@@ -40,14 +34,14 @@ def seasstat(self, vars = None, stat = "mean"):
     return(self)
     
 
-def seasonal_mean(self, vars = None):
-    return seasstat(self, vars = vars, stat = "mean")
+def seasonal_mean(self):
+    return seasstat(self, stat = "mean")
 
-def seasonal_min(self, vars = None):
-    return seasstat(self, vars = vars, stat = "min")
+def seasonal_min(self):
+    return seasstat(self, stat = "min")
 
-def seasonal_max(self, vars = None):
-    return seasstat(self, vars = vars, stat = "max")
+def seasonal_max(self):
+    return seasstat(self, stat = "max")
     
-def seasonal_range(self, vars = None):
-    return seasstat(self, vars = vars, stat = "range")
+def seasonal_range(self):
+    return seasstat(self, stat = "range")
