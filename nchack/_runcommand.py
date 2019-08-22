@@ -2,7 +2,7 @@ import os
 
 def run_command(os_command, target):
     """ Function to run an nco/cdo system command and check output was generated"""
-    run = target.release
+    run = target.run
 
     # Step 1: find the output file that is being created
 
