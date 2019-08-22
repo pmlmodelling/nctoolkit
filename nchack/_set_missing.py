@@ -34,8 +34,8 @@ def set_missing(self, value):
 
 
     self.history.append(cdo_command)
-    run_command(cdo_command) 
-    self.current = self.target 
+    run_command(cdo_command, self) 
+    if self.run: self.current = self.target 
 
     # clean up the directory
     cleanup(keep = self.current)

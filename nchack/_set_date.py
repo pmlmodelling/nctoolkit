@@ -36,8 +36,8 @@ def set_date(self, year, month, day, base_year = 1900):
     cdo_command = "cdo -setreftime," + str(base_year) + "-01-01 -setdate," + str(year) + "-" + str(month) + "-" + str(day) + " " + self.current + " " + self.target
 
     self.history.append(cdo_command)
-    run_command(cdo_command) 
-    self.current = self.target 
+    run_command(cdo_command, self) 
+    if self.run: self.current = self.target 
 
     # clean up the directory
     cleanup(keep = self.current)

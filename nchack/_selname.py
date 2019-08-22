@@ -25,9 +25,9 @@ def select_variables(self, vars = None):
     
     cdo_command = "cdo selname," + vars_list + " " + self.current + " " + self.target
     self.history.append(cdo_command)
-    run_command(cdo_command)
+    run_command(cdo_command, self)
     
-    self.current = self.target 
+    if self.run: self.current = self.target 
     
     cleanup(keep = self.current)
     
