@@ -122,9 +122,9 @@ def clip(self, vars = None, lon_range = [-180, 180], lat_range = [-90, 90], vert
          
          # Now, we need to select the variables we are interested in....
         if vars != None:
-            cdo_call = ("cdo selname," + str_flatten(vars) + " " + holding_nc + " " + dummy_nc)
-            self.history.append(cdo_call)
-            run_command(cdo_call)
+            cdo_command = ("cdo selname," + str_flatten(vars) + " " + holding_nc + " " + dummy_nc)
+            self.history.append(cdo_command)
+            run_command(cdo_command, self)
             if holding_nc == ff_orig:
                holding_nc = temp_nc
 
@@ -139,9 +139,9 @@ def clip(self, vars = None, lon_range = [-180, 180], lat_range = [-90, 90], vert
         if lon_range[0] > -180 or lon_range[1] > 180 or lat_range[0] > -90 or lat_range[1] < 90:
 
             lat_box = str_flatten(lon_range + lat_range)
-            cdo_call = ("cdo sellonlatbox," + lat_box + " " + holding_nc + " " + dummy_nc)
-            self.history.append(cdo_call)
-            run_command(cdo_call)
+            cdo_command = ("cdo sellonlatbox," + lat_box + " " + holding_nc + " " + dummy_nc)
+            self.history.append(cdo_command)
+            run_command(cdo_command, self)
 
             if os.path.isfile(dummy_nc) == False:
                 raise ValueError("horizontal remapping did not work. Check output")
@@ -162,9 +162,9 @@ def clip(self, vars = None, lon_range = [-180, 180], lat_range = [-90, 90], vert
 
             levels_selected = str_flatten(depths)
 
-            cdo_call = ("cdo sellevel," + levels_selected + " " + holding_nc + " " + dummy_nc)
-            self.history.append(cdo_call)
-            run_command(cdo_call)
+            cdo_command = ("cdo sellevel," + levels_selected + " " + holding_nc + " " + dummy_nc)
+            self.history.append(cdo_command)
+            run_command(cdo_command, self)
 
             if os.path.isfile(dummy_nc) == False:
                 raise ValueError("horizontal remapping did not work. Check output")
@@ -191,9 +191,9 @@ def clip(self, vars = None, lon_range = [-180, 180], lat_range = [-90, 90], vert
             
             if month_clip:
                 month_choice = str_flatten(months)
-                cdo_call = ("cdo selmonth," + month_choice + " " + holding_nc + " " + dummy_nc)
-                self.history.append(cdo_call)
-                run_command(cdo_call)
+                cdo_command = ("cdo selmonth," + month_choice + " " + holding_nc + " " + dummy_nc)
+                self.history.append(cdo_command)
+                run_command(cdo_command, self)
 
                 if os.path.isfile(dummy_nc) == False:
                     raise ValueError("monthly clipping did not work. Check output")
@@ -223,9 +223,9 @@ def clip(self, vars = None, lon_range = [-180, 180], lat_range = [-90, 90], vert
             
             if year_clip:
                 year_choice = str_flatten(years)
-                cdo_call = ("cdo selyear," + year_choice + " " + holding_nc + " " + dummy_nc)
-                self.history.append(cdo_call)
-                run_command(cdo_call)
+                cdo_command = ("cdo selyear," + year_choice + " " + holding_nc + " " + dummy_nc)
+                self.history.append(cdo_command)
+                run_command(cdo_command, self)
 
                 if os.path.isfile(dummy_nc) == False:
                     raise ValueError("yearly clipping did not work. Check output")
@@ -237,7 +237,7 @@ def clip(self, vars = None, lon_range = [-180, 180], lat_range = [-90, 90], vert
 
         os.rename(holding_nc, self.target)
 
-        self.current = self.target 
+        if self.run: self.current = self.target 
 
         # clean up the directory
         cleanup(keep = self.current)

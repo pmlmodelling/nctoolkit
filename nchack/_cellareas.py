@@ -13,11 +13,11 @@ from ._runcommand import run_command
 def cell_areas(self):
     self.target = tempfile.NamedTemporaryFile().name + ".nc"
     nc_created.append(self.target)
-    cdo_call = ( "cdo gridarea " + self.current + " " + self.target)
-    self.history.append(cdo_call)
-    run_command(cdo_call)
+    cdo_command = ( "cdo gridarea " + self.current + " " + self.target)
+    self.history.append(cdo_command)
+    run_command(cdo_command, self)
 
-    self.current = self.target
+    if self.run: self.current = self.target
     cleanup(keep = self.current)
     
     return(self)
