@@ -207,4 +207,6 @@ class NCTracker:
     from ._release import release 
     from ._delete import remove_variable 
 
+    from ._show import show_years 
+
 
