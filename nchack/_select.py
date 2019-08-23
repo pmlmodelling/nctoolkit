@@ -15,14 +15,14 @@ from ._runcommand import run_command
 def select_season(self, season, silent = True):
     """Function to select the season"""
 
-    self.target  = tempfile.NamedTemporaryFile().name + ".nc"
-    nc_created.append(self.target)
+    target  = tempfile.NamedTemporaryFile().name + ".nc"
+    nc_created.append(target)
     
-    cdo_command = "cdo select,season=" + season + " " + self.current + " " + self.target
+    cdo_command = "cdo select,season=" + season + " " + self.current + " " + target
     self.history.append(cdo_command)
     run_command(cdo_command, self, silent)
     
-    if self.run: self.current = self.target 
+    if self.run: self.current = target 
     
     cleanup(keep = self.current)
     
@@ -33,8 +33,8 @@ def select_season(self, season, silent = True):
 def select_months(self, months, silent = True):
     """Function to select months"""
 
-    self.target  = tempfile.NamedTemporaryFile().name + ".nc"
-    nc_created.append(self.target)
+    target  = tempfile.NamedTemporaryFile().name + ".nc"
+    nc_created.append(target)
     if type(months) is not list:
         months = [months]
     # all of the variables in months need to be converted to ints, just in case floats have been provided
@@ -47,11 +47,11 @@ def select_months(self, months, silent = True):
 
     months = str_flatten(months, ",") 
 
-    cdo_command = "cdo selmonth," + months + " " + self.current + " " + self.target
+    cdo_command = "cdo selmonth," + months + " " + self.current + " " + target
     self.history.append(cdo_command)
     run_command(cdo_command, self, silent)
     
-    if self.run: self.current = self.target 
+    if self.run: self.current = target 
     
     cleanup(keep = self.current)
     
@@ -61,8 +61,8 @@ def select_months(self, months, silent = True):
 def select_years(self, years, silent = True):
     """Function to select years"""
 
-    self.target  = tempfile.NamedTemporaryFile().name + ".nc"
-    nc_created.append(self.target)
+    target  = tempfile.NamedTemporaryFile().name + ".nc"
+    nc_created.append(target)
     if type(years) is not list:
         years = [years]
     
@@ -72,11 +72,11 @@ def select_years(self, years, silent = True):
     years = str_flatten(years, ",") 
 
 
-    cdo_command = "cdo selyear," + years + " " + self.current + " " + self.target
+    cdo_command = "cdo selyear," + years + " " + self.current + " " + target
     self.history.append(cdo_command)
     run_command(cdo_command, self, silent)
     
-    if self.run: self.current = self.target 
+    if self.run: self.current = target 
     
     cleanup(keep = self.current)
     
