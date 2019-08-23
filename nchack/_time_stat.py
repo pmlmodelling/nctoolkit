@@ -13,7 +13,7 @@ from ._filetracker import nc_created
 from ._cleanup import cleanup
 from ._runcommand import run_command
 
-def time_stat(self, stat = "mean"):
+def time_stat(self, stat = "mean", silent = True):
     """Function to calculate the mean from from a single file"""
     ff = self.current
 
@@ -26,7 +26,7 @@ def time_stat(self, stat = "mean"):
     cdo_command = ("cdo --reduce_dim tim" + stat + " " + ff + " " + self.target) 
 
     self.history.append(cdo_command)
-    run_command(cdo_command, self) 
+    run_command(cdo_command, self, silent) 
     if self.run: self.current = self.target 
 
     # clean up the directory
@@ -35,21 +35,21 @@ def time_stat(self, stat = "mean"):
     return(self)
     
 
-def time_mean(self):
-    return(time_stat(self, stat = "mean"))
+def time_mean(self, silent = True):
+    return(time_stat(self, stat = "mean", silent))
 
-def time_min(self):
-    return(time_stat(self, stat = "min"))
+def time_min(self, silent = True):
+    return(time_stat(self, stat = "min", silent))
 
-def time_max(self):
-    return(time_stat(self, stat = "max"))
+def time_max(self, silent = True):
+    return(time_stat(self, stat = "max", silent))
 
 
-def time_range(self):
-    return(time_stat(self,jstat = "range"))
+def time_range(self, silent = True):
+    return(time_stat(self,jstat = "range", silent))
 
-def time_var(self):
-    return(time_stat(self, stat = "var"))
+def time_var(self, silent = True):
+    return(time_stat(self, stat = "var", silent))
 
 
 
