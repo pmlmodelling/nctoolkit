@@ -21,7 +21,6 @@ class NCTracker:
         self.current = start
         self.weights = None 
         self.grid = None 
-        self.target = None
         self.run = True
         self.hold_history = []
 
