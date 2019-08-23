@@ -12,7 +12,7 @@ from ._filetracker import nc_created
 from ._cleanup import cleanup 
 from ._runcommand import run_command
 
-def surface(self):
+def surface(self, silent = True):
    # if nc_valid(self.current) == False:
         #raise ValueError("File is invalid")
 
@@ -21,7 +21,7 @@ def surface(self):
     nc_created.append(self.target)
 
     cdo_command = "cdo --reduce_dim -sellevidx,1 " + self.current + " " + self.target
-    run_command(cdo_command, self)
+    run_command(cdo_command, self, silent)
     self.history.append(cdo_command)
 
     self.target
