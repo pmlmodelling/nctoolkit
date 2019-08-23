@@ -20,13 +20,13 @@ def vertical_interp(self, vert_depths = None, silent = True):
     os.chdir("/tmp")
     try:
     # need a check at this point for file validity     
-        self.target = tempfile.NamedTemporaryFile().name + ".nc"
+        target = tempfile.NamedTemporaryFile().name + ".nc"
         holding_nc = ff_orig 
-        temp_nc = self.target 
+        temp_nc = target 
         dummy_nc = tempfile.NamedTemporaryFile().name + ".nc"
-        nc_created.append(self.target)
+        nc_created.append(target)
         nc_created.append(dummy_nc)
-        nc_created.append(self.target)
+        nc_created.append(target)
          
         vertical_remap = False
 
@@ -72,7 +72,7 @@ def vertical_interp(self, vert_depths = None, silent = True):
             os.rename(dummy_nc, holding_nc)
         if vertical_remap:
             
-            if self.run: self.current = self.target 
+            if self.run: self.current = target 
         
         cleanup(keep = self.current)
         
