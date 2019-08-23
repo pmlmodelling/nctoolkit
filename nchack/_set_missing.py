@@ -19,23 +19,23 @@ def set_missing(self, value, silent = True):
 
     ff = self.current
 
-    self.target = tempfile.NamedTemporaryFile().name + ".nc"
+    target = tempfile.NamedTemporaryFile().name + ".nc"
     owd = os.getcwd()
    # log the full path of the file
     global nc_created
-    nc_created.append(self.target)
+    nc_created.append(target)
     if type(value) is int:
         value = float(value)
 
     if type(value) is float:
-        cdo_command = ("cdo setctomiss," + str(value) + " " +  ff + " " + self.target) 
+        cdo_command = ("cdo setctomiss," + str(value) + " " +  ff + " " + target) 
     if type(value) is list:
-        cdo_command = ("cdo setrtomiss," + str(value[0]) + "," + str(value[1]) + " " +  ff + " " + self.target) 
+        cdo_command = ("cdo setrtomiss," + str(value[0]) + "," + str(value[1]) + " " +  ff + " " + target) 
 
 
     self.history.append(cdo_command)
     run_command(cdo_command, self, silent) 
-    if self.run: self.current = self.target 
+    if self.run: self.current = target 
 
     # clean up the directory
     cleanup(keep = self.current)
