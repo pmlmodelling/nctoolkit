@@ -14,7 +14,7 @@ from ._cleanup import cleanup
 
 from ._runcommand import run_command
 
-def yearlystat(self, stat = "mean"):
+def yearlystat(self, stat = "mean", silent = True):
     """Function to calculate the seasonal statistic from a function""" 
     ff = self.current
 
@@ -26,7 +26,7 @@ def yearlystat(self, stat = "mean"):
     cdo_command = ("cdo -year" + stat + " " + ff + " " + self.target) 
 
     self.history.append(cdo_command)
-    run_command(cdo_command, self) 
+    run_command(cdo_command, self, silent) 
     if self.run: self.current = self.target 
 
     # clean up the directory
@@ -35,14 +35,14 @@ def yearlystat(self, stat = "mean"):
     return(self)
     
 
-def yearly_mean(self):
-    return yearlystat(self, stat = "mean")
+def yearly_mean(self, silent = True):
+    return yearlystat(self, stat = "mean", silent)
 
-def yearly_min(self):
-    return yearlystat(self, stat = "min")
+def yearly_min(self, silent = True):
+    return yearlystat(self, stat = "min", silent)
 
-def yearly_max(self):
-    return yearlystat(self, stat = "max")
+def yearly_max(self, silent = True):
+    return yearlystat(self, stat = "max", silent)
     
-def yearly_range(self):
-    return yearlystat(self, stat = "range")
+def yearly_range(self, silent = True):
+    return yearlystat(self, stat = "range", silent)
