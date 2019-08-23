@@ -10,7 +10,7 @@ from ._cleanup import cleanup
 from ._filetracker import nc_created
 from ._runcommand import run_command
 
-def expression(self, operations = None, method = "expr"):
+def expression(self, operations = None, method = "expr", silent = True):
     """Function to mutate a netcdf file using expr"""
 
     if type(operations) is not dict:
@@ -33,7 +33,7 @@ def expression(self, operations = None, method = "expr"):
     nc_created.append(self.target)
 
     cdo_command = ("cdo " + method + "," + expr + " " + self.current  + " " + self.target)
-    self.history.append(cdo_command)
+    self.history.append(cdo_command, silent)
     run_command(cdo_command, self)
 
     if self.run: self.current = self.target
@@ -44,12 +44,12 @@ def expression(self, operations = None, method = "expr"):
     return(self)
 
 
-def mutate(self, operations = None):
-    return(expression(self, operations = operations, method = "expr"))
+def mutate(self, operations = None, silent = True):
+    return(expression(self, operations = operations, method = "expr", silent))
 
 
-def transmute(self, operations = None):
-    return(expression(self, operations = operations, method = "aexpr"))
+def transmute(self, operations = None, silent = True):
+    return(expression(self, operations = operations, method = "aexpr", silent))
 
 
 
