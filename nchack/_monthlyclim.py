@@ -13,7 +13,7 @@ from ._filetracker import nc_created
 from ._cleanup import cleanup
 from ._runcommand import run_command
 
-def ymonstat(self, stat = "mean"):
+def ymonstat(self, stat = "mean", silent = True):
     """Function to calculate the seasonal statistic from a function""" 
     ff = self.current
 
@@ -25,7 +25,7 @@ def ymonstat(self, stat = "mean"):
     cdo_command = ("cdo -ymon" + stat + " " + ff + " " + self.target) 
 
     self.history.append(cdo_command)
-    run_command(cdo_command, self) 
+    run_command(cdo_command, self, silent) 
     if self.run: self.current = self.target 
 
     # clean up the directory
@@ -34,14 +34,14 @@ def ymonstat(self, stat = "mean"):
     return(self)
     
 
-def monthly_mean_climatology(self):
-    return ymonstat(self, stat = "mean")
+def monthly_mean_climatology(self, silent = True):
+    return ymonstat(self, stat = "mean", silent)
 
-def monthly_min_climatology(self):
-    return ymonstat(self, stat = "min")
+def monthly_min_climatology(self, silent = True):
+    return ymonstat(self, stat = "min", silent)
 
-def monthly_max_climatology(self):
-    return ymonstat(self,  stat = "max")
+def monthly_max_climatology(self, silent = True):
+    return ymonstat(self,  stat = "max", silent)
     
-def monthly_range_climatology(self):
-    return ymonstat(self, stat = "range")
+def monthly_range_climatology(self, silent = True):
+    return ymonstat(self, stat = "range", silent)
