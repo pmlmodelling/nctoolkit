@@ -216,5 +216,6 @@ class NCTracker:
     from ._show import show_years 
     from ._show import show_months
     from ._show import show_levels
+    from ._numbers import numbers 
 
 
