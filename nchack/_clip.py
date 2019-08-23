@@ -14,7 +14,7 @@ from ._filetracker import nc_created
 from ._cleanup import cleanup
 from ._cleanup import cleanup
 
-def clip(self, lon_range = [-180, 180], lat_range = [-90, 90]):
+def clip(self, lon_range = [-180, 180], lat_range = [-90, 90], silent = True):
     """ Function to clip netcdf files, spatially"""
     if type(self.current) is not str:
         raise ValueError("The current state of the tracker is not a single file")
@@ -47,7 +47,7 @@ def clip(self, lon_range = [-180, 180], lat_range = [-90, 90]):
         lat_box = str_flatten(lon_range + lat_range)
         cdo_command = ("cdo sellonlatbox," + lat_box + " " + self.current + " " + self.target)
         self.history.append(cdo_command)
-        run_command(cdo_command, self)
+        run_command(cdo_command, self, silent)
 
         if self.run: self.current = self.target 
 
