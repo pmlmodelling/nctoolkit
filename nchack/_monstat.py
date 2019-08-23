@@ -35,13 +35,13 @@ def monstat(self,  stat = "mean", silent = True):
     
 
 def monthly_mean(self, silent = True):
-    return monstat(self, stat = "mean", silent)
+    return monstat(self, stat = "mean", silent = silent)
 
 def monthly_min(self, silent = True):
-    return monstat(self, stat = "min", silent)
+    return monstat(self, stat = "min", silent = silent)
 
 def monthly_max(self, silent = True):
-    return monstat(self, stat = "max", silent)
+    return monstat(self, stat = "max", silent = silent)
     
 def monthly_range(self, silent = True):
-    return monstat(self, stat = "range", silent)
+    return monstat(self, stat = "range", silent = silent)
