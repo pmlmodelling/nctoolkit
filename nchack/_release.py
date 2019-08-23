@@ -11,7 +11,7 @@ from ._cleanup import cleanup
 from ._filetracker import nc_created
 from ._runcommand import run_command
 
-def release(self):
+def release(self, silent = True):
     """Function to release a self from hold mode  """
     # the first step is to set the run status to true
     if self.run:
@@ -76,7 +76,7 @@ def release(self):
 
         run_this = run_this.replace("cdo","cdo -L ")
         run_this = run_this.replace("  ", " ")
-        run_command(run_this, self)
+        run_command(run_this, self, silent)
         # Now we need to modify the history
         self.history = copy.deepcopy(self.hold_history)
         self.history.append(run_this)
