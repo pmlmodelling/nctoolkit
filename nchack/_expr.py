@@ -28,15 +28,15 @@ def expression(self, operations = None, method = "expr", silent = True):
     expr = expr.replace(" ", "" )
     expr = '"' + expr + '"'
 
-    self.target = tempfile.NamedTemporaryFile().name + ".nc"
+    target = tempfile.NamedTemporaryFile().name + ".nc"
     
-    nc_created.append(self.target)
+    nc_created.append(target)
 
-    cdo_command = ("cdo " + method + "," + expr + " " + self.current  + " " + self.target)
+    cdo_command = ("cdo " + method + "," + expr + " " + self.current  + " " + target)
     self.history.append(cdo_command)
     run_command(cdo_command, self, silent)
 
-    if self.run: self.current = self.target
+    if self.run: self.current = target
     
     cleanup(keep = self.current)    
     
