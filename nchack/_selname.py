@@ -14,8 +14,8 @@ from ._runcommand import run_command
 
 def select_variables(self, vars = None, silent = True):
 
-    self.target  = tempfile.NamedTemporaryFile().name + ".nc"
-    nc_created.append(self.target)
+    target  = tempfile.NamedTemporaryFile().name + ".nc"
+    nc_created.append(target)
     
     if type(vars) is str:
         vars_list = [vars]
@@ -23,11 +23,11 @@ def select_variables(self, vars = None, silent = True):
         vars_list = vars
     vars_list = str_flatten(vars_list, ",")
     
-    cdo_command = "cdo selname," + vars_list + " " + self.current + " " + self.target
+    cdo_command = "cdo selname," + vars_list + " " + self.current + " " + target
     self.history.append(cdo_command)
     run_command(cdo_command, self, silent)
     
-    if self.run: self.current = self.target 
+    if self.run: self.current = target 
     
     cleanup(keep = self.current)
     
