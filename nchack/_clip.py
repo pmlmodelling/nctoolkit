@@ -19,11 +19,11 @@ def clip(self, lon_range = [-180, 180], lat_range = [-90, 90], silent = True):
     if type(self.current) is not str:
         raise ValueError("The current state of the tracker is not a single file")
 
-    self.target = tempfile.NamedTemporaryFile().name + ".nc"
+    target = tempfile.NamedTemporaryFile().name + ".nc"
     
     global nc_created
 
-    nc_created.append(self.target)
+    nc_created.append(target)
     
     if (type(lon_range) is not list) or (type(lat_range) is not list):
         raise ValueError("Check that lon/lat ranges are tuples")
@@ -45,11 +45,11 @@ def clip(self, lon_range = [-180, 180], lat_range = [-90, 90], silent = True):
     if lon_range[0] > -180 or lon_range[1] > 180 or lat_range[0] > -90 or lat_range[1] < 90:
 
         lat_box = str_flatten(lon_range + lat_range)
-        cdo_command = ("cdo sellonlatbox," + lat_box + " " + self.current + " " + self.target)
+        cdo_command = ("cdo sellonlatbox," + lat_box + " " + self.current + " " + target)
         self.history.append(cdo_command)
         run_command(cdo_command, self, silent)
 
-        if self.run: self.current = self.target 
+        if self.run: self.current = target 
 
     # clean up the directory
     cleanup(keep = self.current)
