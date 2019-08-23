@@ -17,7 +17,7 @@ from ._filetracker import nc_created
 from ._cleanup import cleanup
 from ._runcommand import run_command
 
-def ensemble_percentile(self, p = 50):
+def ensemble_percentile(self, p = 50, silent = True):
     """Function to calculate an ensemble percentile from a list of files"""
     ff_ensemble = self.current
 
@@ -34,7 +34,7 @@ def ensemble_percentile(self, p = 50):
     cdo_command = ("cdo enspctl," + str(p) + " " + str_flatten(ff_ensemble, " ") + " " + self.target) 
 
     self.history.append(cdo_command)
-    run_command(cdo_command, self) 
+    run_command(cdo_command, self, silent) 
     if self.run: self.current = self.target 
 
     # clean up the directory
