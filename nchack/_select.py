@@ -37,7 +37,14 @@ def select_months(self, months, silent = True):
     nc_created.append(self.target)
     if type(months) is not list:
         months = [months]
-    
+    # all of the variables in months need to be converted to ints, just in case floats have been provided
+
+    months = [int(x) for x in months]
+
+    for x in months:
+        if x not in list(range(1, 13)):
+            raise ValueError("Months supplied are not valid!")
+
     months = str_flatten(months, ",") 
 
     cdo_command = "cdo selmonth," + months + " " + self.current + " " + self.target
