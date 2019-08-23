@@ -66,7 +66,11 @@ def select_years(self, years, silent = True):
     if type(years) is not list:
         years = [years]
     
+    # convert years to int
+    years = [int(x) for x in years]
+
     years = str_flatten(years, ",") 
+
 
     cdo_command = "cdo selyear," + years + " " + self.current + " " + self.target
     self.history.append(cdo_command)
