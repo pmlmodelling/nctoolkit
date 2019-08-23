@@ -13,7 +13,7 @@ from ._filetracker import nc_created
 from ._runcommand import run_command
 
 
-def vertical_interp(self, vert_depths = None):
+def vertical_interp(self, vert_depths = None, silent = True):
     owd = os.getcwd()
    # log the full path of the file
     ff_orig = os.path.abspath(self.current)
@@ -62,7 +62,7 @@ def vertical_interp(self, vert_depths = None):
             vert_depths = str_flatten(vert_depths, ",")
             cdo_command = ("cdo intlevel," + vert_depths + " " + holding_nc + " " + dummy_nc)
             self.history(cdo_command)
-            run_command(cdo_command, self)
+            run_command(cdo_command, self, silent)
 
             if holding_nc == ff_orig:
                 holding_nc = temp_nc
