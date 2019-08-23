@@ -11,7 +11,7 @@ from ._cleanup import cleanup
 from ._filetracker import nc_created
 from ._runcommand import run_command
 
-def regrid(self, grid = None, method = "bil"):
+def regrid(self, grid = None, method = "bil", silent):
 
     if grid is None:
         raise ValueError("No grid was supplied")
@@ -85,13 +85,13 @@ def regrid(self, grid = None, method = "bil"):
 
             cdo_command = ("cdo gen" + method + ","+ self.grid+ " " + holding_nc + " " + weights_nc)
             self.history.append(cdo_command)
-            run_command(cdo_command, self)
+            run_command(cdo_command, self, silent)
         else:
             weights_nc = self.weights
 
         cdo_command= ("cdo remap," + self.grid + "," + weights_nc +  " " + holding_nc + " " + dummy_nc)
         self.history.append(cdo_command)
-        run_command(cdo_command, self)
+        run_command(cdo_command, self, silent)
    
         if holding_nc == self.current:
             holding_nc = temp_nc
