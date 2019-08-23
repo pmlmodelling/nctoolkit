@@ -17,17 +17,17 @@ def time_stat(self, stat = "mean", silent = True):
     """Function to calculate the mean from from a single file"""
     ff = self.current
 
-    self.target = tempfile.NamedTemporaryFile().name + ".nc"
+    target = tempfile.NamedTemporaryFile().name + ".nc"
     owd = os.getcwd()
    # log the full path of the file
     global nc_created
-    nc_created.append(self.target)
+    nc_created.append(target)
 
-    cdo_command = ("cdo --reduce_dim tim" + stat + " " + ff + " " + self.target) 
+    cdo_command = ("cdo --reduce_dim tim" + stat + " " + ff + " " + target) 
 
     self.history.append(cdo_command)
     run_command(cdo_command, self, silent) 
-    if self.run: self.current = self.target 
+    if self.run: self.current = target 
 
     # clean up the directory
     cleanup(keep = self.current)
