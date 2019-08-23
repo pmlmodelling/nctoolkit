@@ -14,6 +14,9 @@ from ._cleanup import cleanup
 from ._runcommand import run_command
 
 def ensemble_nco(self, method):
+    if self.release == False:
+        raise ValueError("NCO methods cannot be held over")
+
     """Function to calculate an ensemble min from a list of files"""
     ff_ensemble = self.current
     if type(ff_ensemble) is not list:
