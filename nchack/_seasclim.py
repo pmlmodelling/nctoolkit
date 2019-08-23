@@ -13,7 +13,7 @@ from ._filetracker import nc_created
 from ._cleanup import cleanup
 from ._runcommand import run_command
 
-def seasstat(self, stat = "mean"):
+def seasstat(self, stat = "mean", silent = True):
     """Function to calculate the seasonal statistic from a function""" 
     ff = self.current
 
@@ -25,7 +25,7 @@ def seasstat(self, stat = "mean"):
     cdo_command = ("cdo -yseas" + stat + " " + ff + " " + self.target) 
 
     self.history.append(cdo_command)
-    run_command(cdo_command, self) 
+    run_command(cdo_command, self, silent) 
     if self.run: self.current = self.target 
 
     # clean up the directory
@@ -34,14 +34,14 @@ def seasstat(self, stat = "mean"):
     return(self)
     
 
-def seasonal_mean_climatology(self):
-    return seasstat(self, stat = "mean")
+def seasonal_mean_climatology(self, silent = True):
+    return seasstat(self, stat = "mean", silent)
 
-def seasonal_min_climatology(self):
-    return seasstat(self, stat = "min")
+def seasonal_min_climatology(self, silent = True):
+    return seasstat(self, stat = "min", silent)
 
-def seasonal_max_climatology(self):
-    return seasstat(self, stat = "max")
+def seasonal_max_climatology(self, silent = True):
+    return seasstat(self, stat = "max", silent)
     
-def seasonal_range_climatology(self):
-    return seasstat(self, stat = "range")
+def seasonal_range_climatology(self, silent = True):
+    return seasstat(self, stat = "range", silent)
