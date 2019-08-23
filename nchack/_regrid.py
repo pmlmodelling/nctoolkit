@@ -11,7 +11,7 @@ from ._cleanup import cleanup
 from ._filetracker import nc_created
 from ._runcommand import run_command
 
-def regrid(self, grid = None, method = "bil", silent):
+def regrid(self, grid = None, method = "bil", silent = True):
 
     if grid is None:
         raise ValueError("No grid was supplied")
