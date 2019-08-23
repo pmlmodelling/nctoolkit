@@ -12,7 +12,7 @@ from ._filetracker import nc_created
 from ._runcommand import run_command
 
 
-def select_season(self, season):
+def select_season(self, season, silent = True):
     """Function to select the season"""
 
     self.target  = tempfile.NamedTemporaryFile().name + ".nc"
@@ -20,7 +20,7 @@ def select_season(self, season):
     
     cdo_command = "cdo select,season=" + season + " " + self.current + " " + self.target
     self.history.append(cdo_command)
-    run_command(cdo_command, self)
+    run_command(cdo_command, self, silent)
     
     if self.run: self.current = self.target 
     
@@ -30,7 +30,7 @@ def select_season(self, season):
 
 
 
-def select_months(self, months):
+def select_months(self, months, silent = True):
     """Function to select months"""
 
     self.target  = tempfile.NamedTemporaryFile().name + ".nc"
@@ -42,7 +42,7 @@ def select_months(self, months):
 
     cdo_command = "cdo selmonth," + months + " " + self.current + " " + self.target
     self.history.append(cdo_command)
-    run_command(cdo_command, self)
+    run_command(cdo_command, self, silent)
     
     if self.run: self.current = self.target 
     
@@ -51,7 +51,7 @@ def select_months(self, months):
     return(self)
 
 
-def select_years(self, years):
+def select_years(self, years, silent = True):
     """Function to select years"""
 
     self.target  = tempfile.NamedTemporaryFile().name + ".nc"
@@ -63,7 +63,7 @@ def select_years(self, years):
 
     cdo_command = "cdo selyear," + years + " " + self.current + " " + self.target
     self.history.append(cdo_command)
-    run_command(cdo_command, self)
+    run_command(cdo_command, self, silent)
     
     if self.run: self.current = self.target 
     
