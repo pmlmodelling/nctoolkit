@@ -35,13 +35,13 @@ def seasstat(self, stat = "mean", silent = True):
     
 
 def seasonal_mean(self, silent = True):
-    return seasstat(self, stat = "mean", silent)
+    return seasstat(self, stat = "mean", silent = True)
 
 def seasonal_min(self, silent = True):
-    return seasstat(self, stat = "min", silent)
+    return seasstat(self, stat = "min", silent = True)
 
 def seasonal_max(self, silent = True):
-    return seasstat(self, stat = "max", silent)
+    return seasstat(self, stat = "max", silent = True)
     
 def seasonal_range(self, silent = True):
-    return seasstat(self, stat = "range", silent)
+    return seasstat(self, stat = "range", silent = True)
