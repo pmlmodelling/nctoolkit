@@ -13,7 +13,7 @@ from ._cleanup import cleanup
 from .flatten import str_flatten 
 from ._runcommand import run_command
 
-def cdo_command(self, command):
+def cdo_command(self, command, silent = True):
     """ Function to all any cdo command of the the form 'command + infile + outfile'"""
 
     self.target = tempfile.NamedTemporaryFile().name + ".nc"
@@ -26,7 +26,7 @@ def cdo_command(self, command):
     cdo_command = "cdo " + command + " " + infile + " " + self.target
 
     self.history.append(cdo_command)
-    run_command(cdo_command, self)
+    run_command(cdo_command, self, silent)
 
     if self.run: self.current = self.target
 
