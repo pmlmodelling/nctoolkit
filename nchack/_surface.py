@@ -17,16 +17,15 @@ def surface(self, silent = True):
         #raise ValueError("File is invalid")
 
     surface_depth = float(nc_depths(self.current)[0])
-    self.target = tempfile.NamedTemporaryFile().name + ".nc"
-    nc_created.append(self.target)
+    target = tempfile.NamedTemporaryFile().name + ".nc"
+    nc_created.append(target)
 
-    cdo_command = "cdo --reduce_dim -sellevidx,1 " + self.current + " " + self.target
+    cdo_command = "cdo --reduce_dim -sellevidx,1 " + self.current + " " + target
     run_command(cdo_command, self, silent)
     self.history.append(cdo_command)
 
-    self.target
 
-    if self.run: self.current = self.target
+    if self.run: self.current = target
 
     cleanup(keep = self.current)
 
