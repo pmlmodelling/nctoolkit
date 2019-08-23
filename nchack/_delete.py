@@ -12,7 +12,7 @@ from ._filetracker import nc_created
 from ._runcommand import run_command
 
 
-def remove_variable(self, vars):
+def remove_variable(self, vars, silent = True):
     """Function to select the season"""
 
     self.target  = tempfile.NamedTemporaryFile().name + ".nc"
@@ -24,7 +24,7 @@ def remove_variable(self, vars):
     
     cdo_command = "cdo delete,name=" + vars + " " + self.current + " " + self.target
     self.history.append(cdo_command)
-    run_command(cdo_command, self)
+    run_command(cdo_command, self, silent)
     
     if self.run: self.current = self.target 
     
