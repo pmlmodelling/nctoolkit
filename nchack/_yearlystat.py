@@ -18,16 +18,16 @@ def yearlystat(self, stat = "mean", silent = True):
     """Function to calculate the seasonal statistic from a function""" 
     ff = self.current
 
-    self.target = tempfile.NamedTemporaryFile().name + ".nc"
+    target = tempfile.NamedTemporaryFile().name + ".nc"
 
     global nc_created
-    nc_created.append(self.target)
+    nc_created.append(target)
 
-    cdo_command = ("cdo -year" + stat + " " + ff + " " + self.target) 
+    cdo_command = ("cdo -year" + stat + " " + ff + " " + target) 
 
     self.history.append(cdo_command)
     run_command(cdo_command, self, silent) 
-    if self.run: self.current = self.target 
+    if self.run: self.current = target 
 
     # clean up the directory
     cleanup(keep = self.current)
