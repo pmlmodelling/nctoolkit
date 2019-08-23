@@ -19,11 +19,11 @@ def set_date(self, year, month, day, base_year = 1900, silent = True):
 
     ff = self.current
 
-    self.target = tempfile.NamedTemporaryFile().name + ".nc"
+    target = tempfile.NamedTemporaryFile().name + ".nc"
     owd = os.getcwd()
    # log the full path of the file
     global nc_created
-    nc_created.append(self.target)
+    nc_created.append(target)
     # check that the values supplied are valid
     # This will convert things to ints, and if it can't be done, throw an error
     if type(year) is not int:
@@ -33,11 +33,11 @@ def set_date(self, year, month, day, base_year = 1900, silent = True):
 
     if type(day) is not int:
         day = float(day)
-    cdo_command = "cdo -setreftime," + str(base_year) + "-01-01 -setdate," + str(year) + "-" + str(month) + "-" + str(day) + " " + self.current + " " + self.target
+    cdo_command = "cdo -setreftime," + str(base_year) + "-01-01 -setdate," + str(year) + "-" + str(month) + "-" + str(day) + " " + self.current + " " + target
 
     self.history.append(cdo_command)
     run_command(cdo_command, self, silent) 
-    if self.run: self.current = self.target 
+    if self.run: self.current = target 
 
     # clean up the directory
     cleanup(keep = self.current)
