@@ -13,7 +13,7 @@ from ._filetracker import nc_created
 from ._cleanup import cleanup
 from ._runcommand import run_command
 
-def set_missing(self, value):
+def set_missing(self, value, silent = True):
     """Function to set the missing values"""
     """This is either a range or a single value"""
 
@@ -34,7 +34,7 @@ def set_missing(self, value):
 
 
     self.history.append(cdo_command)
-    run_command(cdo_command, self) 
+    run_command(cdo_command, self, silent) 
     if self.run: self.current = self.target 
 
     # clean up the directory
