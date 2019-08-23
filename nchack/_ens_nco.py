@@ -39,7 +39,11 @@ def ensemble_nco(self, method):
 def ensemble_min(self):
     return ensemble_nco(self, "min")
 
+def ensemble_max(self):
+    return ensemble_nco(self, "mean")
 
+def ensemble_mean(self):
+    return ensemble_nco(self, "mean")
 
 
     
