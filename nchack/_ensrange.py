@@ -24,18 +24,18 @@ def ensemble_range(self, silent = True):
     if type(ff_ensemble) is not list:
         raise ValueError("The current state of the tracker is not a list")
 
-    self.target = tempfile.NamedTemporaryFile().name + ".nc"
+    target = tempfile.NamedTemporaryFile().name + ".nc"
     owd = os.getcwd()
 
    # log the full path of the file
     global nc_created
-    nc_created.append(self.target)
+    nc_created.append(target)
 
-    cdo_command = ("cdo ensrange " + str_flatten(ff_ensemble, " ") + " " + self.target) 
+    cdo_command = ("cdo ensrange " + str_flatten(ff_ensemble, " ") + " " + target) 
 
     self.history.append(cdo_command, silent)
     run_command(cdo_command, self) 
-    if self.run: self.current = self.target 
+    if self.run: self.current = target 
 
     # clean up the directory
     cleanup(keep = self.current)
