@@ -33,8 +33,8 @@ def expression(self, operations = None, method = "expr", silent = True):
     nc_created.append(self.target)
 
     cdo_command = ("cdo " + method + "," + expr + " " + self.current  + " " + self.target)
-    self.history.append(cdo_command, silent)
-    run_command(cdo_command, self)
+    self.history.append(cdo_command)
+    run_command(cdo_command, self, silent)
 
     if self.run: self.current = self.target
     
@@ -45,11 +45,11 @@ def expression(self, operations = None, method = "expr", silent = True):
 
 
 def mutate(self, operations = None, silent = True):
-    return(expression(self, operations = operations, method = "expr", silent))
+    return(expression(self, operations = operations, method = "expr", silent = silent))
 
 
 def transmute(self, operations = None, silent = True):
-    return(expression(self, operations = operations, method = "aexpr", silent))
+    return(expression(self, operations = operations, method = "aexpr", silent = silent))
 
 
 
