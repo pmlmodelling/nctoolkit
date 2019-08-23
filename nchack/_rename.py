@@ -25,14 +25,14 @@ def rename(self, newnames, silent = True):
         cdo_rename += "," + value
 
     # need a check at this point for file validity     
-    self.target  = tempfile.NamedTemporaryFile().name + ".nc"
-    nc_created.append(self.target)
-    cdo_command= ("cdo chname" + cdo_rename + " " + self.current + " " + self.target)
+    target  = tempfile.NamedTemporaryFile().name + ".nc"
+    nc_created.append(target)
+    cdo_command= ("cdo chname" + cdo_rename + " " + self.current + " " + target)
     self.history.append(cdo_command)
     run_command(cdo_command, self, silent)
         
 
-    if self.run: self.current = self.target 
+    if self.run: self.current = target 
 
     cleanup(keep = self.current)
 
