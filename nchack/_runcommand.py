@@ -1,6 +1,6 @@
 import os
 
-def run_command(os_command, target):
+def run_command(os_command, target, silent = False):
     """ Function to run an nco/cdo system command and check output was generated"""
     run = target.run
 
@@ -12,7 +12,14 @@ def run_command(os_command, target):
     # Step 2: run the system command
 
     if run:
+
+        if silent:
+            os_command = os_command.replace("cdo ", "cdo -s ")
+
+
+
         os.system(os_command)
+
         
         # Step 3: check the file was actually created
         # Raise error if it wasn't
