@@ -35,13 +35,13 @@ def vertstat(self, stat = "mean", silent = True):
     
 
 def vertical_mean(self, silent = True):
-    return vertstat(self, stat = "mean", silent)
+    return vertstat(self, stat = "mean", silent = True)
 
 def vertical_min(self, silent = True):
-    return vertstat(self, stat = "min", silent)
+    return vertstat(self, stat = "min", silent = True)
 
 def vertical_max(self, silent = True):
-    return vertstat(self, stat = "max", silent)
+    return vertstat(self, stat = "max", silent = True)
     
 def vertical_range(self, silent = True):
-    return vertstat(self, stat = "range", silent)
+    return vertstat(self, stat = "range", silent = True)

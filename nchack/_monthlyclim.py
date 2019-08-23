@@ -35,13 +35,13 @@ def ymonstat(self, stat = "mean", silent = True):
     
 
 def monthly_mean_climatology(self, silent = True):
-    return ymonstat(self, stat = "mean", silent)
+    return ymonstat(self, stat = "mean", silent = True)
 
 def monthly_min_climatology(self, silent = True):
-    return ymonstat(self, stat = "min", silent)
+    return ymonstat(self, stat = "min", silent = True)
 
 def monthly_max_climatology(self, silent = True):
-    return ymonstat(self,  stat = "max", silent)
+    return ymonstat(self,  stat = "max", silent = True)
     
 def monthly_range_climatology(self, silent = True):
-    return ymonstat(self, stat = "range", silent)
+    return ymonstat(self, stat = "range", silent = True)

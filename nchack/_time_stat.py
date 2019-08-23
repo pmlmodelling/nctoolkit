@@ -36,20 +36,19 @@ def time_stat(self, stat = "mean", silent = True):
     
 
 def time_mean(self, silent = True):
-    return(time_stat(self, stat = "mean", silent))
+    return(time_stat(self, stat = "mean", silent = silent))
 
 def time_min(self, silent = True):
-    return(time_stat(self, stat = "min", silent))
+    return(time_stat(self, stat = "min", silent = silent))
 
 def time_max(self, silent = True):
-    return(time_stat(self, stat = "max", silent))
-
+    return(time_stat(self, stat = "max", silent = silent))
 
 def time_range(self, silent = True):
-    return(time_stat(self,jstat = "range", silent))
+    return(time_stat(self,jstat = "range", silent = silent))
 
 def time_var(self, silent = True):
-    return(time_stat(self, stat = "var", silent))
+    return(time_stat(self, stat = "var", silent = silent))
 
 
 

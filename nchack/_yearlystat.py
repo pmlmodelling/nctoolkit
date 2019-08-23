@@ -36,13 +36,13 @@ def yearlystat(self, stat = "mean", silent = True):
     
 
 def yearly_mean(self, silent = True):
-    return yearlystat(self, stat = "mean", silent)
+    return yearlystat(self, stat = "mean", silent = True)
 
 def yearly_min(self, silent = True):
-    return yearlystat(self, stat = "min", silent)
+    return yearlystat(self, stat = "min", silent = True)
 
 def yearly_max(self, silent = True):
-    return yearlystat(self, stat = "max", silent)
+    return yearlystat(self, stat = "max", silent = True)
     
 def yearly_range(self, silent = True):
-    return yearlystat(self, stat = "range", silent)
+    return yearlystat(self, stat = "range", silent = True)
