@@ -137,10 +137,17 @@ class NCTracker:
     from ._regrid import regrid
     from ._surface import surface
     from ._vertint import vertical_interp
-    from ._ensmean import ensemble_mean
-    from ._ensmax import ensemble_max
-    from ._ensmin import ensemble_min
+
+
+    from ._ens_nco import ensemble_mean
+    from ._ens_nco import ensemble_max
+    from ._ens_nco import ensemble_min
+
+
     from ._ensrange import ensemble_range
+    from ._ensemble_percentile import ensemble_percentile
+
+
     from ._clip import clip
     from ._selname import select_variables
     from ._cdo_command import cdo_command
@@ -160,7 +167,6 @@ class NCTracker:
 
 
 
-    from ._ensemble_percentile import ensemble_percentile
     from ._vertstat import vertical_mean 
     from ._vertstat import vertical_min
     from ._vertstat import vertical_max
