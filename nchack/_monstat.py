@@ -13,7 +13,7 @@ from ._filetracker import nc_created
 from ._cleanup import cleanup
 from ._runcommand import run_command
 
-def monstat(self,  stat = "mean"):
+def monstat(self,  stat = "mean", silent = True):
     """Function to calculate the monthly statistic from a netcdf file""" 
     ff = self.current
 
@@ -25,7 +25,7 @@ def monstat(self,  stat = "mean"):
     cdo_command = ("cdo -mon" + stat + " " + ff + " " + self.target) 
 
     self.history.append(cdo_command)
-    run_command(cdo_command, self) 
+    run_command(cdo_command, self, silent) 
     if self.run: self.current = self.target 
 
     # clean up the directory
@@ -34,14 +34,14 @@ def monstat(self,  stat = "mean"):
     return(self)
     
 
-def monthly_mean(self):
-    return monstat(self, stat = "mean")
+def monthly_mean(self, silent = True):
+    return monstat(self, stat = "mean", silent)
 
-def monthly_min(self):
-    return monstat(self, stat = "min")
+def monthly_min(self, silent = True):
+    return monstat(self, stat = "min", silent)
 
-def monthly_max(self):
-    return monstat(self, stat = "max")
+def monthly_max(self, silent = True):
+    return monstat(self, stat = "max", silent)
     
-def monthly_range(self):
-    return monstat(self, stat = "range")
+def monthly_range(self, silent = True):
+    return monstat(self, stat = "range", silent)
