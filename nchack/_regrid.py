@@ -45,10 +45,10 @@ def regrid(self, grid = None, method = "bil", silent = True):
 
     # need a check at this point for file validity     
     holding_nc = self.current 
-    self.target  = tempfile.NamedTemporaryFile().name + ".nc"
+    target  = tempfile.NamedTemporaryFile().name + ".nc"
     temp_nc = tempfile.NamedTemporaryFile().name + ".nc"
     dummy_nc = tempfile.NamedTemporaryFile().name + ".nc"
-    nc_created.append(self.target)
+    nc_created.append(target)
     nc_created.append(temp_nc)
     nc_created.append(dummy_nc)
 
@@ -98,9 +98,9 @@ def regrid(self, grid = None, method = "bil", silent = True):
 
         os.rename(dummy_nc, holding_nc)
         
-    os.rename(holding_nc, self.target)
+    os.rename(holding_nc, target)
 
-    if self.run: self.current = self.target 
+    if self.run: self.current = target 
 
     cleanup(keep = [self.current, self.weights, self.grid])
 
