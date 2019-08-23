@@ -13,7 +13,7 @@ from ._filetracker import nc_created
 from ._cleanup import cleanup
 from ._runcommand import run_command
 
-def vertstat(self, stat = "mean"):
+def vertstat(self, stat = "mean", silent = True):
     """Function to calculate the vertical mean from a function""" 
     ff = self.current
 
@@ -25,7 +25,7 @@ def vertstat(self, stat = "mean"):
     cdo_command = ("cdo --reduce_dim -vert" + stat + " " + ff + " " + self.target) 
 
     self.history.append(cdo_command)
-    run_command(cdo_command, self) 
+    run_command(cdo_command, self, silent) 
     if self.run: self.current = self.target 
 
     # clean up the directory
@@ -34,14 +34,14 @@ def vertstat(self, stat = "mean"):
     return(self)
     
 
-def vertical_mean(self):
-    return vertstat(self, stat = "mean")
+def vertical_mean(self, silent = True):
+    return vertstat(self, stat = "mean", silent)
 
-def vertical_min(self):
-    return vertstat(self, stat = "min")
+def vertical_min(self, silent = True):
+    return vertstat(self, stat = "min", silent)
 
-def vertical_max(self):
-    return vertstat(self, stat = "max")
+def vertical_max(self, silent = True):
+    return vertstat(self, stat = "max", silent)
     
-def vertical_range(self):
-    return vertstat(self, stat = "range")
+def vertical_range(self, silent = True):
+    return vertstat(self, stat = "range", silent)
