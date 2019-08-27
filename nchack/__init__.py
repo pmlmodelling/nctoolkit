@@ -55,13 +55,13 @@ class NCTracker:
     def start(self, value):
         if type(value) is str:
             self._start = value
-            #if value == "":
-            #    self._start = value
-            #else:
-            #    if os.path.exists(value):
-            #        self._start = value
-            #    else:
-            #        raise TypeError("File does not exist")
+            if value == "":
+                self._start = value
+            else:
+                if os.path.exists(value):
+                    self._start = value
+                else:
+                    raise TypeError("File does not exist")
         if isinstance(value,list):
             self._start = value
     def hold(self):
@@ -216,5 +216,6 @@ class NCTracker:
     from ._show import show_months
     from ._show import show_levels
     from ._numbers import numbers 
+    from ._depths import depths
 
 
