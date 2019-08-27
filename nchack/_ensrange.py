@@ -26,8 +26,8 @@ def ensemble_range(self, silent = True):
 
     cdo_command = ("cdo ensrange " + str_flatten(ff_ensemble, " ") + " " + target) 
 
-    self.history.append(cdo_command, silent)
-    run_command(cdo_command, self) 
+    self.history.append(cdo_command)
+    run_command(cdo_command, self, silent) 
     if self.run: self.current = target 
 
     # clean up the directory
