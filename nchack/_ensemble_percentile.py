@@ -1,18 +1,10 @@
 
 # to do
 # think about adding ability to call nco
-
-
-import xarray as xr
-import pandas as pd
-import numpy as np
 import os
 import tempfile
-import itertools
 
 from .flatten import str_flatten
-from ._depths import nc_depths 
-from ._variables import variables
 from ._filetracker import nc_created
 from ._cleanup import cleanup
 from ._runcommand import run_command
