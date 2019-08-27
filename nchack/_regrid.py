@@ -1,9 +1,5 @@
-import xarray as xr
-import pandas as pd
-import numpy as np
 import os
 import tempfile
-import itertools
 
 from ._generate_grid import generate_grid
 from .flatten import str_flatten
@@ -12,6 +8,7 @@ from ._filetracker import nc_created
 from ._runcommand import run_command
 
 def regrid(self, grid = None, method = "bil", silent = True):
+    """Method to regrid a netcdf file"""
 
     if grid is None:
         raise ValueError("No grid was supplied")
