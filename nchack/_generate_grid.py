@@ -4,7 +4,6 @@ import pandas as pd
 import numpy as np
 import os
 import tempfile
-import itertools
 # function to generate the grid for cdo remapping
 from .flatten import str_flatten
 
