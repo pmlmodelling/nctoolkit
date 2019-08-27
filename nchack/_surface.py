@@ -11,7 +11,6 @@ def surface(self, silent = True):
    # if nc_valid(self.current) == False:
         #raise ValueError("File is invalid")
 
-    surface_depth = float(nc_depths(self.current)[0])
     target = tempfile.NamedTemporaryFile().name + ".nc"
     nc_created.append(target)
 

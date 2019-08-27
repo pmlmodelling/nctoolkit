@@ -3,7 +3,6 @@ import os
 import tempfile
 
 from .flatten import str_flatten
-from ._depths import nc_depths 
 from ._variables import variables
 from ._filetracker import nc_created
 from ._cleanup import cleanup
