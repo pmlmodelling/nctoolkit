@@ -16,10 +16,7 @@ def run_command(os_command, target, silent = False):
         if silent:
             os_command = os_command.replace("cdo ", "cdo -s ")
 
-
-
         os.system(os_command)
-
         
         # Step 3: check the file was actually created
         # Raise error if it wasn't
