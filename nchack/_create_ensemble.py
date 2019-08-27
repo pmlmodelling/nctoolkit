@@ -1,11 +1,6 @@
 
-
 import glob
-import pandas as pd
-import numpy as np
 import os
-import tempfile
-import itertools
 
 # function to find files in directory with a specified variable 
 
