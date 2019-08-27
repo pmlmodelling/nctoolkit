@@ -1,19 +1,14 @@
 
-import xarray as xr
-import pandas as pd
-import numpy as np
 import os
 import tempfile
-import itertools
 
-from ._depths import nc_depths
-from .flatten import str_flatten
 from ._cleanup import cleanup
 from ._filetracker import nc_created
 from ._runcommand import run_command
 
 
 def vertical_interp(self, vert_depths = None, silent = True):
+    """Method to perform vertical interpolation on a netcdf file"""
     owd = os.getcwd()
    # log the full path of the file
     ff_orig = os.path.abspath(self.current)
