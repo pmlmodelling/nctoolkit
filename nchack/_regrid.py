@@ -41,13 +41,8 @@ def regrid(self, grid = None, method = "bil", silent = True):
     ##ff_orig = os.path.abspath(self.current)
 
     # need a check at this point for file validity     
-    holding_nc = self.current 
     target  = tempfile.NamedTemporaryFile().name + ".nc"
-    temp_nc = tempfile.NamedTemporaryFile().name + ".nc"
-    dummy_nc = tempfile.NamedTemporaryFile().name + ".nc"
     nc_created.append(target)
-    nc_created.append(temp_nc)
-    nc_created.append(dummy_nc)
 
     # check that the remapping method is valid
     if (method in {"bil", "dis", "nn"}) == False:
@@ -80,22 +75,15 @@ def regrid(self, grid = None, method = "bil", silent = True):
             
             weights_nc = self.weights
 
-            cdo_command = ("cdo gen" + method + ","+ self.grid+ " " + holding_nc + " " + weights_nc)
+            cdo_command = ("cdo gen" + method + ","+ self.grid+ " " + self.current + " " + weights_nc)
             self.history.append(cdo_command)
             run_command(cdo_command, self, silent)
         else:
             weights_nc = self.weights
 
-        cdo_command= ("cdo remap," + self.grid + "," + weights_nc +  " " + holding_nc + " " + dummy_nc)
+        cdo_command= ("cdo remap," + self.grid + "," + weights_nc +  " " + self.current + " " + target)
         self.history.append(cdo_command)
         run_command(cdo_command, self, silent)
-   
-        if holding_nc == self.current:
-            holding_nc = temp_nc
-
-        os.rename(dummy_nc, holding_nc)
-        
-    os.rename(holding_nc, target)
 
     if self.run: self.current = target 
 
