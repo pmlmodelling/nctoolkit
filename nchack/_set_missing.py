@@ -1,10 +1,6 @@
 
-import xarray as xr
-import pandas as pd
-import numpy as np
 import os
 import tempfile
-import itertools
 
 from .flatten import str_flatten
 from ._depths import nc_depths 
