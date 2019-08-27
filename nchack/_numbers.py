@@ -1,10 +1,6 @@
 
-import xarray as xr
-import pandas as pd
-import numpy as np
 import os
 import tempfile
-import itertools
 # function to get the depths available in a netcdf file
 
 def numbers(self):
