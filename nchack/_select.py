@@ -12,7 +12,7 @@ def select_season(self, season, silent = True):
     """Function to select the season"""
 
     cdo_command = "cdo select,season=" + season
-    run_this(cdo_command, self, silent)
+    run_this(cdo_command, self, silent, output = "ensemble")
     
     cleanup(keep = self.current)
     
@@ -36,7 +36,7 @@ def select_months(self, months, silent = True):
     months = str_flatten(months, ",") 
 
     cdo_command = "cdo selmonth," + months + " "
-    run_this(cdo_command, self, silent)
+    run_this(cdo_command, self, silent, output = "ensemble")
     
     return(self)
 
@@ -53,7 +53,7 @@ def select_years(self, years, silent = True):
     years = str_flatten(years, ",") 
 
     cdo_command = "cdo selyear," + years + " " + self.current + " " + target
-    run_this(cdo_command, self, silent)
+    run_this(cdo_command, self, silent, output = "ensemble")
     
     cleanup(keep = self.current)
     
