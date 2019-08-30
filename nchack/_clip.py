@@ -29,8 +29,7 @@ def clip(self, lon_range = [-180, 180], lat_range = [-90, 90], silent = True):
 
         lat_box = str_flatten(lon_range + lat_range)
         cdo_command = ("cdo sellonlatbox," + lat_box)
-        run_this(cdo_command, self, silent)
-
+        run_this(cdo_command, self, silent, output = "ensemble")
 
     # clean up the directory
     cleanup(keep = self.current)
