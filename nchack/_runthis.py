@@ -3,9 +3,10 @@ import copy
 import tempfile
 
 from ._filetracker import nc_created
+from .flatten import str_flatten
 
 
-def run_this(os_command, self, silent = False):
+def run_this(os_command, self, silent = False, output = "one"):
     """ Function to run an nco/cdo system command and check output was generated"""
     # Works on multiple files
     run = self.run
@@ -35,15 +36,15 @@ def run_this(os_command, self, silent = False):
             self.current = target
         else:
             # multiple file case
-            target_list = []
-            for ff in self.current:
-            
+
+            if output == "one":
                 if silent:
                     ff_command = os_command.replace("cdo ", "cdo -s ")
 
                 target = tempfile.NamedTemporaryFile().name + ".nc"
                 nc_created.append(target)
-                ff_command = ff_command + " " + ff + " " + target
+                flat_ensemble = str_flatten(self.current, " ")
+                ff_command = ff_command + " " + flat_ensemble + " " + target
 
                 self.history.append(ff_command)
                 os.system(ff_command)
@@ -53,9 +54,30 @@ def run_this(os_command, self, silent = False):
 
                 if os.path.exists(target) == False:
                     raise ValueError(ff_command + " was not successful. Check output")
-                target_list.append(target) 
+                self.current = target
 
-            self.current = copy.deepcopy(target_list)
+            else:
+                target_list = []
+                for ff in self.current:
+                
+                    if silent:
+                        ff_command = os_command.replace("cdo ", "cdo -s ")
+
+                    target = tempfile.NamedTemporaryFile().name + ".nc"
+                    nc_created.append(target)
+                    ff_command = ff_command + " " + ff + " " + target
+
+                    self.history.append(ff_command)
+                    os.system(ff_command)
+                    
+                    # check the file was actually created
+                    # Raise error if it wasn't
+
+                    if os.path.exists(target) == False:
+                        raise ValueError(ff_command + " was not successful. Check output")
+                    target_list.append(target) 
+
+                self.current = copy.deepcopy(target_list)
 
     else:
         # Now, if this is not a cdo command we need throw an error
