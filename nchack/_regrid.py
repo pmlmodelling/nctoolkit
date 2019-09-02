@@ -5,7 +5,7 @@ from ._generate_grid import generate_grid
 from .flatten import str_flatten
 from ._cleanup import cleanup
 from ._filetracker import nc_created
-from ._runcommand import run_command
+from ._runthis import run_this
 
 def regrid(self, grid = None, method = "bil", silent = True):
     """Method to regrid a netcdf file"""
@@ -36,13 +36,6 @@ def regrid(self, grid = None, method = "bil", silent = True):
 
     if grid_type is None:
         raise ValueError("grid supplied is not valid")
-
-   # log the full path of the file
-    ##ff_orig = os.path.abspath(self.current)
-
-    # need a check at this point for file validity     
-    target  = tempfile.NamedTemporaryFile().name + ".nc"
-    nc_created.append(target)
 
     # check that the remapping method is valid
     if (method in {"bil", "dis", "nn"}) == False:
@@ -75,17 +68,14 @@ def regrid(self, grid = None, method = "bil", silent = True):
             
             weights_nc = self.weights
 
-            cdo_command = ("cdo gen" + method + ","+ self.grid+ " " + self.current + " " + weights_nc)
+            cdo_command = "cdo gen" + method + ","+ self.grid 
             self.history.append(cdo_command)
-            run_command(cdo_command, self, silent)
+            run_this(cdo_command, self, silent, output = "ensemble")
         else:
             weights_nc = self.weights
 
-        cdo_command= ("cdo remap," + self.grid + "," + weights_nc +  " " + self.current + " " + target)
-        self.history.append(cdo_command)
-        run_command(cdo_command, self, silent)
-
-    if self.run: self.current = target 
+        cdo_command= "cdo remap," + self.grid + "," + weights_nc 
+        run_this(cdo_command, self, silent, output = "ensemble")
 
     cleanup(keep = [self.current, self.weights, self.grid])
 
