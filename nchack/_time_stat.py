@@ -10,7 +10,7 @@ from ._runthis import run_this
 def time_stat(self, stat = "mean", silent = True):
     """Function to calculate the mean from from a single file"""
 
-    cdo_command = "cdo --reduce_dim tim" + stat
+    cdo_command = "cdo tim" + stat
 
    # run_command(cdo_command, self, silent) 
     run_this(cdo_command, self, silent, output = "ensemble")
