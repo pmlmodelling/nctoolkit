@@ -5,14 +5,11 @@ import pandas as pd
 
 from ._cleanup import cleanup
 from ._filetracker import nc_created
-from ._runcommand import run_command
+from ._runthis import run_this
 from .flatten import str_flatten
 
 def vertical_interp(self, vert_depths = None, silent = True):
     """Method to perform vertical interpolation on a netcdf file"""
-    # Create a temp file name
-    target = tempfile.NamedTemporaryFile().name + ".nc"
-    nc_created.append(target)
      
     # below used for checking whether vertical remapping occurs
 
@@ -43,15 +40,12 @@ def vertical_interp(self, vert_depths = None, silent = True):
              raise ValueError("error: maximum depth supplied is too low")
 
         vert_depths = str_flatten(vert_depths, ",")
-        cdo_command = ("cdo intlevel," + vert_depths + " " + self.current + " " + target)
-        self.history.append(cdo_command)
-        run_command(cdo_command, self, silent)
+        cdo_command = "cdo intlevel," + vert_depths
+        
+        run_this(cdo_command, self, silent, output = "ensemble")
 
      # throw error if cdo fails at this point
     
-    if vertical_remap:
-        
-        if self.run: self.current = target 
     
     cleanup(keep = self.current)
 
