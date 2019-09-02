@@ -13,6 +13,9 @@ def run_this(os_command, self, silent = False, output = "one"):
     # Step one
 
     # Step 2: run the system command
+    
+    if run == False:
+        self.history.append(os_command)
 
     if run:
 
@@ -24,6 +27,9 @@ def run_this(os_command, self, silent = False, output = "one"):
             target = tempfile.NamedTemporaryFile().name + ".nc"
             nc_created.append(target)
             os_command = os_command + " " + self.current + " " + target
+
+            run_history = [x for x in self.history if x.endswith(".nc")]
+            self.history = copy.deepcopy(run_history)
             self.history.append(os_command)
 
             os.system(os_command)
@@ -40,12 +46,17 @@ def run_this(os_command, self, silent = False, output = "one"):
             if output == "one":
                 if silent:
                     ff_command = os_command.replace("cdo ", "cdo -s ")
+                else:
+                    ff_command = copy.deepcopy(os_command)
 
                 target = tempfile.NamedTemporaryFile().name + ".nc"
                 nc_created.append(target)
                 flat_ensemble = str_flatten(self.current, " ")
                 ff_command = ff_command + " " + flat_ensemble + " " + target
 
+                run_history = copy.deepcopy(self.history)
+                run_history = [x for x in run_history if x.endswith(".nc")]
+                self.history = copy.deepcopy(run_history)
                 self.history.append(ff_command)
                 os.system(ff_command)
                 
@@ -62,6 +73,8 @@ def run_this(os_command, self, silent = False, output = "one"):
                 
                     if silent:
                         ff_command = os_command.replace("cdo ", "cdo -s ")
+                    else:
+                        ff_command = copy.deepcopy(os_command)
 
                     target = tempfile.NamedTemporaryFile().name + ".nc"
                     nc_created.append(target)
