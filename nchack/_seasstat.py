@@ -5,22 +5,14 @@ import tempfile
 from .flatten import str_flatten
 from ._filetracker import nc_created
 from ._cleanup import cleanup
-from ._runcommand import run_command
+from ._runthis import run_this
 
 def seasstat(self, stat = "mean", silent = True):
     """Function to calculate the seasonal statistic from a function""" 
-    ff = self.current
 
-    target = tempfile.NamedTemporaryFile().name + ".nc"
+    cdo_command = "cdo -seas" + stat
 
-    global nc_created
-    nc_created.append(target)
-
-    cdo_command = ("cdo -seas" + stat + " " + ff + " " + target) 
-
-    self.history.append(cdo_command)
-    run_command(cdo_command, self, silent) 
-    if self.run: self.current = target 
+    run_this(cdo_command, self, silent, output = "ensemble")
 
     # clean up the directory
     cleanup(keep = self.current)
