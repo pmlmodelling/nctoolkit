@@ -5,7 +5,7 @@ from ._generate_grid import generate_grid
 from .flatten import str_flatten
 from ._cleanup import cleanup
 from ._filetracker import nc_created
-from ._runcommand import run_command
+from ._runthis import run_this
 
 def rename(self, newnames, silent = True):
     """Function to rename netcdf variable"""
@@ -21,14 +21,10 @@ def rename(self, newnames, silent = True):
         cdo_rename += "," + value
 
     # need a check at this point for file validity     
-    target  = tempfile.NamedTemporaryFile().name + ".nc"
-    nc_created.append(target)
-    cdo_command= ("cdo chname" + cdo_rename + " " + self.current + " " + target)
-    self.history.append(cdo_command)
-    run_command(cdo_command, self, silent)
-        
+    cdo_command= "cdo chname" + cdo_rename 
 
-    if self.run: self.current = target 
+    self.history.append(cdo_command)
+    run_this(cdo_command, self, silent, output = "ensemble")
 
     cleanup(keep = self.current)
 
