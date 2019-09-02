@@ -14,7 +14,8 @@ def surface(self, silent = True):
    # target = tempfile.NamedTemporaryFile().name + ".nc"
    # nc_created.append(target)
 
-    cdo_command = "cdo --reduce_dim -sellevidx,1 "
+    cdo_command = "cdo -sellevidx,1 "
+    #cdo_command = "cdo --reduce_dim -sellevidx,1 "
    # run_command(cdo_command, self, silent)
     run_this(cdo_command, self, silent, output = "ensemble")
 
