@@ -6,7 +6,7 @@ from ._cleanup import cleanup
 from ._filetracker import nc_created
 from ._runthis import run_this
 
-def remove_variable(self, vars, silent = True):
+def remove_variable(self, vars, silent = True, cores = 1):
     """Function to select the season"""
 
     if type(vars) is not list:
@@ -14,7 +14,7 @@ def remove_variable(self, vars, silent = True):
     vars = str_flatten(vars, ",")
     
     cdo_command = "cdo delete,name=" + vars
-    run_this(cdo_command, self, silent, output = "ensemble")
+    run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
     
     cleanup(keep = self.current)
     
