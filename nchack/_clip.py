@@ -6,7 +6,7 @@ from .flatten import str_flatten
 from ._filetracker import nc_created
 from ._cleanup import cleanup
 
-def clip(self, lon_range = [-180, 180], lat_range = [-90, 90], silent = True):
+def clip(self, lon_range = [-180, 180], lat_range = [-90, 90], silent = True, cores = 1):
     """ Function to clip netcdf files, spatially"""
     if (type(lon_range) is not list) or (type(lat_range) is not list):
         raise ValueError("Check that lon/lat ranges are tuples")
@@ -29,7 +29,7 @@ def clip(self, lon_range = [-180, 180], lat_range = [-90, 90], silent = True):
 
         lat_box = str_flatten(lon_range + lat_range)
         cdo_command = ("cdo sellonlatbox," + lat_box)
-        run_this(cdo_command, self, silent, output = "ensemble")
+        run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
 
     # clean up the directory
     cleanup(keep = self.current)
