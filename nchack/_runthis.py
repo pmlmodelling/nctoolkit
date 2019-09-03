@@ -1,12 +1,18 @@
 import os
 import copy
 import tempfile
+import multiprocessing
 
 from ._filetracker import nc_created
 from .flatten import str_flatten
 
+def run_it(command, target):
+    os.system(command)
+    if os.path.exists(target) == False:
+        raise ValueError(command + " was not successful. Check output")
+    return target
 
-def run_this(os_command, self, silent = False, output = "one"):
+def run_this(os_command, self, silent = False, output = "one", cores = 1):
     """ Function to run an nco/cdo system command and check output was generated"""
     # Works on multiple files
     run = self.run
@@ -68,29 +74,62 @@ def run_this(os_command, self, silent = False, output = "one"):
                 self.current = target
 
             else:
-                target_list = []
-                for ff in self.current:
-                
-                    if silent:
-                        ff_command = os_command.replace("cdo ", "cdo -s ")
-                    else:
-                        ff_command = copy.deepcopy(os_command)
-
-                    target = tempfile.NamedTemporaryFile().name + ".nc"
-                    nc_created.append(target)
-                    ff_command = ff_command + " " + ff + " " + target
-
-                    self.history.append(ff_command)
-                    os.system(ff_command)
+                if cores == 1:
+                    target_list = []
+                    for ff in self.current:
                     
-                    # check the file was actually created
-                    # Raise error if it wasn't
+                        if silent:
+                            ff_command = os_command.replace("cdo ", "cdo -s ")
+                        else:
+                            ff_command = copy.deepcopy(os_command)
 
-                    if os.path.exists(target) == False:
-                        raise ValueError(ff_command + " was not successful. Check output")
-                    target_list.append(target) 
+                        target = tempfile.NamedTemporaryFile().name + ".nc"
+                        nc_created.append(target)
+                        ff_command = ff_command + " " + ff + " " + target
 
-                self.current = copy.deepcopy(target_list)
+                        self.history.append(ff_command)
+                        os.system(ff_command)
+                        
+                        # check the file was actually created
+                        # Raise error if it wasn't
+
+                        if os.path.exists(target) == False:
+                            raise ValueError(ff_command + " was not successful. Check output")
+                        target_list.append(target) 
+
+                    self.current = copy.deepcopy(target_list)
+
+                else:
+                # multi-core case
+
+                    pool = multiprocessing.Pool(cores)
+                    target_list = []
+                    results = dict()
+                    for ff in self.current:
+                    
+                        if silent:
+                            ff_command = os_command.replace("cdo ", "cdo -s ")
+                        else:
+                            ff_command = copy.deepcopy(os_command)
+
+                        target = tempfile.NamedTemporaryFile().name + ".nc"
+                        nc_created.append(target)
+                        ff_command = ff_command + " " + ff + " " + target
+
+                        self.history.append(ff_command)
+                        temp = pool.apply_async(run_it,[ff_command, target])
+                        results[ff] = temp 
+
+                    pool.close()
+                    pool.join()
+                    new_current = []
+                    for k,v in results.items():
+                        target_list.append(v.get())
+
+                    self.current = copy.deepcopy(target_list)
+
+
+
 
     else:
         # Now, if this is not a cdo command we need throw an error
