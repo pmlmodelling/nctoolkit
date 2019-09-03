@@ -7,7 +7,7 @@ from ._cleanup import cleanup
 from ._filetracker import nc_created
 from ._runthis import run_this
 
-def regrid(self, grid = None, method = "bil", silent = True):
+def regrid(self, grid = None, method = "bil", silent = True, cores = 1):
     """Method to regrid a netcdf file"""
 
     if grid is None:
@@ -70,12 +70,12 @@ def regrid(self, grid = None, method = "bil", silent = True):
 
             cdo_command = "cdo gen" + method + ","+ self.grid 
             self.history.append(cdo_command)
-            run_this(cdo_command, self, silent, output = "ensemble")
+            run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
         else:
             weights_nc = self.weights
 
         cdo_command= "cdo remap," + self.grid + "," + weights_nc 
-        run_this(cdo_command, self, silent, output = "ensemble")
+        run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
 
     cleanup(keep = [self.current, self.weights, self.grid])
 
