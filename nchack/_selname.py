@@ -5,10 +5,9 @@ import tempfile
 from .flatten import str_flatten
 from ._cleanup import cleanup
 from ._filetracker import nc_created
-from ._runcommand import run_command
 from ._runthis import run_this
 
-def select_variables(self, vars = None, silent = True):
+def select_variables(self, vars = None, silent = True, cores = 1):
 
     if type(vars) is str:
         vars_list = [vars]
@@ -18,7 +17,7 @@ def select_variables(self, vars = None, silent = True):
     
     cdo_command = "cdo selname," + vars_list
 
-    run_this(cdo_command, self, silent, output = "ensemble")
+    run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
     
     cleanup(keep = self.current)
     
