@@ -62,7 +62,6 @@ def release(self, silent = True, cores = 1):
 
         cdo_command = cdo_command.replace("cdo","cdo -L ")
         cdo_command = cdo_command.replace("  ", " ")
-        print(cdo_command)
         run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
 
     return self
