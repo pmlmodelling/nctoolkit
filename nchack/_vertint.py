@@ -8,7 +8,7 @@ from ._filetracker import nc_created
 from ._runthis import run_this
 from .flatten import str_flatten
 
-def vertical_interp(self, vert_depths = None, silent = True):
+def vertical_interp(self, vert_depths = None, silent = True, cores = 1):
     """Method to perform vertical interpolation on a netcdf file"""
      
     # below used for checking whether vertical remapping occurs
@@ -42,7 +42,7 @@ def vertical_interp(self, vert_depths = None, silent = True):
         vert_depths = str_flatten(vert_depths, ",")
         cdo_command = "cdo intlevel," + vert_depths
         
-        run_this(cdo_command, self, silent, output = "ensemble")
+        run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
 
      # throw error if cdo fails at this point
     
