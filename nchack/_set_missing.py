@@ -8,7 +8,7 @@ from ._filetracker import nc_created
 from ._cleanup import cleanup
 from ._runthis import run_this
 
-def set_missing(self, value, silent = True):
+def set_missing(self, value, silent = True, cores = 1):
     """Function to set the missing values"""
     """This is either a range or a single value"""
 
@@ -20,7 +20,7 @@ def set_missing(self, value, silent = True):
     if type(value) is list:
         cdo_command = "cdo setrtomiss," + str(value[0]) + "," + str(value[1])
 
-    run_this(cdo_command, self, silent, output = "ensemble")
+    run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
 
     # clean up the directory
     cleanup(keep = self.current)
