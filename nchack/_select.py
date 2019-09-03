@@ -8,11 +8,11 @@ from ._filetracker import nc_created
 from ._runthis import run_this
 
 
-def select_season(self, season, silent = True):
+def select_season(self, season, silent = True, cores = 1):
     """Function to select the season"""
 
     cdo_command = "cdo select,season=" + season
-    run_this(cdo_command, self, silent, output = "ensemble")
+    run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
     
     cleanup(keep = self.current)
     
@@ -20,7 +20,7 @@ def select_season(self, season, silent = True):
 
 
 
-def select_months(self, months, silent = True):
+def select_months(self, months, silent = True, cores = 1):
     """Function to select months"""
 
     if type(months) is not list:
@@ -36,12 +36,12 @@ def select_months(self, months, silent = True):
     months = str_flatten(months, ",") 
 
     cdo_command = "cdo selmonth," + months + " "
-    run_this(cdo_command, self, silent, output = "ensemble")
+    run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
     
     return(self)
 
 
-def select_years(self, years, silent = True):
+def select_years(self, years, silent = True, cores = 1):
     """Function to select years"""
 
     if type(years) is not list:
@@ -53,7 +53,7 @@ def select_years(self, years, silent = True):
     years = str_flatten(years, ",") 
 
     cdo_command = "cdo selyear," + years + " " + self.current + " " + target
-    run_this(cdo_command, self, silent, output = "ensemble")
+    run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
     
     cleanup(keep = self.current)
     
