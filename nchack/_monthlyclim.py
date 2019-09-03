@@ -12,7 +12,6 @@ def ymonstat(self, stat = "mean", silent = True, cores = 1):
 
     cdo_command = "cdo -ymon" + stat
 
-    self.history.append(cdo_command)
     run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
 
     # clean up the directory
