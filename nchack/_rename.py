@@ -23,7 +23,6 @@ def rename(self, newnames, silent = True, cores = 1):
     # need a check at this point for file validity     
     cdo_command= "cdo chname" + cdo_rename 
 
-    self.history.append(cdo_command)
     run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
 
     cleanup(keep = self.current)
