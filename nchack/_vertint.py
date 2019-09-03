@@ -17,9 +17,9 @@ def vertical_interp(self, vert_depths = None, silent = True, cores = 1):
        
     # first a quick fix for the case when there is only one vertical depth
 
-  #  if vert_depths != None:
-  #      if (type(vert_depths) == int) or (type(vert_depths) == float):
-  #          vert_depths = {vert_depths}
+    if vert_depths != None:
+        if (type(vert_depths) == int) or (type(vert_depths) == float):
+            vert_depths = {vert_depths}
 
   #  if vert_depths == None:
   #      vertical_remap = False
