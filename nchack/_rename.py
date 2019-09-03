@@ -7,7 +7,7 @@ from ._cleanup import cleanup
 from ._filetracker import nc_created
 from ._runthis import run_this
 
-def rename(self, newnames, silent = True):
+def rename(self, newnames, silent = True, cores = 1):
     """Function to rename netcdf variable"""
 
     if type(newnames) is not dict:
@@ -24,7 +24,7 @@ def rename(self, newnames, silent = True):
     cdo_command= "cdo chname" + cdo_rename 
 
     self.history.append(cdo_command)
-    run_this(cdo_command, self, silent, output = "ensemble")
+    run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
 
     cleanup(keep = self.current)
 
