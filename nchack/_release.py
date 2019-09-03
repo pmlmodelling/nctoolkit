@@ -7,7 +7,7 @@ from ._cleanup import cleanup
 from ._filetracker import nc_created
 from ._runthis import run_this
 
-def release(self, silent = True):
+def release(self, silent = True, cores = 1):
     """Function to release a self from hold mode  """
     # the first step is to set the run status to true
     if self.run:
@@ -63,7 +63,7 @@ def release(self, silent = True):
         cdo_command = cdo_command.replace("cdo","cdo -L ")
         cdo_command = cdo_command.replace("  ", " ")
         print(cdo_command)
-        run_this(cdo_command, self, silent, output = "ensemble")
+        run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
 
     return self
     
