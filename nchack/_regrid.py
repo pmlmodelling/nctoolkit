@@ -69,7 +69,6 @@ def regrid(self, grid = None, method = "bil", silent = True, cores = 1):
             weights_nc = self.weights
 
             cdo_command = "cdo gen" + method + ","+ self.grid 
-            self.history.append(cdo_command)
             run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
         else:
             weights_nc = self.weights
