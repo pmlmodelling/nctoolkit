@@ -4,10 +4,9 @@ import tempfile
 
 from ._cleanup import cleanup
 from ._filetracker import nc_created
-#from ._runcommand import run_command
 from ._runthis import run_this
 
-def expression(self, operations = None, method = "expr", silent = True):
+def expression(self, operations = None, method = "expr", silent = True, cores = 1):
     """Function to mutate a netcdf file using expr"""
 
     if type(operations) is not dict:
@@ -26,19 +25,19 @@ def expression(self, operations = None, method = "expr", silent = True):
     expr = '"' + expr + '"'
 
     cdo_command = "cdo " + method + "," + expr
-    run_this(cdo_command, self, silent, output = "ensemble")
+    run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
     
     cleanup(keep = self.current)    
 
     return(self)
 
 
-def transmute(self, operations = None, silent = True):
-    return(expression(self, operations = operations, method = "expr", silent = silent))
+def transmute(self, operations = None, silent = True, cores = 1):
+    return expression(self, operations = operations, method = "expr", silent = silent, cores = cores)
 
 
-def mutate(self, operations = None, silent = True):
-    return(expression(self, operations = operations, method = "aexpr", silent = silent))
+def mutate(self, operations = None, silent = True, cores = 1):
+    return expression(self, operations = operations, method = "aexpr", silent = silent, cores = cores)
 
 
 
