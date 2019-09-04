@@ -220,4 +220,5 @@ class NCTracker:
     from ._depths import depths
 
     from ._mergetime import merge_time 
+    from ._merge import merge
 
