@@ -8,7 +8,7 @@ from ._runthis import run_this
 
 def vertstat(self, stat = "mean", silent = True, cores = 1):
     """Function to calculate the vertical mean from a function""" 
-    cdo_command = "cdo --reduce_dim -vert" + stat
+    cdo_command = "cdo -vert" + stat
 
     run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
 
