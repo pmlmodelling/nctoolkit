@@ -117,7 +117,6 @@ class NCTracker:
         else:
             new.start = start
             new.current = start
-        new.target = None
         return(new)
 
 
