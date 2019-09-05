@@ -9,6 +9,11 @@ from ._runthis import run_this
 
 def rollstat(self, window,  stat = "mean", silent = True, cores = 1):
     """Function to calculate the monthly statistic from a netcdf file""" 
+    if type(window) is float:
+        window = int(window)
+        
+    if type(window) is not int:
+        raise ValueError("The window supplied is not numeric!")
     
     cdo_command = "cdo -run" + stat + "," + str(window)
 
