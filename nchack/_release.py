@@ -62,6 +62,10 @@ def release(self, silent = True, cores = 1):
 
         cdo_command = cdo_command.replace("cdo","cdo -L ")
         cdo_command = cdo_command.replace("  ", " ")
+
+        # now change the history to the pre-hold history
+        self.history= pre_history
+
         run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
 
     return self
