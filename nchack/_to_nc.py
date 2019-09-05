@@ -20,7 +20,9 @@ def to_netcdf(self, out, zip = True, overwrite = False):
     if os.path.exists(out) and overwrite == False: 
         raise ValueError("The out file exists and overwrite is set to false")
     if zip:
-        run_command("cdo -f nc4 -z zip_9 copy " + ff + " " + out)
+        os.system("cdo -f nc4 -z zip_9 copy " + ff + " " + out)
+        if os.path.exists(out) == False: 
+            raise ValueError("File zipping was not successful")
     else:
         shutil.copy(ff, out)
 
