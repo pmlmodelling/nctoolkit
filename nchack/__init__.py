@@ -222,3 +222,11 @@ class NCTracker:
     from ._mergetime import merge_time 
     from ._merge import merge
 
+
+    from ._rollstat import rolling_mean
+    from ._rollstat import rolling_min
+    from ._rollstat import rolling_max
+    from ._rollstat import rolling_range
+    from ._rollstat import rolling_sum
+
+
