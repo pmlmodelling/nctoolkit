@@ -19,8 +19,6 @@ def expression(self, operations = None, method = "expr", silent = True, cores = 
         expr.append(key + "=" + value)
         
     expr = ";".join(expr)
-    expr = expr.replace("(", "\\(")
-    expr = expr.replace(")", "\\)")
     expr = expr.replace(" ", "" )
     expr = '"' + expr + '"'
 
