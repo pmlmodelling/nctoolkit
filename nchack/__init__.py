@@ -232,4 +232,6 @@ class NCTracker:
     from ._set_unit import set_unit 
     from ._set_longname import set_longname
 
+    from ._bottom import bottom 
+
 
