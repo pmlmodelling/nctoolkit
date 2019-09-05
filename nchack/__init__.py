@@ -229,4 +229,7 @@ class NCTracker:
     from ._rollstat import rolling_range
     from ._rollstat import rolling_sum
 
+    from ._set_unit import set_unit 
+    from ._set_longname import set_longname
+
 
