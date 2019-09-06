@@ -1,11 +1,7 @@
 
 # to do
 # think about adding ability to call nco
-import os
-import tempfile
 
-from .flatten import str_flatten
-from ._filetracker import nc_created
 from ._cleanup import cleanup
 from ._runthis import run_this
 
