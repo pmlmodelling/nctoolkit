@@ -26,6 +26,8 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1):
     if run:
 
         if type(self.current) is str:
+            if os.path.exists(self.current) == False:
+                raise ValueError("The file " + self.current + " does not exist!")
             # single file case
             if silent:
                 os_command = os_command.replace("cdo ", "cdo -s ")
@@ -50,6 +52,11 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1):
             # multiple file case
 
             if output == "one":
+
+                for ff in self.current:
+                    if os.path.exists(ff) == False:
+                        raise ValueError("The file " + ff + " does not exist!")
+
                 if silent:
                     ff_command = os_command.replace("cdo ", "cdo -s ")
                 else:
@@ -78,6 +85,8 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1):
                     target_list = []
                     for ff in self.current:
                     
+                        if os.path.exists(ff) == False:
+                            raise ValueError("The file " + ff + " does not exist!")
                         if silent:
                             ff_command = os_command.replace("cdo ", "cdo -s ")
                         else:
