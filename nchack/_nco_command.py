@@ -1,7 +1,4 @@
 
-import os
-import tempfile
-
 from ._filetracker import nc_created
 from ._cleanup import cleanup 
 from ._runcommand import run_command
