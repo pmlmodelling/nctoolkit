@@ -1,9 +1,7 @@
 
-import tempfile
 
 from ._runthis import run_this
 from .flatten import str_flatten
-from ._filetracker import nc_created
 from ._cleanup import cleanup
 
 def clip(self, lon = [-180, 180], lat = [-90, 90], silent = True, cores = 1):
