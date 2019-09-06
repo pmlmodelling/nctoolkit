@@ -1,12 +1,7 @@
 
-import os
-import tempfile
-
 from .flatten import str_flatten
 from ._cleanup import cleanup
-from ._filetracker import nc_created
 from ._runthis import run_this
-
 
 def select_season(self, season, silent = True, cores = 1):
     """Function to select the season"""
@@ -17,7 +12,6 @@ def select_season(self, season, silent = True, cores = 1):
     cleanup(keep = self.current)
     
     return(self)
-
 
 
 def select_months(self, months, silent = True, cores = 1):
