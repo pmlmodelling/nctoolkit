@@ -1,9 +1,4 @@
 
-import os
-import tempfile
-
-from .flatten import str_flatten
-from ._filetracker import nc_created
 from ._cleanup import cleanup
 from ._runthis import run_this
 
@@ -30,3 +25,4 @@ def monthly_max(self, silent = True, cores = 1):
     
 def monthly_range(self, silent = True, cores = 1):
     return monstat(self, stat = "range", silent = silent, cores = cores)
+
