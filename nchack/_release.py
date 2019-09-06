@@ -1,10 +1,8 @@
 
 import os
-import tempfile
 import copy
 
 from ._cleanup import cleanup
-from ._filetracker import nc_created
 from ._runthis import run_this
 
 def release(self, silent = True, cores = 1):
