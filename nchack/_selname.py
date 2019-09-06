@@ -1,10 +1,6 @@
 
-import os
-import tempfile
-
 from .flatten import str_flatten
 from ._cleanup import cleanup
-from ._filetracker import nc_created
 from ._runthis import run_this
 
 def select_variables(self, vars = None, silent = True, cores = 1):
