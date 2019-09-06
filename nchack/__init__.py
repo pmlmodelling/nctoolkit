@@ -209,7 +209,10 @@ class NCTracker:
     from ._time_stat import time_min
     from ._time_stat import time_range
     from ._time_stat import time_var
+
     from ._release import release 
+    from ._release_command import release_command
+
     from ._delete import remove_variable 
 
     from ._show import show_years 
