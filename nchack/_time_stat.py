@@ -1,22 +1,12 @@
-
-import os
-import tempfile
-
-from .flatten import str_flatten
-from ._filetracker import nc_created
 from ._cleanup import cleanup
 from ._runthis import run_this
 
 def time_stat(self, stat = "mean", silent = True, cores = 1):
     """Function to calculate the mean from from a single file"""
-
     cdo_command = "cdo tim" + stat
-
     run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
-
     # clean up the directory
     cleanup(keep = self.current)
-
     return(self)
     
 
