@@ -62,7 +62,7 @@ def release_command(self):
 
         cdo_command = cdo_command.replace("cdo","cdo -L ")
         cdo_command = cdo_command.replace("  ", " ")
-        cdo_command = cdo_command.replace("cdo ", "")
+#        cdo_command = cdo_command.replace("cdo ", "")
 
         return cdo_command
 
