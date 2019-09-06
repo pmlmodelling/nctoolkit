@@ -1,6 +1,5 @@
 
 import os
-import tempfile
 # function to get the depths available in a netcdf file
 
 def numbers(self):
