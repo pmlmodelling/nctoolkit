@@ -1,8 +1,4 @@
-
-import copy
 import xarray as xr
-import os
-
 from ._cleanup import cleanup
 
 def to_xarray(self, decode_times = True):
