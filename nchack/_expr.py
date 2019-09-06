@@ -1,9 +1,5 @@
 
-import os
-import tempfile
-
 from ._cleanup import cleanup
-from ._filetracker import nc_created
 from ._runthis import run_this
 
 def expression(self, operations = None, method = "expr", silent = True, cores = 1):
