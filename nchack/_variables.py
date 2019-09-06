@@ -1,4 +1,3 @@
-
 import os
 
 # function to get list of variables
