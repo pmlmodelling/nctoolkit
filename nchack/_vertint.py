@@ -1,10 +1,4 @@
-
-import os
-import tempfile
-import pandas as pd
-
 from ._cleanup import cleanup
-from ._filetracker import nc_created
 from ._runthis import run_this
 from .flatten import str_flatten
 
