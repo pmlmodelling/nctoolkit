@@ -62,6 +62,8 @@ def regrid(self, grid = None, method = "bil", silent = True, cores = 1):
         # first we need to generate the weights for remapping
         # and add this to the files created list and self.weights
         if self.weights is None:
+            if self.run == False:
+                raise ValueError("You cannot generate weights as part of a chain currently")
             weights_nc = tempfile.NamedTemporaryFile().name + ".nc"
             nc_created.append(weights_nc)
             self.weights = weights_nc
