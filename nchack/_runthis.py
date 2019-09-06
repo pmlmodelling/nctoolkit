@@ -147,10 +147,10 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1):
             raise ValueError("You can only use cdo commands in hold mode")
         # Now, we need to throw an error if the command is generating a grid
         
-        commas = [x for x in os_command.split(" ") if "," in x]
-        commas = "".join(commas)
-        if "gen" in commas:
-            raise ValueError("You cannot generate weights as part of a chain!")
-
+#        commas = [x for x in os_command.split(" ") if "," in x]
+#        commas = "".join(commas)
+#        if "gen" in commas:
+#            raise ValueError("You cannot generate weights as part of a chain!")
+#
 
 
