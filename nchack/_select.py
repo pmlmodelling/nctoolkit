@@ -52,7 +52,7 @@ def select_years(self, years, silent = True, cores = 1):
 
     years = str_flatten(years, ",") 
 
-    cdo_command = "cdo selyear," + years + " " + self.current + " " + target
+    cdo_command = "cdo selyear," + years
     run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
     
     cleanup(keep = self.current)
