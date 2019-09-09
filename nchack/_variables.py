@@ -7,4 +7,4 @@ def variables(self, detailed = False):
     cdo_result = cdo_result.replace("\n", "")
     cdo_result = cdo_result.split()
   #  if detailed == False:
-    return(cdo_result)
+    return cdo_result
