@@ -3,7 +3,7 @@ from ._cleanup import cleanup
 from ._runthis import run_this
 
 def monstat(self,  stat = "mean", silent = True, cores = 1):
-    """Function to calculate the monthly statistic from a netcdf file""" 
+    """Method to calculate the monthly statistic from a netcdf file""" 
     cdo_command = "cdo -mon" + stat
 
     run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
@@ -11,7 +11,7 @@ def monstat(self,  stat = "mean", silent = True, cores = 1):
     # clean up the directory
     cleanup(keep = self.current)
 
-    return(self)
+    return self
     
 
 def monthly_mean(self, silent = True, cores = 1):
