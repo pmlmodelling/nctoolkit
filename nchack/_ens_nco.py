@@ -30,7 +30,7 @@ def ensemble_nco(self, method, silent = True):
     # clean up the directory
     cleanup(keep = self.current)
 
-    return(self)
+    return self
     
 
 def ensemble_min(self, silent = True):
