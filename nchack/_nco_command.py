@@ -4,7 +4,7 @@ from ._cleanup import cleanup
 from ._runcommand import run_command
 
 def nco_command(self, command):
-    """ Function to all any nco command of the the form 'command + infile + outfile'"""
+    """ Method to all any nco command of the the form 'command + infile + outfile'"""
     target = tempfile.NamedTemporaryFile().name + ".nc"
     nc_created.append(target)
     nco_command = command + " " + self.current + " " + target
@@ -15,7 +15,4 @@ def nco_command(self, command):
 
     cleanup(keep = self.current)
 
-    return(self)
-
-
-
+    return self
