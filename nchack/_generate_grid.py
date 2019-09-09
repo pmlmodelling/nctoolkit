@@ -58,5 +58,5 @@ def generate_grid(coords):
         f.write("xinc = " + str(lon_step) +"\n")
         f.write("yinc = " + str(lat_step) +  "\n")
         f.close()
-    return(grid_file)
+    return grid_file
 
