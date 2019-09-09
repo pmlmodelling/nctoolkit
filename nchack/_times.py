@@ -6,4 +6,4 @@ def times(self):
     cdo_result = cdo_result.replace("\n", "")
     cdo_result = cdo_result.split()
     cdo_result = pd.Series( (v for v in cdo_result) )
-    return cdo_result
+    #return cdo_result
