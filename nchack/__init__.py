@@ -158,7 +158,6 @@ class NCTracker:
     from ._times import times
     from ._ensemble_check import ensemble_check
     ##from ._mean import mean 
-    from ._set_missing import set_missing
 
     from ._select import select_season
     from ._select import select_months
@@ -202,7 +201,11 @@ class NCTracker:
     from ._to_nc import to_netcdf
 
     from ._rename import rename 
-    from ._set_date import set_date 
+
+    from ._setters import set_date 
+    from ._setters import set_missing
+    from ._setters import set_unit 
+    from ._setters import set_longname
 
     from ._time_stat import time_mean 
     from ._time_stat import time_max
@@ -231,8 +234,6 @@ class NCTracker:
     from ._rollstat import rolling_range
     from ._rollstat import rolling_sum
 
-    from ._set_unit import set_unit 
-    from ._set_longname import set_longname
 
     from ._bottom import bottom 
 
