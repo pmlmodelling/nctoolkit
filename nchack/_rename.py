@@ -3,7 +3,7 @@ from ._cleanup import cleanup
 from ._runthis import run_this
 
 def rename(self, newnames, silent = True, cores = 1):
-    """Function to rename netcdf variable"""
+    """Method to rename netcdf variable"""
 
     if type(newnames) is not dict:
         raise ValueError("a dictionary was not supplied")
@@ -22,5 +22,4 @@ def rename(self, newnames, silent = True, cores = 1):
 
     cleanup(keep = self.current)
 
-    return(self)
-
+    return self
