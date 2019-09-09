@@ -26,5 +26,3 @@ def to_netcdf(self, out, zip = True, overwrite = False):
 
     # run the cleanup
     cleanup()
-
-   
