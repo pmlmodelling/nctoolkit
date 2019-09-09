@@ -80,5 +80,5 @@ def regrid(self, grid = None, method = "bil", silent = True, cores = 1):
 
     cleanup(keep = [self.current, self.weights, self.grid])
 
-    return(self)
+    return self
 
