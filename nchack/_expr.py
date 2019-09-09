@@ -23,7 +23,7 @@ def expression(self, operations = None, method = "expr", silent = True, cores = 
     
     cleanup(keep = self.current)    
 
-    return self
+#    return self
 
 
 def transmute(self, operations = None, silent = True, cores = 1):
