@@ -1,3 +1,5 @@
+# todo:
+    # add checker for date validity
 
 import os
 import tempfile
@@ -6,11 +8,6 @@ from ._filetracker import nc_created
 from ._cleanup import cleanup
 from ._runthis import run_this
 
-
-# todo:
-    # add checker for date validity
-from ._cleanup import cleanup
-from ._runthis import run_this
 
 def set_date(self, year, month, day, base_year = 1900, silent = True):
     """Function to set the date"""
@@ -31,7 +28,7 @@ def set_date(self, year, month, day, base_year = 1900, silent = True):
     # clean up the directory
     cleanup(keep = self.current)
 
-    return self
+#    return self
 
 def set_longname(self, var, new_long, silent = True):
     """Function to set the date"""
@@ -65,7 +62,7 @@ def set_longname(self, var, new_long, silent = True):
     # clean up the directory
     cleanup(keep = self.current)
 
-    return self
+#    return self
 
 
 def set_missing(self, value, silent = True, cores = 1):
@@ -85,7 +82,7 @@ def set_missing(self, value, silent = True, cores = 1):
     # clean up the directory
     cleanup(keep = self.current)
 
-    return self
+#    return self
 
 
 def set_unit(self, unit, silent = True):
@@ -102,4 +99,4 @@ def set_unit(self, unit, silent = True):
     # clean up the directory
     cleanup(keep = self.current)
 
-    return self
+#    return self
