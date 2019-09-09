@@ -26,4 +26,4 @@ def select_variables(self, vars = None, silent = True, cores = 1):
     
     cleanup(keep = self.current)
     
-    return(self)
+    return self
