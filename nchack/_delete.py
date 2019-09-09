@@ -23,6 +23,4 @@ def remove_variable(self, vars, silent = True, cores = 1):
     
     cleanup(keep = self.current)
     
-    return(self)
-
-
+    return self
