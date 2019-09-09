@@ -23,4 +23,4 @@ def bottom(self, silent = True, cores = 1):
 
     cleanup(keep = self.current)
 
-    return self
+    ##return self
