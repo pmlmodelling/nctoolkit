@@ -43,4 +43,4 @@ def vertical_interp(self, vert_depths = None, silent = True, cores = 1):
     
     cleanup(keep = self.current)
 
-    return(self)
+    return self
