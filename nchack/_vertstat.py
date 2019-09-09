@@ -10,7 +10,7 @@ def vertstat(self, stat = "mean", silent = True, cores = 1):
     # clean up the directory
     cleanup(keep = self.current)
 
-    return self
+    #return self
     
 
 def vertical_mean(self, silent = True, cores = 1):
