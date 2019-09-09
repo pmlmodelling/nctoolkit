@@ -16,4 +16,4 @@ def set_unit(self, unit, silent = True):
     # clean up the directory
     cleanup(keep = self.current)
 
-    return(self)
+    return self
