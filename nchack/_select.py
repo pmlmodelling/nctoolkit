@@ -3,6 +3,7 @@ from .flatten import str_flatten
 from ._cleanup import cleanup
 from ._runthis import run_this
 from ._variables import variables
+from ._variables import nc_variables
 
 
 def select_season(self, season, silent = True, cores = 1):
@@ -64,11 +65,17 @@ def select_variables(self, vars = None, silent = True, cores = 1):
     else:
         vars_list = vars
 
-    valid_vars = self.variables()
+    
+    if type(self.current) is str:
+        file_list = [self.current]
+    else:
+        file_list = self.current
 
-    for vv in vars_list:
-        if vv not in valid_vars:
-            raise ValueError(vv + " is not available in the file!")
+    for ff in file_list:    
+        valid_vars = nc_variables(ff)
+        for vv in vars_list:
+            if vv not in valid_vars:
+                raise ValueError(vv + " is not available in " + ff)
 
     vars_list = str_flatten(vars_list, ",")
     
