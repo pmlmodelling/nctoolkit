@@ -14,7 +14,7 @@ def select_season(self, season, silent = True, cores = 1):
     
     cleanup(keep = self.current)
     
-    return self
+    #return self
 
 
 def select_months(self, months, silent = True, cores = 1):
@@ -35,7 +35,7 @@ def select_months(self, months, silent = True, cores = 1):
     cdo_command = "cdo selmonth," + months + " "
     run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
     
-    return self
+    ##return self
 
 
 def select_years(self, years, silent = True, cores = 1):
@@ -54,7 +54,7 @@ def select_years(self, years, silent = True, cores = 1):
     
     cleanup(keep = self.current)
     
-    return self
+    #return self
 
 
 def select_variables(self, vars = None, silent = True, cores = 1):
@@ -85,4 +85,4 @@ def select_variables(self, vars = None, silent = True, cores = 1):
     
     cleanup(keep = self.current)
     
-    return self
+  #  return self
