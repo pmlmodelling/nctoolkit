@@ -237,4 +237,6 @@ class NCTracker:
 
     from ._bottom import bottom 
 
+    from ._ncks_command import ncks_command 
+
 
