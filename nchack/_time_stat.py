@@ -7,7 +7,7 @@ def time_stat(self, stat = "mean", silent = True, cores = 1):
     run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
     # clean up the directory
     cleanup(keep = self.current)
-    return self
+    #return self
     
 
 def time_mean(self, silent = True, cores = 1):
@@ -24,9 +24,3 @@ def time_range(self, silent = True, cores = 1):
 
 def time_var(self, silent = True, cores = 1):
     return time_stat(self, stat = "var", silent = silent, cores = cores)
-
-
-
-
-
-    
