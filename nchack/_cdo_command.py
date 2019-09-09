@@ -17,7 +17,4 @@ def cdo_command(self, command, silent = True, cores = 1):
 
     cleanup(keep = self.current)
 
-    return(self)
-
-
-
+    return self
