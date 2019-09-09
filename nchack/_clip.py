@@ -32,5 +32,5 @@ def clip(self, lon = [-180, 180], lat = [-90, 90], silent = True, cores = 1):
     # clean up the directory
     cleanup(keep = self.current)
 
-    return(self)
+    return self
     
