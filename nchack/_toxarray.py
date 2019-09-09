@@ -10,4 +10,4 @@ def to_xarray(self, decode_times = True):
         data = xr.open_mfdataset(self.current, decode_times = decode_times)
 
     cleanup(keep = self.current)
-    return(data)
+    return data
