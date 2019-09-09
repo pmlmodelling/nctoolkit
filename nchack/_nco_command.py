@@ -15,4 +15,4 @@ def nco_command(self, command):
 
     cleanup(keep = self.current)
 
-    return self
+    #return self
