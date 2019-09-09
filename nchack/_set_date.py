@@ -1,4 +1,6 @@
 
+# todo:
+    # add checker for date validity
 from ._cleanup import cleanup
 from ._runthis import run_this
 
@@ -21,7 +23,4 @@ def set_date(self, year, month, day, base_year = 1900, silent = True):
     # clean up the directory
     cleanup(keep = self.current)
 
-    return(self)
-    
-
-    
+    return self
