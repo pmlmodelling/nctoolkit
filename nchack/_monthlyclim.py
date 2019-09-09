@@ -12,7 +12,7 @@ def ymonstat(self, stat = "mean", silent = True, cores = 1):
     # clean up the directory
     cleanup(keep = self.current)
 
-    return self
+    #return self
     
 
 def monthly_mean_climatology(self, silent = True, cores = 1):
