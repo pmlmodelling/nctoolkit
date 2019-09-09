@@ -7,4 +7,4 @@ def surface(self, silent = True, cores = 1):
     run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
     cleanup(keep = self.current)
 
-    return self
+    #return self
