@@ -19,7 +19,4 @@ def set_missing(self, value, silent = True, cores = 1):
     # clean up the directory
     cleanup(keep = self.current)
 
-    return(self)
-    
-
-    
+    return self
