@@ -20,5 +20,5 @@ def merge_time(self, silent = True):
     # clean up the directory
     cleanup(keep = self.current)
 
-    return self
+  #  return self
     
