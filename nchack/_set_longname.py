@@ -38,7 +38,4 @@ def set_longname(self, var, new_long, silent = True):
     # clean up the directory
     cleanup(keep = self.current)
 
-    return(self)
-    
-
-    
+    return self
