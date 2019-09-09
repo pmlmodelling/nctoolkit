@@ -12,7 +12,7 @@ def seasstat(self, stat = "mean", silent = True, cores = 1):
     # clean up the directory
     cleanup(keep = self.current)
 
-    return self
+    ##return self
     
 
 def seasonal_mean(self, silent = True, cores = 1):
