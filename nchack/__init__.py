@@ -137,7 +137,6 @@ class NCTracker:
     from ._surface import surface
     from ._vertint import vertical_interp
 
-
     from ._ens_nco import ensemble_mean
     from ._ens_nco import ensemble_max
     from ._ens_nco import ensemble_min
@@ -146,7 +145,6 @@ class NCTracker:
     from ._ensrange import ensemble_range
     from ._ensemble_percentile import ensemble_percentile
 
-
     from ._clip import clip
     from ._select import select_variables
     from ._cdo_command import cdo_command
@@ -154,16 +152,11 @@ class NCTracker:
     from ._expr import mutate 
     from ._expr import transmute 
 
-
-    from ._times import times
     from ._ensemble_check import ensemble_check
-    ##from ._mean import mean 
 
     from ._select import select_season
     from ._select import select_months
     from ._select import select_years
-
-
 
     from ._vertstat import vertical_mean 
     from ._vertstat import vertical_min
@@ -218,11 +211,6 @@ class NCTracker:
 
     from ._delete import remove_variable 
 
-    from ._show import show_years 
-    from ._show import show_months
-    from ._show import show_levels
-    from ._numbers import numbers 
-    from ._depths import depths
 
     from ._mergetime import merge_time 
     from ._merge import merge
@@ -240,3 +228,9 @@ class NCTracker:
     from ._ncks_command import ncks_command 
 
 
+    from ._show import times
+    from ._show import numbers 
+    from ._show import show_years 
+    from ._show import show_months
+    from ._show import show_levels
+    from ._show import depths
