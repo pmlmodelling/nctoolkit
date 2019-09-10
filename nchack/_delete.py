@@ -11,16 +11,16 @@ def remove_variable(self, vars, silent = True, cores = 1):
     if type(vars) is not list:
         vars = [vars]
 
-    if type(self.current) is str:
-        file_list = [self.current]
-    else:
-        file_list = self.current
+   # if type(self.current) is str:
+   #     file_list = [self.current]
+   # else:
+   #     file_list = self.current
   
-    for ff in file_list:
-        valid_vars = nc_variables(ff)
-        for vv in vars:
-            if vv not in valid_vars:
-                raise ValueError(vv + " is not available in " + ff)
+   # for ff in file_list:
+   #     valid_vars = nc_variables(ff)
+   #     for vv in vars:
+   #         if vv not in valid_vars:
+   #             raise ValueError(vv + " is not available in " + ff)
 
     vars = str_flatten(vars, ",")
     
