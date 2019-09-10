@@ -2,9 +2,6 @@
 from .flatten import str_flatten
 from ._cleanup import cleanup
 from ._runthis import run_this
-from ._variables import variables
-from ._variables import nc_variables
-
 
 def select_season(self, season, silent = True, cores = 1):
     """Method to select the season"""
@@ -13,9 +10,6 @@ def select_season(self, season, silent = True, cores = 1):
     run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
     
     cleanup(keep = self.current)
-    
-    #return self
-
 
 def select_months(self, months, silent = True, cores = 1):
     """Method to select months"""
@@ -35,8 +29,6 @@ def select_months(self, months, silent = True, cores = 1):
     cdo_command = "cdo selmonth," + months + " "
     run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
     
-    ##return self
-
 
 def select_years(self, years, silent = True, cores = 1):
     """Method to select years"""
@@ -54,8 +46,6 @@ def select_years(self, years, silent = True, cores = 1):
     
     cleanup(keep = self.current)
     
-    #return self
-
 
 def select_variables(self, vars = None, silent = True, cores = 1):
     """Method to select variables from a netcdf file"""
@@ -65,18 +55,6 @@ def select_variables(self, vars = None, silent = True, cores = 1):
     else:
         vars_list = vars
 
-    
-    #if type(self.current) is str:
-    #    file_list = [self.current]
-    #else:
-    #    file_list = self.current
-
-    #for ff in file_list:    
-    #    valid_vars = nc_variables(ff)
-    #    for vv in vars_list:
-    #        if vv not in valid_vars:
-    #            raise ValueError(vv + " is not available in " + ff)
-
     vars_list = str_flatten(vars_list, ",")
     
     cdo_command = "cdo selname," + vars_list
@@ -85,4 +63,3 @@ def select_variables(self, vars = None, silent = True, cores = 1):
     
     cleanup(keep = self.current)
     
-  #  return self
