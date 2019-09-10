@@ -66,16 +66,16 @@ def select_variables(self, vars = None, silent = True, cores = 1):
         vars_list = vars
 
     
-    if type(self.current) is str:
-        file_list = [self.current]
-    else:
-        file_list = self.current
+    #if type(self.current) is str:
+    #    file_list = [self.current]
+    #else:
+    #    file_list = self.current
 
-    for ff in file_list:    
-        valid_vars = nc_variables(ff)
-        for vv in vars_list:
-            if vv not in valid_vars:
-                raise ValueError(vv + " is not available in " + ff)
+    #for ff in file_list:    
+    #    valid_vars = nc_variables(ff)
+    #    for vv in vars_list:
+    #        if vv not in valid_vars:
+    #            raise ValueError(vv + " is not available in " + ff)
 
     vars_list = str_flatten(vars_list, ",")
     
