@@ -39,7 +39,7 @@ def ensemble_min(self, silent = True):
 
 def ensemble_max(self, silent = True):
     """Method to calculate an ensemble max from a list of files"""
-    return ensemble_nco(self, "mean")
+    return ensemble_nco(self, "max")
 
 def ensemble_mean(self, silent = True):
     """Method to calculate an ensemble mean from a list of files"""
