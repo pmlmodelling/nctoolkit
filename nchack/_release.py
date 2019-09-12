@@ -63,9 +63,13 @@ def release(self, silent = True, cores = 1):
 
         # now change the history to the pre-hold history
         self.history= pre_history
+        
+        output_method = "ensemble"
 
-        run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
+        ## Now, if we start the chain with a merging operation, we only want one output file
+        if "mergetime" in cdo_command:
+        
 
-   # return self
-    
+        run_this(cdo_command, self, silent, output = output_method, cores = cores)
+
     
