@@ -28,7 +28,6 @@ def set_date(self, year, month, day, base_year = 1900, silent = True):
     # clean up the directory
     cleanup(keep = self.current)
 
-#    return self
 
 def set_longname(self, var, new_long, silent = True):
     """Function to set the date"""
@@ -62,8 +61,6 @@ def set_longname(self, var, new_long, silent = True):
     # clean up the directory
     cleanup(keep = self.current)
 
-#    return self
-
 
 def set_missing(self, value, silent = True, cores = 1):
     """Function to set the missing values"""
@@ -82,21 +79,26 @@ def set_missing(self, value, silent = True, cores = 1):
     # clean up the directory
     cleanup(keep = self.current)
 
-#    return self
 
+def set_unit(self, var_dict, silent = True):
+    """Method to set units"""
 
-def set_unit(self, unit, silent = True):
-    """Function to set the date"""
-
-    # Check that the unit supplied is a string
-    if type(unit) is not str:
-        ValueError("Unit supplied is not a string")
-
-    cdo_command = "cdo -setunit,'" + unit +"'"
-
-    run_this(cdo_command, self, silent, output = "ensemble")
+    # Check that a dictionary has been supplied
+    if type(var_dict) is not dict:
+        ValueError("A dictionary has not been supplied!")
+    
+    # change the units in turn. This doesn't seem to be something you can chain?
+    for i in var_dict:
+        cdo_command = ""
+        cdo_command = cdo_command + " -setattribute," + i + "@units=" + '"' + var_dict[i]  + '"'
+        cdo_command = "cdo " + cdo_command 
+        run_this(cdo_command, self, silent, output = "ensemble")
 
     # clean up the directory
     cleanup(keep = self.current)
 
-#    return self
+
+
+
+
+
