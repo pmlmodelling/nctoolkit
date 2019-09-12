@@ -147,6 +147,8 @@ class NCTracker:
 
     from ._clip import clip
     from ._select import select_variables
+    from ._select import select_timestep
+
     from ._cdo_command import cdo_command
 
     from ._expr import mutate 
