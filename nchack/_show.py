@@ -8,6 +8,7 @@ def times(self):
     cdo_result = cdo_result.replace("\n", "")
     cdo_result = cdo_result.split()
     cdo_result = pd.Series( (v for v in cdo_result) )
+    return cdo_result
 
 def depths(self):
     """function to get the depths available in a netcdf file"""
