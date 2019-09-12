@@ -11,6 +11,9 @@ def merge_time(self, silent = True):
     if type(self.current) is not list:
         raise ValueError("The current state of the tracker is not a list")
 
+    if len(self.hold_history) > 0:
+        raise ValueError("You cannot run merge_time with pre-existing hold over commands!")
+
    # log the full path of the file
 
     cdo_command = "cdo mergetime "
@@ -20,5 +23,4 @@ def merge_time(self, silent = True):
     # clean up the directory
     cleanup(keep = self.current)
 
-  #  return self
     
