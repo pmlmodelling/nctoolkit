@@ -131,7 +131,6 @@ class NCTracker:
     def start(self):
         raise AttributeError("You cannot delete the start point")
  
-    from ._variables import variables
     from ._toxarray import to_xarray
     from ._cellareas import cell_areas
     from ._regrid import regrid
@@ -201,11 +200,12 @@ class NCTracker:
     from ._setters import set_unit 
     from ._setters import set_longname
 
-    from ._time_stat import time_mean 
-    from ._time_stat import time_max
-    from ._time_stat import time_min
-    from ._time_stat import time_range
-    from ._time_stat import time_var
+    from ._time_stat import mean 
+    from ._time_stat import max
+    from ._time_stat import min
+    from ._time_stat import range
+    from ._time_stat import var
+    #from ._time_stat import percentile 
 
     from ._release import release 
     from ._release_command import release_command
@@ -229,6 +229,7 @@ class NCTracker:
     from ._ncks_command import ncks_command 
 
 
+    from ._show import variables
     from ._show import times
     from ._show import numbers 
     from ._show import show_years 
