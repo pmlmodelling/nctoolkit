@@ -236,3 +236,8 @@ class NCTracker:
     from ._show import show_months
     from ._show import show_levels
     from ._show import depths
+
+    from ._fldstat import spatial_mean
+    from ._fldstat import spatial_min
+    from ._fldstat import spatial_max
+    from ._fldstat import spatial_range
