@@ -1,8 +1,8 @@
 from ._cleanup import cleanup
 from ._runthis import run_this
 
-def cell_areas(self, silent = True):
+def cell_areas(self, silent = True, cores = 1):
     cdo_command = "cdo gridarea "
-    run_this(cdo_command, self, silent, output = "ensemble")
+    run_this(cdo_command, self, silent, output = "ensemble", cores)
     cleanup(keep = self.current)
     #return self
