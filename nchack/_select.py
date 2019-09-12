@@ -63,3 +63,20 @@ def select_variables(self, vars = None, silent = True, cores = 1):
     
     cleanup(keep = self.current)
     
+def select_timestep(self, times, silent = True, cores = 1):
+    """Method to select time steps"""
+
+    if type(times) is not list:
+        times = [times]
+    # all of the variables in months need to be converted to ints, just in case floats have been provided
+
+    times = [int(x) + 1 for x in times]
+    times = [str(x) for x in times]
+    times = str_flatten(times)
+
+    cdo_command = "cdo seltimestep," + times 
+
+    run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
+
+
+
