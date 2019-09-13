@@ -11,6 +11,8 @@ def time_stat(self, stat = "mean", silent = True, cores = 1):
     # clean up the directory
     cleanup(keep = self.current)
     
+def sum(self, silent = True, cores = 1):
+    return time_stat(self, stat = "sum", silent = silent, cores = cores)
 
 def mean(self, silent = True, cores = 1):
     return time_stat(self, stat = "mean", silent = silent, cores = cores)
@@ -26,6 +28,17 @@ def range(self, silent = True, cores = 1):
 
 def var(self, silent = True, cores = 1):
     return time_stat(self, stat = "var", silent = silent, cores = cores)
+
+
+def cum_sum(self, silent = True, cores = 1):
+    """Method to calculate a stat over all time steps"""
+    cdo_command = "cdo timcumsum" 
+    run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
+    # clean up the directory
+    cleanup(keep = self.current)
+    
+def sum(self, silent = True, cores = 1):
+    return time_stat(self, stat = "sum", silent = silent, cores = cores)
 
 
 
