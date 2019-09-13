@@ -115,8 +115,6 @@ class NCTracker:
     from ._toxarray import to_xarray
     from ._cellareas import cell_areas
     from ._regrid import regrid
-    from ._surface import surface
-    from ._vertint import vertical_interp
 
     from ._ensembles import ensemble_mean
     from ._ensembles import ensemble_max
@@ -141,10 +139,6 @@ class NCTracker:
     from ._select import select_months
     from ._select import select_years
 
-    from ._vertstat import vertical_mean 
-    from ._vertstat import vertical_min
-    from ._vertstat import vertical_max
-    from ._vertstat import vertical_range
 
     from ._seasstat import seasonal_mean 
     from ._seasstat import seasonal_min
@@ -207,7 +201,6 @@ class NCTracker:
     from ._rollstat import rolling_sum
 
 
-    from ._bottom import bottom 
 
     from ._ncks_command import ncks_command 
 
@@ -224,3 +217,16 @@ class NCTracker:
     from ._fldstat import spatial_min
     from ._fldstat import spatial_max
     from ._fldstat import spatial_range
+
+
+
+    from ._verticals import vertical_mean 
+    from ._verticals import vertical_min
+    from ._verticals import vertical_max
+    from ._verticals import vertical_range
+    from ._verticals import surface
+    from ._verticals import vertical_interp
+    from ._verticals import bottom 
+
+
+
