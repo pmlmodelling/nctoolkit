@@ -182,6 +182,8 @@ class NCTracker:
     from ._time_stat import min
     from ._time_stat import range
     from ._time_stat import var
+    from ._time_stat import sum
+    from ._time_stat import cum_sum
     #from ._time_stat import percentile 
 
     from ._release import release 
