@@ -71,23 +71,6 @@ class NCTracker:
         self.run = False 
         self.hold_history = copy.deepcopy(self.history)
         
-        return(self)
-
-   # def execute(self):
-   #     """A method to execute the heldover commands"""
-   #     self.hold = True
-   #     # now, we need to chain together the held over commands
-   #     # step one
-   #     self.hold_history = self.history
-   #     
-   #     return(self)
-   # read = os.popen("cdo --operators").read()
-
-    #[x.split(" ")[0] for x in read.split("\n")]
-
-
-
-
 
     def append(self, x):
         """A function for creating a new tracker using an existing one as the starting point"""
@@ -99,14 +82,12 @@ class NCTracker:
             self.current.append(x)
         else:
             self.current = self.current + x
-        return(self)
 
     def update(self, current):
         """A function for creating a new tracker using an existing one as the starting point"""
         self.current = current
         if self.start == "":
             self.start = current
-        return(self)
 
     def restart(self, start = None):
         """A function for creating a new tracker using an existing one as the starting point"""
@@ -137,13 +118,14 @@ class NCTracker:
     from ._surface import surface
     from ._vertint import vertical_interp
 
-    from ._ens_nco import ensemble_mean
-    from ._ens_nco import ensemble_max
-    from ._ens_nco import ensemble_min
+    from ._ensembles import ensemble_mean
+    from ._ensembles import ensemble_max
+    from ._ensembles import ensemble_min
+    from ._ensembles import ensemble_range
+    from ._ensembles import ensemble_percentile
 
+    from ._ensembles import ensemble_check
 
-    from ._ensrange import ensemble_range
-    from ._ensemble_percentile import ensemble_percentile
 
     from ._clip import clip
     from ._select import select_variables
@@ -154,7 +136,6 @@ class NCTracker:
     from ._expr import mutate 
     from ._expr import transmute 
 
-    from ._ensemble_check import ensemble_check
 
     from ._select import select_season
     from ._select import select_months
