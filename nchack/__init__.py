@@ -215,8 +215,8 @@ class NCTracker:
     from ._delete import remove_variable 
 
 
-    from ._mergetime import merge_time 
-    from ._merge import merge
+    from ._mergers import merge_time 
+    from ._mergers import merge
 
 
     from ._rollstat import rolling_mean
