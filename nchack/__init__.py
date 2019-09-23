@@ -230,5 +230,7 @@ class NCTracker:
     from ._verticals import vertical_interp
     from ._verticals import bottom 
 
+    from ._size import size
+
 
 
