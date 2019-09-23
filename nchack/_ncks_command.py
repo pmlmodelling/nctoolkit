@@ -16,5 +16,3 @@ def ncks_command(self, command, silent = True, cores = 1):
     run_this(the_command, self, silent, output = "ensemble", cores = cores)
 
     cleanup(keep = self.current)
-
-    #return self

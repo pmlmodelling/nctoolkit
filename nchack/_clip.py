@@ -3,7 +3,7 @@ from .flatten import str_flatten
 from ._cleanup import cleanup
 
 def clip(self, lon = [-180, 180], lat = [-90, 90], silent = True, cores = 1):
-    """Method to clip netcdf files, spatially"""
+    """Method to clip netcdf files spatially"""
     if (type(lon) is not list) or (type(lat) is not list):
         raise ValueError("Check that lon/lat ranges are tuples")
     
@@ -31,6 +31,3 @@ def clip(self, lon = [-180, 180], lat = [-90, 90], silent = True, cores = 1):
 
     # clean up the directory
     cleanup(keep = self.current)
-
-   # return self
-    

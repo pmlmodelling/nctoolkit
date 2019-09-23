@@ -11,7 +11,6 @@ def yearlystat(self, stat = "mean", silent = True, cores = 1):
     # clean up the directory
     cleanup(keep = self.current)
 
-    #return self
     
 
 def yearly_mean(self, silent = True, cores = 1):

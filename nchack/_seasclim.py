@@ -11,7 +11,6 @@ def seasstat(self, stat = "mean", silent = True, cores = 1):
     # clean up the directory
     cleanup(keep = self.current)
 
-    ##return self
     
 
 def seasonal_mean_climatology(self, silent = True, cores = 1):

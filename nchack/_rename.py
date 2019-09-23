@@ -22,4 +22,3 @@ def rename(self, newnames, silent = True, cores = 1):
 
     cleanup(keep = self.current)
 
-    #return self

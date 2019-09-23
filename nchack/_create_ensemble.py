@@ -41,5 +41,3 @@ def create_ensemble(path = "", var = None, recursive = True):
 
     return ensemble
 
-
-

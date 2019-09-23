@@ -17,7 +17,6 @@ def rollstat(self, window,  stat = "mean", silent = True, cores = 1):
     # clean up the directory
     cleanup(keep = self.current)
 
-    #return self
     
 
 def rolling_mean(self, window, silent = True, cores = 1):

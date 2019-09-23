@@ -12,9 +12,6 @@ def fldstat(self, stat = "mean", silent = True, cores = 1):
     # clean up the directory
     cleanup(keep = self.current)
 
-    ##return self
-    
-
 def spatial_mean(self, silent = True, cores = 1):
     return fldstat(self, stat = "mean", silent = True, cores = cores)
 

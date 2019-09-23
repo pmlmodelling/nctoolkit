@@ -1,4 +1,3 @@
-
 from ._cleanup import cleanup
 from ._runthis import run_this
 
@@ -12,8 +11,6 @@ def ymonstat(self, stat = "mean", silent = True, cores = 1):
     # clean up the directory
     cleanup(keep = self.current)
 
-    #return self
-    
 
 def monthly_mean_climatology(self, silent = True, cores = 1):
     return ymonstat(self, stat = "mean", silent = True, cores = cores)

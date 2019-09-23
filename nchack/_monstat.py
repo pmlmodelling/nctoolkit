@@ -11,8 +11,6 @@ def monstat(self,  stat = "mean", silent = True, cores = 1):
     # clean up the directory
     cleanup(keep = self.current)
 
-#    return self
-    
 
 def monthly_mean(self, silent = True, cores = 1):
     return monstat(self, stat = "mean", silent = silent, cores = cores)
