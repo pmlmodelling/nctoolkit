@@ -8,7 +8,7 @@ def convert_bytes(num):
     """
     for x in ['bytes', 'KB', 'MB', 'GB', 'TB']:
         if num < 1000.0:
-            return f'{num:.1f} {x}'
+            return str(num) + " " + x 
         num /= 1000.0
 
 
