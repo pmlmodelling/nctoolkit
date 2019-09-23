@@ -120,5 +120,39 @@ def clean_all():
             nc_remove(dd)
     
 
+def deep_clean():
+    """
+    Function to do a deep clean of all temporary files ever created by nchack
+    """
+    mylist = [f for f in glob.glob("/tmp/" + "*.nc*")]
+    mylist = mylist + [f for f in glob.glob("/var/tmp/" + "*.nc*")]
+    mylist = mylist + [f for f in glob.glob("/usr/tmp/" + "*.nc*")]
+    mylist = [f for f in mylist if "nchack" in f]
+    print ( str(len(mylist)) + " files were deleted!")
+    return mylist
+
+def temp_check():
+    """
+    Function to do a deep clean of all temporary files ever created by nchack
+    """
+    mylist = [f for f in glob.glob("/tmp/" + "*.nc*")]
+    mylist = mylist + [f for f in glob.glob("/var/tmp/" + "*.nc*")]
+    mylist = mylist + [f for f in glob.glob("/usr/tmp/" + "*.nc*")]
+    mylist = [f for f in mylist if "nchack" in f]
+    if len(mylist) > 0:
+        if len(mylist) == 1:
+            print(str(len(mylist)) +  " file was created by nchack in prior or current sessions. Consider running deep_clean!")
+        else:
+            print(str(len(mylist)) +  " files were created by nchack in prior or current sessions. Consider running deep_clean!")
+
+
+
+
+
+
+
+
+
+
 
 
