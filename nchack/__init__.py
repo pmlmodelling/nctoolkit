@@ -7,11 +7,14 @@ from ._generate_grid import generate_grid
 from ._filetracker import nc_created
 from ._cleanup import cleanup
 from ._cleanup import clean_all
+from ._cleanup import deep_clean 
+from ._cleanup import temp_check 
 import copy
 from ._create_ensemble import create_ensemble 
 from ._show import nc_variables
 
 print("Tip: include atexit.register(nchack.clean_all) after loading nchack")
+temp_check()
 
 class NCTracker:
     """A tracker/log for manipulating netcdf files"""
