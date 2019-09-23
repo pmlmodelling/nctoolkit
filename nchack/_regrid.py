@@ -23,6 +23,7 @@ def regrid(self, grid = None, method = "bil", silent = True, cores = 1):
     if isinstance(grid, xr.Dataset):
         grid_type = "xr"
         temp_nc = tempfile.NamedTemporaryFile().name + ".nc"
+        temp_nc = temp_nc.replace("tmp/", "tmp/nchack")
         nc_created.append(temp_nc)
         grid.to_netcdf(temp_nc)
         grid = temp_nc
@@ -65,6 +66,8 @@ def regrid(self, grid = None, method = "bil", silent = True, cores = 1):
             if self.run == False:
                 raise ValueError("You cannot generate weights as part of a chain currently")
             weights_nc = tempfile.NamedTemporaryFile().name + ".nc"
+            weights_nc = weights_nc.replace("tmp/", "tmp/nchack")
+
             nc_created.append(weights_nc)
             self.weights = weights_nc
             
@@ -79,6 +82,4 @@ def regrid(self, grid = None, method = "bil", silent = True, cores = 1):
         run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
 
     cleanup(keep = [self.current, self.weights, self.grid])
-
-#    return self
 

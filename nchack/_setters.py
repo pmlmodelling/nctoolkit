@@ -43,6 +43,7 @@ def set_longname(self, var_dict, silent = True):
     # change the units in turn. This doesn't seem to be something you can chain?
     for i in var_dict:
         target = tempfile.NamedTemporaryFile().name + ".nc"
+        target = target.replace("tmp/", "tmp/nchack")
         nc_created.append(target)
         var = i
         new_long = var_dict[i]
