@@ -13,7 +13,7 @@ def run_it(command, target):
     return target
 
 def run_this(os_command, self, silent = False, output = "one", cores = 1):
-    """ Function to run an nco/cdo system command and check output was generated"""
+    """Method to run an nco/cdo system command and check output was generated"""
     # Works on multiple files
     run = self.run
     # Step one
@@ -33,6 +33,7 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1):
                 os_command = os_command.replace("cdo ", "cdo -s ")
 
             target = tempfile.NamedTemporaryFile().name + ".nc"
+            target = target.replace("tmp/", "tmp/nchack")
             nc_created.append(target)
             os_command = os_command + " " + self.current + " " + target
 
@@ -63,6 +64,7 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1):
                     ff_command = copy.deepcopy(os_command)
 
                 target = tempfile.NamedTemporaryFile().name + ".nc"
+                target = target.replace("tmp/", "tmp/nchack")
                 nc_created.append(target)
                 flat_ensemble = str_flatten(self.current, " ")
                 ff_command = ff_command + " " + flat_ensemble + " " + target
@@ -93,6 +95,7 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1):
                             ff_command = copy.deepcopy(os_command)
 
                         target = tempfile.NamedTemporaryFile().name + ".nc"
+                        target = target.replace("tmp/", "tmp/nchack")
                         nc_created.append(target)
                         ff_command = ff_command + " " + ff + " " + target
 
@@ -122,6 +125,7 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1):
                             ff_command = copy.deepcopy(os_command)
 
                         target = tempfile.NamedTemporaryFile().name + ".nc"
+                        target = target.replace("tmp/", "tmp/nchack")
                         nc_created.append(target)
                         ff_command = ff_command + " " + ff + " " + target
 
@@ -136,8 +140,6 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1):
                         target_list.append(v.get())
 
                     self.current = copy.deepcopy(target_list)
-
-
 
 
     else:
