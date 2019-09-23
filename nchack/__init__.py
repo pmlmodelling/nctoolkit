@@ -137,11 +137,9 @@ class NCTracker:
     from ._expr import mutate 
     from ._expr import transmute 
 
-
     from ._select import select_season
     from ._select import select_months
     from ._select import select_years
-
 
     from ._seasstat import seasonal_mean 
     from ._seasstat import seasonal_min
@@ -153,23 +151,25 @@ class NCTracker:
     from ._seasclim import seasonal_max_climatology
     from ._seasclim import seasonal_range_climatology
 
-
     from ._yearlystat import yearly_mean 
     from ._yearlystat import yearly_min
     from ._yearlystat import yearly_max 
     from ._yearlystat import yearly_range
-
 
     from ._monstat import monthly_mean
     from ._monstat import monthly_min
     from ._monstat import monthly_max
     from ._monstat import monthly_range
 
-
     from ._monthlyclim import monthly_mean_climatology
     from ._monthlyclim import monthly_min_climatology
     from ._monthlyclim import monthly_max_climatology
     from ._monthlyclim import monthly_range_climatology
+
+    from ._dailyclim import daily_mean_climatology
+    from ._dailyclim import daily_min_climatology
+    from ._dailyclim import daily_max_climatology
+    from ._dailyclim import daily_range_climatology
 
     from ._to_nc import to_netcdf
 
