@@ -31,15 +31,32 @@ def size(self):
         print(result)
     else:
         all_sizes = []
+        
+        smallest_file = ""
+        largest_file = ""
+        min_size = 1e15 
+        max_size = -1 
+
         for ff in self.current:
+
             all_sizes.append(file_size(ff))
-        min_size = convert_bytes(min(all_sizes))
-        max_size = convert_bytes(max(all_sizes))
+
+            if file_size(ff) > max_size:
+                max_size = file_size(ff)
+                largest_file = ff
+
+            if file_size(ff) < min_size:
+                min_size = file_size(ff)
+                smallest_file = ff
+
+        min_size = convert_bytes(min_size)
+        max_size = convert_bytes(max_size)
+
         sum_size = convert_bytes(sum(all_sizes))
         result = "Number of files in ensemble: " + str(len(self.current)) + "\n"
         result = result + "Ensemble size: " + sum_size  + "\n"
-        result = result + "Smallest file size: " + min_size  + "\n"
-        result = result + "Largest file size: " + max_size 
+        result = result + "Smallest file " + smallest_file + " has size "  + min_size  + "\n"
+        result = result + "Largest file " + largest_file + " has size "  + max_size 
         print(result)
 
 
