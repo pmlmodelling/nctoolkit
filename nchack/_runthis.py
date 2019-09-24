@@ -72,6 +72,11 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1):
                 run_history = copy.deepcopy(self.history)
                 run_history = [x for x in run_history if x.endswith(".nc")]
                 self.history = copy.deepcopy(run_history)
+
+                if "merge" in ff_command:
+                    ff_command = ff_command.replace("cdo ", "cdo -z -zip")
+
+
                 self.history.append(ff_command)
                 os.system(ff_command)
                 
