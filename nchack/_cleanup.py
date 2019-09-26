@@ -130,6 +130,8 @@ def deep_clean():
     mylist = mylist + [f for f in glob.glob("/var/tmp/" + "*.nc*")]
     mylist = mylist + [f for f in glob.glob("/usr/tmp/" + "*.nc*")]
     mylist = [f for f in mylist if "nchack" in f]
+    for ff in mylist:
+        os.remove(ff)
     print ( str(len(mylist)) + " files were deleted!")
     return mylist
 
