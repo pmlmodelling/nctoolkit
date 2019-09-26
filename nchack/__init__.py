@@ -11,6 +11,8 @@ from ._cleanup import deep_clean
 from ._cleanup import temp_check 
 import copy
 from ._create_ensemble import create_ensemble 
+from ._create_ensemble import generate_ensemble 
+
 from ._show import nc_variables
 
 print("Tip: include atexit.register(nchack.clean_all) after loading nchack")
