@@ -74,7 +74,11 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1):
                 self.history = copy.deepcopy(run_history)
 
                 if "merge" in ff_command:
+                    ff_command = ff_command.replace(" merge ", " -merge ")
+                    ff_command = ff_command.replace(" mergetime ", " -mergetime ")
                     ff_command = ff_command.replace("cdo ", "cdo -z zip ")
+                    ff_command = ff_command.replace(" -s ", " ")
+                    ff_command = ff_command.replace("cdo ", "cdo -s ")
 
                 self.history.append(ff_command)
                 os.system(ff_command)
