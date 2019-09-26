@@ -1,9 +1,9 @@
 
 import os
 
-def to_ncview(self):
+def view(self):
     if type(self.current) is str:
-        os.system("ncview " + self.current)
+        os.system("ncview " + self.current + "&")
     else:
         print("You cannot send multiple files to ncview!")
 
