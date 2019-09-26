@@ -127,7 +127,6 @@ class NCTracker:
     from ._ensembles import ensemble_range
     from ._ensembles import ensemble_percentile
 
-    from ._ensembles import ensemble_check
 
 
     from ._clip import clip
@@ -242,5 +241,5 @@ class NCTracker:
     from ._zip import zip
 
     from ._checkers import check_dates
-
+    from ._checkers import ensemble_check
 
