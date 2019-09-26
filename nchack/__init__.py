@@ -235,5 +235,7 @@ class NCTracker:
 
     from ._size import size
 
+    from ._zip import zip
+
 
 
