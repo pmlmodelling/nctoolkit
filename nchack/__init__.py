@@ -241,5 +241,6 @@ class NCTracker:
 
     from ._zip import zip
 
+    from ._checkers import check_dates
 
 
