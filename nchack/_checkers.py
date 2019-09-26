@@ -75,7 +75,8 @@ def check_dates(self):
     df["year"] = [x.year for x in all_times]
     df = df.groupby("year").size().reset_index()
     df.columns = ["year", "dates_available"]
-    df["year_days"] = [year_days(x) for x in df.year]
+    df["days_in_year"] = [year_days(x) for x in df.year]
+    df = df.filter(["year", "days_in_year", "dates_available"])
 
     return(df)
 
