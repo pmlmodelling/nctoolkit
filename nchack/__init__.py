@@ -237,6 +237,8 @@ class NCTracker:
 
     from ._size import size
 
+    from ._view import to_ncview
+
     from ._zip import zip
 
 
