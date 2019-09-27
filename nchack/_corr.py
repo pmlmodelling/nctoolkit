@@ -9,13 +9,8 @@ from ._select import select_variables
 from ._setters import set_longname
 import copy
 
-def run_it(command, target):
-    os.system(command)
-    if os.path.exists(target) == False:
-        raise ValueError(command + " was not successful. Check output")
-    return target
 
-def cor_space(self, var1 = None, var2 = None,  silent = False, cores = 1):
+def cor(self, var1 = None, var2 = None, method = "fld",  silent = False, cores = 1):
     """
     Method to calculate the correlation between two variables in space
     """
@@ -61,7 +56,8 @@ def cor_space(self, var1 = None, var2 = None,  silent = False, cores = 1):
     target = target.replace("tmp/", "tmp/nchack")
     nc_created.append(target)
 
-    cdo_command = "cdo fldcor " + out1 + " " + out2 + " " + target
+    cdo_command = "cdo " + method + "cor " + out1 + " " + out2 + " " + target
+
     new_self.history.append(cdo_command)
     os.system(cdo_command)
 
@@ -83,7 +79,7 @@ def cor_space(self, var1 = None, var2 = None,  silent = False, cores = 1):
     target2 = target2.replace("tmp/", "tmp/nchack")
     nc_created.append(target2)
 
-    cdo_command = "cdo setunit," + "'' " + target1 + " " + target2
+    cdo_command = "cdo setunit," + "'-' " + target1 + " " + target2
     new_self.history.append(cdo_command)
     os.system(cdo_command)
 
@@ -96,6 +92,15 @@ def cor_space(self, var1 = None, var2 = None,  silent = False, cores = 1):
 
 
     return new_self
+
+
+
+
+def cor_space(self, var1 = None, var2 = None,  silent = False, cores = 1):
+    return cor(self, var1 = var1, var2 = var2,  silent = silent, cores = cores, method = "fld")
+    
+def cor_time(self, var1 = None, var2 = None,  silent = False, cores = 1):
+    return cor(self, var1 = var1, var2 = var2,  silent = silent, cores = cores, method = "tim")
 
 
 

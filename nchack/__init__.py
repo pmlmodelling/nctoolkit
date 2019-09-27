@@ -317,6 +317,7 @@ class NCTracker:
     from ._checkers import ensemble_check
     
     from ._corr import cor_space
+    from ._corr import cor_time
 
 
 
