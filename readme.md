@@ -29,8 +29,7 @@ conda install -c conda-forge nco
 ```
  
 Currently, the package has been tested for Linux computers. It will not
-work on Windows platforms, currently. But (buyer beware) it probably
-should work on Macs.
+work on Windows platforms, currently. But (buyer beware) it should work on Macs.
 
 ## Tutorials
 
