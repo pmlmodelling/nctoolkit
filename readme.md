@@ -12,12 +12,13 @@ You can install the development version of nchack using using pip as follows.
 pip install git+https://github.com/r4ecology/nchack.git
 ```
 
-This package relies on CDO and NCO under the hood. You will therefore need to have Climate Data Operators installed to run nchack.
-Visit <https://code.mpimet.mpg.de/projects/cdo/files> for download and
-installation instructions. Note that the development version of rcdo is
+This package relies on CDO and NCO under the hood.
+Visit <https://code.mpimet.mpg.de/projects/cdo/files> for CDO download and
+installation instructions. Note that the development version of is
 currently being developed using CDO Version 1.9.7. Vist http://nco.sourceforge.net/ to download and install NCO.
 
 If you use Anaconda, you can install these packages as follows:
+
 ```sh
 conda install -c conda-forge nco 
 ```
