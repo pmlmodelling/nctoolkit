@@ -17,16 +17,13 @@ from ._show import nc_variables
 print("Tip: include atexit.register(nchack.clean_all) after loading nchack")
 temp_check()
 
-class lazyproperty:
-    def __init__(self, func):
-        self.func = func
-    def __get__(self, instance, cls):
-        if instance is None:
-            return self
-        else:
-            value = self.func(instance)
-            setattr(instance, self.func.__name__, value)
-            return value
+#class lazyproperty:
+#    def __init__(self, func):
+#        self.func = func
+#    def __get__(self, instance, cls):
+#        value = self.func(instance)
+#        setattr(instance, self.func.__name__, value)
+#        return value
 
 
 
@@ -84,7 +81,7 @@ class NCTracker:
         return "<nchack.NCTracker>:\nstart: " + start + "\ncurrent: " + current + "\noperations: " + str(len(self.history))
 
 
-    @lazyproperty
+    @property
     def size(self):
 
         if type(self.current) is str:
@@ -121,16 +118,16 @@ class NCTracker:
             result = result + "Largest file " + largest_file + " has size "  + max_size 
             print(result)
 
-    @lazyproperty
+    @property
     def variables(self):
         if type(self.current) is list:
-            return "This tracker is a list. Please inspect individual files using nc_variables"
+            print("This tracker is a list. Please inspect individual files using nc_variables")
   
         cdo_result = os.popen( "cdo showname " + self.current).read()
         cdo_result = cdo_result.replace("\n", "")
         cdo_result = cdo_result.split()
   
-        return cdo_result
+        print(cdo_result)
 
     @property
     def start(self):
