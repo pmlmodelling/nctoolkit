@@ -22,10 +22,10 @@ currently being developed using CDO Version 1.9.7. Vist http://nco.sourceforge.n
 If you use Anaconda, you can install these packages as follows:
 
 ```sh
-conda install -c conda-forge nco 
+conda install -c conda-forge cdo 
 ```
 ```sh
-conda install -c conda-forge cdo 
+conda install -c conda-forge nco 
 ```
  
 Currently, the package has been tested for Linux computers. It will not
