@@ -5,6 +5,8 @@
 
 The goal of nchack is to provide a comprehensive tool in Python for manipulating individual netcdf files and ensembles of netcdf files. The philosophy is to provide sufficient methods to carry out 80-90% of netcdf manipulations.
 
+This package should work with Python 2.7 upwards.
+
 ## Installation
 
 You can install the development version of nchack using using pip as follows.
