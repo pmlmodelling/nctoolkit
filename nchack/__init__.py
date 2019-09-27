@@ -121,6 +121,17 @@ class NCTracker:
             result = result + "Largest file " + largest_file + " has size "  + max_size 
             print(result)
 
+    @lazyproperty
+    def variables(self):
+        if type(self.current) is list:
+            return "This tracker is a list. Please inspect individual files using nc_variables"
+  
+        cdo_result = os.popen( "cdo showname " + self.current).read()
+        cdo_result = cdo_result.replace("\n", "")
+        cdo_result = cdo_result.split()
+  
+        return cdo_result
+
 
 
 
@@ -285,7 +296,7 @@ class NCTracker:
     from ._ncks_command import ncks_command 
 
 
-    from ._show import variables
+   # from ._show import variables
     from ._show import times
     from ._show import numbers 
     from ._show import show_years 
