@@ -8,8 +8,9 @@ The goal of nchack is to provide a comprehensive tool in Python for manipulating
 ## Installation
 
 You can install the development version of nchack using using pip as follows.
-
+```sh
 pip install git+https://github.com/r4ecology/nchack.git
+```
 
 This package relies on CDO and NCO under the hood. You will therefore need to have Climate Data Operators installed to run nchack.
 Visit <https://code.mpimet.mpg.de/projects/cdo/files> for download and
@@ -17,11 +18,12 @@ installation instructions. Note that the development version of rcdo is
 currently being developed using CDO Version 1.9.7. Vist http://nco.sourceforge.net/ to download and install NCO.
 
 If you use Anaconda, you can install these packages as follows:
-
+```sh
  conda install -c conda-forge nco 
-
+```
+```sh
  conda install -c conda-forge cdo 
- 
+ ```
  
 Currently, the package has been tested for Linux computers. It will not
 work on Windows platforms, currently. But (buyer beware) it probably
