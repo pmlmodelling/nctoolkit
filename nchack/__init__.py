@@ -14,9 +14,41 @@ from ._create_ensemble import create_ensemble
 from ._create_ensemble import generate_ensemble 
 
 from ._show import nc_variables
-
 print("Tip: include atexit.register(nchack.clean_all) after loading nchack")
 temp_check()
+
+class lazyproperty:
+    def __init__(self, func):
+        self.func = func
+    def __get__(self, instance, cls):
+        if instance is None:
+            return self
+        else:
+            value = self.func(instance)
+            setattr(instance, self.func.__name__, value)
+            return value
+
+
+
+def convert_bytes(num):
+    """
+     A function to make file size human readable
+    """
+    for x in ['bytes', 'KB', 'MB', 'GB', 'TB']:
+        if num < 1000.0:
+            return str(num) + " " + x 
+        num /= 1000.0
+
+
+def file_size(file_path):
+    """
+    A function to return file size
+    """
+    if os.path.isfile(file_path):
+        file_info = os.stat(file_path)
+        return file_info.st_size
+
+
 
 class NCTracker:
     """A tracker/log for manipulating netcdf files"""
@@ -50,6 +82,48 @@ class NCTracker:
             current = self.current
 
         return "<nchack.NCTracker>:\nstart: " + start + "\ncurrent: " + current + "\noperations: " + str(len(self.history))
+
+
+    @lazyproperty
+    def size(self):
+
+        if type(self.current) is str:
+            result = "Number of files: 1\n"
+            result = result + "File size: " + convert_bytes(file_size(self.current))
+            print(result)
+        else:
+            all_sizes = []
+            
+            smallest_file = ""
+            largest_file = ""
+            min_size = 1e15 
+            max_size = -1 
+
+            for ff in self.current:
+
+                all_sizes.append(file_size(ff))
+
+                if file_size(ff) > max_size:
+                    max_size = file_size(ff)
+                    largest_file = ff
+
+                if file_size(ff) < min_size:
+                    min_size = file_size(ff)
+                    smallest_file = ff
+
+            min_size = convert_bytes(min_size)
+            max_size = convert_bytes(max_size)
+
+            sum_size = convert_bytes(sum(all_sizes))
+            result = "Number of files in ensemble: " + str(len(self.current)) + "\n"
+            result = result + "Ensemble size: " + sum_size  + "\n"
+            result = result + "Smallest file " + smallest_file + " has size "  + min_size  + "\n"
+            result = result + "Largest file " + largest_file + " has size "  + max_size 
+            print(result)
+
+
+
+
 
 
     # todo
@@ -234,7 +308,7 @@ class NCTracker:
     from ._verticals import vertical_interp
     from ._verticals import bottom 
 
-    from ._size import size
+#    from ._size import size
 
     from ._view import view
 
