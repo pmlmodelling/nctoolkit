@@ -132,8 +132,6 @@ def deep_clean():
     mylist = [f for f in mylist if "nchack" in f]
     for ff in mylist:
         os.remove(ff)
-    print ( str(len(mylist)) + " files were deleted!")
-    return mylist
 
 def temp_check():
     """
