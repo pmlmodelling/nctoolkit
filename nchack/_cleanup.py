@@ -55,10 +55,12 @@ def cleanup(keep = None):
 
             # add the start files to valid_files
             if type(i_start) is str:
-                valid_files.append(i_start)
+                if i_start not in nc_created:
+                    valid_files.append(i_start)
             else:
                 for ff in i_start:
-                    valid_files.append(ff)
+                    if ff not in nc_created:
+                        valid_files.append(ff)
 
             i_grid = eval("sys.modules['__main__']." +i + ".grid")
             i_weights = eval("sys.modules['__main__']." +i + ".weights")
@@ -128,8 +130,8 @@ def deep_clean():
     mylist = mylist + [f for f in glob.glob("/var/tmp/" + "*.nc*")]
     mylist = mylist + [f for f in glob.glob("/usr/tmp/" + "*.nc*")]
     mylist = [f for f in mylist if "nchack" in f]
-    print ( str(len(mylist)) + " files were deleted!")
-    return mylist
+    for ff in mylist:
+        os.remove(ff)
 
 def temp_check():
     """

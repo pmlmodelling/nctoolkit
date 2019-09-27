@@ -11,10 +11,44 @@ from ._cleanup import deep_clean
 from ._cleanup import temp_check 
 import copy
 from ._create_ensemble import create_ensemble 
-from ._show import nc_variables
+from ._create_ensemble import generate_ensemble 
 
+from ._show import nc_variables
 print("Tip: include atexit.register(nchack.clean_all) after loading nchack")
 temp_check()
+
+class lazyproperty:
+    def __init__(self, func):
+        self.func = func
+    def __get__(self, instance, cls):
+        if instance is None:
+            return self
+        else:
+            value = self.func(instance)
+            setattr(instance, self.func.__name__, value)
+            return value
+
+
+
+def convert_bytes(num):
+    """
+     A function to make file size human readable
+    """
+    for x in ['bytes', 'KB', 'MB', 'GB', 'TB']:
+        if num < 1000.0:
+            return str(num) + " " + x 
+        num /= 1000.0
+
+
+def file_size(file_path):
+    """
+    A function to return file size
+    """
+    if os.path.isfile(file_path):
+        file_info = os.stat(file_path)
+        return file_info.st_size
+
+
 
 class NCTracker:
     """A tracker/log for manipulating netcdf files"""
@@ -50,12 +84,58 @@ class NCTracker:
         return "<nchack.NCTracker>:\nstart: " + start + "\ncurrent: " + current + "\noperations: " + str(len(self.history))
 
 
-    # todo
-    # make it impossible to delete the start point
-    
+    @lazyproperty
+    def size(self):
+
+        if type(self.current) is str:
+            result = "Number of files: 1\n"
+            result = result + "File size: " + convert_bytes(file_size(self.current))
+            print(result)
+        else:
+            all_sizes = []
+            
+            smallest_file = ""
+            largest_file = ""
+            min_size = 1e15 
+            max_size = -1 
+
+            for ff in self.current:
+
+                all_sizes.append(file_size(ff))
+
+                if file_size(ff) > max_size:
+                    max_size = file_size(ff)
+                    largest_file = ff
+
+                if file_size(ff) < min_size:
+                    min_size = file_size(ff)
+                    smallest_file = ff
+
+            min_size = convert_bytes(min_size)
+            max_size = convert_bytes(max_size)
+
+            sum_size = convert_bytes(sum(all_sizes))
+            result = "Number of files in ensemble: " + str(len(self.current)) + "\n"
+            result = result + "Ensemble size: " + sum_size  + "\n"
+            result = result + "Smallest file " + smallest_file + " has size "  + min_size  + "\n"
+            result = result + "Largest file " + largest_file + " has size "  + max_size 
+            print(result)
+
+    @lazyproperty
+    def variables(self):
+        if type(self.current) is list:
+            return "This tracker is a list. Please inspect individual files using nc_variables"
+  
+        cdo_result = os.popen( "cdo showname " + self.current).read()
+        cdo_result = cdo_result.replace("\n", "")
+        cdo_result = cdo_result.split()
+  
+        return cdo_result
+
     @property
     def start(self):
         return self._start
+
     @start.setter
     def start(self, value):
         if type(value) is str:
@@ -69,6 +149,7 @@ class NCTracker:
                     raise TypeError("File does not exist")
         if isinstance(value,list):
             self._start = value
+
     def hold(self):
         """A method to set the mode to hold"""
         self.run = False 
@@ -85,12 +166,6 @@ class NCTracker:
             self.current.append(x)
         else:
             self.current = self.current + x
-
-    def update(self, current):
-        """A function for creating a new tracker using an existing one as the starting point"""
-        self.current = current
-        if self.start == "":
-            self.start = current
 
     def restart(self, start = None):
         """A function for creating a new tracker using an existing one as the starting point"""
@@ -125,7 +200,6 @@ class NCTracker:
     from ._ensembles import ensemble_range
     from ._ensembles import ensemble_percentile
 
-    from ._ensembles import ensemble_check
 
 
     from ._clip import clip
@@ -210,7 +284,7 @@ class NCTracker:
     from ._ncks_command import ncks_command 
 
 
-    from ._show import variables
+   # from ._show import variables
     from ._show import times
     from ._show import numbers 
     from ._show import show_years 
@@ -233,7 +307,18 @@ class NCTracker:
     from ._verticals import vertical_interp
     from ._verticals import bottom 
 
-    from ._size import size
+#    from ._size import size
+
+    from ._view import view
+
+    from ._zip import zip
+
+    from ._checkers import check_dates
+    from ._checkers import ensemble_check
+    
+    from ._corr import cor_space
+    from ._corr import cor_time
+
 
 
 
