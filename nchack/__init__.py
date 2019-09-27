@@ -132,17 +132,10 @@ class NCTracker:
   
         return cdo_result
 
-
-
-
-
-
-    # todo
-    # make it impossible to delete the start point
-    
     @property
     def start(self):
         return self._start
+
     @start.setter
     def start(self, value):
         if type(value) is str:
@@ -156,6 +149,7 @@ class NCTracker:
                     raise TypeError("File does not exist")
         if isinstance(value,list):
             self._start = value
+
     def hold(self):
         """A method to set the mode to hold"""
         self.run = False 
@@ -172,12 +166,6 @@ class NCTracker:
             self.current.append(x)
         else:
             self.current = self.current + x
-
-    def update(self, current):
-        """A function for creating a new tracker using an existing one as the starting point"""
-        self.current = current
-        if self.start == "":
-            self.start = current
 
     def restart(self, start = None):
         """A function for creating a new tracker using an existing one as the starting point"""
