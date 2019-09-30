@@ -17,15 +17,6 @@ from ._show import nc_variables
 print("Tip: include atexit.register(nchack.clean_all) after loading nchack")
 temp_check()
 
-#class lazyproperty:
-#    def __init__(self, func):
-#        self.func = func
-#    def __get__(self, instance, cls):
-#        value = self.func(instance)
-#        setattr(instance, self.func.__name__, value)
-#        return value
-
-
 
 def convert_bytes(num):
     """
@@ -197,8 +188,6 @@ class NCTracker:
     from ._ensembles import ensemble_range
     from ._ensembles import ensemble_percentile
 
-
-
     from ._clip import clip
     from ._select import select_variables
     from ._select import select_timestep
@@ -265,10 +254,8 @@ class NCTracker:
 
     from ._delete import remove_variable 
 
-
     from ._mergers import merge_time 
     from ._mergers import merge
-
 
     from ._rollstat import rolling_mean
     from ._rollstat import rolling_min
@@ -276,12 +263,8 @@ class NCTracker:
     from ._rollstat import rolling_range
     from ._rollstat import rolling_sum
 
-
-
     from ._ncks_command import ncks_command 
 
-
-   # from ._show import variables
     from ._show import times
     from ._show import numbers 
     from ._show import show_years 
@@ -294,8 +277,6 @@ class NCTracker:
     from ._fldstat import spatial_max
     from ._fldstat import spatial_range
 
-
-
     from ._verticals import vertical_mean 
     from ._verticals import vertical_min
     from ._verticals import vertical_max
@@ -303,8 +284,6 @@ class NCTracker:
     from ._verticals import surface
     from ._verticals import vertical_interp
     from ._verticals import bottom 
-
-#    from ._size import size
 
     from ._view import view
 
@@ -315,6 +294,8 @@ class NCTracker:
     
     from ._corr import cor_space
     from ._corr import cor_time
+
+    from ._phenology import phenology
 
 
 
