@@ -8,12 +8,17 @@ def merge(self, silent = True):
     if type(self.current) is not list:
         raise ValueError("The current state of the tracker is not a list")
 
-    if len(self.hold_history) > 0:
-        raise ValueError("You cannot run merge_time with pre-existing hold over commands!")
+    if self.run == False:
+        if (len(self.current) * (len(self.history) - len(self.hold_history))) > 127:
+            raise ValueError("You cannot chain more than 128 operations!")
 
     cdo_command = ("cdo merge")
 
+
     run_this(cdo_command, self, silent, output = "one") 
+
+    self.release()
+
 
     # clean up the directory
     cleanup(keep = self.current)
@@ -25,12 +30,15 @@ def merge_time(self, silent = True):
     if type(self.current) is not list:
         raise ValueError("The current state of the tracker is not a list")
 
-    if len(self.hold_history) > 0:
-        raise ValueError("You cannot run merge_time with pre-existing hold over commands!")
+    if self.run == False:
+        if (len(self.current) * (len(self.history) - len(self.hold_history))) > 127:
+            raise ValueError("You cannot chain more than 128 operations!")
 
     cdo_command = "cdo mergetime"
 
     run_this(cdo_command, self, silent, output = "one") 
+
+    self.release()
 
     # clean up the directory
     cleanup(keep = self.current)

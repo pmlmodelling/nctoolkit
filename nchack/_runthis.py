@@ -12,7 +12,7 @@ def run_it(command, target):
         raise ValueError(command + " was not successful. Check output")
     return target
 
-def run_this(os_command, self, silent = False, output = "one", cores = 1):
+def run_this(os_command, self, silent = False, output = "one", cores = 1, merge_method = None):
     """Method to run an nco/cdo system command and check output was generated"""
     # Works on multiple files
     run = self.run
@@ -54,41 +54,83 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1):
 
             if output == "one":
 
-                for ff in self.current:
-                    if os.path.exists(ff) == False:
-                        raise ValueError("The file " + ff + " does not exist!")
+                if merge_method == None:
 
-                if silent:
-                    ff_command = os_command.replace("cdo ", "cdo -s ")
+                    for ff in self.current:
+                        if os.path.exists(ff) == False:
+                            raise ValueError("The file " + ff + " does not exist!")
+
+                    if silent:
+                        ff_command = os_command.replace("cdo ", "cdo -s ")
+                    else:
+                        ff_command = copy.deepcopy(os_command)
+
+                    target = tempfile.NamedTemporaryFile().name + ".nc"
+                    target = target.replace("tmp/", "tmp/nchack")
+                    nc_created.append(target)
+                    flat_ensemble = str_flatten(self.current, " ")
+                    ff_command = ff_command + " " + flat_ensemble + " " + target
+
+                    run_history = copy.deepcopy(self.history)
+                    run_history = [x for x in run_history if x.endswith(".nc")]
+                    self.history = copy.deepcopy(run_history)
+
+                    if "merge" in ff_command:
+                        ff_command = ff_command.replace(" merge ", " -merge ")
+                        ff_command = ff_command.replace(" mergetime ", " -mergetime ")
+                        ff_command = ff_command.replace("cdo ", "cdo -z zip ")
+                        ff_command = ff_command.replace(" -s ", " ")
+                        ff_command = ff_command.replace("cdo ", "cdo -s ")
+
+                    self.history.append(ff_command)
+                    os.system(ff_command)
+                    
+                    # check the file was actually created
+                    # Raise error if it wasn't
+
+                    if os.path.exists(target) == False:
+                        raise ValueError(ff_command + " was not successful. Check output")
+                    self.current = target
                 else:
-                    ff_command = copy.deepcopy(os_command)
 
-                target = tempfile.NamedTemporaryFile().name + ".nc"
-                target = target.replace("tmp/", "tmp/nchack")
-                nc_created.append(target)
-                flat_ensemble = str_flatten(self.current, " ")
-                ff_command = ff_command + " " + flat_ensemble + " " + target
+                    # We only need one temp file in this case
+                    target = tempfile.NamedTemporaryFile().name + ".nc"
+                    target = target.replace("tmp/", "tmp/nchack")
+                    nc_created.append(target)
 
-                run_history = copy.deepcopy(self.history)
-                run_history = [x for x in run_history if x.endswith(".nc")]
-                self.history = copy.deepcopy(run_history)
+                    for ff in self.current:
+                        if os.path.exists(ff) == False:
+                            raise ValueError("The file " + ff + " does not exist!")
 
-                if "merge" in ff_command:
-                    ff_command = ff_command.replace(" merge ", " -merge ")
-                    ff_command = ff_command.replace(" mergetime ", " -mergetime ")
-                    ff_command = ff_command.replace("cdo ", "cdo -z zip ")
-                    ff_command = ff_command.replace(" -s ", " ")
-                    ff_command = ff_command.replace("cdo ", "cdo -s ")
+                    the_command = ""
+                    for ff in self.current:
+                        the_command = the_command + " " + os_command + " " + ff + " " 
 
-                self.history.append(ff_command)
-                os.system(ff_command)
-                
-                # check the file was actually created
-                # Raise error if it wasn't
+                    run_history = copy.deepcopy(self.history)
+                    run_history = [x for x in run_history if x.endswith(".nc")]
+                    self.history = copy.deepcopy(run_history)
 
-                if os.path.exists(target) == False:
-                    raise ValueError(ff_command + " was not successful. Check output")
-                self.current = target
+
+                    if merge_method == "mergetime":
+                        the_command = "cdo -L -z zip -mergetime " + the_command + " " + target
+
+                    if merge_method == "merge":
+                        the_command = "cdo -L -z zip -merge" + the_command + " " + target
+
+                    the_command = the_command.replace("  ", " ")
+
+                    self.history.append(the_command)
+
+                    os.system(the_command)
+                    
+                    # check the file was actually created
+                    # Raise error if it wasn't
+
+                    if os.path.exists(target) == False:
+                        raise ValueError(the_command + " was not successful. Check output")
+                    self.current = target
+
+    
 
             else:
                 if cores == 1:

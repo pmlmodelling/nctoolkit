@@ -29,6 +29,14 @@ def release(self, silent = True, cores = 1):
         
         # we need to reverse the history so that the commands are in the correct order for chaining
         the_history.reverse()
+        ## now, we need to remove anything with mergetime in it
+
+        do_mergetime = len([ff for ff in the_history if "mergetime" in ff]) > 0
+        do_merge = len([ff for ff in the_history if "merge " in ff]) > 0
+
+        the_history = [ff for ff in the_history if "mergetime" not in ff]
+        the_history = [ff for ff in the_history if "merge " not in ff]
+        
 
         # now, pull all of the history together into one string
         # We can then tweak that
@@ -49,7 +57,20 @@ def release(self, silent = True, cores = 1):
             old_history = the_history
             the_history = the_history.replace(" " + mm, " -"+mm)
 
-        cdo_command = "cdo " + the_history
+
+        ## Now, if we start the chain with a merging operation, we only want one output file
+            
+        merge_method = None
+        if do_merge:
+            merge_method = "merge"
+
+        if do_mergetime:
+            merge_method = "mergetime"
+
+        if (do_merge == False) and (do_mergetime == False):
+            cdo_command = "cdo " + the_history
+        else:
+            cdo_command = the_history
 
         cdo_command = cdo_command.replace("  ", " ")
 
@@ -65,13 +86,11 @@ def release(self, silent = True, cores = 1):
         self.history= pre_history
         
         output_method = "ensemble"
-
-        ## Now, if we start the chain with a merging operation, we only want one output file
-        if "mergetime" in cdo_command:
-            output_method = "one"
         
+        if do_merge or do_mergetime :
+            output_method = "one"
 
-    run_this(cdo_command, self, silent, output = output_method, cores = cores)
+        run_this(cdo_command, self, silent, output = output_method, cores = cores, merge_method = merge_method)
 
 
 
