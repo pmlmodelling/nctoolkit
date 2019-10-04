@@ -49,6 +49,7 @@ class NCTracker:
         self.grid = None 
         self.run = True
         self.hold_history = []
+        self.merged = False
 
     def __repr__(self):
         # tidy up the output first

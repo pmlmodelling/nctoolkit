@@ -5,14 +5,15 @@ import copy
 from ._cleanup import cleanup
 from ._runthis import run_this
 
-def release(self, silent = True, cores = 1):
+def release(self, silent = True, cores = 1, run_merge = True):
     """Method to release a self from hold mode  """
     # the first step is to set the run status to true
     if self.run:
         return("Warning: tracker is in run mode. Nothing to release")
 
     if self.run == False:
-        self.run = True
+        if run_merge:
+            self.run = True
         read = os.popen("cdo --operators").read()
         cdo_methods = [x.split(" ")[0] for x in read.split("\n")]
         cdo_methods = [mm for mm in cdo_methods if len(mm) > 0]
@@ -20,7 +21,7 @@ def release(self, silent = True, cores = 1):
         pre_history = copy.deepcopy(self.hold_history)
         
         the_history = copy.deepcopy(self.history)
-        
+
         the_history = the_history[len(pre_history):len(the_history)]
 
         # first, thing to check is whether all of the calls are to cdo
@@ -29,14 +30,8 @@ def release(self, silent = True, cores = 1):
         
         # we need to reverse the history so that the commands are in the correct order for chaining
         the_history.reverse()
-        ## now, we need to remove anything with mergetime in it
+        ## now, we need to remove the most recent history if it is a merge
 
-        do_mergetime = len([ff for ff in the_history if "mergetime" in ff]) > 0
-        do_merge = len([ff for ff in the_history if "merge " in ff]) > 0
-
-        the_history = [ff for ff in the_history if "mergetime" not in ff]
-        the_history = [ff for ff in the_history if "merge " not in ff]
-        
 
         # now, pull all of the history together into one string
         # We can then tweak that
@@ -48,7 +43,9 @@ def release(self, silent = True, cores = 1):
         # Now, we need to remove any files from the history
         # This should probably be removed, as it should not do anything...
         
-        the_history = [f for f in the_history if ("," not in f and f.endswith(".nc")) == False]
+        if self.merged == False:
+            the_history = [f for f in the_history if ("," not in f and f.endswith(".nc")) == False]
+
         the_history = " ".join(the_history)
         the_history = " " + the_history
         # now, the cdo methods need to have a - in front of them
@@ -58,19 +55,30 @@ def release(self, silent = True, cores = 1):
             the_history = the_history.replace(" " + mm, " -"+mm)
 
 
+        # Now, at this point we need to deal with the merging cases
+
+        if ".nc" not in the_history:
+            if "merge " in the_history:
+                the_history = the_history.replace("merge ", " ")
+                new_history = ""
+                for ff in self.current:
+                    new_history = new_history + the_history + " " +  ff
+                the_history = "merge " + new_history
+                    
+
+            if "mergetime " in the_history:
+                the_history = the_history.replace("mergetime ", " ")
+                new_history = ""
+                for ff in self.current:
+                    new_history = new_history + the_history + " " + ff
+                the_history = "mergetime " + new_history
+
+
         ## Now, if we start the chain with a merging operation, we only want one output file
             
-        merge_method = None
-        if do_merge:
-            merge_method = "merge"
 
-        if do_mergetime:
-            merge_method = "mergetime"
 
-        if (do_merge == False) and (do_mergetime == False):
-            cdo_command = "cdo " + the_history
-        else:
-            cdo_command = the_history
+        cdo_command = "cdo " + the_history
 
         cdo_command = cdo_command.replace("  ", " ")
 
@@ -87,10 +95,19 @@ def release(self, silent = True, cores = 1):
         
         output_method = "ensemble"
         
-        if do_merge or do_mergetime :
+        cdo_command = cdo_command.replace(" - ", " ")
+
+        if run_merge == False:
+            cdo_command = cdo_command.replace("-L "," ")
+            cdo_command = cdo_command + " "
+            self.history.append(cdo_command)
+        
+        if self.merged:
             output_method = "one"
 
-        run_this(cdo_command, self, silent, output = output_method, cores = cores, merge_method = merge_method)
+    
+        if run_merge: 
+            run_this(cdo_command, self, silent, output = output_method, cores = cores)
 
 
 
@@ -135,8 +152,9 @@ def release_command(self, silent = True, cores = 1):
         # now, the cdo methods need to have a - in front of them
         
         for mm in cdo_methods:
-            old_history = the_history
             the_history = the_history.replace(" " + mm, " -"+mm)
+
+    
 
         cdo_command = "cdo " + the_history
 
