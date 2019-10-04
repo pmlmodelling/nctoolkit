@@ -8,6 +8,9 @@ def merge(self, silent = True):
     if type(self.current) is not list:
         raise ValueError("The current state of the tracker is not a list")
 
+    if "merge " in self.history or "mergetime " in self.history:
+        raise ValueError("You cannot double chain merge methods!")
+
     if self.run == False:
         if (len(self.current) * (len(self.history) - len(self.hold_history))) > 127:
             raise ValueError("You cannot chain more than 128 operations!")
@@ -19,13 +22,15 @@ def merge(self, silent = True):
 
     self.release()
 
-
     # clean up the directory
     cleanup(keep = self.current)
 
 
 def merge_time(self, silent = True):
     """Method to to a time-based merge of files"""
+
+    if "merge " in self.history or "mergetime " in self.history:
+        raise ValueError("You cannot double chain merge methods!")
 
     if type(self.current) is not list:
         raise ValueError("The current state of the tracker is not a list")
