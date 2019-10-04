@@ -143,6 +143,11 @@ class NCTracker:
         self.run = False 
         self.hold_history = copy.deepcopy(self.history)
         
+    def lazy(self):
+        """A method to set the mode to lazy"""
+        self.run = False 
+        self.hold_history = copy.deepcopy(self.history)
+
 
     def append(self, x):
         """A function for creating a new tracker using an existing one as the starting point"""
