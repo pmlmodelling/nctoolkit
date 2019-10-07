@@ -18,8 +18,13 @@ from ._runcommand import run_command
 def ensemble_percentile(self, p = 50, silent = True):
     """Method to calculate an ensemble percentile from a list of files"""
 
+    # Throw an error if there is only a single file in the tracker
     if type(self.current) is not list:
         raise ValueError("The current state of the tracker is not a list")
+
+    # This method cannot possibly be chained. Release it
+    if self.run == False:
+        self.release()
 
     cdo_command = "cdo enspctl," + str(p)
 
@@ -32,13 +37,15 @@ def ensemble_percentile(self, p = 50, silent = True):
 
 def ensemble_nco(self, method, vars = None, silent = True):
     """Method to calculate an ensemble stat from a list of files"""
-    if self.release == False:
-        raise ValueError("NCO methods cannot be held over")
-
-    ff_ensemble = self.current
-
+    # Throw an error if there is only a single file in the tracker
     if type(ff_ensemble) is not list:
         raise ValueError("The current state of the tracker is not a list")
+
+    # This method cannot possibly be chained. Release it
+    if self.run == False:
+        self.release()
+
+    ff_ensemble = self.current
 
     if vars is not None:
         if type(vars) == str:
@@ -60,7 +67,8 @@ def ensemble_nco(self, method, vars = None, silent = True):
 
     self.history.append(nco_command)
     run_command(nco_command, self, silent) 
-    if self.run: self.current = target 
+    if self.run:
+        self.current = target 
 
     # clean up the directory
     cleanup(keep = self.current)
