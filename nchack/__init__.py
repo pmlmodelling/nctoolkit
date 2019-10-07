@@ -256,7 +256,6 @@ class NCTracker:
     #from ._time_stat import percentile 
 
     from ._release import release 
-    from ._release import release_command
 
     from ._delete import remove_variable 
 
