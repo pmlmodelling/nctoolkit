@@ -35,6 +35,7 @@ def ensemble_percentile(self, p = 50, silent = True):
 
     # clean up the directory
     cleanup(keep = self.current)
+    self.merged = True
 
 
 
@@ -106,4 +107,5 @@ def ensemble_range(self, silent = True):
 
     # clean up the directory
     cleanup(keep = self.current)
+    self.merged = True
 
