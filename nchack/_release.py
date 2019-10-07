@@ -107,9 +107,6 @@ def release(self, silent = True, cores = 1, run_merge = True):
             for y in x.split(","):
                 if y in cdo_methods:
                     n_chained+=1
-        if n_chained > 128:
-            raise ValueError("You cannot chain more than 128 operations together in CDO. Consider altering the processing method")
-
 
 
         if run_merge == False:
@@ -122,7 +119,7 @@ def release(self, silent = True, cores = 1, run_merge = True):
 
     
         if run_merge: 
-            run_this(cdo_command, self, silent, output = output_method, cores = cores)
+            run_this(cdo_command, self, silent, output = output_method, cores = cores, n_operations = n_chained)
 
 
 
