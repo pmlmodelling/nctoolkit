@@ -97,6 +97,21 @@ def release(self, silent = True, cores = 1, run_merge = True):
         
         cdo_command = cdo_command.replace(" - ", " ")
 
+        ## now, count the number of methods
+
+        command_split = cdo_command.split(" ")
+        command_split = [x.replace("-", "") for x in command_split]
+        n_chained = 0
+
+        for x in command_split:
+            for y in x.split(","):
+                if y in cdo_methods:
+                    n_chained+=1
+        if n_chained > 128:
+            raise ValueError("You cannot chain more than 128 operations together in CDO. Consider altering the processing method")
+
+
+
         if run_merge == False:
             cdo_command = cdo_command.replace("-L "," ")
             cdo_command = cdo_command + " "

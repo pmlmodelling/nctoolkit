@@ -13,10 +13,6 @@ def merge(self, silent = True):
     if "merge " in self.history or "mergetime " in self.history:
         raise ValueError("You cannot double chain merge methods!")
 
-    if self.run == False:
-        if (len(self.current) * (len(self.history) - len(self.hold_history))) > 127:
-            raise ValueError("You cannot chain more than 128 operations! Consider reducing number of operations or files.")
-
     cdo_command = ("cdo merge ")
 
     self.history.append(cdo_command)
@@ -39,10 +35,6 @@ def merge_time(self, silent = True):
     self.merged = True
     if type(self.current) is not list:
         raise ValueError("The current state of the tracker is not a list")
-
-    if self.run == False:
-        if (len(self.current) * (len(self.history) - len(self.hold_history))) > 127:
-            raise ValueError("You cannot chain more than 128 operations! Consider reducing number of operations or files.")
 
     cdo_command = "cdo mergetime "
 
