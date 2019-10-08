@@ -5,6 +5,7 @@ import sys
 import copy
 
 from ._filetracker import nc_created
+from ._filetracker import nc_safe
 from ._remove import nc_remove
 
 # keep is a file you do not want to delete
@@ -40,6 +41,7 @@ def cleanup(keep = None):
     # Step 2 is to find the trackers in the locals
     
     valid_files = []
+    valid_files = valid_files + nc_safe
     objects = dir(sys.modules["__main__"])
     for i in ([v for v in objects if not v.startswith('_')]):
         i_class = str(eval("type(sys.modules['__main__']." +i + ")"))
