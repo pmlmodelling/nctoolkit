@@ -10,10 +10,21 @@ from ._cleanup import clean_all
 from ._cleanup import deep_clean 
 from ._cleanup import temp_check 
 import copy
+
+import random
+import string
+
 from ._create_ensemble import create_ensemble 
 from ._create_ensemble import generate_ensemble 
 
 from ._show import nc_variables
+from ._session import session_stamp
+
+global session_stamp
+letters = string.ascii_lowercase
+session_stamp["stamp"] = "nchack" + "".join(random.choice(letters) for i in range(8)) + "nchack"
+
+
 print("Tip: include atexit.register(nchack.clean_all) after loading nchack")
 temp_check()
 

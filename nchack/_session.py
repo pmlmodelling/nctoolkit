@@ -1,3 +1,3 @@
 
 
-session_stamp = "nchack"
+session_stamp = dict() 
