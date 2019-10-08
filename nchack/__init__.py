@@ -321,6 +321,7 @@ class NCTracker:
 
     from ._anomaly import anomaly_annual
 
+    from ._mask_lonlat import mask_lonlat
 
 
 
