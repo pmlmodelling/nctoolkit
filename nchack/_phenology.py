@@ -1,8 +1,8 @@
 import os
 import copy
-import tempfile
 import multiprocessing
 
+from ._temp_file import temp_file
 from ._filetracker import nc_created
 from .flatten import str_flatten
 from ._select import select_variables
@@ -39,8 +39,7 @@ def phenology(self, var = None, silent = False, cores = 1):
 
     # Create the day of year
 
-    doy_nc = tempfile.NamedTemporaryFile().name  + ".nc"
-    doy_nc = doy_nc.replace("tmp/", "tmp/nchack")
+    doy_nc = temp_file("nc")
     nc_created.append(doy_nc)
     
     cdo_command = "cdo -L -timcumsum -chname," + var +   ",peak -setclonlatbox,1,-180,180,-90,90 " + new_self.current + " " + doy_nc
@@ -54,8 +53,7 @@ def phenology(self, var = None, silent = False, cores = 1):
 
     # Find the max value of the var
 
-    max_nc = tempfile.NamedTemporaryFile().name  + ".nc"
-    max_nc = max_nc.replace("tmp/", "tmp/nchack")
+    max_nc = temp_file("nc") 
     nc_created.append(max_nc)
 
     cdo_command = "cdo -L -timmax -chname," + var + "," + var + "_max " + new_self.current + " " + max_nc
@@ -68,7 +66,7 @@ def phenology(self, var = None, silent = False, cores = 1):
 
     # We now need to merge the three  netcdf files
 
-    out_nc = tempfile.NamedTemporaryFile().name  + ".nc"
+    out_nc = temp_file("nc")
     out_nc = out_nc.replace("tmp/", "tmp/nchack")
     nc_created.append(out_nc)
 
@@ -83,7 +81,7 @@ def phenology(self, var = None, silent = False, cores = 1):
 
     # Now, calculate the timing of the annual maximum
 
-    phen_nc = tempfile.NamedTemporaryFile().name  + ".nc"
+    phen_nc = temp_file("nc") 
     phen_nc = phen_nc.replace("tmp/", "tmp/nchack")
     nc_created.append(phen_nc)
 
