@@ -31,6 +31,9 @@ def cdo_command(self, command, silent = True, cores = 1):
 
     cdo_command = "cdo " + command
 
+    if "merge " in command or "mergetime " in command:
+        output = "one"
+
     run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
 
     cleanup(keep = self.current)
