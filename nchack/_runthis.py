@@ -76,14 +76,14 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
 
                     # mergetime case
                     # operations after merging need to be chunked by file
+                    # right now, this is only limited to mergetime
+                    # I don't think there is anything else that can be chunked
+                    # so the two if statements can probably be merged later
                     
-                    if "mergetime " in os_command or "merge " in os_command:
+                    if "mergetime " in os_command:
 
                         if "mergetime " in os_command:
                             merge_op = "mergetime "
-
-                        if "merge " in os_command:
-                            merge_op = "merge "
                         
                         post_merge = 0
                         for x in os_command.split(merge_op)[0].split(" "):
