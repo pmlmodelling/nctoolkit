@@ -1,5 +1,5 @@
 import os
-import tempfile
+from ._temp_file import temp_file
 from ._cleanup import cleanup
 from ._runthis import run_this
 from .flatten import str_flatten
@@ -60,8 +60,7 @@ def ensemble_nco(self, method, vars = None, silent = True):
         if type(vars) is not list:
             raise ValueError("vars supplied is not a list or str!")
 
-    target = tempfile.NamedTemporaryFile().name + ".nc"
-    target = target.replace("tmp/", "tmp/nchack")
+    target = temp_file("nc") 
 
     global nc_created
     nc_created.append(target)
