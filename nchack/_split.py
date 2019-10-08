@@ -13,7 +13,7 @@ import copy
 
 def split(self, method = "year", silent = False):
     """
-    Method to split files by year 
+    Method to split files by period 
     """
     if self.run == False:
         raise ValueError("This cannot be run with held over commands. Please release commands prior to running")
