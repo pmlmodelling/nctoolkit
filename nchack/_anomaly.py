@@ -1,7 +1,7 @@
 import os
 import glob
 import copy
-import tempfile
+from ._temp_file import temp_file
 import multiprocessing
 
 from ._filetracker import nc_created
@@ -48,8 +48,7 @@ def anomaly_annual(self, var = None, base_years = None, silent = False):
     clim_tracker.rename({var:"base"})
     nc_safe.append(copy.deepcopy(clim_tracker.current))
     
-    target = tempfile.NamedTemporaryFile().name + ".nc"
-    target = target.replace("tmp/", "tmp/nchack")
+    target = temp_file("nc") 
 
     nc_created.append(target)
     nc_safe.append(target)
