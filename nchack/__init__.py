@@ -1,7 +1,6 @@
 import os
 import xarray as xr
 import sys
-import tempfile
 from .flatten import str_flatten
 from ._generate_grid import generate_grid
 from ._filetracker import nc_created
