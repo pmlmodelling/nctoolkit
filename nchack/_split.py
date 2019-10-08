@@ -1,9 +1,9 @@
 import os
 import glob
 import copy
-import tempfile
 import multiprocessing
 
+from ._temp_file import temp_file
 from ._filetracker import nc_created
 from .flatten import str_flatten
 from ._select import select_variables
@@ -27,8 +27,7 @@ def split(self, method = "year", silent = False):
     for ff in ff_list:
     
         # We need to split the file by name
-        split_base = tempfile.NamedTemporaryFile().name 
-        split_base = split_base.replace("tmp/", "tmp/nchack")
+        split_base = temp_file() 
     
         cdo_command = "cdo split" + method + " "  + ff +  " " + split_base
     
