@@ -225,7 +225,6 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
                             ff_command = copy.deepcopy(os_command)
 
                         target = temp_file("nc") 
-                        target = target.replace("tmp/", "tmp/nchack")
                         nc_created.append(target)
                         ff_command = ff_command + " " + ff + " " + target
 

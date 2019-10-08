@@ -67,7 +67,6 @@ def phenology(self, var = None, silent = False, cores = 1):
     # We now need to merge the three  netcdf files
 
     out_nc = temp_file("nc")
-    out_nc = out_nc.replace("tmp/", "tmp/nchack")
     nc_created.append(out_nc)
 
     
@@ -82,7 +81,6 @@ def phenology(self, var = None, silent = False, cores = 1):
     # Now, calculate the timing of the annual maximum
 
     phen_nc = temp_file("nc") 
-    phen_nc = phen_nc.replace("tmp/", "tmp/nchack")
     nc_created.append(phen_nc)
 
     cdo_command = "cdo -L -timmin -selname,peak -expr,'peak=peak + 365*(" + var + "<" + var + "_max)' " + out_nc + " " + phen_nc
