@@ -61,7 +61,13 @@ def split_year(self,  silent = False):
 def split_year_month(self,  silent = False):
     split(self, method = "yearmon", silent = silent)
 
+def split_month(self,  silent = False):
+    split(self, method = "mon", silent = silent)
 
+def split_day(self,  silent = False):
+    split(self, method = "day", silent = silent)
 
+def split_season(self,  silent = False):
+    split(self, method = "seas", silent = silent)
 
 
