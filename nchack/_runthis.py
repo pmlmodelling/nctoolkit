@@ -1,9 +1,9 @@
 import os
 import copy
-import tempfile
 import multiprocessing
 import math
 
+from ._temp_file import temp_file
 from ._filetracker import nc_created
 from .flatten import str_flatten
 
@@ -47,8 +47,7 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
             if silent:
                 os_command = os_command.replace("cdo ", "cdo -s ")
 
-            target = tempfile.NamedTemporaryFile().name + ".nc"
-            target = target.replace("tmp/", "tmp/nchack")
+            target = temp_file("nc") 
             nc_created.append(target)
             os_command = os_command + " " + self.current + " " + target
 
@@ -107,8 +106,7 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
                             start_chunk = start_chunk.split(end_file)[1] 
                         
                         for x in os_commands:
-                            target = tempfile.NamedTemporaryFile().name + ".nc"
-                            target = target.replace("tmp/", "tmp/nchack")
+                            target = temp_file("nc") 
                             a_command = "cdo -L -" + merge_op + x + " " + target
                             nc_created.append(target)
                             os.system(a_command)
@@ -118,8 +116,7 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
                             self.history.append(a_command)
                             targets.append(target)
 
-                        target = tempfile.NamedTemporaryFile().name + ".nc"
-                        target = target.replace("tmp/", "tmp/nchack")
+                        target = temp_file("nc") 
                         a_command = "cdo -L -" + merge_op +  str_flatten(targets, " ") + " " + target
                         nc_created.append(target)
                         os.system(a_command)
@@ -130,8 +127,7 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
                         
                         if post_merge > 0:
                             post_merge = os_command.split(merge_op)[0] + " " 
-                            out_file  = tempfile.NamedTemporaryFile().name + ".nc"
-                            out_file = out_file.replace("tmp/", "tmp/nchack")
+                            out_file  = temp_file("nc") 
                             nc_created.append(out_file)
 
                             post_merge = post_merge.replace(" - ", " ") + target + " " + out_file
@@ -158,8 +154,7 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
                 else:
                     ff_command = copy.deepcopy(os_command)
 
-                target = tempfile.NamedTemporaryFile().name + ".nc"
-                target = target.replace("tmp/", "tmp/nchack")
+                target = temp_file("nc") 
                 nc_created.append(target)
                 flat_ensemble = str_flatten(self.current, " ")
                 if (self.merged == False) or (".nc" not in ff_command):
@@ -200,8 +195,7 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
                         else:
                             ff_command = copy.deepcopy(os_command)
 
-                        target = tempfile.NamedTemporaryFile().name + ".nc"
-                        target = target.replace("tmp/", "tmp/nchack")
+                        target = temp_file("nc") 
                         nc_created.append(target)
                         ff_command = ff_command + " " + ff + " " + target
 
@@ -230,7 +224,7 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
                         else:
                             ff_command = copy.deepcopy(os_command)
 
-                        target = tempfile.NamedTemporaryFile().name + ".nc"
+                        target = temp_file("nc") 
                         target = target.replace("tmp/", "tmp/nchack")
                         nc_created.append(target)
                         ff_command = ff_command + " " + ff + " " + target
