@@ -1,5 +1,6 @@
 import os
-import tempfile
+
+from ._temp_file import temp_file
 
 from ._generate_grid import generate_grid
 from .flatten import str_flatten
@@ -22,8 +23,7 @@ def regrid(self, grid = None, method = "bil", silent = True, cores = 1):
     # If the grid is an xarray object, we need to convert it to .nc
     if isinstance(grid, xr.Dataset):
         grid_type = "xr"
-        temp_nc = tempfile.NamedTemporaryFile().name + ".nc"
-        temp_nc = temp_nc.replace("tmp/", "tmp/nchack")
+        temp_nc = temp_file("nc") 
         nc_created.append(temp_nc)
         grid.to_netcdf(temp_nc)
         grid = temp_nc
@@ -65,8 +65,7 @@ def regrid(self, grid = None, method = "bil", silent = True, cores = 1):
         if self.weights is None:
             if self.run == False:
                 raise ValueError("You cannot generate weights as part of a chain currently")
-            weights_nc = tempfile.NamedTemporaryFile().name + ".nc"
-            weights_nc = weights_nc.replace("tmp/", "tmp/nchack")
+            weights_nc = temp_file("nc") 
 
             nc_created.append(weights_nc)
             self.weights = weights_nc
