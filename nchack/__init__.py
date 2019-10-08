@@ -302,6 +302,8 @@ class NCTracker:
 
     from ._phenology import phenology
 
+    from ._split import split_year
+
 
 
 

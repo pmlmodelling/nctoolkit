@@ -54,7 +54,6 @@ def release(self, silent = True, cores = 1, run_merge = True):
             old_history = the_history
             the_history = the_history.replace(" " + mm, " -"+mm)
 
-
         # Now, at this point we need to deal with the merging cases
 
         if ".nc" not in the_history:
@@ -73,10 +72,7 @@ def release(self, silent = True, cores = 1, run_merge = True):
                     new_history = new_history + the_history + " " + ff
                 the_history = "mergetime " + new_history
 
-
         ## Now, if we start the chain with a merging operation, we only want one output file
-            
-
 
         cdo_command = "cdo " + the_history
 
@@ -108,7 +104,6 @@ def release(self, silent = True, cores = 1, run_merge = True):
                 if y in cdo_methods:
                     n_chained+=1
 
-
         if run_merge == False:
             cdo_command = cdo_command.replace("-L "," ")
             cdo_command = cdo_command + " "
@@ -116,7 +111,6 @@ def release(self, silent = True, cores = 1, run_merge = True):
         
         if self.merged:
             output_method = "one"
-
     
         if run_merge: 
             run_this(cdo_command, self, silent, output = output_method, cores = cores, n_operations = n_chained)
