@@ -13,6 +13,11 @@ def merge(self, silent = True):
     if "merge " in self.history or "mergetime " in self.history:
         raise ValueError("You cannot double chain merge methods!")
 
+    # add a check for the number of operations 
+    if self.run == False:
+        if (len(self.current) * (len(self.history) - len(self.hold_history))) > 127:
+            raise ValueError("You cannot chain more than 128 operations in CDO. Consider releasing the tracker prior to merging!")
+
     cdo_command = ("cdo merge ")
 
     self.history.append(cdo_command)
