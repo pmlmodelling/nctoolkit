@@ -139,7 +139,7 @@ def deep_clean():
     mylist = [f for f in glob.glob("/tmp/" + "*.nc*")]
     mylist = mylist + [f for f in glob.glob("/var/tmp/" + "*.nc*")]
     mylist = mylist + [f for f in glob.glob("/usr/tmp/" + "*.nc*")]
-    mylist = [f for f in mylist if session_stamp["stamp"] in f]
+    mylist = [f for f in mylist if "nchack" in f]
     for ff in mylist:
         os.remove(ff)
 
