@@ -10,7 +10,7 @@ from ._setters import set_longname
 import copy
 
 
-def cor(self, var1 = None, var2 = None, method = "fld",  silent = False, cores = 1):
+def cor(self, var1 = None, var2 = None, method = "fld",  silent = False):
     """
     Method to calculate the correlation between two variables in space
     """
@@ -92,11 +92,11 @@ def cor(self, var1 = None, var2 = None, method = "fld",  silent = False, cores =
 
 
 
-def cor_space(self, var1 = None, var2 = None,  silent = False, cores = 1):
-    return cor(self, var1 = var1, var2 = var2,  silent = silent, cores = cores, method = "fld")
+def cor_space(self, var1 = None, var2 = None,  silent = False):
+    return cor(self, var1 = var1, var2 = var2,  silent = silent, method = "fld")
     
-def cor_time(self, var1 = None, var2 = None,  silent = False, cores = 1):
-    return cor(self, var1 = var1, var2 = var2,  silent = silent, cores = cores, method = "tim")
+def cor_time(self, var1 = None, var2 = None,  silent = False):
+    return cor(self, var1 = var1, var2 = var2,  silent = silent,  method = "tim")
 
 
 
