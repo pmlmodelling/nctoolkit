@@ -29,10 +29,17 @@ def cdo_command(self, command, silent = True, cores = 1):
     if n_methods > 1:
         raise ValueError("Errror: please supply one cdo method")
 
-    cdo_command = "cdo " + command
+    cdo_command = "cdo " + command + " "
 
     if "merge " in command or "mergetime " in command:
         output = "one"
+
+    for mm in cdo_methods:
+        if " " + mm + " " in cdo_command:
+            cdo_command = cdo_command.replace(" " + mm + " ", " -" + mm + " ")
+
+        if " " + mm + "," in cdo_command:
+            cdo_command = cdo_command.replace(" " + mm + ","," -" + mm + ",")
 
     run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
 
