@@ -316,7 +316,7 @@ class NCTracker:
 
     from ._split import split_year
     from ._split import split_year_month
-    from ._split import split_month
+    #from ._split import split_month
     from ._split import split_day
     from ._split import split_season
 

@@ -45,12 +45,15 @@ def split(self, method = "year", silent = False):
         for x in mylist:
             if split_base in x:
                 new_files.append(x)
+                nc_created.append(x)
                 counter+=1
 
         if counter == 0:
             raise ValueError("Splitting the file by year did not work!")
 
+        
 
+    self.merged = False
     self.current = new_files
 
 
@@ -61,8 +64,8 @@ def split_year(self,  silent = False):
 def split_year_month(self,  silent = False):
     split(self, method = "yearmon", silent = silent)
 
-def split_month(self,  silent = False):
-    split(self, method = "mon", silent = silent)
+#def split_month(self,  silent = False):
+#    split(self, method = "mon", silent = silent)
 
 def split_day(self,  silent = False):
     split(self, method = "day", silent = silent)
