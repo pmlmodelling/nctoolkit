@@ -111,3 +111,38 @@ def ensemble_range(self, silent = True):
     cleanup(keep = self.current)
     self.merged = True
 
+def ensemble_mean_cdo(self,  vars = None, silent = True):
+    """Method to calculate an ensemble stat from a list of files"""
+    if self.merged:
+        raise ValueError("There is no point running this on a merged tracker. Check chains")
+
+    ff_ensemble = self.current
+
+    # Throw an error if there is only a single file in the tracker
+    if type(ff_ensemble) is not list:
+        raise ValueError("The current state of the tracker is not a list")
+
+    # This method cannot be chained right now. Release it
+    if self.run == False:
+        self.release()
+
+    ff_ensemble = self.current
+
+    if vars is not None:
+        if type(vars) == str:
+            vars = [vars]
+
+        if type(vars) is not list:
+            raise ValueError("vars supplied is not a list or str!")
+
+    
+    cdo_command = "cdo -ensmean "
+
+
+    run_this(cdo_command, self, silent, output = "one")
+
+    # clean up the directory
+    cleanup(keep = self.current)
+    self.merged = True
+
+

@@ -200,6 +200,7 @@ class NCTracker:
     from ._regrid import regrid
 
     from ._ensembles import ensemble_mean
+    from ._ensembles import ensemble_mean_cdo
     from ._ensembles import ensemble_max
     from ._ensembles import ensemble_min
     from ._ensembles import ensemble_range
