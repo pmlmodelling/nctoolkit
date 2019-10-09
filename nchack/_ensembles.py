@@ -126,6 +126,11 @@ def ensemble_mean_cdo(self,  vars = None, silent = True):
     if self.run == False:
         self.release()
 
+    if self.run == False:
+        if (len(self.current) * (len(self.history) - len(self.hold_history))) > 127:
+            raise ValueError("You cannot chain more than 128 operations in CDO. Consider releasing the tracker prior to ensemble averaging!")
+
+
     ff_ensemble = self.current
 
     if vars is not None:
