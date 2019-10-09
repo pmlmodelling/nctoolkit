@@ -130,7 +130,7 @@ class NCTracker:
         cdo_result = cdo_result.replace("\n", "")
         cdo_result = cdo_result.split()
   
-        print(cdo_result)
+        return(cdo_result)
 
     @property
     def start(self):
