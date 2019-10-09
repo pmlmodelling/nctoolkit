@@ -25,6 +25,12 @@ def anomaly_annual(self, var = None, base_years = None, silent = False):
     if type(self.current) is not str:
         raise ValueError("Splitting the file by year did not work!")
 
+    if var is None:
+        if(len(self.variables) == 1):
+            var = self.variables[0]
+        else:
+            raise ValueError("This method currently only works with single variables. Please select one")
+
     if type(var) is not str:
         raise ValueError("This method currently only works with single variables")
 
@@ -75,17 +81,3 @@ def anomaly_annual(self, var = None, base_years = None, silent = False):
     return(new_tracker)
     
     
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
