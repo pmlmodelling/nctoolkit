@@ -122,15 +122,6 @@ def ensemble_mean_cdo(self,  vars = None, silent = True):
     if type(ff_ensemble) is not list:
         raise ValueError("The current state of the tracker is not a list")
 
-    # This method cannot be chained right now. Release it
-    if self.run == False:
-        self.release()
-
-    if self.run == False:
-        if (len(self.current) * (len(self.history) - len(self.hold_history))) > 127:
-            raise ValueError("You cannot chain more than 128 operations in CDO. Consider releasing the tracker prior to ensemble averaging!")
-
-
     ff_ensemble = self.current
 
     if vars is not None:
@@ -142,9 +133,14 @@ def ensemble_mean_cdo(self,  vars = None, silent = True):
 
     
     cdo_command = "cdo -ensmean "
+    self.history.append(cdo_command)
 
 
-    run_this(cdo_command, self, silent, output = "one")
+    if self.run:
+        run_this(cdo_command, self, silent, output = "one")
+    else:
+        self.release(run_merge = False)
+
 
     # clean up the directory
     cleanup(keep = self.current)

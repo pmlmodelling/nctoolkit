@@ -72,6 +72,13 @@ def release(self, silent = True, cores = 1, run_merge = True):
                     new_history = new_history + the_history + " " + ff
                 the_history = "mergetime " + new_history
 
+            if "ensmean " in the_history:
+                the_history = the_history.replace("ensmean ", " ")
+                new_history = ""
+                for ff in self.current:
+                    new_history = new_history + the_history + " " + ff
+                the_history = "ensmean " + new_history
+
         ## Now, if we start the chain with a merging operation, we only want one output file
 
         cdo_command = "cdo " + the_history
@@ -103,6 +110,12 @@ def release(self, silent = True, cores = 1, run_merge = True):
             for y in x.split(","):
                 if y in cdo_methods:
                     n_chained+=1
+        
+        if n_chained > 128:
+            if "mergetime " not in cdo_command: 
+                raise ValueError("You cannot chain more than 128 operations. Consider releasing chain prior to merge type operation")
+
+
 
         if run_merge == False:
             cdo_command = cdo_command.replace("-L "," ")
