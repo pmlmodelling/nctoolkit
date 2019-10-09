@@ -16,7 +16,7 @@ def rename(self, newnames, silent = True, cores = 1):
         cdo_rename += "," + value
 
     # need a check at this point for file validity     
-    cdo_command= "cdo chname" + cdo_rename 
+    cdo_command= "cdo -chname" + cdo_rename 
 
     run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
 

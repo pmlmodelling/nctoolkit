@@ -77,7 +77,7 @@ def regrid(self, grid = None, method = "bil", silent = True, cores = 1):
         else:
             weights_nc = self.weights
 
-        cdo_command= "cdo remap," + self.grid + "," + weights_nc 
+        cdo_command= "cdo -remap," + self.grid + "," + weights_nc 
         run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
 
     cleanup(keep = [self.current, self.weights, self.grid])

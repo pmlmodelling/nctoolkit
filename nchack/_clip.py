@@ -24,7 +24,7 @@ def clip(self, lon = [-180, 180], lat = [-90, 90], silent = True, cores = 1):
     if lon[0] >= -180 and lon[1] <= 180 and lat[0] >= -90 and lat[1] <= 90:
 
         lat_box = str_flatten(lon + lat)
-        cdo_command = ("cdo sellonlatbox," + lat_box)
+        cdo_command = ("cdo -sellonlatbox," + lat_box)
         run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
     else:
         raise ValueError("The lonlat box supplied is not valid!")

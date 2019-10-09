@@ -19,7 +19,7 @@ def expression(self, operations = None, method = "expr", silent = True, cores = 
     expr = expr.replace(" ", "" )
     expr = '"' + expr + '"'
 
-    cdo_command = "cdo " + method + "," + expr
+    cdo_command = "cdo -" + method + "," + expr
     run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
     
     cleanup(keep = self.current)    

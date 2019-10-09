@@ -29,7 +29,7 @@ def ensemble_percentile(self, p = 50, silent = True):
     if self.run == False:
         self.release()
 
-    cdo_command = "cdo enspctl," + str(p)
+    cdo_command = "cdo -enspctl," + str(p)
 
     run_this(cdo_command, self, silent, output = "one")
 
@@ -43,6 +43,9 @@ def ensemble_nco(self, method, vars = None, silent = True):
     """Method to calculate an ensemble stat from a list of files"""
     if self.merged:
         raise ValueError("There is no point running this on a merged tracker. Check chains")
+
+    ff_ensemble = self.current
+
     # Throw an error if there is only a single file in the tracker
     if type(ff_ensemble) is not list:
         raise ValueError("The current state of the tracker is not a list")

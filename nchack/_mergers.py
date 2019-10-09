@@ -18,7 +18,7 @@ def merge(self, silent = True):
         if (len(self.current) * (len(self.history) - len(self.hold_history))) > 127:
             raise ValueError("You cannot chain more than 128 operations in CDO. Consider releasing the tracker prior to merging!")
 
-    cdo_command = ("cdo merge ")
+    cdo_command = ("cdo -merge ")
 
     self.history.append(cdo_command)
 
@@ -41,7 +41,7 @@ def merge_time(self, silent = True):
     if type(self.current) is not list:
         raise ValueError("The current state of the tracker is not a list")
 
-    cdo_command = "cdo mergetime "
+    cdo_command = "cdo -mergetime "
 
     self.history.append(cdo_command)
 

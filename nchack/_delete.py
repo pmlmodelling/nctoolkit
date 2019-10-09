@@ -11,7 +11,7 @@ def remove_variable(self, vars, silent = True, cores = 1):
 
     vars = str_flatten(vars, ",")
     
-    cdo_command = "cdo delete,name=" + vars
+    cdo_command = "cdo -delete,name=" + vars
     run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
     
     cleanup(keep = self.current)

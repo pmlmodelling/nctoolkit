@@ -6,7 +6,7 @@ import os
 
 def time_stat(self, stat = "mean", silent = True, cores = 1):
     """Method to calculate a stat over all time steps"""
-    cdo_command = "cdo tim" + stat
+    cdo_command = "cdo -tim" + stat
     run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
     # clean up the directory
     cleanup(keep = self.current)
@@ -32,7 +32,7 @@ def var(self, silent = True, cores = 1):
 
 def cum_sum(self, silent = True, cores = 1):
     """Method to calculate a stat over all time steps"""
-    cdo_command = "cdo timcumsum" 
+    cdo_command = "cdo -timcumsum" 
     run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
     # clean up the directory
     cleanup(keep = self.current)

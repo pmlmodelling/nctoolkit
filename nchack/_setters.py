@@ -66,9 +66,9 @@ def set_missing(self, value, silent = True, cores = 1):
         value = float(value)
 
     if type(value) is float:
-        cdo_command = "cdo setctomiss," + str(value)
+        cdo_command = "cdo -setctomiss," + str(value)
     if type(value) is list:
-        cdo_command = "cdo setrtomiss," + str(value[0]) + "," + str(value[1])
+        cdo_command = "cdo -setrtomiss," + str(value[0]) + "," + str(value[1])
 
     run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
 
