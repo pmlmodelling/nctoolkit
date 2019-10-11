@@ -60,10 +60,23 @@ def open_data(x = None):
         if os.path.exists(x) == False:
             raise ValueError("Data set " + x + " does not exist!")
 
+
+    # it's possible there are duplicates in the data
+    # Get rid of them..
+
+    if type(x) is list:
+        orig_size = len(x)
+        x = list(set(x))
+        if len(x) < orig_size:
+            print("Warning: duplicates in data set have been removed!")
+
     if type(x) is list:
         for ff in x:
             if os.path.exists(ff) == False:
                 raise ValueError("Data set " + ff + " does not exist!")
+
+
+
     
 
 
