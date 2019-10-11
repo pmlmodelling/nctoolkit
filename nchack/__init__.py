@@ -48,6 +48,28 @@ def file_size(file_path):
         return file_info.st_size
 
 
+def open_data(x = None):
+
+    if x == None:
+            raise ValueError("No data was supplied!")
+
+    if (type(x) is str or type(x) is list) == False:
+            raise ValueError("Please supply string or list!")
+
+    if type(x) is str:
+        if os.path.exists(x) == False:
+            raise ValueError("Data set " + x + " does not exist!")
+
+    if type(x) is list:
+        for ff in x:
+            if os.path.exists(ff) == False:
+                raise ValueError("Data set " + ff + " does not exist!")
+    
+
+
+    return NCTracker(x)
+    
+
 
 class NCTracker:
     """A tracker/log for manipulating netcdf files"""
@@ -140,13 +162,6 @@ class NCTracker:
     def start(self, value):
         if type(value) is str:
             self._start = value
-            if value == "":
-                self._start = value
-            else:
-                if os.path.exists(value):
-                    self._start = value
-                else:
-                    raise TypeError("File does not exist")
         if isinstance(value,list):
             self._start = value
 
