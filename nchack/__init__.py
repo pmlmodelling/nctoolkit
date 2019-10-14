@@ -11,6 +11,8 @@ from ._cleanup import deep_clean
 from ._cleanup import temp_check 
 import copy
 
+from ._temp_file import temp_file
+
 import random
 import string
 
@@ -23,6 +25,7 @@ from ._session import session_stamp
 global session_stamp
 letters = string.ascii_lowercase
 session_stamp["stamp"] = "nchack" + "".join(random.choice(letters) for i in range(8)) + "nchack"
+session_stamp["temp_dir"] = "/tmp/"
 
 
 print("Tip: include atexit.register(nchack.clean_all) after loading nchack")
@@ -76,6 +79,10 @@ def open_data(x = None):
                 raise ValueError("Data set " + ff + " does not exist!")
 
 
+    # if there is only one file in the list, change it to a single file
+    if type(x) is list:
+        if len(x) == 1:
+            x = x[0]
 
     
 
