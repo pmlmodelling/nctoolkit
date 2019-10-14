@@ -5,8 +5,9 @@ import sys
 
 
 def fix_expr(expr):
+    """Function to fix expressions that use locals"""
 
-    expr = ''.join((' {} '.format(el) if el in '+-/*^()' else el for el in expr))
+    expr = ''.join((' {} '.format(el) if el in '=><+-/*^()' else el for el in expr))
     expr_split = expr.split(" ")
     new_expr = ""
 
@@ -15,7 +16,6 @@ def fix_expr(expr):
             # We need to first check the local variable supplied is a numeric
             if (isinstance(eval("sys.modules['__main__']." + x.replace("@", "")), (int, float))) == False:
                 raise ValueError(x +  " is not numeric!")
-            
             new_expr +=  str(eval("sys.modules['__main__']." + x.replace("@", "")))
         else:
             new_expr +=  x
