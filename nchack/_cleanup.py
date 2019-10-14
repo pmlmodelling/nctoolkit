@@ -27,7 +27,7 @@ def cleanup(keep = None):
 
     mylist = [f for f in glob.glob("/tmp/" + "*.nc*")]
     mylist = mylist + [f for f in glob.glob("/var/tmp/" + "*.nc*")]
-    mylist = mylist + [f for f in glob.glob("/usr/tmp/" + "*.nc*")]
+    #mylist = mylist + [f for f in glob.glob("/usr/tmp/" + "*.nc*")]
 
     other_files = []
     for ff in mylist:
@@ -37,7 +37,7 @@ def cleanup(keep = None):
       
     mylist = [f for f in glob.glob("/tmp/" + "*.nc*")]
     mylist = mylist + [f for f in glob.glob("/var/tmp/" + "*.nc*")]
-    mylist = mylist + [f for f in glob.glob("/usr/tmp/" + "*.nc*")]
+    #mylist = mylist + [f for f in glob.glob("/usr/tmp/" + "*.nc*")]
     mylist = [f for f in mylist if session_stamp["stamp"] in f]
     for ff in mylist:
         other_files.append(ff)
