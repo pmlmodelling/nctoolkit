@@ -308,6 +308,7 @@ class NCTracker:
     from ._setters import set_missing
     from ._setters import set_unit 
     from ._setters import set_longname
+    from ._setters import set_gridtype
 
     from ._time_stat import mean 
     from ._time_stat import max

@@ -93,3 +93,22 @@ def set_unit(self, var_dict, silent = True):
     # clean up the directory
     cleanup(keep = self.current)
 
+
+def set_gridtype(self, grid, silent = True):
+    """Method to set the grid type"""
+
+    # check that the values supplied are valid
+    # This will convert things to ints, and if it can't be done, throw an error
+
+    if grid not in ["curvilinear", "unstructured", "dereference", "regular", "regularnn", "lonlat"]:
+            raise ValueError("Grid type supplies is not supported")
+
+    cdo_command = "cdo -setgridtype," + grid
+
+    run_this(cdo_command, self, silent, output = "ensemble")
+
+    # clean up the directory
+    cleanup(keep = self.current)
+
+
+
