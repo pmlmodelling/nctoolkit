@@ -375,5 +375,7 @@ class NCTracker:
 
     from ._mask_lonlat import mask_lonlat
 
+    from ._inttime import time_interp
+
 
 
