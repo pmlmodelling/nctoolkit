@@ -1,4 +1,6 @@
 import os
+import xarray as xr
+import pandas as pd
 
 from ._temp_file import temp_file
 
@@ -72,12 +74,16 @@ def regrid(self, grid = None, method = "bil", silent = True, cores = 1):
             
             weights_nc = self.weights
 
-            cdo_command = "cdo gen" + method + ","+ self.grid 
-            run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
+            cdo_command = "cdo -gen" + method + ","+ self.grid + " " + self.current + " " +  weights_nc
+            os.system(cdo_command)
+            if os.path.exists(weights_nc) == False:
+                raise ValueError("Creation of weights failed!")
+
         else:
             weights_nc = self.weights
 
         cdo_command= "cdo -remap," + self.grid + "," + weights_nc 
+        print(cdo_command)
         run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
 
     cleanup(keep = [self.current, self.weights, self.grid])
