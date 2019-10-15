@@ -76,7 +76,6 @@ def anomaly_annual(self, var = None, base_years = None, silent = False):
     del clim_tracker
 
     nc_safe.remove(target)
-    print(os.path.exists(target))
 
     return(new_tracker)
     
