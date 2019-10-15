@@ -37,6 +37,15 @@ def regrid(self, grid = None, method = "bil", silent = True, cores = 1):
             raise ValueError("grid file supplied is not a netcdf file!")
         grid_type = "nc"
 
+
+    if "NCTracker" in str(type(grid)):
+        if type(grid.current) is str:
+            grid = grid.current
+        else:
+            grid = grid.current[0]
+            print("Warning: first file in tracker used for regridding!")
+        grid_type = "nc"
+
     if grid_type is None:
         raise ValueError("grid supplied is not valid")
 
@@ -83,7 +92,7 @@ def regrid(self, grid = None, method = "bil", silent = True, cores = 1):
             weights_nc = self.weights
 
         cdo_command= "cdo -remap," + self.grid + "," + weights_nc 
-        print(cdo_command)
+
         run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
 
     cleanup(keep = [self.current, self.weights, self.grid])
