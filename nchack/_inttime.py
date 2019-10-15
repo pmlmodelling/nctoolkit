@@ -1,3 +1,4 @@
+import os
 from ._runthis import run_this
 from .flatten import str_flatten
 from ._cleanup import cleanup
@@ -23,7 +24,13 @@ def time_interp(self, start_date = None, end_date = None, resolution = "monthly"
         resolution = "1year"
     
     if start_date is None:
-        raise ValueError("No start date supplied")
+        if type(self.current) is list:
+            ff = self.current[0]
+            print("Warning: start date taken from first file in tracker!")
+        else:
+            ff = self.current
+        cdo_command = "cdo showdate " + ff
+        start_date = os.popen(cdo_command).read().strip().split(" ")[0]
 
     start_date = start_date.replace("/", "-")
 
