@@ -6,6 +6,7 @@ import pandas as pd
 from ._cleanup import cleanup
 from ._runthis import run_this
 
+
 def merge(self, silent = True):
     """Method to merge a list of files"""
 
@@ -27,6 +28,21 @@ def merge(self, silent = True):
 
     
     # Now, we need to check if there are duplicate variables. If there are, we need to fix that
+
+    all_times = []
+    for ff in self.current:
+        ntime = int(os.popen( "cdo ntime " + ff).read().split("\n")[0])
+        all_times.append(ntime)
+    if len(set(all_times)) > 1:
+        print("Warning: files to merge do not have the same number of time steps!")
+
+
+    all_times = []
+    for ff in self.current:
+        ntime = os.popen( "cdo showtimestamp " + ff).read()
+        all_times.append(ntime)
+    if len(set(all_times)) > 1:
+        print("Warning: files to merge do not have the same times!")
 
 
     all_codes = []
@@ -113,6 +129,4 @@ def merge_time(self, silent = True):
 
     # clean up the directory
     cleanup(keep = self.current)
-
-
 
