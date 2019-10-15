@@ -89,6 +89,22 @@ def open_data(x = None):
 
     return NCTracker(x)
     
+def merge_trackers(*trackers):
+    all_files = []
+    for tracker in trackers:
+        if "NCTracker" in str(type(tracker)) == False:
+            raise ValueError("Please check everything is a tracker!")
+        if type(tracker.current) is str:
+            all_files += [tracker.current]
+        else:
+            all_files += tracker.current
+    result = open_data(all_files)
+    result.merge()
+    return result
+
+
+
+
 
 
 class NCTracker:
