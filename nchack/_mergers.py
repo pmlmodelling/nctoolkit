@@ -34,7 +34,7 @@ def merge(self, silent = True):
         cdo_result = os.popen( "cdo showcode " + ff).read().replace("\n", "").strip()
         all_codes.append(cdo_result)
 
-    if len(set(all_codes)) < len(all_codes):
+    if len(set(all_codes)) > len(all_codes):
 
         cdo_all = []
         for ff in (self.current):
@@ -71,7 +71,6 @@ def merge(self, silent = True):
         
         cdo_command = "cdo -L -merge " + cdo_command
         self.history.append(cdo_command)
-        print(cdo_command)
 
         run_this(cdo_command, self, silent, output = "one") 
 
