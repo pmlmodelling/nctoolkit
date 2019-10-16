@@ -9,6 +9,7 @@ from ._select import select_variables
 from ._setters import set_longname
 from ._cleanup import cleanup
 from ._setters import set_longname
+from ._runthis import run_cdo
 import copy
 
 
@@ -46,7 +47,7 @@ def phenology(self, var = None, silent = False, cores = 1):
 
     new_self.history.append(cdo_command)
 
-    os.system(cdo_command)
+    doy_nc = run_cdo(cdo_command, doy_nc)
 
     if os.path.exists(doy_nc) == False:
         raise ValueError("Creating day of year failed")
@@ -59,7 +60,7 @@ def phenology(self, var = None, silent = False, cores = 1):
     cdo_command = "cdo -L -timmax -chname," + var + "," + var + "_max " + new_self.current + " " + max_nc
 
     new_self.history.append(cdo_command)
-    os.system(cdo_command)
+    max_nc = run_cdo(cdo_command, max_nc)
 
     if os.path.exists(max_nc) == False:
         raise ValueError("Calculating the max of " + var + " failed!")
@@ -73,7 +74,7 @@ def phenology(self, var = None, silent = False, cores = 1):
     cdo_command = "cdo merge " + new_self.current + " " + max_nc + " " + doy_nc + " " + out_nc
 
     new_self.history.append(cdo_command)
-    os.system(cdo_command)
+    out_nc = run_cdo(cdo_command, out_nc)
 
     if os.path.exists(out_nc) == False:
         raise ValueError("Merging netcdf files failed!")
@@ -86,7 +87,7 @@ def phenology(self, var = None, silent = False, cores = 1):
     cdo_command = "cdo -L -timmin -selname,peak -expr,'peak=peak + 365*(" + var + "<" + var + "_max)' " + out_nc + " " + phen_nc
 
     new_self.history.append(cdo_command)
-    os.system(cdo_command)
+    phen_nc = run_cdo(cdo_command, phen_nc)
 
     if os.path.exists(phen_nc) == False:
         raise ValueError("Failed to merge files")
