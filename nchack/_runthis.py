@@ -2,10 +2,13 @@ import os
 import copy
 import multiprocessing
 import math
+import subprocess
 
 from ._temp_file import temp_file
 from ._filetracker import nc_created
 from .flatten import str_flatten
+from ._session import session_stamp
+from ._session import session_info
 
 
 def split_list(seq, num):
@@ -21,9 +24,33 @@ def split_list(seq, num):
 
 
 def run_it(command, target):
-    os.system(command)
+    command = command.strip()
+    if command.startswith("cdo ") == False:
+        raise ValueError("The command does not start with cdo!")
+
+    out = subprocess.Popen(command,shell = True, stdin = subprocess.PIPE,stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
+    result,ignore = out.communicate()
+
+    if "(Abort)" in str(result):
+        raise ValueError(str(result).replace("b'","").replace("\\n", "").replace("'", ""))
+
+    if str(result).startswith("b'Error"):
+       if target.startswith("/tmp/"):
+            new_target = target.replace("/tmp/", "/var/tmp/") 
+            command = command.replace(target, new_target)
+            target = new_target
+            nc_created.append(target)
+            out = subprocess.Popen(command,shell = True, stdin = subprocess.PIPE,stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
+            result1,ignore = out.communicate()
+            if str(result1).startswith("b'Error"):
+                raise ValueError(str(result).replace("b'","").replace("\\n", "").replace("'", ""))
+            session_stamp["temp_dir"] = "/var/tmp/"
+            
     if os.path.exists(target) == False:
         raise ValueError(command + " was not successful. Check output")
+
+    session_info["latest_size"] = os.path.getsize(target)
+
     return target
 
 def run_this(os_command, self, silent = False, output = "one", cores = 1, n_operations = 1):
@@ -55,7 +82,7 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
             self.history = copy.deepcopy(run_history)
             self.history.append(os_command)
 
-            os.system(os_command)
+            target = run_it(os_command, target)
             
             # check the file was actually created
             # Raise error if it wasn't
@@ -63,6 +90,7 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
             if os.path.exists(target) == False:
                 raise ValueError(os_command + " was not successful. Check output")
             self.current = target
+
         else:
             # multiple file case
 
@@ -109,7 +137,7 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
                             target = temp_file("nc") 
                             a_command = "cdo -L -" + merge_op + x + " " + target
                             nc_created.append(target)
-                            os.system(a_command)
+                            target = run_it(a_command, target)
                             
                             if os.path.exists(target) == False:
                                 raise ValueError(a_command + " was not successful. Check output")
@@ -119,7 +147,7 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
                         target = temp_file("nc") 
                         a_command = "cdo -L -" + merge_op +  str_flatten(targets, " ") + " " + target
                         nc_created.append(target)
-                        os.system(a_command)
+                        target = run_it(a_command, target)
                             
                         if os.path.exists(target) == False:
                             raise ValueError(a_command + " was not successful. Check output")
@@ -131,7 +159,7 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
                             nc_created.append(out_file)
 
                             post_merge = post_merge.replace(" - ", " ") + target + " " + out_file
-                            os.system(post_merge)
+                            out_file = run_it(post_merge, out_file)
                             if os.path.exists(out_file) == False:
                                 raise ValueError(post_merge + " was not successful. Check output")
                             self.history.append(post_merge)
@@ -174,7 +202,7 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
                     ff_command = ff_command.replace("cdo ", "cdo -s ")
 
                 self.history.append(ff_command)
-                os.system(ff_command)
+                target = run_it(ff_command, target)
                 
                 # check the file was actually created
                 # Raise error if it wasn't
@@ -200,7 +228,7 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
                         ff_command = ff_command + " " + ff + " " + target
 
                         self.history.append(ff_command)
-                        os.system(ff_command)
+                        target = run_it(ff_command, target)
                         
                         # check the file was actually created
                         # Raise error if it wasn't

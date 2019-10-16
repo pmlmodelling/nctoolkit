@@ -8,6 +8,7 @@ from ._filetracker import nc_created
 from ._filetracker import nc_safe
 from ._remove import nc_remove
 from ._session import session_stamp
+from ._session import session_info
 
 # keep is a file you do not want to delete
 
@@ -95,8 +96,16 @@ def cleanup(keep = None):
     for dd in delete_these:
         if os.path.exists(dd):
             nc_remove(dd)
-    
 
+    result = os.statvfs("/tmp/")
+    result = result.f_frsize * result.f_bavail 
+    if result > session_info["size"]:
+        if session_stamp["temp_dir"] == "/var/tmp/":
+            session_stamp["temp_dir"] = "/tmp/"
+    session_info["size"] = result
+
+    if session_info["size"] > 1.5 * session_info["latest_size"]:
+            session_stamp["temp_dir"] = "/tmp/"
 
 
 def clean_all():
@@ -130,6 +139,8 @@ def clean_all():
     for dd in delete_these:
         if os.path.exists(dd):
             nc_remove(dd)
+
+            
     
 
 def deep_clean():

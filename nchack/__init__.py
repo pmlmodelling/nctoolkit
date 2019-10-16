@@ -21,6 +21,7 @@ from ._create_ensemble import generate_ensemble
 
 from ._show import nc_variables
 from ._session import session_stamp
+from ._session import session_info
 
 global session_stamp
 letters = string.ascii_lowercase
@@ -31,6 +32,9 @@ session_stamp["temp_dir"] = "/tmp/"
 print("Tip: include atexit.register(nchack.clean_all) after loading nchack")
 temp_check()
 
+result = os.statvfs("/tmp/")
+session_info["size"] = result.f_frsize * result.f_bavail 
+session_info["latest_size"] = 0 
 
 def convert_bytes(num):
     """
