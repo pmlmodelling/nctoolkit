@@ -14,6 +14,7 @@ from ._rename import rename
 from ._cdo_command import cdo_command 
 from ._expr import transmute
 from ._cleanup import cleanup
+from ._runthis import run_cdo
 import copy
 
 
@@ -62,8 +63,9 @@ def anomaly_annual(self, var = None, base_years = None, silent = False):
 
     new_tracker.history.append(os_command)
 
+    target = run_cdo(os_command, target)
+
     new_tracker.current = target
-    os.system(os_command)
 
     if os.path.exists(target) == False:
         raise ValueError("Calculating the anomaly failed")
