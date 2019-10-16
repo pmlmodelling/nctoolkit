@@ -7,7 +7,7 @@ from ._cleanup import cleanup
 from ._runthis import run_this
 
 
-def merge(self, silent = True):
+def merge(self, silent = True, zip = False):
     """Method to merge a list of files"""
 
     # OK. You have to force a release
@@ -92,14 +92,12 @@ def merge(self, silent = True):
 
         return None
         
-
-
     cdo_command = ("cdo -merge ")
 
     self.history.append(cdo_command)
 
    # if self.run:
-    run_this(cdo_command, self, silent, output = "one") 
+    run_this(cdo_command, self, silent, output = "one", zip = zip) 
    # else:
         #self.release(run_merge = False)
 
@@ -107,7 +105,7 @@ def merge(self, silent = True):
     cleanup(keep = self.current)
 
 
-def merge_time(self, silent = True):
+def merge_time(self, silent = True, zip = True):
     """Method to to a time-based merge of files"""
 
     if "merge " in self.history or "mergetime " in self.history:
@@ -122,7 +120,7 @@ def merge_time(self, silent = True):
     self.history.append(cdo_command)
 
     if self.run:
-        run_this(cdo_command, self, silent, output = "one") 
+        run_this(cdo_command, self, silent, output = "one", zip = zip) 
     else:
         self.release(run_merge = False)
 
