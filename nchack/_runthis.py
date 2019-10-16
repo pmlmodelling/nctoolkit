@@ -53,7 +53,7 @@ def run_cdo(command, target):
 
     return target
 
-def run_this(os_command, self, silent = False, output = "one", cores = 1, n_operations = 1):
+def run_this(os_command, self, silent = False, output = "one", cores = 1, n_operations = 1, zip = False):
 
     """Method to run an nco/cdo system command and check output was generated"""
     # Works on multiple files
@@ -197,9 +197,11 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
                 if "merge" in ff_command:
                     ff_command = ff_command.replace(" merge ", " -merge ")
                     ff_command = ff_command.replace(" mergetime ", " -mergetime ")
-                    #ff_command = ff_command.replace("cdo ", "cdo -z zip ")
                     ff_command = ff_command.replace(" -s ", " ")
                     ff_command = ff_command.replace("cdo ", "cdo -s ")
+
+                if zip:
+                    ff_command = ff_command.replace("cdo ", "cdo -z zip ")
 
                 self.history.append(ff_command)
                 target = run_cdo(ff_command, target)
