@@ -207,11 +207,6 @@ class NCTracker:
         if isinstance(value,list):
             self._start = value
 
-    def hold(self):
-        """A method to set the mode to hold"""
-        self.run = False 
-        self.hold_history = copy.deepcopy(self.history)
-        
     def lazy(self):
         """A method to set the mode to lazy"""
         self.run = False 
