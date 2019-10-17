@@ -3,7 +3,24 @@ from .flatten import str_flatten
 from ._cleanup import cleanup
 
 def mask_lonlat(self, lon = [-180, 180], lat = [-90, 90], silent = True, cores = 1):
-    """Method to clip netcdf files spatially"""
+    """
+    Mask a lon/lat box 
+
+    Parameters
+    -------------
+    lon : list
+        Longitude range to mask. Must be of the form: [lon_min, lon_max]
+    lat : list
+        Latitude range to mask. Must be of the form: [lat_min, lat_max]
+    cores: int
+        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+
+    Returns
+    -------------
+    nchack.NCTracker
+        Reduced tracker with masked data 
+    """
+
     if (type(lon) is not list) or (type(lat) is not list):
         raise ValueError("Check that lon/lat ranges are tuples")
     

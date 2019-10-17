@@ -4,8 +4,25 @@ from .flatten import str_flatten
 from ._cleanup import cleanup
 
 def time_interp(self, start_date = None, end_date = None, resolution = "monthly",  silent = True, cores = 1):
-    """Method to carry out time interplation
-    Start and end dates must be of the format YYYY-MM-DD or YYYY/MM/DD
+
+    """
+    Temporally interpolate variables based on date range and time resolution 
+
+    Parameters
+    -------------
+    start_data : str
+        Start date for interpolation. Needs to be of the form YYYY/MM/DD or YYYY-MM-DD
+    end_data : str
+        End date for interpolation. Needs to be of the form YYYY/MM/DD or YYYY-MM-DD
+    resolution : str
+        Time steps used for intpoleration. Needs to be "daily", "weekly", "monthly" or "yearly"
+    cores: int
+        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+
+    Returns
+    -------------
+    nchack.NCTracker
+        Reduced tracker with the time interpolated data 
     """
 
     if resolution not in ["daily", "weekly", "monthly", "yearly"]:

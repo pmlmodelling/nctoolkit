@@ -8,8 +8,20 @@ from ._runthis import run_this
 
 
 def merge(self, silent = True, zip = False):
-    """Method to merge a list of files"""
 
+    """
+    Merge a multi-file ensemble into a single file. Merging will occur based on the time steps in the first file. This will only be effective if either you want to merge files with the same times or multi-time files with single time files.
+
+    Parameters
+    -------------
+    zip : boolean
+        If True, the resulting netcdf files are zipped. Defaults to False. 
+
+    Returns
+    -------------
+    nchack.NCTracker
+        Reduced tracker with merged data. 
+    """
     # OK. You have to force a release
     if self.run == False:
         self.release()
@@ -106,7 +118,20 @@ def merge(self, silent = True, zip = False):
 
 
 def merge_time(self, silent = True, zip = True):
-    """Method to to a time-based merge of files"""
+
+    """
+    Time-based merging of a multi-file ensemble into a single file. This method is ideal if you have the same data split over multiple files covering different data sets. 
+
+    Parameters
+    -------------
+    zip : boolean
+        If True, the resulting netcdf files are zipped. Defaults to False. 
+
+    Returns
+    -------------
+    nchack.NCTracker
+        Reduced tracker with merged data. 
+    """
 
     if "merge " in self.history or "mergetime " in self.history:
         raise ValueError("You cannot double chain merge methods!")

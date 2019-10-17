@@ -16,7 +16,19 @@ from ._runcommand import run_command
 
 
 def ensemble_percentile(self, p = 50, silent = True):
-    """Method to calculate an ensemble percentile from a list of files"""
+    """
+    Calculate an ensemble percentile from a multi-file tracker
+
+    Parameters
+    -------------
+    p : float or int 
+        percentile to calculate
+
+    Returns
+    -------------
+    nchack.NCTracker
+        Reduced tracker with the percentiles
+    """
 
     if self.merged:
         raise ValueError("There is no point running this on a merged tracker. Check chains")
@@ -92,22 +104,80 @@ def ensemble_nco(self, method, vars = None, ignore_time = False, silent = True):
     
 
 def ensemble_min(self, vars = None, ignore_time = False, silent = True):
-    """Method to calculate an ensemble min from a list of files"""
+    """
+    Calculate an ensemble minimum from a multi-file tracker
+
+    Parameters
+    -------------
+    vars : str or list
+        variables to analyse. If this is not supplied all variables will be analysed.
+    ignore_time : boolean
+        If True time is ignored when the statistic is ignored. If False, the statistics is calculated for each time step; for example, if each file in the ensemble has 12 months of data the statistic will be calculated for each month.
+
+    Returns
+    -------------
+    nchack.NCTracker
+        Reduced tracker with the ensemble minimums
+    """
+
     return ensemble_nco(self, "min", ignore_time = ignore_time, vars = vars)
 
 def ensemble_max(self, vars = None, ignore_time = False, silent = True):
-    """Method to calculate an ensemble max from a list of files"""
+    """
+    Calculate an ensemble maximum from a multi-file tracker
+
+    Parameters
+    -------------
+    vars : str or list
+        variables to analyse. If this is not supplied all variables will be analysed.
+    ignore_time : boolean
+        If True time is ignored when the statistic is ignored. If False, the statistics is calculated for each time step; for example, if each file in the ensemble has 12 months of data the statistic will be calculated for each month.
+
+    Returns
+    -------------
+    nchack.NCTracker
+        Reduced tracker with the ensemble minimums
+    """
+
     return ensemble_nco(self, "max", ignore_time = ignore_time, vars = vars)
 
 def ensemble_mean(self, vars = None, ignore_time = False, silent = True):
-    """Method to calculate an ensemble mean from a list of files"""
+    """
+    Calculate an ensemble mean from a multi-file tracker
+
+    Parameters
+    -------------
+    vars : str or list
+        variables to analyse. If this is not supplied all variables will be analysed.
+    ignore_time : boolean
+        If True time is ignored when the statistic is ignored. If False, the statistics is calculated for each time step; for example, if each file in the ensemble has 12 months of data the statistic will be calculated for each month.
+
+    Returns
+    -------------
+    nchack.NCTracker
+        Reduced tracker with the ensemble minimums
+    """
+
     return ensemble_nco(self, "mean", ignore_time = ignore_time, vars = vars)
 
 
 
 def ensemble_range(self, silent = True):
-    """Method to calculate an ensemble range from a list of files"""
+    """
+    Calculate an ensemble range from a multi-file tracker
 
+    Parameters
+    -------------
+    vars : str or list
+        variables to analyse. If this is not supplied all variables will be analysed.
+    ignore_time : boolean
+        If True time is ignored when the statistic is ignored. If False, the statistics is calculated for each time step; for example, if each file in the ensemble has 12 months of data the statistic will be calculated for each month.
+
+    Returns
+    -------------
+    nchack.NCTracker
+        Reduced tracker with the ensemble minimums
+    """
     if type(self.current) is not list:
         raise ValueError("The current state of the tracker is not a list")
 
@@ -120,7 +190,22 @@ def ensemble_range(self, silent = True):
     self.merged = True
 
 def ensemble_mean_cdo(self,  vars = None, silent = True):
-    """Method to calculate an ensemble stat from a list of files"""
+    """
+    Calculate an ensemble mean from a multi-file tracker, using CDO
+
+    Parameters
+    -------------
+    vars : str or list
+        variables to analyse. If this is not supplied all variables will be analysed.
+    ignore_time : boolean
+        If True time is ignored when the statistic is ignored. If False, the statistics is calculated for each time step; for example, if each file in the ensemble has 12 months of data the statistic will be calculated for each month.
+
+    Returns
+    -------------
+    nchack.NCTracker
+        Reduced tracker with the ensemble minimums
+    """
+
     if self.merged:
         raise ValueError("There is no point running this on a merged tracker. Check chains")
 
