@@ -20,7 +20,20 @@ import copy
 
 def anomaly_annual(self, var = None, base_years = None, silent = False):
     """
-    Method to calculate annual anomalies based on a baseline period
+    Calculate annual anomalies based on a baseline period
+    
+    Parameters
+    -------------
+    var : string
+        Variable to calculate the anomomaly for. This only works with single variables currently 
+    base_years : list
+        Baseline years. An annual cimatology for these years is used to calculate the anomalies.
+
+    Returns
+    -------------
+    nchack.NCTracker
+        A new tracker with the annual anomalies labelled anomaly
+
     """
 
     if type(self.current) is not str:
