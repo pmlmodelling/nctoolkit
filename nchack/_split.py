@@ -59,18 +59,50 @@ def split(self, method = "year", silent = False):
 
 
 def split_year(self,  silent = False):
+    """
+    Split the ensemble based on years. Each file in the ensemble will be separated into new files based on years.
+
+    Returns
+    -------------
+    nchack.NCTracker
+        Reduced tracker with split data
+    """
     split(self, method = "year", silent = silent)
 
 def split_year_month(self,  silent = False):
+    """
+    Split the ensemble based on years and months. Each file in the ensemble will be separated into new files based on years and months.
+
+    Returns
+    -------------
+    nchack.NCTracker
+        Reduced tracker with split data
+    """
     split(self, method = "yearmon", silent = silent)
 
 #def split_month(self,  silent = False):
 #    split(self, method = "mon", silent = silent)
 
 def split_day(self,  silent = False):
+    """
+    Split the ensemble based on days. Each file in the ensemble will be separated into new files based on days.
+
+    Returns
+    -------------
+    nchack.NCTracker
+        Reduced tracker with split data
+    """
     split(self, method = "day", silent = silent)
 
 def split_season(self,  silent = False):
+    """
+    Split the ensemble based on season. Each file in the ensemble will be separated into new files based on season.
+
+    Returns
+    -------------
+    nchack.NCTracker
+        Reduced tracker with split data
+    """
     split(self, method = "seas", silent = silent)
 
 

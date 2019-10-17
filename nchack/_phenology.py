@@ -15,8 +15,20 @@ import copy
 
 def phenology(self, var = None, silent = False, cores = 1):
     """
-    Method to calculate the phenology of a variable.
-    At present this only works for one variable, which should be enough.
+    Calculate phenologies from the tracker. Each file in an ensemble must only cover a single year, and ideally have all days.
+    This method currently only calculcates the day of year of the annual maximum.
+
+    Parameters
+    -------------
+    var : str
+        Variable to analyze.
+    cores: int
+        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+
+    Returns
+    -------------
+    nchack.NCTracker
+        Reduced tracker with the phenologies 
     """
 
     if var is None:
