@@ -18,7 +18,7 @@ from ._runthis import run_cdo
 import copy
 
 
-def anomaly_annual(self, var = None, base_years = None, silent = False):
+def anomaly_annual(self, var = None, baseline = None, silent = False):
     """
     Calculate annual anomalies based on a baseline period
     
@@ -26,7 +26,7 @@ def anomaly_annual(self, var = None, base_years = None, silent = False):
     -------------
     var : string
         Variable to calculate the anomomaly for. This only works with single variables currently 
-    base_years : list
+    baseline: list
         Baseline years. An annual cimatology for these years is used to calculate the anomalies.
 
     Returns
@@ -48,7 +48,7 @@ def anomaly_annual(self, var = None, base_years = None, silent = False):
     if type(var) is not str:
         raise ValueError("This method currently only works with single variables")
 
-    if type(base_years) is not list:
+    if type(baseline) is not list:
         raise ValueError("baseline years supplied is not a list")
 
     # Calculate the yearly mean 
@@ -63,7 +63,7 @@ def anomaly_annual(self, var = None, base_years = None, silent = False):
     # calculate the climatology
     clim_tracker = copy.deepcopy(self)
     clim_tracker.select_variables(var)
-    clim_tracker.select_years(base_years)
+    clim_tracker.select_years(baseline)
     clim_tracker.mean()
     clim_tracker.rename({var:"base"})
     nc_safe.append(copy.deepcopy(clim_tracker.current))
