@@ -218,16 +218,16 @@ class NCTracker:
         self.hold_history = copy.deepcopy(self.history)
 
 
-    def append(self, x):
-        """A function for creating a new tracker using an existing one as the starting point"""
-        
-        # 1st, current needs to be convert to a list if we are able to append something to it
-        if type(self.current) is str:
-            self.current = [self.current]
-        if type(x) is str:
-            self.current.append(x)
-        else:
-            self.current = self.current + x
+#    def append(self, x):
+#        """A function for creating a new tracker using an existing one as the starting point"""
+#        
+#        # 1st, current needs to be convert to a list if we are able to append something to it
+#        if type(self.current) is str:
+#            self.current = [self.current]
+#        if type(x) is str:
+#            self.current.append(x)
+#        else:
+#            self.current = self.current + x
 
 #    def restart(self, start = None):
 #        """A function for creating a new tracker using an existing one as the starting point"""
