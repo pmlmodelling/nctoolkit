@@ -57,6 +57,17 @@ def file_size(file_path):
 
 def open_data(x = None):
 
+    """
+    Create a newtracker
+
+    Parameters
+    ---------------
+
+    x : str or list
+        A string or list of netcdf files. The function will check the files exist
+
+    """
+
     if x == None:
             raise ValueError("No data was supplied!")
 
