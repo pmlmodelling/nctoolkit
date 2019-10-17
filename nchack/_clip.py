@@ -3,7 +3,19 @@ from .flatten import str_flatten
 from ._cleanup import cleanup
 
 def clip(self, lon = [-180, 180], lat = [-90, 90], silent = True, cores = 1):
-    """Method to clip netcdf files spatially"""
+    """
+    Clip a tracker to a lon/lat box 
+
+    Parameters
+    -------------
+    lon: list
+        The longitude range to select. This must be two variables, within -180 and 180.    
+    lat: list
+        The latitude range to select. This must be two variables, within -90 and 90.    
+    cores: int
+        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+    """
+
     if (type(lon) is not list) or (type(lat) is not list):
         raise ValueError("Check that lon/lat ranges are tuples")
     

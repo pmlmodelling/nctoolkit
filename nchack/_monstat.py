@@ -13,14 +13,70 @@ def monstat(self,  stat = "mean", silent = True, cores = 1):
 
 
 def monthly_mean(self, silent = True, cores = 1):
+
+    """
+    Calculate the monthly mean for each year/month combination in files. This applies to each file in an ensemble.
+
+    Parameters
+    -------------
+    cores: int
+        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+
+    Returns
+    -------------
+    nchack.NCTracker
+        Reduced tracker with monthly means 
+    """
+
     return monstat(self, stat = "mean", silent = silent, cores = cores)
 
 def monthly_min(self, silent = True, cores = 1):
+    """
+    Calculate the monthly minimums for each year/month combination in files. This applies to each file in an ensemble.
+
+    Parameters
+    -------------
+    cores: int
+        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+
+    Returns
+    -------------
+    nchack.NCTracker
+        Reduced tracker with monthly minimums
+    """
     return monstat(self, stat = "min", silent = silent, cores = cores)
 
 def monthly_max(self, silent = True, cores = 1):
+    """
+    Calculate the monthly maximum for each year/month combination in files. This applies to each file in an ensemble.
+
+    Parameters
+    -------------
+    cores: int
+        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+
+    Returns
+    -------------
+    nchack.NCTracker
+        Reduced tracker with monthly maximums
+    """
     return monstat(self, stat = "max", silent = silent, cores = cores)
     
 def monthly_range(self, silent = True, cores = 1):
+
+    """
+    Calculate the monthly range for each year/month combination in files. This applies to each file in an ensemble.
+
+    Parameters
+    -------------
+    cores: int
+        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+
+    Returns
+    -------------
+    nchack.NCTracker
+        Reduced tracker with monthly ranges
+    """
+
     return monstat(self, stat = "range", silent = silent, cores = cores)
 

@@ -11,9 +11,6 @@ import copy
 
 
 def cor(self, var1 = None, var2 = None, method = "fld",  silent = False):
-    """
-    Method to calculate the correlation between two variables in space
-    """
 
     new_self = copy.deepcopy(self)
 
@@ -93,9 +90,40 @@ def cor(self, var1 = None, var2 = None, method = "fld",  silent = False):
 
 
 def cor_space(self, var1 = None, var2 = None,  silent = False):
+    """
+    Calculate the correlation correct between two variables in space, and for each time step
+
+    Parameters
+    -------------
+    var1: str
+        The first variable 
+    var2: str
+        The  second variable
+
+    Returns
+    -------------
+    nchack.NCTracker
+        New tracker with the correlation coefficients 
+    """
+
     return cor(self, var1 = var1, var2 = var2,  silent = silent, method = "fld")
     
 def cor_time(self, var1 = None, var2 = None,  silent = False):
+    """
+    Calculate the correlation correct in time between two variables, for each grid cell
+
+    Parameters
+    -------------
+    var1: str
+        The first variable 
+    var2: str
+        The  second variable
+
+    Returns
+    -------------
+    nchack.NCTracker
+        New tracker with the correlation coefficients 
+    """
     return cor(self, var1 = var1, var2 = var2,  silent = silent,  method = "tim")
 
 

@@ -22,11 +22,18 @@ def year_days(x):
 # Is there a way to check the ensemble without it being slow?
 
 
-def ensemble_check(self):
-    "A function to check an ensemble is valid"
+def ensemble_check(tracker):
+    """
+    A function to do some validity checks on an ensemble. This will check whether the files have identifical grids, etc.
+    
+    Parameters
+    -------------
+    tracker: nchack.NCtracker
+        A tracker to analyse
+    """
 
     results = []
-    for ff in self.current:
+    for ff in tracker.current:
         cdo_result = os.popen( "cdo partab " + ff).read()
         results.append(cdo_result)
 
@@ -39,7 +46,7 @@ def ensemble_check(self):
 
     results = []
 
-    for ff in self.current:
+    for ff in tracker.current:
         cdo_result = os.popen( "cdo griddes " + ff).read()
         results.append(cdo_result)
 
@@ -50,6 +57,9 @@ def ensemble_check(self):
 
     if grid == False:
         print("the same grid is not available in all files")
+
+
+
 
 def check_dates(self):
     "A function to check if sufficient dates are available in a file or ensemble"

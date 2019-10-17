@@ -7,7 +7,24 @@ import pandas as pd
 # function to find files in directory with a specified variable 
 
 def create_ensemble(path = "", var = None, recursive = True):
-    "A function to create an ensemble is valid"
+    """
+    Generate an ensemble
+
+    Parameters
+    -------------
+    path: str
+        The system to search for netcdf files
+    var: str
+        The variable the ensemble files must contain. This is ignored if not set.
+    recursive : boolean
+        True/False depending on whether you want to search the path recursively. Defaults to True.
+
+    Returns
+    -------------
+    list
+        A list of files 
+    """
+
 
     def intersection(lst1, lst2): 
         lst3 = [value for value in lst1 if value in lst2] 
@@ -16,14 +33,11 @@ def create_ensemble(path = "", var = None, recursive = True):
 
     if os.path.exists(path) == False:
         raise ValueError("The path provided does not exist!")
-# check that the remapping method is valid
 
     # make sure the path ends with "/" if it is not empty
-
     if path != "":
         if path.endswith("/") == False:
             path = path + "/"
-
 
     if recursive:   
         files = [f for f in glob.glob(path + "**/*.nc", recursive=True)]
@@ -43,7 +57,23 @@ def create_ensemble(path = "", var = None, recursive = True):
     return ensemble
 
 def generate_ensemble(path = "", recursive = True):
-    "A function to create an ensemble is valid"
+
+    """
+    A candidate ensemble generator. Ensembles are generated based on the distinct variable, time and grids available in the files detected in the given path.
+
+    Parameters
+    -------------
+    path: str
+        The system to search for netcdf files
+    recursive : boolean
+        True/False depending on whether you want to search the path recursively. Defaults to True.
+
+    Returns
+    -------------
+    list
+        A list of potential ensembles.
+    """
+
     ensemble = create_ensemble(path, recursive = recursive)
     all_info = []
     for ff in ensemble:

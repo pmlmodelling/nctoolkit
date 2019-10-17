@@ -5,7 +5,23 @@ from ._runthis import run_this
 import os
 
 def cdo_command(self, command, silent = True, cores = 1):
-    """Method to call any cdo command of the the form 'command + infile + outfile'"""
+    """
+    Apply a cdo command to a tracker
+
+    Parameters
+    -------------
+    command : string
+        cdo command to call. This must be of the form cdo command infile outfile, where cdo, infile and outfile are attached later. 
+    cores: int
+        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+
+    Returns
+    -------------
+    nchack.NCTracker
+        Original tracker with cdo command applied. 
+
+    """
+
 
     # First carry out some checks
 

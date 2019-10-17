@@ -4,7 +4,21 @@ from ._cleanup import cleanup
 from ._runthis import run_this
 
 def remove_variable(self, vars, silent = True, cores = 1):
-    """Method to remove sellected variables from tracker"""
+    """
+    Remove variables from tracker 
+
+    Parameters
+    -------------
+    vars : str or list
+        Variable or variables to be removed from the tracker
+    cores: int
+        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+
+    Returns
+    -------------
+    nchack.NCTracker
+        Reduced tracker without the listed variables
+    """
 
     if type(vars) is not list:
         vars = [vars]

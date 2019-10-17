@@ -46,10 +46,40 @@ def expression(self, operations = None, method = "expr", silent = True, cores = 
 
 
 def transmute(self, operations = None, silent = True, cores = 1):
+    """
+    Create new variables using mathematical expressions, and drop original variables 
+
+    Parameters
+    -------------
+    operations : dict 
+        operations to apply. The keys are the new variables to generate. The values are the mathematical operations to carry out. 
+    cores: int
+        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+
+    Returns
+    -------------
+    nchack.NCTracker
+        Reduced tracker with the new variables
+    """
     return expression(self, operations = operations, method = "expr", silent = silent, cores = cores)
 
 
 def mutate(self, operations = None, silent = True, cores = 1):
+    """
+    Create new variables using mathematical expressions, and keep original variables 
+
+    Parameters
+    -------------
+    operations : dict 
+        operations to apply. The keys are the new variables to generate. The values are the mathematical operations to carry out. 
+    cores: int
+        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+
+    Returns
+    -------------
+    nchack.NCTracker
+        Reduced tracker with the new variables
+    """
     return expression(self, operations = operations, method = "aexpr", silent = silent, cores = cores)
 
 
