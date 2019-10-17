@@ -5,7 +5,19 @@ from ._runthis import run_this
 from .flatten import str_flatten
 
 def bottom(self, silent = True, cores = 1):
-    """Method to extract the bottom level from netcdf files"""
+    """
+    Extract the bottom level from a tracker 
+
+    Parameters
+    -------------
+    cores: int
+        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+
+    Returns
+    -------------
+    nchack.NCTracke
+        Reduced tracker with the bottom level
+    """
 
     # extract the number of the bottom level
     # Use the first file for an ensemble
@@ -25,7 +37,19 @@ def bottom(self, silent = True, cores = 1):
     cleanup(keep = self.current)
 
 def surface(self, silent = True, cores = 1):
-    """Method to extract the top level from netcdf files"""
+    """
+    Extract the top/surface level from a tracker 
+
+    Parameters
+    -------------
+    cores: int
+        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+
+    Returns
+    -------------
+    nchack.NCTracke
+        Reduced tracker with the surface level
+    """
 
     cdo_command = "cdo -sellevidx,1 "
     run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
@@ -33,7 +57,21 @@ def surface(self, silent = True, cores = 1):
 
 
 def vertical_interp(self, vert_depths = None, silent = True, cores = 1):
-    """Method to perform vertical interpolation on a netcdf file"""
+    """
+    Verticaly interpolate a tracker based on given depths
+
+    Parameters
+    -------------
+    vert_depths : list
+        list of depths to vertical interpolate to
+    cores: int
+        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+
+    Returns
+    -------------
+    nchack.NCTracke
+        Reduced tracker with the surface level
+    """
      
     # below used for checking whether vertical remapping occurs
 
@@ -84,13 +122,69 @@ def vertstat(self, stat = "mean", silent = True, cores = 1):
     cleanup(keep = self.current)
 
 def vertical_mean(self, silent = True, cores = 1):
+    """
+    Calculate the depth-averaged mean 
+
+    Parameters
+    -------------
+    cores: int
+        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+
+    Returns
+    -------------
+    nchack.NCTracke
+        Reduced tracker with the depth-averaged mean
+    """
+
     return vertstat(self, stat = "mean", silent = True, cores = cores)
 
 def vertical_min(self, silent = True, cores = 1):
+    """
+    Calculate the depth-averaged minimum 
+
+    Parameters
+    -------------
+    cores: int
+        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+
+    Returns
+    -------------
+    nchack.NCTracke
+        Reduced tracker with the depth-averaged minimum
+    """
+
     return vertstat(self, stat = "min", silent = True, cores = cores)
 
 def vertical_max(self, silent = True, cores = 1):
+    """
+    Calculate the depth-averaged maximum 
+
+    Parameters
+    -------------
+    cores: int
+        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+
+    Returns
+    -------------
+    nchack.NCTracke
+        Reduced tracker with the depth-averaged maximum
+    """
+
     return vertstat(self, stat = "max", silent = True, cores = cores)
     
 def vertical_range(self, silent = True, cores = 1):
+    """
+    Calculate the depth-averaged range 
+
+    Parameters
+    -------------
+    cores: int
+        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+
+    Returns
+    -------------
+    nchack.NCTracke
+        Reduced tracker with the depth-averaged range
+    """
+
     return vertstat(self, stat = "range", silent = True, cores = cores)

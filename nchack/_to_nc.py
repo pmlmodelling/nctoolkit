@@ -5,7 +5,18 @@ from ._cleanup import cleanup
 from ._runcommand import run_command
 
 def to_netcdf(self, out, zip = True, overwrite = False):
-    """ Function to save the current file to netcdf"""
+    """
+    Save a tracker to a named file 
+
+    Parameters
+    -------------
+    out : str
+        output file name 
+    zip : boolean
+        True/False depending on whether you want to zip the file. Defaults to True.
+
+    """
+
     ff = self.current
     if type(ff) is not str:
         raise ValueError("The current state of the tracker is not a string")

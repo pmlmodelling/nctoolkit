@@ -4,7 +4,19 @@ from ._cleanup import cleanup
 from ._runthis import run_this
 
 def zip(self,  silent = True, cores = 1):
-    """Method to zip the netcdf files"""
+    """
+    Zip the tracker
+
+    Parameters
+    -------------
+    cores: int
+        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+
+    Returns
+    -------------
+    nchack.NCTracker
+        Zipped tracker
+    """
 
     if self.run == True:
         cdo_command = "cdo -z zip copy "
