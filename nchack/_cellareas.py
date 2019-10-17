@@ -13,6 +13,8 @@ def cell_areas(self, silent = True, cores = 1, join = True):
     -------------
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+    join: boolean
+        Set to False if you only want the cell areas to be in the output. True joins the areas to the files.
 
     Returns
     -------------
