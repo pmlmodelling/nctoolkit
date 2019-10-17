@@ -229,17 +229,17 @@ class NCTracker:
         else:
             self.current = self.current + x
 
-    def restart(self, start = None):
-        """A function for creating a new tracker using an existing one as the starting point"""
-        new = copy.copy(self)
-        new.history = []
-        if start is None:
-            new.start = self.current
-            new.current = new.start
-        else:
-            new.start = start
-            new.current = start
-        return(new)
+#    def restart(self, start = None):
+#        """A function for creating a new tracker using an existing one as the starting point"""
+#        new = copy.copy(self)
+#        new.history = []
+#        if start is None:
+#            new.start = self.current
+#            new.current = new.start
+#        else:
+#            new.start = start
+#            new.current = start
+#        return(new)
 
 
     def str_flatten(L, sep = ","):
