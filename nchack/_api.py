@@ -348,7 +348,7 @@ class NCTracker:
 
     from ._release import release 
 
-    from ._delete import remove_variable 
+    from ._delete import remove_variables
 
     from ._mergers import merge_time 
     from ._mergers import merge
