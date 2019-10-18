@@ -45,6 +45,11 @@ def run_cdo(command, target):
             if str(result1).startswith("b'Error"):
                 raise ValueError(str(result).replace("b'","").replace("\\n", "").replace("'", ""))
             session_stamp["temp_dir"] = "/var/tmp/"
+            if "Warning:" in str(result1):
+                print("CDO warning:" + str(result1))
+    else:
+        if "Warning:" in str(result):
+            print("CDO warning:" + str(result))
             
     if os.path.exists(target) == False:
         raise ValueError(command + " was not successful. Check output")
