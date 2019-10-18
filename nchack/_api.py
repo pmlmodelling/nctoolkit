@@ -58,7 +58,7 @@ def file_size(file_path):
 def open_data(x = None):
 
     """
-    Create a newtracker
+    Create a new tracker
 
     Parameters
     ---------------
@@ -150,7 +150,9 @@ class NCTracker:
 
     @property
     def size(self):
-
+        """The size of the tracker.
+        This will print the number of files, total size, and smallest and largest files in the tracker.
+        """
         if type(self.current) is str:
             result = "Number of files: 1\n"
             result = result + "File size: " + convert_bytes(file_size(self.current))
@@ -187,6 +189,11 @@ class NCTracker:
 
     @property
     def variables(self):
+        """
+        Variables contained in the tracker's netcdf file.
+        This will check the netcfile's contents, if it is a single file tracker.
+        """
+        
         if type(self.current) is list:
             print("This tracker is a list. Please inspect individual files using nc_variables")
   
@@ -196,8 +203,12 @@ class NCTracker:
   
         return(cdo_result)
 
+
     @property
     def start(self):
+        """
+        The starting file or files of the tracker
+        """
         return self._start
 
     @start.setter
@@ -206,6 +217,42 @@ class NCTracker:
             self._start = value
         if isinstance(value,list):
             self._start = value
+
+    @property
+    def current(self):
+        """
+        The current file or files in the tracker
+        """
+        return self._current
+
+    @current.setter
+    def current(self, value):
+        if type(value) is str:
+            self._current = value
+        if isinstance(value,list):
+            self._current = value
+
+    @property
+    def history(self):
+        """
+        The history of operations on the tracker 
+        """
+        return self._history
+
+    @history.setter
+    def history(self, value):
+        self._history = value
+
+    @property
+    def run(self):
+        """
+        Is the tracker in run or lazy eval mode? 
+        """
+        return self._run
+
+    @run.setter
+    def run(self, value):
+        self._run = value
 
     def lazy(self):
         """A method to set the mode to lazy"""
