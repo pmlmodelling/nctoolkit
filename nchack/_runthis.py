@@ -34,7 +34,7 @@ def run_cdo(command, target):
     if "(Abort)" in str(result):
         raise ValueError(str(result).replace("b'","").replace("\\n", "").replace("'", ""))
 
-    if str(result).startswith("b'Error"):
+    if str(result).startswith("b'Error") or "HDF error" in str(result):
        if target.startswith("/tmp/"):
             new_target = target.replace("/tmp/", "/var/tmp/") 
             command = command.replace(target, new_target)
