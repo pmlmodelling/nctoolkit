@@ -1,8 +1,8 @@
 import os
 import copy
-import tempfile
 import multiprocessing
 
+from ._temp_file import temp_file
 from ._filetracker import nc_created
 from .flatten import str_flatten
 from ._select import select_variables
@@ -10,10 +10,7 @@ from ._setters import set_longname
 import copy
 
 
-def cor(self, var1 = None, var2 = None, method = "fld",  silent = False, cores = 1):
-    """
-    Method to calculate the correlation between two variables in space
-    """
+def cor(self, var1 = None, var2 = None, method = "fld",  silent = False):
 
     new_self = copy.deepcopy(self)
 
@@ -29,8 +26,7 @@ def cor(self, var1 = None, var2 = None, method = "fld",  silent = False, cores =
         raise ValueError("This method only works on single files")
 
     # We need to split the file by name
-    split_base = tempfile.NamedTemporaryFile().name 
-    split_base = split_base.replace("tmp/", "tmp/nchack")
+    split_base = temp_file()
 
     vars = [var1, var2]
     vars = str_flatten(vars)
@@ -52,8 +48,7 @@ def cor(self, var1 = None, var2 = None, method = "fld",  silent = False, cores =
     if os.path.exists(out1) == False or os.path.exists(out2) == False:
         raise ValueError("Splitting the file by name did not work!")
 
-    target = tempfile.NamedTemporaryFile().name  + ".nc"
-    target = target.replace("tmp/", "tmp/nchack")
+    target = temp_file()
     nc_created.append(target)
 
     cdo_command = "cdo " + method + "cor " + out1 + " " + out2 + " " + target
@@ -64,8 +59,7 @@ def cor(self, var1 = None, var2 = None, method = "fld",  silent = False, cores =
     if os.path.exists(target) == False:
         raise ValueError("Calculating the correlation coefficient failed!")
 
-    target1 = tempfile.NamedTemporaryFile().name  + ".nc"
-    target1 = target1.replace("tmp/", "tmp/nchack")
+    target1 = temp_file()
     nc_created.append(target1)
 
     cdo_command = "cdo setname," + "cor " + target + " " + target1
@@ -75,8 +69,7 @@ def cor(self, var1 = None, var2 = None, method = "fld",  silent = False, cores =
     if os.path.exists(target1) == False:
         raise ValueError("Changing the name to cor failed!")
 
-    target2 = tempfile.NamedTemporaryFile().name  + ".nc"
-    target2 = target2.replace("tmp/", "tmp/nchack")
+    target2 = temp_file()
     nc_created.append(target2)
 
     cdo_command = "cdo setunit," + "'-' " + target1 + " " + target2
@@ -96,11 +89,42 @@ def cor(self, var1 = None, var2 = None, method = "fld",  silent = False, cores =
 
 
 
-def cor_space(self, var1 = None, var2 = None,  silent = False, cores = 1):
-    return cor(self, var1 = var1, var2 = var2,  silent = silent, cores = cores, method = "fld")
+def cor_space(self, var1 = None, var2 = None,  silent = False):
+    """
+    Calculate the correlation correct between two variables in space, and for each time step
+
+    Parameters
+    -------------
+    var1: str
+        The first variable 
+    var2: str
+        The  second variable
+
+    Returns
+    -------------
+    nchack.NCTracker
+        New tracker with the correlation coefficients 
+    """
+
+    return cor(self, var1 = var1, var2 = var2,  silent = silent, method = "fld")
     
-def cor_time(self, var1 = None, var2 = None,  silent = False, cores = 1):
-    return cor(self, var1 = var1, var2 = var2,  silent = silent, cores = cores, method = "tim")
+def cor_time(self, var1 = None, var2 = None,  silent = False):
+    """
+    Calculate the correlation correct in time between two variables, for each grid cell
+
+    Parameters
+    -------------
+    var1: str
+        The first variable 
+    var2: str
+        The  second variable
+
+    Returns
+    -------------
+    nchack.NCTracker
+        New tracker with the correlation coefficients 
+    """
+    return cor(self, var1 = var1, var2 = var2,  silent = silent,  method = "tim")
 
 
 

@@ -2,11 +2,11 @@
 from ._filetracker import nc_created
 from ._cleanup import cleanup 
 from ._runcommand import run_command
+from ._temp_file import temp_file
 
 def nco_command(self, command):
     """ Method to all any nco command of the the form 'command + infile + outfile'"""
-    target = tempfile.NamedTemporaryFile().name + ".nc"
-    target = target.replace("tmp/", "tmp/nchack")
+    target = temp_file("nc")
     nc_created.append(target)
     nco_command = command + " " + self.current + " " + target
     run_command(nco_command)

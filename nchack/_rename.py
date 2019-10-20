@@ -3,7 +3,21 @@ from ._cleanup import cleanup
 from ._runthis import run_this
 
 def rename(self, newnames, silent = True, cores = 1):
-    """Method to rename netcdf variable"""
+    """
+    Rename variables in a tracker. 
+
+    Parameters
+    -------------
+    newnames : dict
+        Dictionary with keys being old variable names and values being new variable names
+    cores: int
+        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+
+    Returns
+    -------------
+    nchack.NCTracker
+        Reduced tracker with variables renamed 
+    """
 
     if type(newnames) is not dict:
         raise ValueError("a dictionary was not supplied")
@@ -16,7 +30,7 @@ def rename(self, newnames, silent = True, cores = 1):
         cdo_rename += "," + value
 
     # need a check at this point for file validity     
-    cdo_command= "cdo chname" + cdo_rename 
+    cdo_command= "cdo -chname" + cdo_rename 
 
     run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
 

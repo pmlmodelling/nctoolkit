@@ -4,15 +4,43 @@ from ._cleanup import cleanup
 from ._runthis import run_this
 
 def select_season(self, season, silent = True, cores = 1):
-    """Method to select the season"""
+    """
+    Select season from tracker
 
-    cdo_command = "cdo select,season=" + season
+    Parameters
+    -------------
+    season : str
+        Season to select. TBC.....
+    cores: int
+        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+
+    Returns
+    -------------
+    nchack.NCTracker
+        Reduced tracker with the season selected
+    """
+
+    cdo_command = "cdo -select,season=" + season
     run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
     
     cleanup(keep = self.current)
 
 def select_months(self, months, silent = True, cores = 1):
-    """Method to select months"""
+    """
+    Select months from tracker
+
+    Parameters
+    -------------
+    months : list or int
+        Month(s) to select. 
+    cores: int
+        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+
+    Returns
+    -------------
+    nchack.NCTracker
+        Reduced tracker with the months selected
+    """
 
     if type(months) is not list:
         months = [months]
@@ -26,12 +54,26 @@ def select_months(self, months, silent = True, cores = 1):
 
     months = str_flatten(months, ",") 
 
-    cdo_command = "cdo selmonth," + months + " "
+    cdo_command = "cdo -selmonth," + months + " "
     run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
     
 
 def select_years(self, years, silent = True, cores = 1):
-    """Method to select years"""
+    """
+    Select years from tracker
+
+    Parameters
+    -------------
+    months : list or int
+        Month(s) to select. 
+    cores: int
+        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+
+    Returns
+    -------------
+    nchack.NCTracker
+        Reduced tracker with the years selected
+    """
 
     if type(years) is not list:
         years = [years]
@@ -41,14 +83,29 @@ def select_years(self, years, silent = True, cores = 1):
 
     years = str_flatten(years, ",") 
 
-    cdo_command = "cdo selyear," + years
+    cdo_command = "cdo -selyear," + years
     run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
     
     cleanup(keep = self.current)
     
 
 def select_variables(self, vars = None, silent = True, cores = 1):
-    """Method to select variables from a netcdf file"""
+    """
+    Select variables from tracker
+
+    Parameters
+    -------------
+    months : list or int
+        Month(s) to select. 
+    cores: int
+        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+
+    Returns
+    -------------
+    nchack.NCTracker
+        Reduced tracker with the variables selected
+    """
+
 
     if type(vars) is str:
         vars_list = [vars]
@@ -57,14 +114,17 @@ def select_variables(self, vars = None, silent = True, cores = 1):
 
     vars_list = str_flatten(vars_list, ",")
     
-    cdo_command = "cdo selname," + vars_list
+    cdo_command = "cdo -selname," + vars_list
 
     run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
     
     cleanup(keep = self.current)
     
 def select_timestep(self, times, silent = True, cores = 1):
-    """Method to select time steps"""
+    """
+    This method should probably be removed
+    
+    """
 
     if type(times) is not list:
         times = [times]
@@ -74,7 +134,7 @@ def select_timestep(self, times, silent = True, cores = 1):
     times = [str(x) for x in times]
     times = str_flatten(times)
 
-    cdo_command = "cdo seltimestep," + times 
+    cdo_command = "cdo -seltimestep," + times 
 
     run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
 

@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# nchack - easy tools for manipulating netcdf data in Python.
+# nchack - easy tools for manipulating netcdf data in Python
 
 The goal of nchack is to provide a comprehensive tool in Python for manipulating individual netcdf files and ensembles of netcdf files. The philosophy is to provide sufficient methods to carry out 80-90% of netcdf manipulations.
 
@@ -29,8 +29,7 @@ conda install -c conda-forge nco
 ```
  
 Currently, the package has been tested for Linux computers. It will not
-work on Windows platforms, currently. But (buyer beware) it probably
-should work on Macs.
+work on Windows platforms, currently. But (buyer beware) it should work on Macs.
 
 ## Tutorials
 

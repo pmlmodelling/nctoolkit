@@ -3,6 +3,9 @@ import os
 import pandas as pd
 
 def times(self):
+    if type(self.current) is list:
+        raise ValueError("This presently only works for single file trackers")
+        
     ff = self.current
     cdo_result = os.popen( "cdo showtimestamp " + ff).read()
     cdo_result = cdo_result.replace("\n", "")

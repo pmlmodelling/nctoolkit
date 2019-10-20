@@ -3,14 +3,14 @@ import xarray as xr
 import pandas as pd
 import numpy as np
 import os
-import tempfile
+from._temp_file import temp_file
 # function to generate the grid for cdo remapping
 from .flatten import str_flatten
 
 def generate_grid(coords):
     grid_type = None
-    grid_file = tempfile.NamedTemporaryFile().name
-    grid_file = grid_file.replace("tmp/", "tmp/nchack")
+    grid_file = temp_file()
+
     lon_unique = np.unique(coords.iloc[:,0])
     lat_unique = np.unique(coords.iloc[:,1])
     lon_step = (max(lon_unique) - min(lon_unique)) / (len(lon_unique) - 1)

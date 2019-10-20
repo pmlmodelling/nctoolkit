@@ -5,7 +5,10 @@ import sys
 import copy
 
 from ._filetracker import nc_created
+from ._filetracker import nc_safe
 from ._remove import nc_remove
+from ._session import session_stamp
+from ._session import session_info
 
 # keep is a file you do not want to delete
 
@@ -25,7 +28,7 @@ def cleanup(keep = None):
 
     mylist = [f for f in glob.glob("/tmp/" + "*.nc*")]
     mylist = mylist + [f for f in glob.glob("/var/tmp/" + "*.nc*")]
-    mylist = mylist + [f for f in glob.glob("/usr/tmp/" + "*.nc*")]
+    #mylist = mylist + [f for f in glob.glob("/usr/tmp/" + "*.nc*")]
 
     other_files = []
     for ff in mylist:
@@ -33,6 +36,13 @@ def cleanup(keep = None):
             if cc in ff:
                 other_files.append(ff)
       
+    mylist = [f for f in glob.glob("/tmp/" + "*.nc*")]
+    mylist = mylist + [f for f in glob.glob("/var/tmp/" + "*.nc*")]
+    #mylist = mylist + [f for f in glob.glob("/usr/tmp/" + "*.nc*")]
+    mylist = [f for f in mylist if session_stamp["stamp"] in f]
+    for ff in mylist:
+        other_files.append(ff)
+
     candidates = list(set(candidates + other_files))
     candidates = [x for x in candidates if os.path.exists(x)]
     candidates
@@ -40,6 +50,7 @@ def cleanup(keep = None):
     # Step 2 is to find the trackers in the locals
     
     valid_files = []
+    valid_files = valid_files + nc_safe
     objects = dir(sys.modules["__main__"])
     for i in ([v for v in objects if not v.startswith('_')]):
         i_class = str(eval("type(sys.modules['__main__']." +i + ")"))
@@ -85,8 +96,16 @@ def cleanup(keep = None):
     for dd in delete_these:
         if os.path.exists(dd):
             nc_remove(dd)
-    
 
+    result = os.statvfs("/tmp/")
+    result = result.f_frsize * result.f_bavail 
+    if result > session_info["size"]:
+        if session_stamp["temp_dir"] == "/var/tmp/":
+            session_stamp["temp_dir"] = "/tmp/"
+    session_info["size"] = result
+
+    if session_info["size"] > 1.5 * session_info["latest_size"]:
+            session_stamp["temp_dir"] = "/tmp/"
 
 
 def clean_all():
@@ -120,6 +139,8 @@ def clean_all():
     for dd in delete_these:
         if os.path.exists(dd):
             nc_remove(dd)
+
+            
     
 
 def deep_clean():
@@ -140,7 +161,7 @@ def temp_check():
     mylist = [f for f in glob.glob("/tmp/" + "*.nc*")]
     mylist = mylist + [f for f in glob.glob("/var/tmp/" + "*.nc*")]
     mylist = mylist + [f for f in glob.glob("/usr/tmp/" + "*.nc*")]
-    mylist = [f for f in mylist if "nchack" in f]
+    mylist = [f for f in mylist if session_stamp["stamp"] in f]
     if len(mylist) > 0:
         if len(mylist) == 1:
             print(str(len(mylist)) +  " file was created by nchack in prior or current sessions. Consider running deep_clean!")

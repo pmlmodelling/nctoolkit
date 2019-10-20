@@ -2,15 +2,36 @@
     # add checker for date validity
 
 import os
-import tempfile
 
+from ._temp_file import temp_file
 from ._filetracker import nc_created
 from ._cleanup import cleanup
 from ._runthis import run_this
 
 
 def set_date(self, year, month, day, base_year = 1900, silent = True):
-    """Function to set the date"""
+
+    """
+    Set the date in a tracker. You should only do this if you have to fix/change a tracker with a single date. 
+
+    Parameters
+    -------------
+    year : int 
+        The year
+    month : int 
+        The month
+    day : int 
+        The day
+    base_year : int
+        The base year for time creation in the netcdf. Defaults to 1900.
+    cores: int
+        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+
+    Returns
+    -------------
+    nchack.NCTracker
+        Reduced tracker with the new date 
+    """
 
     # check that the values supplied are valid
     # This will convert things to ints, and if it can't be done, throw an error
@@ -30,7 +51,20 @@ def set_date(self, year, month, day, base_year = 1900, silent = True):
 
 
 def set_longname(self, var_dict, silent = True):
-    """Method to set long names"""
+    """
+    Set long name of variables. 
+
+    Parameters
+    -------------
+    var_dict : dict
+        Dictionary with key, value pairs representing the variable names and the new long names
+
+    Returns
+    -------------
+    nchack.NCTracker
+        Reduced tracker with the new date 
+    """
+
     if self.run == False:
         ValueError("NCO methods do not work in hold mode")
 
@@ -42,8 +76,7 @@ def set_longname(self, var_dict, silent = True):
     
     # change the units in turn. This doesn't seem to be something you can chain?
     for i in var_dict:
-        target = tempfile.NamedTemporaryFile().name + ".nc"
-        target = target.replace("tmp/", "tmp/nchack")
+        target = temp_file("nc") 
         nc_created.append(target)
         var = i
         new_long = var_dict[i]
@@ -60,16 +93,29 @@ def set_longname(self, var_dict, silent = True):
 
 
 def set_missing(self, value, silent = True, cores = 1):
-    """Function to set the missing values"""
-    """This is either a range or a single value"""
+    """
+    Set the missing value for a single number or a range
+
+    Parameters
+    -------------
+    value : int or list
+        IIf int is supplied, this will be converted to a missing value. If a two variable list is supplied this will used for the range to to apply missing values to. 
+    cores: int
+        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+
+    Returns
+    -------------
+    nchack.NCTracker
+        Reduced tracker with the missing values applied.
+    """
 
     if type(value) is int:
         value = float(value)
 
     if type(value) is float:
-        cdo_command = "cdo setctomiss," + str(value)
+        cdo_command = "cdo -setctomiss," + str(value)
     if type(value) is list:
-        cdo_command = "cdo setrtomiss," + str(value[0]) + "," + str(value[1])
+        cdo_command = "cdo -setrtomiss," + str(value[0]) + "," + str(value[1])
 
     run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
 
@@ -78,7 +124,20 @@ def set_missing(self, value, silent = True, cores = 1):
 
 
 def set_unit(self, var_dict, silent = True):
-    """Method to set units"""
+    """
+    Set the units for variables 
+
+    Parameters
+    -------------
+    var_dict : dict
+        A dictionary where the key, value pair are the variables and new units respectively.
+
+    Returns
+    -------------
+    nchack.NCTracker
+        Reduced tracker with the new units. 
+    """
+
 
     # Check that a dictionary has been supplied
     if type(var_dict) is not dict:
@@ -93,4 +152,36 @@ def set_unit(self, var_dict, silent = True):
 
     # clean up the directory
     cleanup(keep = self.current)
+
+
+def set_gridtype(self, grid, silent = True):
+    """
+    Set the grid type. Only use this if, for example, the grid is "generic" when it should be lonlat. 
+
+    Parameters
+    -------------
+    grid : str
+        Grid type. Needs to be one of "curvilinear", "unstructured", "dereference", "regular", "regularnn" or "lonlat".
+
+    Returns
+    -------------
+    nchack.NCTracker
+        Reduced tracker with the new grid type
+    """
+
+
+    # check that the values supplied are valid
+    # This will convert things to ints, and if it can't be done, throw an error
+
+    if grid not in ["curvilinear", "unstructured", "dereference", "regular", "regularnn", "lonlat"]:
+            raise ValueError("Grid type supplies is not supported")
+
+    cdo_command = "cdo -setgridtype," + grid
+
+    run_this(cdo_command, self, silent, output = "ensemble")
+
+    # clean up the directory
+    cleanup(keep = self.current)
+
+
 
