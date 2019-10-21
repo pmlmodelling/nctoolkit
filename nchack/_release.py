@@ -29,7 +29,10 @@ def release(self, silent = True, cores = 1, run_merge = True):
     if self.run == False:
         self.run = True
 
-        cdo_command = "cdo -L "
+        if (len(self.history) > len(self.hold_history)):
+            cdo_command = "cdo -L"
+        else:
+            cdo_command = "cdo "
 
         output_method = "ensemble"
         
