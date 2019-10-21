@@ -36,7 +36,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="API" href="api.html" />
+    <link rel="next" title="Ensemble methods" href="merging_notebook.html" />
     <link rel="prev" title="Introduction tutorial" href="basic_usage.html" /> 
 </head>
 
@@ -86,9 +86,11 @@
 <li class="toctree-l1"><a class="reference internal" href="installing.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="basic_usage.html">Introduction tutorial</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Lazy evaluation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="merging_notebook.html">Ensemble methods</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Help &amp; reference</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="howto.html">Introduction tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="backends.html">nckack backends</a></li>
 </ul>
@@ -386,35 +388,18 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">clear_output</span>
+<span></span><span class="kn">import</span> <span class="nn">nchack</span> <span class="k">as</span> <span class="nn">nc</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">clear_output</span>
 <span class="o">!</span> wget ftp://ftp.cdc.noaa.gov/Datasets/COBE2/sst.mon.ltm.1981-2010.nc
 <span class="n">clear_output</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
-<p>We also, of course, need to import nchack. Please note I am suppressing warnings to make this notebook more readable. I do not recommend suppressing warnings….</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">nchack</span> <span class="k">as</span> <span class="nn">nc</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
-<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Tip: include atexit.register(nchack.clean_all) after loading nchack
-</pre></div></div>
-</div>
 <p>We can then set up the tracker file which we will use for manipulating the SST climatology.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -425,7 +410,7 @@ Tip: include atexit.register(nchack.clean_all) after loading nchack
 </div>
 <p>Now, let’s select the variable sst, clip the file to the northern hemisphere, calculate the mean value in each grid cell for the first half of the year, and then calculate the spatial mean.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -439,7 +424,7 @@ Tip: include atexit.register(nchack.clean_all) after loading nchack
 </div>
 <p>The tracker’s history is as follows:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -448,21 +433,21 @@ Tip: include atexit.register(nchack.clean_all) after loading nchack
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="output_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span>[&#39;cdo -s -selname,sst sst.mon.ltm.1981-2010.nc /tmp/nchackphodfsbpnchacknchackphodfsbpnchacktmpe8sal2iu.nc&#39;,
- &#39;cdo -s -sellonlatbox,-180,180,0,90 /tmp/nchackphodfsbpnchacknchackphodfsbpnchacktmpe8sal2iu.nc /tmp/nchackphodfsbpnchacknchackphodfsbpnchacktmp7pwx_ds7.nc&#39;,
- &#39;cdo -s -selmonth,1,2,3,4,5,6 /tmp/nchackphodfsbpnchacknchackphodfsbpnchacktmp7pwx_ds7.nc /tmp/nchackphodfsbpnchacknchackphodfsbpnchacktmpnbgxkvd5.nc&#39;,
- &#39;cdo -s -timmean /tmp/nchackphodfsbpnchacknchackphodfsbpnchacktmpnbgxkvd5.nc /tmp/nchackphodfsbpnchacknchackphodfsbpnchacktmpfcj1f4k4.nc&#39;,
- &#39;cdo -s -fldmean /tmp/nchackphodfsbpnchacknchackphodfsbpnchacktmpfcj1f4k4.nc /tmp/nchackphodfsbpnchacknchackphodfsbpnchacktmp7y39q73y.nc&#39;]
+<span></span>[&#39;cdo -s -selname,sst sst.mon.ltm.1981-2010.nc /tmp/nchackknphvysanchacknchackknphvysanchacktmpsc5w3q07.nc&#39;,
+ &#39;cdo -s -sellonlatbox,-180,180,0,90 /tmp/nchackknphvysanchacknchackknphvysanchacktmpsc5w3q07.nc /tmp/nchackknphvysanchacknchackknphvysanchacktmp9oawgs3c.nc&#39;,
+ &#39;cdo -s -selmonth,1,2,3,4,5,6 /tmp/nchackknphvysanchacknchackknphvysanchacktmp9oawgs3c.nc /tmp/nchackknphvysanchacknchackknphvysanchacktmp623fx8jm.nc&#39;,
+ &#39;cdo -s -timmean /tmp/nchackknphvysanchacknchackknphvysanchacktmp623fx8jm.nc /tmp/nchackknphvysanchacknchackknphvysanchacktmp66dscls5.nc&#39;,
+ &#39;cdo -s -fldmean /tmp/nchackknphvysanchacknchackknphvysanchacktmp66dscls5.nc /tmp/nchackknphvysanchacknchackknphvysanchacktmpebhtjmsp.nc&#39;]
 </pre></div>
 </div>
 </div>
 <p>In total, there are 5 operations, with temporary files created each time. However, we only want to generate one temporary file. So, can we do that? Yes, thanks to CDO’s method chaining ability. If we want to utilize this we need to set the tracker’s evaluation to lazy. Once this is done nchack will only evaluate things either when it needs to, e.g. you call a method that cannot possibly be chained, or if you release it. This works as follows:</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -480,7 +465,7 @@ Tip: include atexit.register(nchack.clean_all) after loading nchack
 </div>
 <p>We can now see that the history is much cleaner, with only one command.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -489,17 +474,17 @@ Tip: include atexit.register(nchack.clean_all) after loading nchack
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="output_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span>[&#39;cdo -s -L -fldmean -timmean -selmonth,1,2,3,4,5,6 -sellonlatbox,-180,180,0,90 -selname,sst sst.mon.ltm.1981-2010.nc /tmp/nchackphodfsbpnchacknchackphodfsbpnchacktmp2flaw_zy.nc&#39;]
+<span></span>[&#39;cdo -s -L -fldmean -timmean -selmonth,1,2,3,4,5,6 -sellonlatbox,-180,180,0,90 -selname,sst sst.mon.ltm.1981-2010.nc /tmp/nchackknphvysanchacknchackknphvysanchacktmpxgk0eazy.nc&#39;]
 </pre></div>
 </div>
 </div>
 <p>How does this impact run time? Let’s time the original, unchained method.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -519,12 +504,12 @@ Tip: include atexit.register(nchack.clean_all) after loading nchack
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-CPU times: user 11.7 ms, sys: 18.4 ms, total: 30.2 ms
-Wall time: 535 ms
+CPU times: user 11.6 ms, sys: 22.6 ms, total: 34.2 ms
+Wall time: 538 ms
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -546,8 +531,8 @@ Wall time: 535 ms
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-CPU times: user 5.48 ms, sys: 3.43 ms, total: 8.91 ms
-Wall time: 131 ms
+CPU times: user 4.21 ms, sys: 5.16 ms, total: 9.36 ms
+Wall time: 113 ms
 </pre></div></div>
 </div>
 <p>This was almost 4 times faster. Exact speed improvements, will of course depend on specific IO requirements, and some times using lazy evaluation will make negligible impact, but in others can make code over 10 times fasteExact speed improvements, will of course depend on specific IO requirements, and some times using lazy evaluation will make negligible impact, but in others can make code over 10 times faster.</p>
@@ -561,7 +546,7 @@ Wall time: 131 ms
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="api.html" class="btn btn-neutral float-right" title="API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="merging_notebook.html" class="btn btn-neutral float-right" title="Ensemble methods" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="basic_usage.html" class="btn btn-neutral float-left" title="Introduction tutorial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

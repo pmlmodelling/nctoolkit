@@ -19,6 +19,7 @@ Documentation
    installing
    basic_usage
    lazy_methods 
+   merging_notebook 
 
 **User Guide**
 
@@ -33,9 +34,12 @@ Documentation
    :hidden:
    :caption: Help & reference
 
+   howto
    api
    backends
    
+
+
 
 
 

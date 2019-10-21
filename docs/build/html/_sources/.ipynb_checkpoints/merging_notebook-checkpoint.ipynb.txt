@@ -1,0 +1,348 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Ensemble methods \n",
+    "This notebook will outline some general methods for doing comparisons of multiple files. We will work with two different sea surface temperature data sets from NOAA and the Met Office Hadley Centre.\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Merging files with different variables"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "This notebook will outline some general methods for doing comparisons of multiple files. We will work with two different sea surface temperature data sets from NOAA and the Met Office Hadley Centre."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import nchack as nc\n",
+    "import pandas as pd\n",
+    "import xarray as xr\n",
+    "import numpy as np"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The first step is to get the data. \n",
+    "We will start by creating two separate trackers for each file."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "tracker1 = nc.open_data(\"/users/modellers/rwi/nchack/data/ensemble_merge/sst.mon.mean.nc\")\n",
+    "tracker2 = nc.open_data(\"/users/modellers/rwi/nchack/data/ensemble_merge/HadISST_sst.nc\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We can see that both variables have sea surface temperature labelled as sst. So we will need to change that."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['sst']"
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "text/plain": [
+       "['time_bnds', 'sst']"
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "tracker1.variables\n",
+    "tracker2.variables"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "tracker1.rename({\"sst\":\"noaa\"})\n",
+    "tracker2.rename({\"sst\":\"hadley\"})"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The data sets also cover different time periods, and only have overlapping between 1870 and 2018. so we will need to select those years"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "tracker1.select_years(list(range(1870, 2019)))\n",
+    "tracker2.select_years(list(range(1870, 2019)))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We also have a problem in that there are two horizontal grids in the Hadley Centre file. We can solve this by selecting the sst variable only"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Number of variables: 2\n",
+      "Number of levels: 1\n",
+      "Number of years: 149\n",
+      "Number of months: 1788\n",
+      "Number of dates: 1788\n",
+      "Number of times: 1788\n",
+      "Number of grid points: 2\n",
+      "Number of horizontal grids: 2\n"
+     ]
+    }
+   ],
+   "source": [
+    "tracker2.numbers()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "tracker2.select_variables(\"hadley\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Number of variables: 1\n",
+      "Number of levels: 1\n",
+      "Number of years: 149\n",
+      "Number of months: 1788\n",
+      "Number of dates: 1788\n",
+      "Number of times: 1788\n",
+      "Number of grid points: 64800\n",
+      "Number of horizontal grids: 1\n"
+     ]
+    }
+   ],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "At this point, the trackers have the same number of time steps and months covered. \n",
+    "However, the grids are still a bit different. So we want to unify them by regridding one tracker on to the other's grid. This can be done using regrid, or any grid of your choosing."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "tracker1.regrid(grid = tracker2)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We now have two separate trackers. Let's create a new tracker that has both of them, and then merge them.\n",
+    "When doing this we need to make sure nas are treated properly. In this case Hadley Centre values not being NAs as they should be, so we need to fix that."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 27,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Warning: files to merge do not have the same times!\n",
+      "CDO warning:b'Warning: Duplicate entry of parameter -1 in /tmp/nchacktikwuxwgnchacknchacktikwuxwgnchacktmphf25p4zy.nc!\\ncdo    merge: Processed 2 variables over 3576 timesteps [1.07s 81MB].\\n'\n"
+     ]
+    }
+   ],
+   "source": [
+    "big_tracker = nc.merge_trackers(tracker1, tracker2)\n",
+    "big_tracker.set_missing([-9000, - 900])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's work out what the global mean SST was over the time period. Note that this will not be totally accurate as there are some missing values here and there that might bias things."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "big_tracker.spatial_mean()\n",
+    "big_tracker.yearly_mean()\n",
+    "big_tracker.rolling_mean(10)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "big_tracker.to_xarray().hadley.plot()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "big_tracker.to_xarray().noaa.plot()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We can also work out the difference between the two. Here we wil work out the monthly bias per cell. Then calculate the mean global difference per year, and then calculate a rolling 10 year mean."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "big_tracker = nc.open_data([tracker1.current, tracker2.current])\n",
+    "big_tracker.merge()\n",
+    "big_tracker.mutate({\"bias\":\"hadley-noaa\"})\n",
+    "big_tracker.set_missing([-9000, - 900])\n",
+    "big_tracker.spatial_mean()\n",
+    "big_tracker.yearly_mean()\n",
+    "big_tracker.rolling_mean(10)\n",
+    "big_tracker.to_xarray().bias.plot()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "You can see that there is a notable difference at the start of the time series."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "new = nc.open_data(tracker1.current)\n",
+    "new.spatial_mean()\n",
+    "new.yearly_mean()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Merging files with different times"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Ensemble averaging"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.7.3"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
