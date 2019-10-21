@@ -65,6 +65,7 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
             self.history.append(os_command)
         else:
             self.history[-1] = os_command + " " + self.history[-1].replace("cdo ", " ")
+            self.history[-1] = self.history[-1].replace("  ", " ")
 
     if self.run:
 
@@ -79,6 +80,7 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
 
             if len(self.hold_history) < len(self.history):
                 os_command = os_command + " " + self.history[-1].replace("cdo ", " ")
+                os_command = os_command.replace("  ", " ")
 
             pool = multiprocessing.Pool(cores)
             target_list = []
@@ -96,6 +98,7 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
                 target = temp_file("nc")
                 nc_created.append(target)
                 ff_command = ff_command + " " + ff + " " + target
+                ff_command = ff_command.replace("  ", " ")
     
                 self.history.append(ff_command)
                 temp = pool.apply_async(run_cdo,[ff_command, target])
@@ -128,6 +131,7 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
 
             target = temp_file("nc")
             os_command = os_command + str_flatten(self.current, " ") + " " + target
+            os_command = os_command.replace("  ", " ")
             target = run_cdo(os_command, target)
             self.current = target
             self.history = new_history
