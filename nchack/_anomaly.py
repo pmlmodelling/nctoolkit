@@ -1,9 +1,10 @@
 import os
 import glob
 import copy
-from ._temp_file import temp_file
 import multiprocessing
+import copy
 
+from ._temp_file import temp_file
 from ._filetracker import nc_created
 from ._filetracker import nc_safe
 from .flatten import str_flatten
@@ -15,11 +16,10 @@ from ._cdo_command import cdo_command
 from ._expr import transmute
 from ._cleanup import cleanup
 from ._runthis import run_cdo
-import copy
 
-
-def anomaly_annual(self, var = None, baseline = None, silent = False):
+def anomaly_annual(self, var = None, baseline = None):
     """
+
     Calculate annual anomalies based on a baseline period
     The anomoly is calculated by first calculating the climatological mean for the given baseline period. Annual means are then calculated for each year and the anomaly is calculated compared with the baseline mean.
     
@@ -95,7 +95,3 @@ def anomaly_annual(self, var = None, baseline = None, silent = False):
     self.history = self.history + new_tracker.history
 
     self.current = new_tracker.current
-
-
-    
-    
