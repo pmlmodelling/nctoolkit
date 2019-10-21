@@ -1,0 +1,6 @@
+nchack.NCTracker.to\_xarray
+===========================
+
+.. currentmodule:: nchack
+
+.. automethod:: NCTracker.to_xarray

@@ -1,0 +1,6 @@
+nchack.NCTracker.anomaly\_annual
+================================
+
+.. currentmodule:: nchack
+
+.. automethod:: NCTracker.anomaly_annual

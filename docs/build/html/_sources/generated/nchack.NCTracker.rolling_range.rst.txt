@@ -1,0 +1,6 @@
+nchack.NCTracker.rolling\_range
+===============================
+
+.. currentmodule:: nchack
+
+.. automethod:: NCTracker.rolling_range

@@ -1,0 +1,6 @@
+nchack.NCTracker.bottom
+=======================
+
+.. currentmodule:: nchack
+
+.. automethod:: NCTracker.bottom

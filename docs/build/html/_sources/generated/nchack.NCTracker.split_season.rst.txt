@@ -1,0 +1,6 @@
+nchack.NCTracker.split\_season
+==============================
+
+.. currentmodule:: nchack
+
+.. automethod:: NCTracker.split_season

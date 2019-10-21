@@ -1,0 +1,130 @@
+nchack.NCTracker
+================
+
+.. currentmodule:: nchack
+
+.. autoclass:: NCTracker
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~NCTracker.__init__
+      ~NCTracker.anomaly_annual
+      ~NCTracker.bottom
+      ~NCTracker.cdo_command
+      ~NCTracker.cell_areas
+      ~NCTracker.check_dates
+      ~NCTracker.clip
+      ~NCTracker.copy
+      ~NCTracker.cor_space
+      ~NCTracker.cor_time
+      ~NCTracker.cum_sum
+      ~NCTracker.daily_max_climatology
+      ~NCTracker.daily_mean_climatology
+      ~NCTracker.daily_min_climatology
+      ~NCTracker.daily_range_climatology
+      ~NCTracker.depths
+      ~NCTracker.ensemble_check
+      ~NCTracker.ensemble_max
+      ~NCTracker.ensemble_mean
+      ~NCTracker.ensemble_mean_cdo
+      ~NCTracker.ensemble_min
+      ~NCTracker.ensemble_percentile
+      ~NCTracker.ensemble_range
+      ~NCTracker.lazy
+      ~NCTracker.mask_lonlat
+      ~NCTracker.max
+      ~NCTracker.mean
+      ~NCTracker.merge
+      ~NCTracker.merge_time
+      ~NCTracker.min
+      ~NCTracker.monthly_max
+      ~NCTracker.monthly_max_climatology
+      ~NCTracker.monthly_mean
+      ~NCTracker.monthly_mean_climatology
+      ~NCTracker.monthly_min
+      ~NCTracker.monthly_min_climatology
+      ~NCTracker.monthly_range
+      ~NCTracker.monthly_range_climatology
+      ~NCTracker.mutate
+      ~NCTracker.ncks_command
+      ~NCTracker.numbers
+      ~NCTracker.phenology
+      ~NCTracker.range
+      ~NCTracker.regrid
+      ~NCTracker.release
+      ~NCTracker.remove_variable
+      ~NCTracker.rename
+      ~NCTracker.rolling_max
+      ~NCTracker.rolling_mean
+      ~NCTracker.rolling_min
+      ~NCTracker.rolling_range
+      ~NCTracker.rolling_sum
+      ~NCTracker.seasonal_max
+      ~NCTracker.seasonal_max_climatology
+      ~NCTracker.seasonal_mean
+      ~NCTracker.seasonal_mean_climatology
+      ~NCTracker.seasonal_min
+      ~NCTracker.seasonal_min_climatology
+      ~NCTracker.seasonal_range
+      ~NCTracker.seasonal_range_climatology
+      ~NCTracker.select_months
+      ~NCTracker.select_season
+      ~NCTracker.select_timestep
+      ~NCTracker.select_variables
+      ~NCTracker.select_years
+      ~NCTracker.set_date
+      ~NCTracker.set_gridtype
+      ~NCTracker.set_longname
+      ~NCTracker.set_missing
+      ~NCTracker.set_unit
+      ~NCTracker.show_levels
+      ~NCTracker.show_months
+      ~NCTracker.show_years
+      ~NCTracker.spatial_max
+      ~NCTracker.spatial_mean
+      ~NCTracker.spatial_min
+      ~NCTracker.spatial_range
+      ~NCTracker.split_day
+      ~NCTracker.split_season
+      ~NCTracker.split_year
+      ~NCTracker.split_year_month
+      ~NCTracker.str_flatten
+      ~NCTracker.sum
+      ~NCTracker.surface
+      ~NCTracker.time_interp
+      ~NCTracker.times
+      ~NCTracker.to_netcdf
+      ~NCTracker.to_xarray
+      ~NCTracker.transmute
+      ~NCTracker.var
+      ~NCTracker.vertical_interp
+      ~NCTracker.vertical_max
+      ~NCTracker.vertical_mean
+      ~NCTracker.vertical_min
+      ~NCTracker.vertical_range
+      ~NCTracker.view
+      ~NCTracker.yearly_max
+      ~NCTracker.yearly_mean
+      ~NCTracker.yearly_min
+      ~NCTracker.yearly_range
+      ~NCTracker.zip
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~NCTracker.size
+      ~NCTracker.start
+      ~NCTracker.variables
+   
+   

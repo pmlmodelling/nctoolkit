@@ -1,0 +1,6 @@
+nchack.NCTracker.monthly\_range
+===============================
+
+.. currentmodule:: nchack
+
+.. automethod:: NCTracker.monthly_range

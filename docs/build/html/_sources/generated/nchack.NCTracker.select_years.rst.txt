@@ -1,0 +1,6 @@
+nchack.NCTracker.select\_years
+==============================
+
+.. currentmodule:: nchack
+
+.. automethod:: NCTracker.select_years

@@ -1,0 +1,6 @@
+nchack.NCTracker.yearly\_max
+============================
+
+.. currentmodule:: nchack
+
+.. automethod:: NCTracker.yearly_max

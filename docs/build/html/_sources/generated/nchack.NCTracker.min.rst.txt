@@ -1,0 +1,6 @@
+nchack.NCTracker.min
+====================
+
+.. currentmodule:: nchack
+
+.. automethod:: NCTracker.min

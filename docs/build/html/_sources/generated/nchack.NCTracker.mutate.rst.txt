@@ -1,0 +1,6 @@
+nchack.NCTracker.mutate
+=======================
+
+.. currentmodule:: nchack
+
+.. automethod:: NCTracker.mutate

@@ -1,0 +1,6 @@
+nchack.NCTracker.monthly\_max
+=============================
+
+.. currentmodule:: nchack
+
+.. automethod:: NCTracker.monthly_max

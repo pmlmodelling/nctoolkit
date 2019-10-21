@@ -1,0 +1,6 @@
+nchack.NCTracker.yearly\_mean
+=============================
+
+.. currentmodule:: nchack
+
+.. automethod:: NCTracker.yearly_mean

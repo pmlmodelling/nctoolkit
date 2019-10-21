@@ -1,0 +1,6 @@
+nchack.NCTracker.numbers
+========================
+
+.. currentmodule:: nchack
+
+.. automethod:: NCTracker.numbers

@@ -1,0 +1,6 @@
+nchack.NCTracker.set\_missing
+=============================
+
+.. currentmodule:: nchack
+
+.. automethod:: NCTracker.set_missing

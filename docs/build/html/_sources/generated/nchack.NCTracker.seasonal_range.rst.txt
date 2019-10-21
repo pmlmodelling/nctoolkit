@@ -1,0 +1,6 @@
+nchack.NCTracker.seasonal\_range
+================================
+
+.. currentmodule:: nchack
+
+.. automethod:: NCTracker.seasonal_range

@@ -1,0 +1,6 @@
+nchack.NCTracker.monthly\_mean
+==============================
+
+.. currentmodule:: nchack
+
+.. automethod:: NCTracker.monthly_mean

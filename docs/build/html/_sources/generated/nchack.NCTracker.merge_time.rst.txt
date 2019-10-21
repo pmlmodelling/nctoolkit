@@ -1,0 +1,6 @@
+nchack.NCTracker.merge\_time
+============================
+
+.. currentmodule:: nchack
+
+.. automethod:: NCTracker.merge_time

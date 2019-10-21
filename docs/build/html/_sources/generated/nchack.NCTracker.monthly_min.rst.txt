@@ -1,0 +1,6 @@
+nchack.NCTracker.monthly\_min
+=============================
+
+.. currentmodule:: nchack
+
+.. automethod:: NCTracker.monthly_min

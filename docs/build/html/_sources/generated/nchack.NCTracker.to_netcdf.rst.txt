@@ -1,0 +1,6 @@
+nchack.NCTracker.to\_netcdf
+===========================
+
+.. currentmodule:: nchack
+
+.. automethod:: NCTracker.to_netcdf

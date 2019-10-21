@@ -1,0 +1,6 @@
+nchack.NCTracker.ensemble\_min
+==============================
+
+.. currentmodule:: nchack
+
+.. automethod:: NCTracker.ensemble_min

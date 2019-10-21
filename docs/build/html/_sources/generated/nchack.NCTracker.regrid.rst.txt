@@ -1,0 +1,6 @@
+nchack.NCTracker.regrid
+=======================
+
+.. currentmodule:: nchack
+
+.. automethod:: NCTracker.regrid

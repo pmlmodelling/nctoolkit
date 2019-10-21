@@ -1,0 +1,6 @@
+nchack.NCTracker.start
+======================
+
+.. currentmodule:: nchack
+
+.. autoproperty:: NCTracker.start

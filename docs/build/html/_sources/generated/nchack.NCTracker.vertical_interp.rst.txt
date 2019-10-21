@@ -1,0 +1,6 @@
+nchack.NCTracker.vertical\_interp
+=================================
+
+.. currentmodule:: nchack
+
+.. automethod:: NCTracker.vertical_interp

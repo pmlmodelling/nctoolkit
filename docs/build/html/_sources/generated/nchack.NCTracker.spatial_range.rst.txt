@@ -1,0 +1,6 @@
+nchack.NCTracker.spatial\_range
+===============================
+
+.. currentmodule:: nchack
+
+.. automethod:: NCTracker.spatial_range

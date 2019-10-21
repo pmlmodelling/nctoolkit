@@ -1,0 +1,6 @@
+nchack.NCTracker.select\_variables
+==================================
+
+.. currentmodule:: nchack
+
+.. automethod:: NCTracker.select_variables

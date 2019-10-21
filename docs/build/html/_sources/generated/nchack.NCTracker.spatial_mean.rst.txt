@@ -1,0 +1,6 @@
+nchack.NCTracker.spatial\_mean
+==============================
+
+.. currentmodule:: nchack
+
+.. automethod:: NCTracker.spatial_mean

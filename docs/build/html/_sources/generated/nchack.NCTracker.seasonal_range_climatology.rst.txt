@@ -1,0 +1,6 @@
+nchack.NCTracker.seasonal\_range\_climatology
+=============================================
+
+.. currentmodule:: nchack
+
+.. automethod:: NCTracker.seasonal_range_climatology

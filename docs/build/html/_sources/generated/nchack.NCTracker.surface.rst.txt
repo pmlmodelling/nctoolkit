@@ -1,0 +1,6 @@
+nchack.NCTracker.surface
+========================
+
+.. currentmodule:: nchack
+
+.. automethod:: NCTracker.surface

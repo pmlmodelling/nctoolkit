@@ -1,0 +1,6 @@
+nchack.NCTracker.view
+=====================
+
+.. currentmodule:: nchack
+
+.. automethod:: NCTracker.view

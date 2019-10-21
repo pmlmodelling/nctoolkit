@@ -1,0 +1,6 @@
+nchack.NCTracker.seasonal\_max\_climatology
+===========================================
+
+.. currentmodule:: nchack
+
+.. automethod:: NCTracker.seasonal_max_climatology

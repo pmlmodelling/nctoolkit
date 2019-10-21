@@ -1,0 +1,6 @@
+nchack.NCTracker.history
+========================
+
+.. currentmodule:: nchack
+
+.. autoproperty:: NCTracker.history

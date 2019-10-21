@@ -1,0 +1,6 @@
+nchack.NCTracker.cdo\_command
+=============================
+
+.. currentmodule:: nchack
+
+.. automethod:: NCTracker.cdo_command

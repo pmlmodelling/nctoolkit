@@ -1,0 +1,6 @@
+nchack.NCTracker.show\_years
+============================
+
+.. currentmodule:: nchack
+
+.. automethod:: NCTracker.show_years

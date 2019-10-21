@@ -1,0 +1,6 @@
+nchack.NCTracker.show\_months
+=============================
+
+.. currentmodule:: nchack
+
+.. automethod:: NCTracker.show_months

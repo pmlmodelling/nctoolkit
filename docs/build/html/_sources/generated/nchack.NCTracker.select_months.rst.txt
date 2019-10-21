@@ -1,0 +1,6 @@
+nchack.NCTracker.select\_months
+===============================
+
+.. currentmodule:: nchack
+
+.. automethod:: NCTracker.select_months

@@ -1,0 +1,6 @@
+nchack.NCTracker.ensemble\_range
+================================
+
+.. currentmodule:: nchack
+
+.. automethod:: NCTracker.ensemble_range
