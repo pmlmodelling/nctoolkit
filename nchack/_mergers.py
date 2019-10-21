@@ -1,5 +1,6 @@
 
 
+import copy
 import os
 import pandas as pd
 
@@ -240,13 +241,15 @@ def merge_time(self, zip = True):
         Reduced tracker with merged data. 
     """
 
+    lazy_merger = copy.deepcopy(self.run)
+
     if self.merged:
         raise ValueError("You cannot double chain merge methods!")
 
     if self.run == False and (len(self.history) > len(self.hold_history)):
         self.release()
 
-    if self.run == False:
+    if lazy_merger == False:
         self.lazy()
 
     self.merged = True

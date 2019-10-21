@@ -125,6 +125,7 @@ class NCTracker:
         self.run = True
         self.hold_history = []
         self.merged = False
+        self.released = False
 
     def __repr__(self):
         # tidy up the output first

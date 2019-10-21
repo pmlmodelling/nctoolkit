@@ -114,7 +114,7 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
             else:
                 file_list = self.current
 
-            if len(self.hold_history) < len(self.history):
+            if self.released:
                 os_command = os_command + " " + self.history[-1].replace("cdo ", " ")
                 os_command = os_command.replace("  ", " ")
 
@@ -161,7 +161,7 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
 
             file_list = [self.current]
 
-            if len(self.history) > len(self.hold_history):
+            if self.released:
 
                 os_command = os_command + " " + self.history[-1].replace("cdo ", " ")
 

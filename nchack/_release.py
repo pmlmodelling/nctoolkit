@@ -28,6 +28,7 @@ def release(self,  cores = 1, run_merge = True):
 
     if self.run == False:
         self.run = True
+        self.released = True
 
         if (len(self.history) > len(self.hold_history)):
             cdo_command = "cdo -L"
@@ -40,6 +41,7 @@ def release(self,  cores = 1, run_merge = True):
             output_method = "one"
 
         run_this(cdo_command, self,  output = output_method, cores = cores)
+        self.released = False
 
 
 
