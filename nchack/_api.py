@@ -100,7 +100,7 @@ def open_data(x = None):
 
     return NCTracker(x)
     
-def merge_trackers(*trackers, silent = True):
+def merge_trackers(*trackers):
     all_files = []
     for tracker in trackers:
         if "NCTracker" in str(type(tracker)) == False:
@@ -110,7 +110,7 @@ def merge_trackers(*trackers, silent = True):
         else:
             all_files += tracker.current
     result = open_data(all_files)
-    result.merge(silent = silent)
+    result.merge()
     return result
 
 class NCTracker:

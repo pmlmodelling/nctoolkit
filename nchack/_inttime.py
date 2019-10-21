@@ -3,16 +3,16 @@ from ._runthis import run_this
 from .flatten import str_flatten
 from ._cleanup import cleanup
 
-def time_interp(self, start_date = None, end_date = None, resolution = "monthly",   cores = 1):
+def time_interp(self, start = None, end = None, resolution = "monthly",   cores = 1):
 
     """
     Temporally interpolate variables based on date range and time resolution 
 
     Parameters
     -------------
-    start_data : str
+    start : str
         Start date for interpolation. Needs to be of the form YYYY/MM/DD or YYYY-MM-DD
-    end_data : str
+    end : str
         End date for interpolation. Needs to be of the form YYYY/MM/DD or YYYY-MM-DD
     resolution : str
         Time steps used for intpoleration. Needs to be "daily", "weekly", "monthly" or "yearly"
@@ -40,25 +40,25 @@ def time_interp(self, start_date = None, end_date = None, resolution = "monthly"
     if resolution == "yearly":
         resolution = "1year"
     
-    if start_date is None:
+    if start is None:
         if type(self.current) is list:
             ff = self.current[0]
             print("Warning: start date taken from first file in tracker!")
         else:
             ff = self.current
         cdo_command = "cdo showdate " + ff
-        start_date = os.popen(cdo_command).read().strip().split(" ")[0]
+        start = os.popen(cdo_command).read().strip().split(" ")[0]
 
-    start_date = start_date.replace("/", "-")
+    start = start.replace("/", "-")
 
 
-    cdo_command = "-inttime,"+start_date +",12:00:00," + resolution
+    cdo_command = "-inttime,"+start +",12:00:00," + resolution
 
-    if end_date is None:
+    if end is None:
         cdo_command = "cdo -L " + cdo_command
     else:
-        end_date = end_date.replace("/", "-")
-        cdo_command = "cdo -L " + "-seldate," + start_date + "," + end_date + " " + cdo_command
+        end = end.replace("/", "-")
+        cdo_command = "cdo -L " + "-seldate," + start + "," + end + " " + cdo_command
 
     run_this(cdo_command, self,  output = "ensemble", cores = cores)
 
