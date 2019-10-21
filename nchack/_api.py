@@ -359,8 +359,6 @@ class NCTracker:
     from ._rollstat import rolling_range
     from ._rollstat import rolling_sum
 
-    from ._ncks_command import ncks_command 
-
     from ._show import times
     from ._show import numbers 
     from ._show import show_years 
