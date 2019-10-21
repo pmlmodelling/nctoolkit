@@ -2,9 +2,9 @@ import os
 from ._temp_file import temp_file
 from ._cleanup import cleanup
 from ._runthis import run_this
+from ._runthis import run_nco
 from .flatten import str_flatten
 from ._filetracker import nc_created
-from ._runcommand import run_command
 
 
 # Ensemble methods all assume the structure of the input files are idential
@@ -91,10 +91,10 @@ def ensemble_nco(self, method, vars = None, ignore_time = False):
         else:
             nco_command = ("ncra -y " + method + " -v " + str_flatten(vars, ",") + " " + str_flatten(ff_ensemble, " ") + " " + target) 
 
-
+    target = run_nco(nco_command, target) 
 
     self.history.append(nco_command)
-    run_command(nco_command, self) 
+
     if self.run:
         self.current = target 
 
