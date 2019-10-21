@@ -23,6 +23,42 @@ def split_list(seq, num):
     return out
 
 
+def run_nco(command, target):
+    command = command.strip()
+    if (command.startswith("ncea ") == False) and (command.startswith("ncra ") == False):
+        raise ValueError("This is not a valid NCO command")
+
+    out = subprocess.Popen(command,shell = True, stdin = subprocess.PIPE,stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
+    result,ignore = out.communicate()
+
+    if "(Abort)" in str(result):
+        raise ValueError(str(result).replace("b'","").replace("\\n", "").replace("'", ""))
+
+    if "ERROR" in str(result):
+       if target.startswith("/tmp/"):
+            new_target = target.replace("/tmp/", "/var/tmp/") 
+            command = command.replace(target, new_target)
+            target = new_target
+            nc_created.append(target)
+            out = subprocess.Popen(command,shell = True, stdin = subprocess.PIPE,stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
+            result1,ignore = out.communicate()
+            if "ERROR" in str(result1):
+                raise ValueError(str(result).replace("b'","").replace("\\n", "").replace("'", ""))
+            session_stamp["temp_dir"] = "/var/tmp/"
+            if "Warning:" in str(result1):
+                print("NCO warning:" + str(result1))
+    else:
+        if "Warning:" in str(result):
+            print("NCO warning:" + str(result))
+            
+    if os.path.exists(target) == False:
+        raise ValueError(command + " was not successful. Check output")
+
+    session_info["latest_size"] = os.path.getsize(target)
+
+    return target
+
+
 def run_cdo(command, target):
     command = command.strip()
     if command.startswith("cdo ") == False:
