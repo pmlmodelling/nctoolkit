@@ -60,240 +60,79 @@ def run_cdo(command, target):
 
 def run_this(os_command, self, silent = False, output = "one", cores = 1, n_operations = 1, zip = False):
 
-    """Method to run an nco/cdo system command and check output was generated"""
-    # Works on multiple files
-    run = self.run
-    # Step one
-
-    # Step 2: run the system command
-    
-    if run == False:
-        self.history.append(os_command)
-
-    if run:
-
-        if type(self.current) is str:
-            if os.path.exists(self.current) == False:
-                raise ValueError("The file " + self.current + " does not exist!")
-            # single file case
-            if silent:
-                os_command = os_command.replace("cdo ", "cdo -s ")
-
-            target = temp_file("nc") 
-            nc_created.append(target)
-            os_command = os_command + " " + self.current + " " + target
-
-            target = run_cdo(os_command, target)
-
-            run_history = [x for x in self.history if x.endswith(".nc")]
-            self.history = copy.deepcopy(run_history)
+    if self.run == False:
+        if len(self.hold_history) == len(self.history):
             self.history.append(os_command)
-
-            
-            # check the file was actually created
-            # Raise error if it wasn't
-
-            if os.path.exists(target) == False:
-                raise ValueError(os_command + " was not successful. Check output")
-            self.current = target
-
         else:
-            # multiple file case
+            self.history[-1] = os_command + " " + self.history[-1].replace("cdo ", " ")
 
-            if output == "one":
-                
-                if n_operations > 128:
-                    read = os.popen("cdo --operators").read()
-                    cdo_methods = [x.split(" ")[0] for x in read.split("\n")]
-                    cdo_methods = [mm for mm in cdo_methods if len(mm) > 0]
+    if self.run:
 
-                    # mergetime case
-                    # operations after merging need to be chunked by file
-                    # right now, this is only limited to mergetime
-                    # I don't think there is anything else that can be chunked
-                    # so the two if statements can probably be merged later
-                    
-                    if "mergetime " in os_command:
+        if (output == "ensemble" and type(self.current) == list) or (output == "ensemble" and type(self.current) == str):
+            new_history = self.hold_history
 
-                        if "mergetime " in os_command:
-                            merge_op = "mergetime "
-                        
-                        post_merge = 0
-                        for x in os_command.split(merge_op)[0].split(" "):
-                            for y in x.split(","):
-                                if y.replace("-", "") in cdo_methods:
-                                    post_merge +=1
-                        n_files = len(self.current)
-                        n_split = n_operations - post_merge - 1
-                        max_split = 127 - post_merge
-                        file_chunks = split_list(self.current, math.ceil(n_split / max_split) + 1)
-                        
-                        os_commands = []
-                        start_chunk = os_command.split(merge_op)[1]
+            if type(self.current) == str:
+                file_list = [self.current]
+                cores = 1
+            else:
+                file_list = self.current
 
-                        targets = []
+            if len(self.hold_history) < len(self.history):
+                os_command = os_command + " " + self.history[-1].replace("cdo ", " ")
 
-                        raise ValueError()
-                        new_commands = []
-                        
-                        for cc in file_chunks:
-                            for x in os_commands:
-                                target = temp_file("nc") 
-                                mid_cdo = " "
-                                for ff in cc:
-                                    mid_cdo = mid_cdo + x + " " + ff + " " 
+            pool = multiprocessing.Pool(cores)
+            target_list = []
+            results = dict()
+
+            self.history = new_history
+
+            for ff in file_list:
     
-                                a_command = "cdo -L -" + mid_cdo + " " + target
-                                nc_created.append(target)
-                                print(a_command)
-                                target = run_cdo(a_command, target)
-                                
-                                if os.path.exists(target) == False:
-                                    raise ValueError(a_command + " was not successful. Check output")
-                                new_commands.append(a_command)
-                                targets.append(target)
-
-
-                        target = temp_file("nc") 
-                        a_command = "cdo -L -" + merge_op +  x  + " " + target
-
-                        nc_created.append(target)
-                        target = run_cdo(a_command, target)
-                        self.history+=new_commands
-                            
-                        if os.path.exists(target) == False:
-                            raise ValueError(a_command + " was not successful. Check output")
-                        self.history.append(a_command)
-                        
-                        if post_merge > 0:
-                            post_merge = os_command.split(merge_op)[0] + " " 
-                            out_file  = temp_file("nc") 
-                            nc_created.append(out_file)
-
-                            post_merge = post_merge.replace(" - ", " ") + target + " " + out_file
-                            out_file = run_cdo(post_merge, out_file)
-                            if os.path.exists(out_file) == False:
-                                raise ValueError(post_merge + " was not successful. Check output")
-                            self.history.append(post_merge)
-                            self.current = out_file
-                        else:
-                            self.current = target
-                        return None
-                
-        
-                    if "merge " in os_command:
-                        if n_operations > 128:
-                            raise ValueError("More than 128 operations have been chained")
-
-                for ff in self.current:
-                    if os.path.exists(ff) == False:
-                        raise ValueError("The file " + ff + " does not exist!")
-
                 if silent:
                     ff_command = os_command.replace("cdo ", "cdo -s ")
                 else:
                     ff_command = copy.deepcopy(os_command)
-
-                target = temp_file("nc") 
+    
+                target = temp_file("nc")
                 nc_created.append(target)
-                flat_ensemble = str_flatten(self.current, " ")
-                if (self.merged == False) or (".nc" not in ff_command):
-                    ff_command = ff_command + " " + flat_ensemble + " " + target
-                else:
-                    ff_command = ff_command + " "  + target
-
-                run_history = copy.deepcopy(self.history)
-                run_history = [x for x in run_history if x.endswith(".nc")]
-                self.history = copy.deepcopy(run_history)
-
-                if "merge" in ff_command:
-                    ff_command = ff_command.replace(" merge ", " -merge ")
-                    ff_command = ff_command.replace(" mergetime ", " -mergetime ")
-                    ff_command = ff_command.replace(" -s ", " ")
-                    ff_command = ff_command.replace("cdo ", "cdo -s ")
-
-                if zip:
-                    ff_command = ff_command.replace("cdo ", "cdo -z zip ")
-
+                ff_command = ff_command + " " + ff + " " + target
+    
                 self.history.append(ff_command)
-                target = run_cdo(ff_command, target)
-                
-                # check the file was actually created
-                # Raise error if it wasn't
+                temp = pool.apply_async(run_cdo,[ff_command, target])
+                results[ff] = temp
+    
+            pool.close()
+            pool.join()
+            new_current = []
+            for k,v in results.items():
+                target_list.append(v.get())
 
-                if os.path.exists(target) == False:
-                    raise ValueError(ff_command + " was not successful. Check output")
-                self.current = target
+            if type(self.current) == str:
+                target_list = target_list[0]
+    
+            self.current = copy.deepcopy(target_list)
 
-            else:
-                if cores == 1:
-                    target_list = []
-                    for ff in self.current:
-                    
-                        if os.path.exists(ff) == False:
-                            raise ValueError("The file " + ff + " does not exist!")
-                        if silent:
-                            ff_command = os_command.replace("cdo ", "cdo -s ")
-                        else:
-                            ff_command = copy.deepcopy(os_command)
-
-                        target = temp_file("nc") 
-                        nc_created.append(target)
-                        ff_command = ff_command + " " + ff + " " + target
-
-                        self.history.append(ff_command)
-                        target = run_cdo(ff_command, target)
-                        
-                        # check the file was actually created
-                        # Raise error if it wasn't
-
-                        if os.path.exists(target) == False:
-                            raise ValueError(ff_command + " was not successful. Check output")
-                        target_list.append(target) 
-
-                    self.current = copy.deepcopy(target_list)
-
-                else:
-                # multi-core case
-
-                    pool = multiprocessing.Pool(cores)
-                    target_list = []
-                    results = dict()
-                    for ff in self.current:
-                    
-                        if silent:
-                            ff_command = os_command.replace("cdo ", "cdo -s ")
-                        else:
-                            ff_command = copy.deepcopy(os_command)
-
-                        target = temp_file("nc") 
-                        nc_created.append(target)
-                        ff_command = ff_command + " " + ff + " " + target
-
-                        self.history.append(ff_command)
-                        temp = pool.apply_async(run_cdo,[ff_command, target])
-                        results[ff] = temp 
-
-                    pool.close()
-                    pool.join()
-                    new_current = []
-                    for k,v in results.items():
-                        target_list.append(v.get())
-
-                    self.current = copy.deepcopy(target_list)
+            
+            return None
 
 
-    else:
-        # Now, if this is not a cdo command we need throw an error
+        if (output == "one" and type(self.current) == list):
 
-        if os_command.strip().startswith("cdo") == False:
-            raise ValueError("You can only use cdo commands in hold mode")
-        # Now, we need to throw an error if the command is generating a grid
-        
-#        commas = [x for x in os_command.split(" ") if "," in x]
-#        commas = "".join(commas)
-#        if "gen" in commas:
-#            raise ValueError("You cannot generate weights as part of a chain!")
-#
+            new_history = self.hold_history
+
+            file_list = [self.current]
+
+            if len(self.history) > len(self.hold_history):
+
+                os_command = os_command + " " + self.history[-1].replace("cdo ", " ")
+
+            target = temp_file("nc")
+            os_command = os_command + str_flatten(self.current, " ") + " " + target
+            target = run_cdo(os_command, target)
+            self.current = target
+            self.history = new_history
+            self.history.append(os_command)
+
+
 
 
