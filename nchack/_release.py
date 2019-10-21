@@ -29,7 +29,7 @@ def release(self, silent = True, cores = 1, run_merge = True):
     if self.run == False:
         self.run = True
 
-        cdo_command = "cdo "
+        cdo_command = "cdo -L "
 
         output_method = "ensemble"
         
