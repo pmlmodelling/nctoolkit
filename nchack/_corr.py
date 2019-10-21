@@ -10,7 +10,7 @@ from ._setters import set_longname
 import copy
 
 
-def cor(self, var1 = None, var2 = None, method = "fld",  silent = False):
+def cor(self, var1 = None, var2 = None, method = "fld"):
 
     new_self = copy.deepcopy(self)
 
@@ -89,7 +89,7 @@ def cor(self, var1 = None, var2 = None, method = "fld",  silent = False):
 
 
 
-def cor_space(self, var1 = None, var2 = None,  silent = False):
+def cor_space(self, var1 = None, var2 = None):
     """
     Calculate the correlation correct between two variables in space, and for each time step
 
@@ -106,9 +106,9 @@ def cor_space(self, var1 = None, var2 = None,  silent = False):
         New tracker with the correlation coefficients 
     """
 
-    return cor(self, var1 = var1, var2 = var2,  silent = silent, method = "fld")
+    return cor(self, var1 = var1, var2 = var2,   method = "fld")
     
-def cor_time(self, var1 = None, var2 = None,  silent = False):
+def cor_time(self, var1 = None, var2 = None):
     """
     Calculate the correlation correct in time between two variables, for each grid cell
 
@@ -124,7 +124,7 @@ def cor_time(self, var1 = None, var2 = None,  silent = False):
     nchack.NCTracker
         New tracker with the correlation coefficients 
     """
-    return cor(self, var1 = var1, var2 = var2,  silent = silent,  method = "tim")
+    return cor(self, var1 = var1, var2 = var2, method = "tim")
 
 
 
