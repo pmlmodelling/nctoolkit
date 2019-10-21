@@ -4,7 +4,7 @@ from .flatten import str_flatten
 from ._runthis import run_this
 import os
 
-def cdo_command(self, command, silent = True, cores = 1):
+def cdo_command(self, command, cores = 1):
     """
     Apply a cdo command to a tracker
 
@@ -19,9 +19,7 @@ def cdo_command(self, command, silent = True, cores = 1):
     -------------
     nchack.NCTracker
         Original tracker with cdo command applied. 
-
     """
-
 
     # First carry out some checks
 
@@ -57,6 +55,6 @@ def cdo_command(self, command, silent = True, cores = 1):
         if " " + mm + "," in cdo_command:
             cdo_command = cdo_command.replace(" " + mm + ","," -" + mm + ",")
 
-    run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
+    run_this(cdo_command, self, output = "ensemble", cores = cores)
 
     cleanup(keep = self.current)
