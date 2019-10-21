@@ -142,7 +142,7 @@ def merge_time(self, silent = True, zip = True):
 
     cdo_command = "cdo -mergetime "
 
-    self.history.append(cdo_command)
+#    self.history.append(cdo_command)
 
     if self.run:
         run_this(cdo_command, self, silent, output = "one", zip = zip) 
