@@ -3,7 +3,7 @@ from .flatten import str_flatten
 from ._cleanup import cleanup
 from ._runthis import run_this
 
-def remove_variables(self, vars, silent = True, cores = 1):
+def remove_variables(self, vars, cores = 1):
     """
     Remove variables from tracker 
 
@@ -26,7 +26,7 @@ def remove_variables(self, vars, silent = True, cores = 1):
     vars = str_flatten(vars, ",")
     
     cdo_command = "cdo -delete,name=" + vars
-    run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
+    run_this(cdo_command, self, output = "ensemble", cores = cores)
     
     cleanup(keep = self.current)
     
