@@ -113,7 +113,9 @@ def cleanup(keep = None):
 
 
 def clean_all():
-    """Function to remove all temporary files created"""
+    """
+    Remove all temporary files created by nchack in the present session
+    """
 
     # Step 1 is to find the files we potentially need to delete
     # These are files that we know nchack has either created or would attempt to create after
@@ -150,7 +152,6 @@ def clean_all():
 def deep_clean():
     """
     Deep temp file cleaner
-
     Remove all temporary files ever created by nchack across all previous and current sesions
     """
     mylist = [f for f in glob.glob("/tmp/" + "*.nc*")]
@@ -173,15 +174,4 @@ def temp_check():
             print(str(len(mylist)) +  " file was created by nchack in prior or current sessions. Consider running deep_clean!")
         else:
             print(str(len(mylist)) +  " files were created by nchack in prior or current sessions. Consider running deep_clean!")
-
-
-
-
-
-
-
-
-
-
-
 
