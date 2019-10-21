@@ -83,11 +83,12 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
             nc_created.append(target)
             os_command = os_command + " " + self.current + " " + target
 
+            target = run_cdo(os_command, target)
+
             run_history = [x for x in self.history if x.endswith(".nc")]
             self.history = copy.deepcopy(run_history)
             self.history.append(os_command)
 
-            target = run_cdo(os_command, target)
             
             # check the file was actually created
             # Raise error if it wasn't
@@ -129,30 +130,36 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
                         
                         os_commands = []
                         start_chunk = os_command.split(merge_op)[1]
-                        tracker = 0
+
                         targets = []
-                        for cc in file_chunks:
-                            end_file = file_chunks[tracker][-1]
-                            tracker+=1
-                            
-                            os_commands.append(start_chunk.split(end_file)[0] + " " + end_file)
-                            start_chunk = start_chunk.split(end_file)[1] 
+
+                        raise ValueError()
+                        new_commands = []
                         
-                        for x in os_commands:
-                            target = temp_file("nc") 
-                            a_command = "cdo -L -" + merge_op + x + " " + target
-                            nc_created.append(target)
-                            target = run_cdo(a_command, target)
-                            
-                            if os.path.exists(target) == False:
-                                raise ValueError(a_command + " was not successful. Check output")
-                            self.history.append(a_command)
-                            targets.append(target)
+                        for cc in file_chunks:
+                            for x in os_commands:
+                                target = temp_file("nc") 
+                                mid_cdo = " "
+                                for ff in cc:
+                                    mid_cdo = mid_cdo + x + " " + ff + " " 
+    
+                                a_command = "cdo -L -" + mid_cdo + " " + target
+                                nc_created.append(target)
+                                print(a_command)
+                                target = run_cdo(a_command, target)
+                                
+                                if os.path.exists(target) == False:
+                                    raise ValueError(a_command + " was not successful. Check output")
+                                new_commands.append(a_command)
+                                targets.append(target)
+
 
                         target = temp_file("nc") 
-                        a_command = "cdo -L -" + merge_op +  str_flatten(targets, " ") + " " + target
+                        a_command = "cdo -L -" + merge_op +  x  + " " + target
+
                         nc_created.append(target)
                         target = run_cdo(a_command, target)
+                        self.history+=new_commands
                             
                         if os.path.exists(target) == False:
                             raise ValueError(a_command + " was not successful. Check output")
