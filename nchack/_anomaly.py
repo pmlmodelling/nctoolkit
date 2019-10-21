@@ -21,6 +21,7 @@ import copy
 def anomaly_annual(self, var = None, baseline = None, silent = False):
     """
     Calculate annual anomalies based on a baseline period
+    The anomoly is calculated by first calculating the climatological mean for the given baseline period. Annual means are then calculated for each year and the anomaly is calculated compared with the baseline mean.
     
     Parameters
     -------------
@@ -91,7 +92,10 @@ def anomaly_annual(self, var = None, baseline = None, silent = False):
     del clim_tracker
 
     nc_safe.remove(target)
+    self.history = self.history + new_tracker.history
 
-    return(new_tracker)
+    self.current = new_tracker.current
+
+
     
     
