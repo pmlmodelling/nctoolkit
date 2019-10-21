@@ -29,7 +29,7 @@ def sum(self, silent = True, cores = 1):
 
 def mean(self, silent = True, cores = 1):
     """
-    Calculate the sum of all values.  
+    Calculate the mean of all values.  
 
     Parameters
     -------------
@@ -39,7 +39,7 @@ def mean(self, silent = True, cores = 1):
     Returns
     -------------
     nchack.NCTracker
-        Reduced tracker with the sums 
+        Reduced tracker with the means 
     """
     return time_stat(self, stat = "mean", silent = silent, cores = cores)
 
