@@ -13,7 +13,7 @@ def yearlystat(self, stat = "mean",  cores = 1):
 
     
 
-def yearly_mean(self,  cores = 1):
+def annual_mean(self,  cores = 1):
     """
     Calculate the yearly mean 
 
@@ -29,7 +29,7 @@ def yearly_mean(self,  cores = 1):
     """
     return yearlystat(self, stat = "mean",  cores = cores)
 
-def yearly_min(self,  cores = 1):
+def annual_min(self,  cores = 1):
     """
     Calculate the yearly minimum 
 
@@ -45,7 +45,7 @@ def yearly_min(self,  cores = 1):
     """
     return yearlystat(self, stat = "min",  cores = cores)
 
-def yearly_max(self,  cores = 1):
+def annual_max(self,  cores = 1):
     """
     Calculate the yearly maximum 
 
@@ -61,7 +61,7 @@ def yearly_max(self,  cores = 1):
     """
     return yearlystat(self, stat = "max",  cores = cores)
     
-def yearly_range(self,  cores = 1):
+def annual_range(self,  cores = 1):
     """
     Calculate the yearly range 
 

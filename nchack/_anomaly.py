@@ -56,7 +56,7 @@ def anomaly_annual(self, var = None, baseline = None):
     new_tracker = copy.deepcopy(self)
     new_tracker.select_variables(var)
     new_tracker.rename({var:"observed"})
-    new_tracker.yearly_mean()
+    new_tracker.annual_mean()
     nc_safe.append(new_tracker.current)
 
     remove_later = copy.deepcopy(new_tracker.current)

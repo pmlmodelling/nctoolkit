@@ -307,10 +307,10 @@ class NCTracker:
     from ._seasclim import seasonal_max_climatology
     from ._seasclim import seasonal_range_climatology
 
-    from ._yearlystat import yearly_mean 
-    from ._yearlystat import yearly_min
-    from ._yearlystat import yearly_max 
-    from ._yearlystat import yearly_range
+    from ._yearlystat import annual_mean 
+    from ._yearlystat import annual_min
+    from ._yearlystat import annual_max 
+    from ._yearlystat import annual_range
 
     from ._monstat import monthly_mean
     from ._monstat import monthly_min
