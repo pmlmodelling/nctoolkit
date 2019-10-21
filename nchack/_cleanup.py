@@ -13,7 +13,11 @@ from ._session import session_info
 # keep is a file you do not want to delete
 
 def cleanup(keep = None):
-    """Function to remove temporary files created that are no longer in use"""
+    """
+    Temp file cleaner
+
+    Remove all files created during the session that are now out of use
+    """
 
     # Step 1 is to find the files we potentially need to delete
     # These are files that we know nchack has either created or would attempt to create after
@@ -145,7 +149,9 @@ def clean_all():
 
 def deep_clean():
     """
-    Function to do a deep clean of all temporary files ever created by nchack
+    Deep temp file cleaner
+
+    Remove all temporary files ever created by nchack across all previous and current sesions
     """
     mylist = [f for f in glob.glob("/tmp/" + "*.nc*")]
     mylist = mylist + [f for f in glob.glob("/var/tmp/" + "*.nc*")]
