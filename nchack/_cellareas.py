@@ -5,7 +5,7 @@ from ._temp_file import temp_file
 from ._filetracker import nc_created
 
 
-def cell_areas(self, silent = True, cores = 1, join = True):
+def cell_areas(self, cores = 1, join = True):
     """
     Calculate the cell areas in square meters
 
@@ -20,7 +20,6 @@ def cell_areas(self, silent = True, cores = 1, join = True):
     -------------
     nchack.NCTracker
         Reduced tracker with cell areas 
-
     """
 
     if join and self.run == False:
@@ -40,8 +39,6 @@ def cell_areas(self, silent = True, cores = 1, join = True):
         run_cdo(cdo_command, new_target)
         self.current = new_target
     else:
-        run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
-
-
+        run_this(cdo_command, self,  output = "ensemble", cores = cores)
 
     cleanup(keep = self.current)
