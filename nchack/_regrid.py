@@ -10,7 +10,7 @@ from ._cleanup import cleanup
 from ._filetracker import nc_created
 from ._runthis import run_this
 
-def regrid(self, grid = None, method = "bil", silent = True, cores = 1):
+def regrid(self, grid = None, method = "bil", cores = 1):
 
     """
     Regrid a tracker for a target grid and remapping method
@@ -110,7 +110,7 @@ def regrid(self, grid = None, method = "bil", silent = True, cores = 1):
 
         cdo_command= "cdo -remap," + self.grid + "," + weights_nc 
 
-        run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
+        run_this(cdo_command, self,  output = "ensemble", cores = cores)
 
     cleanup(keep = [self.current, self.weights, self.grid])
 

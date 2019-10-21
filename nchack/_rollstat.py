@@ -2,7 +2,7 @@
 from ._cleanup import cleanup
 from ._runthis import run_this
 
-def rollstat(self, window,  stat = "mean", silent = True, cores = 1):
+def rollstat(self, window,  stat = "mean", cores = 1):
     """Method to calculate the monthly statistic from a netcdf file""" 
     if type(window) is float:
         window = int(window)
@@ -12,14 +12,14 @@ def rollstat(self, window,  stat = "mean", silent = True, cores = 1):
     
     cdo_command = "cdo -run" + stat + "," + str(window)
 
-    run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
+    run_this(cdo_command, self, output = "ensemble", cores = cores)
 
     # clean up the directory
     cleanup(keep = self.current)
 
     
 
-def rolling_mean(self, window, silent = True, cores = 1):
+def rolling_mean(self, window, cores = 1):
 
     """
     Calculate a rolling mean based on a window. 
@@ -37,9 +37,9 @@ def rolling_mean(self, window, silent = True, cores = 1):
         Reduced tracker with the rolling mean 
     """
 
-    return rollstat(self, window = window, stat = "mean", silent = silent, cores = cores)
+    return rollstat(self, window = window, stat = "mean", cores = cores)
 
-def rolling_min(self, window, silent = True, cores = 1):
+def rolling_min(self, window, cores = 1):
     """
     Calculate a rolling minimum based on a window. 
 
@@ -56,9 +56,9 @@ def rolling_min(self, window, silent = True, cores = 1):
         Reduced tracker with the rolling minimum 
     """
 
-    return rollstat(self, window = window, stat = "min", silent = silent, cores = cores)
+    return rollstat(self, window = window, stat = "min", cores = cores)
 
-def rolling_max(self, window, silent = True, cores = 1):
+def rolling_max(self, window, cores = 1):
     """
     Calculate a rolling maximum based on a window. 
 
@@ -74,9 +74,9 @@ def rolling_max(self, window, silent = True, cores = 1):
     nchack.NCTracker
         Reduced tracker with the rolling maximum 
     """
-    return rollstat(self, window = window, stat = "max", silent = silent, cores = cores)
+    return rollstat(self, window = window, stat = "max", cores = cores)
     
-def rolling_range(self, window, silent = True, cores = 1):
+def rolling_range(self, window, cores = 1):
     """
     Calculate a rolling range based on a window. 
 
@@ -92,9 +92,9 @@ def rolling_range(self, window, silent = True, cores = 1):
     nchack.NCTracker
         Reduced tracker with the rolling range 
     """
-    return rollstat(self, window = window, stat = "range", silent = silent, cores = cores)
+    return rollstat(self, window = window, stat = "range", cores = cores)
 
-def rolling_sum(self, window, silent = True, cores = 1):
+def rolling_sum(self, window, cores = 1):
     """
     Calculate a rolling sum based on a window. 
 
@@ -110,5 +110,5 @@ def rolling_sum(self, window, silent = True, cores = 1):
     nchack.NCTracker
         Reduced tracker with the rolling sum 
     """
-    return rollstat(self, window = window, stat = "sum", silent = silent, cores = cores)
+    return rollstat(self, window = window, stat = "sum", cores = cores)
 

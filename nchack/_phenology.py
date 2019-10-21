@@ -13,7 +13,7 @@ from ._runthis import run_cdo
 import copy
 
 
-def phenology(self, var = None, silent = False, cores = 1):
+def phenology(self, var = None, cores = 1):
     """
     Calculate phenologies from the tracker. Each file in an ensemble must only cover a single year, and ideally have all days.
     This method currently only calculcates the day of year of the annual maximum.

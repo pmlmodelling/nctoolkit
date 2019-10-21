@@ -9,7 +9,7 @@ from ._cleanup import cleanup
 from ._runthis import run_this
 
 
-def set_date(self, year, month, day, base_year = 1900, silent = True):
+def set_date(self, year, month, day, base_year = 1900):
 
     """
     Set the date in a tracker. You should only do this if you have to fix/change a tracker with a single date. 
@@ -44,13 +44,13 @@ def set_date(self, year, month, day, base_year = 1900, silent = True):
         day = float(day)
     cdo_command = "cdo -setreftime," + str(base_year) + "-01-01 -setdate," + str(year) + "-" + str(month) + "-" + str(day)
 
-    run_this(cdo_command, self, silent, output = "ensemble")
+    run_this(cdo_command, self,  output = "ensemble")
 
     # clean up the directory
     cleanup(keep = self.current)
 
 
-def set_longname(self, var_dict, silent = True):
+def set_longname(self, var_dict):
     """
     Set long name of variables. 
 
@@ -92,7 +92,7 @@ def set_longname(self, var_dict, silent = True):
     cleanup(keep = self.current)
 
 
-def set_missing(self, value, silent = True, cores = 1):
+def set_missing(self, value,  cores = 1):
     """
     Set the missing value for a single number or a range
 
@@ -117,13 +117,13 @@ def set_missing(self, value, silent = True, cores = 1):
     if type(value) is list:
         cdo_command = "cdo -setrtomiss," + str(value[0]) + "," + str(value[1])
 
-    run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
+    run_this(cdo_command, self,  output = "ensemble", cores = cores)
 
     # clean up the directory
     cleanup(keep = self.current)
 
 
-def set_unit(self, var_dict, silent = True):
+def set_unit(self, var_dict):
     """
     Set the units for variables 
 
@@ -148,13 +148,13 @@ def set_unit(self, var_dict, silent = True):
         cdo_command = ""
         cdo_command = cdo_command + " -setattribute," + i + "@units=" + '"' + var_dict[i]  + '"'
         cdo_command = "cdo " + cdo_command 
-        run_this(cdo_command, self, silent, output = "ensemble")
+        run_this(cdo_command, self,  output = "ensemble")
 
     # clean up the directory
     cleanup(keep = self.current)
 
 
-def set_gridtype(self, grid, silent = True):
+def set_gridtype(self, grid):
     """
     Set the grid type. Only use this if, for example, the grid is "generic" when it should be lonlat. 
 
@@ -178,7 +178,7 @@ def set_gridtype(self, grid, silent = True):
 
     cdo_command = "cdo -setgridtype," + grid
 
-    run_this(cdo_command, self, silent, output = "ensemble")
+    run_this(cdo_command, self,  output = "ensemble")
 
     # clean up the directory
     cleanup(keep = self.current)

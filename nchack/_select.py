@@ -3,7 +3,7 @@ from .flatten import str_flatten
 from ._cleanup import cleanup
 from ._runthis import run_this
 
-def select_season(self, season, silent = True, cores = 1):
+def select_season(self, season,  cores = 1):
     """
     Select season from tracker
 
@@ -21,11 +21,11 @@ def select_season(self, season, silent = True, cores = 1):
     """
 
     cdo_command = "cdo -select,season=" + season
-    run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
+    run_this(cdo_command, self,  output = "ensemble", cores = cores)
     
     cleanup(keep = self.current)
 
-def select_months(self, months, silent = True, cores = 1):
+def select_months(self, months,  cores = 1):
     """
     Select months from tracker
 
@@ -55,10 +55,10 @@ def select_months(self, months, silent = True, cores = 1):
     months = str_flatten(months, ",") 
 
     cdo_command = "cdo -selmonth," + months + " "
-    run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
+    run_this(cdo_command, self,  output = "ensemble", cores = cores)
     
 
-def select_years(self, years, silent = True, cores = 1):
+def select_years(self, years,  cores = 1):
     """
     Select years from tracker
 
@@ -84,12 +84,12 @@ def select_years(self, years, silent = True, cores = 1):
     years = str_flatten(years, ",") 
 
     cdo_command = "cdo -selyear," + years
-    run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
+    run_this(cdo_command, self,  output = "ensemble", cores = cores)
     
     cleanup(keep = self.current)
     
 
-def select_variables(self, vars = None, silent = True, cores = 1):
+def select_variables(self, vars = None,  cores = 1):
     """
     Select variables from tracker
 
@@ -116,11 +116,11 @@ def select_variables(self, vars = None, silent = True, cores = 1):
     
     cdo_command = "cdo -selname," + vars_list
 
-    run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
+    run_this(cdo_command, self,  output = "ensemble", cores = cores)
     
     cleanup(keep = self.current)
     
-def select_timestep(self, times, silent = True, cores = 1):
+def select_timestep(self, times,  cores = 1):
     """
     This method should probably be removed
     
@@ -136,7 +136,7 @@ def select_timestep(self, times, silent = True, cores = 1):
 
     cdo_command = "cdo -seltimestep," + times 
 
-    run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
+    run_this(cdo_command, self,  output = "ensemble", cores = cores)
 
 
 

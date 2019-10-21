@@ -2,18 +2,18 @@
 from ._cleanup import cleanup
 from ._runthis import run_this
 
-def seasstat(self, stat = "mean", silent = True, cores = 1):
+def seasstat(self, stat = "mean",  cores = 1):
     """Method to calculate the seasonal statistic from a function""" 
     cdo_command = "cdo -yseas" + stat 
 
-    run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
+    run_this(cdo_command, self,  output = "ensemble", cores = cores)
 
     # clean up the directory
     cleanup(keep = self.current)
 
     
 
-def seasonal_mean_climatology(self, silent = True, cores = 1):
+def seasonal_mean_climatology(self,  cores = 1):
 
     """
     Calculate a seasonal mean climatology 
@@ -31,9 +31,9 @@ def seasonal_mean_climatology(self, silent = True, cores = 1):
         Reduced tracker with the climatology 
     """
 
-    return seasstat(self, stat = "mean", silent = True, cores = cores)
+    return seasstat(self, stat = "mean",  cores = cores)
 
-def seasonal_min_climatology(self, silent = True, cores = 1):
+def seasonal_min_climatology(self,  cores = 1):
     """
     Calculate a seasonal minimum climatology 
 
@@ -49,9 +49,9 @@ def seasonal_min_climatology(self, silent = True, cores = 1):
     nchack.NCTracker
         Reduced tracker with the climatology 
     """
-    return seasstat(self, stat = "min", silent = True, cores = cores)
+    return seasstat(self, stat = "min",  cores = cores)
 
-def seasonal_max_climatology(self, silent = True, cores = 1):
+def seasonal_max_climatology(self,  cores = 1):
     """
     Calculate a seasonal maximum climatology 
 
@@ -67,9 +67,9 @@ def seasonal_max_climatology(self, silent = True, cores = 1):
     nchack.NCTracker
         Reduced tracker with the climatology 
     """
-    return seasstat(self, stat = "max", silent = True, cores = cores)
+    return seasstat(self, stat = "max",  cores = cores)
     
-def seasonal_range_climatology(self, silent = True, cores = 1):
+def seasonal_range_climatology(self,  cores = 1):
     """
     Calculate a seasonal range climatology 
 
@@ -85,4 +85,4 @@ def seasonal_range_climatology(self, silent = True, cores = 1):
     nchack.NCTracker
         Reduced tracker with the climatology 
     """
-    return seasstat(self, stat = "range", silent = True, cores = cores)
+    return seasstat(self, stat = "range",  cores = cores)

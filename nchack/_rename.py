@@ -2,7 +2,7 @@
 from ._cleanup import cleanup
 from ._runthis import run_this
 
-def rename(self, newnames, silent = True, cores = 1):
+def rename(self, newnames, cores = 1):
     """
     Rename variables in a tracker. 
 
@@ -32,7 +32,7 @@ def rename(self, newnames, silent = True, cores = 1):
     # need a check at this point for file validity     
     cdo_command= "cdo -chname" + cdo_rename 
 
-    run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
+    run_this(cdo_command, self, output = "ensemble", cores = cores)
 
     cleanup(keep = self.current)
 

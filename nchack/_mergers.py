@@ -7,7 +7,7 @@ from ._cleanup import cleanup
 from ._runthis import run_this
 
 
-def merge(self, silent = True, zip = False):
+def merge(self, zip = False):
 
     """
     Merge a multi-file ensemble into a single file. Merging will occur based on the time steps in the first file. This will only be effective if either you want to merge files with the same times or multi-time files with single time files.
@@ -102,20 +102,18 @@ def merge(self, silent = True, zip = False):
 #        cdo_command = "cdo -L -merge "
   #      self.history.append(cdo_command)
 
-#        run_this(cdo_command, self, silent, output = "one") 
+#        run_this(cdo_command, self,  output = "one") 
 
 #        return None
         
     cdo_command = ("cdo -merge ")
 
-    self.history.append(cdo_command)
-
-    run_this(cdo_command, self, silent, output = "one", zip = zip) 
+    run_this(cdo_command, self, output = "one", zip = zip) 
 
     cleanup(keep = self.current)
 
 
-def merge_time(self, silent = True, zip = True):
+def merge_time(self, zip = True):
 
     """
     Time-based merging of a multi-file ensemble into a single file. This method is ideal if you have the same data split over multiple files covering different data sets. 
@@ -209,7 +207,7 @@ def merge_time(self, silent = True, zip = True):
 #        cdo_command = "cdo -L -merge "
   #      self.history.append(cdo_command)
 
-#        run_this(cdo_command, self, silent, output = "one") 
+#        run_this(cdo_command, self,  output = "one") 
 
 #        return None
         
@@ -218,7 +216,7 @@ def merge_time(self, silent = True, zip = True):
     self.history.append(cdo_command)
 
    # if self.run:
-    run_this(cdo_command, self, silent, output = "one", zip = zip) 
+    run_this(cdo_command, self, output = "one", zip = zip) 
    # else:
         #self.release(run_merge = False)
 
@@ -226,7 +224,7 @@ def merge_time(self, silent = True, zip = True):
     cleanup(keep = self.current)
 
 
-def merge_time(self, silent = True, zip = True):
+def merge_time(self, zip = True):
 
     """
     Time-based merging of a multi-file ensemble into a single file. This method is ideal if you have the same data split over multiple files covering different data sets. 
@@ -255,7 +253,7 @@ def merge_time(self, silent = True, zip = True):
 
     cdo_command = "cdo -mergetime "
 
-    run_this(cdo_command, self, silent, output = "one", zip = zip) 
+    run_this(cdo_command, self,  output = "one", zip = zip) 
 
     # clean up the directory
     cleanup(keep = self.current)

@@ -1,19 +1,19 @@
 from ._cleanup import cleanup
 from ._runthis import run_this
 
-def yearlystat(self, stat = "mean", silent = True, cores = 1):
+def yearlystat(self, stat = "mean",  cores = 1):
     """Function to calculate the seasonal statistic from a function""" 
 
     cdo_command = "cdo -year" + stat
 
-    run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
+    run_this(cdo_command, self,  output = "ensemble", cores = cores)
 
     # clean up the directory
     cleanup(keep = self.current)
 
     
 
-def yearly_mean(self, silent = True, cores = 1):
+def yearly_mean(self,  cores = 1):
     """
     Calculate the yearly mean 
 
@@ -27,9 +27,9 @@ def yearly_mean(self, silent = True, cores = 1):
     nchack.NCTracker
         Reduced tracker with the yearly mean
     """
-    return yearlystat(self, stat = "mean", silent = True, cores = cores)
+    return yearlystat(self, stat = "mean",  cores = cores)
 
-def yearly_min(self, silent = True, cores = 1):
+def yearly_min(self,  cores = 1):
     """
     Calculate the yearly minimum 
 
@@ -43,9 +43,9 @@ def yearly_min(self, silent = True, cores = 1):
     nchack.NCTracker
         Reduced tracker with the yearly minimum
     """
-    return yearlystat(self, stat = "min", silent = True, cores = cores)
+    return yearlystat(self, stat = "min",  cores = cores)
 
-def yearly_max(self, silent = True, cores = 1):
+def yearly_max(self,  cores = 1):
     """
     Calculate the yearly maximum 
 
@@ -59,9 +59,9 @@ def yearly_max(self, silent = True, cores = 1):
     nchack.NCTracker
         Reduced tracker with the yearly maximum
     """
-    return yearlystat(self, stat = "max", silent = True, cores = cores)
+    return yearlystat(self, stat = "max",  cores = cores)
     
-def yearly_range(self, silent = True, cores = 1):
+def yearly_range(self,  cores = 1):
     """
     Calculate the yearly range 
 
@@ -75,4 +75,4 @@ def yearly_range(self, silent = True, cores = 1):
     nchack.NCTracker
         Reduced tracker with the yearly range
     """
-    return yearlystat(self, stat = "range", silent = True, cores = cores)
+    return yearlystat(self, stat = "range",  cores = cores)

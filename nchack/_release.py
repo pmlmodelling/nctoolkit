@@ -5,7 +5,7 @@ import copy
 from ._cleanup import cleanup
 from ._runthis import run_this
 
-def release(self, silent = True, cores = 1, run_merge = True):
+def release(self,  cores = 1, run_merge = True):
     """
     Run commands on tracker set to lazy/hold mode 
 
@@ -39,7 +39,7 @@ def release(self, silent = True, cores = 1, run_merge = True):
         if self.merged:
             output_method = "one"
 
-        run_this(cdo_command, self, silent, output = output_method, cores = cores)
+        run_this(cdo_command, self,  output = output_method, cores = cores)
 
 
 

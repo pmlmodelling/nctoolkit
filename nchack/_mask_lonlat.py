@@ -2,7 +2,7 @@ from ._runthis import run_this
 from .flatten import str_flatten
 from ._cleanup import cleanup
 
-def mask_lonlat(self, lon = [-180, 180], lat = [-90, 90], silent = True, cores = 1):
+def mask_lonlat(self, lon = [-180, 180], lat = [-90, 90], cores = 1):
     """
     Mask a lon/lat box 
 
@@ -42,7 +42,7 @@ def mask_lonlat(self, lon = [-180, 180], lat = [-90, 90], silent = True, cores =
 
         lat_box = str_flatten(lon + lat)
         cdo_command = ("cdo -masklonlatbox," + lat_box)
-        run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
+        run_this(cdo_command, self, output = "ensemble", cores = cores)
     else:
         raise ValueError("The lonlat box supplied is not valid!")
 

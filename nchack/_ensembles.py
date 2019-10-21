@@ -15,7 +15,7 @@ from ._runcommand import run_command
 
 
 
-def ensemble_percentile(self, p = 50, silent = True):
+def ensemble_percentile(self, p = 50):
     """
     Calculate an ensemble percentile from a multi-file tracker
 
@@ -43,7 +43,7 @@ def ensemble_percentile(self, p = 50, silent = True):
 
     cdo_command = "cdo -enspctl," + str(p)
 
-    run_this(cdo_command, self, silent, output = "one")
+    run_this(cdo_command, self, output = "one")
 
     # clean up the directory
     cleanup(keep = self.current)
@@ -51,7 +51,7 @@ def ensemble_percentile(self, p = 50, silent = True):
 
 
 
-def ensemble_nco(self, method, vars = None, ignore_time = False, silent = True):
+def ensemble_nco(self, method, vars = None, ignore_time = False):
     """Method to calculate an ensemble stat from a list of files"""
     if self.merged:
         raise ValueError("There is no point running this on a merged tracker. Check chains")
@@ -94,7 +94,7 @@ def ensemble_nco(self, method, vars = None, ignore_time = False, silent = True):
 
 
     self.history.append(nco_command)
-    run_command(nco_command, self, silent) 
+    run_command(nco_command, self) 
     if self.run:
         self.current = target 
 
@@ -103,7 +103,7 @@ def ensemble_nco(self, method, vars = None, ignore_time = False, silent = True):
 
     
 
-def ensemble_min(self, vars = None, ignore_time = False, silent = True):
+def ensemble_min(self, vars = None, ignore_time = False):
     """
     Calculate an ensemble minimum from a multi-file tracker
 
@@ -122,7 +122,7 @@ def ensemble_min(self, vars = None, ignore_time = False, silent = True):
 
     return ensemble_nco(self, "min", ignore_time = ignore_time, vars = vars)
 
-def ensemble_max(self, vars = None, ignore_time = False, silent = True):
+def ensemble_max(self, vars = None, ignore_time = False):
     """
     Calculate an ensemble maximum from a multi-file tracker
 
@@ -141,7 +141,7 @@ def ensemble_max(self, vars = None, ignore_time = False, silent = True):
 
     return ensemble_nco(self, "max", ignore_time = ignore_time, vars = vars)
 
-def ensemble_mean(self, vars = None, ignore_time = False, silent = True):
+def ensemble_mean(self, vars = None, ignore_time = False):
     """
     Calculate an ensemble mean from a multi-file tracker
 
@@ -162,7 +162,7 @@ def ensemble_mean(self, vars = None, ignore_time = False, silent = True):
 
 
 
-def ensemble_range(self, silent = True):
+def ensemble_range(self):
     """
     Calculate an ensemble range from a multi-file tracker
 
@@ -183,13 +183,13 @@ def ensemble_range(self, silent = True):
 
     cdo_command = "cdo ensrange " 
 
-    run_this(cdo_command, self, silent, output = "one")
+    run_this(cdo_command, self)
 
     # clean up the directory
     cleanup(keep = self.current)
     self.merged = True
 
-def ensemble_mean_cdo(self,  vars = None, silent = True):
+def ensemble_mean_cdo(self,  vars = None):
     """
     Calculate an ensemble mean from a multi-file tracker, using CDO
 
@@ -230,7 +230,7 @@ def ensemble_mean_cdo(self,  vars = None, silent = True):
 
 
     if self.run:
-        run_this(cdo_command, self, silent, output = "one")
+        run_this(cdo_command, self, output = "one")
     else:
         self.release(run_merge = False)
 

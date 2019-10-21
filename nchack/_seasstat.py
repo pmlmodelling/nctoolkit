@@ -2,19 +2,19 @@
 from ._cleanup import cleanup
 from ._runthis import run_this
 
-def seasstat(self, stat = "mean", silent = True, cores = 1):
+def seasstat(self, stat = "mean",  cores = 1):
     """Method to calculate the seasonal statistic from a function""" 
 
     cdo_command = "cdo -seas" + stat
 
-    run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
+    run_this(cdo_command, self,  output = "ensemble", cores = cores)
 
     # clean up the directory
     cleanup(keep = self.current)
 
     
 
-def seasonal_mean(self, silent = True, cores = 1):
+def seasonal_mean(self,  cores = 1):
     """
     Calculate the seasonal mean for each year. Applies at the grid cell level.
 
@@ -30,9 +30,9 @@ def seasonal_mean(self, silent = True, cores = 1):
     nchack.NCTracker
         Reduced tracker with the seasonal mean 
     """
-    return seasstat(self, stat = "mean", silent = True, cores = cores)
+    return seasstat(self, stat = "mean",  cores = cores)
 
-def seasonal_min(self, silent = True, cores = 1):
+def seasonal_min(self,  cores = 1):
     """
     Calculate the seasonal minimum for each year. Applies at the grid cell level.
 
@@ -48,9 +48,9 @@ def seasonal_min(self, silent = True, cores = 1):
     nchack.NCTracker
         Reduced tracker with the seasonal minimum 
     """
-    return seasstat(self, stat = "min", silent = True, cores = cores)
+    return seasstat(self, stat = "min",  cores = cores)
 
-def seasonal_max(self, silent = True, cores = 1):
+def seasonal_max(self,  cores = 1):
     """
     Calculate the seasonal maximum for each year. Applies at the grid cell level.
 
@@ -66,9 +66,9 @@ def seasonal_max(self, silent = True, cores = 1):
     nchack.NCTracker
         Reduced tracker with the seasonal maximum 
     """
-    return seasstat(self, stat = "max", silent = True, cores = cores)
+    return seasstat(self, stat = "max",  cores = cores)
     
-def seasonal_range(self, silent = True, cores = 1):
+def seasonal_range(self,  cores = 1):
     """
     Calculate the seasonal range for each year. Applies at the grid cell level.
 
@@ -84,4 +84,4 @@ def seasonal_range(self, silent = True, cores = 1):
     nchack.NCTracker
         Reduced tracker with the seasonal range 
     """
-    return seasstat(self, stat = "range", silent = True, cores = cores)
+    return seasstat(self, stat = "range",  cores = cores)

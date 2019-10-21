@@ -4,14 +4,14 @@ from ._filetracker import nc_created
 from ._temp_file import temp_file
 import os
 
-def time_stat(self, stat = "mean", silent = True, cores = 1):
+def time_stat(self, stat = "mean", cores = 1):
     """Method to calculate a stat over all time steps"""
     cdo_command = "cdo -tim" + stat
-    run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
+    run_this(cdo_command, self,  output = "ensemble", cores = cores)
     # clean up the directory
     cleanup(keep = self.current)
     
-def sum(self, silent = True, cores = 1):
+def sum(self,  cores = 1):
     """
     Calculate the sum of all values.  
 
@@ -25,9 +25,9 @@ def sum(self, silent = True, cores = 1):
     nchack.NCTracker
         Reduced tracker with the sums 
     """
-    return time_stat(self, stat = "sum", silent = silent, cores = cores)
+    return time_stat(self, stat = "sum",  cores = cores)
 
-def mean(self, silent = True, cores = 1):
+def mean(self,  cores = 1):
     """
     Calculate the mean of all values.  
 
@@ -41,9 +41,9 @@ def mean(self, silent = True, cores = 1):
     nchack.NCTracker
         Reduced tracker with the means 
     """
-    return time_stat(self, stat = "mean", silent = silent, cores = cores)
+    return time_stat(self, stat = "mean",  cores = cores)
 
-def min(self, silent = True, cores = 1):
+def min(self,  cores = 1):
     """
     Calculate the minimums of all values.  
 
@@ -57,9 +57,9 @@ def min(self, silent = True, cores = 1):
     nchack.NCTracker
         Reduced tracker with the minimums 
     """
-    return time_stat(self, stat = "min", silent = silent, cores = cores)
+    return time_stat(self, stat = "min",  cores = cores)
 
-def max(self, silent = True, cores = 1):
+def max(self,  cores = 1):
     """
     Calculate the maximums of all values.  
 
@@ -73,9 +73,9 @@ def max(self, silent = True, cores = 1):
     nchack.NCTracker
         Reduced tracker with the maximums 
     """
-    return time_stat(self, stat = "max", silent = silent, cores = cores)
+    return time_stat(self, stat = "max",  cores = cores)
 
-def range(self, silent = True, cores = 1):
+def range(self,  cores = 1):
     """
     Calculate the ranges of all values.  
 
@@ -89,9 +89,9 @@ def range(self, silent = True, cores = 1):
     nchack.NCTracker
         Reduced tracker with the ranges 
     """
-    return time_stat(self,stat = "range", silent = silent, cores = cores)
+    return time_stat(self,stat = "range",  cores = cores)
 
-def var(self, silent = True, cores = 1):
+def var(self,  cores = 1):
     """
     Calculate the variances of all values.  
 
@@ -105,10 +105,10 @@ def var(self, silent = True, cores = 1):
     nchack.NCTracker
         Reduced tracker with the variances 
     """
-    return time_stat(self, stat = "var", silent = silent, cores = cores)
+    return time_stat(self, stat = "var",  cores = cores)
 
 
-def cum_sum(self, silent = True, cores = 1):
+def cum_sum(self,  cores = 1):
     """
     Calculate the cumulative sums of all values.  
 
@@ -124,6 +124,6 @@ def cum_sum(self, silent = True, cores = 1):
     """
 
     cdo_command = "cdo -timcumsum" 
-    run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
+    run_this(cdo_command, self,  output = "ensemble", cores = cores)
     # clean up the directory
     cleanup(keep = self.current)

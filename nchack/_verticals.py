@@ -4,7 +4,7 @@ from ._cleanup import cleanup
 from ._runthis import run_this
 from .flatten import str_flatten
 
-def bottom(self, silent = True, cores = 1):
+def bottom(self,  cores = 1):
     """
     Extract the bottom level from a tracker 
 
@@ -32,11 +32,11 @@ def bottom(self, silent = True, cores = 1):
 
     cdo_command = "cdo -sellevidx," + str(n_levels)
 
-    run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
+    run_this(cdo_command, self,  output = "ensemble", cores = cores)
 
     cleanup(keep = self.current)
 
-def surface(self, silent = True, cores = 1):
+def surface(self,  cores = 1):
     """
     Extract the top/surface level from a tracker 
 
@@ -52,11 +52,11 @@ def surface(self, silent = True, cores = 1):
     """
 
     cdo_command = "cdo -sellevidx,1 "
-    run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
+    run_this(cdo_command, self,  output = "ensemble", cores = cores)
     cleanup(keep = self.current)
 
 
-def vertical_interp(self, vert_depths = None, silent = True, cores = 1):
+def vertical_interp(self, vert_depths = None,  cores = 1):
     """
     Verticaly interpolate a tracker based on given depths
 
@@ -104,7 +104,7 @@ def vertical_interp(self, vert_depths = None, silent = True, cores = 1):
         vert_depths = str_flatten(vert_depths, ",")
         cdo_command = "cdo intlevel," + vert_depths
         
-        run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
+        run_this(cdo_command, self,  output = "ensemble", cores = cores)
 
      # throw error if cdo fails at this point
     
@@ -112,16 +112,16 @@ def vertical_interp(self, vert_depths = None, silent = True, cores = 1):
     cleanup(keep = self.current)
 
 
-def vertstat(self, stat = "mean", silent = True, cores = 1):
+def vertstat(self, stat = "mean",  cores = 1):
     """Method to calculate the vertical mean from a function""" 
     cdo_command = "cdo -vert" + stat
 
-    run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
+    run_this(cdo_command, self,  output = "ensemble", cores = cores)
 
     # clean up the directory
     cleanup(keep = self.current)
 
-def vertical_mean(self, silent = True, cores = 1):
+def vertical_mean(self,  cores = 1):
     """
     Calculate the depth-averaged mean 
 
@@ -136,9 +136,9 @@ def vertical_mean(self, silent = True, cores = 1):
         Reduced tracker with the depth-averaged mean
     """
 
-    return vertstat(self, stat = "mean", silent = True, cores = cores)
+    return vertstat(self, stat = "mean",  cores = cores)
 
-def vertical_min(self, silent = True, cores = 1):
+def vertical_min(self,  cores = 1):
     """
     Calculate the depth-averaged minimum 
 
@@ -153,9 +153,9 @@ def vertical_min(self, silent = True, cores = 1):
         Reduced tracker with the depth-averaged minimum
     """
 
-    return vertstat(self, stat = "min", silent = True, cores = cores)
+    return vertstat(self, stat = "min",  cores = cores)
 
-def vertical_max(self, silent = True, cores = 1):
+def vertical_max(self,  cores = 1):
     """
     Calculate the depth-averaged maximum 
 
@@ -170,9 +170,9 @@ def vertical_max(self, silent = True, cores = 1):
         Reduced tracker with the depth-averaged maximum
     """
 
-    return vertstat(self, stat = "max", silent = True, cores = cores)
+    return vertstat(self, stat = "max",  cores = cores)
     
-def vertical_range(self, silent = True, cores = 1):
+def vertical_range(self,  cores = 1):
     """
     Calculate the depth-averaged range 
 
@@ -187,4 +187,4 @@ def vertical_range(self, silent = True, cores = 1):
         Reduced tracker with the depth-averaged range
     """
 
-    return vertstat(self, stat = "range", silent = True, cores = cores)
+    return vertstat(self, stat = "range",  cores = cores)

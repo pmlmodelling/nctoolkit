@@ -3,7 +3,7 @@ from .flatten import str_flatten
 from ._cleanup import cleanup
 from ._runthis import run_this
 
-def zip(self,  silent = True, cores = 1):
+def zip(self,  cores = 1):
     """
     Zip the tracker
 
@@ -22,6 +22,6 @@ def zip(self,  silent = True, cores = 1):
         cdo_command = "cdo -z zip copy "
     else:
         cdo_command = "cdo -z zip "
-    run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
+    run_this(cdo_command, self, output = "ensemble", cores = cores)
     
     cleanup(keep = self.current)

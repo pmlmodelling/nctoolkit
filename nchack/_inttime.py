@@ -3,7 +3,7 @@ from ._runthis import run_this
 from .flatten import str_flatten
 from ._cleanup import cleanup
 
-def time_interp(self, start_date = None, end_date = None, resolution = "monthly",  silent = True, cores = 1):
+def time_interp(self, start_date = None, end_date = None, resolution = "monthly",   cores = 1):
 
     """
     Temporally interpolate variables based on date range and time resolution 
@@ -60,7 +60,7 @@ def time_interp(self, start_date = None, end_date = None, resolution = "monthly"
         end_date = end_date.replace("/", "-")
         cdo_command = "cdo -L " + "-seldate," + start_date + "," + end_date + " " + cdo_command
 
-    run_this(cdo_command, self, silent, output = "ensemble", cores = cores)
+    run_this(cdo_command, self,  output = "ensemble", cores = cores)
 
     # clean up the directory
     cleanup(keep = self.current)

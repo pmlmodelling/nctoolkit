@@ -11,7 +11,7 @@ from ._setters import set_longname
 import copy
 
 
-def split(self, method = "year", silent = False):
+def split(self, method = "year"):
     """
     Method to split files by period 
     """
@@ -58,7 +58,7 @@ def split(self, method = "year", silent = False):
 
 
 
-def split_year(self,  silent = False):
+def split_year(self):
     """
     Split the ensemble based on years. Each file in the ensemble will be separated into new files based on years.
 
@@ -67,9 +67,9 @@ def split_year(self,  silent = False):
     nchack.NCTracker
         Reduced tracker with split data
     """
-    split(self, method = "year", silent = silent)
+    split(self, method = "year")
 
-def split_year_month(self,  silent = False):
+def split_year_month(self):
     """
     Split the ensemble based on years and months. Each file in the ensemble will be separated into new files based on years and months.
 
@@ -78,12 +78,12 @@ def split_year_month(self,  silent = False):
     nchack.NCTracker
         Reduced tracker with split data
     """
-    split(self, method = "yearmon", silent = silent)
+    split(self, method = "yearmon")
 
-#def split_month(self,  silent = False):
-#    split(self, method = "mon", silent = silent)
+#def split_month(self):
+#    split(self, method = "mon")
 
-def split_day(self,  silent = False):
+def split_day(self):
     """
     Split the ensemble based on days. Each file in the ensemble will be separated into new files based on days.
 
@@ -92,9 +92,9 @@ def split_day(self,  silent = False):
     nchack.NCTracker
         Reduced tracker with split data
     """
-    split(self, method = "day", silent = silent)
+    split(self, method = "day")
 
-def split_season(self,  silent = False):
+def split_season(self):
     """
     Split the ensemble based on season. Each file in the ensemble will be separated into new files based on season.
 
@@ -103,6 +103,6 @@ def split_season(self,  silent = False):
     nchack.NCTracker
         Reduced tracker with split data
     """
-    split(self, method = "seas", silent = silent)
+    split(self, method = "seas")
 
 
