@@ -63,5 +63,18 @@ def daily_max_climatology(self, silent = True, cores = 1):
     return ydaystat(self,  stat = "max", silent = True, cores = cores)
     
 def daily_range_climatology(self, silent = True, cores = 1):
+    """
+    Calculate a daily range climatology. This assumes times in files are directly comparable, so make sure the same number of days are in each file
+
+    Parameters
+    -------------
+    cores: int
+        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+
+    Returns
+    -------------
+    nchack.NCTracker
+        Reduced tracker with the daily climatology
+    """
     return ydaystat(self, stat = "range", silent = True, cores = cores)
 
