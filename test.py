@@ -121,7 +121,7 @@ class TestSelect(unittest.TestCase):
         y = len(tracker.history)
         self.assertEqual(x, 18.360414505004883)
 
-    def seasonal_clim1(self):
+    def test_seasonal_clim1(self):
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
         tracker.seasonal_mean_climatology()
@@ -129,6 +129,18 @@ class TestSelect(unittest.TestCase):
         tracker.spatial_mean()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         self.assertEqual(x, 17.8525390625)
+
+    def test_merge_rename(self):
+        ff = "data/sst.mon.mean.nc"
+        tracker1 = nc.open_data(ff)
+        tracker2 = nc.open_data(ff)
+        tracker2.rename({"sst": "tos"})
+        tracker = nc.merge_trackers(tracker1, tracker2)
+        tracker.transmute({"bias":"sst-tos"})
+        tracker.mean()
+        tracker.spatial_mean()
+        x = tracker.to_xarray().bias.values[0][0][0].astype("float")
+        self.assertEqual(x, 0)
 
 
 
