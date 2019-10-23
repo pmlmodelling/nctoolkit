@@ -68,7 +68,9 @@ def run_cdo(command, target, out_file = None):
     result,ignore = out.communicate()
 
     if out_file is not None:
-        return None 
+        if str(result).startswith("b'Error") or "HDF error" in str(result):
+            raise ValueError(str(result).replace("b'","").replace("\\n", "").replace("'", ""))
+        return out_file 
 
     if "(Abort)" in str(result):
         raise ValueError(str(result).replace("b'","").replace("\\n", "").replace("'", ""))
@@ -140,15 +142,20 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
                     ff_command = copy.deepcopy(os_command)
     
                 target = temp_file("nc")
+                nc_created.append(target)
+
                 if out_file is not None:
                     target = out_file
-                nc_created.append(target)
                 ff_command = ff_command + " " + ff + " " + target
                 ff_command = ff_command.replace("  ", " ")
+
+                print(ff_command)
+                print(target)
     
                 self.history.append(ff_command)
                 temp = pool.apply_async(run_cdo,[ff_command, target, out_file])
                 results[ff] = temp
+                print(temp)
     
             pool.close()
             pool.join()
