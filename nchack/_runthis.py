@@ -23,7 +23,7 @@ def split_list(seq, num):
     return out
 
 
-def run_nco(command, target):
+def run_nco(command, target, out_file = None):
     command = command.strip()
     if (command.startswith("ncea ") == False) and (command.startswith("ncra ") == False):
         raise ValueError("This is not a valid NCO command")
@@ -59,13 +59,16 @@ def run_nco(command, target):
     return target
 
 
-def run_cdo(command, target):
+def run_cdo(command, target, out_file = None):
     command = command.strip()
     if command.startswith("cdo ") == False:
         raise ValueError("The command does not start with cdo!")
 
     out = subprocess.Popen(command,shell = True, stdin = subprocess.PIPE,stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
     result,ignore = out.communicate()
+
+    if out_file is not None:
+        return None 
 
     if "(Abort)" in str(result):
         raise ValueError(str(result).replace("b'","").replace("\\n", "").replace("'", ""))
@@ -75,6 +78,8 @@ def run_cdo(command, target):
             new_target = target.replace("/tmp/", "/var/tmp/") 
             command = command.replace(target, new_target)
             target = new_target
+
+        
             nc_created.append(target)
             out = subprocess.Popen(command,shell = True, stdin = subprocess.PIPE,stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
             result1,ignore = out.communicate()
@@ -94,7 +99,10 @@ def run_cdo(command, target):
 
     return target
 
-def run_this(os_command, self, silent = False, output = "one", cores = 1, n_operations = 1, zip = False):
+def run_this(os_command, self, silent = False, output = "one", cores = 1, n_operations = 1, zip = False, out_file = None):
+
+    if type(self.current) is str:
+        output = "ensemble"
 
     if self.run == False:
         if len(self.hold_history) == len(self.history):
@@ -132,12 +140,14 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
                     ff_command = copy.deepcopy(os_command)
     
                 target = temp_file("nc")
+                if out_file is not None:
+                    target = out_file
                 nc_created.append(target)
                 ff_command = ff_command + " " + ff + " " + target
                 ff_command = ff_command.replace("  ", " ")
     
                 self.history.append(ff_command)
-                temp = pool.apply_async(run_cdo,[ff_command, target])
+                temp = pool.apply_async(run_cdo,[ff_command, target, out_file])
                 results[ff] = temp
     
             pool.close()
