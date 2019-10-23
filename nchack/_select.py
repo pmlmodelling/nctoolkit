@@ -1,3 +1,4 @@
+import os
 
 from .flatten import str_flatten
 from ._cleanup import cleanup
@@ -81,6 +82,25 @@ def select_years(self, years,  cores = 1):
     # convert years to int
     years = [int(x) for x in years]
 
+
+    if type(self.current) is list:
+        new_current = []
+        for ff in self.current:
+            cdo_result = os.popen( "cdo showyear " + ff).read()
+            cdo_result = cdo_result.replace("\n", "")
+            cdo_result = cdo_result.split()
+            cdo_result = list(set(cdo_result))
+            cdo_result =  [int(v) for v in cdo_result]
+            inter = [element for element in cdo_result if element in years]
+            if len(inter) > 0:
+                new_current.append(ff)
+            if len(inter) == 0:
+                print("Warning: " + ff + " has none of the years, so has been removed!")
+        if len(new_current) == 0:
+            raise ValueError("Data for none of the years is available!")
+
+        self.current = new_current
+        
     years = str_flatten(years, ",") 
 
     cdo_command = "cdo -selyear," + years
