@@ -3,6 +3,7 @@ import shutil
 
 from ._cleanup import cleanup
 from ._runcommand import run_command
+from ._runthis import run_this
 
 def to_netcdf(self, out, zip = True, overwrite = False):
     """
@@ -28,12 +29,27 @@ def to_netcdf(self, out, zip = True, overwrite = False):
     # This should maybe be a warning, not an error 
     if os.path.exists(out) and overwrite == False: 
         raise ValueError("The out file exists and overwrite is set to false")
-    if zip:
-        os.system("cdo -f nc4 -z zip_9 copy " + ff + " " + out)
-        if os.path.exists(out) == False: 
-            raise ValueError("File zipping was not successful")
+
+ 
+    if self.run:
+        if zip:
+            os.system("cdo -z zip_9 copy " + ff + " " + out)
+        else:
+            os.system("cdo copy " + ff + " " + out)
     else:
-        shutil.copy(ff, out)
+        if zip:
+            cdo_command = "cdo -z zip_9 "
+        else:
+            cdo_command = "cdo "
+
+        self.run = True
+        self.released = True
+        run_this(cdo_command, self, out_file = out)
+    if os.path.exists(out) == False: 
+        raise ValueError("File zipping was not successful")
 
     # run the cleanup
     cleanup()
+
+
+
