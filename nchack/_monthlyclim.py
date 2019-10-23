@@ -23,7 +23,7 @@ def monthly_mean_climatology(self, cores = 1):
 
     Returns
     -------------
-    nchack.NCTracker
+    nchack.NCData
         Reduced tracker with monthly climatologies
     """
     return ymonstat(self, stat = "mean", cores = cores)
@@ -39,7 +39,7 @@ def monthly_min_climatology(self, cores = 1):
 
     Returns
     -------------
-    nchack.NCTracker
+    nchack.NCData
         Reduced tracker with monthly climatologies
     """
     return ymonstat(self, stat = "min", cores = cores)
@@ -55,7 +55,7 @@ def monthly_max_climatology(self, cores = 1):
 
     Returns
     -------------
-    nchack.NCTracker
+    nchack.NCData
         Reduced tracker with monthly climatologies
     """
     return ymonstat(self,  stat = "max",  cores = cores)
@@ -71,7 +71,7 @@ def monthly_range_climatology(self,  cores = 1):
 
     Returns
     -------------
-    nchack.NCTracker
+    nchack.NCData
         Reduced tracker with monthly climatologies
     """
     return ymonstat(self, stat = "range",  cores = cores)

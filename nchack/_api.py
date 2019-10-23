@@ -98,12 +98,12 @@ def open_data(x = None):
         if len(x) == 1:
             x = x[0]
 
-    return NCTracker(x)
+    return NCData(x)
     
 def merge_trackers(*trackers):
     all_files = []
     for tracker in trackers:
-        if "NCTracker" in str(type(tracker)) == False:
+        if "NCData" in str(type(tracker)) == False:
             raise ValueError("Please check everything is a tracker!")
         if type(tracker.current) is str:
             all_files += [tracker.current]
@@ -113,7 +113,7 @@ def merge_trackers(*trackers):
     result.merge()
     return result
 
-class NCTracker:
+class NCData:
     """A tracker/log for manipulating netcdf files"""
     def __init__(self, start = ""):
         """Initialize the starting file name etc"""
@@ -146,7 +146,7 @@ class NCTracker:
         if type(self.current) == str:
             current = self.current
 
-        return "<nchack.NCTracker>:\nstart: " + start + "\ncurrent: " + current + "\noperations: " + str(len(self.history))
+        return "<nchack.NCData>:\nstart: " + start + "\ncurrent: " + current + "\noperations: " + str(len(self.history))
 
 
     @property

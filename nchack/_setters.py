@@ -29,7 +29,7 @@ def set_date(self, year, month, day, base_year = 1900):
 
     Returns
     -------------
-    nchack.NCTracker
+    nchack.NCData
         Reduced tracker with the new date 
     """
 
@@ -61,7 +61,7 @@ def set_longname(self, var_dict):
 
     Returns
     -------------
-    nchack.NCTracker
+    nchack.NCData
         Reduced tracker with the new date 
     """
 
@@ -105,7 +105,7 @@ def set_missing(self, value,  cores = 1):
 
     Returns
     -------------
-    nchack.NCTracker
+    nchack.NCData
         Reduced tracker with the missing values applied.
     """
 
@@ -134,7 +134,7 @@ def set_unit(self, var_dict):
 
     Returns
     -------------
-    nchack.NCTracker
+    nchack.NCData
         Reduced tracker with the new units. 
     """
 
@@ -165,7 +165,7 @@ def set_gridtype(self, grid):
 
     Returns
     -------------
-    nchack.NCTracker
+    nchack.NCData
         Reduced tracker with the new grid type
     """
 

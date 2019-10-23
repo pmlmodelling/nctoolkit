@@ -26,7 +26,7 @@ def regrid(self, grid = None, method = "bil", cores = 1):
 
     Returns
     -------------
-    nchack.NCTracker
+    nchack.NCData
         Reduced tracker with the regridded variables 
     """
 
@@ -55,7 +55,7 @@ def regrid(self, grid = None, method = "bil", cores = 1):
         grid_type = "nc"
 
 
-    if "NCTracker" in str(type(grid)):
+    if "NCData" in str(type(grid)):
         if type(grid.current) is str:
             grid = grid.current
         else:

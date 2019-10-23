@@ -32,7 +32,7 @@ def anomaly_annual(self, var = None, baseline = None):
 
     Returns
     -------------
-    nchack.NCTracker
+    nchack.NCData
         A new tracker with the annual anomalies labelled anomaly
 
     """

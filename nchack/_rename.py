@@ -15,7 +15,7 @@ def rename(self, newnames, cores = 1):
 
     Returns
     -------------
-    nchack.NCTracker
+    nchack.NCData
         Reduced tracker with variables renamed 
     """
 

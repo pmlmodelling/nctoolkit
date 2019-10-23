@@ -1,7 +1,7 @@
 
 from ._api import ( open_data ,
     merge_trackers,
-    NCTracker
+    NCData
     )
 
 from ._cleanup import cleanup

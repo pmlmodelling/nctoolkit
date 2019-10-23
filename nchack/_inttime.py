@@ -21,7 +21,7 @@ def time_interp(self, start = None, end = None, resolution = "monthly",   cores 
 
     Returns
     -------------
-    nchack.NCTracker
+    nchack.NCData
         Reduced tracker with the time interpolated data 
     """
 

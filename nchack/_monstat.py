@@ -24,7 +24,7 @@ def monthly_mean(self, cores = 1):
 
     Returns
     -------------
-    nchack.NCTracker
+    nchack.NCData
         Reduced tracker with monthly means 
     """
 
@@ -41,7 +41,7 @@ def monthly_min(self, cores = 1):
 
     Returns
     -------------
-    nchack.NCTracker
+    nchack.NCData
         Reduced tracker with monthly minimums
     """
     return monstat(self, stat = "min", cores = cores)
@@ -57,7 +57,7 @@ def monthly_max(self, cores = 1):
 
     Returns
     -------------
-    nchack.NCTracker
+    nchack.NCData
         Reduced tracker with monthly maximums
     """
     return monstat(self, stat = "max",  cores = cores)
@@ -74,7 +74,7 @@ def monthly_range(self, cores = 1):
 
     Returns
     -------------
-    nchack.NCTracker
+    nchack.NCData
         Reduced tracker with monthly ranges
     """
 

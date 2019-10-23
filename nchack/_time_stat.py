@@ -22,7 +22,7 @@ def sum(self,  cores = 1):
 
     Returns
     -------------
-    nchack.NCTracker
+    nchack.NCData
         Reduced tracker with the sums 
     """
     return time_stat(self, stat = "sum",  cores = cores)
@@ -38,7 +38,7 @@ def mean(self,  cores = 1):
 
     Returns
     -------------
-    nchack.NCTracker
+    nchack.NCData
         Reduced tracker with the means 
     """
     return time_stat(self, stat = "mean",  cores = cores)
@@ -54,7 +54,7 @@ def min(self,  cores = 1):
 
     Returns
     -------------
-    nchack.NCTracker
+    nchack.NCData
         Reduced tracker with the minimums 
     """
     return time_stat(self, stat = "min",  cores = cores)
@@ -70,7 +70,7 @@ def max(self,  cores = 1):
 
     Returns
     -------------
-    nchack.NCTracker
+    nchack.NCData
         Reduced tracker with the maximums 
     """
     return time_stat(self, stat = "max",  cores = cores)
@@ -86,7 +86,7 @@ def range(self,  cores = 1):
 
     Returns
     -------------
-    nchack.NCTracker
+    nchack.NCData
         Reduced tracker with the ranges 
     """
     return time_stat(self,stat = "range",  cores = cores)
@@ -102,7 +102,7 @@ def var(self,  cores = 1):
 
     Returns
     -------------
-    nchack.NCTracker
+    nchack.NCData
         Reduced tracker with the variances 
     """
     return time_stat(self, stat = "var",  cores = cores)
@@ -119,7 +119,7 @@ def cum_sum(self,  cores = 1):
 
     Returns
     -------------
-    nchack.NCTracker
+    nchack.NCData
         Reduced tracker with the cumulative sums 
     """
 

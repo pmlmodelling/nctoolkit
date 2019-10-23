@@ -18,7 +18,7 @@ def release(self,  cores = 1, run_merge = True):
 
     Returns
     -------------
-    nchack.NCTracker
+    nchack.NCData
         Reduced tracker with commands applies 
     """
 

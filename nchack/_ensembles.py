@@ -26,7 +26,7 @@ def ensemble_percentile(self, p = 50):
 
     Returns
     -------------
-    nchack.NCTracker
+    nchack.NCData
         Reduced tracker with the percentiles
     """
 
@@ -116,7 +116,7 @@ def ensemble_min(self, vars = None, ignore_time = False):
 
     Returns
     -------------
-    nchack.NCTracker
+    nchack.NCData
         Reduced tracker with the ensemble minimums
     """
 
@@ -135,7 +135,7 @@ def ensemble_max(self, vars = None, ignore_time = False):
 
     Returns
     -------------
-    nchack.NCTracker
+    nchack.NCData
         Reduced tracker with the ensemble minimums
     """
 
@@ -154,7 +154,7 @@ def ensemble_mean(self, vars = None, ignore_time = False):
 
     Returns
     -------------
-    nchack.NCTracker
+    nchack.NCData
         Reduced tracker with the ensemble minimums
     """
 
@@ -175,7 +175,7 @@ def ensemble_range(self):
 
     Returns
     -------------
-    nchack.NCTracker
+    nchack.NCData
         Reduced tracker with the ensemble minimums
     """
     if type(self.current) is not list:
@@ -202,7 +202,7 @@ def ensemble_mean_cdo(self,  vars = None):
 
     Returns
     -------------
-    nchack.NCTracker
+    nchack.NCData
         Reduced tracker with the ensemble minimums
     """
 

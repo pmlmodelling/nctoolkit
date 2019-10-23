@@ -18,7 +18,7 @@ def cell_areas(self, cores = 1, join = True):
 
     Returns
     -------------
-    nchack.NCTracker
+    nchack.NCData
         Reduced tracker with cell areas 
     """
 
