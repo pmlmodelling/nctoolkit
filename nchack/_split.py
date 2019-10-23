@@ -8,6 +8,9 @@ from ._filetracker import nc_created
 from .flatten import str_flatten
 from ._select import select_variables
 from ._setters import set_longname
+from ._session import session_stamp
+from ._session import session_info
+
 import copy
 
 
@@ -27,9 +30,24 @@ def split(self, method = "year"):
     for ff in ff_list:
     
         # We need to split the file by name
+
+        # But, first we need to check whether there is sufficient space in the output folder
+        # If there isn't, we need to switch to the /var/tmp
+
+        if session_stamp["temp_dir"] == "/tmp/":
+            result = os.statvfs("/tmp/")
+            result = result.f_frsize * result.f_bavail 
+            if result > session_info["size"]:
+                if session_stamp["temp_dir"] == "/var/tmp/":
+                    session_stamp["temp_dir"] = "/tmp/"
+            session_info["size"] = result
+            
+            if os.path.getsize(ff)*2 > session_info["size"]:
+                    session_stamp["temp_dir"] = "/var/tmp/"
+
         split_base = temp_file() 
     
-        cdo_command = "cdo split" + method + " "  + ff +  " " + split_base
+        cdo_command = "cdo -s -split" + method + " "  + ff +  " " + split_base
     
         self.history.append(cdo_command)
     
