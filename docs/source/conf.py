@@ -11,11 +11,11 @@ sys.path.insert(0, os.path.abspath('../..'))
 
 project = 'nchack'
 copyright = '2019, Robert Wilson'
-author = 'Robert Wilson
+author = 'Robert Wilson'
 
 # The short X.Y version
 # The full version, including alpha/beta/rc tags
-release = '0.11'
+version = '0.10'
 
 
 # -- General configuration ---------------------------------------------------
