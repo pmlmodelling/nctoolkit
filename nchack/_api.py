@@ -58,7 +58,7 @@ def file_size(file_path):
 def open_data(x = None):
 
     """
-    Create a new tracker
+    Read netcdf data as a NCData object 
 
     Parameters
     ---------------
