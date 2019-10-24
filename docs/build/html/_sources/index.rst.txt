@@ -35,7 +35,7 @@ Documentation
 * :doc:`backends`
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 1
    :hidden:
    :caption: Help & reference
 
@@ -43,6 +43,7 @@ Documentation
    api
    backends
    
+
 
 
 
