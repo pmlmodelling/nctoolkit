@@ -1,6 +1,6 @@
 
 from ._api import ( open_data ,
-    merge_trackers,
+    merge,
     NCData
     )
 
