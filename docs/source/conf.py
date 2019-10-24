@@ -9,14 +9,13 @@ sys.path.insert(0, os.path.abspath('../..'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'Sphinx-Themes template'
-copyright = '2018, sphinx-themes.org'
-author = 'sphinx-themes.org'
+project = 'nchack'
+copyright = '2019, Robert Wilson'
+author = 'Robert Wilson
 
 # The short X.Y version
-version = ''
 # The full version, including alpha/beta/rc tags
-release = '1'
+release = '0.11'
 
 
 # -- General configuration ---------------------------------------------------
