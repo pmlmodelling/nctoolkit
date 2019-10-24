@@ -1,4 +1,3 @@
 sphinx==2.2
-readthedocs_ext
 nbsphinx
 
