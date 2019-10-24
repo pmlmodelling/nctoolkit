@@ -1,5 +1,5 @@
 python:
    setup_py_install: true
    install:
-      - method: setup_py_install
+      - method: setuptools
         path: .
