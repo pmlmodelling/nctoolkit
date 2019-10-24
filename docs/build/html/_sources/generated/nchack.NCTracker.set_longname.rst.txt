@@ -1,6 +1,0 @@
-nchack.NCTracker.set\_longname
-==============================
-
-.. currentmodule:: nchack
-
-.. automethod:: NCTracker.set_longname

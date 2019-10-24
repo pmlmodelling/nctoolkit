@@ -1,6 +1,0 @@
-nchack.NCTracker.rolling\_max
-=============================
-
-.. currentmodule:: nchack
-
-.. automethod:: NCTracker.rolling_max

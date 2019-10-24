@@ -1,6 +1,0 @@
-nchack.NCTracker.phenology
-==========================
-
-.. currentmodule:: nchack
-
-.. automethod:: NCTracker.phenology

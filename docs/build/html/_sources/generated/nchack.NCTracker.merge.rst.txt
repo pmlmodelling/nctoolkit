@@ -1,6 +1,0 @@
-nchack.NCTracker.merge
-======================
-
-.. currentmodule:: nchack
-
-.. automethod:: NCTracker.merge

@@ -1,6 +1,0 @@
-nchack.NCTracker.rolling\_sum
-=============================
-
-.. currentmodule:: nchack
-
-.. automethod:: NCTracker.rolling_sum

@@ -1,6 +1,0 @@
-nchack.NCTracker.cor\_time
-==========================
-
-.. currentmodule:: nchack
-
-.. automethod:: NCTracker.cor_time

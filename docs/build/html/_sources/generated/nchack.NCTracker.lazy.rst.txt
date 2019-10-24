@@ -1,6 +1,0 @@
-nchack.NCTracker.lazy
-=====================
-
-.. currentmodule:: nchack
-
-.. automethod:: NCTracker.lazy

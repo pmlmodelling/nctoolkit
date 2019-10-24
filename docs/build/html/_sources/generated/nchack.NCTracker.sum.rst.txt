@@ -1,6 +1,0 @@
-nchack.NCTracker.sum
-====================
-
-.. currentmodule:: nchack
-
-.. automethod:: NCTracker.sum

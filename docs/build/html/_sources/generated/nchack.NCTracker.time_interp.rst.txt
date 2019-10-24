@@ -1,6 +1,0 @@
-nchack.NCTracker.time\_interp
-=============================
-
-.. currentmodule:: nchack
-
-.. automethod:: NCTracker.time_interp

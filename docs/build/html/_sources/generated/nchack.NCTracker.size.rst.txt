@@ -1,6 +1,0 @@
-nchack.NCTracker.size
-=====================
-
-.. currentmodule:: nchack
-
-.. autoproperty:: NCTracker.size

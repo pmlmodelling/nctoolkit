@@ -1,6 +1,0 @@
-nchack.NCTracker.mask\_lonlat
-=============================
-
-.. currentmodule:: nchack
-
-.. automethod:: NCTracker.mask_lonlat

@@ -1,6 +1,0 @@
-nchack.NCTracker.remove\_variables
-==================================
-
-.. currentmodule:: nchack
-
-.. automethod:: NCTracker.remove_variables

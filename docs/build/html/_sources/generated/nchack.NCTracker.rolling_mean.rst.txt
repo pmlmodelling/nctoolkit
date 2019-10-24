@@ -1,6 +1,0 @@
-nchack.NCTracker.rolling\_mean
-==============================
-
-.. currentmodule:: nchack
-
-.. automethod:: NCTracker.rolling_mean

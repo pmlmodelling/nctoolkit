@@ -1,6 +1,0 @@
-nchack.NCTracker.rolling\_min
-=============================
-
-.. currentmodule:: nchack
-
-.. automethod:: NCTracker.rolling_min

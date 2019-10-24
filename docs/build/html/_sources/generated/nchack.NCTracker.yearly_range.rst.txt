@@ -1,6 +1,0 @@
-nchack.NCTracker.yearly\_range
-==============================
-
-.. currentmodule:: nchack
-
-.. automethod:: NCTracker.yearly_range

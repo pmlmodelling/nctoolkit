@@ -1,6 +1,0 @@
-nchack.NCTracker.vertical\_max
-==============================
-
-.. currentmodule:: nchack
-
-.. automethod:: NCTracker.vertical_max

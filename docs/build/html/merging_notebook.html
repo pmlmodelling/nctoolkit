@@ -36,7 +36,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Introduction tutorial" href="howto.html" />
+    <link rel="next" title="How to guide" href="howto.html" />
     <link rel="prev" title="Lazy evaluation" href="lazy_methods.html" /> 
 </head>
 
@@ -95,7 +95,7 @@
 </ul>
 <p class="caption"><span class="caption-text">Help &amp; reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="howto.html">Introduction tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="howto.html">How to guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="backends.html">nckack backends</a></li>
 </ul>
@@ -386,20 +386,11 @@ div.rendered_html tbody tr:hover {
 </style>
 <div class="section" id="Ensemble-methods">
 <h1>Ensemble methods<a class="headerlink" href="#Ensemble-methods" title="Permalink to this headline">¶</a></h1>
-<p>This notebook will outline some general methods for doing comparisons of multiple files. We will work with two different sea surface temperature data sets from NOAA and the Met Office Hadley Centre.</p>
 <div class="section" id="Merging-files-with-different-variables">
 <h2>Merging files with different variables<a class="headerlink" href="#Merging-files-with-different-variables" title="Permalink to this headline">¶</a></h2>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">This</span> <span class="n">notebook</span> <span class="n">will</span> <span class="n">outline</span> <span class="n">some</span> <span class="n">general</span> <span class="n">methods</span> <span class="k">for</span> <span class="n">doing</span> <span class="n">comparisons</span> <span class="n">of</span> <span class="n">multiple</span> <span class="n">files</span><span class="o">.</span> <span class="n">We</span> <span class="n">will</span> <span class="n">work</span> <span class="k">with</span> <span class="n">two</span> <span class="n">different</span> <span class="n">sea</span> <span class="n">surface</span> <span class="n">temperature</span> <span class="n">data</span> <span class="n">sets</span> <span class="kn">from</span> <span class="nn">NOAA</span> <span class="ow">and</span> <span class="n">the</span> <span class="n">Met</span> <span class="n">Office</span> <span class="n">Hadley</span> <span class="n">Centre</span><span class="o">.</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<p>This notebook will outline some general methods for doing comparisons of multiple files. We will work with two different sea surface temperature data sets from NOAA and the Met Office Hadley Centre.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -410,9 +401,17 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Tip: include atexit.register(nchack.clean_all) after loading nchack
+</pre></div></div>
+</div>
 <p>The first step is to get the data. We will start by creating two separate trackers for each file.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -451,7 +450,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -462,7 +461,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <p>The data sets also cover different time periods, and only have overlapping between 1870 and 2018. so we will need to select those years</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -497,7 +496,7 @@ Number of horizontal grids: 2
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -505,8 +504,8 @@ Number of horizontal grids: 2
 </pre></div>
 </div>
 </div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -514,24 +513,9 @@ Number of horizontal grids: 2
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Number of variables: 1
-Number of levels: 1
-Number of years: 149
-Number of months: 1788
-Number of dates: 1788
-Number of times: 1788
-Number of grid points: 64800
-Number of horizontal grids: 1
-</pre></div></div>
-</div>
 <p>At this point, the trackers have the same number of time steps and months covered. However, the grids are still a bit different. So we want to unify them by regridding one tracker on to the other’s grid. This can be done using regrid, or any grid of your choosing.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -541,7 +525,7 @@ Number of horizontal grids: 1
 </div>
 <p>We now have two separate trackers. Let’s create a new tracker that has both of them, and then merge them. When doing this we need to make sure nas are treated properly. In this case Hadley Centre values not being NAs as they should be, so we need to fix that.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -556,23 +540,23 @@ Number of horizontal grids: 1
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Warning: files to merge do not have the same times!
-CDO warning:b&#39;Warning: Duplicate entry of parameter -1 in /tmp/nchacktikwuxwgnchacknchacktikwuxwgnchacktmphf25p4zy.nc!\ncdo    merge: Processed 2 variables over 3576 timesteps [1.07s 81MB].\n&#39;
+CDO warning:b&#39;Warning: Duplicate entry of parameter -1 in /tmp/nchackounbwgvbnchacknchackounbwgvbnchacktmpdtionqj9.nc!\ncdo    merge: Processed 2 variables over 3576 timesteps [1.00s 79MB].\n&#39;
 </pre></div></div>
 </div>
 <p>Let’s work out what the global mean SST was over the time period. Note that this will not be totally accurate as there are some missing values here and there that might bias things.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">big_tracker</span><span class="o">.</span><span class="n">spatial_mean</span><span class="p">()</span>
-<span class="n">big_tracker</span><span class="o">.</span><span class="n">yearly_mean</span><span class="p">()</span>
+<span class="n">big_tracker</span><span class="o">.</span><span class="n">annual_mean</span><span class="p">()</span>
 <span class="n">big_tracker</span><span class="o">.</span><span class="n">rolling_mean</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -580,8 +564,30 @@ CDO warning:b&#39;Warning: Duplicate entry of parameter -1 in /tmp/nchacktikwuxw
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/users/modellers/rwi/anaconda3/lib/python3.7/site-packages/pandas/plotting/_matplotlib/converter.py:103: FutureWarning: Using an implicitly registered datetime converter for a matplotlib plotting method. The converter was registered by pandas on import. Future versions of pandas will require you to explicitly register matplotlib converters.
+
+To register the converters:
+        &gt;&gt;&gt; from pandas.plotting import register_matplotlib_converters
+        &gt;&gt;&gt; register_matplotlib_converters()
+  warnings.warn(msg, FutureWarning)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>[&lt;matplotlib.lines.Line2D at 0x7fca8fcd4860&gt;]
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -589,9 +595,25 @@ CDO warning:b&#39;Warning: Duplicate entry of parameter -1 in /tmp/nchacktikwuxw
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>[&lt;matplotlib.lines.Line2D at 0x7fca8fc3fac8&gt;]
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/merging_notebook_22_1.png" src="_images/merging_notebook_22_1.png" />
+</div>
+</div>
 <p>We can also work out the difference between the two. Here we wil work out the monthly bias per cell. Then calculate the mean global difference per year, and then calculate a rolling 10 year mean.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -600,21 +622,46 @@ CDO warning:b&#39;Warning: Duplicate entry of parameter -1 in /tmp/nchacktikwuxw
 <span class="n">big_tracker</span><span class="o">.</span><span class="n">mutate</span><span class="p">({</span><span class="s2">&quot;bias&quot;</span><span class="p">:</span><span class="s2">&quot;hadley-noaa&quot;</span><span class="p">})</span>
 <span class="n">big_tracker</span><span class="o">.</span><span class="n">set_missing</span><span class="p">([</span><span class="o">-</span><span class="mi">9000</span><span class="p">,</span> <span class="o">-</span> <span class="mi">900</span><span class="p">])</span>
 <span class="n">big_tracker</span><span class="o">.</span><span class="n">spatial_mean</span><span class="p">()</span>
-<span class="n">big_tracker</span><span class="o">.</span><span class="n">yearly_mean</span><span class="p">()</span>
+<span class="n">big_tracker</span><span class="o">.</span><span class="n">annual_mean</span><span class="p">()</span>
 <span class="n">big_tracker</span><span class="o">.</span><span class="n">rolling_mean</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 <span class="n">big_tracker</span><span class="o">.</span><span class="n">to_xarray</span><span class="p">()</span><span class="o">.</span><span class="n">bias</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Warning: files to merge do not have the same times!
+CDO warning:b&#39;Warning: Duplicate entry of parameter -1 in /tmp/nchackounbwgvbnchacknchackounbwgvbnchacktmpdtionqj9.nc!\ncdo    merge: Processed 2 variables over 3576 timesteps [1.00s 92MB].\n&#39;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>[&lt;matplotlib.lines.Line2D at 0x7fca8fbb2dd8&gt;]
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/merging_notebook_24_2.png" src="_images/merging_notebook_24_2.png" />
+</div>
+</div>
 <p>You can see that there is a notable difference at the start of the time series.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">new</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">open_data</span><span class="p">(</span><span class="n">tracker1</span><span class="o">.</span><span class="n">current</span><span class="p">)</span>
 <span class="n">new</span><span class="o">.</span><span class="n">spatial_mean</span><span class="p">()</span>
-<span class="n">new</span><span class="o">.</span><span class="n">yearly_mean</span><span class="p">()</span>
+<span class="n">new</span><span class="o">.</span><span class="n">annual_mean</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -644,7 +691,7 @@ CDO warning:b&#39;Warning: Duplicate entry of parameter -1 in /tmp/nchacktikwuxw
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="howto.html" class="btn btn-neutral float-right" title="Introduction tutorial" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="howto.html" class="btn btn-neutral float-right" title="How to guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="lazy_methods.html" class="btn btn-neutral float-left" title="Lazy evaluation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

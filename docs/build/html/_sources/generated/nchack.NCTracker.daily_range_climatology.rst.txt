@@ -1,6 +1,0 @@
-nchack.NCTracker.daily\_range\_climatology
-==========================================
-
-.. currentmodule:: nchack
-
-.. automethod:: NCTracker.daily_range_climatology

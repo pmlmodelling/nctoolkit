@@ -1,6 +1,0 @@
-nchack.NCTracker.seasonal\_mean
-===============================
-
-.. currentmodule:: nchack
-
-.. automethod:: NCTracker.seasonal_mean

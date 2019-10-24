@@ -1,6 +1,0 @@
-nchack.NCTracker.split\_day
-===========================
-
-.. currentmodule:: nchack
-
-.. automethod:: NCTracker.split_day

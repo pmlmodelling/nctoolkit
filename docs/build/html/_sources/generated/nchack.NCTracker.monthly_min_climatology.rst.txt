@@ -1,6 +1,0 @@
-nchack.NCTracker.monthly\_min\_climatology
-==========================================
-
-.. currentmodule:: nchack
-
-.. automethod:: NCTracker.monthly_min_climatology

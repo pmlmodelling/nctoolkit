@@ -1,6 +1,0 @@
-nchack.NCTracker.transmute
-==========================
-
-.. currentmodule:: nchack
-
-.. automethod:: NCTracker.transmute

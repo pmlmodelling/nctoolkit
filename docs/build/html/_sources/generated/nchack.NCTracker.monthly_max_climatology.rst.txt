@@ -1,6 +1,0 @@
-nchack.NCTracker.monthly\_max\_climatology
-==========================================
-
-.. currentmodule:: nchack
-
-.. automethod:: NCTracker.monthly_max_climatology

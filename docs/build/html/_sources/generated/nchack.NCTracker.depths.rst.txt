@@ -1,6 +1,0 @@
-nchack.NCTracker.depths
-=======================
-
-.. currentmodule:: nchack
-
-.. automethod:: NCTracker.depths

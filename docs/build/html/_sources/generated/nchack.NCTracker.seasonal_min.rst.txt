@@ -1,6 +1,0 @@
-nchack.NCTracker.seasonal\_min
-==============================
-
-.. currentmodule:: nchack
-
-.. automethod:: NCTracker.seasonal_min

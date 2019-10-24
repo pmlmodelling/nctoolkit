@@ -1,6 +1,0 @@
-nchack.NCTracker.rename
-=======================
-
-.. currentmodule:: nchack
-
-.. automethod:: NCTracker.rename

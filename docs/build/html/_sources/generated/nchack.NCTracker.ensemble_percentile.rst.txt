@@ -1,6 +1,0 @@
-nchack.NCTracker.ensemble\_percentile
-=====================================
-
-.. currentmodule:: nchack
-
-.. automethod:: NCTracker.ensemble_percentile

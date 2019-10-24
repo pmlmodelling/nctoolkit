@@ -1,6 +1,0 @@
-nchack.NCTracker.vertical\_mean
-===============================
-
-.. currentmodule:: nchack
-
-.. automethod:: NCTracker.vertical_mean

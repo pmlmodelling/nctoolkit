@@ -1,6 +1,0 @@
-nchack.NCTracker.spatial\_min
-=============================
-
-.. currentmodule:: nchack
-
-.. automethod:: NCTracker.spatial_min

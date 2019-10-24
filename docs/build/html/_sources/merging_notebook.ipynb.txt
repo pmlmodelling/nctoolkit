@@ -4,8 +4,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "# Ensemble methods \n",
-    "This notebook will outline some general methods for doing comparisons of multiple files. We will work with two different sea surface temperature data sets from NOAA and the Met Office Hadley Centre.\n"
+    "# Ensemble methods "
    ]
   },
   {
@@ -16,17 +15,15 @@
    ]
   },
   {
-   "cell_type": "code",
-   "execution_count": null,
+   "cell_type": "markdown",
    "metadata": {},
-   "outputs": [],
    "source": [
     "This notebook will outline some general methods for doing comparisons of multiple files. We will work with two different sea surface temperature data sets from NOAA and the Met Office Hadley Centre."
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 15,
+   "execution_count": null,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -46,7 +43,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 16,
+   "execution_count": null,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -63,30 +60,9 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 3,
+   "execution_count": null,
    "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "['sst']"
-      ]
-     },
-     "execution_count": 3,
-     "metadata": {},
-     "output_type": "execute_result"
-    },
-    {
-     "data": {
-      "text/plain": [
-       "['time_bnds', 'sst']"
-      ]
-     },
-     "execution_count": 3,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
+   "outputs": [],
    "source": [
     "tracker1.variables\n",
     "tracker2.variables"
@@ -94,7 +70,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 17,
+   "execution_count": null,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -111,7 +87,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 18,
+   "execution_count": null,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -128,31 +104,16 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 6,
+   "execution_count": null,
    "metadata": {},
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "Number of variables: 2\n",
-      "Number of levels: 1\n",
-      "Number of years: 149\n",
-      "Number of months: 1788\n",
-      "Number of dates: 1788\n",
-      "Number of times: 1788\n",
-      "Number of grid points: 2\n",
-      "Number of horizontal grids: 2\n"
-     ]
-    }
-   ],
+   "outputs": [],
    "source": [
     "tracker2.numbers()"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 19,
+   "execution_count": null,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -161,24 +122,9 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 14,
+   "execution_count": null,
    "metadata": {},
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "Number of variables: 1\n",
-      "Number of levels: 1\n",
-      "Number of years: 149\n",
-      "Number of months: 1788\n",
-      "Number of dates: 1788\n",
-      "Number of times: 1788\n",
-      "Number of grid points: 64800\n",
-      "Number of horizontal grids: 1\n"
-     ]
-    }
-   ],
+   "outputs": [],
    "source": []
   },
   {
@@ -191,7 +137,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 20,
+   "execution_count": null,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -208,18 +154,9 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 27,
+   "execution_count": null,
    "metadata": {},
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "Warning: files to merge do not have the same times!\n",
-      "CDO warning:b'Warning: Duplicate entry of parameter -1 in /tmp/nchacktikwuxwgnchacknchacktikwuxwgnchacktmphf25p4zy.nc!\\ncdo    merge: Processed 2 variables over 3576 timesteps [1.07s 81MB].\\n'\n"
-     ]
-    }
-   ],
+   "outputs": [],
    "source": [
     "big_tracker = nc.merge_trackers(tracker1, tracker2)\n",
     "big_tracker.set_missing([-9000, - 900])"
@@ -239,7 +176,7 @@
    "outputs": [],
    "source": [
     "big_tracker.spatial_mean()\n",
-    "big_tracker.yearly_mean()\n",
+    "big_tracker.annual_mean()\n",
     "big_tracker.rolling_mean(10)"
    ]
   },
@@ -279,7 +216,7 @@
     "big_tracker.mutate({\"bias\":\"hadley-noaa\"})\n",
     "big_tracker.set_missing([-9000, - 900])\n",
     "big_tracker.spatial_mean()\n",
-    "big_tracker.yearly_mean()\n",
+    "big_tracker.annual_mean()\n",
     "big_tracker.rolling_mean(10)\n",
     "big_tracker.to_xarray().bias.plot()"
    ]
@@ -299,7 +236,7 @@
    "source": [
     "new = nc.open_data(tracker1.current)\n",
     "new.spatial_mean()\n",
-    "new.yearly_mean()"
+    "new.annual_mean()"
    ]
   },
   {

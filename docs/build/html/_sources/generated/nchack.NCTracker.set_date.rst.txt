@@ -1,6 +1,0 @@
-nchack.NCTracker.set\_date
-==========================
-
-.. currentmodule:: nchack
-
-.. automethod:: NCTracker.set_date

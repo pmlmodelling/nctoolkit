@@ -1,6 +1,0 @@
-nchack.NCTracker.seasonal\_max
-==============================
-
-.. currentmodule:: nchack
-
-.. automethod:: NCTracker.seasonal_max

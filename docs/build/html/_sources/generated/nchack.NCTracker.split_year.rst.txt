@@ -1,6 +1,0 @@
-nchack.NCTracker.split\_year
-============================
-
-.. currentmodule:: nchack
-
-.. automethod:: NCTracker.split_year

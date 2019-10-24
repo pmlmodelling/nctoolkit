@@ -1,6 +1,0 @@
-nchack.NCTracker.yearly\_min
-============================
-
-.. currentmodule:: nchack
-
-.. automethod:: NCTracker.yearly_min

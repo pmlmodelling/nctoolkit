@@ -1,6 +1,0 @@
-nchack.NCTracker.select\_season
-===============================
-
-.. currentmodule:: nchack
-
-.. automethod:: NCTracker.select_season

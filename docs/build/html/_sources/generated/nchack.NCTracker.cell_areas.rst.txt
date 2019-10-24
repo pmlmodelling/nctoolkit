@@ -1,6 +1,0 @@
-nchack.NCTracker.cell\_areas
-============================
-
-.. currentmodule:: nchack
-
-.. automethod:: NCTracker.cell_areas

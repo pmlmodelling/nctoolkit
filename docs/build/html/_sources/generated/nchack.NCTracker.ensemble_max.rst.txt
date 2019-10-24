@@ -1,6 +1,0 @@
-nchack.NCTracker.ensemble\_max
-==============================
-
-.. currentmodule:: nchack
-
-.. automethod:: NCTracker.ensemble_max

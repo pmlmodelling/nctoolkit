@@ -1,6 +1,0 @@
-nchack.NCTracker.set\_unit
-==========================
-
-.. currentmodule:: nchack
-
-.. automethod:: NCTracker.set_unit

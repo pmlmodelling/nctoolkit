@@ -1,6 +1,0 @@
-nchack.NCTracker.vertical\_range
-================================
-
-.. currentmodule:: nchack
-
-.. automethod:: NCTracker.vertical_range

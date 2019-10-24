@@ -1,6 +1,0 @@
-nchack.NCTracker.times
-======================
-
-.. currentmodule:: nchack
-
-.. automethod:: NCTracker.times

@@ -1,6 +1,0 @@
-nchack.NCTracker.clip
-=====================
-
-.. currentmodule:: nchack
-
-.. automethod:: NCTracker.clip
