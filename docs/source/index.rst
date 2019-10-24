@@ -17,7 +17,7 @@ Documentation
 * :doc:`installing`
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 3
    :hidden:
    :caption: Getting Started
 
@@ -35,7 +35,7 @@ Documentation
 * :doc:`backends`
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 3
    :hidden:
    :caption: Help & reference
 
@@ -43,6 +43,7 @@ Documentation
    api
    backends
    
+
 
 
 
