@@ -48,7 +48,7 @@ def cor(self, var1 = None, var2 = None, method = "fld"):
     if os.path.exists(out1) == False or os.path.exists(out2) == False:
         raise ValueError("Splitting the file by name did not work!")
 
-    target = temp_file()
+    target = temp_file(".nc")
     nc_created.append(target)
 
     cdo_command = "cdo " + method + "cor " + out1 + " " + out2 + " " + target
@@ -59,7 +59,7 @@ def cor(self, var1 = None, var2 = None, method = "fld"):
     if os.path.exists(target) == False:
         raise ValueError("Calculating the correlation coefficient failed!")
 
-    target1 = temp_file()
+    target1 = temp_file(".nc")
     nc_created.append(target1)
 
     cdo_command = "cdo setname," + "cor " + target + " " + target1
@@ -69,7 +69,7 @@ def cor(self, var1 = None, var2 = None, method = "fld"):
     if os.path.exists(target1) == False:
         raise ValueError("Changing the name to cor failed!")
 
-    target2 = temp_file()
+    target2 = temp_file(".nc")
     nc_created.append(target2)
 
     cdo_command = "cdo setunit," + "'-' " + target1 + " " + target2
