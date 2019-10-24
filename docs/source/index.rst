@@ -1,7 +1,10 @@
+
 nchack: tools to manipulate and analyze netcdf data in Python
 =======================================================
 
 **nchack** is a blah blah.
+
+The goal of nchack is to provide a comprehensive tool in Python for manipulating individual netcdf files and ensembles of netcdf files. The philosophy is to provide sufficient methods to carry out 80-90% of netcdf manipulations.
 
 
 Documentation
