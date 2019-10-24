@@ -1,8 +1,0 @@
-{
-    "body": "<div class=\"section\" id=\"nchack-ncdata-size\">\n<h1>nchack.NCData.size<a class=\"headerlink\" href=\"#nchack-ncdata-size\" title=\"Permalink to this headline\">\u00b6</a></h1>\n<dl class=\"method\">\n<dt id=\"nchack.NCData.size\">\n<em class=\"property\">property </em><code class=\"sig-prename descclassname\">NCData.</code><code class=\"sig-name descname\">size</code><a class=\"headerlink\" href=\"#nchack.NCData.size\" title=\"Permalink to this definition\">\u00b6</a></dt>\n<dd><p>The size of the tracker.\nThis will print the number of files, total size, and smallest and largest files in the tracker.</p>\n</dd></dl>\n\n</div>\n",
-    "title": "nchack.NCData.size",
-    "sourcename": "generated/nchack.NCData.size.rst.txt",
-    "current_page_name": "generated/nchack.NCData.size",
-    "toc": "<ul>\n<li><a class=\"reference internal\" href=\"#\">nchack.NCData.size</a></li>\n</ul>\n",
-    "page_source_suffix": ".rst"
-}

@@ -1,8 +1,0 @@
-{
-    "body": "<div class=\"section\" id=\"nchack-ncdata-to-xarray\">\n<h1>nchack.NCData.to_xarray<a class=\"headerlink\" href=\"#nchack-ncdata-to-xarray\" title=\"Permalink to this headline\">\u00b6</a></h1>\n<dl class=\"method\">\n<dt id=\"nchack.NCData.to_xarray\">\n<code class=\"sig-prename descclassname\">NCData.</code><code class=\"sig-name descname\">to_xarray</code><span class=\"sig-paren\">(</span><em class=\"sig-param\">decode_times=True</em><span class=\"sig-paren\">)</span><a class=\"headerlink\" href=\"#nchack.NCData.to_xarray\" title=\"Permalink to this definition\">\u00b6</a></dt>\n<dd><p>Open a tracker as an xarray object</p>\n<dl class=\"field-list simple\">\n<dt class=\"field-odd\">Parameters</dt>\n<dd class=\"field-odd\"><p><strong>decode_times</strong> (<em>boolean</em>) -- Set to False if you do not want xarray to decode the times. Default is True.</p>\n</dd>\n</dl>\n</dd></dl>\n\n</div>\n",
-    "title": "nchack.NCData.to_xarray",
-    "sourcename": "generated/nchack.NCData.to_xarray.rst.txt",
-    "current_page_name": "generated/nchack.NCData.to_xarray",
-    "toc": "<ul>\n<li><a class=\"reference internal\" href=\"#\">nchack.NCData.to_xarray</a></li>\n</ul>\n",
-    "page_source_suffix": ".rst"
-}

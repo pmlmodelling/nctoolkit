@@ -1,8 +1,0 @@
-{
-    "body": "<div class=\"section\" id=\"nchack-open-data\">\n<h1>nchack.open_data<a class=\"headerlink\" href=\"#nchack-open-data\" title=\"Permalink to this headline\">\u00b6</a></h1>\n<dl class=\"function\">\n<dt id=\"nchack.open_data\">\n<code class=\"sig-prename descclassname\">nchack.</code><code class=\"sig-name descname\">open_data</code><span class=\"sig-paren\">(</span><em class=\"sig-param\">x=None</em><span class=\"sig-paren\">)</span><a class=\"headerlink\" href=\"#nchack.open_data\" title=\"Permalink to this definition\">\u00b6</a></dt>\n<dd><p>Create a new tracker</p>\n<dl class=\"field-list simple\">\n<dt class=\"field-odd\">Parameters</dt>\n<dd class=\"field-odd\"><p><strong>x</strong> (<em>str</em><em> or </em><em>list</em>) -- A string or list of netcdf files. The function will check the files exist</p>\n</dd>\n</dl>\n</dd></dl>\n\n</div>\n",
-    "title": "nchack.open_data",
-    "sourcename": "generated/nchack.open_data.rst.txt",
-    "current_page_name": "generated/nchack.open_data",
-    "toc": "<ul>\n<li><a class=\"reference internal\" href=\"#\">nchack.open_data</a></li>\n</ul>\n",
-    "page_source_suffix": ".rst"
-}

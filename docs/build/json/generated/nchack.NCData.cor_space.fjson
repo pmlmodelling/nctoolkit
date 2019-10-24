@@ -1,8 +1,0 @@
-{
-    "body": "<div class=\"section\" id=\"nchack-ncdata-cor-space\">\n<h1>nchack.NCData.cor_space<a class=\"headerlink\" href=\"#nchack-ncdata-cor-space\" title=\"Permalink to this headline\">\u00b6</a></h1>\n<dl class=\"method\">\n<dt id=\"nchack.NCData.cor_space\">\n<code class=\"sig-prename descclassname\">NCData.</code><code class=\"sig-name descname\">cor_space</code><span class=\"sig-paren\">(</span><em class=\"sig-param\">var1=None</em>, <em class=\"sig-param\">var2=None</em><span class=\"sig-paren\">)</span><a class=\"headerlink\" href=\"#nchack.NCData.cor_space\" title=\"Permalink to this definition\">\u00b6</a></dt>\n<dd><p>Calculate the correlation correct between two variables in space, and for each time step</p>\n<dl class=\"field-list simple\">\n<dt class=\"field-odd\">Parameters</dt>\n<dd class=\"field-odd\"><ul class=\"simple\">\n<li><p><strong>var1</strong> (<em>str</em>) -- The first variable</p></li>\n<li><p><strong>var2</strong> (<em>str</em>) -- The  second variable</p></li>\n</ul>\n</dd>\n<dt class=\"field-even\">Returns</dt>\n<dd class=\"field-even\"><p>New tracker with the correlation coefficients</p>\n</dd>\n<dt class=\"field-odd\">Return type</dt>\n<dd class=\"field-odd\"><p><a class=\"reference internal\" href=\"nchack.NCData.html#nchack.NCData\" title=\"nchack.NCData\">nchack.NCData</a></p>\n</dd>\n</dl>\n</dd></dl>\n\n</div>\n",
-    "title": "nchack.NCData.cor_space",
-    "sourcename": "generated/nchack.NCData.cor_space.rst.txt",
-    "current_page_name": "generated/nchack.NCData.cor_space",
-    "toc": "<ul>\n<li><a class=\"reference internal\" href=\"#\">nchack.NCData.cor_space</a></li>\n</ul>\n",
-    "page_source_suffix": ".rst"
-}

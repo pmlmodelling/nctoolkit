@@ -1,8 +1,0 @@
-{
-    "body": "<div class=\"section\" id=\"nchack-ncdata-depths\">\n<h1>nchack.NCData.depths<a class=\"headerlink\" href=\"#nchack-ncdata-depths\" title=\"Permalink to this headline\">\u00b6</a></h1>\n<dl class=\"method\">\n<dt id=\"nchack.NCData.depths\">\n<code class=\"sig-prename descclassname\">NCData.</code><code class=\"sig-name descname\">depths</code><span class=\"sig-paren\">(</span><span class=\"sig-paren\">)</span><a class=\"headerlink\" href=\"#nchack.NCData.depths\" title=\"Permalink to this definition\">\u00b6</a></dt>\n<dd><p>function to get the depths available in a netcdf file</p>\n</dd></dl>\n\n</div>\n",
-    "title": "nchack.NCData.depths",
-    "sourcename": "generated/nchack.NCData.depths.rst.txt",
-    "current_page_name": "generated/nchack.NCData.depths",
-    "toc": "<ul>\n<li><a class=\"reference internal\" href=\"#\">nchack.NCData.depths</a></li>\n</ul>\n",
-    "page_source_suffix": ".rst"
-}

@@ -34,10 +34,8 @@ release = '0.1'
 # ones.
 
 import sphinx_rtd_theme
-import readthedocs_ext.readthedocs
 
 extensions = [
-    'readthedocs_ext.readthedocs',
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
     "sphinx.ext.intersphinx",

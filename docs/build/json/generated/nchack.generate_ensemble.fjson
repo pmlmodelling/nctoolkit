@@ -1,8 +1,0 @@
-{
-    "body": "<div class=\"section\" id=\"nchack-generate-ensemble\">\n<h1>nchack.generate_ensemble<a class=\"headerlink\" href=\"#nchack-generate-ensemble\" title=\"Permalink to this headline\">\u00b6</a></h1>\n<dl class=\"function\">\n<dt id=\"nchack.generate_ensemble\">\n<code class=\"sig-prename descclassname\">nchack.</code><code class=\"sig-name descname\">generate_ensemble</code><span class=\"sig-paren\">(</span><em class=\"sig-param\">path=''</em>, <em class=\"sig-param\">recursive=True</em><span class=\"sig-paren\">)</span><a class=\"headerlink\" href=\"#nchack.generate_ensemble\" title=\"Permalink to this definition\">\u00b6</a></dt>\n<dd><p>A candidate ensemble generator. Ensembles are generated based on the distinct variable, time and grids available in the files detected in the given path.</p>\n<dl class=\"field-list simple\">\n<dt class=\"field-odd\">Parameters</dt>\n<dd class=\"field-odd\"><ul class=\"simple\">\n<li><p><strong>path</strong> (<em>str</em>) -- The system to search for netcdf files</p></li>\n<li><p><strong>recursive</strong> (<em>boolean</em>) -- True/False depending on whether you want to search the path recursively. Defaults to True.</p></li>\n</ul>\n</dd>\n<dt class=\"field-even\">Returns</dt>\n<dd class=\"field-even\"><p>A list of potential ensembles.</p>\n</dd>\n<dt class=\"field-odd\">Return type</dt>\n<dd class=\"field-odd\"><p>list</p>\n</dd>\n</dl>\n</dd></dl>\n\n</div>\n",
-    "title": "nchack.generate_ensemble",
-    "sourcename": "generated/nchack.generate_ensemble.rst.txt",
-    "current_page_name": "generated/nchack.generate_ensemble",
-    "toc": "<ul>\n<li><a class=\"reference internal\" href=\"#\">nchack.generate_ensemble</a></li>\n</ul>\n",
-    "page_source_suffix": ".rst"
-}

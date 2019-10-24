@@ -1,8 +1,0 @@
-{
-    "body": "<div class=\"section\" id=\"nchack-ncdata-set-longname\">\n<h1>nchack.NCData.set_longname<a class=\"headerlink\" href=\"#nchack-ncdata-set-longname\" title=\"Permalink to this headline\">\u00b6</a></h1>\n<dl class=\"method\">\n<dt id=\"nchack.NCData.set_longname\">\n<code class=\"sig-prename descclassname\">NCData.</code><code class=\"sig-name descname\">set_longname</code><span class=\"sig-paren\">(</span><em class=\"sig-param\">var_dict</em><span class=\"sig-paren\">)</span><a class=\"headerlink\" href=\"#nchack.NCData.set_longname\" title=\"Permalink to this definition\">\u00b6</a></dt>\n<dd><p>Set long name of variables.</p>\n<dl class=\"field-list simple\">\n<dt class=\"field-odd\">Parameters</dt>\n<dd class=\"field-odd\"><p><strong>var_dict</strong> (<em>dict</em>) -- Dictionary with key, value pairs representing the variable names and the new long names</p>\n</dd>\n<dt class=\"field-even\">Returns</dt>\n<dd class=\"field-even\"><p>Reduced tracker with the new date</p>\n</dd>\n<dt class=\"field-odd\">Return type</dt>\n<dd class=\"field-odd\"><p><a class=\"reference internal\" href=\"nchack.NCData.html#nchack.NCData\" title=\"nchack.NCData\">nchack.NCData</a></p>\n</dd>\n</dl>\n</dd></dl>\n\n</div>\n",
-    "title": "nchack.NCData.set_longname",
-    "sourcename": "generated/nchack.NCData.set_longname.rst.txt",
-    "current_page_name": "generated/nchack.NCData.set_longname",
-    "toc": "<ul>\n<li><a class=\"reference internal\" href=\"#\">nchack.NCData.set_longname</a></li>\n</ul>\n",
-    "page_source_suffix": ".rst"
-}

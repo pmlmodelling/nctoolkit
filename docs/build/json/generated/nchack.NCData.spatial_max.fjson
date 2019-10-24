@@ -1,8 +1,0 @@
-{
-    "body": "<div class=\"section\" id=\"nchack-ncdata-spatial-max\">\n<h1>nchack.NCData.spatial_max<a class=\"headerlink\" href=\"#nchack-ncdata-spatial-max\" title=\"Permalink to this headline\">\u00b6</a></h1>\n<dl class=\"method\">\n<dt id=\"nchack.NCData.spatial_max\">\n<code class=\"sig-prename descclassname\">NCData.</code><code class=\"sig-name descname\">spatial_max</code><span class=\"sig-paren\">(</span><em class=\"sig-param\">cores=1</em><span class=\"sig-paren\">)</span><a class=\"headerlink\" href=\"#nchack.NCData.spatial_max\" title=\"Permalink to this definition\">\u00b6</a></dt>\n<dd><p>Calculate a spatial maximum of variables. This is performed for each time step.</p>\n<dl class=\"field-list simple\">\n<dt class=\"field-odd\">Parameters</dt>\n<dd class=\"field-odd\"><p><strong>cores</strong> (<em>int</em>) -- Number of cores to use if files are processed in parallel. Defaults to non-parallel operation</p>\n</dd>\n<dt class=\"field-even\">Returns</dt>\n<dd class=\"field-even\"><p>Reduced tracker with the spatial maximum</p>\n</dd>\n<dt class=\"field-odd\">Return type</dt>\n<dd class=\"field-odd\"><p><a class=\"reference internal\" href=\"nchack.NCData.html#nchack.NCData\" title=\"nchack.NCData\">nchack.NCData</a></p>\n</dd>\n</dl>\n</dd></dl>\n\n</div>\n",
-    "title": "nchack.NCData.spatial_max",
-    "sourcename": "generated/nchack.NCData.spatial_max.rst.txt",
-    "current_page_name": "generated/nchack.NCData.spatial_max",
-    "toc": "<ul>\n<li><a class=\"reference internal\" href=\"#\">nchack.NCData.spatial_max</a></li>\n</ul>\n",
-    "page_source_suffix": ".rst"
-}

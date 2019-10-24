@@ -1,8 +1,0 @@
-{
-    "body": "<div class=\"section\" id=\"nchack-ncdata-run\">\n<h1>nchack.NCData.run<a class=\"headerlink\" href=\"#nchack-ncdata-run\" title=\"Permalink to this headline\">\u00b6</a></h1>\n<dl class=\"method\">\n<dt id=\"nchack.NCData.run\">\n<em class=\"property\">property </em><code class=\"sig-prename descclassname\">NCData.</code><code class=\"sig-name descname\">run</code><a class=\"headerlink\" href=\"#nchack.NCData.run\" title=\"Permalink to this definition\">\u00b6</a></dt>\n<dd><p>Is the tracker in run or lazy eval mode?</p>\n</dd></dl>\n\n</div>\n",
-    "title": "nchack.NCData.run",
-    "sourcename": "generated/nchack.NCData.run.rst.txt",
-    "current_page_name": "generated/nchack.NCData.run",
-    "toc": "<ul>\n<li><a class=\"reference internal\" href=\"#\">nchack.NCData.run</a></li>\n</ul>\n",
-    "page_source_suffix": ".rst"
-}

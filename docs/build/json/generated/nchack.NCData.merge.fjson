@@ -1,8 +1,0 @@
-{
-    "body": "<div class=\"section\" id=\"nchack-ncdata-merge\">\n<h1>nchack.NCData.merge<a class=\"headerlink\" href=\"#nchack-ncdata-merge\" title=\"Permalink to this headline\">\u00b6</a></h1>\n<dl class=\"method\">\n<dt id=\"nchack.NCData.merge\">\n<code class=\"sig-prename descclassname\">NCData.</code><code class=\"sig-name descname\">merge</code><span class=\"sig-paren\">(</span><em class=\"sig-param\">zip=False</em><span class=\"sig-paren\">)</span><a class=\"headerlink\" href=\"#nchack.NCData.merge\" title=\"Permalink to this definition\">\u00b6</a></dt>\n<dd><p>Merge a multi-file ensemble into a single file. Merging will occur based on the time steps in the first file. This will only be effective if either you want to merge files with the same times or multi-time files with single time files.</p>\n<dl class=\"field-list simple\">\n<dt class=\"field-odd\">Parameters</dt>\n<dd class=\"field-odd\"><p><strong>zip</strong> (<em>boolean</em>) -- If True, the resulting netcdf files are zipped. Defaults to False.</p>\n</dd>\n<dt class=\"field-even\">Returns</dt>\n<dd class=\"field-even\"><p>Reduced tracker with merged data.</p>\n</dd>\n<dt class=\"field-odd\">Return type</dt>\n<dd class=\"field-odd\"><p><a class=\"reference internal\" href=\"nchack.NCData.html#nchack.NCData\" title=\"nchack.NCData\">nchack.NCData</a></p>\n</dd>\n</dl>\n</dd></dl>\n\n</div>\n",
-    "title": "nchack.NCData.merge",
-    "sourcename": "generated/nchack.NCData.merge.rst.txt",
-    "current_page_name": "generated/nchack.NCData.merge",
-    "toc": "<ul>\n<li><a class=\"reference internal\" href=\"#\">nchack.NCData.merge</a></li>\n</ul>\n",
-    "page_source_suffix": ".rst"
-}

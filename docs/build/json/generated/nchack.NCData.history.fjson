@@ -1,8 +1,0 @@
-{
-    "body": "<div class=\"section\" id=\"nchack-ncdata-history\">\n<h1>nchack.NCData.history<a class=\"headerlink\" href=\"#nchack-ncdata-history\" title=\"Permalink to this headline\">\u00b6</a></h1>\n<dl class=\"method\">\n<dt id=\"nchack.NCData.history\">\n<em class=\"property\">property </em><code class=\"sig-prename descclassname\">NCData.</code><code class=\"sig-name descname\">history</code><a class=\"headerlink\" href=\"#nchack.NCData.history\" title=\"Permalink to this definition\">\u00b6</a></dt>\n<dd><p>The history of operations on the tracker</p>\n</dd></dl>\n\n</div>\n",
-    "title": "nchack.NCData.history",
-    "sourcename": "generated/nchack.NCData.history.rst.txt",
-    "current_page_name": "generated/nchack.NCData.history",
-    "toc": "<ul>\n<li><a class=\"reference internal\" href=\"#\">nchack.NCData.history</a></li>\n</ul>\n",
-    "page_source_suffix": ".rst"
-}

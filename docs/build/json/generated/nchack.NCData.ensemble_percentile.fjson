@@ -1,8 +1,0 @@
-{
-    "body": "<div class=\"section\" id=\"nchack-ncdata-ensemble-percentile\">\n<h1>nchack.NCData.ensemble_percentile<a class=\"headerlink\" href=\"#nchack-ncdata-ensemble-percentile\" title=\"Permalink to this headline\">\u00b6</a></h1>\n<dl class=\"method\">\n<dt id=\"nchack.NCData.ensemble_percentile\">\n<code class=\"sig-prename descclassname\">NCData.</code><code class=\"sig-name descname\">ensemble_percentile</code><span class=\"sig-paren\">(</span><em class=\"sig-param\">p=50</em><span class=\"sig-paren\">)</span><a class=\"headerlink\" href=\"#nchack.NCData.ensemble_percentile\" title=\"Permalink to this definition\">\u00b6</a></dt>\n<dd><p>Calculate an ensemble percentile from a multi-file tracker</p>\n<dl class=\"field-list simple\">\n<dt class=\"field-odd\">Parameters</dt>\n<dd class=\"field-odd\"><p><strong>p</strong> (<em>float</em><em> or </em><em>int</em>) -- percentile to calculate</p>\n</dd>\n<dt class=\"field-even\">Returns</dt>\n<dd class=\"field-even\"><p>Reduced tracker with the percentiles</p>\n</dd>\n<dt class=\"field-odd\">Return type</dt>\n<dd class=\"field-odd\"><p><a class=\"reference internal\" href=\"nchack.NCData.html#nchack.NCData\" title=\"nchack.NCData\">nchack.NCData</a></p>\n</dd>\n</dl>\n</dd></dl>\n\n</div>\n",
-    "title": "nchack.NCData.ensemble_percentile",
-    "sourcename": "generated/nchack.NCData.ensemble_percentile.rst.txt",
-    "current_page_name": "generated/nchack.NCData.ensemble_percentile",
-    "toc": "<ul>\n<li><a class=\"reference internal\" href=\"#\">nchack.NCData.ensemble_percentile</a></li>\n</ul>\n",
-    "page_source_suffix": ".rst"
-}

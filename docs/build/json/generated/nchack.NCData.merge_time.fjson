@@ -1,8 +1,0 @@
-{
-    "body": "<div class=\"section\" id=\"nchack-ncdata-merge-time\">\n<h1>nchack.NCData.merge_time<a class=\"headerlink\" href=\"#nchack-ncdata-merge-time\" title=\"Permalink to this headline\">\u00b6</a></h1>\n<dl class=\"method\">\n<dt id=\"nchack.NCData.merge_time\">\n<code class=\"sig-prename descclassname\">NCData.</code><code class=\"sig-name descname\">merge_time</code><span class=\"sig-paren\">(</span><em class=\"sig-param\">zip=True</em><span class=\"sig-paren\">)</span><a class=\"headerlink\" href=\"#nchack.NCData.merge_time\" title=\"Permalink to this definition\">\u00b6</a></dt>\n<dd><p>Time-based merging of a multi-file ensemble into a single file. This method is ideal if you have the same data split over multiple files covering different data sets.</p>\n<dl class=\"field-list simple\">\n<dt class=\"field-odd\">Parameters</dt>\n<dd class=\"field-odd\"><p><strong>zip</strong> (<em>boolean</em>) -- If True, the resulting netcdf files are zipped. Defaults to False.</p>\n</dd>\n<dt class=\"field-even\">Returns</dt>\n<dd class=\"field-even\"><p>Reduced tracker with merged data.</p>\n</dd>\n<dt class=\"field-odd\">Return type</dt>\n<dd class=\"field-odd\"><p><a class=\"reference internal\" href=\"nchack.NCData.html#nchack.NCData\" title=\"nchack.NCData\">nchack.NCData</a></p>\n</dd>\n</dl>\n</dd></dl>\n\n</div>\n",
-    "title": "nchack.NCData.merge_time",
-    "sourcename": "generated/nchack.NCData.merge_time.rst.txt",
-    "current_page_name": "generated/nchack.NCData.merge_time",
-    "toc": "<ul>\n<li><a class=\"reference internal\" href=\"#\">nchack.NCData.merge_time</a></li>\n</ul>\n",
-    "page_source_suffix": ".rst"
-}
