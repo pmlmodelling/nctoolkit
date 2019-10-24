@@ -1,0 +1,8 @@
+{
+    "body": "<div class=\"section\" id=\"nchack-ncdata-lazy\">\n<h1>nchack.NCData.lazy<a class=\"headerlink\" href=\"#nchack-ncdata-lazy\" title=\"Permalink to this headline\">\u00b6</a></h1>\n<dl class=\"method\">\n<dt id=\"nchack.NCData.lazy\">\n<code class=\"sig-prename descclassname\">NCData.</code><code class=\"sig-name descname\">lazy</code><span class=\"sig-paren\">(</span><span class=\"sig-paren\">)</span><a class=\"headerlink\" href=\"#nchack.NCData.lazy\" title=\"Permalink to this definition\">\u00b6</a></dt>\n<dd><p>A method to set the mode to lazy</p>\n</dd></dl>\n\n</div>\n",
+    "title": "nchack.NCData.lazy",
+    "sourcename": "generated/nchack.NCData.lazy.rst.txt",
+    "current_page_name": "generated/nchack.NCData.lazy",
+    "toc": "<ul>\n<li><a class=\"reference internal\" href=\"#\">nchack.NCData.lazy</a></li>\n</ul>\n",
+    "page_source_suffix": ".rst"
+}

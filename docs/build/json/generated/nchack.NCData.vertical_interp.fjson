@@ -1,0 +1,8 @@
+{
+    "body": "<div class=\"section\" id=\"nchack-ncdata-vertical-interp\">\n<h1>nchack.NCData.vertical_interp<a class=\"headerlink\" href=\"#nchack-ncdata-vertical-interp\" title=\"Permalink to this headline\">\u00b6</a></h1>\n<dl class=\"method\">\n<dt id=\"nchack.NCData.vertical_interp\">\n<code class=\"sig-prename descclassname\">NCData.</code><code class=\"sig-name descname\">vertical_interp</code><span class=\"sig-paren\">(</span><em class=\"sig-param\">vert_depths=None</em>, <em class=\"sig-param\">cores=1</em><span class=\"sig-paren\">)</span><a class=\"headerlink\" href=\"#nchack.NCData.vertical_interp\" title=\"Permalink to this definition\">\u00b6</a></dt>\n<dd><p>Verticaly interpolate a tracker based on given depths</p>\n<dl class=\"field-list simple\">\n<dt class=\"field-odd\">Parameters</dt>\n<dd class=\"field-odd\"><ul class=\"simple\">\n<li><p><strong>vert_depths</strong> (<em>list</em>) -- list of depths to vertical interpolate to</p></li>\n<li><p><strong>cores</strong> (<em>int</em>) -- Number of cores to use if files are processed in parallel. Defaults to non-parallel operation</p></li>\n</ul>\n</dd>\n<dt class=\"field-even\">Returns</dt>\n<dd class=\"field-even\"><p>Reduced tracker with the surface level</p>\n</dd>\n<dt class=\"field-odd\">Return type</dt>\n<dd class=\"field-odd\"><p>nchack.NCTracke</p>\n</dd>\n</dl>\n</dd></dl>\n\n</div>\n",
+    "title": "nchack.NCData.vertical_interp",
+    "sourcename": "generated/nchack.NCData.vertical_interp.rst.txt",
+    "current_page_name": "generated/nchack.NCData.vertical_interp",
+    "toc": "<ul>\n<li><a class=\"reference internal\" href=\"#\">nchack.NCData.vertical_interp</a></li>\n</ul>\n",
+    "page_source_suffix": ".rst"
+}

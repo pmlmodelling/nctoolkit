@@ -1,0 +1,8 @@
+{
+    "body": "<div class=\"section\" id=\"nchack-ncdata-current\">\n<h1>nchack.NCData.current<a class=\"headerlink\" href=\"#nchack-ncdata-current\" title=\"Permalink to this headline\">\u00b6</a></h1>\n<dl class=\"method\">\n<dt id=\"nchack.NCData.current\">\n<em class=\"property\">property </em><code class=\"sig-prename descclassname\">NCData.</code><code class=\"sig-name descname\">current</code><a class=\"headerlink\" href=\"#nchack.NCData.current\" title=\"Permalink to this definition\">\u00b6</a></dt>\n<dd><p>The current file or files in the tracker</p>\n</dd></dl>\n\n</div>\n",
+    "title": "nchack.NCData.current",
+    "sourcename": "generated/nchack.NCData.current.rst.txt",
+    "current_page_name": "generated/nchack.NCData.current",
+    "toc": "<ul>\n<li><a class=\"reference internal\" href=\"#\">nchack.NCData.current</a></li>\n</ul>\n",
+    "page_source_suffix": ".rst"
+}

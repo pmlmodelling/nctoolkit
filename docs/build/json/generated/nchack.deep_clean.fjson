@@ -1,0 +1,8 @@
+{
+    "body": "<div class=\"section\" id=\"nchack-deep-clean\">\n<h1>nchack.deep_clean<a class=\"headerlink\" href=\"#nchack-deep-clean\" title=\"Permalink to this headline\">\u00b6</a></h1>\n<dl class=\"function\">\n<dt id=\"nchack.deep_clean\">\n<code class=\"sig-prename descclassname\">nchack.</code><code class=\"sig-name descname\">deep_clean</code><span class=\"sig-paren\">(</span><span class=\"sig-paren\">)</span><a class=\"headerlink\" href=\"#nchack.deep_clean\" title=\"Permalink to this definition\">\u00b6</a></dt>\n<dd><p>Deep temp file cleaner\nRemove all temporary files ever created by nchack across all previous and current sesions</p>\n</dd></dl>\n\n</div>\n",
+    "title": "nchack.deep_clean",
+    "sourcename": "generated/nchack.deep_clean.rst.txt",
+    "current_page_name": "generated/nchack.deep_clean",
+    "toc": "<ul>\n<li><a class=\"reference internal\" href=\"#\">nchack.deep_clean</a></li>\n</ul>\n",
+    "page_source_suffix": ".rst"
+}

@@ -1,0 +1,8 @@
+{
+    "body": "<div class=\"section\" id=\"nckack-backends\">\n<span id=\"backends\"></span><h1>nckack backends<a class=\"headerlink\" href=\"#nckack-backends\" title=\"Permalink to this headline\">\u00b6</a></h1>\n<p>nchack relies on two netcdf processing tools as back ends: CDO and NCO, with the the vast majority of operations calling CDO.</p>\n</div>\n",
+    "title": "nckack backends",
+    "sourcename": "backends.rst.txt",
+    "current_page_name": "backends",
+    "toc": "<ul>\n<li><a class=\"reference internal\" href=\"#\">nckack backends</a></li>\n</ul>\n",
+    "page_source_suffix": ".rst"
+}

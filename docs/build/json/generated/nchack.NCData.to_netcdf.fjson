@@ -1,0 +1,8 @@
+{
+    "body": "<div class=\"section\" id=\"nchack-ncdata-to-netcdf\">\n<h1>nchack.NCData.to_netcdf<a class=\"headerlink\" href=\"#nchack-ncdata-to-netcdf\" title=\"Permalink to this headline\">\u00b6</a></h1>\n<dl class=\"method\">\n<dt id=\"nchack.NCData.to_netcdf\">\n<code class=\"sig-prename descclassname\">NCData.</code><code class=\"sig-name descname\">to_netcdf</code><span class=\"sig-paren\">(</span><em class=\"sig-param\">out</em>, <em class=\"sig-param\">zip=True</em>, <em class=\"sig-param\">overwrite=False</em><span class=\"sig-paren\">)</span><a class=\"headerlink\" href=\"#nchack.NCData.to_netcdf\" title=\"Permalink to this definition\">\u00b6</a></dt>\n<dd><p>Save a tracker to a named file</p>\n<dl class=\"field-list simple\">\n<dt class=\"field-odd\">Parameters</dt>\n<dd class=\"field-odd\"><ul class=\"simple\">\n<li><p><strong>out</strong> (<em>str</em>) -- output file name</p></li>\n<li><p><strong>zip</strong> (<em>boolean</em>) -- True/False depending on whether you want to zip the file. Defaults to True.</p></li>\n</ul>\n</dd>\n</dl>\n</dd></dl>\n\n</div>\n",
+    "title": "nchack.NCData.to_netcdf",
+    "sourcename": "generated/nchack.NCData.to_netcdf.rst.txt",
+    "current_page_name": "generated/nchack.NCData.to_netcdf",
+    "toc": "<ul>\n<li><a class=\"reference internal\" href=\"#\">nchack.NCData.to_netcdf</a></li>\n</ul>\n",
+    "page_source_suffix": ".rst"
+}

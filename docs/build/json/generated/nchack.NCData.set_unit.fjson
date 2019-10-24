@@ -1,0 +1,8 @@
+{
+    "body": "<div class=\"section\" id=\"nchack-ncdata-set-unit\">\n<h1>nchack.NCData.set_unit<a class=\"headerlink\" href=\"#nchack-ncdata-set-unit\" title=\"Permalink to this headline\">\u00b6</a></h1>\n<dl class=\"method\">\n<dt id=\"nchack.NCData.set_unit\">\n<code class=\"sig-prename descclassname\">NCData.</code><code class=\"sig-name descname\">set_unit</code><span class=\"sig-paren\">(</span><em class=\"sig-param\">var_dict</em><span class=\"sig-paren\">)</span><a class=\"headerlink\" href=\"#nchack.NCData.set_unit\" title=\"Permalink to this definition\">\u00b6</a></dt>\n<dd><p>Set the units for variables</p>\n<dl class=\"field-list simple\">\n<dt class=\"field-odd\">Parameters</dt>\n<dd class=\"field-odd\"><p><strong>var_dict</strong> (<em>dict</em>) -- A dictionary where the key, value pair are the variables and new units respectively.</p>\n</dd>\n<dt class=\"field-even\">Returns</dt>\n<dd class=\"field-even\"><p>Reduced tracker with the new units.</p>\n</dd>\n<dt class=\"field-odd\">Return type</dt>\n<dd class=\"field-odd\"><p><a class=\"reference internal\" href=\"nchack.NCData.html#nchack.NCData\" title=\"nchack.NCData\">nchack.NCData</a></p>\n</dd>\n</dl>\n</dd></dl>\n\n</div>\n",
+    "title": "nchack.NCData.set_unit",
+    "sourcename": "generated/nchack.NCData.set_unit.rst.txt",
+    "current_page_name": "generated/nchack.NCData.set_unit",
+    "toc": "<ul>\n<li><a class=\"reference internal\" href=\"#\">nchack.NCData.set_unit</a></li>\n</ul>\n",
+    "page_source_suffix": ".rst"
+}

@@ -1,0 +1,8 @@
+{
+    "body": "<div class=\"section\" id=\"nchack-cleanup\">\n<h1>nchack.cleanup<a class=\"headerlink\" href=\"#nchack-cleanup\" title=\"Permalink to this headline\">\u00b6</a></h1>\n<dl class=\"function\">\n<dt id=\"nchack.cleanup\">\n<code class=\"sig-prename descclassname\">nchack.</code><code class=\"sig-name descname\">cleanup</code><span class=\"sig-paren\">(</span><em class=\"sig-param\">keep=None</em><span class=\"sig-paren\">)</span><a class=\"headerlink\" href=\"#nchack.cleanup\" title=\"Permalink to this definition\">\u00b6</a></dt>\n<dd><p>Temp file cleaner</p>\n<p>Remove all files created during the session that are now out of use</p>\n</dd></dl>\n\n</div>\n",
+    "title": "nchack.cleanup",
+    "sourcename": "generated/nchack.cleanup.rst.txt",
+    "current_page_name": "generated/nchack.cleanup",
+    "toc": "<ul>\n<li><a class=\"reference internal\" href=\"#\">nchack.cleanup</a></li>\n</ul>\n",
+    "page_source_suffix": ".rst"
+}

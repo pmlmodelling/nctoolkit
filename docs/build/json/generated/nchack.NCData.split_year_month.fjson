@@ -1,0 +1,8 @@
+{
+    "body": "<div class=\"section\" id=\"nchack-ncdata-split-year-month\">\n<h1>nchack.NCData.split_year_month<a class=\"headerlink\" href=\"#nchack-ncdata-split-year-month\" title=\"Permalink to this headline\">\u00b6</a></h1>\n<dl class=\"method\">\n<dt id=\"nchack.NCData.split_year_month\">\n<code class=\"sig-prename descclassname\">NCData.</code><code class=\"sig-name descname\">split_year_month</code><span class=\"sig-paren\">(</span><span class=\"sig-paren\">)</span><a class=\"headerlink\" href=\"#nchack.NCData.split_year_month\" title=\"Permalink to this definition\">\u00b6</a></dt>\n<dd><p>Split the ensemble based on years and months. Each file in the ensemble will be separated into new files based on years and months.</p>\n<dl class=\"field-list simple\">\n<dt class=\"field-odd\">Returns</dt>\n<dd class=\"field-odd\"><p>Reduced tracker with split data</p>\n</dd>\n<dt class=\"field-even\">Return type</dt>\n<dd class=\"field-even\"><p><a class=\"reference internal\" href=\"nchack.NCData.html#nchack.NCData\" title=\"nchack.NCData\">nchack.NCData</a></p>\n</dd>\n</dl>\n</dd></dl>\n\n</div>\n",
+    "title": "nchack.NCData.split_year_month",
+    "sourcename": "generated/nchack.NCData.split_year_month.rst.txt",
+    "current_page_name": "generated/nchack.NCData.split_year_month",
+    "toc": "<ul>\n<li><a class=\"reference internal\" href=\"#\">nchack.NCData.split_year_month</a></li>\n</ul>\n",
+    "page_source_suffix": ".rst"
+}

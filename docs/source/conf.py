@@ -25,7 +25,7 @@ author = 'Robert Wilson'
 # The full version, including alpha/beta/rc tags
 release = '0.1'
 
-nbsphinx_allow_errors = True
+#nbsphinx_allow_errors = True
 
 # -- General configuration ---------------------------------------------------
 
@@ -34,15 +34,16 @@ nbsphinx_allow_errors = True
 # ones.
 
 import sphinx_rtd_theme
+import readthedocs_ext.readthedocs
 
 extensions = [
+    'readthedocs_ext.readthedocs',
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
     "sphinx.ext.intersphinx",
     "sphinx.ext.extlinks",
     "sphinx.ext.mathjax",
     "sphinx.ext.napoleon",
-    #"numpydoc",
     "sphinx_rtd_theme",
     "nbsphinx"
 ]

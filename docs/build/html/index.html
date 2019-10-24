@@ -25,6 +25,7 @@
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
         <script type="text/javascript" src="_static/language_data.js"></script>
+        <script type="text/javascript" src="https://assets.readthedocs.org/static/javascript/readthedocs-doc-embed.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
@@ -182,7 +183,9 @@
 </style>
 <div class="section" id="nchack-tools-to-manipulate-and-analyze-netcdf-data-in-python">
 <h1>nchack: tools to manipulate and analyze netcdf data in Python<a class="headerlink" href="#nchack-tools-to-manipulate-and-analyze-netcdf-data-in-python" title="Permalink to this headline">¶</a></h1>
-<p><strong>nchack</strong> is a blah blah.</p>
+<p>The goal of nchack is to provide a comprehensive tool in Python for manipulating individual netcdf files and ensembles of netcdf files. The philosophy is to provide sufficient methods to carry out 80-90% of what you want to do with netcdf files.</p>
+<p>nchack is designed with both individual files and ensembles in mind.</p>
+<p>Under the hood nchack relies on the command line packages Climate Data Operates (CDO) and the NCO toolkit, but primarily on CDO. No prioer knowledge of CDO or NCO are required to use nchack. Behind the scenes nchack will generate system calls to either CDO or NCO, which are traced and can be viewed by the user. However, in almost all cases these can be ignored by most users.</p>
 <div class="section" id="documentation">
 <h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
 <p><strong>Getting Started</strong></p>

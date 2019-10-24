@@ -1,0 +1,8 @@
+{
+    "body": "<div class=\"section\" id=\"nchack-ncdata-annual-mean\">\n<h1>nchack.NCData.annual_mean<a class=\"headerlink\" href=\"#nchack-ncdata-annual-mean\" title=\"Permalink to this headline\">\u00b6</a></h1>\n<dl class=\"method\">\n<dt id=\"nchack.NCData.annual_mean\">\n<code class=\"sig-prename descclassname\">NCData.</code><code class=\"sig-name descname\">annual_mean</code><span class=\"sig-paren\">(</span><em class=\"sig-param\">cores=1</em><span class=\"sig-paren\">)</span><a class=\"headerlink\" href=\"#nchack.NCData.annual_mean\" title=\"Permalink to this definition\">\u00b6</a></dt>\n<dd><p>Calculate the yearly mean</p>\n<dl class=\"field-list simple\">\n<dt class=\"field-odd\">Parameters</dt>\n<dd class=\"field-odd\"><p><strong>cores</strong> (<em>int</em>) -- Number of cores to use if files are processed in parallel. Defaults to non-parallel operation</p>\n</dd>\n<dt class=\"field-even\">Returns</dt>\n<dd class=\"field-even\"><p>Reduced tracker with the yearly mean</p>\n</dd>\n<dt class=\"field-odd\">Return type</dt>\n<dd class=\"field-odd\"><p><a class=\"reference internal\" href=\"nchack.NCData.html#nchack.NCData\" title=\"nchack.NCData\">nchack.NCData</a></p>\n</dd>\n</dl>\n</dd></dl>\n\n</div>\n",
+    "title": "nchack.NCData.annual_mean",
+    "sourcename": "generated/nchack.NCData.annual_mean.rst.txt",
+    "current_page_name": "generated/nchack.NCData.annual_mean",
+    "toc": "<ul>\n<li><a class=\"reference internal\" href=\"#\">nchack.NCData.annual_mean</a></li>\n</ul>\n",
+    "page_source_suffix": ".rst"
+}

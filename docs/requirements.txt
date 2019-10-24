@@ -1,4 +1,4 @@
-sphinx>=1.4
-ipykernel
+sphinx==2.2
+readthedocs_ext
 nbsphinx
 

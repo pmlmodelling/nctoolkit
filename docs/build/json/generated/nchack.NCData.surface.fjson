@@ -1,0 +1,8 @@
+{
+    "body": "<div class=\"section\" id=\"nchack-ncdata-surface\">\n<h1>nchack.NCData.surface<a class=\"headerlink\" href=\"#nchack-ncdata-surface\" title=\"Permalink to this headline\">\u00b6</a></h1>\n<dl class=\"method\">\n<dt id=\"nchack.NCData.surface\">\n<code class=\"sig-prename descclassname\">NCData.</code><code class=\"sig-name descname\">surface</code><span class=\"sig-paren\">(</span><em class=\"sig-param\">cores=1</em><span class=\"sig-paren\">)</span><a class=\"headerlink\" href=\"#nchack.NCData.surface\" title=\"Permalink to this definition\">\u00b6</a></dt>\n<dd><p>Extract the top/surface level from a tracker</p>\n<dl class=\"field-list simple\">\n<dt class=\"field-odd\">Parameters</dt>\n<dd class=\"field-odd\"><p><strong>cores</strong> (<em>int</em>) -- Number of cores to use if files are processed in parallel. Defaults to non-parallel operation</p>\n</dd>\n<dt class=\"field-even\">Returns</dt>\n<dd class=\"field-even\"><p>Reduced tracker with the surface level</p>\n</dd>\n<dt class=\"field-odd\">Return type</dt>\n<dd class=\"field-odd\"><p>nchack.NCTracke</p>\n</dd>\n</dl>\n</dd></dl>\n\n</div>\n",
+    "title": "nchack.NCData.surface",
+    "sourcename": "generated/nchack.NCData.surface.rst.txt",
+    "current_page_name": "generated/nchack.NCData.surface",
+    "toc": "<ul>\n<li><a class=\"reference internal\" href=\"#\">nchack.NCData.surface</a></li>\n</ul>\n",
+    "page_source_suffix": ".rst"
+}
