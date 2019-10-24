@@ -2,24 +2,18 @@
 
 
 ####################
-API
+API reference
 ####################
 
-Trackers
-=======
-
-Creating a tracker
+Reading netcdf data
 ------------------
-
 
 .. autosummary::
    :toctree: generated/
 
-   NCData
    open_data
 
-
-Attributes
+Accessing attributes
 ------------------
 
 .. autosummary::
@@ -326,6 +320,7 @@ Miscellaneous methods
 
    NCData.cell_areas
    NCData.cdo_command
+
 
 
 
