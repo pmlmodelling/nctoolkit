@@ -37,15 +37,13 @@ def split(self, method = "year"):
         if session_stamp["temp_dir"] == "/tmp/":
             result = os.statvfs("/tmp/")
             result = result.f_frsize * result.f_bavail 
-            if result > session_info["size"]:
-                if session_stamp["temp_dir"] == "/var/tmp/":
-                    session_stamp["temp_dir"] = "/tmp/"
             session_info["size"] = result
             
             if os.path.getsize(ff)*2 > session_info["size"]:
                     session_stamp["temp_dir"] = "/var/tmp/"
 
         split_base = temp_file() 
+#        print(split_base)
     
         cdo_command = "cdo -s -split" + method + " "  + ff +  " " + split_base
     
