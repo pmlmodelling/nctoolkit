@@ -40,6 +40,8 @@ extensions = [
     'sphinx.ext.githubpages',
 ]
 
+html_theme = "sphinx_rtd_theme"
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
@@ -104,6 +106,5 @@ html_static_path = ['_static']
 # 'searchbox.html']``.
 #
 # html_sidebars = {}
-html_theme = 'nature'
 
 

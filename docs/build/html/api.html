@@ -1,45 +1,381 @@
 
-<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta charset="utf-8" />
-    <title>API &#8212; Sphinx-Themes template 1 documentation</title>
-    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
-    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>API &mdash; Sphinx-Themes template 1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="nchack.NCData" href="generated/nchack.NCData.html" />
     <link rel="prev" title="How to guide" href="howto.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="generated/nchack.NCData.html" title="nchack.NCData"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="howto.html" title="How to guide"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Sphinx-Themes template 1 documentation</a> &#187;</li> 
-      </ul>
-    </div>  
+</head>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Sphinx-Themes template
+          
+
+          
+          </a>
+
+          
             
-  <div class="section" id="api">
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installing.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic_usage.html">Introduction tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lazy_methods.html">Lazy evaluation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="merging_notebook.html">Ensemble methods</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="howto.html">How to guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#trackers">Trackers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#creating-a-tracker">Creating a tracker</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.html">nchack.NCData</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.open_data.html">nchack.open_data</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#attributes">Attributes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.start.html">nchack.NCData.start</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.current.html">nchack.NCData.current</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.history.html">nchack.NCData.history</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.size.html">nchack.NCData.size</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.run.html">nchack.NCData.run</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#variable-modification">Variable modification</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.rename.html">nchack.NCData.rename</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.mutate.html">nchack.NCData.mutate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.transmute.html">nchack.NCData.transmute</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.set_longname.html">nchack.NCData.set_longname</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.set_unit.html">nchack.NCData.set_unit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.set_missing.html">nchack.NCData.set_missing</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#vertical-level-methods">Vertical/level methods</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.bottom.html">nchack.NCData.bottom</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.surface.html">nchack.NCData.surface</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.vertical_interp.html">nchack.NCData.vertical_interp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.vertical_mean.html">nchack.NCData.vertical_mean</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.vertical_min.html">nchack.NCData.vertical_min</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.vertical_max.html">nchack.NCData.vertical_max</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.vertical_range.html">nchack.NCData.vertical_range</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#rolling-methods">Rolling methods</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.rolling_mean.html">nchack.NCData.rolling_mean</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.rolling_min.html">nchack.NCData.rolling_min</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.rolling_max.html">nchack.NCData.rolling_max</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.rolling_sum.html">nchack.NCData.rolling_sum</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.rolling_range.html">nchack.NCData.rolling_range</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#evaluation-setting">Evaluation setting</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.lazy.html">nchack.NCData.lazy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.release.html">nchack.NCData.release</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#cleaning-functions">Cleaning functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ensemble-creation">Ensemble creation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.create_ensemble.html">nchack.create_ensemble</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.generate_ensemble.html">nchack.generate_ensemble</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#arithemetic-methods">Arithemetic methods</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.mutate.html">nchack.NCData.mutate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.transmute.html">nchack.NCData.transmute</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#ensemble-statistics">Ensemble statistics</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.ensemble_percentile.html">nchack.NCData.ensemble_percentile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.ensemble_mean.html">nchack.NCData.ensemble_mean</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.ensemble_min.html">nchack.NCData.ensemble_min</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.ensemble_max.html">nchack.NCData.ensemble_max</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.ensemble_range.html">nchack.NCData.ensemble_range</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#subsetting-operations">Subsetting operations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.clip.html">nchack.NCData.clip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.select_months.html">nchack.NCData.select_months</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.select_season.html">nchack.NCData.select_season</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.select_years.html">nchack.NCData.select_years</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.select_variables.html">nchack.NCData.select_variables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.remove_variables.html">nchack.NCData.remove_variables</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#time-based-methods">Time-based methods</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.set_date.html">nchack.NCData.set_date</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.select_months.html">nchack.NCData.select_months</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.select_season.html">nchack.NCData.select_season</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.select_years.html">nchack.NCData.select_years</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#interpolation-methods">Interpolation methods</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.regrid.html">nchack.NCData.regrid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.time_interp.html">nchack.NCData.time_interp</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#masking-methods">Masking methods</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.mask_lonlat.html">nchack.NCData.mask_lonlat</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#summary-methods">Summary methods</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.anomaly_annual.html">nchack.NCData.anomaly_annual</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.phenology.html">nchack.NCData.phenology</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#statistical-methods">Statistical methods</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.sum.html">nchack.NCData.sum</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.mean.html">nchack.NCData.mean</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.min.html">nchack.NCData.min</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.cum_sum.html">nchack.NCData.cum_sum</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.cor_space.html">nchack.NCData.cor_space</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.cor_time.html">nchack.NCData.cor_time</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.spatial_mean.html">nchack.NCData.spatial_mean</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.spatial_min.html">nchack.NCData.spatial_min</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.spatial_max.html">nchack.NCData.spatial_max</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.spatial_range.html">nchack.NCData.spatial_range</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.monthly_mean.html">nchack.NCData.monthly_mean</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.monthly_min.html">nchack.NCData.monthly_min</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.monthly_max.html">nchack.NCData.monthly_max</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.monthly_range.html">nchack.NCData.monthly_range</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.daily_mean_climatology.html">nchack.NCData.daily_mean_climatology</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.daily_min_climatology.html">nchack.NCData.daily_min_climatology</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.daily_max_climatology.html">nchack.NCData.daily_max_climatology</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.daily_mean_climatology.html">nchack.NCData.daily_mean_climatology</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.daily_range_climatology.html">nchack.NCData.daily_range_climatology</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.monthly_mean_climatology.html">nchack.NCData.monthly_mean_climatology</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.monthly_min_climatology.html">nchack.NCData.monthly_min_climatology</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.monthly_max_climatology.html">nchack.NCData.monthly_max_climatology</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.monthly_range_climatology.html">nchack.NCData.monthly_range_climatology</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.annual_mean.html">nchack.NCData.annual_mean</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.annual_min.html">nchack.NCData.annual_min</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.annual_max.html">nchack.NCData.annual_max</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.annual_range.html">nchack.NCData.annual_range</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.seasonal_mean.html">nchack.NCData.seasonal_mean</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.seasonal_min.html">nchack.NCData.seasonal_min</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.seasonal_max.html">nchack.NCData.seasonal_max</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.seasonal_range.html">nchack.NCData.seasonal_range</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.seasonal_mean_climatology.html">nchack.NCData.seasonal_mean_climatology</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.seasonal_min_climatology.html">nchack.NCData.seasonal_min_climatology</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.seasonal_max_climatology.html">nchack.NCData.seasonal_max_climatology</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.seasonal_range_climatology.html">nchack.NCData.seasonal_range_climatology</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#seasonal-methods">Seasonal methods</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.seasonal_mean.html">nchack.NCData.seasonal_mean</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.seasonal_min.html">nchack.NCData.seasonal_min</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.seasonal_max.html">nchack.NCData.seasonal_max</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.seasonal_range.html">nchack.NCData.seasonal_range</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.seasonal_mean_climatology.html">nchack.NCData.seasonal_mean_climatology</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.seasonal_min_climatology.html">nchack.NCData.seasonal_min_climatology</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.seasonal_max_climatology.html">nchack.NCData.seasonal_max_climatology</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.seasonal_range_climatology.html">nchack.NCData.seasonal_range_climatology</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.select_season.html">nchack.NCData.select_season</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#merging-methods">Merging methods</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.merge.html">nchack.NCData.merge</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.merge_time.html">nchack.NCData.merge_time</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#climatology-methods">Climatology methods</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.daily_mean_climatology.html">nchack.NCData.daily_mean_climatology</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.daily_min_climatology.html">nchack.NCData.daily_min_climatology</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.daily_max_climatology.html">nchack.NCData.daily_max_climatology</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.daily_mean_climatology.html">nchack.NCData.daily_mean_climatology</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.daily_range_climatology.html">nchack.NCData.daily_range_climatology</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.monthly_mean_climatology.html">nchack.NCData.monthly_mean_climatology</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.monthly_min_climatology.html">nchack.NCData.monthly_min_climatology</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.monthly_max_climatology.html">nchack.NCData.monthly_max_climatology</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.monthly_range_climatology.html">nchack.NCData.monthly_range_climatology</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#splitting-methods">Splitting methods</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.split_year.html">nchack.NCData.split_year</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.split_year_month.html">nchack.NCData.split_year_month</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.split_day.html">nchack.NCData.split_day</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.split_season.html">nchack.NCData.split_season</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#display-methods">Display methods</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.view.html">nchack.NCData.view</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.times.html">nchack.NCData.times</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.depths.html">nchack.NCData.depths</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.numbers.html">nchack.NCData.numbers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.show_years.html">nchack.NCData.show_years</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.show_months.html">nchack.NCData.show_months</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.show_levels.html">nchack.NCData.show_levels</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#output-methods">Output methods</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.to_netcdf.html">nchack.NCData.to_netcdf</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.to_xarray.html">nchack.NCData.to_xarray</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.zip.html">nchack.NCData.zip</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#miscellaneous-methods">Miscellaneous methods</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.cell_areas.html">nchack.NCData.cell_areas</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/nchack.NCData.cdo_command.html">nchack.NCData.cdo_command</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="backends.html">nckack backends</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Sphinx-Themes template</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="api">
 <h1>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="trackers">
 <h2>Trackers<a class="headerlink" href="#trackers" title="Permalink to this headline">¶</a></h2>
@@ -676,89 +1012,52 @@
 </div>
 
 
+           </div>
+           
           </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">API</a><ul>
-<li><a class="reference internal" href="#trackers">Trackers</a><ul>
-<li><a class="reference internal" href="#creating-a-tracker">Creating a tracker</a></li>
-<li><a class="reference internal" href="#attributes">Attributes</a></li>
-<li><a class="reference internal" href="#variable-modification">Variable modification</a></li>
-<li><a class="reference internal" href="#vertical-level-methods">Vertical/level methods</a></li>
-<li><a class="reference internal" href="#rolling-methods">Rolling methods</a></li>
-<li><a class="reference internal" href="#evaluation-setting">Evaluation setting</a></li>
-<li><a class="reference internal" href="#cleaning-functions">Cleaning functions</a></li>
-<li><a class="reference internal" href="#ensemble-creation">Ensemble creation</a></li>
-<li><a class="reference internal" href="#arithemetic-methods">Arithemetic methods</a></li>
-<li><a class="reference internal" href="#ensemble-statistics">Ensemble statistics</a></li>
-<li><a class="reference internal" href="#subsetting-operations">Subsetting operations</a></li>
-<li><a class="reference internal" href="#time-based-methods">Time-based methods</a></li>
-<li><a class="reference internal" href="#interpolation-methods">Interpolation methods</a></li>
-<li><a class="reference internal" href="#masking-methods">Masking methods</a></li>
-<li><a class="reference internal" href="#summary-methods">Summary methods</a></li>
-<li><a class="reference internal" href="#statistical-methods">Statistical methods</a></li>
-<li><a class="reference internal" href="#seasonal-methods">Seasonal methods</a></li>
-<li><a class="reference internal" href="#merging-methods">Merging methods</a></li>
-<li><a class="reference internal" href="#climatology-methods">Climatology methods</a></li>
-<li><a class="reference internal" href="#splitting-methods">Splitting methods</a></li>
-<li><a class="reference internal" href="#display-methods">Display methods</a></li>
-<li><a class="reference internal" href="#output-methods">Output methods</a></li>
-<li><a class="reference internal" href="#miscellaneous-methods">Miscellaneous methods</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="generated/nchack.NCData.html" class="btn btn-neutral float-right" title="nchack.NCData" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="howto.html" class="btn btn-neutral float-left" title="How to guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="howto.html"
-                        title="previous chapter">How to guide</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="generated/nchack.NCData.html"
-                        title="next chapter">nchack.NCData</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/api.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, sphinx-themes.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
         </div>
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="generated/nchack.NCData.html" title="nchack.NCData"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="howto.html" title="How to guide"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Sphinx-Themes template 1 documentation</a> &#187;</li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2018, sphinx-themes.org.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.
-    </div>
-  </body>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
 </html>
