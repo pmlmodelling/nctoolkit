@@ -47,6 +47,7 @@ extensions = [
 
 ]
 
+html_theme = 'nature'
 #html_theme = "sphinx_rtd_theme"
 
 
