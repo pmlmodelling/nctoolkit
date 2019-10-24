@@ -2,4 +2,6 @@ sphinx>1.7
 numpydoc
 ipykernel
 nbsphinx
+sphinx_rtd_theme
+
 
