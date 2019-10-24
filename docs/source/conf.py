@@ -12,6 +12,8 @@
 #
 import os
 import sys
+import sphinx_rtd_theme
+import nchack
 sys.path.insert(0, os.path.abspath('../..'))
 sys.setrecursionlimit(1500)
 
@@ -31,7 +33,6 @@ release = '0.1'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 
-import sphinx_rtd_theme
 
 extensions = [
     "sphinx.ext.autodoc",
@@ -108,4 +109,4 @@ html_static_path = ['_static']
 #
 
 
-autoclass_content = 'both'
+#autoclass_content = 'both'
