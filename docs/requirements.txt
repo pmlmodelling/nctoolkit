@@ -1,7 +1,7 @@
 sphinx>=2.2
-numpydoc
-ipykernel
-nbsphinx
+numpydoc=0.9.1
+ipykernel=5.1.2
+nbsphinx=0.43
 sphinx_rtd_theme
 
 
