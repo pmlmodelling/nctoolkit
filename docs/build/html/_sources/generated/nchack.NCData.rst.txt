@@ -33,6 +33,7 @@ nchack.NCData
       ~NCData.daily_min_climatology
       ~NCData.daily_range_climatology
       ~NCData.depths
+      ~NCData.disk_clean
       ~NCData.ensemble_check
       ~NCData.ensemble_max
       ~NCData.ensemble_mean

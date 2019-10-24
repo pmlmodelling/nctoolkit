@@ -41,8 +41,9 @@ extensions = [
     "sphinx.ext.mathjax",
     "sphinx.ext.napoleon",
     "sphinx_rtd_theme",
-    "numpydoc",
-    "nbsphinx"
+    "numpydoc"
+    #"nbsphinx",
+
 ]
 
 html_theme = "sphinx_rtd_theme"
@@ -85,7 +86,6 @@ language = 'python'
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = []
 
-
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
@@ -96,7 +96,6 @@ exclude_patterns = []
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
-
 
 
 #def skip(app, what, name, obj, would_skip, options):
