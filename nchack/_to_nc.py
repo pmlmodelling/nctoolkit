@@ -43,7 +43,9 @@ def to_netcdf(self, out, zip = True, overwrite = False):
             cdo_command = "cdo "
 
         self.run = True
+
         self.released = True
+
         run_this(cdo_command, self, out_file = out)
     if os.path.exists(out) == False: 
         raise ValueError("File zipping was not successful")
