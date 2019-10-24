@@ -16,8 +16,10 @@ Documentation
    :hidden:
    :caption: Getting Started
 
-   tutorial
    installing
+   basic_usage
+   lazy_methods 
+   merging_notebook 
 
 **User Guide**
 
@@ -25,10 +27,24 @@ Documentation
 **Help & reference**
 
 * :doc:`api`
+* :doc:`backends`
 
 .. toctree::
    :maxdepth: 1
    :hidden:
    :caption: Help & reference
 
+   howto
    api
+   backends
+   
+
+
+
+
+
+
+
+
+
+

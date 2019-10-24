@@ -15,8 +15,9 @@ Creating a tracker
 .. autosummary::
    :toctree: generated/
 
-   NCTracker
+   NCData
    open_data
+
 
 Attributes
 ------------------
@@ -24,11 +25,12 @@ Attributes
 .. autosummary::
    :toctree: generated/
 
-   NCTracker.start
-   NCTracker.current
-   NCTracker.history
-   NCTracker.size
-   NCTracker.run
+   NCData.start
+   NCData.current
+   NCData.history
+   NCData.size
+   NCData.run
+
 
 
 
@@ -38,12 +40,12 @@ Variable modification
 .. autosummary::
    :toctree: generated/
 
-   NCTracker.rename
-   NCTracker.mutate
-   NCTracker.transmute
-   NCTracker.set_longname
-   NCTracker.set_unit
-   NCTracker.set_missing
+   NCData.rename
+   NCData.mutate
+   NCData.transmute
+   NCData.set_longname
+   NCData.set_unit
+   NCData.set_missing
 
 Vertical/level methods
 ---------------------
@@ -51,13 +53,13 @@ Vertical/level methods
 .. autosummary::
    :toctree: generated/
 
-   NCTracker.bottom
-   NCTracker.surface
-   NCTracker.vertical_interp
-   NCTracker.vertical_mean
-   NCTracker.vertical_min
-   NCTracker.vertical_max
-   NCTracker.vertical_range
+   NCData.bottom
+   NCData.surface
+   NCData.vertical_interp
+   NCData.vertical_mean
+   NCData.vertical_min
+   NCData.vertical_max
+   NCData.vertical_range
 
 
 
@@ -67,11 +69,11 @@ Rolling methods
 .. autosummary::
    :toctree: generated/
 
-   NCTracker.rolling_mean
-   NCTracker.rolling_min
-   NCTracker.rolling_max
-   NCTracker.rolling_sum
-   NCTracker.rolling_range
+   NCData.rolling_mean
+   NCData.rolling_min
+   NCData.rolling_max
+   NCData.rolling_sum
+   NCData.rolling_range
 
 
 
@@ -81,8 +83,8 @@ Evaluation setting
 .. autosummary::
    :toctree: generated/
 
-   NCTracker.lazy
-   NCTracker.release
+   NCData.lazy
+   NCData.release
 
 
 Cleaning functions
@@ -111,8 +113,8 @@ Arithemetic methods
 .. autosummary::
    :toctree: generated/
 
-   NCTracker.mutate
-   NCTracker.transmute
+   NCData.mutate
+   NCData.transmute
 
 Ensemble statistics
 ---------------------
@@ -120,11 +122,11 @@ Ensemble statistics
 .. autosummary::
    :toctree: generated/
 
-   NCTracker.ensemble_percentile
-   NCTracker.ensemble_mean
-   NCTracker.ensemble_min
-   NCTracker.ensemble_max
-   NCTracker.ensemble_range
+   NCData.ensemble_percentile
+   NCData.ensemble_mean
+   NCData.ensemble_min
+   NCData.ensemble_max
+   NCData.ensemble_range
 
 
 Subsetting operations
@@ -133,12 +135,12 @@ Subsetting operations
 .. autosummary::
    :toctree: generated/
 
-   NCTracker.clip
-   NCTracker.select_months
-   NCTracker.select_season
-   NCTracker.select_years
-   NCTracker.select_variables
-   NCTracker.remove_variables
+   NCData.clip
+   NCData.select_months
+   NCData.select_season
+   NCData.select_years
+   NCData.select_variables
+   NCData.remove_variables
 
 
 Time-based methods
@@ -147,10 +149,10 @@ Time-based methods
 .. autosummary::
    :toctree: generated/
 
-   NCTracker.set_date
-   NCTracker.select_months
-   NCTracker.select_season
-   NCTracker.select_years
+   NCData.set_date
+   NCData.select_months
+   NCData.select_season
+   NCData.select_years
 
 Interpolation methods
 ---------------------
@@ -158,8 +160,8 @@ Interpolation methods
 .. autosummary::
    :toctree: generated/
 
-   NCTracker.regrid
-   NCTracker.time_interp
+   NCData.regrid
+   NCData.time_interp
 
 
 Masking methods
@@ -168,7 +170,7 @@ Masking methods
 .. autosummary::
    :toctree: generated/
 
-   NCTracker.mask_lonlat
+   NCData.mask_lonlat
 
 
 
@@ -178,8 +180,8 @@ Summary methods
 .. autosummary::
    :toctree: generated/
 
-   NCTracker.anomaly_annual
-   NCTracker.phenology
+   NCData.anomaly_annual
+   NCData.phenology
 
 Statistical methods
 ---------------------
@@ -187,48 +189,48 @@ Statistical methods
 .. autosummary::
    :toctree: generated/
 
-   NCTracker.sum
-   NCTracker.mean
-   NCTracker.min
-   NCTracker.cum_sum
+   NCData.sum
+   NCData.mean
+   NCData.min
+   NCData.cum_sum
 
-   NCTracker.cor_space
-   NCTracker.cor_time
-   NCTracker.spatial_mean
-   NCTracker.spatial_min
-   NCTracker.spatial_max
-   NCTracker.spatial_range
+   NCData.cor_space
+   NCData.cor_time
+   NCData.spatial_mean
+   NCData.spatial_min
+   NCData.spatial_max
+   NCData.spatial_range
 
-   NCTracker.monthly_mean
-   NCTracker.monthly_min
-   NCTracker.monthly_max
-   NCTracker.monthly_range
+   NCData.monthly_mean
+   NCData.monthly_min
+   NCData.monthly_max
+   NCData.monthly_range
 
-   NCTracker.daily_mean_climatology
-   NCTracker.daily_min_climatology
-   NCTracker.daily_max_climatology
-   NCTracker.daily_mean_climatology
-   NCTracker.daily_range_climatology
+   NCData.daily_mean_climatology
+   NCData.daily_min_climatology
+   NCData.daily_max_climatology
+   NCData.daily_mean_climatology
+   NCData.daily_range_climatology
 
-   NCTracker.monthly_mean_climatology
-   NCTracker.monthly_min_climatology
-   NCTracker.monthly_max_climatology
-   NCTracker.monthly_range_climatology
+   NCData.monthly_mean_climatology
+   NCData.monthly_min_climatology
+   NCData.monthly_max_climatology
+   NCData.monthly_range_climatology
 
-   NCTracker.annual_mean
-   NCTracker.annual_min
-   NCTracker.annual_max
-   NCTracker.annual_range
+   NCData.annual_mean
+   NCData.annual_min
+   NCData.annual_max
+   NCData.annual_range
 
-   NCTracker.seasonal_mean
-   NCTracker.seasonal_min
-   NCTracker.seasonal_max
-   NCTracker.seasonal_range
+   NCData.seasonal_mean
+   NCData.seasonal_min
+   NCData.seasonal_max
+   NCData.seasonal_range
 
-   NCTracker.seasonal_mean_climatology
-   NCTracker.seasonal_min_climatology
-   NCTracker.seasonal_max_climatology
-   NCTracker.seasonal_range_climatology
+   NCData.seasonal_mean_climatology
+   NCData.seasonal_min_climatology
+   NCData.seasonal_max_climatology
+   NCData.seasonal_range_climatology
 
 
 
@@ -239,17 +241,17 @@ Seasonal methods
    :toctree: generated/
 
 
-   NCTracker.seasonal_mean
-   NCTracker.seasonal_min
-   NCTracker.seasonal_max
-   NCTracker.seasonal_range
+   NCData.seasonal_mean
+   NCData.seasonal_min
+   NCData.seasonal_max
+   NCData.seasonal_range
 
 
-   NCTracker.seasonal_mean_climatology
-   NCTracker.seasonal_min_climatology
-   NCTracker.seasonal_max_climatology
-   NCTracker.seasonal_range_climatology
-   NCTracker.select_season
+   NCData.seasonal_mean_climatology
+   NCData.seasonal_min_climatology
+   NCData.seasonal_max_climatology
+   NCData.seasonal_range_climatology
+   NCData.select_season
 
 
 
@@ -259,8 +261,8 @@ Merging methods
 .. autosummary::
    :toctree: generated/
 
-   NCTracker.merge
-   NCTracker.merge_time
+   NCData.merge
+   NCData.merge_time
    merge_trackers
 
 Climatology methods
@@ -269,16 +271,16 @@ Climatology methods
 .. autosummary::
    :toctree: generated/
 
-   NCTracker.daily_mean_climatology
-   NCTracker.daily_min_climatology
-   NCTracker.daily_max_climatology
-   NCTracker.daily_mean_climatology
-   NCTracker.daily_range_climatology
+   NCData.daily_mean_climatology
+   NCData.daily_min_climatology
+   NCData.daily_max_climatology
+   NCData.daily_mean_climatology
+   NCData.daily_range_climatology
 
-   NCTracker.monthly_mean_climatology
-   NCTracker.monthly_min_climatology
-   NCTracker.monthly_max_climatology
-   NCTracker.monthly_range_climatology
+   NCData.monthly_mean_climatology
+   NCData.monthly_min_climatology
+   NCData.monthly_max_climatology
+   NCData.monthly_range_climatology
 
 Splitting methods
 ---------------------
@@ -286,10 +288,10 @@ Splitting methods
 .. autosummary::
    :toctree: generated/
 
-   NCTracker.split_year
-   NCTracker.split_year_month
-   NCTracker.split_day
-   NCTracker.split_season
+   NCData.split_year
+   NCData.split_year_month
+   NCData.split_day
+   NCData.split_season
 
 
 Display methods
@@ -298,13 +300,13 @@ Display methods
 .. autosummary::
    :toctree: generated/
 
-   NCTracker.view
-   NCTracker.times
-   NCTracker.depths
-   NCTracker.numbers
-   NCTracker.show_years
-   NCTracker.show_months
-   NCTracker.show_levels
+   NCData.view
+   NCData.times
+   NCData.depths
+   NCData.numbers
+   NCData.show_years
+   NCData.show_months
+   NCData.show_levels
 
 Output methods
 ---------------------
@@ -312,9 +314,9 @@ Output methods
 .. autosummary::
    :toctree: generated/
 
-   NCTracker.to_netcdf
-   NCTracker.to_xarray
-   NCTracker.zip
+   NCData.to_netcdf
+   NCData.to_xarray
+   NCData.zip
 
 Miscellaneous methods
 ---------------------
@@ -322,8 +324,9 @@ Miscellaneous methods
 .. autosummary::
    :toctree: generated/
 
-   NCTracker.cell_areas
-   NCTracker.cdo_command
+   NCData.cell_areas
+   NCData.cdo_command
+
 
 
 

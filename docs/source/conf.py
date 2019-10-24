@@ -25,6 +25,7 @@ author = 'Robert Wilson'
 # The full version, including alpha/beta/rc tags
 release = '0.1'
 
+nbsphinx_allow_errors = True
 
 # -- General configuration ---------------------------------------------------
 
@@ -41,11 +42,34 @@ extensions = [
     "sphinx.ext.extlinks",
     "sphinx.ext.mathjax",
     "sphinx.ext.napoleon",
-    "numpydoc",
-    "sphinx_rtd_theme"
+    #"numpydoc",
+    "sphinx_rtd_theme",
+    "nbsphinx"
 ]
 
 html_theme = "sphinx_rtd_theme"
+
+
+autosummary_generate = True
+autodoc_typehints = "none"
+
+napoleon_use_param = True
+napoleon_use_rtype = True
+
+numpydoc_class_members_toctree = True
+numpydoc_show_class_members = False
+
+# Add any paths that contain templates here, relative to this directory.
+templates_path = ["_templates"]
+
+# The suffix of source filenames.
+source_suffix = ".rst"
+
+# The encoding of source files.
+# source_encoding = 'utf-8-sig'
+
+# The master toctree document.
+master_doc = "index"
 
 
 # Add any paths that contain templates here, relative to this directory.
