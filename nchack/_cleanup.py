@@ -156,7 +156,7 @@ def deep_clean():
     """
     mylist = [f for f in glob.glob("/tmp/" + "*.nc*")]
     mylist = mylist + [f for f in glob.glob("/var/tmp/" + "*.nc*")]
-    mylist = mylist + [f for f in glob.glob("/usr/tmp/" + "*.nc*")]
+    ##mylist = mylist + [f for f in glob.glob("/usr/tmp/" + "*.nc*")]
     mylist = [f for f in mylist if "nchack" in f]
     for ff in mylist:
         os.remove(ff)
@@ -175,3 +175,58 @@ def temp_check():
         else:
             print(str(len(mylist)) +  " files were created by nchack in prior or current sessions. Consider running deep_clean!")
 
+
+
+
+def disk_clean(self, method = "year"):
+    """
+    Method to make sure /tmp is not clogged up after running an operation 
+    """
+
+    # get files as a list
+
+    if type(self.current) is str:
+        ff_list = [self.current]
+    else:
+        ff_list = self.current
+
+    # First step is to figure out how much space is in /tmp
+    # Do nothing if it is less than 0.5 GB
+
+    if session_stamp["temp_dir"] == "/tmp/":
+        result = os.statvfs("/tmp/")
+        result = result.f_frsize * result.f_bavail 
+
+        if result > 0.5 * 1e9:
+            return None
+
+    # at this point we want to change the temp dir, though it probably has been already
+    session_stamp["temp_dir"] = "/var/tmp/"
+    # get a list of the new file names
+
+
+    # loop through the existing ones
+    for ff in ff_list:
+    # check if the file is in /var/tmp
+    # if it is, keep it that way
+    # check the space remaining the /tmp
+        result = os.statvfs("/tmp/")
+        result = result.f_frsize * result.f_bavail 
+    # if there is less than 0.5 GB left, move the file to /var/tmp
+        if result < 0.5 * 1e9:
+            if ff.startswith("/tmp/"):
+                new_ff =  ff.replace("/tmp/", "/var/tmp/")
+                nc_created.append(new_ff)
+                shutil.copyfile(ff, new_ff) 
+                self.current = [new_ff if file == ff else file for file in ff_list]
+        cleanup()
+
+    if type(self.current) is str:
+        self.current = self.current[0]
+    else:
+        self.current = self.current 
+
+
+    return None
+
+            

@@ -149,13 +149,9 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
                 ff_command = ff_command + " " + ff + " " + target
                 ff_command = ff_command.replace("  ", " ")
 
-                print(ff_command)
-                print(target)
-    
                 self.history.append(ff_command)
                 temp = pool.apply_async(run_cdo,[ff_command, target, out_file])
                 results[ff] = temp
-                print(temp)
     
             pool.close()
             pool.join()
@@ -167,8 +163,8 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
                 target_list = target_list[0]
     
             self.current = copy.deepcopy(target_list)
-
             
+            self.disk_clean()
             return None
 
 
@@ -190,6 +186,7 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
             self.history = new_history
             self.history.append(os_command)
 
-
+            if self.run == True:
+                self.disk_clean()
 
 

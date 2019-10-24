@@ -100,7 +100,7 @@ def open_data(x = None):
 
     return NCData(x)
     
-def merge_trackers(*trackers):
+def merge(*trackers):
     all_files = []
     for tracker in trackers:
         if "NCData" in str(type(tracker)) == False:
@@ -400,9 +400,12 @@ class NCData:
 
     from ._anomaly import anomaly_annual
 
+
     from ._masking import mask_lonlat
 
     from ._inttime import time_interp
+
+    from ._cleanup import disk_clean 
 
 
 
