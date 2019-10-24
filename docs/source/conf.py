@@ -29,13 +29,13 @@ release = '1'
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
- "sphinx.ext.intersphinx",
+    "sphinx.ext.intersphinx",
     "sphinx.ext.extlinks",
     "sphinx.ext.mathjax",
     "sphinx.ext.napoleon",
     "numpydoc",
     "sphinx_rtd_theme",
-"nbsphinx",
+    "nbsphinx",
     'sphinx.ext.todo',
     'sphinx.ext.githubpages',
 ]
