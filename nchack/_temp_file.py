@@ -15,17 +15,26 @@ def temp_file(ext = ""):
                 if session_stamp["temp_dir"] == "/tmp/":
                     session_stamp["temp_dir"] = "/var/tmp/"
 
-            actual_temp = session_stamp["temp_dir"]
-            actual_temp = actual_temp + "/"
-            actual_temp = actual_temp.replace("//", "/")
+        actual_temp = session_stamp["temp_dir"]
+        actual_temp = actual_temp + "/"
+        actual_temp = actual_temp.replace("//", "/")
 
-            target = tempfile.NamedTemporaryFile().name 
-            target = target.replace("tmp/", "tmp/" + session_stamp["stamp"])
-            target = target.replace("tmp/", "tmp/" + session_stamp["stamp"])
-            #if actual_temp != "/tmp/":
+        target = tempfile.NamedTemporaryFile().name 
+        target = target.replace("tmp/", "tmp/" + session_stamp["stamp"])
+
+        if ext is not None:
             target = actual_temp + os.path.basename(target)
-            target = target + ".nc"
-            return target
+            if type(ext) is not str:
+                raise ValueError("Extension supplied is not a str")
+            if ext.startswith("."):
+                target = target + ext
+            else:
+                target = target + "." +  ext
+                
+        else:
+            target = actual_temp + os.path.basename(target)
+            
+        return target
 
 
 
