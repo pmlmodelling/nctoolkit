@@ -43,6 +43,7 @@ extensions = [
     "sphinx.ext.mathjax",
     "sphinx.ext.napoleon",
     "sphinx_rtd_theme",
+    "numpydoc",
     "nbsphinx"
 ]
 
