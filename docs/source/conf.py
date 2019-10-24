@@ -40,9 +40,9 @@ extensions = [
     "sphinx.ext.extlinks",
     "sphinx.ext.mathjax",
     "sphinx.ext.napoleon",
+    "numpydoc",
     "sphinx_rtd_theme",
-    "numpydoc"
-    #"nbsphinx",
+    "nbsphinx"
 
 ]
 

@@ -1,0 +1,1117 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="python" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="python" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>How to guide &mdash; nchack 0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> nchack
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installing.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage.html">Introduction tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lazy_methods.html">Lazy evaluation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../merging_notebook.html">Ensemble methods</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../howto.html">How to guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backends.html">nckack backends</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">nchack</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>How to guide</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/.ipynb_checkpoints/howto-checkpoint.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 5ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    background: #f5f5f5;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="How-to-guide">
+<h1>How to guide<a class="headerlink" href="#How-to-guide" title="Permalink to this headline">¶</a></h1>
+<p>This guide will show how to carry out key nchack operations. We will use a sea surface temperature data set and a depth-resolved ocean temperature data set. The data sets can be downloaded using wget as follows:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">nchack</span> <span class="k">as</span> <span class="nn">nc</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="ch">#! wget ftp://ftp.cdc.noaa.gov/Datasets/COBE2/sst.mon.mean.nc</span>
+<span class="c1">#clear_output()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="How-to-select-years-and-months">
+<h2>How to select years and months<a class="headerlink" href="#How-to-select-years-and-months" title="Permalink to this headline">¶</a></h2>
+<p>If we want to select specific years and months we can use the select_years and select_months method</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">tracker</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">open_data</span><span class="p">(</span><span class="s2">&quot;sst.mon.mean.nc&quot;</span><span class="p">)</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">select_years</span><span class="p">(</span><span class="mi">1960</span><span class="p">)</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">select_months</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">times</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>0    1960-01-01T00:00:00
+dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="How-to-clip-to-a-region">
+<h2>How to clip to a region<a class="headerlink" href="#How-to-clip-to-a-region" title="Permalink to this headline">¶</a></h2>
+<p>If you want to clip the data to a specific longitude and latitude box, we can use clip, with the longitude and latitude range given by lon and lat.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">tracker</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">open_data</span><span class="p">(</span><span class="s2">&quot;sst.mon.mean.nc&quot;</span><span class="p">)</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">lon</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">80</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span> <span class="n">lat</span> <span class="o">=</span> <span class="p">[</span><span class="mi">40</span><span class="p">,</span> <span class="mi">70</span><span class="p">])</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">to_xarray</span><span class="p">()</span><span class="o">.</span><span class="n">sst</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span> <span class="o">=</span> <span class="s2">&quot;time&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/users/modellers/rwi/anaconda3/lib/python3.7/site-packages/xarray/core/nanops.py:140: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis=axis, dtype=dtype)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>&lt;matplotlib.collections.QuadMesh at 0x7f24744574a8&gt;
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/.ipynb_checkpoints_howto-checkpoint_6_2.png" src="../_images/.ipynb_checkpoints_howto-checkpoint_6_2.png" />
+</div>
+</div>
+</div>
+<div class="section" id="How-to-rename-a-variable">
+<h2>How to rename a variable<a class="headerlink" href="#How-to-rename-a-variable" title="Permalink to this headline">¶</a></h2>
+<p>If we want to rename a variable we use the rename method, and supply a dictionary where the key, value pairs are the original and new names</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">tracker</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">open_data</span><span class="p">(</span><span class="s2">&quot;sst.mon.mean.nc&quot;</span><span class="p">)</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">variables</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;sst&quot;</span><span class="p">:</span> <span class="s2">&quot;temperature&quot;</span><span class="p">})</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">variables</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>[&#39;sst&#39;]
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>[&#39;temperature&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="How-to-create-new-variables">
+<h2>How to create new variables<a class="headerlink" href="#How-to-create-new-variables" title="Permalink to this headline">¶</a></h2>
+<p>New variables can be created using arithmetic operations using either mutate or transmute. The mutate method will maintain the original variables, whereas transmute will not. This method requires a dictionary, where the key, values pairs are the names of the new variables and the arithemtic operations to perform. The example below shows how to create a new variable with</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">tracker</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">open_data</span><span class="p">(</span><span class="s2">&quot;sst.mon.mean.nc&quot;</span><span class="p">)</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">mutate</span><span class="p">({</span><span class="s2">&quot;sst_k&quot;</span><span class="p">:</span> <span class="s2">&quot;sst+273.15&quot;</span><span class="p">})</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">variables</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>[&#39;sst&#39;, &#39;sst_k&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="How-to-calculate-a-spatial-average">
+<h2>How to calculate a spatial average<a class="headerlink" href="#How-to-calculate-a-spatial-average" title="Permalink to this headline">¶</a></h2>
+<p>You can calculate a spatial average using the spatial_mean method. There are additional methods for maximums etc.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[43]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">tracker</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">open_data</span><span class="p">(</span><span class="s2">&quot;sst.mon.mean.nc&quot;</span><span class="p">)</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">spatial_mean</span><span class="p">()</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">to_xarray</span><span class="p">()</span><span class="o">.</span><span class="n">sst</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[43]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>[&lt;matplotlib.lines.Line2D at 0x7f247f68eda0&gt;]
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/.ipynb_checkpoints_howto-checkpoint_12_1.png" src="../_images/.ipynb_checkpoints_howto-checkpoint_12_1.png" />
+</div>
+</div>
+</div>
+<div class="section" id="How-to-calculate-an-annual-mean">
+<h2>How to calculate an annual mean<a class="headerlink" href="#How-to-calculate-an-annual-mean" title="Permalink to this headline">¶</a></h2>
+<p>You can calculate an annual mean using the annual_mean method.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">tracker</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">open_data</span><span class="p">(</span><span class="s2">&quot;sst.mon.mean.nc&quot;</span><span class="p">)</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">spatial_mean</span><span class="p">()</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">annual_mean</span><span class="p">()</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">to_xarray</span><span class="p">()</span><span class="o">.</span><span class="n">sst</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>[&lt;matplotlib.lines.Line2D at 0x7f247f679320&gt;]
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/.ipynb_checkpoints_howto-checkpoint_14_1.png" src="../_images/.ipynb_checkpoints_howto-checkpoint_14_1.png" />
+</div>
+</div>
+</div>
+<div class="section" id="How-to-calculate-a-rolling-average">
+<h2>How to calculate a rolling average<a class="headerlink" href="#How-to-calculate-a-rolling-average" title="Permalink to this headline">¶</a></h2>
+<p>You can calculate a rolling mean using the rolling_mean method, with the window argument providing the number of time steps to average over. There are additional methods for rolling sums etc. The code below will calculate a rolling mean of global SST using a 20 year window.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[45]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">tracker</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">open_data</span><span class="p">(</span><span class="s2">&quot;sst.mon.mean.nc&quot;</span><span class="p">)</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">spatial_mean</span><span class="p">()</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">annual_mean</span><span class="p">()</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">rolling_mean</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">to_xarray</span><span class="p">()</span><span class="o">.</span><span class="n">sst</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[45]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>[&lt;matplotlib.lines.Line2D at 0x7f247f5f6198&gt;]
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/.ipynb_checkpoints_howto-checkpoint_16_1.png" src="../_images/.ipynb_checkpoints_howto-checkpoint_16_1.png" />
+</div>
+</div>
+</div>
+<div class="section" id="How-to-calculate-temporal-anomalies">
+<h2>How to calculate temporal anomalies<a class="headerlink" href="#How-to-calculate-temporal-anomalies" title="Permalink to this headline">¶</a></h2>
+<p>You can calculate annual temporal anomalies using the anomaly_annual method. This requires a baseline period.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[46]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">tracker</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">open_data</span><span class="p">(</span><span class="s2">&quot;sst.mon.mean.nc&quot;</span><span class="p">)</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">spatial_mean</span><span class="p">()</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">anomaly_annual</span><span class="p">(</span><span class="n">baseline</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1960</span><span class="p">,</span> <span class="mi">1979</span><span class="p">)))</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">to_xarray</span><span class="p">()</span><span class="o">.</span><span class="n">anomaly</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+CDO warning:b&#39;cdo(1) merge: Process started\nWarning: Duplicate entry of parameter -1 in /tmp/nchackglwwvolhnchacknchackglwwvolhnchacktmplo0be6ot.nc!\ncdo(1) merge: Processed 170 values from 2 variables over 170 timesteps.\ncdo    expr: Processed 170 values from 2 variables [0.02s 414MB].\n&#39;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[46]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>[&lt;matplotlib.lines.Line2D at 0x7f247f54dba8&gt;]
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/.ipynb_checkpoints_howto-checkpoint_18_2.png" src="../_images/.ipynb_checkpoints_howto-checkpoint_18_2.png" />
+</div>
+</div>
+</div>
+<div class="section" id="How-to-split-files-in-trackers">
+<h2>How to split files in trackers<a class="headerlink" href="#How-to-split-files-in-trackers" title="Permalink to this headline">¶</a></h2>
+<p>Files within a tracker can be split by year (split_year), day (split_day), year and month (split_year_month) or season (split_season). If we wanted to split by year and we can use the split_year method</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[47]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">tracker</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">open_data</span><span class="p">(</span><span class="s2">&quot;sst.mon.mean.nc&quot;</span><span class="p">)</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">split_year</span><span class="p">()</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">size</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Number of files in ensemble: 169
+Ensemble size: 530.549474 MB
+Smallest file /tmp/nchackglwwvolhnchacknchackglwwvolhnchacktmpra17b_n2.nc2018.nc has size 3.139346 MB
+Largest file /tmp/nchackglwwvolhnchacknchackglwwvolhnchacktmpra17b_n2.nc2018.nc has size 3.139346 MB
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="How-to-merge-files-in-time">
+<h2>How to merge files in time<a class="headerlink" href="#How-to-merge-files-in-time" title="Permalink to this headline">¶</a></h2>
+<p>We can merge files based on time using merge_time. The code below splits the netcdf files by year and then merges them using merge_time.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">tracker</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">open_data</span><span class="p">(</span><span class="s2">&quot;sst.mon.mean.nc&quot;</span><span class="p">)</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">split_year</span><span class="p">()</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">size</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">merge_time</span><span class="p">()</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">size</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Number of files in ensemble: 169
+Ensemble size: 530.549474 MB
+Smallest file /tmp/nchackglwwvolhnchacknchackglwwvolhnchacktmpfjvhyato.nc2018.nc has size 3.139346 MB
+Largest file /tmp/nchackglwwvolhnchacknchackglwwvolhnchacktmpfjvhyato.nc2018.nc has size 3.139346 MB
+Number of files: 1
+File size: 525.835353 MB
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="How-to-do-variables-based-merging">
+<h2>How to do variables based merging<a class="headerlink" href="#How-to-do-variables-based-merging" title="Permalink to this headline">¶</a></h2>
+<p>If we have two more more files that have the same time steps, but different variables, we can merge them using merge. The code below will first create a tracker with a netcdf file with sst in K, and it will then create a new tracker with this netcd file and the original, and then merge them.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">tracker1</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">open_data</span><span class="p">(</span><span class="s2">&quot;sst.mon.mean.nc&quot;</span><span class="p">)</span>
+<span class="n">tracker2</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">open_data</span><span class="p">(</span><span class="s2">&quot;sst.mon.mean.nc&quot;</span><span class="p">)</span>
+<span class="n">tracker2</span><span class="o">.</span><span class="n">transmute</span><span class="p">({</span><span class="s2">&quot;sst_k&quot;</span><span class="p">:</span> <span class="s2">&quot;sst+273.15&quot;</span><span class="p">})</span>
+<span class="n">new_tracker</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">open_data</span><span class="p">([</span><span class="n">tracker1</span><span class="o">.</span><span class="n">current</span><span class="p">,</span> <span class="n">tracker2</span><span class="o">.</span><span class="n">current</span><span class="p">])</span>
+<span class="n">new_tracker</span><span class="o">.</span><span class="n">current</span>
+<span class="n">new_tracker</span><span class="o">.</span><span class="n">merge</span><span class="p">()</span>
+<span class="n">new_tracker</span><span class="o">.</span><span class="n">variables</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>[&#39;/tmp/nchackglwwvolhnchacknchackglwwvolhnchacktmptz6jhrv2.nc&#39;,
+ &#39;sst.mon.mean.nc&#39;]
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+CDO warning:b&#39;Warning: Duplicate entry of parameter -1 in sst.mon.mean.nc!\ncdo    merge: Processed 2 variables over 4056 timesteps [1.21s 414MB].\n&#39;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>[&#39;sst_k&#39;, &#39;sst&#39;]
+</pre></div>
+</div>
+</div>
+<p>In some cases we will have two or more trackers we want to merge. In this case we can use the merge_trackers function as follows:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">tracker1</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">open_data</span><span class="p">(</span><span class="s2">&quot;sst.mon.mean.nc&quot;</span><span class="p">)</span>
+<span class="n">tracker2</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">open_data</span><span class="p">(</span><span class="s2">&quot;sst.mon.mean.nc&quot;</span><span class="p">)</span>
+<span class="n">tracker2</span><span class="o">.</span><span class="n">transmute</span><span class="p">({</span><span class="s2">&quot;sst_k&quot;</span><span class="p">:</span> <span class="s2">&quot;sst+273.15&quot;</span><span class="p">})</span>
+<span class="n">new_tracker</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">merge_trackers</span><span class="p">(</span><span class="n">tracker1</span><span class="p">,</span> <span class="n">tracker2</span><span class="p">)</span>
+<span class="n">new_tracker</span><span class="o">.</span><span class="n">variables</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+CDO warning:b&#39;Warning: Duplicate entry of parameter -1 in /tmp/nchackglwwvolhnchacknchackglwwvolhnchacktmp141j_swx.nc!\ncdo    merge: Processed 2 variables over 4056 timesteps [1.30s 414MB].\n&#39;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>[&#39;sst&#39;, &#39;sst_k&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="How-to-horizontally-regrid-a-tracker">
+<h2>How to horizontally regrid a tracker<a class="headerlink" href="#How-to-horizontally-regrid-a-tracker" title="Permalink to this headline">¶</a></h2>
+<p>Variables can be regridded horizontally using regrid. This method requires the new grid to be defined. This can either be a pandas data frame, with lon/lat as columns, an xarray object, a netcdfile or a tracker. I will demonstrate all three methods by regridding SST to the North Atlantic. Let’s begin by getting a grid for the North Atlantic.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[51]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">new_grid</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">open_data</span><span class="p">(</span><span class="s2">&quot;sst.mon.mean.nc&quot;</span><span class="p">)</span>
+<span class="n">new_grid</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">lon</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">80</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span> <span class="n">lat</span> <span class="o">=</span> <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">70</span><span class="p">])</span>
+<span class="n">new_grid</span><span class="o">.</span><span class="n">select_months</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">new_grid</span><span class="o">.</span><span class="n">select_years</span><span class="p">(</span> <span class="mi">2000</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>First, we will use the new tracker itself to do the regridding. I will calculate mean SST using the original data, and then regrid to the North Atlantic.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[52]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%%time</span>
+<span class="n">tracker</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">open_data</span><span class="p">(</span><span class="s2">&quot;sst.mon.mean.nc&quot;</span><span class="p">)</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">regrid</span><span class="p">(</span><span class="n">grid</span> <span class="o">=</span> <span class="n">new_grid</span><span class="p">)</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">to_xarray</span><span class="p">()</span><span class="o">.</span><span class="n">sst</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+CDO warning:b&#39;Warning: HDF5 support not compiled in!\ncdo    remap: Processed 64800 values from 1 variable over 1 timestep [0.01s 414MB].\n&#39;
+CPU times: user 49.5 ms, sys: 52.4 ms, total: 102 ms
+Wall time: 1.25 s
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[52]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>&lt;matplotlib.collections.QuadMesh at 0x7f247f4eaa20&gt;
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/.ipynb_checkpoints_howto-checkpoint_30_2.png" src="../_images/.ipynb_checkpoints_howto-checkpoint_30_2.png" />
+</div>
+</div>
+<p>We can also do this using the netcdf, which is new_grid.current</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[53]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%%time</span>
+<span class="n">tracker</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">open_data</span><span class="p">(</span><span class="s2">&quot;sst.mon.mean.nc&quot;</span><span class="p">)</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">regrid</span><span class="p">(</span><span class="n">grid</span> <span class="o">=</span> <span class="n">new_grid</span><span class="o">.</span><span class="n">current</span><span class="p">)</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">to_xarray</span><span class="p">()</span><span class="o">.</span><span class="n">sst</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+CDO warning:b&#39;Warning: HDF5 support not compiled in!\ncdo    remap: Processed 64800 values from 1 variable over 1 timestep [0.01s 415MB].\n&#39;
+CPU times: user 51.3 ms, sys: 21.9 ms, total: 73.3 ms
+Wall time: 1.11 s
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[53]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>&lt;matplotlib.collections.QuadMesh at 0x7f247f401c50&gt;
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/.ipynb_checkpoints_howto-checkpoint_32_2.png" src="../_images/.ipynb_checkpoints_howto-checkpoint_32_2.png" />
+</div>
+</div>
+<p>In a similar way we can read the new_grid in as an xarray data set.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[54]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%%time</span>
+<span class="n">na_grid</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">new_grid</span><span class="o">.</span><span class="n">current</span><span class="p">)</span>
+<span class="n">tracker</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">open_data</span><span class="p">(</span><span class="s2">&quot;sst.mon.mean.nc&quot;</span><span class="p">)</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">regrid</span><span class="p">(</span><span class="n">grid</span> <span class="o">=</span> <span class="n">na_grid</span><span class="p">)</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">to_xarray</span><span class="p">()</span><span class="o">.</span><span class="n">sst</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+CDO warning:b&#39;Warning: HDF5 support not compiled in!\ncdo    remap: Processed 64800 values from 1 variable over 1 timestep [0.01s 415MB].\n&#39;
+CPU times: user 59.6 ms, sys: 26 ms, total: 85.6 ms
+Wall time: 1.23 s
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[54]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>&lt;matplotlib.collections.QuadMesh at 0x7f247f342b70&gt;
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/.ipynb_checkpoints_howto-checkpoint_34_2.png" src="../_images/.ipynb_checkpoints_howto-checkpoint_34_2.png" />
+</div>
+</div>
+<p>or we can use a pandas data frame. In this case I will convert the xarray data set to a data frame.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[55]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%%time</span>
+<span class="n">na_grid</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">new_grid</span><span class="o">.</span><span class="n">current</span><span class="p">)</span>
+<span class="n">na_grid</span> <span class="o">=</span> <span class="n">na_grid</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,[</span><span class="s2">&quot;lon&quot;</span><span class="p">,</span> <span class="s2">&quot;lat&quot;</span><span class="p">]]</span>
+<span class="n">tracker</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">open_data</span><span class="p">(</span><span class="s2">&quot;sst.mon.mean.nc&quot;</span><span class="p">)</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">regrid</span><span class="p">(</span><span class="n">grid</span> <span class="o">=</span> <span class="n">na_grid</span><span class="p">)</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">to_xarray</span><span class="p">()</span><span class="o">.</span><span class="n">sst</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+CPU times: user 76.8 ms, sys: 24.5 ms, total: 101 ms
+Wall time: 1.24 s
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[55]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>&lt;matplotlib.collections.QuadMesh at 0x7f247f2e5ba8&gt;
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/.ipynb_checkpoints_howto-checkpoint_36_2.png" src="../_images/.ipynb_checkpoints_howto-checkpoint_36_2.png" />
+</div>
+</div>
+</div>
+<div class="section" id="How-to-temporally-interpolate">
+<h2>How to temporally interpolate<a class="headerlink" href="#How-to-temporally-interpolate" title="Permalink to this headline">¶</a></h2>
+<p>Temporal interpolation can be carried out using time_interp. This method requires a start date (start) of the format YYYY/MM/DD and an end date (end), and a temporal resolution (resolution), which is either 1 day (“daily”), 1 week (“weekly”), 1 month (“monthly”), or 1 year (“yearly”).</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[56]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">tracker</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">open_data</span><span class="p">(</span><span class="s2">&quot;sst.mon.mean.nc&quot;</span><span class="p">)</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">time_interp</span><span class="p">(</span><span class="n">start</span> <span class="o">=</span> <span class="s2">&quot;1990/01/01&quot;</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="s2">&quot;1990/12/31&quot;</span><span class="p">,</span> <span class="n">resolution</span> <span class="o">=</span> <span class="s2">&quot;daily&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="How-to-calculate-a-monthly-average-from-daily-data">
+<h2>How to calculate a monthly average from daily data<a class="headerlink" href="#How-to-calculate-a-monthly-average-from-daily-data" title="Permalink to this headline">¶</a></h2>
+<p>If you have daily data, you can calculate a month average using monthly_mean. There are also methods for maximums etc.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[60]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">tracker</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">open_data</span><span class="p">(</span><span class="s2">&quot;sst.mon.mean.nc&quot;</span><span class="p">)</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">time_interp</span><span class="p">(</span><span class="n">start</span> <span class="o">=</span> <span class="s2">&quot;1990/01/01&quot;</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="s2">&quot;1990/12/31&quot;</span><span class="p">,</span> <span class="n">resolution</span> <span class="o">=</span> <span class="s2">&quot;daily&quot;</span><span class="p">)</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">monthly_mean</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="How-to-calculate-a-monthly-climatology">
+<h2>How to calculate a monthly climatology<a class="headerlink" href="#How-to-calculate-a-monthly-climatology" title="Permalink to this headline">¶</a></h2>
+<p>CDO outputs the date of the final month.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[57]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">tracker</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">open_data</span><span class="p">(</span><span class="s2">&quot;sst.mon.mean.nc&quot;</span><span class="p">)</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">select_years</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1990</span><span class="p">,</span> <span class="mi">2000</span><span class="p">)))</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">monthly_mean_climatology</span><span class="p">()</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">to_xarray</span><span class="p">()</span><span class="o">.</span><span class="n">sst</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">col</span> <span class="o">=</span> <span class="s2">&quot;time&quot;</span><span class="p">,</span> <span class="n">col_wrap</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[57]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>&lt;xarray.plot.facetgrid.FacetGrid at 0x7f247f251860&gt;
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/.ipynb_checkpoints_howto-checkpoint_43_1.png" src="../_images/.ipynb_checkpoints_howto-checkpoint_43_1.png" />
+</div>
+</div>
+</div>
+<div class="section" id="How-to-calculate-a-seasonal-climatology">
+<h2>How to calculate a seasonal climatology<a class="headerlink" href="#How-to-calculate-a-seasonal-climatology" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[58]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">tracker</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">open_data</span><span class="p">(</span><span class="s2">&quot;sst.mon.mean.nc&quot;</span><span class="p">)</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">seasonal_mean_climatology</span><span class="p">()</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">to_xarray</span><span class="p">()</span><span class="o">.</span><span class="n">sst</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">col</span> <span class="o">=</span> <span class="s2">&quot;time&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[58]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>&lt;xarray.plot.facetgrid.FacetGrid at 0x7f247ef5df98&gt;
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/.ipynb_checkpoints_howto-checkpoint_45_1.png" src="../_images/.ipynb_checkpoints_howto-checkpoint_45_1.png" />
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Robert Wilson
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

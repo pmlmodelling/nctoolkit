@@ -1,0 +1,265 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Lazy evaluation  "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Under the hood nchack relies mostly on CDO to carry out the specified manipulation of netcdf files. Each time CDO is called a new temporary file is generated. This has the potential to result in slower than necessary processing chains, as IO takes up far too much time.\n",
+    "\n",
+    "I will demonstrate this using a netcdf file os sea surface temperature. To download the file we can just use wget:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from IPython.display import clear_output\n",
+    "! wget ftp://ftp.cdc.noaa.gov/Datasets/COBE2/sst.mon.ltm.1981-2010.nc\n",
+    "clear_output()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We also, of course, need to import nchack. Please note I am suppressing warnings to make this notebook more readable. I do not recommend suppressing warnings...."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Tip: include atexit.register(nchack.clean_all) after loading nchack\n"
+     ]
+    }
+   ],
+   "source": [
+    "import nchack as nc\n",
+    "import warnings\n",
+    "warnings.filterwarnings('ignore')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We can then set up the tracker file which we will use for manipulating the SST climatology."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "ff =  \"sst.mon.ltm.1981-2010.nc\"\n",
+    "tracker = nc.NCTracker(ff)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Now, let's select the variable sst, clip the file to the northern hemisphere, calculate the mean value in each grid cell for the first half of the year, and then calculate the spatial mean."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "tracker.select_variables(\"sst\")\n",
+    "tracker.clip(lat = [0,90])\n",
+    "tracker.select_months(list(range(1,7)))\n",
+    "tracker.mean()\n",
+    "tracker.spatial_mean()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The tracker's history is as follows:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['cdo -s -selname,sst sst.mon.ltm.1981-2010.nc /tmp/nchackbmqgjvnqnchacknchackbmqgjvnqnchacktmp1rm6szfq.nc',\n",
+       " 'cdo -s -sellonlatbox,-180,180,0,90 /tmp/nchackbmqgjvnqnchacknchackbmqgjvnqnchacktmp1rm6szfq.nc /tmp/nchackbmqgjvnqnchacknchackbmqgjvnqnchacktmpl89ojir1.nc',\n",
+       " 'cdo -s -selmonth,1,2,3,4,5,6 /tmp/nchackbmqgjvnqnchacknchackbmqgjvnqnchacktmpl89ojir1.nc /tmp/nchackbmqgjvnqnchacknchackbmqgjvnqnchacktmpiiv55wgz.nc',\n",
+       " 'cdo -s -timmean /tmp/nchackbmqgjvnqnchacknchackbmqgjvnqnchacktmpiiv55wgz.nc /tmp/nchackbmqgjvnqnchacknchackbmqgjvnqnchacktmpfhqam3u2.nc',\n",
+       " 'cdo -s -fldmean /tmp/nchackbmqgjvnqnchacknchackbmqgjvnqnchacktmpfhqam3u2.nc /tmp/nchackbmqgjvnqnchacknchackbmqgjvnqnchacktmpkc7w3cge.nc']"
+      ]
+     },
+     "execution_count": 12,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "tracker.history"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "In total, there are 5 operations, with temporary files created each time. However, we only want to generate one temporary file. So, can we do that? Yes, thanks to CDO's method chaining ability.\n",
+    "If we want to utilize this we need to set the tracker's evaluation to lazy. Once this is done nchack will only evaluate things either when it needs to, e.g. you call a method that cannot possibly be chained, or if you release it.\n",
+    "This works as follows:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "ff =  \"sst.mon.ltm.1981-2010.nc\"\n",
+    "tracker = nc.NCTracker(ff)\n",
+    "tracker.lazy()\n",
+    "tracker.select_variables(\"sst\")\n",
+    "tracker.clip(lat = [0,90])\n",
+    "tracker.select_months(list(range(1,7)))\n",
+    "tracker.mean()\n",
+    "tracker.spatial_mean()\n",
+    "tracker.release()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We can now see that the history is much cleaner, with only one command."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['cdo -s -L -fldmean -timmean -selmonth,1,2,3,4,5,6 -sellonlatbox,-180,180,0,90 -selname,sst sst.mon.ltm.1981-2010.nc /tmp/nchackbmqgjvnqnchacknchackbmqgjvnqnchacktmppq58k6v9.nc']"
+      ]
+     },
+     "execution_count": 16,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "tracker.history"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "How does this impact run time? Let's time the original, unchained method."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "CPU times: user 12.1 ms, sys: 23.5 ms, total: 35.6 ms\n",
+      "Wall time: 540 ms\n"
+     ]
+    }
+   ],
+   "source": [
+    "%%time\n",
+    "ff =  \"sst.mon.ltm.1981-2010.nc\"\n",
+    "tracker = nc.NCTracker(ff)\n",
+    "tracker.select_variables(\"sst\")\n",
+    "tracker.clip(lat = [0,90])\n",
+    "tracker.select_months(list(range(1,7)))\n",
+    "tracker.mean()\n",
+    "tracker.spatial_mean()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "CPU times: user 4.35 ms, sys: 6.32 ms, total: 10.7 ms\n",
+      "Wall time: 148 ms\n"
+     ]
+    }
+   ],
+   "source": [
+    "%%time\n",
+    "ff =  \"sst.mon.ltm.1981-2010.nc\"\n",
+    "tracker = nc.NCTracker(ff)\n",
+    "tracker.lazy()\n",
+    "tracker.select_variables(\"sst\")\n",
+    "tracker.clip(lat = [0,90])\n",
+    "tracker.select_months(list(range(1,7)))\n",
+    "tracker.mean()\n",
+    "tracker.spatial_mean()\n",
+    "tracker.release()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "This was almost 4 times faster. Exact speed improvements, will of course depend on specific IO requirements, and some times using lazy evaluation will make negligible impact, but in others can make code over 10 times fasteExact speed improvements, will of course depend on specific IO requirements, and some times using lazy evaluation will make negligible impact, but in others can make code over 10 times faster."
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.7.3"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
