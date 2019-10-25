@@ -65,6 +65,7 @@ def run_cdo(command, target, out_file = None):
         raise ValueError("The command does not start with cdo!")
 
     out = subprocess.Popen(command,shell = True, stdin = subprocess.PIPE,stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
+    out.wait()
     result,ignore = out.communicate()
     
 
@@ -84,6 +85,7 @@ def run_cdo(command, target, out_file = None):
         
             nc_created.append(target)
             out = subprocess.Popen(command,shell = True, stdin = subprocess.PIPE,stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
+            out.wait()
             result1,ignore = out.communicate()
             print(str(result1))
             if str(result1).startswith("b'Error") or "HDF error" in str(result1) or out.returncode != 0:
