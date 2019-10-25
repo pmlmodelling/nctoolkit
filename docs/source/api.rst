@@ -5,6 +5,15 @@
 API Reference
 ####################
 
+Session options
+------------------
+
+.. autosummary::
+   :toctree: generated/
+
+   options
+
+
 Reading netcdf data
 ------------------
 
@@ -12,6 +21,7 @@ Reading netcdf data
    :toctree: generated/
 
    open_data
+
 
 Accessing attributes
 ------------------
@@ -320,6 +330,7 @@ Miscellaneous methods
 
    NCData.cell_areas
    NCData.cdo_command
+
 
 
 
