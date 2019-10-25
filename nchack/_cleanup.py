@@ -175,7 +175,8 @@ def temp_check():
     mylist = [f for f in glob.glob("/tmp/" + "*.nc*")]
     mylist = mylist + [f for f in glob.glob("/var/tmp/" + "*.nc*")]
     mylist = mylist + [f for f in glob.glob("/usr/tmp/" + "*.nc*")]
-    mylist = [f for f in mylist if session_stamp["stamp"] in f]
+    mylist = [f for f in mylist if "nchack" in f]
+
     if len(mylist) > 0:
         if len(mylist) == 1:
             print(str(len(mylist)) +  " file was created by nchack in prior or current sessions. Consider running deep_clean!")
