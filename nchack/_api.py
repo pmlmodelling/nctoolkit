@@ -27,12 +27,14 @@ global session_stamp
 letters = string.ascii_lowercase
 session_stamp["stamp"] = "nchack" + "".join(random.choice(letters) for i in range(8)) + "nchack"
 session_stamp["temp_dir"] = "/tmp/"
+session_info["thread_safe"] = False 
 
+import atexit
+atexit.register(clean_all)
 
-print("Tip: include atexit.register(nchack.clean_all) after loading nchack")
+# run temp_check to see if any files are held over from previous sessions
 temp_check()
 
-session_info["thread_safe"] = False 
 
 def options(**kwargs):
     """
