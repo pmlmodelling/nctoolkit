@@ -37,6 +37,9 @@ def annual_anomaly(self, var = None, baseline = None):
 
     """
 
+    if self.run == False:
+        self.release()
+
     if type(self.current) is not str:
         raise ValueError("Splitting the file by year did not work!")
 
@@ -51,6 +54,8 @@ def annual_anomaly(self, var = None, baseline = None):
 
     if type(baseline) is not list:
         raise ValueError("baseline years supplied is not a list")
+
+
 
     # Calculate the yearly mean 
     new_tracker = copy.deepcopy(self)
