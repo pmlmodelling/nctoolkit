@@ -3,6 +3,7 @@ import glob
 import os
 import copy 
 import pandas as pd
+import fnmatch
 
 # function to find files in directory with a specified variable 
 
@@ -40,7 +41,11 @@ def create_ensemble(path = "", var = None, recursive = True):
             path = path + "/"
 
     if recursive:   
-        files = [f for f in glob.glob(path + "**/*.nc", recursive=True)]
+        matches = []
+        for root, dirnames, filenames in os.walk(path + "/"):
+            for filename in fnmatch.filter(filenames, '*.nc'):
+                matches.append(os.path.join(root, filename))
+        files = matches
     else:
         files = [f for f in glob.glob(path + "*.nc", recursive=True)]
     
