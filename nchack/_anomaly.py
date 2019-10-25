@@ -16,6 +16,7 @@ from ._cdo_command import cdo_command
 from ._expr import transmute
 from ._cleanup import cleanup
 from ._runthis import run_cdo
+from ._api import open_data
 
 def annual_anomaly(self, var = None, baseline = None):
     """
@@ -56,22 +57,28 @@ def annual_anomaly(self, var = None, baseline = None):
         raise ValueError("baseline years supplied is not a list")
 
 
+    print(self.current)
+
+    self_copy = copy.deepcopy(self)
 
     # Calculate the yearly mean 
-    new_tracker = copy.deepcopy(self)
+    new_tracker = open_data(self.current) 
+    clim_tracker = open_data(self.current)
+
     new_tracker.select_variables(var)
     new_tracker.rename({var:"observed"})
     new_tracker.annual_mean()
     nc_safe.append(new_tracker.current)
 
-    remove_later = copy.deepcopy(new_tracker.current)
-
     # calculate the climatology
-    clim_tracker = copy.deepcopy(self)
+
+
     clim_tracker.select_variables(var)
     clim_tracker.select_years(baseline)
     clim_tracker.mean()
     clim_tracker.rename({var:"base"})
+
+
     nc_safe.append(copy.deepcopy(clim_tracker.current))
     
     target = temp_file("nc") 
@@ -89,14 +96,11 @@ def annual_anomaly(self, var = None, baseline = None):
     if os.path.exists(target) == False:
         raise ValueError("Calculating the anomaly failed")
 
-    nc_safe.remove(clim_tracker.current)
-    nc_safe.remove(remove_later)
-
-    cleanup(keep = new_tracker.current)
-
-    del clim_tracker
-
-    nc_safe.remove(target)
     self.history = self.history + new_tracker.history
 
     self.current = new_tracker.current
+
+    cleanup(keep = self.current)
+
+
+
