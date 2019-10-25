@@ -76,9 +76,8 @@ class TestSelect(unittest.TestCase):
         self.assertEqual(y, 2)
 
     def test_ensemble_mean_1(self):
-        ff = "data/sst.mon.mean.nc"
+        ff = nc.create_ensemble("data/ensemble/")
         tracker = nc.open_data(ff)
-        tracker.split_year()
         tracker.mean()
         tracker.ensemble_mean()
         tracker.spatial_mean()
@@ -135,13 +134,12 @@ class TestSelect(unittest.TestCase):
         tracker1 = nc.open_data(ff)
         tracker2 = nc.open_data(ff)
         tracker2.rename({"sst": "tos"})
-        tracker = nc.merge_trackers(tracker1, tracker2)
+        tracker = nc.merge(tracker1, tracker2)
         tracker.transmute({"bias":"sst-tos"})
         tracker.mean()
         tracker.spatial_mean()
         x = tracker.to_xarray().bias.values[0][0][0].astype("float")
         self.assertEqual(x, 0)
-
 
 
 if __name__ == '__main__':
