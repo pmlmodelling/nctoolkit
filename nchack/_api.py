@@ -35,6 +35,17 @@ temp_check()
 session_info["thread_safe"] = False 
 
 def options(**kwargs):
+    """
+    Define session options.
+    Set the options in the session. Available options are thread_safe. Set thread_safe = True if hdf5 was built to be thread safe.
+
+    Parameters
+    ---------------
+    **kwargs
+        Define options using key, value pairs.
+
+    """
+
     valid_keys = ["thread_safe"] 
     for key in kwargs:
         if key in valid_keys:
