@@ -1,6 +1,7 @@
 
 from ._api import ( open_data ,
     merge,
+    options,
     NCData
     )
 
