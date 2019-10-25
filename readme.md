@@ -31,10 +31,7 @@ conda install -c conda-forge nco
 Currently, the package has been tested for Linux computers. It will not
 work on Windows platforms, currently. But (buyer beware) it should work on Macs.
 
-## Tutorials
+## Reference and tutorials
 
-In depth tutorials will be added over time to https://github.com/r4ecology/nchack/tree/master/examples. At present a Jupyter notebook outlining basic usage is provided.
+A full API reference, in depth tutorials and a how-to guide are available at [readthedocs](https://nchack.readthedocs.io/en/latest/).
 
-## Development state
-
-This package is currently in the early stages of development, and is relatively unstable. This will change by the end of 2019, when the package should be relatively stable.
