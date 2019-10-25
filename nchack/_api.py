@@ -32,6 +32,22 @@ session_stamp["temp_dir"] = "/tmp/"
 print("Tip: include atexit.register(nchack.clean_all) after loading nchack")
 temp_check()
 
+session_info["thread_safe"] = False 
+
+def options(**kwargs):
+    valid_keys = ["thread_safe"] 
+    for key in kwargs:
+        if key in valid_keys:
+            if key == "thread_safe":
+                if type(kwargs[key]) is not bool: 
+                    raise AttributeError("thread_safe must be True or False")
+                else:
+                    session_info[key] = kwargs[key]
+        else:
+            raise AttributeError(key + " is not a valid option")
+
+
+
 result = os.statvfs("/tmp/")
 session_info["size"] = result.f_frsize * result.f_bavail 
 session_info["latest_size"] = 0 

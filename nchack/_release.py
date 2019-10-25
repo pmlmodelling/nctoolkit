@@ -4,6 +4,7 @@ import copy
 
 from ._cleanup import cleanup
 from ._runthis import run_this
+from ._session import session_info
 
 def release(self,  cores = 1, run_merge = True):
     """
@@ -30,7 +31,7 @@ def release(self,  cores = 1, run_merge = True):
         self.run = True
         self.released = True
 
-        if (len(self.history) > len(self.hold_history)):
+        if (len(self.history) > len(self.hold_history)) and session_info["thread_safe"] == False:
             cdo_command = "cdo -L"
         else:
             cdo_command = "cdo "
