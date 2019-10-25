@@ -427,7 +427,7 @@ class NCData:
     from ._split import split_day
     from ._split import split_season
 
-    from ._anomaly import anomaly_annual
+    from ._anomaly import annual_anomaly
 
 
     from ._masking import mask_lonlat

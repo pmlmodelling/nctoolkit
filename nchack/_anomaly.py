@@ -17,7 +17,7 @@ from ._expr import transmute
 from ._cleanup import cleanup
 from ._runthis import run_cdo
 
-def anomaly_annual(self, var = None, baseline = None):
+def annual_anomaly(self, var = None, baseline = None):
     """
 
     Calculate annual anomalies based on a baseline period
