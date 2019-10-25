@@ -132,6 +132,13 @@ def clean_all():
             if cc in ff:
                 other_files.append(ff)
       
+    mylist = [f for f in glob.glob("/tmp/" + "*.nc*")]
+    mylist = mylist + [f for f in glob.glob("/var/tmp/" + "*.nc*")]
+    mylist = [f for f in mylist if session_stamp["stamp"] in f]
+
+    for ff in mylist:
+        other_files.append(ff)
+
     candidates = list(set(candidates + other_files))
     candidates = [x for x in candidates if os.path.exists(x)]
     candidates
