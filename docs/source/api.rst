@@ -2,7 +2,7 @@
 
 
 ####################
-API reference
+API Reference
 ####################
 
 Reading netcdf data
@@ -257,7 +257,7 @@ Merging methods
 
    NCData.merge
    NCData.merge_time
-   merge_trackers
+   merge
 
 Climatology methods
 ---------------------
@@ -320,6 +320,7 @@ Miscellaneous methods
 
    NCData.cell_areas
    NCData.cdo_command
+
 
 
 
