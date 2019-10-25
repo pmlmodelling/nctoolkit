@@ -66,26 +66,27 @@ def run_cdo(command, target, out_file = None):
 
     out = subprocess.Popen(command,shell = True, stdin = subprocess.PIPE,stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
     result,ignore = out.communicate()
+    
 
     if out_file is not None:
-        if str(result).startswith("b'Error") or "HDF error" in str(result):
+        if str(result).startswith("b'Error") or "HDF error" in str(result) or out.returncode != 1:
             raise ValueError(str(result).replace("b'","").replace("\\n", "").replace("'", ""))
         return out_file 
 
     if "(Abort)" in str(result):
         raise ValueError(str(result).replace("b'","").replace("\\n", "").replace("'", ""))
 
-    if str(result).startswith("b'Error") or "HDF error" in str(result):
+    if str(result).startswith("b'Error") or "HDF error" in str(result) or out.returncode != 0:
        if target.startswith("/tmp/"):
             new_target = target.replace("/tmp/", "/var/tmp/") 
             command = command.replace(target, new_target)
             target = new_target
-
         
             nc_created.append(target)
             out = subprocess.Popen(command,shell = True, stdin = subprocess.PIPE,stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
             result1,ignore = out.communicate()
-            if str(result1).startswith("b'Error"):
+            print(str(result1))
+            if str(result1).startswith("b'Error") or "HDF error" in str(result1) or out.returncode != 0:
                 raise ValueError(str(result).replace("b'","").replace("\\n", "").replace("'", ""))
             session_stamp["temp_dir"] = "/var/tmp/"
             if "Warning:" in str(result1):
