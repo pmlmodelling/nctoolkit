@@ -56,10 +56,8 @@ def annual_anomaly(self, var = None, baseline = None):
     if type(baseline) is not list:
         raise ValueError("baseline years supplied is not a list")
 
-
-    print(self.current)
-
     self_copy = copy.deepcopy(self)
+    nc_safe.append(self.current)
 
     # Calculate the yearly mean 
     new_tracker = open_data(self.current) 
@@ -77,7 +75,6 @@ def annual_anomaly(self, var = None, baseline = None):
     clim_tracker.select_years(baseline)
     clim_tracker.mean()
     clim_tracker.rename({var:"base"})
-
 
     nc_safe.append(copy.deepcopy(clim_tracker.current))
     
@@ -100,7 +97,16 @@ def annual_anomaly(self, var = None, baseline = None):
 
     self.current = new_tracker.current
 
+    if len(nc_safe) > 0:
+        for i in range(1, len(nc_safe)+1):
+            nc_safe.pop()
+    nc_safe.append(self.current)
+
     cleanup(keep = self.current)
+
+
+
+
 
 
 
