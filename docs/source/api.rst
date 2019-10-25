@@ -184,7 +184,7 @@ Summary methods
 .. autosummary::
    :toctree: generated/
 
-   NCData.anomaly_annual
+   NCData.annual_anomaly
    NCData.phenology
 
 Statistical methods
