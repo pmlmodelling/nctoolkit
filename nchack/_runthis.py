@@ -6,6 +6,7 @@ import subprocess
 
 from ._temp_file import temp_file
 from ._filetracker import nc_created
+from ._filetracker import nc_safe
 from .flatten import str_flatten
 from ._session import session_stamp
 from ._session import session_info
@@ -106,6 +107,11 @@ def run_cdo(command, target, out_file = None):
 
 def run_this(os_command, self, silent = False, output = "one", cores = 1, n_operations = 1, zip = False, out_file = None):
 
+    if self.current == self.start:
+        start_files = []
+    else:
+        start_files = copy.deepcopy(self.current)
+
     if type(self.current) is str:
         output = "ensemble"
 
@@ -166,7 +172,21 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
                 target_list = target_list[0]
     
             self.current = copy.deepcopy(target_list)
+
+            if type(self.current) is str:
+                nc_safe.append(self.current)
+            else:
+                for ff in self.current:
+                    nc_safe.append(ff)
             
+            if type(start_files) is str:
+                if start_files in nc_safe:
+                    nc_safe.remove(start_files)
+            else:
+                for ff in start_files:
+                    if ff in nc_safe:
+                        nc_safe.remove(ff)
+
             self.disk_clean()
             return None
 
@@ -192,4 +212,18 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
             if self.run == True:
                 self.disk_clean()
 
+
+            if type(self.current) is str:
+                nc_safe.append(self.current)
+            else:
+                for ff in self.current:
+                    nc_safe.append(ff)
+
+            if type(start_files) is str:
+                if start_files in nc_safe:
+                    nc_safe.remove(start_files)
+            else:
+                for ff in start_files:
+                    if ff in nc_safe:
+                        nc_safe.remove(ff)
 

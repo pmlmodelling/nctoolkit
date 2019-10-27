@@ -291,12 +291,21 @@ class NCData:
 
     def copy(self, deep = True):
         new = copy.deepcopy(self)
+        new.start = new.current
         return new
 
     def str_flatten(L, sep = ","):
         result = sep.join(str(x) for x in L)
         return(result)
     def __del__(self):
+        if type(self.current) is str:
+            if self.current in nc_safe:
+                nc_safe.remove(self.current)
+        else:
+            for ff in self.current:
+                if ff in nc_safe:
+                    nc_safe.remove(ff)
+
         cleanup()
 
     @start.deleter
