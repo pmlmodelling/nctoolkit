@@ -4,6 +4,7 @@ import multiprocessing
 
 from ._temp_file import temp_file
 from ._filetracker import nc_created
+from ._filetracker import nc_safe
 from .flatten import str_flatten
 from ._select import select_variables
 from ._setters import set_longname
@@ -31,6 +32,8 @@ def phenology(self, var = None, cores = 1):
         Reduced tracker with the phenologies 
     """
 
+    start_files = copy.deepcopy(self.current)
+
     if var is None:
         raise ValueError("No var was supplied")
     if type(var) is not str:
@@ -49,6 +52,7 @@ def phenology(self, var = None, cores = 1):
     new_self = self.copy()
     
     new_self.select_variables(var)
+    print(new_self.current)
 
     # Create the day of year
 
@@ -102,6 +106,7 @@ def phenology(self, var = None, cores = 1):
 
     if os.path.exists(phen_nc) == False:
         raise ValueError("Failed to merge files")
+    nc_safe.remove(new_self.current)
 
     new_self.current = phen_nc
 
@@ -111,9 +116,17 @@ def phenology(self, var = None, cores = 1):
 
     new_self.set_unit({"peak": "Day of year"})
 
-    cleanup(new_self.current)
+    self.current = copy.deepcopy(new_self.current )
+    self.history+=copy.deepcopy(new_self.history)
+    nc_safe.append(self.current)
 
-    return new_self
+    nc_safe.remove(start_files)
+
+
+    cleanup(self.current)
+
+
+#    return new_self
 
 
 
