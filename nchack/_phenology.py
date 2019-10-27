@@ -46,7 +46,7 @@ def phenology(self, var = None, cores = 1):
     #  create a new tracker for the phenologies
     # Then restrict the file to the var selected
     
-    new_self = copy.deepcopy(self)
+    new_self = self.copy()
     
     new_self.select_variables(var)
 
@@ -82,7 +82,6 @@ def phenology(self, var = None, cores = 1):
     out_nc = temp_file("nc")
     nc_created.append(out_nc)
 
-    
     cdo_command = "cdo merge " + new_self.current + " " + max_nc + " " + doy_nc + " " + out_nc
 
     new_self.history.append(cdo_command)
