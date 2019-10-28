@@ -254,7 +254,7 @@ def merge_time(self, zip = True):
 
     self.merged = True
 
-    cdo_command = "cdo -mergetime "
+    cdo_command = "cdo --sortname -mergetime "
 
     run_this(cdo_command, self,  output = "one", zip = zip) 
 
