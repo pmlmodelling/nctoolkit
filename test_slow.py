@@ -19,6 +19,29 @@ class TestSelect(unittest.TestCase):
         x = tracker.to_xarray().peak.values[0][0][0].astype("float")
         self.assertEqual(x, 214.74716186523438)
 
+    def test_regrid1(self):
+        ff = "/users/modellers/rwi/nchack/data/sst.mon.mean.nc"
+        tracker = nc.open_data(ff)
+        # tracker.select_years(list(range(1950, 1959)))
+        # tracker.select_months([1,2,3,4,5])
+        tracker.clip(lon = [0,90])
+        tracker.clip(lat = [0,90])
+        grid = tracker.copy()
+        tracker.annual_mean()
+        tracker.mean()
+        tracker.spatial_mean()
+        tracker.release()
+        x = tracker.to_xarray().sst.values[0][0][0].astype("float")
+        
+        tracker = nc.open_data(ff)
+        tracker.merge_time()
+        tracker.regrid(grid = grid, method = "nn")
+        tracker.annual_mean()
+        tracker.mean()
+        tracker.spatial_mean()
+        y = tracker.to_xarray().sst.values[0][0][0].astype("float")
+        self.assertEqual(x, y) 
+
 
 
 if __name__ == '__main__':
