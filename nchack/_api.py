@@ -285,11 +285,16 @@ class NCData:
         self._run = value
 
     def lazy(self):
-        """A method to set the mode to lazy"""
+        """
+        Set the method evaluation mode to lazy 
+        """
         self.run = False 
         self.hold_history = copy.deepcopy(self.history)
 
-    def copy(self, deep = True):
+    def copy(self):
+        """
+        Make a deep copy of an NCData object
+        """
         new = copy.deepcopy(self)
         nc_safe.append(new.current)
         return new
