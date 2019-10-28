@@ -9,6 +9,7 @@ from ._generate_grid import generate_grid
 from .flatten import str_flatten
 from ._cleanup import cleanup
 from ._filetracker import nc_created
+from ._filetracker import nc_safe
 from ._runthis import run_this
 
 def regrid(self, grid = None, method = "bil", cores = 1):
@@ -103,8 +104,6 @@ def regrid(self, grid = None, method = "bil", cores = 1):
                 self.grid = grid
     new_files = []
 
-
-    
     for key in grid_split:
         # first we need to generate the weights for remapping
         # and add this to the files created list and self.weights
@@ -128,15 +127,37 @@ def regrid(self, grid = None, method = "bil", cores = 1):
         cdo_command= "cdo -remap," + self.grid + "," + weights_nc 
 
         run_this(cdo_command, tracker,  output = "ensemble", cores = cores)
-        new_files.append(tracker.current)
+        if type(tracker.current) is str:
+            new_files += [tracker.current]
+            nc_safe.append(tracker.current)
+        else:
+            new_files += tracker.current
+            for ff in tracker.current:
+                nc_safe.append(ff)
         self.history.append(cdo_command)
 
     self.current = new_files 
     if len(self.current) == 1:
         self.current = self.current[0]
 
+   # if len(grid_split) > 1:
+   #     self.grid = None
+   #     self.weights = None
+   # else:
+   #     self.weights = weights_nc 
 
-    
+   # keep = []
+   # if self.weights is not None:
+   #     keep.append(self.weights)
 
-    cleanup(keep = [self.current, self.weights, self.grid])
+   # if self.grid is not None:
+   #     keep.append(self.grid)
+
+    if type(self.current) is str:
+        keep.append(self.current)
+    else:
+        for ff in self.current:
+            keep.append(ff)
+
+    cleanup(keep = keep) 
     
