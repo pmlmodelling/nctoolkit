@@ -296,7 +296,11 @@ class DataSet:
         Make a deep copy of an DataSet object
         """
         new = copy.deepcopy(self)
-        nc_safe.append(new.current)
+        if type(new.current) is str:
+            nc_safe.append(new.current)
+        else:
+            for ff in new.current:
+            nc_safe.append(ff)
         return new
 
     def str_flatten(L, sep = ","):
