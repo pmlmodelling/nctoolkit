@@ -33,7 +33,7 @@ def rolling_mean(self, window, cores = 1):
 
     Returns
     -------------
-    nchack.NCData
+    nchack.DataSet
         Reduced tracker with the rolling mean 
     """
 
@@ -52,7 +52,7 @@ def rolling_min(self, window, cores = 1):
 
     Returns
     -------------
-    nchack.NCData
+    nchack.DataSet
         Reduced tracker with the rolling minimum 
     """
 
@@ -71,7 +71,7 @@ def rolling_max(self, window, cores = 1):
 
     Returns
     -------------
-    nchack.NCData
+    nchack.DataSet
         Reduced tracker with the rolling maximum 
     """
     return rollstat(self, window = window, stat = "max", cores = cores)
@@ -89,7 +89,7 @@ def rolling_range(self, window, cores = 1):
 
     Returns
     -------------
-    nchack.NCData
+    nchack.DataSet
         Reduced tracker with the rolling range 
     """
     return rollstat(self, window = window, stat = "range", cores = cores)
@@ -107,7 +107,7 @@ def rolling_sum(self, window, cores = 1):
 
     Returns
     -------------
-    nchack.NCData
+    nchack.DataSet
         Reduced tracker with the rolling sum 
     """
     return rollstat(self, window = window, stat = "sum", cores = cores)

@@ -58,7 +58,7 @@ def transmute(self, operations = None, cores = 1):
 
     Returns
     -------------
-    nchack.NCData
+    nchack.DataSet
         Reduced tracker with the new variables
     """
     return expression(self, operations = operations, method = "expr", cores = cores)
@@ -77,7 +77,7 @@ def mutate(self, operations = None, cores = 1):
 
     Returns
     -------------
-    nchack.NCData
+    nchack.DataSet
         Reduced tracker with the new variables
     """
     return expression(self, operations = operations, method = "aexpr", cores = cores)

@@ -27,7 +27,7 @@ def seasonal_mean(self,  cores = 1):
 
     Returns
     -------------
-    nchack.NCData
+    nchack.DataSet
         Reduced tracker with the seasonal mean 
     """
     return seasstat(self, stat = "mean",  cores = cores)
@@ -45,7 +45,7 @@ def seasonal_min(self,  cores = 1):
 
     Returns
     -------------
-    nchack.NCData
+    nchack.DataSet
         Reduced tracker with the seasonal minimum 
     """
     return seasstat(self, stat = "min",  cores = cores)
@@ -63,7 +63,7 @@ def seasonal_max(self,  cores = 1):
 
     Returns
     -------------
-    nchack.NCData
+    nchack.DataSet
         Reduced tracker with the seasonal maximum 
     """
     return seasstat(self, stat = "max",  cores = cores)
@@ -81,7 +81,7 @@ def seasonal_range(self,  cores = 1):
 
     Returns
     -------------
-    nchack.NCData
+    nchack.DataSet
         Reduced tracker with the seasonal range 
     """
     return seasstat(self, stat = "range",  cores = cores)

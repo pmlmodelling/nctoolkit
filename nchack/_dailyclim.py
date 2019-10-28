@@ -23,7 +23,7 @@ def daily_mean_climatology(self, cores = 1):
 
     Returns
     -------------
-    nchack.NCData
+    nchack.DataSet
         Reduced tracker with the daily climatology
     """
 
@@ -40,7 +40,7 @@ def daily_min_climatology(self, cores = 1):
 
     Returns
     -------------
-    nchack.NCData
+    nchack.DataSet
         Reduced tracker with the daily climatology
     """
 
@@ -57,7 +57,7 @@ def daily_max_climatology(self, cores = 1):
 
     Returns
     -------------
-    nchack.NCData
+    nchack.DataSet
         Reduced tracker with the daily climatology
     """
     return ydaystat(self,  stat = "max", cores = cores)
@@ -73,7 +73,7 @@ def daily_range_climatology(self, cores = 1):
 
     Returns
     -------------
-    nchack.NCData
+    nchack.DataSet
         Reduced tracker with the daily climatology
     """
     return ydaystat(self, stat = "range", cores = cores)

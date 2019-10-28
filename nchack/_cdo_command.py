@@ -17,7 +17,7 @@ def cdo_command(self, command, cores = 1):
 
     Returns
     -------------
-    nchack.NCData
+    nchack.DataSet
         Original tracker with cdo command applied. 
     """
 

@@ -28,7 +28,7 @@ def phenology(self, var = None, cores = 1):
 
     Returns
     -------------
-    nchack.NCData
+    nchack.DataSet
         Reduced tracker with the phenologies 
     """
 

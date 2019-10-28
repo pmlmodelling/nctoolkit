@@ -17,7 +17,7 @@ def mask_lonlat(self, lon = [-180, 180], lat = [-90, 90], cores = 1):
 
     Returns
     -------------
-    nchack.NCData
+    nchack.DataSet
         Reduced tracker with masked data 
     """
 

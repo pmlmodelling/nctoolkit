@@ -14,7 +14,7 @@ def zip(self,  cores = 1):
 
     Returns
     -------------
-    nchack.NCData
+    nchack.DataSet
         Zipped tracker
     """
 

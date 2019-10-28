@@ -80,7 +80,7 @@ def split_year(self):
 
     Returns
     -------------
-    nchack.NCData
+    nchack.DataSet
         Reduced tracker with split data
     """
     split(self, method = "year")
@@ -91,7 +91,7 @@ def split_year_month(self):
 
     Returns
     -------------
-    nchack.NCData
+    nchack.DataSet
         Reduced tracker with split data
     """
     split(self, method = "yearmon")
@@ -105,7 +105,7 @@ def split_day(self):
 
     Returns
     -------------
-    nchack.NCData
+    nchack.DataSet
         Reduced tracker with split data
     """
     split(self, method = "day")
@@ -116,7 +116,7 @@ def split_season(self):
 
     Returns
     -------------
-    nchack.NCData
+    nchack.DataSet
         Reduced tracker with split data
     """
     split(self, method = "seas")

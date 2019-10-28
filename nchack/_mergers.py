@@ -20,7 +20,7 @@ def merge(self, zip = False):
 
     Returns
     -------------
-    nchack.NCData
+    nchack.DataSet
         Reduced tracker with merged data. 
     """
 
@@ -126,7 +126,7 @@ def merge_time(self, zip = True):
 
     Returns
     -------------
-    nchack.NCData
+    nchack.DataSet
         Reduced tracker with merged data. 
     """
 
@@ -237,7 +237,7 @@ def merge_time(self, zip = True):
 
     Returns
     -------------
-    nchack.NCData
+    nchack.DataSet
         Reduced tracker with merged data. 
     """
 

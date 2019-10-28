@@ -87,7 +87,7 @@ def file_size(file_path):
 def open_data(x = None):
 
     """
-    Read netcdf data as a NCData object 
+    Read netcdf data as a DataSet object 
 
     Parameters
     ---------------
@@ -127,13 +127,13 @@ def open_data(x = None):
         if len(x) == 1:
             x = x[0]
 
-    return NCData(x)
+    return DataSet(x)
     
 def merge(*trackers):
     all_files = []
     for tracker in trackers:
-        if "NCData" in str(type(tracker)) == False:
-            raise ValueError("Please check everything is an NCData object!")
+        if "DataSet" in str(type(tracker)) == False:
+            raise ValueError("Please check everything is an DataSet object!")
         if type(tracker.current) is str:
             all_files += [tracker.current]
         else:
@@ -142,7 +142,7 @@ def merge(*trackers):
     result.merge()
     return result
 
-class NCData:
+class DataSet:
     """A tracker/log for manipulating netcdf files"""
     def __init__(self, start = ""):
         """Initialize the starting file name etc"""
@@ -175,13 +175,13 @@ class NCData:
         if type(self.current) == str:
             current = self.current
 
-        return "<nchack.NCData>:\nstart: " + start + "\ncurrent: " + current + "\noperations: " + str(len(self.history))
+        return "<nchack.DataSet>:\nstart: " + start + "\ncurrent: " + current + "\noperations: " + str(len(self.history))
 
 
     @property
     def size(self):
         """The size of an object 
-        This will print the number of files, total size, and smallest and largest files in an NCData object.
+        This will print the number of files, total size, and smallest and largest files in an DataSet object.
         """
         if type(self.current) is str:
             result = "Number of files: 1\n"
@@ -221,11 +221,11 @@ class NCData:
     def variables(self):
         """
         Variables contained in an object's netcdf file.
-        This will check the netcfile's contents, if it is a single file NCData object.
+        This will check the netcfile's contents, if it is a single file DataSet object.
         """
         
         if type(self.current) is list:
-            print("This NCData object is a list. Please inspect individual files using nc_variables")
+            print("This DataSet object is a list. Please inspect individual files using nc_variables")
   
         cdo_result = os.popen( "cdo showname " + self.current).read()
         cdo_result = cdo_result.replace("\n", "")
@@ -237,7 +237,7 @@ class NCData:
     @property
     def start(self):
         """
-        The starting file or files of the NCData object
+        The starting file or files of the DataSet object
         """
         return self._start
 
@@ -251,7 +251,7 @@ class NCData:
     @property
     def current(self):
         """
-        The current file or files in the NCData object
+        The current file or files in the DataSet object
         """
         return self._current
 
@@ -265,7 +265,7 @@ class NCData:
     @property
     def history(self):
         """
-        The history of operations on the NCData 
+        The history of operations on the DataSet 
         """
         return self._history
 
@@ -293,7 +293,7 @@ class NCData:
 
     def copy(self):
         """
-        Make a deep copy of an NCData object
+        Make a deep copy of an DataSet object
         """
         new = copy.deepcopy(self)
         nc_safe.append(new.current)

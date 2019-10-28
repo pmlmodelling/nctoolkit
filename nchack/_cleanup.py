@@ -60,7 +60,7 @@ def cleanup(keep = None):
     objects = dir(sys.modules["__main__"])
     for i in ([v for v in objects if not v.startswith('_')]):
         i_class = str(eval("type(sys.modules['__main__']." +i + ")"))
-        if "NCData" in i_class and "List" not in i_class:
+        if "DataSet" in i_class and "List" not in i_class:
             i_current =eval("sys.modules['__main__']." +i + ".current")
             i_start = eval("sys.modules['__main__']." +i + ".start")
             # add the current files to valid_files

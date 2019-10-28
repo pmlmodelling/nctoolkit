@@ -16,7 +16,7 @@ def remove_variables(self, vars, cores = 1):
 
     Returns
     -------------
-    nchack.NCData
+    nchack.DataSet
         Reduced tracker without the listed variables
     """
 

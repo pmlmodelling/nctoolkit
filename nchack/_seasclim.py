@@ -27,7 +27,7 @@ def seasonal_mean_climatology(self,  cores = 1):
 
     Returns
     -------------
-    nchack.NCData
+    nchack.DataSet
         Reduced tracker with the climatology 
     """
 
@@ -46,7 +46,7 @@ def seasonal_min_climatology(self,  cores = 1):
 
     Returns
     -------------
-    nchack.NCData
+    nchack.DataSet
         Reduced tracker with the climatology 
     """
     return seasstat(self, stat = "min",  cores = cores)
@@ -64,7 +64,7 @@ def seasonal_max_climatology(self,  cores = 1):
 
     Returns
     -------------
-    nchack.NCData
+    nchack.DataSet
         Reduced tracker with the climatology 
     """
     return seasstat(self, stat = "max",  cores = cores)
@@ -82,7 +82,7 @@ def seasonal_range_climatology(self,  cores = 1):
 
     Returns
     -------------
-    nchack.NCData
+    nchack.DataSet
         Reduced tracker with the climatology 
     """
     return seasstat(self, stat = "range",  cores = cores)

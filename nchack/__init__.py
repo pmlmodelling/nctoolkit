@@ -2,7 +2,7 @@
 from ._api import ( open_data ,
     merge,
     options,
-    NCData
+    DataSet
     )
 
 from ._cleanup import cleanup

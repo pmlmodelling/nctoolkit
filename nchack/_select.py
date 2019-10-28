@@ -17,7 +17,7 @@ def select_season(self, season,  cores = 1):
 
     Returns
     -------------
-    nchack.NCData
+    nchack.DataSet
         Reduced tracker with the season selected
     """
 
@@ -39,7 +39,7 @@ def select_months(self, months,  cores = 1):
 
     Returns
     -------------
-    nchack.NCData
+    nchack.DataSet
         Reduced tracker with the months selected
     """
 
@@ -72,7 +72,7 @@ def select_years(self, years,  cores = 1):
 
     Returns
     -------------
-    nchack.NCData
+    nchack.DataSet
         Reduced tracker with the years selected
     """
 
@@ -122,7 +122,7 @@ def select_variables(self, vars = None,  cores = 1):
 
     Returns
     -------------
-    nchack.NCData
+    nchack.DataSet
         Reduced tracker with the variables selected
     """
 

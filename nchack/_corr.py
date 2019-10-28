@@ -102,7 +102,7 @@ def cor_space(self, var1 = None, var2 = None):
 
     Returns
     -------------
-    nchack.NCData
+    nchack.DataSet
         New tracker with the correlation coefficients 
     """
 
@@ -121,7 +121,7 @@ def cor_time(self, var1 = None, var2 = None):
 
     Returns
     -------------
-    nchack.NCData
+    nchack.DataSet
         New tracker with the correlation coefficients 
     """
     return cor(self, var1 = var1, var2 = var2, method = "tim")

@@ -19,7 +19,7 @@ def release(self,  cores = 1, run_merge = True):
 
     Returns
     -------------
-    nchack.NCData
+    nchack.DataSet
         Reduced tracker with commands applies 
     """
 
