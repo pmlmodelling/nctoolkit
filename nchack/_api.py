@@ -300,7 +300,7 @@ class DataSet:
             nc_safe.append(new.current)
         else:
             for ff in new.current:
-            nc_safe.append(ff)
+                nc_safe.append(ff)
         return new
 
     def str_flatten(L, sep = ","):
