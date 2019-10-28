@@ -142,7 +142,7 @@ def merge(*trackers):
     result.merge()
     return result
 
-class DataSet:
+class DataSet(object):
     """A tracker/log for manipulating netcdf files"""
     def __init__(self, start = ""):
         """Initialize the starting file name etc"""
