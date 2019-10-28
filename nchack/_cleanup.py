@@ -4,6 +4,7 @@ import os
 import glob
 import sys
 import copy
+import shutil
 
 from ._filetracker import nc_created
 from ._filetracker import nc_safe
