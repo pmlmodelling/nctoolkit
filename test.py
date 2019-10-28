@@ -2,6 +2,7 @@ import unittest
 import nchack as nc
 import pandas as pd
 import xarray as xr
+import os
 
 
 class TestSelect(unittest.TestCase):
@@ -140,6 +141,23 @@ class TestSelect(unittest.TestCase):
         tracker.spatial_mean()
         x = tracker.to_xarray().bias.values[0][0][0].astype("float")
         self.assertEqual(x, 0)
+
+    def test_anomaly(self):
+        ff = "data/sst.mon.mean.nc"
+        tracker = nc.open_data(ff)
+        tracker.select_years(list(range(1950, 1959)))
+        tracker.select_months([1,2,3,4,5])
+        tracker.clip(lon = [0,90])
+        tracker.clip(lat = [0,90])
+        tracker.annual_anomaly(baseline = list(range(1950, 1979)))
+        x = (os.path.exists(tracker.current))
+#        tracker.annual_mean()
+#        tracker.spatial_mean()
+#        tracker.mean()
+#        x = tracker.to_xarray().anomaly.values[0][0][0].astype("float")
+        self.assertEqual(x, True)
+        #self.assertEqual(x, -8.278422947149977e-10)
+
 
 
 if __name__ == '__main__':

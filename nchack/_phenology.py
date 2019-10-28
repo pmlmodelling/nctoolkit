@@ -52,7 +52,6 @@ def phenology(self, var = None, cores = 1):
     new_self = self.copy()
     
     new_self.select_variables(var)
-    print(new_self.current)
 
     # Create the day of year
 

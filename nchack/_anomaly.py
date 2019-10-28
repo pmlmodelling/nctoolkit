@@ -101,7 +101,6 @@ def annual_anomaly(self, var = None, baseline = None):
    #     for i in range(1, len(nc_safe)+1):
    #         nc_safe.pop()
     nc_safe.append(self.current)
-    print(nc_safe)
 
     cleanup(keep = self.current)
 
