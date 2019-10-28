@@ -88,15 +88,24 @@ def run_cdo(command, target, out_file = None):
             out = subprocess.Popen(command,shell = True, stdin = subprocess.PIPE,stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
             out.wait()
             result1,ignore = out.communicate()
-            print(str(result1))
             if str(result1).startswith("b'Error") or "HDF error" in str(result1) or out.returncode != 0:
                 raise ValueError(str(result).replace("b'","").replace("\\n", "").replace("'", ""))
             session_stamp["temp_dir"] = "/var/tmp/"
             if "Warning:" in str(result1):
                 print("CDO warning:" + str(result1))
+            if "Warning:" in str(result1):
+                print_result1 = True
+                if "merge" in str(result1) and "Duplicate entry of parameter" in str(result1):
+                    print_result1 = False
+                if print_result1:
+                    print("CDO warning:" + str(result1))
     else:
         if "Warning:" in str(result):
-            print("CDO warning:" + str(result))
+            print_result = True
+            if "merge" in str(result) and "Duplicate entry of parameter" in str(result):
+                print_result = False
+            if print_result:
+                print("CDO warning:" + str(result))
             
     if os.path.exists(target) == False:
         raise ValueError(command + " was not successful. Check output")
@@ -104,6 +113,9 @@ def run_cdo(command, target, out_file = None):
     session_info["latest_size"] = os.path.getsize(target)
 
     return target
+
+
+
 
 def run_this(os_command, self, silent = False, output = "one", cores = 1, n_operations = 1, zip = False, out_file = None):
 
@@ -198,7 +210,6 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
             file_list = [self.current]
 
             if self.released:
-
                 os_command = os_command + " " + self.history[-1].replace("cdo ", " ")
 
             target = temp_file("nc")
@@ -212,9 +223,8 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
             if self.run == True:
                 self.disk_clean()
 
-
             if type(self.current) is str:
-                nc_safe.append(self.current)
+                nc_safe.append(copy.deepcopy(self.current))
             else:
                 for ff in self.current:
                     nc_safe.append(ff)
@@ -226,4 +236,7 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
                 for ff in start_files:
                     if ff in nc_safe:
                         nc_safe.remove(ff)
+
+
+
 
