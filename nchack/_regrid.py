@@ -56,7 +56,6 @@ def regrid(self, grid = None, method = "bil", cores = 1):
             raise ValueError("grid file supplied is not a netcdf file!")
         grid_type = "nc"
 
-
     if "DataSet" in str(type(grid)):
         if type(grid.current) is str:
             grid = grid.current
@@ -152,6 +151,8 @@ def regrid(self, grid = None, method = "bil", cores = 1):
 
    # if self.grid is not None:
    #     keep.append(self.grid)
+
+    keep = []
 
     if type(self.current) is str:
         keep.append(self.current)
