@@ -231,9 +231,9 @@ def disk_clean(self, method = "year"):
         cleanup()
 
     if type(self.current) is str:
-        self.current = self.current[0]
+        self.current = self.current
     else:
-        self.current = self.current 
+        self.current = self.current[0]
 
 
     return None
