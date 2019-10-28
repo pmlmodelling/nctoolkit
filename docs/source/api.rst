@@ -14,14 +14,14 @@ Session options
    options
 
 
-Reading netcdf data
+Reading/copying data
 ------------------
 
 .. autosummary::
    :toctree: generated/
 
    open_data
-
+   NCData.copy
 
 Accessing attributes
 ------------------
@@ -35,9 +35,6 @@ Accessing attributes
    NCData.size
    NCData.run
 
-
-
-
 Variable modification 
 ---------------------
 
@@ -50,6 +47,7 @@ Variable modification
    NCData.set_longname
    NCData.set_unit
    NCData.set_missing
+
 
 Vertical/level methods
 ---------------------
@@ -330,6 +328,7 @@ Miscellaneous methods
 
    NCData.cell_areas
    NCData.cdo_command
+
 
 
 
