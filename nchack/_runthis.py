@@ -215,6 +215,11 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
             target = temp_file("nc")
             os_command = os_command + str_flatten(self.current, " ") + " " + target
             os_command = os_command.replace("  ", " ")
+            
+            if " --sortname " in os_command:
+                os_command = os_command.replace(" --sortname ", " ")
+                os_command = os_command.replace("cdo -L ", "cdo -L --sortname ")
+
             target = run_cdo(os_command, target)
             self.current = target
             self.history = new_history
