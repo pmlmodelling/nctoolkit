@@ -9,7 +9,7 @@ class TestSelect(unittest.TestCase):
 
     def test_select(self):
 
-        ff = "/home/robert/Dropbox/nchack/data/sst.mon.mean.nc"
+        ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
         tracker.clip(lon = [-30, 20])
         tracker.clip(lat = [40, 70])
