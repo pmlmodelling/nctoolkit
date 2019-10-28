@@ -3,6 +3,7 @@ import xarray as xr
 import pandas as pd
 
 from ._temp_file import temp_file
+from ._api import open_data
 
 from ._generate_grid import generate_grid
 from .flatten import str_flatten
@@ -78,7 +79,20 @@ def regrid(self, grid = None, method = "bil", cores = 1):
      # check the number of grids in the file
 
     # Do do the horizontal regridding
-   
+
+    grid_split = dict()
+
+    if type(self.current) is str:
+        self.current = [self.current]
+    
+    if type(self.current) is list:
+        for ff in self.current:
+            cdo_result = os.popen( "cdo griddes " + ff).read()
+            if cdo_result in grid_split:
+                grid_split[cdo_result].append(ff)
+            else:
+                grid_split[cdo_result] = [ff]
+
     if grid is not None:
                    # first generate the grid
         if self.grid is None:
@@ -87,30 +101,42 @@ def regrid(self, grid = None, method = "bil", cores = 1):
                 nc_created.append(self.grid)
             else:
                 self.grid = grid
-            
+    new_files = []
+
+
+    
+    for key in grid_split:
         # first we need to generate the weights for remapping
         # and add this to the files created list and self.weights
-        if self.weights is None:
-            if self.run == False:
-                raise ValueError("You cannot generate weights as part of a chain currently")
-            weights_nc = temp_file("nc") 
+        if self.run == False:
+            raise ValueError("You cannot generate weights as part of a chain currently")
+        tracker = open_data(grid_split[key])
 
-            nc_created.append(weights_nc)
-            self.weights = weights_nc
-            
-            weights_nc = self.weights
+        weights_nc = temp_file("nc") 
 
-            cdo_command = "cdo -gen" + method + ","+ self.grid + " " + self.current + " " +  weights_nc
-            os.system(cdo_command)
-            if os.path.exists(weights_nc) == False:
-                raise ValueError("Creation of weights failed!")
+        nc_created.append(weights_nc)
 
+        if type(tracker.current) is list:
+            cdo_command = "cdo -gen" + method + ","+ self.grid + " " + tracker.current[0] + " " +  weights_nc
         else:
-            weights_nc = self.weights
+            cdo_command = "cdo -gen" + method + ","+ self.grid + " " + tracker.current + " " +  weights_nc
+
+        os.system(cdo_command)
+        if os.path.exists(weights_nc) == False:
+            raise ValueError("Creation of weights failed!")
 
         cdo_command= "cdo -remap," + self.grid + "," + weights_nc 
 
-        run_this(cdo_command, self,  output = "ensemble", cores = cores)
+        run_this(cdo_command, tracker,  output = "ensemble", cores = cores)
+        new_files.append(tracker.current)
+        self.history.append(cdo_command)
+
+    self.current = new_files 
+    if len(self.current) == 1:
+        self.current = self.current[0]
+
+
+    
 
     cleanup(keep = [self.current, self.weights, self.grid])
-
+    
