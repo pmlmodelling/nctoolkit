@@ -291,7 +291,7 @@ class NCData:
 
     def copy(self, deep = True):
         new = copy.deepcopy(self)
-        new.start = new.current
+        nc_safe.append(new.current)
         return new
 
     def str_flatten(L, sep = ","):
