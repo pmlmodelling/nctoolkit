@@ -21,7 +21,7 @@ Reading/copying data
    :toctree: generated/
 
    open_data
-   NCData.copy
+   DataSet.copy
 
 Accessing attributes
 ------------------
@@ -29,11 +29,11 @@ Accessing attributes
 .. autosummary::
    :toctree: generated/
 
-   NCData.start
-   NCData.current
-   NCData.history
-   NCData.size
-   NCData.run
+   DataSet.start
+   DataSet.current
+   DataSet.history
+   DataSet.size
+   DataSet.run
 
 Variable modification 
 ---------------------
@@ -41,12 +41,12 @@ Variable modification
 .. autosummary::
    :toctree: generated/
 
-   NCData.rename
-   NCData.mutate
-   NCData.transmute
-   NCData.set_longname
-   NCData.set_unit
-   NCData.set_missing
+   DataSet.rename
+   DataSet.mutate
+   DataSet.transmute
+   DataSet.set_longname
+   DataSet.set_unit
+   DataSet.set_missing
 
 
 Vertical/level methods
@@ -55,13 +55,13 @@ Vertical/level methods
 .. autosummary::
    :toctree: generated/
 
-   NCData.bottom
-   NCData.surface
-   NCData.vertical_interp
-   NCData.vertical_mean
-   NCData.vertical_min
-   NCData.vertical_max
-   NCData.vertical_range
+   DataSet.bottom
+   DataSet.surface
+   DataSet.vertical_interp
+   DataSet.vertical_mean
+   DataSet.vertical_min
+   DataSet.vertical_max
+   DataSet.vertical_range
 
 
 
@@ -71,11 +71,11 @@ Rolling methods
 .. autosummary::
    :toctree: generated/
 
-   NCData.rolling_mean
-   NCData.rolling_min
-   NCData.rolling_max
-   NCData.rolling_sum
-   NCData.rolling_range
+   DataSet.rolling_mean
+   DataSet.rolling_min
+   DataSet.rolling_max
+   DataSet.rolling_sum
+   DataSet.rolling_range
 
 
 
@@ -85,8 +85,8 @@ Evaluation setting
 .. autosummary::
    :toctree: generated/
 
-   NCData.lazy
-   NCData.release
+   DataSet.lazy
+   DataSet.release
 
 
 Cleaning functions
@@ -115,8 +115,8 @@ Arithemetic methods
 .. autosummary::
    :toctree: generated/
 
-   NCData.mutate
-   NCData.transmute
+   DataSet.mutate
+   DataSet.transmute
 
 Ensemble statistics
 ---------------------
@@ -124,11 +124,11 @@ Ensemble statistics
 .. autosummary::
    :toctree: generated/
 
-   NCData.ensemble_percentile
-   NCData.ensemble_mean
-   NCData.ensemble_min
-   NCData.ensemble_max
-   NCData.ensemble_range
+   DataSet.ensemble_percentile
+   DataSet.ensemble_mean
+   DataSet.ensemble_min
+   DataSet.ensemble_max
+   DataSet.ensemble_range
 
 
 Subsetting operations
@@ -137,12 +137,12 @@ Subsetting operations
 .. autosummary::
    :toctree: generated/
 
-   NCData.clip
-   NCData.select_months
-   NCData.select_season
-   NCData.select_years
-   NCData.select_variables
-   NCData.remove_variables
+   DataSet.clip
+   DataSet.select_months
+   DataSet.select_season
+   DataSet.select_years
+   DataSet.select_variables
+   DataSet.remove_variables
 
 
 Time-based methods
@@ -151,10 +151,10 @@ Time-based methods
 .. autosummary::
    :toctree: generated/
 
-   NCData.set_date
-   NCData.select_months
-   NCData.select_season
-   NCData.select_years
+   DataSet.set_date
+   DataSet.select_months
+   DataSet.select_season
+   DataSet.select_years
 
 Interpolation methods
 ---------------------
@@ -162,8 +162,8 @@ Interpolation methods
 .. autosummary::
    :toctree: generated/
 
-   NCData.regrid
-   NCData.time_interp
+   DataSet.regrid
+   DataSet.time_interp
 
 
 Masking methods
@@ -172,7 +172,7 @@ Masking methods
 .. autosummary::
    :toctree: generated/
 
-   NCData.mask_lonlat
+   DataSet.mask_lonlat
 
 
 
@@ -182,8 +182,8 @@ Summary methods
 .. autosummary::
    :toctree: generated/
 
-   NCData.annual_anomaly
-   NCData.phenology
+   DataSet.annual_anomaly
+   DataSet.phenology
 
 Statistical methods
 ---------------------
@@ -191,48 +191,48 @@ Statistical methods
 .. autosummary::
    :toctree: generated/
 
-   NCData.sum
-   NCData.mean
-   NCData.min
-   NCData.cum_sum
+   DataSet.sum
+   DataSet.mean
+   DataSet.min
+   DataSet.cum_sum
 
-   NCData.cor_space
-   NCData.cor_time
-   NCData.spatial_mean
-   NCData.spatial_min
-   NCData.spatial_max
-   NCData.spatial_range
+   DataSet.cor_space
+   DataSet.cor_time
+   DataSet.spatial_mean
+   DataSet.spatial_min
+   DataSet.spatial_max
+   DataSet.spatial_range
 
-   NCData.monthly_mean
-   NCData.monthly_min
-   NCData.monthly_max
-   NCData.monthly_range
+   DataSet.monthly_mean
+   DataSet.monthly_min
+   DataSet.monthly_max
+   DataSet.monthly_range
 
-   NCData.daily_mean_climatology
-   NCData.daily_min_climatology
-   NCData.daily_max_climatology
-   NCData.daily_mean_climatology
-   NCData.daily_range_climatology
+   DataSet.daily_mean_climatology
+   DataSet.daily_min_climatology
+   DataSet.daily_max_climatology
+   DataSet.daily_mean_climatology
+   DataSet.daily_range_climatology
 
-   NCData.monthly_mean_climatology
-   NCData.monthly_min_climatology
-   NCData.monthly_max_climatology
-   NCData.monthly_range_climatology
+   DataSet.monthly_mean_climatology
+   DataSet.monthly_min_climatology
+   DataSet.monthly_max_climatology
+   DataSet.monthly_range_climatology
 
-   NCData.annual_mean
-   NCData.annual_min
-   NCData.annual_max
-   NCData.annual_range
+   DataSet.annual_mean
+   DataSet.annual_min
+   DataSet.annual_max
+   DataSet.annual_range
 
-   NCData.seasonal_mean
-   NCData.seasonal_min
-   NCData.seasonal_max
-   NCData.seasonal_range
+   DataSet.seasonal_mean
+   DataSet.seasonal_min
+   DataSet.seasonal_max
+   DataSet.seasonal_range
 
-   NCData.seasonal_mean_climatology
-   NCData.seasonal_min_climatology
-   NCData.seasonal_max_climatology
-   NCData.seasonal_range_climatology
+   DataSet.seasonal_mean_climatology
+   DataSet.seasonal_min_climatology
+   DataSet.seasonal_max_climatology
+   DataSet.seasonal_range_climatology
 
 
 
@@ -243,17 +243,17 @@ Seasonal methods
    :toctree: generated/
 
 
-   NCData.seasonal_mean
-   NCData.seasonal_min
-   NCData.seasonal_max
-   NCData.seasonal_range
+   DataSet.seasonal_mean
+   DataSet.seasonal_min
+   DataSet.seasonal_max
+   DataSet.seasonal_range
 
 
-   NCData.seasonal_mean_climatology
-   NCData.seasonal_min_climatology
-   NCData.seasonal_max_climatology
-   NCData.seasonal_range_climatology
-   NCData.select_season
+   DataSet.seasonal_mean_climatology
+   DataSet.seasonal_min_climatology
+   DataSet.seasonal_max_climatology
+   DataSet.seasonal_range_climatology
+   DataSet.select_season
 
 
 
@@ -263,8 +263,8 @@ Merging methods
 .. autosummary::
    :toctree: generated/
 
-   NCData.merge
-   NCData.merge_time
+   DataSet.merge
+   DataSet.merge_time
    merge
 
 Climatology methods
@@ -273,16 +273,16 @@ Climatology methods
 .. autosummary::
    :toctree: generated/
 
-   NCData.daily_mean_climatology
-   NCData.daily_min_climatology
-   NCData.daily_max_climatology
-   NCData.daily_mean_climatology
-   NCData.daily_range_climatology
+   DataSet.daily_mean_climatology
+   DataSet.daily_min_climatology
+   DataSet.daily_max_climatology
+   DataSet.daily_mean_climatology
+   DataSet.daily_range_climatology
 
-   NCData.monthly_mean_climatology
-   NCData.monthly_min_climatology
-   NCData.monthly_max_climatology
-   NCData.monthly_range_climatology
+   DataSet.monthly_mean_climatology
+   DataSet.monthly_min_climatology
+   DataSet.monthly_max_climatology
+   DataSet.monthly_range_climatology
 
 Splitting methods
 ---------------------
@@ -290,10 +290,10 @@ Splitting methods
 .. autosummary::
    :toctree: generated/
 
-   NCData.split_year
-   NCData.split_year_month
-   NCData.split_day
-   NCData.split_season
+   DataSet.split_year
+   DataSet.split_year_month
+   DataSet.split_day
+   DataSet.split_season
 
 
 Display methods
@@ -302,13 +302,13 @@ Display methods
 .. autosummary::
    :toctree: generated/
 
-   NCData.view
-   NCData.times
-   NCData.depths
-   NCData.numbers
-   NCData.show_years
-   NCData.show_months
-   NCData.show_levels
+   DataSet.view
+   DataSet.times
+   DataSet.depths
+   DataSet.numbers
+   DataSet.show_years
+   DataSet.show_months
+   DataSet.show_levels
 
 Output methods
 ---------------------
@@ -316,9 +316,9 @@ Output methods
 .. autosummary::
    :toctree: generated/
 
-   NCData.to_netcdf
-   NCData.to_xarray
-   NCData.zip
+   DataSet.to_netcdf
+   DataSet.to_xarray
+   DataSet.zip
 
 Miscellaneous methods
 ---------------------
@@ -326,8 +326,8 @@ Miscellaneous methods
 .. autosummary::
    :toctree: generated/
 
-   NCData.cell_areas
-   NCData.cdo_command
+   DataSet.cell_areas
+   DataSet.cdo_command
 
 
 
