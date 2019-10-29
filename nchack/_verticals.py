@@ -50,7 +50,7 @@ def surface(self,  cores = 1):
 
 def vertical_interp(self, vert_depths = None,  cores = 1):
     """
-    Verticaly interpolate a tracker based on given depths
+    Verticaly interpolate a dataset based on given depths
 
     Parameters
     -------------
@@ -59,10 +59,6 @@ def vertical_interp(self, vert_depths = None,  cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.NCTracke
-        Reduced tracker with the surface level
     """
      
     # below used for checking whether vertical remapping occurs
@@ -122,10 +118,6 @@ def vertical_mean(self,  cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.NCTracke
-        Reduced tracker with the depth-averaged mean
     """
 
     return vertstat(self, stat = "mean",  cores = cores)
@@ -139,10 +131,6 @@ def vertical_min(self,  cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.NCTracke
-        Reduced tracker with the depth-averaged minimum
     """
 
     return vertstat(self, stat = "min",  cores = cores)
@@ -156,10 +144,6 @@ def vertical_max(self,  cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.NCTracke
-        Reduced tracker with the depth-averaged maximum
     """
 
     return vertstat(self, stat = "max",  cores = cores)
@@ -173,10 +157,6 @@ def vertical_range(self,  cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.NCTracke
-        Reduced tracker with the depth-averaged range
     """
 
     return vertstat(self, stat = "range",  cores = cores)
