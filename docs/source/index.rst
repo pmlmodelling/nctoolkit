@@ -13,7 +13,6 @@ Documentation
 -------------
 **Getting Started**
 
-* :doc:`tutorial`
 * :doc:`installing`
 
 .. toctree::
@@ -42,6 +41,7 @@ Documentation
    howto
    api
    
+
 
 
 
