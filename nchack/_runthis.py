@@ -218,7 +218,10 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
             
             if " --sortname " in os_command:
                 os_command = os_command.replace(" --sortname ", " ")
-                os_command = os_command.replace("cdo -L ", "cdo -L --sortname ")
+                if "cdo -L" in os_command:
+                    os_command = os_command.replace("cdo -L ", "cdo -L --sortname ")
+                else:
+                    os_command = os_command.replace("cdo ", "cdo -L --sortname ")
 
             target = run_cdo(os_command, target)
             self.current = target
