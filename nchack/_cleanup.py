@@ -56,7 +56,6 @@ def cleanup(keep = None):
     # Step 2 is to find the trackers in the locals
     
     valid_files = []
-    valid_files = valid_files + nc_safe
     objects = dir(sys.modules["__main__"])
     for i in ([v for v in objects if not v.startswith('_')]):
         i_class = str(eval("type(sys.modules['__main__']." +i + ")"))
@@ -85,12 +84,16 @@ def cleanup(keep = None):
                 valid_files.append(i_grid)
                 valid_files.append(i_weights)
     valid_files = list(set(valid_files))
+    valid_files = valid_files + nc_safe
 
     delete_these = [v for v in candidates if v not in valid_files]            
+    delete_these = [v for v in candidates if v not in nc_safe]            
     if keep is not None:
         if type(keep) is str:
             keep = (keep)
         delete_these = [v for v in delete_these if v not in keep]            
+
+    
 
     delete_these = set(delete_these)
     delete_these = list(delete_these)
@@ -214,7 +217,6 @@ def disk_clean(self, method = "year"):
     session_stamp["temp_dir"] = "/var/tmp/"
     # get a list of the new file names
 
-
     # loop through the existing ones
     for ff in ff_list:
     # check if the file is in /var/tmp
@@ -228,16 +230,17 @@ def disk_clean(self, method = "year"):
                 new_ff =  ff.replace("/tmp/", "/var/tmp/")
                 nc_created.append(new_ff)
                 nc_safe.append(new_ff)
+                new_safe.remove(ff)
                 shutil.copyfile(ff, new_ff) 
                 self.current = [new_ff if file == ff else file for file in ff_list]
-        cleanup()
+
 
     if type(self.current) is str:
         self.current = self.current
     else:
         self.current = self.current[0]
 
+    cleanup()
 
-    return None
 
             

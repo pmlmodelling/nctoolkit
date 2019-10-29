@@ -228,8 +228,6 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
             self.history = new_history
             self.history.append(os_command)
 
-            if self.run == True:
-                self.disk_clean()
 
             if type(self.current) is str:
                 nc_safe.append(copy.deepcopy(self.current))
@@ -244,6 +242,9 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
                 for ff in start_files:
                     if ff in nc_safe:
                         nc_safe.remove(ff)
+
+            if self.run == True:
+                self.disk_clean()
 
 
 
