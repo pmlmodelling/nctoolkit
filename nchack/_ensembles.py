@@ -5,6 +5,7 @@ from ._runthis import run_this
 from ._runthis import run_nco
 from .flatten import str_flatten
 from ._filetracker import nc_created
+from ._filetracker import nc_safe
 
 
 # Ensemble methods all assume the structure of the input files are idential
@@ -93,6 +94,11 @@ def ensemble_nco(self, method, vars = None, ignore_time = False):
 
     if self.run:
         self.current = target 
+
+
+    # remove the original files from the safe list
+    for ff in ff_ensemble:
+        nc_safe.remove(ff)
 
     # clean up the directory
     cleanup(keep = self.current)

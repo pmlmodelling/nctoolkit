@@ -5,6 +5,7 @@ import multiprocessing
 
 from ._temp_file import temp_file
 from ._filetracker import nc_created
+from ._filetracker import nc_safe
 from .flatten import str_flatten
 from ._select import select_variables
 from ._setters import set_longname
@@ -62,6 +63,7 @@ def split(self, method = "year"):
             if split_base in x:
                 new_files.append(x)
                 nc_created.append(x)
+                nc_safe.append(x)
                 counter+=1
 
         if counter == 0:
