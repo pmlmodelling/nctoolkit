@@ -28,8 +28,8 @@ def ensemble_check(tracker):
     
     Parameters
     -------------
-    tracker: nchack.NCtracker
-        A tracker to analyse
+    tracker: nchack.DataSet
+        A data set to analyse
     """
 
     results = []

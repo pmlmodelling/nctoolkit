@@ -19,10 +19,6 @@ def time_interp(self, start = None, end = None, resolution = "monthly",   cores 
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the time interpolated data 
     """
 
     if resolution not in ["daily", "weekly", "monthly", "yearly"]:
@@ -43,7 +39,7 @@ def time_interp(self, start = None, end = None, resolution = "monthly",   cores 
     if start is None:
         if type(self.current) is list:
             ff = self.current[0]
-            print("Warning: start date taken from first file in tracker!")
+            print("Warning: start date taken from first file in data set!")
         else:
             ff = self.current
         cdo_command = "cdo showdate " + ff

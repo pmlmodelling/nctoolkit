@@ -6,17 +6,13 @@ from .flatten import str_flatten
 
 def bottom(self,  cores = 1):
     """
-    Extract the bottom level from a tracker 
+    Extract the bottom level from a dataset 
 
     Parameters
     -------------
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.NCTracke
-        Reduced tracker with the bottom level
     """
 
     # extract the number of the bottom level
@@ -38,17 +34,13 @@ def bottom(self,  cores = 1):
 
 def surface(self,  cores = 1):
     """
-    Extract the top/surface level from a tracker 
+    Extract the top/surface level from a dataset 
 
     Parameters
     -------------
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.NCTracke
-        Reduced tracker with the surface level
     """
 
     cdo_command = "cdo -sellevidx,1 "

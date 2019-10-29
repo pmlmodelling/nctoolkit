@@ -6,7 +6,7 @@ import os
 
 def cdo_command(self, command, cores = 1):
     """
-    Apply a cdo command to a tracker
+    Apply a cdo command
 
     Parameters
     -------------
@@ -18,7 +18,7 @@ def cdo_command(self, command, cores = 1):
     Returns
     -------------
     nchack.DataSet
-        Original tracker with cdo command applied. 
+        Original data set with cdo command applied. 
     """
 
     # First carry out some checks

@@ -4,7 +4,7 @@ from ._runthis import run_this
 
 def rename(self, newnames, cores = 1):
     """
-    Rename variables in a tracker. 
+    Rename variables
 
     Parameters
     -------------
@@ -13,10 +13,6 @@ def rename(self, newnames, cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with variables renamed 
     """
 
     if type(newnames) is not dict:

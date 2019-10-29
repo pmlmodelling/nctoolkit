@@ -78,10 +78,6 @@ def split_year(self):
     """
     Split the ensemble based on years. Each file in the ensemble will be separated into new files based on years.
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with split data
     """
     split(self, method = "year")
 
@@ -89,10 +85,6 @@ def split_year_month(self):
     """
     Split the ensemble based on years and months. Each file in the ensemble will be separated into new files based on years and months.
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with split data
     """
     split(self, method = "yearmon")
 
@@ -103,10 +95,6 @@ def split_day(self):
     """
     Split the ensemble based on days. Each file in the ensemble will be separated into new files based on days.
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with split data
     """
     split(self, method = "day")
 
@@ -114,10 +102,6 @@ def split_season(self):
     """
     Split the ensemble based on season. Each file in the ensemble will be separated into new files based on season.
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with split data
     """
     split(self, method = "seas")
 

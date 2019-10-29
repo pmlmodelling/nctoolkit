@@ -21,10 +21,6 @@ def spatial_mean(self, cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the spatial means 
     """
     return fldstat(self, stat = "mean", cores = cores)
 
@@ -37,10 +33,6 @@ def spatial_min(self, cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the spatial minimum 
     """
     return fldstat(self, stat = "min",  cores = cores)
 
@@ -53,10 +45,6 @@ def spatial_max(self, cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the spatial maximum 
     """
 
     return fldstat(self, stat = "max", cores = cores)
@@ -70,9 +58,5 @@ def spatial_range(self, cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the spatial range 
     """
     return fldstat(self, stat = "range",  cores = cores)

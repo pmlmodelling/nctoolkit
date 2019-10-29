@@ -31,10 +31,6 @@ def rolling_mean(self, window, cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the rolling mean 
     """
 
     return rollstat(self, window = window, stat = "mean", cores = cores)
@@ -50,10 +46,6 @@ def rolling_min(self, window, cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the rolling minimum 
     """
 
     return rollstat(self, window = window, stat = "min", cores = cores)
@@ -69,10 +61,6 @@ def rolling_max(self, window, cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the rolling maximum 
     """
     return rollstat(self, window = window, stat = "max", cores = cores)
     
@@ -87,10 +75,6 @@ def rolling_range(self, window, cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the rolling range 
     """
     return rollstat(self, window = window, stat = "range", cores = cores)
 
@@ -105,10 +89,6 @@ def rolling_sum(self, window, cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the rolling sum 
     """
     return rollstat(self, window = window, stat = "sum", cores = cores)
 

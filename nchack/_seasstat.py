@@ -25,10 +25,6 @@ def seasonal_mean(self,  cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the seasonal mean 
     """
     return seasstat(self, stat = "mean",  cores = cores)
 
@@ -43,10 +39,6 @@ def seasonal_min(self,  cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the seasonal minimum 
     """
     return seasstat(self, stat = "min",  cores = cores)
 
@@ -61,10 +53,6 @@ def seasonal_max(self,  cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the seasonal maximum 
     """
     return seasstat(self, stat = "max",  cores = cores)
     
@@ -79,9 +67,5 @@ def seasonal_range(self,  cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the seasonal range 
     """
     return seasstat(self, stat = "range",  cores = cores)

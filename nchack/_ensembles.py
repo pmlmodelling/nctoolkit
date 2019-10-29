@@ -17,25 +17,21 @@ from ._filetracker import nc_created
 
 def ensemble_percentile(self, p = 50):
     """
-    Calculate an ensemble percentile from a multi-file tracker
+    Calculate an ensemble percentile
 
     Parameters
     -------------
     p : float or int 
         percentile to calculate
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the percentiles
     """
 
     if self.merged:
-        raise ValueError("There is no point running this on a merged tracker. Check chains")
+        raise ValueError("There is no point running this on a merged dataset. Check chains")
 
     # Throw an error if there is only a single file in the tracker
     if type(self.current) is not list:
-        raise ValueError("The current state of the tracker is not a list")
+        raise ValueError("The current state of the dataset is not a list")
 
     # This method cannot possibly be chained. Release it
     if self.run == False:
@@ -54,13 +50,13 @@ def ensemble_percentile(self, p = 50):
 def ensemble_nco(self, method, vars = None, ignore_time = False):
     """Method to calculate an ensemble stat from a list of files"""
     if self.merged:
-        raise ValueError("There is no point running this on a merged tracker. Check chains")
+        raise ValueError("There is no point running this on a merged dataset. Check chains")
 
     ff_ensemble = self.current
 
     # Throw an error if there is only a single file in the tracker
     if type(ff_ensemble) is not list:
-        raise ValueError("The current state of the tracker is not a list")
+        raise ValueError("The current state of the dataset is not a list")
 
     # This method cannot possibly be chained. Release it
     if self.run == False:
@@ -105,7 +101,7 @@ def ensemble_nco(self, method, vars = None, ignore_time = False):
 
 def ensemble_min(self, vars = None, ignore_time = False):
     """
-    Calculate an ensemble minimum from a multi-file tracker
+    Calculate an ensemble minimum
 
     Parameters
     -------------
@@ -114,17 +110,13 @@ def ensemble_min(self, vars = None, ignore_time = False):
     ignore_time : boolean
         If True time is ignored when the statistic is ignored. If False, the statistics is calculated for each time step; for example, if each file in the ensemble has 12 months of data the statistic will be calculated for each month.
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the ensemble minimums
     """
 
     return ensemble_nco(self, "min", ignore_time = ignore_time, vars = vars)
 
 def ensemble_max(self, vars = None, ignore_time = False):
     """
-    Calculate an ensemble maximum from a multi-file tracker
+    Calculate an ensemble maximum
 
     Parameters
     -------------
@@ -133,17 +125,13 @@ def ensemble_max(self, vars = None, ignore_time = False):
     ignore_time : boolean
         If True time is ignored when the statistic is ignored. If False, the statistics is calculated for each time step; for example, if each file in the ensemble has 12 months of data the statistic will be calculated for each month.
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the ensemble minimums
     """
 
     return ensemble_nco(self, "max", ignore_time = ignore_time, vars = vars)
 
 def ensemble_mean(self, vars = None, ignore_time = False):
     """
-    Calculate an ensemble mean from a multi-file tracker
+    Calculate an ensemble mean
 
     Parameters
     -------------
@@ -152,10 +140,6 @@ def ensemble_mean(self, vars = None, ignore_time = False):
     ignore_time : boolean
         If True time is ignored when the statistic is ignored. If False, the statistics is calculated for each time step; for example, if each file in the ensemble has 12 months of data the statistic will be calculated for each month.
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the ensemble minimums
     """
 
     return ensemble_nco(self, "mean", ignore_time = ignore_time, vars = vars)
@@ -164,7 +148,7 @@ def ensemble_mean(self, vars = None, ignore_time = False):
 
 def ensemble_range(self):
     """
-    Calculate an ensemble range from a multi-file tracker
+    Calculate an ensemble range
 
     Parameters
     -------------
@@ -173,13 +157,9 @@ def ensemble_range(self):
     ignore_time : boolean
         If True time is ignored when the statistic is ignored. If False, the statistics is calculated for each time step; for example, if each file in the ensemble has 12 months of data the statistic will be calculated for each month.
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the ensemble minimums
     """
     if type(self.current) is not list:
-        raise ValueError("The current state of the tracker is not a list")
+        raise ValueError("The current state of the dataset is not a list")
 
     cdo_command = "cdo ensrange " 
 
@@ -191,7 +171,7 @@ def ensemble_range(self):
 
 def ensemble_mean_cdo(self,  vars = None):
     """
-    Calculate an ensemble mean from a multi-file tracker, using CDO
+    Calculate an ensemble mean
 
     Parameters
     -------------
@@ -200,20 +180,16 @@ def ensemble_mean_cdo(self,  vars = None):
     ignore_time : boolean
         If True time is ignored when the statistic is ignored. If False, the statistics is calculated for each time step; for example, if each file in the ensemble has 12 months of data the statistic will be calculated for each month.
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the ensemble minimums
     """
 
     if self.merged:
-        raise ValueError("There is no point running this on a merged tracker. Check chains")
+        raise ValueError("There is no point running this on a merged dataset. Check chains")
 
     ff_ensemble = self.current
 
     # Throw an error if there is only a single file in the tracker
     if type(ff_ensemble) is not list:
-        raise ValueError("The current state of the tracker is not a list")
+        raise ValueError("The current state of the dataset is not a list")
 
     ff_ensemble = self.current
 

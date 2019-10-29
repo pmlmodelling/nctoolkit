@@ -22,10 +22,6 @@ def annual_mean(self,  cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the yearly mean
     """
     return yearlystat(self, stat = "mean",  cores = cores)
 
@@ -38,10 +34,6 @@ def annual_min(self,  cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the yearly minimum
     """
     return yearlystat(self, stat = "min",  cores = cores)
 
@@ -54,10 +46,6 @@ def annual_max(self,  cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the yearly maximum
     """
     return yearlystat(self, stat = "max",  cores = cores)
     
@@ -70,9 +58,5 @@ def annual_range(self,  cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the yearly range
     """
     return yearlystat(self, stat = "range",  cores = cores)

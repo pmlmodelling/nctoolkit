@@ -4,7 +4,7 @@ from ._cleanup import cleanup
 
 def clip(self, lon = [-180, 180], lat = [-90, 90], cores = 1):
     """
-    Clip a tracker to a lon/lat box 
+    Clip to a rectangular longitude and latitude lat box 
 
     Parameters
     -------------

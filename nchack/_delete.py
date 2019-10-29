@@ -5,19 +5,15 @@ from ._runthis import run_this
 
 def remove_variables(self, vars, cores = 1):
     """
-    Remove variables from tracker 
+    Remove variables
 
     Parameters
     -------------
     vars : str or list
-        Variable or variables to be removed from the tracker
+        Variable or variables to be removed from the data set
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker without the listed variables
     """
 
     if type(vars) is not list:

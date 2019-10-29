@@ -25,10 +25,6 @@ def seasonal_mean_climatology(self,  cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the climatology 
     """
 
     return seasstat(self, stat = "mean",  cores = cores)
@@ -44,10 +40,6 @@ def seasonal_min_climatology(self,  cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the climatology 
     """
     return seasstat(self, stat = "min",  cores = cores)
 
@@ -62,10 +54,6 @@ def seasonal_max_climatology(self,  cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the climatology 
     """
     return seasstat(self, stat = "max",  cores = cores)
     
@@ -80,9 +68,5 @@ def seasonal_range_climatology(self,  cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the climatology 
     """
     return seasstat(self, stat = "range",  cores = cores)

@@ -3,7 +3,7 @@ from ._cleanup import cleanup
 
 def to_xarray(self, decode_times = True):
     """
-    Open a tracker as an xarray object
+    Open a dataset as an xarray object
 
     Parameters
     -------------

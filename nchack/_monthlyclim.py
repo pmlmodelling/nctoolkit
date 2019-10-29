@@ -21,10 +21,6 @@ def monthly_mean_climatology(self, cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with monthly climatologies
     """
     return ymonstat(self, stat = "mean", cores = cores)
 
@@ -37,10 +33,6 @@ def monthly_min_climatology(self, cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with monthly climatologies
     """
     return ymonstat(self, stat = "min", cores = cores)
 
@@ -53,10 +45,6 @@ def monthly_max_climatology(self, cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with monthly climatologies
     """
     return ymonstat(self,  stat = "max",  cores = cores)
     
@@ -69,9 +57,5 @@ def monthly_range_climatology(self,  cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with monthly climatologies
     """
     return ymonstat(self, stat = "range",  cores = cores)

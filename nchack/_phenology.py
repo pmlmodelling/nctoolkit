@@ -16,7 +16,7 @@ import copy
 
 def phenology(self, var = None, cores = 1):
     """
-    Calculate phenologies from the tracker. Each file in an ensemble must only cover a single year, and ideally have all days.
+    Calculate phenologies from a dataset. Each file in an ensemble must only cover a single year, and ideally have all days.
     This method currently only calculcates the day of year of the annual maximum.
 
     Parameters
@@ -26,10 +26,6 @@ def phenology(self, var = None, cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the phenologies 
     """
 
     start_files = copy.deepcopy(self.current)
@@ -124,8 +120,6 @@ def phenology(self, var = None, cores = 1):
 
     cleanup(self.current)
 
-
-#    return new_self
 
 
 

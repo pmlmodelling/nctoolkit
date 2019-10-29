@@ -8,7 +8,7 @@ from ._session import session_info
 
 def release(self,  cores = 1, run_merge = True):
     """
-    Run commands on tracker set to lazy/hold mode 
+    Run all stored commands in a dataset 
 
     Parameters
     -------------
@@ -17,15 +17,11 @@ def release(self,  cores = 1, run_merge = True):
     run_merge: boolean
         Ignore this for now. This needs to be replaced by the keywords arg method
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with commands applies 
     """
 
     # the first step is to set the run status to true
     if self.run:
-        return("Warning: tracker is in run mode. Nothing to release")
+        return("Warning: dataset is in run mode. Nothing to release")
 
     if self.run == False:
         self.run = True

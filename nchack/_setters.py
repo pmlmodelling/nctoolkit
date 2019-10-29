@@ -12,7 +12,8 @@ from ._runthis import run_this
 def set_date(self, year, month, day, base_year = 1900):
 
     """
-    Set the date in a tracker. You should only do this if you have to fix/change a tracker with a single date. 
+    Set the date in a dataset
+    You should only do this if you have to fix/change a dataset with a single, not multiple dates. 
 
     Parameters
     -------------
@@ -27,10 +28,6 @@ def set_date(self, year, month, day, base_year = 1900):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the new date 
     """
 
     # check that the values supplied are valid
@@ -59,10 +56,6 @@ def set_longname(self, var_dict):
     var_dict : dict
         Dictionary with key, value pairs representing the variable names and the new long names
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the new date 
     """
 
     if self.run == False:
@@ -103,10 +96,6 @@ def set_missing(self, value,  cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the missing values applied.
     """
 
     if type(value) is int:
@@ -132,10 +121,6 @@ def set_unit(self, var_dict):
     var_dict : dict
         A dictionary where the key, value pair are the variables and new units respectively.
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the new units. 
     """
 
 
@@ -163,10 +148,6 @@ def set_gridtype(self, grid):
     grid : str
         Grid type. Needs to be one of "curvilinear", "unstructured", "dereference", "regular", "regularnn" or "lonlat".
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the new grid type
     """
 
 

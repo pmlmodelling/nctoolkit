@@ -34,7 +34,7 @@ def annual_anomaly(self, var = None, baseline = None):
     Returns
     -------------
     nchack.DataSet
-        A new tracker with the annual anomalies labelled anomaly
+        A new data set with the annual anomalies labelled anomaly
 
     """
 

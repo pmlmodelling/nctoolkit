@@ -19,7 +19,7 @@ def cell_areas(self, cores = 1, join = True):
     Returns
     -------------
     nchack.DataSet
-        Reduced tracker with cell areas 
+        Reduced data set with cell areas 
     """
 
     if join and self.run == False:

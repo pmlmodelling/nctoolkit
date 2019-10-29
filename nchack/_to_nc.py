@@ -7,7 +7,7 @@ from ._runthis import run_this
 
 def to_netcdf(self, out, zip = True, overwrite = False):
     """
-    Save a tracker to a named file 
+    Save a dataset to a named file 
 
     Parameters
     -------------
@@ -20,10 +20,10 @@ def to_netcdf(self, out, zip = True, overwrite = False):
 
     ff = self.current
     if type(ff) is not str:
-        raise ValueError("The current state of the tracker is not a string")
+        raise ValueError("You cannot save multiple files!")
 
     if os.path.exists(ff) == False: 
-        raise ValueError("The current state of the tracker does not exist")
+        raise ValueError("The current state of the dataset does not exist")
 
     # Check if outfile exists and overwrite is set to False
     # This should maybe be a warning, not an error 

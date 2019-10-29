@@ -21,10 +21,6 @@ def daily_mean_climatology(self, cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the daily climatology
     """
 
     return ydaystat(self, stat = "mean", cores = cores)
@@ -38,10 +34,6 @@ def daily_min_climatology(self, cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the daily climatology
     """
 
     return ydaystat(self, stat = "min", cores = cores)
@@ -55,10 +47,6 @@ def daily_max_climatology(self, cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the daily climatology
     """
     return ydaystat(self,  stat = "max", cores = cores)
     
@@ -71,10 +59,6 @@ def daily_range_climatology(self, cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the daily climatology
     """
     return ydaystat(self, stat = "range", cores = cores)
 

@@ -18,14 +18,10 @@ def merge(self, zip = False):
     zip : boolean
         If True, the resulting netcdf files are zipped. Defaults to False. 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with merged data. 
     """
 
     if type(self.current) is not list:
-        raise ValueError("The current state of the tracker is not a list")
+        raise ValueError("The current state of the dataset is not a list")
 
     if self.merged:
         raise ValueError("You cannot double chain merge methods!")
@@ -35,12 +31,6 @@ def merge(self, zip = False):
         self.release()
 
     self.merged = True
-
-    # add a check for the number of operations 
-   # if self.run == False:
-   #     if (len(self.current) * (len(self.history) - len(self.hold_history))) > 127:
-   #         raise ValueError("You cannot chain more than 128 operations in CDO. Consider releasing the tracker prior to merging!")
-
     
     # Now, we need to check if there are duplicate variables. If there are, we need to fix that
 
@@ -50,7 +40,6 @@ def merge(self, zip = False):
         all_times.append(ntime)
     if len(set(all_times)) > 1:
         print("Warning: files to merge do not have the same number of time steps!")
-
 
     all_times = []
     for ff in self.current:
@@ -114,116 +103,6 @@ def merge(self, zip = False):
     cleanup(keep = self.current)
 
 
-def merge_time(self, zip = True):
-
-    """
-    Time-based merging of a multi-file ensemble into a single file. This method is ideal if you have the same data split over multiple files covering different data sets. 
-
-    Parameters
-    -------------
-    zip : boolean
-        If True, the resulting netcdf files are zipped. Defaults to False. 
-
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with merged data. 
-    """
-
-    if self.merged:
-        raise ValueError("You cannot double chain merge methods!")
-
-    if self.run == False & len(self.history) > len(self.hold_history):
-        self.release()
-
-    if self.merged:
-        raise ValueError("You cannot double chain merge methods!")
-
-    self.merged = True
-
-    # add a check for the number of operations 
-   # if self.run == False:
-   #     if (len(self.current) * (len(self.history) - len(self.hold_history))) > 127:
-   #         raise ValueError("You cannot chain more than 128 operations in CDO. Consider releasing the tracker prior to merging!")
-
-    
-    # Now, we need to check if there are duplicate variables. If there are, we need to fix that
-
-    all_times = []
-    for ff in self.current:
-        ntime = int(os.popen( "cdo ntime " + ff).read().split("\n")[0])
-        all_times.append(ntime)
-    if len(set(all_times)) > 1:
-        print("Warning: files to merge do not have the same number of time steps!")
-
-
-    all_times = []
-    for ff in self.current:
-        ntime = os.popen( "cdo showtimestamp " + ff).read()
-        all_times.append(ntime)
-    if len(set(all_times)) > 1:
-        print("Warning: files to merge do not have the same times!")
-
-
-#    all_codes = []
-#    for ff in self.current:
-#        cdo_result = os.popen( "cdo showcode " + ff).read().replace("\n", "").strip()
-#        all_codes.append(cdo_result)
-#
-#    if len(set(all_codes)) > len(all_codes):
-#
-#        cdo_all = []
-#        for ff in (self.current):
-#            cdo_result = os.popen( "cdo codetab " + ff).read().replace("\n", "").strip().split(" ")
-#            cdo_result = [ff for ff in cdo_result if len(ff) > 0]
-#            cdo_all.append(pd.DataFrame({"code":[cdo_result[0]],"parameter": [cdo_result[1]], "path":[ff]}))
-#        orig_paths = pd.concat(cdo_all)
-#        cdo_all = pd.concat(cdo_all).drop(columns = "path").drop_duplicates()
-#
-#        cdo_all["new"] = [str(ff) for ff in list(range(-len(cdo_all), 0))]
-#
-
-        # check length of ensemble
-
-  #      cdo_command = ""
-
-  #      if len(self.current) > 128/2:
-  #          pass
-  #      else:
-  #          for ff in self.current:
-  #              ff_data = (orig_paths.merge(cdo_all)
-  #              .query("path == @ff")
-  #              .query("code != new")
-  #              .reset_index()
-  #              )
-  #              if len(ff_data) > 0:
-  #                  sub_command = "-chcode"
-  #                  for i in range(0, len(ff_data)):
-  #                      sub_command+= "," + ff_data["code"][i] + "," +  ff_data["new"][i]
-  #                  cdo_command+= " " + sub_command + " " + ff + " "
-  #              
-  #              if len(ff_data) == 0:
-  #                  cdo_command += " " + ff + " "
-        
-#        cdo_command = "cdo -L -merge "
-  #      self.history.append(cdo_command)
-
-#        run_this(cdo_command, self,  output = "one") 
-
-#        return None
-        
-    cdo_command = ("cdo -merge ")
-
-    self.history.append(cdo_command)
-
-   # if self.run:
-    run_this(cdo_command, self, output = "one", zip = zip) 
-   # else:
-        #self.release(run_merge = False)
-
-    # clean up the directory
-    cleanup(keep = self.current)
-
 
 def merge_time(self, zip = True):
 
@@ -235,10 +114,6 @@ def merge_time(self, zip = True):
     zip : boolean
         If True, the resulting netcdf files are zipped. Defaults to False. 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with merged data. 
     """
 
     lazy_merger = copy.deepcopy(self.run)

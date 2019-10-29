@@ -4,7 +4,7 @@ import pandas as pd
 
 def times(self):
     if type(self.current) is list:
-        raise ValueError("This presently only works for single file trackers")
+        raise ValueError("This presently only works for single file datasets")
         
     ff = self.current
     cdo_result = os.popen( "cdo showtimestamp " + ff).read()

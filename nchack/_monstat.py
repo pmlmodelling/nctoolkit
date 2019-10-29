@@ -22,10 +22,6 @@ def monthly_mean(self, cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with monthly means 
     """
 
     return monstat(self, stat = "mean", cores = cores)
@@ -39,10 +35,6 @@ def monthly_min(self, cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with monthly minimums
     """
     return monstat(self, stat = "min", cores = cores)
 
@@ -55,10 +47,6 @@ def monthly_max(self, cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with monthly maximums
     """
     return monstat(self, stat = "max",  cores = cores)
     
@@ -72,10 +60,6 @@ def monthly_range(self, cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with monthly ranges
     """
 
     return monstat(self, stat = "range", cores = cores)

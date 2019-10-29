@@ -5,17 +5,13 @@ from ._runthis import run_this
 
 def zip(self,  cores = 1):
     """
-    Zip the tracker
+    Zip the dataset
 
     Parameters
     -------------
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Zipped tracker
     """
 
     if self.run == True:

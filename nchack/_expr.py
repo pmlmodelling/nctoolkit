@@ -56,10 +56,6 @@ def transmute(self, operations = None, cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the new variables
     """
     return expression(self, operations = operations, method = "expr", cores = cores)
 
@@ -75,10 +71,6 @@ def mutate(self, operations = None, cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the new variables
     """
     return expression(self, operations = operations, method = "aexpr", cores = cores)
 

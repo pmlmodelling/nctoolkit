@@ -15,10 +15,6 @@ def mask_lonlat(self, lon = [-180, 180], lat = [-90, 90], cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with masked data 
     """
 
     if (type(lon) is not list) or (type(lat) is not list):

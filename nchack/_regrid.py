@@ -15,21 +15,17 @@ from ._runthis import run_this
 def regrid(self, grid = None, method = "bil", cores = 1):
 
     """
-    Regrid a tracker for a target grid and remapping method
+    Regrid a dataset for a target grid and remapping method
 
     Parameters
     -------------
-    grid : nchack.tracker, xarray obect, pandas data frame or netcdf file 
+    grid : nchack.DataSet, xarray object, pandas data frame or netcdf file 
         grid to remap to 
     method : str
         remapping method. Defaults to "bil". Bilinear: "bil"; Nearest neighbour: "nn",....
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the regridded variables 
     """
 
     if grid is None:
@@ -61,7 +57,7 @@ def regrid(self, grid = None, method = "bil", cores = 1):
             grid = grid.current
         else:
             grid = grid.current[0]
-            print("Warning: first file in tracker used for regridding!")
+            print("Warning: first file in dataset used for regridding!")
         grid_type = "nc"
 
     if grid_type is None:

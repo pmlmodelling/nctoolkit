@@ -6,7 +6,7 @@ from ._runthis import run_this
 
 def select_season(self, season,  cores = 1):
     """
-    Select season from tracker
+    Select season from a dataset
 
     Parameters
     -------------
@@ -15,10 +15,6 @@ def select_season(self, season,  cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the season selected
     """
 
     cdo_command = "cdo -select,season=" + season
@@ -28,7 +24,7 @@ def select_season(self, season,  cores = 1):
 
 def select_months(self, months,  cores = 1):
     """
-    Select months from tracker
+    Select months from a dataset
 
     Parameters
     -------------
@@ -37,10 +33,6 @@ def select_months(self, months,  cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the months selected
     """
 
     if type(months) is not list:
@@ -61,7 +53,7 @@ def select_months(self, months,  cores = 1):
 
 def select_years(self, years,  cores = 1):
     """
-    Select years from tracker
+    Select years from a dataset
 
     Parameters
     -------------
@@ -70,10 +62,6 @@ def select_years(self, years,  cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the years selected
     """
 
     if type(years) is not list:
@@ -111,7 +99,7 @@ def select_years(self, years,  cores = 1):
 
 def select_variables(self, vars = None,  cores = 1):
     """
-    Select variables from tracker
+    Select variables from a dataset
 
     Parameters
     -------------
@@ -120,10 +108,6 @@ def select_variables(self, vars = None,  cores = 1):
     cores: int
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced tracker with the variables selected
     """
 
 
