@@ -1,4 +1,5 @@
 import os
+import copy
 from ._temp_file import temp_file
 from ._cleanup import cleanup
 from ._runthis import run_this
@@ -53,7 +54,7 @@ def ensemble_nco(self, method, vars = None, ignore_time = False):
     if self.merged:
         raise ValueError("There is no point running this on a merged dataset. Check chains")
 
-    ff_ensemble = self.current
+    ff_ensemble = copy.deepcopy(self.current)
 
     # Throw an error if there is only a single file in the tracker
     if type(ff_ensemble) is not list:
@@ -98,7 +99,8 @@ def ensemble_nco(self, method, vars = None, ignore_time = False):
 
     # remove the original files from the safe list
     for ff in ff_ensemble:
-        nc_safe.remove(ff)
+        if ff in nc_safe:
+            nc_safe.remove(ff)
 
     # clean up the directory
     cleanup(keep = self.current)
