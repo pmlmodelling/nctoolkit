@@ -79,6 +79,7 @@ def set_longname(self, var_dict):
 
         if os.path.exists(target) == False:
             raise ValueError(nco_command + " was not successful. Check output")
+        nc_safe.remove(self.current)
         self.current = target
 
     # clean up the directory
