@@ -230,7 +230,7 @@ def disk_clean(self, method = "year"):
                 new_ff =  ff.replace("/tmp/", "/var/tmp/")
                 nc_created.append(new_ff)
                 nc_safe.append(new_ff)
-                new_safe.remove(ff)
+                nc_safe.remove(ff)
                 shutil.copyfile(ff, new_ff) 
                 self.current = [new_ff if file == ff else file for file in ff_list]
 
