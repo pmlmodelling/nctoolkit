@@ -8,7 +8,7 @@ def sort_times(self, cores = 1):
 
     """
 
-    cdo_command = ("cdo -timsort," + lat_box)
+    cdo_command = "cdo -sorttimestamp"
     run_this(cdo_command, self, output = "ensemble", cores = cores)
 
     # clean up the directory
