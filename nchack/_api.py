@@ -106,6 +106,8 @@ def open_data(x = None):
     if type(x) is str:
         if os.path.exists(x) == False:
             raise ValueError("Data set " + x + " does not exist!")
+        else:
+            nc_safe.append(x)
 
 
     # it's possible there are duplicates in the data
@@ -121,6 +123,8 @@ def open_data(x = None):
         for ff in x:
             if os.path.exists(ff) == False:
                 raise ValueError("Data set " + ff + " does not exist!")
+            else:
+                nc_safe.append(ff)
 
     # if there is only one file in the list, change it to a single file
     if type(x) is list:
@@ -453,6 +457,8 @@ class DataSet(object):
     from ._inttime import time_interp
 
     from ._cleanup import disk_clean 
+
+    from ._time_sort import sort_times
 
 
 
