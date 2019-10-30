@@ -87,7 +87,7 @@ def cleanup(keep = None):
     valid_files = valid_files + nc_safe
 
     delete_these = [v for v in candidates if v not in valid_files]            
-    delete_these = [v for v in candidates if v not in nc_safe]            
+
     if keep is not None:
         if type(keep) is str:
             keep = (keep)
