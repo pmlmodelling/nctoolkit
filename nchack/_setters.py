@@ -8,6 +8,7 @@ from ._filetracker import nc_created
 from ._filetracker import nc_safe
 from ._cleanup import cleanup
 from ._runthis import run_this
+from ._runthis import run_nco
 
 
 def set_date(self, year, month, day, base_year = 1900):
@@ -76,10 +77,8 @@ def set_longname(self, var_dict):
         new_long = var_dict[i]
         nco_command = "ncatted -a long_name," + var + ",o,c,'" + new_long + "' " + self.current + " " + target
         self.history.append(nco_command)
-        os.system(nco_command)
+        target = run_nco(nco_command, target)
 
-        if os.path.exists(target) == False:
-            raise ValueError(nco_command + " was not successful. Check output")
         nc_safe.remove(self.current)
         self.current = target
         nc_safe.append(self.current)

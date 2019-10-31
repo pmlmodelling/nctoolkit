@@ -26,7 +26,7 @@ def split_list(seq, num):
 
 def run_nco(command, target, out_file = None):
     command = command.strip()
-    if (command.startswith("ncea ") == False) and (command.startswith("ncra ") == False):
+    if (command.startswith("ncea ") and command.startswith("ncra ") or command.startswith("ncatted")) == False:
         raise ValueError("This is not a valid NCO command")
 
     out = subprocess.Popen(command,shell = True, stdin = subprocess.PIPE,stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
