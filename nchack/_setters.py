@@ -82,6 +82,7 @@ def set_longname(self, var_dict):
             raise ValueError(nco_command + " was not successful. Check output")
         nc_safe.remove(self.current)
         self.current = target
+        nc_safe.append(self.current)
 
     # clean up the directory
     cleanup(keep = self.current)
