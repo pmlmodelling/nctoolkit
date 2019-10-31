@@ -3,6 +3,7 @@
 import copy
 import os
 import pandas as pd
+from datetime import datetime
 
 from ._cleanup import cleanup
 from ._runthis import run_this
@@ -30,6 +31,8 @@ def merge(self, zip = False):
     if self.run == False:
         self.release()
 
+#    self.sort_times()
+
     self.merged = True
     
     # Now, we need to check if there are duplicate variables. If there are, we need to fix that
@@ -43,58 +46,16 @@ def merge(self, zip = False):
 
     all_times = []
     for ff in self.current:
-        ntime = os.popen( "cdo showtimestamp " + ff).read()
-        all_times.append(ntime)
-    if len(set(all_times)) > 1:
-        print("Warning: files to merge do not have the same times!")
+        cdo_result = os.popen( "cdo showtimestamp " + ff).read()
+        cdo_result = cdo_result.replace("\n", "")
+        cdo_result = cdo_result.split()
+        cdo_result = pd.Series( (v for v in cdo_result) )
+        all_times.append(cdo_result)
+    all_times = [x for x in all_times if len(x) > 1]
+    
+    if len(set([len(x) for x in all_times])) != 1 and len(all_times) > 1: 
+        print("You are trying to merge data sets with incompatible time steps")
 
-
-#    all_codes = []
-#    for ff in self.current:
-#        cdo_result = os.popen( "cdo showcode " + ff).read().replace("\n", "").strip()
-#        all_codes.append(cdo_result)
-#
-#    if len(set(all_codes)) > len(all_codes):
-#
-#        cdo_all = []
-#        for ff in (self.current):
-#            cdo_result = os.popen( "cdo codetab " + ff).read().replace("\n", "").strip().split(" ")
-#            cdo_result = [ff for ff in cdo_result if len(ff) > 0]
-#            cdo_all.append(pd.DataFrame({"code":[cdo_result[0]],"parameter": [cdo_result[1]], "path":[ff]}))
-#        orig_paths = pd.concat(cdo_all)
-#        cdo_all = pd.concat(cdo_all).drop(columns = "path").drop_duplicates()
-#
-#        cdo_all["new"] = [str(ff) for ff in list(range(-len(cdo_all), 0))]
-#
-
-        # check length of ensemble
-
-  #      cdo_command = ""
-
-  #      if len(self.current) > 128/2:
-  #          pass
-  #      else:
-  #          for ff in self.current:
-  #              ff_data = (orig_paths.merge(cdo_all)
-  #              .query("path == @ff")
-  #              .query("code != new")
-  #              .reset_index()
-  #              )
-  #              if len(ff_data) > 0:
-  #                  sub_command = "-chcode"
-  #                  for i in range(0, len(ff_data)):
-  #                      sub_command+= "," + ff_data["code"][i] + "," +  ff_data["new"][i]
-  #                  cdo_command+= " " + sub_command + " " + ff + " "
-  #              
-  #              if len(ff_data) == 0:
-  #                  cdo_command += " " + ff + " "
-        
-#        cdo_command = "cdo -L -merge "
-  #      self.history.append(cdo_command)
-
-#        run_this(cdo_command, self,  output = "one") 
-
-#        return None
         
     cdo_command = ("cdo -merge ")
 
