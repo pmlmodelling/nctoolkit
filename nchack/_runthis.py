@@ -119,10 +119,7 @@ def run_cdo(command, target, out_file = None):
 
 def run_this(os_command, self, silent = False, output = "one", cores = 1, n_operations = 1, zip = False, out_file = None):
 
-    if self.current == self.start:
-        start_files = []
-    else:
-        start_files = copy.deepcopy(self.current)
+    start_files = copy.deepcopy(self.current)
 
     if type(self.current) is str:
         output = "ensemble"
