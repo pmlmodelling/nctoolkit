@@ -4,6 +4,7 @@ import shutil
 from ._cleanup import cleanup
 from ._runcommand import run_command
 from ._runthis import run_this
+from ._filetracker import nc_safe
 
 def to_netcdf(self, out, zip = True, overwrite = False):
     """
@@ -49,6 +50,8 @@ def to_netcdf(self, out, zip = True, overwrite = False):
         run_this(cdo_command, self, out_file = out)
     if os.path.exists(out) == False: 
         raise ValueError("File zipping was not successful")
+
+    nc_safe.remove(ff)
 
     # run the cleanup
     cleanup()
