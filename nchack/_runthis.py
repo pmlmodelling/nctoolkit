@@ -53,10 +53,16 @@ def run_nco(command, target, out_file = None):
         if "Warning:" in str(result):
             print("NCO warning:" + str(result))
             
-    if os.path.exists(target) == False:
-        raise ValueError(command + " was not successful. Check output")
+    if target != "":
+        if os.path.exists(target) == False:
+            raise ValueError(command + " was not successful. Check output")
+    else:
+        actual_target = command.split(" ")[-1].strip()
+        if os.path.exists(actual_target) == False:
+            raise ValueError(command + " was not successful. Check output")
 
-    session_info["latest_size"] = os.path.getsize(target)
+    if target != "":
+        session_info["latest_size"] = os.path.getsize(target)
 
     return target
 
