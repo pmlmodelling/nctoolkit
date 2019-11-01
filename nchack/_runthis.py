@@ -5,6 +5,7 @@ import math
 import subprocess
 
 from ._temp_file import temp_file
+from ._cleanup import cleanup
 from ._filetracker import nc_created
 from ._filetracker import nc_safe
 from .flatten import str_flatten
@@ -26,7 +27,7 @@ def split_list(seq, num):
 
 def run_nco(command, target, out_file = None):
     command = command.strip()
-    if (command.startswith("ncea ") and command.startswith("ncra ") or command.startswith("ncatted")) == False:
+    if (command.startswith("ncea ") or command.startswith("ncra ") or command.startswith("ncatted")) == False:
         raise ValueError("This is not a valid NCO command")
 
     out = subprocess.Popen(command,shell = True, stdin = subprocess.PIPE,stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
@@ -197,6 +198,10 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
                         nc_safe.remove(ff)
 
             self.disk_clean()
+
+            if self.run:
+                cleanup()
+
             return None
 
 
@@ -243,6 +248,8 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
             if self.run == True:
                 self.disk_clean()
 
+            if self.run:
+                cleanup()
 
 
 
