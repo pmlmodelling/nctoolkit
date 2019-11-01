@@ -49,44 +49,6 @@ def set_date(self, year, month, day, base_year = 1900):
     cleanup(keep = self.current)
 
 
-def set_longname(self, var_dict):
-    """
-    Set long name of variables. 
-
-    Parameters
-    -------------
-    var_dict : dict
-        Dictionary with key, value pairs representing the variable names and the new long names
-
-    """
-
-    if self.run == False:
-        ValueError("NCO methods do not work in hold mode")
-
-    if type(self.current) is not str:
-        ValueError("Method does not yet work with ensembles")
-
-    if type(var_dict) is not dict:
-        ValueError("A dictionary has not been supplied!")
-    
-    # change the units in turn. This doesn't seem to be something you can chain?
-    for i in var_dict:
-        target = temp_file("nc") 
-        nc_created.append(target)
-        var = i
-        new_long = var_dict[i]
-        nco_command = "ncatted -a long_name," + var + ",o,c,'" + new_long + "' " + self.current + " " + target
-        self.history.append(nco_command)
-        target = run_nco(nco_command, target)
-
-        nc_safe.remove(self.current)
-        self.current = target
-        nc_safe.append(self.current)
-
-    # clean up the directory
-    cleanup(keep = self.current)
-
-
 def set_missing(self, value,  cores = 1):
     """
     Set the missing value for a single number or a range
@@ -190,7 +152,6 @@ def set_attributes(self, att_dict):
     
     # change the units in turn. This doesn't seem to be something you can chain?
 
-    att_dict = {"author":"new", "authors":"test"}
     nco_command = "ncatted -O -h "
     for i in att_dict:
         nco_command += "-a authors,global,o,c,'" + att_dict[i]+ "' "
@@ -208,12 +169,65 @@ def set_attributes(self, att_dict):
 
     target = run_nco(nco_command, target)
 
-    nc_safe.remove(self.current)
-    self.current = target
-    nc_safe.append(self.current)
+    if target != "":
+        nc_safe.remove(self.current)
+        self.current = target
+        nc_safe.append(self.current)
 
     # clean up the directory
     cleanup(keep = self.current)
+
+
+
+
+def set_longname(self, var_dict):
+    """
+    Set Global attributes 
+
+    Parameters
+    -------------
+    var_dict : dict
+        Dictionary with key, value pairs representing the attribute names and their long names
+
+    """
+
+    if self.run == False:
+        ValueError("NCO methods do not work in hold mode")
+
+    if type(self.current) is not str:
+        ValueError("Method does not yet work with ensembles")
+
+    if type(var_dict) is not dict:
+        ValueError("A dictionary has not been supplied!")
+    
+    # change the units in turn. This doesn't seem to be something you can chain?
+
+    nco_command = "ncatted "
+    for i in var_dict:
+        nco_command += "-a long_name," + i + ",o,c,'" + var_dict[i]+ "' "
+
+    target = ""
+    if type(self.start) is list:
+        target = "" 
+    else:
+        if self.start == self.current:
+            target = temp_file("nc") 
+
+    nc_created.append(target)
+    nco_command+= self.current + " " + target
+    print(nco_command)
+
+    target = run_nco(nco_command, target)
+
+    if target != "":
+        nc_safe.remove(self.current)
+        self.current = target
+        nc_safe.append(self.current)
+
+    # clean up the directory
+    cleanup(keep = self.current)
+
+
 
 
 
