@@ -197,7 +197,7 @@ def set_attributes(self, att_dict):
 
     target = ""
     if type(self.start) is list:
-        target = temp_file("nc") 
+        target = "" 
     else:
         if self.start == self.current:
             target = temp_file("nc") 
