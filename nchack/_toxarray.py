@@ -1,5 +1,4 @@
 import xarray as xr
-from ._cleanup import cleanup
 
 def to_xarray(self, decode_times = True):
     """
@@ -17,5 +16,4 @@ def to_xarray(self, decode_times = True):
     else:   
         data = xr.open_mfdataset(self.current, decode_times = decode_times)
 
-    cleanup(keep = self.current)
     return data

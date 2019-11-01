@@ -1,5 +1,4 @@
 
-from ._cleanup import cleanup
 from ._runthis import run_this
 import sys
 
@@ -42,8 +41,6 @@ def expression(self, operations = None, method = "expr", cores = 1):
     cdo_command = "cdo -" + method + "," + expr
     run_this(cdo_command, self, output = "ensemble", cores = cores)
     
-    cleanup(keep = self.current)    
-
 
 def transmute(self, operations = None, cores = 1):
     """

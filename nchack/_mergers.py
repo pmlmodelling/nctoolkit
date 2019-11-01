@@ -5,7 +5,6 @@ import os
 import pandas as pd
 from datetime import datetime
 
-from ._cleanup import cleanup
 from ._runthis import run_this
 
 
@@ -61,7 +60,7 @@ def merge(self, zip = False):
 
     run_this(cdo_command, self, output = "one", zip = zip) 
 
-    cleanup(keep = self.current)
+
 
 
 
@@ -94,6 +93,4 @@ def merge_time(self, zip = True):
 
     run_this(cdo_command, self,  output = "one", zip = zip) 
 
-    # clean up the directory
-    cleanup(keep = self.current)
 

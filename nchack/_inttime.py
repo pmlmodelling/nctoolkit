@@ -1,7 +1,6 @@
 import os
 from ._runthis import run_this
 from .flatten import str_flatten
-from ._cleanup import cleanup
 
 def time_interp(self, start = None, end = None, resolution = "monthly",   cores = 1):
 
@@ -58,5 +57,3 @@ def time_interp(self, start = None, end = None, resolution = "monthly",   cores 
 
     run_this(cdo_command, self,  output = "ensemble", cores = cores)
 
-    # clean up the directory
-    cleanup(keep = self.current)

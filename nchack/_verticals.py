@@ -1,6 +1,5 @@
 import os
 
-from ._cleanup import cleanup 
 from ._runthis import run_this
 from .flatten import str_flatten
 
@@ -30,7 +29,6 @@ def bottom(self,  cores = 1):
 
     run_this(cdo_command, self,  output = "ensemble", cores = cores)
 
-    cleanup(keep = self.current)
 
 def surface(self,  cores = 1):
     """
@@ -45,7 +43,6 @@ def surface(self,  cores = 1):
 
     cdo_command = "cdo -sellevidx,1 "
     run_this(cdo_command, self,  output = "ensemble", cores = cores)
-    cleanup(keep = self.current)
 
 
 def vertical_interp(self, vert_depths = None,  cores = 1):
@@ -97,7 +94,6 @@ def vertical_interp(self, vert_depths = None,  cores = 1):
      # throw error if cdo fails at this point
     
     
-    cleanup(keep = self.current)
 
 
 def vertstat(self, stat = "mean",  cores = 1):
@@ -107,7 +103,6 @@ def vertstat(self, stat = "mean",  cores = 1):
     run_this(cdo_command, self,  output = "ensemble", cores = cores)
 
     # clean up the directory
-    cleanup(keep = self.current)
 
 def vertical_mean(self,  cores = 1):
     """

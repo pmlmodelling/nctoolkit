@@ -1,7 +1,6 @@
 import os
 
 from .flatten import str_flatten
-from ._cleanup import cleanup
 from ._runthis import run_this
 
 def select_season(self, season,  cores = 1):
@@ -20,7 +19,6 @@ def select_season(self, season,  cores = 1):
     cdo_command = "cdo -select,season=" + season
     run_this(cdo_command, self,  output = "ensemble", cores = cores)
     
-    cleanup(keep = self.current)
 
 def select_months(self, months,  cores = 1):
     """
@@ -94,7 +92,6 @@ def select_years(self, years,  cores = 1):
     cdo_command = "cdo -selyear," + years
     run_this(cdo_command, self,  output = "ensemble", cores = cores)
     
-    cleanup(keep = self.current)
     
 
 def select_variables(self, vars = None,  cores = 1):
@@ -122,7 +119,6 @@ def select_variables(self, vars = None,  cores = 1):
 
     run_this(cdo_command, self,  output = "ensemble", cores = cores)
     
-    cleanup(keep = self.current)
     
 def select_timestep(self, times,  cores = 1):
     """

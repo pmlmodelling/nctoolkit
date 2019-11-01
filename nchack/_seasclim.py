@@ -1,5 +1,4 @@
 
-from ._cleanup import cleanup
 from ._runthis import run_this
 
 def seasstat(self, stat = "mean",  cores = 1):
@@ -7,10 +6,6 @@ def seasstat(self, stat = "mean",  cores = 1):
     cdo_command = "cdo -yseas" + stat 
 
     run_this(cdo_command, self,  output = "ensemble", cores = cores)
-
-    # clean up the directory
-    cleanup(keep = self.current)
-
     
 
 def seasonal_mean_climatology(self,  cores = 1):

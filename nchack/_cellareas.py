@@ -1,4 +1,3 @@
-from ._cleanup import cleanup
 from ._runthis import run_this
 from ._runthis import run_cdo
 from ._temp_file import temp_file
@@ -41,4 +40,3 @@ def cell_areas(self, cores = 1, join = True):
     else:
         run_this(cdo_command, self,  output = "ensemble", cores = cores)
 
-    cleanup(keep = self.current)

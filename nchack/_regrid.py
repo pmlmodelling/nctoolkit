@@ -7,7 +7,6 @@ from ._api import open_data
 
 from ._generate_grid import generate_grid
 from .flatten import str_flatten
-from ._cleanup import cleanup
 from ._filetracker import nc_created
 from ._filetracker import nc_safe
 from ._runthis import run_this
@@ -134,27 +133,3 @@ def regrid(self, grid = None, method = "bil", cores = 1):
     self.current = new_files 
     if len(self.current) == 1:
         self.current = self.current[0]
-
-   # if len(grid_split) > 1:
-   #     self.grid = None
-   #     self.weights = None
-   # else:
-   #     self.weights = weights_nc 
-
-   # keep = []
-   # if self.weights is not None:
-   #     keep.append(self.weights)
-
-   # if self.grid is not None:
-   #     keep.append(self.grid)
-
-    keep = []
-
-    if type(self.current) is str:
-        keep.append(self.current)
-    else:
-        for ff in self.current:
-            keep.append(ff)
-
-    cleanup(keep = keep) 
-    

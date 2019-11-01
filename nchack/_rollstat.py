@@ -1,5 +1,4 @@
 
-from ._cleanup import cleanup
 from ._runthis import run_this
 
 def rollstat(self, window,  stat = "mean", cores = 1):
@@ -13,9 +12,6 @@ def rollstat(self, window,  stat = "mean", cores = 1):
     cdo_command = "cdo -run" + stat + "," + str(window)
 
     run_this(cdo_command, self, output = "ensemble", cores = cores)
-
-    # clean up the directory
-    cleanup(keep = self.current)
 
     
 

@@ -1,4 +1,3 @@
-from ._cleanup import cleanup
 from ._runthis import run_this
 
 def ydaystat(self, stat = "mean", cores = 1):
@@ -7,9 +6,6 @@ def ydaystat(self, stat = "mean", cores = 1):
     cdo_command = "cdo -yday" + stat
 
     run_this(cdo_command, self, output = "ensemble", cores = cores)
-
-    # clean up the directory
-    cleanup(keep = self.current)
 
 
 def daily_mean_climatology(self, cores = 1):

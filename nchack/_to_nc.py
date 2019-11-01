@@ -1,7 +1,6 @@
 import os
 import shutil
 
-from ._cleanup import cleanup
 from ._runcommand import run_command
 from ._runthis import run_this
 from ._filetracker import nc_safe
@@ -53,8 +52,6 @@ def to_netcdf(self, out, zip = True, overwrite = False):
 
     nc_safe.remove(ff)
 
-    # run the cleanup
-    cleanup()
 
 
 

@@ -1,4 +1,3 @@
-from ._cleanup import cleanup
 from ._runthis import run_this
 from ._filetracker import nc_created
 from ._temp_file import temp_file
@@ -8,8 +7,6 @@ def time_stat(self, stat = "mean", cores = 1):
     """Method to calculate a stat over all time steps"""
     cdo_command = "cdo -tim" + stat
     run_this(cdo_command, self,  output = "ensemble", cores = cores)
-    # clean up the directory
-    cleanup(keep = self.current)
     
 def sum(self,  cores = 1):
     """
@@ -97,5 +94,3 @@ def cum_sum(self,  cores = 1):
 
     cdo_command = "cdo -timcumsum" 
     run_this(cdo_command, self,  output = "ensemble", cores = cores)
-    # clean up the directory
-    cleanup(keep = self.current)

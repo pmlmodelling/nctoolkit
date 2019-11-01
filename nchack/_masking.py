@@ -1,6 +1,5 @@
 from ._runthis import run_this
 from .flatten import str_flatten
-from ._cleanup import cleanup
 
 def mask_lonlat(self, lon = [-180, 180], lat = [-90, 90], cores = 1):
     """
@@ -42,5 +41,3 @@ def mask_lonlat(self, lon = [-180, 180], lat = [-90, 90], cores = 1):
     else:
         raise ValueError("The lonlat box supplied is not valid!")
 
-    # clean up the directory
-    cleanup(keep = self.current)

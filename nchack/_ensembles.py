@@ -1,7 +1,6 @@
 import os
 import copy
 from ._temp_file import temp_file
-from ._cleanup import cleanup
 from ._runthis import run_this
 from ._runthis import run_nco
 from .flatten import str_flatten
@@ -44,7 +43,6 @@ def ensemble_percentile(self, p = 50):
     run_this(cdo_command, self, output = "one")
 
     # clean up the directory
-    cleanup(keep = self.current)
     self.merged = True
 
 
@@ -101,9 +99,6 @@ def ensemble_nco(self, method, vars = None, ignore_time = False):
     for ff in ff_ensemble:
         if ff in nc_safe:
             nc_safe.remove(ff)
-
-    # clean up the directory
-    cleanup(keep = self.current)
 
     
 
@@ -173,8 +168,6 @@ def ensemble_range(self):
 
     run_this(cdo_command, self)
 
-    # clean up the directory
-    cleanup(keep = self.current)
     self.merged = True
 
 def ensemble_mean_cdo(self,  vars = None):
@@ -218,9 +211,6 @@ def ensemble_mean_cdo(self,  vars = None):
     else:
         self.release(run_merge = False)
 
-
-    # clean up the directory
-    cleanup(keep = self.current)
     self.merged = True
 
 

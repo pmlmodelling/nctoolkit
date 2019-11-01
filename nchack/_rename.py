@@ -1,5 +1,4 @@
 
-from ._cleanup import cleanup
 from ._runthis import run_this
 
 def rename(self, newnames, cores = 1):
@@ -30,5 +29,4 @@ def rename(self, newnames, cores = 1):
 
     run_this(cdo_command, self, output = "ensemble", cores = cores)
 
-    cleanup(keep = self.current)
 

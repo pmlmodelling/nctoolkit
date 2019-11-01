@@ -14,7 +14,6 @@ from ._time_stat import mean
 from ._rename import rename
 from ._cdo_command import cdo_command 
 from ._expr import transmute
-from ._cleanup import cleanup
 from ._runthis import run_cdo
 from ._api import open_data
 
@@ -56,8 +55,6 @@ def annual_anomaly(self, var = None, baseline = None):
     if type(baseline) is not list:
         raise ValueError("baseline years supplied is not a list")
 
-    #nc_safe.append(self.current)
-
     # Calculate the yearly mean 
     new_tracker = open_data(self.current) 
     clim_tracker = open_data(self.current)
@@ -65,22 +62,17 @@ def annual_anomaly(self, var = None, baseline = None):
     new_tracker.select_variables(var)
     new_tracker.rename({var:"observed"})
     new_tracker.annual_mean()
-    #nc_safe.append(new_tracker.current)
 
     # calculate the climatology
-
 
     clim_tracker.select_variables(var)
     clim_tracker.select_years(baseline)
     clim_tracker.mean()
     clim_tracker.rename({var:"base"})
 
-    #nc_safe.append(copy.deepcopy(clim_tracker.current))
-    
     target = temp_file("nc") 
 
     nc_created.append(target)
-    #nc_safe.append(target)
     os_command = "cdo -L -expr,'anomaly=observed-base' -merge " + new_tracker.current + " " + clim_tracker.current + " " + target
 
     new_tracker.history.append(os_command)
@@ -97,18 +89,10 @@ def annual_anomaly(self, var = None, baseline = None):
 
     self.current = copy.deepcopy(new_tracker.current)
 
-   # if len(nc_safe) > 0:
-   #     for i in range(1, len(nc_safe)+1):
-   #         nc_safe.pop()
     nc_safe.append(self.current)
 
-    cleanup(keep = self.current)
 
 
     if os.path.exists(target) == False:
         raise ValueError("Calculating the anomaly failed")
-
-
-
-
 

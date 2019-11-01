@@ -2,7 +2,6 @@
 import os
 import copy
 
-from ._cleanup import cleanup
 from ._runthis import run_this
 from ._session import session_info
 

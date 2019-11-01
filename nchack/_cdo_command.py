@@ -1,5 +1,4 @@
 
-from ._cleanup import cleanup 
 from .flatten import str_flatten 
 from ._runthis import run_this
 import os
@@ -57,4 +56,3 @@ def cdo_command(self, command, cores = 1):
 
     run_this(cdo_command, self, output = "ensemble", cores = cores)
 
-    cleanup(keep = self.current)

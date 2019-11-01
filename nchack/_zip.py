@@ -20,4 +20,3 @@ def zip(self,  cores = 1):
         cdo_command = "cdo -z zip "
     run_this(cdo_command, self, output = "ensemble", cores = cores)
     
-    cleanup(keep = self.current)

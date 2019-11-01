@@ -1,4 +1,3 @@
-from ._cleanup import cleanup
 from ._runthis import run_this
 
 def yearlystat(self, stat = "mean",  cores = 1):
@@ -8,8 +7,6 @@ def yearlystat(self, stat = "mean",  cores = 1):
 
     run_this(cdo_command, self,  output = "ensemble", cores = cores)
 
-    # clean up the directory
-    cleanup(keep = self.current)
 
     
 

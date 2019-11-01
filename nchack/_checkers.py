@@ -1,5 +1,4 @@
 import os
-from ._cleanup import cleanup
 from ._runthis import run_this
 from .flatten import str_flatten
 from ._filetracker import nc_created

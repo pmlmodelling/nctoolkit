@@ -45,8 +45,6 @@ def set_date(self, year, month, day, base_year = 1900):
 
     run_this(cdo_command, self,  output = "ensemble")
 
-    # clean up the directory
-    cleanup(keep = self.current)
 
 
 def set_missing(self, value,  cores = 1):
@@ -99,8 +97,6 @@ def set_unit(self, var_dict):
         cdo_command = "cdo " + cdo_command 
         run_this(cdo_command, self,  output = "ensemble")
 
-    # clean up the directory
-    cleanup(keep = self.current)
 
 
 def set_gridtype(self, grid):
@@ -125,8 +121,6 @@ def set_gridtype(self, grid):
 
     run_this(cdo_command, self,  output = "ensemble")
 
-    # clean up the directory
-    cleanup(keep = self.current)
 
 
 
@@ -175,7 +169,8 @@ def set_attributes(self, att_dict):
         nc_safe.append(self.current)
 
     # clean up the directory
-    cleanup(keep = self.current)
+    if self.run:
+        cleanup(keep = self.current)
 
 
 
@@ -225,7 +220,8 @@ def set_longname(self, var_dict):
         nc_safe.append(self.current)
 
     # clean up the directory
-    cleanup(keep = self.current)
+    if self.run:
+        cleanup(keep = self.current)
 
 
 
