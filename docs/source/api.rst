@@ -35,6 +35,7 @@ Accessing attributes
    DataSet.size
    DataSet.run
 
+
 Variable modification 
 ---------------------
 
@@ -44,11 +45,17 @@ Variable modification
    DataSet.rename
    DataSet.mutate
    DataSet.transmute
+   DataSet.set_missing
+
+Netcdf file attribute modification 
+---------------------
+
+.. autosummary::
+   :toctree: generated/
+
    DataSet.set_longname
    DataSet.set_attributes
    DataSet.set_unit
-   DataSet.set_missing
-
 
 Vertical/level methods
 ---------------------
@@ -329,6 +336,7 @@ Miscellaneous methods
 
    DataSet.cell_areas
    DataSet.cdo_command
+
 
 
 
