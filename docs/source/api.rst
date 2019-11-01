@@ -45,6 +45,7 @@ Variable modification
    DataSet.mutate
    DataSet.transmute
    DataSet.set_longname
+   DataSet.set_attributes
    DataSet.set_unit
    DataSet.set_missing
 
