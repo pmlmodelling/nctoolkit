@@ -168,3 +168,55 @@ def set_gridtype(self, grid):
 
 
 
+def set_attributes(self, att_dict):
+    """
+    Set Global attributes 
+
+    Parameters
+    -------------
+    att_dict : dict
+        Dictionary with key, value pairs representing the attribute names and their long names
+
+    """
+
+    if self.run == False:
+        ValueError("NCO methods do not work in hold mode")
+
+    if type(self.current) is not str:
+        ValueError("Method does not yet work with ensembles")
+
+    if type(att_dict) is not dict:
+        ValueError("A dictionary has not been supplied!")
+    
+    # change the units in turn. This doesn't seem to be something you can chain?
+
+    att_dict = {"author":"new", "authors":"test"}
+    nco_command = "ncatted -O -h "
+    for i in att_dict:
+        nco_command += "-a authors,global,o,c,'" + att_dict[i]+ "' "
+
+    target = ""
+    if type(self.start) is list:
+        target = temp_file("nc") 
+    else:
+        if self.start == self.current:
+            target = temp_file("nc") 
+
+    nc_created.append(target)
+    nco_command+= self.current + " " + target
+    print(nco_command)
+
+    target = run_nco(nco_command, target)
+
+    nc_safe.remove(self.current)
+    self.current = target
+    nc_safe.append(self.current)
+
+    # clean up the directory
+    cleanup(keep = self.current)
+
+
+
+
+
+

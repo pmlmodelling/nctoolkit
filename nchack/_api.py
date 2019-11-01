@@ -388,6 +388,8 @@ class DataSet(object):
     from ._setters import set_unit 
     from ._setters import set_longname
     from ._setters import set_gridtype
+    from ._setters import set_attributes
+
 
     from ._time_stat import mean 
     from ._time_stat import max
