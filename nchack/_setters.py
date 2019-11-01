@@ -159,7 +159,6 @@ def set_attributes(self, att_dict):
 
     nc_created.append(target)
     nco_command+= self.current + " " + target
-    print(nco_command)
 
     target = run_nco(nco_command, target)
 
@@ -210,7 +209,6 @@ def set_longname(self, var_dict):
 
     nc_created.append(target)
     nco_command+= self.current + " " + target
-    print(nco_command)
 
     target = run_nco(nco_command, target)
 
