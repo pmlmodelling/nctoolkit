@@ -6,7 +6,7 @@ The goal of nchack is to provide a comprehensive tool in Python for manipulating
 
 nchack is designed with both individual files and ensembles in mind. 
 
-Under the hood nchack relies on the command line packages Climate Data Operates (CDO) and the NCO toolkit, but primarily on CDO. No prioer knowledge of CDO or NCO are required to use nchack. Behind the scenes nchack will generate system calls to either CDO or NCO, which are traced and can be viewed by the user. However, in almost all cases these can be ignored by most users.
+Under the hood nchack relies on the command line packages Climate Data Operates (CDO) and the NCO toolkit, but primarily on CDO. No prior knowledge of CDO or NCO are required to use nchack. Behind the scenes, nchack will generate system calls to either CDO or NCO, which are traced and can be viewed by the user. However, in almost all cases these can be ignored by most users.
 
 
 Documentation
