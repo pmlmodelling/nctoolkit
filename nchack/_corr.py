@@ -3,7 +3,6 @@ import copy
 import multiprocessing
 
 from ._temp_file import temp_file
-from ._filetracker import nc_created
 from .flatten import str_flatten
 from ._select import select_variables
 from ._setters import set_longname
@@ -36,8 +35,6 @@ def cor(self, var1 = None, var2 = None, method = "fld"):
     
     out1 = split_base + var1 + ".nc"
     out2 = split_base + var2 + ".nc"
-    nc_created.append(out1)
-    nc_created.append(out2)
 
     cdo_command = "cdo splitname " + self.current + " " + split_base
 
@@ -49,7 +46,6 @@ def cor(self, var1 = None, var2 = None, method = "fld"):
         raise ValueError("Splitting the file by name did not work!")
 
     target = temp_file(".nc")
-    nc_created.append(target)
 
     cdo_command = "cdo " + method + "cor " + out1 + " " + out2 + " " + target
 
@@ -60,7 +56,6 @@ def cor(self, var1 = None, var2 = None, method = "fld"):
         raise ValueError("Calculating the correlation coefficient failed!")
 
     target1 = temp_file(".nc")
-    nc_created.append(target1)
 
     cdo_command = "cdo setname," + "cor " + target + " " + target1
     new_self.history.append(cdo_command)
@@ -70,7 +65,6 @@ def cor(self, var1 = None, var2 = None, method = "fld"):
         raise ValueError("Changing the name to cor failed!")
 
     target2 = temp_file(".nc")
-    nc_created.append(target2)
 
     cdo_command = "cdo setunit," + "'-' " + target1 + " " + target2
     new_self.history.append(cdo_command)

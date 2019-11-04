@@ -3,7 +3,6 @@ import xarray as xr
 import sys
 from .flatten import str_flatten
 from ._generate_grid import generate_grid
-from ._filetracker import nc_created
 from ._filetracker import nc_safe
 from ._cleanup import cleanup
 from ._cleanup import clean_all

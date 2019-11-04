@@ -1,5 +1,4 @@
 from ._runthis import run_this
-from ._filetracker import nc_created
 from ._temp_file import temp_file
 import os
 

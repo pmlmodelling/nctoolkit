@@ -5,7 +5,6 @@ import multiprocessing
 import copy
 
 from ._temp_file import temp_file
-from ._filetracker import nc_created
 from ._filetracker import nc_safe
 from .flatten import str_flatten
 from ._select import select_variables
@@ -72,7 +71,6 @@ def annual_anomaly(self, var = None, baseline = None):
 
     target = temp_file("nc") 
 
-    nc_created.append(target)
     os_command = "cdo -L -expr,'anomaly=observed-base' -merge " + new_tracker.current + " " + clim_tracker.current + " " + target
 
     new_tracker.history.append(os_command)

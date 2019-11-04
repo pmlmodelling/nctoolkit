@@ -4,7 +4,6 @@
 import os
 
 from ._temp_file import temp_file
-from ._filetracker import nc_created
 from ._filetracker import nc_safe
 from ._cleanup import cleanup
 from ._runthis import run_this
@@ -163,7 +162,6 @@ def set_attributes(self, att_dict):
 
 
     if target != "":
-        nc_created.append(target)
         nc_safe.remove(self.current)
         self.current = target
         nc_safe.append(self.current)
@@ -214,7 +212,6 @@ def set_longname(self, var_dict):
 
 
     if target != "":
-        nc_created.append(target)
         nc_safe.remove(self.current)
         self.current = target
         nc_safe.append(self.current)

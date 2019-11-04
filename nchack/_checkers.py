@@ -1,7 +1,6 @@
 import os
 from ._runthis import run_this
 from .flatten import str_flatten
-from ._filetracker import nc_created
 from ._runcommand import run_command
 import pandas as pd
 import calendar

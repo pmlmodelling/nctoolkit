@@ -4,7 +4,6 @@ from ._temp_file import temp_file
 from ._runthis import run_this
 from ._runthis import run_nco
 from .flatten import str_flatten
-from ._filetracker import nc_created
 from ._filetracker import nc_safe
 
 
@@ -73,8 +72,6 @@ def ensemble_nco(self, method, vars = None, ignore_time = False):
 
     target = temp_file("nc") 
 
-    global nc_created
-    nc_created.append(target)
     
     if ignore_time == False:
         if vars is None:

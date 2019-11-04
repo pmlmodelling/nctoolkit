@@ -6,7 +6,6 @@ import subprocess
 
 from ._temp_file import temp_file
 from ._cleanup import cleanup
-from ._filetracker import nc_created
 from ._filetracker import nc_safe
 from .flatten import str_flatten
 from ._session import session_stamp
@@ -41,7 +40,6 @@ def run_nco(command, target, out_file = None):
             new_target = target.replace("/tmp/", "/var/tmp/") 
             command = command.replace(target, new_target)
             target = new_target
-            nc_created.append(target)
             out = subprocess.Popen(command,shell = True, stdin = subprocess.PIPE,stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
             result1,ignore = out.communicate()
             if "ERROR" in str(result1):
@@ -91,7 +89,6 @@ def run_cdo(command, target, out_file = None):
             command = command.replace(target, new_target)
             target = new_target
         
-            nc_created.append(target)
             out = subprocess.Popen(command,shell = True, stdin = subprocess.PIPE,stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
             out.wait()
             result1,ignore = out.communicate()
@@ -167,7 +164,6 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
                     ff_command = copy.deepcopy(os_command)
     
                 target = temp_file("nc")
-                nc_created.append(target)
 
                 if out_file is not None:
                     target = out_file

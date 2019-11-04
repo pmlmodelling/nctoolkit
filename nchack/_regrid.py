@@ -7,7 +7,6 @@ from ._api import open_data
 
 from ._generate_grid import generate_grid
 from .flatten import str_flatten
-from ._filetracker import nc_created
 from ._filetracker import nc_safe
 from ._runthis import run_this
 
@@ -40,7 +39,6 @@ def regrid(self, grid = None, method = "bil", cores = 1):
     if isinstance(grid, xr.Dataset):
         grid_type = "xr"
         temp_nc = temp_file("nc") 
-        nc_created.append(temp_nc)
         grid.to_netcdf(temp_nc)
         grid = temp_nc
 
@@ -93,7 +91,6 @@ def regrid(self, grid = None, method = "bil", cores = 1):
         if self.grid is None:
             if grid_type == "df":
                 self.grid = generate_grid(grid)
-                nc_created.append(self.grid)
             else:
                 self.grid = grid
     new_files = []
@@ -107,7 +104,6 @@ def regrid(self, grid = None, method = "bil", cores = 1):
 
         weights_nc = temp_file("nc") 
 
-        nc_created.append(weights_nc)
 
         if type(tracker.current) is list:
             cdo_command = "cdo -gen" + method + ","+ self.grid + " " + tracker.current[0] + " " +  weights_nc
