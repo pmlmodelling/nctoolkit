@@ -8,7 +8,7 @@ from datetime import datetime
 from ._runthis import run_this
 
 
-def merge(self, zip = False):
+def merge(self, zip = False, match = ["year", "month", "day"]):
 
     """
     Merge a multi-file ensemble into a single file. Merging will occur based on the time steps in the first file. This will only be effective if either you want to merge files with the same times or multi-time files with single time files.
@@ -17,6 +17,7 @@ def merge(self, zip = False):
     -------------
     zip : boolean
         If True, the resulting netcdf files are zipped. Defaults to False. 
+    match: a list stating what must match in the netcdf files. Defaults to year/month/day. This list must be some combination of year/month/day. An error will be thrown if the elements of time in match do not match across all netcdf files. The only exception is if there is a single date file in the ensemble.
 
     """
 
@@ -30,11 +31,8 @@ def merge(self, zip = False):
     if self.run == False:
         self.release()
 
-#    self.sort_times()
 
-    self.merged = True
-    
-    # Now, we need to check if there are duplicate variables. If there are, we need to fix that
+    # Make sure the times in the files are compatiable, based on the match criteria
 
     all_times = []
     for ff in self.current:
@@ -51,11 +49,27 @@ def merge(self, zip = False):
         cdo_result = pd.Series( (v for v in cdo_result) )
         all_times.append(cdo_result)
     all_times = [x for x in all_times if len(x) > 1]
-    
-    if len(set([len(x) for x in all_times])) != 1 and len(all_times) > 1: 
-        print("You are trying to merge data sets with incompatible time steps")
 
-        
+    if len(set([len(x) for x in all_times])) > 1:
+        raise ValueError("You are trying to merge data sets with an incompatible number of time steps")
+
+
+    all_df = []
+    if len(all_times) > 1:
+        for i in range(0, len(all_times)):
+            month = [datetime.strptime(v[0:10], "%Y-%m-%d").month for v in all_times[i]]
+            year = [datetime.strptime(v[0:10], "%Y-%m-%d").year for v in all_times[i]]
+            day = [datetime.strptime(v[0:10], "%Y-%m-%d").day for v in all_times[i]]
+            i_data = pd.DataFrame({"year":year, "month":month, "day":day})
+            i_data = i_data.loc[:, match] 
+            all_df.append(i_data)
+    
+    for i in range(1, len(all_df)):
+        if all_df[0].equals(all_df[i]) == False:
+            raise ValueError("Dates of data sets do not satisfy matching criteria!")
+
+    self.merged = True
+
     cdo_command = ("cdo -merge ")
 
     run_this(cdo_command, self, output = "one", zip = zip) 
