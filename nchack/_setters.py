@@ -157,12 +157,13 @@ def set_attributes(self, att_dict):
         if self.start == self.current:
             target = temp_file("nc") 
 
-    nc_created.append(target)
     nco_command+= self.current + " " + target
 
     target = run_nco(nco_command, target)
 
+
     if target != "":
+        nc_created.append(target)
         nc_safe.remove(self.current)
         self.current = target
         nc_safe.append(self.current)
@@ -207,12 +208,13 @@ def set_longname(self, var_dict):
         if self.start == self.current:
             target = temp_file("nc") 
 
-    nc_created.append(target)
     nco_command+= self.current + " " + target
 
     target = run_nco(nco_command, target)
 
+
     if target != "":
+        nc_created.append(target)
         nc_safe.remove(self.current)
         self.current = target
         nc_safe.append(self.current)
