@@ -6,7 +6,7 @@ import sys
 import copy
 import shutil
 
-from ._filetracker import nc_safe
+from ._session import nc_safe
 from ._remove import nc_remove
 from ._session import session_stamp
 from ._session import session_info
@@ -72,18 +72,19 @@ def cleanup(keep = None):
 
     delete_these = [v for v in candidates if v not in valid_files]            
 
-    if keep is not None:
-        if type(keep) is str:
-            keep = (keep)
-        delete_these = [v for v in delete_these if v not in keep]            
+    #if keep is not None:
+    #    if type(keep) is str:
+    #        keep = (keep)
+    #    delete_these = [v for v in delete_these if v not in keep]            
 
-    delete_these = set(delete_these)
-    delete_these = list(delete_these)
+    delete_these = list(set(delete_these))
 
     # finally, to be ultra-safe, we will make sure all of the files to be deleted are in the temporary folder
 
     delete_these = [v for v in delete_these if v.startswith("/tmp/") or v.startswith("/var/tmp/") or v.startswith("/usr/tmp/")]
-    
+
+    delete_these = [x for x in delete_these if os.path.exists(x)]
+
     for dd in delete_these:
         if os.path.exists(dd):
             nc_remove(dd)

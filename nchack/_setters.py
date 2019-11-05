@@ -4,7 +4,7 @@
 import os
 
 from ._temp_file import temp_file
-from ._filetracker import nc_safe
+from ._session import nc_safe
 from ._cleanup import cleanup
 from ._runthis import run_this
 from ._runthis import run_nco

@@ -4,7 +4,7 @@ from ._temp_file import temp_file
 from ._runthis import run_this
 from ._runthis import run_nco
 from .flatten import str_flatten
-from ._filetracker import nc_safe
+from ._session import nc_safe
 
 
 # Ensemble methods all assume the structure of the input files are idential

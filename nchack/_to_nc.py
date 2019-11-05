@@ -3,7 +3,7 @@ import shutil
 
 from ._runcommand import run_command
 from ._runthis import run_this
-from ._filetracker import nc_safe
+from ._session import nc_safe
 
 def to_netcdf(self, out, zip = True, overwrite = False):
     """

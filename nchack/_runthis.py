@@ -6,7 +6,7 @@ import subprocess
 
 from ._temp_file import temp_file
 from ._cleanup import cleanup
-from ._filetracker import nc_safe
+from ._session import nc_safe
 from .flatten import str_flatten
 from ._session import session_stamp
 from ._session import session_info

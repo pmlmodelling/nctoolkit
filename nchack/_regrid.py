@@ -7,7 +7,7 @@ from ._api import open_data
 
 from ._generate_grid import generate_grid
 from .flatten import str_flatten
-from ._filetracker import nc_safe
+from ._session import nc_safe
 from ._runthis import run_this
 
 def regrid(self, grid = None, method = "bil", cores = 1):
