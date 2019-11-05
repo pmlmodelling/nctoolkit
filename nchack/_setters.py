@@ -40,7 +40,7 @@ def set_date(self, year, month, day, base_year = 1900):
 
     if type(day) is not int:
         day = float(day)
-    cdo_command = "cdo -setreftime," + str(base_year) + "-01-01 -setdate," + str(year) + "-" + str(month) + "-" + str(day)
+    cdo_command = "cdo -L -setreftime," + str(base_year) + "-01-01 -setdate," + str(year) + "-" + str(month) + "-" + str(day)
 
     run_this(cdo_command, self,  output = "ensemble")
 
