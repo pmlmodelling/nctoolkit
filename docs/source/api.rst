@@ -203,6 +203,7 @@ Statistical methods
    DataSet.mean
    DataSet.min
    DataSet.cum_sum
+   DataSet.percentile
 
    DataSet.cor_space
    DataSet.cor_time
