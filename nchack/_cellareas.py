@@ -14,10 +14,6 @@ def cell_areas(self, cores = 1, join = True):
     join: boolean
         Set to False if you only want the cell areas to be in the output. True joins the areas to the files.
 
-    Returns
-    -------------
-    nchack.DataSet
-        Reduced data set with cell areas 
     """
 
     if join and self.run == False:
