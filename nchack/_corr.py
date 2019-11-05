@@ -6,6 +6,8 @@ from ._temp_file import temp_file
 from .flatten import str_flatten
 from ._select import select_variables
 from ._setters import set_longname
+from ._session import nc_safe
+
 import copy
 
 
@@ -74,6 +76,7 @@ def cor(self, var1 = None, var2 = None, method = "fld"):
         raise ValueError("Changing the unit of cor failed!")
 
     new_self.current = target2
+    nc_safe.append(target2)
 
     new_self.set_longname({"cor":"Correlation between " + var1 +  " & " + var2})
 
