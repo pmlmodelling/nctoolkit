@@ -123,7 +123,7 @@ def set_gridtype(self, grid):
 
 
 
-def set_attributes(self, att_dict):
+def set_attribute(self, att_dict):
     """
     Set Global attributes 
 
