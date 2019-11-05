@@ -1,4 +1,6 @@
 from ._runthis import run_this
+from ._runthis import run_cdo
+from ._session import nc_safe
 from ._temp_file import temp_file
 import os
 
@@ -93,3 +95,38 @@ def cum_sum(self,  cores = 1):
 
     cdo_command = "cdo -timcumsum" 
     run_this(cdo_command, self,  output = "ensemble", cores = cores)
+
+
+
+def percentile(self, p = 50, cores = 1):
+
+    """
+    Calculate the percentile of all values 
+
+    Parameters
+    -------------
+    p: float or int
+        Percentile to calculate 
+
+    """
+    if self.run == False:
+        self.release()
+
+    target = temp_file("nc")
+
+    cdo_command = "cdo -L -timpctl," + str(p) + " " + self.current + " -timmin " + self.current + " -timmax " + self.current + " "  + target
+
+    target = run_cdo(cdo_command, target)
+
+    if self.current in nc_safe:
+        nc_safe.remove(self.current)
+
+    self.current = target
+
+    nc_safe.append(target)
+
+
+
+
+
+

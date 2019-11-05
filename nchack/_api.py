@@ -391,6 +391,7 @@ class DataSet(object):
 
 
     from ._time_stat import mean 
+    from ._time_stat import percentile
     from ._time_stat import max
     from ._time_stat import min
     from ._time_stat import range
