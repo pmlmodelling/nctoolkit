@@ -29,11 +29,6 @@ def annual_anomaly(self, var = None, baseline = None):
     baseline: list
         Baseline years. An annual cimatology for these years is used to calculate the anomalies.
 
-    Returns
-    -------------
-    nchack.DataSet
-        A new data set with the annual anomalies labelled anomaly
-
     """
 
     if self.run == False:
@@ -88,8 +83,6 @@ def annual_anomaly(self, var = None, baseline = None):
     self.current = copy.deepcopy(new_tracker.current)
 
     nc_safe.append(self.current)
-
-
 
     if os.path.exists(target) == False:
         raise ValueError("Calculating the anomaly failed")
