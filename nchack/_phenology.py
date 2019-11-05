@@ -98,6 +98,8 @@ def phenology(self, var = None, cores = 1):
         raise ValueError("Failed to merge files")
     nc_safe.remove(new_self.current)
 
+    nc_safe.append(phen_nc)
+
     new_self.current = phen_nc
 
     # set the long name and unit
