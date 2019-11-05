@@ -31,6 +31,9 @@ def merge(self, zip = False, match = ["year", "month", "day"]):
     if self.run == False:
         self.release()
 
+    if type(match) is list:
+        match = [y.lower() for y in match]
+
 
     # Make sure the times in the files are compatiable, based on the match criteria
 
