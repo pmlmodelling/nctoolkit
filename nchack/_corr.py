@@ -7,17 +7,15 @@ from .flatten import str_flatten
 from ._select import select_variables
 from ._setters import set_longname
 from ._session import nc_safe
+from ._runthis import run_cdo
 
 import copy
 
 
 def cor(self, var1 = None, var2 = None, method = "fld"):
 
-    new_self = copy.deepcopy(self)
-
     if var1 is None or var2 is None:
         raise ValueError("Both variables are not given")
-
 
     # First step is to check if the current file exists
     if type(self.current) is str:
@@ -26,63 +24,18 @@ def cor(self, var1 = None, var2 = None, method = "fld"):
     else:
         raise ValueError("This method only works on single files")
 
-    # We need to split the file by name
-    split_base = temp_file()
-
-    vars = [var1, var2]
-    vars = str_flatten(vars)
-    self.select_variables(vars = vars)
-
-    # we now need to split up the file by variable
-    
-    out1 = split_base + var1 + ".nc"
-    out2 = split_base + var2 + ".nc"
-
-    cdo_command = "cdo splitname " + self.current + " " + split_base
-
-    new_self.history.append(cdo_command)
-
-    os.system(cdo_command)
-
-    if os.path.exists(out1) == False or os.path.exists(out2) == False:
-        raise ValueError("Splitting the file by name did not work!")
-
     target = temp_file(".nc")
 
-    cdo_command = "cdo " + method + "cor " + out1 + " " + out2 + " " + target
+    cdo_command = "cdo -L -" + method + "cor -selname," +var1 + " " + self.current + " -selname," + var2 + " " + self.current + " " + target
+    target = run_cdo(cdo_command, target)
 
-    new_self.history.append(cdo_command)
-    os.system(cdo_command)
+    self.history.append(cdo_command)
+    self.current = target
 
-    if os.path.exists(target) == False:
-        raise ValueError("Calculating the correlation coefficient failed!")
+    self.rename({var1:"cor"})
+    self.set_unit({"cor":"-"})
 
-    target1 = temp_file(".nc")
-
-    cdo_command = "cdo setname," + "cor " + target + " " + target1
-    new_self.history.append(cdo_command)
-    os.system(cdo_command)
-
-    if os.path.exists(target1) == False:
-        raise ValueError("Changing the name to cor failed!")
-
-    target2 = temp_file(".nc")
-
-    cdo_command = "cdo setunit," + "'-' " + target1 + " " + target2
-    new_self.history.append(cdo_command)
-    os.system(cdo_command)
-
-    if os.path.exists(target2) == False:
-        raise ValueError("Changing the unit of cor failed!")
-
-    new_self.current = target2
-    nc_safe.append(target2)
-
-    new_self.set_longname({"cor":"Correlation between " + var1 +  " & " + var2})
-
-
-    return new_self
-
+    self.set_longname({"cor":"Correlation between " + var1 +  " & " + var2})
 
 
 
@@ -97,10 +50,6 @@ def cor_space(self, var1 = None, var2 = None):
     var2: str
         The  second variable
 
-    Returns
-    -------------
-    nchack.DataSet
-        Data set with the correlation coefficients 
     """
 
     return cor(self, var1 = var1, var2 = var2,   method = "fld")
@@ -116,10 +65,6 @@ def cor_time(self, var1 = None, var2 = None):
     var2: str
         The  second variable
 
-    Returns
-    -------------
-    nchack.DataSet
-        Data set with the correlation coefficients 
     """
     return cor(self, var1 = var1, var2 = var2, method = "tim")
 
