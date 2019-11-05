@@ -8,6 +8,17 @@ def fldstat(self, stat = "mean",  cores = 1):
 
     run_this(cdo_command, self,  output = "ensemble", cores = cores)
 
+def spatial_mean(self, cores = 1):
+    """
+    Calculate an area weighted spatial mean of variables. This is performed for each time step.
+
+    Parameters
+    -------------
+    cores: int
+        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+
+    """
+    return fldstat(self, stat = "mean", cores = cores)
 
 def spatial_mean(self, cores = 1):
     """
@@ -57,3 +68,15 @@ def spatial_range(self, cores = 1):
 
     """
     return fldstat(self, stat = "range",  cores = cores)
+
+def spatial_sum(self, cores = 1):
+    """
+    Calculate the spatial sum of variables. This is performed for each time step.
+
+    Parameters
+    -------------
+    cores: int
+        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+
+    """
+    return fldstat(self, stat = "sum", cores = cores)
