@@ -38,9 +38,9 @@ def to_netcdf(self, out, zip = True, overwrite = False):
             os.system("cdo copy " + ff + " " + out)
     else:
         if zip:
-            cdo_command = "cdo -z zip_9 "
+            cdo_command = "cdo -L -z zip_9 "
         else:
-            cdo_command = "cdo "
+            cdo_command = "cdo -L "
 
         self.run = True
 
@@ -50,8 +50,10 @@ def to_netcdf(self, out, zip = True, overwrite = False):
     if os.path.exists(out) == False: 
         raise ValueError("File zipping was not successful")
 
-    nc_safe.remove(ff)
+    if ff in nc_safe:
+        nc_safe.remove(ff)
 
+    self.current = out
 
 
 
