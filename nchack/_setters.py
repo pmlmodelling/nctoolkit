@@ -160,7 +160,6 @@ def set_attribute(self, att_dict):
 
     target = run_nco(nco_command, target)
 
-
     if target != "":
         nc_safe.remove(self.current)
         self.current = target
@@ -169,6 +168,8 @@ def set_attribute(self, att_dict):
     # clean up the directory
     if self.run:
         cleanup(keep = self.current)
+
+    self.history.append(nco_command)
 
 
 
@@ -219,6 +220,8 @@ def set_longname(self, var_dict):
     # clean up the directory
     if self.run:
         cleanup(keep = self.current)
+
+    self.history.append(nco_command)
 
 
 
