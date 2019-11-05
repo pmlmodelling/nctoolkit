@@ -1,5 +1,6 @@
 
 import inspect
+import gc
 import os
 import glob
 import sys
@@ -37,45 +38,9 @@ def cleanup(keep = None):
     candidates = list(set(candidates))
     candidates = [x for x in candidates if os.path.exists(x)]
 
-    # Step 2 is to find the trackers in the locals
-    
-    valid_files = []
-    objects = dir(sys.modules["__main__"])
-    for i in ([v for v in objects if not v.startswith('_')]):
-        i_class = str(eval("type(sys.modules['__main__']." +i + ")"))
-        if "DataSet" in i_class and "List" not in i_class:
-            i_current =eval("sys.modules['__main__']." +i + ".current")
-            i_start = eval("sys.modules['__main__']." +i + ".start")
-            # add the current files to valid_files
-            if type(i_current) is str:
-                valid_files.append(i_current)
-            else:
-                for ff in i_current:
-                    valid_files.append(ff)
-
-            # add the start files to valid_files
-            if type(i_start) is str:
-                if i_start not in mylist:
-                    valid_files.append(i_start)
-            else:
-                for ff in i_start:
-                    if ff not in mylist:
-                        valid_files.append(ff)
-
-            i_grid = eval("sys.modules['__main__']." +i + ".grid")
-            i_weights = eval("sys.modules['__main__']." +i + ".weights")
-            if i_grid is not None:
-                valid_files.append(i_grid)
-                valid_files.append(i_weights)
-    valid_files = list(set(valid_files))
-    valid_files = valid_files + nc_safe
+    valid_files = nc_safe
 
     delete_these = [v for v in candidates if v not in valid_files]            
-
-    #if keep is not None:
-    #    if type(keep) is str:
-    #        keep = (keep)
-    #    delete_these = [v for v in delete_these if v not in keep]            
 
     delete_these = list(set(delete_these))
 
@@ -225,4 +190,3 @@ def disk_clean(self, method = "year"):
     cleanup()
 
 
-            
