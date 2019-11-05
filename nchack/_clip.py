@@ -15,19 +15,19 @@ def clip(self, lon = [-180, 180], lat = [-90, 90], cores = 1):
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
     """
 
-    if (type(lon) is not list) or (type(lat) is not list):
+    if  type(lon) is not list or type(lat) is not list:
         raise ValueError("Check that lon/lat ranges are tuples")
     
-    if(type(lon[0]) is float ) or ( type(lon[0]) is int) == False:
+    if ( type(lon[0]) is float  or  type(lon[0]) is int ) == False:
         raise ValueError("Check lon")
     
-    if( type(lon[1]) is float ) or ( type(lon[1]) is int) == False:
+    if ( type(lon[1]) is float  or  type(lon[1]) is int ) == False:
         raise ValueError("Check lon")
 
-    if( type(lat[0]) is float ) or ( type(lat[0]) is int) == False:
+    if ( type(lat[0]) is float  or  type(lat[0]) is int ) == False:
         raise ValueError("Check lat")
     
-    if( type(lat[1]) is float ) or ( type(lat[1]) is int) == False:
+    if ( type(lat[1]) is float  or  type(lat[1]) is int ) == False:
         raise ValueError("Check lat")
 
     # now, clip to the lonlat box we need
