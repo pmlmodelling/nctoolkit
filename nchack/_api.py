@@ -423,6 +423,7 @@ class DataSet(object):
     from ._fldstat import spatial_min
     from ._fldstat import spatial_max
     from ._fldstat import spatial_range
+    from ._fldstat import spatial_sum
 
     from ._verticals import vertical_mean 
     from ._verticals import vertical_min
@@ -460,6 +461,7 @@ class DataSet(object):
     from ._cleanup import disk_clean 
 
     from ._time_sort import sort_times
+    from ._safe import safe_list
 
 
 
