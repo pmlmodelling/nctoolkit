@@ -70,8 +70,6 @@ def run_cdo(command, target, out_file = None):
     if command.startswith("cdo ") == False:
         raise ValueError("The command does not start with cdo!")
 
-    print(command)
-
     out = subprocess.Popen(command,shell = True, stdin = subprocess.PIPE,stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
     out.wait()
     result,ignore = out.communicate()
