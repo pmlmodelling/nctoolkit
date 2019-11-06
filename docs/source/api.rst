@@ -56,6 +56,7 @@ Netcdf file attribute modification
    DataSet.set_longname
    DataSet.set_attributes
    DataSet.set_unit
+   DataSet.set_gridtype
 
 Vertical/level methods
 ---------------------
