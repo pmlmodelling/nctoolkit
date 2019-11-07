@@ -27,9 +27,14 @@ def merge(self, zip = False, match = ["year", "month", "day"]):
     if self.merged:
         raise ValueError("You cannot double chain merge methods!")
 
+    lazy_merger = copy.deepcopy(self.run)
+
     # Force a release if needed
     if self.run == False:
         self.release()
+
+    if lazy_merger == False:
+        self.lazy()
 
     if type(match) is list:
         match = [y.lower() for y in match]
@@ -55,7 +60,6 @@ def merge(self, zip = False, match = ["year", "month", "day"]):
 
     if len(set([len(x) for x in all_times])) > 1:
         raise ValueError("You are trying to merge data sets with an incompatible number of time steps")
-
 
     all_df = []
     if len(all_times) > 1:
