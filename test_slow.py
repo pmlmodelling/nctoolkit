@@ -22,7 +22,7 @@ class TestSelect(unittest.TestCase):
     def test_regrid1(self):
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
-        tracker.split_year_month()
+        tracker.split_year()
         tracker.merge_time()
         tracker.split_year()
         tracker.merge_time()
@@ -38,7 +38,7 @@ class TestSelect(unittest.TestCase):
         tracker = nc.open_data(ff)
         tracker.regrid(grid = grid, method = "nn")
         #tracker.annual_mean()
-        tracker.split_year_month()
+        tracker.split_year()
         tracker.ensemble_mean()
         tracker.spatial_mean()
         y = tracker.to_xarray().sst.values[0][0][0].astype("float")
