@@ -3,6 +3,7 @@ import copy
 import multiprocessing
 import math
 import subprocess
+import re
 
 from ._temp_file import temp_file
 from ._cleanup import cleanup
@@ -110,6 +111,12 @@ def run_cdo(command, target, out_file = None):
                     print_result1 = True
                     if "merge" in x and "Duplicate entry of parameter" in str(x):
                         print_result1 = False
+
+                    # deal with warning messages for selecting months
+                    pattern = re.compile(r"Month ([1-9][0-9]?|100) not found")
+                    if pattern.match(x):
+                        print_result1 = True
+
                     if print_result1:
                         print("CDO warning:" + x.replace("b'Warning:", ""))
     else:
@@ -120,6 +127,13 @@ def run_cdo(command, target, out_file = None):
                 print_result = True
                 if "merge" in x and "Duplicate entry of parameter" in str(x):
                     print_result = False
+
+                # deal with warning messages for selecting months
+                pattern = re.compile(r"Month ([1-9][0-9]?|100) not found")
+
+                if pattern.search(x):
+                    print_result = True
+
                 if print_result:
                     print("CDO warning:" + x.replace("b'Warning:", ""))
             
