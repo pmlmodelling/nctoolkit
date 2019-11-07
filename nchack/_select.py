@@ -23,6 +23,7 @@ def select_season(self, season,  cores = 1):
 def select_months(self, months,  cores = 1):
     """
     Select months from a dataset
+    This method will subset the data to only contains months within the list given. A warning message will be provided when there are missing months.
 
     Parameters
     -------------
@@ -52,7 +53,7 @@ def select_months(self, months,  cores = 1):
 def select_years(self, years,  cores = 1):
     """
     Select years from a dataset
-
+    This method will subset the data to only contains years within the list given. A warning message will be provided when there are missing years.
     Parameters
     -------------
     months : list or int
