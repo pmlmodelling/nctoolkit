@@ -43,13 +43,12 @@ def split(self, method = "year"):
                     session_stamp["temp_dir"] = "/var/tmp/"
 
         split_base = temp_file() 
-#        print(split_base)
     
         cdo_command = "cdo -s -split" + method + " "  + ff +  " " + split_base
     
-        self.history.append(cdo_command)
-    
         os.system(cdo_command)
+
+        self.history.append(cdo_command)
 
         # now, pull out the files generated
 
@@ -67,41 +66,37 @@ def split(self, method = "year"):
         if counter == 0:
             raise ValueError("Splitting the file by year did not work!")
 
-        
-
     self.merged = False
     self.current = new_files
 
 
-
 def split_year(self):
     """
-    Split the ensemble based on years. Each file in the ensemble will be separated into new files based on years.
+    Split the ensemble based on years
+    Each file in the ensemble will be separated into new files based on years.
 
     """
     split(self, method = "year")
 
 def split_year_month(self):
     """
-    Split the ensemble based on years and months. Each file in the ensemble will be separated into new files based on years and months.
-
+    Split the ensemble based on years and months
+    Each file in the ensemble will be separated into new files based on years and months.
     """
     split(self, method = "yearmon")
 
-#def split_month(self):
-#    split(self, method = "mon")
 
 def split_day(self):
     """
-    Split the ensemble based on days. Each file in the ensemble will be separated into new files based on days.
-
+    Split the ensemble based on days
+    Each file in the ensemble will be separated into new files based on days.
     """
     split(self, method = "day")
 
 def split_season(self):
     """
-    Split the ensemble based on season. Each file in the ensemble will be separated into new files based on season.
-
+    Split the ensemble based on season
+    Each file in the ensemble will be separated into new files based on season.
     """
     split(self, method = "seas")
 
