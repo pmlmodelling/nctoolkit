@@ -118,8 +118,7 @@ def set_gridtype(self, grid):
 
     cdo_command = "cdo -setgridtype," + grid
 
-    run_this(cdo_command, self,  output = "ensemble")
-
+    run_this(cdo_command, self,  output = "ensemble") 
 
 
 
@@ -211,6 +210,69 @@ def set_longname(self, var_dict):
 
     target = run_nco(nco_command, target)
 
+
+    if target != "":
+        nc_safe.remove(self.current)
+        self.current = target
+        nc_safe.append(self.current)
+
+    # clean up the directory
+    if self.run:
+        cleanup(keep = self.current)
+
+    self.history.append(nco_command)
+
+
+
+
+
+
+
+def assign_coords(self, lon_name = None, lat_name = None):
+    """
+    Assign coordinates to variables 
+
+    Parameters
+    -------------
+    lon_name : str
+        Name of the longitude dimension
+    lat_name : str
+        Name of the latitude dimension
+    """
+
+    # add grid number check
+
+    if self.run == False:
+        ValueError("NCO methods do not work in hold mode")
+
+    if type(lon_name) is not str:
+        ValueError("Method does not yet work with ensembles")
+
+    if type(lat_name) is not str:
+        ValueError("Method does not yet work with ensembles")
+    
+    # change the units in turn. This doesn't seem to be something you can chain?
+
+    variables = self.variables 
+
+    nco_command = "ncatted "
+
+    for vv in variables:
+        nco_command += "-a coordinates,"+ vv + ",c,c,'" + lon_name + " " + lat_name + "' "
+
+    target = ""
+    if type(self.start) is list:
+        target = "" 
+    else:
+        if self.start == self.current:
+            target = temp_file("nc") 
+
+    nco_command+= self.current + " " + target
+
+    print(nco_command)
+    return None
+
+    target = run_nco(nco_command, target)
 
     if target != "":
         nc_safe.remove(self.current)

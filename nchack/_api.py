@@ -388,6 +388,7 @@ class DataSet(object):
     from ._setters import set_longname
     from ._setters import set_gridtype
     from ._setters import set_attribute
+    from ._setters import assign_coords
 
 
     from ._time_stat import mean 
