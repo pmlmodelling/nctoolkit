@@ -96,21 +96,29 @@ def run_cdo(command, target, out_file = None):
             if str(result1).startswith("b'Error") or "HDF error" in str(result1) or out.returncode != 0:
                 raise ValueError(str(result).replace("b'","").replace("\\n", "").replace("'", ""))
             session_stamp["temp_dir"] = "/var/tmp/"
-            if "Warning:" in str(result1):
-                print("CDO warning:" + str(result1))
-            if "Warning:" in str(result1):
-                print_result1 = True
-                if "merge" in str(result1) and "Duplicate entry of parameter" in str(result1):
-                    print_result1 = False
-                if print_result1:
-                    print("CDO warning:" + str(result1))
+
+            # loop through the warnings
+
+            messages = str(result1).split("\\n")
+            print(len(messages))
+
+            for x in messages:
+                if "Warning:" in x:
+                    print_result1 = True
+                    if "merge" in x and "Duplicate entry of parameter" in str(x):
+                        print_result1 = False
+                    if print_result1:
+                        print("CDO warning:" + x.replace("b'Warning:", ""))
     else:
-        if "Warning:" in str(result):
-            print_result = True
-            if "merge" in str(result) and "Duplicate entry of parameter" in str(result):
-                print_result = False
-            if print_result:
-                print("CDO warning:" + str(result))
+        messages = str(result).split("\\n")
+
+        for x in messages:
+            if "Warning:" in x:
+                print_result = True
+                if "merge" in x and "Duplicate entry of parameter" in str(x):
+                    print_result = False
+                if print_result:
+                    print("CDO warning:" + x.replace("b'Warning:", ""))
             
     if os.path.exists(target) == False:
         raise ValueError(command + " was not successful. Check output")
