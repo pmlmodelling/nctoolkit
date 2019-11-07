@@ -24,6 +24,10 @@ def cor(self, var1 = None, var2 = None, method = "fld"):
     else:
         raise ValueError("This method only works on single files")
 
+
+    if self.run == False:
+        self.release()
+
     target = temp_file(".nc")
 
     cdo_command = "cdo -L -" + method + "cor -selname," +var1 + " " + self.current + " -selname," + var2 + " " + self.current + " " + target
