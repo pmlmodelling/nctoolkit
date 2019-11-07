@@ -27,7 +27,6 @@ def phenology(self, var = None, cores = 1):
 
     """
 
-    start_files = copy.deepcopy(self.current)
 
     if var is None:
         raise ValueError("No var was supplied")
@@ -47,6 +46,8 @@ def phenology(self, var = None, cores = 1):
     if self.run == False:
         self.release()
     
+    start_files = copy.deepcopy(self.current)
+
     new_self = self.copy()
     
     new_self.select_variables(var)
