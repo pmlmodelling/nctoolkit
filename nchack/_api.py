@@ -1,5 +1,6 @@
 import os
 import xarray as xr
+import subprocess
 import sys
 from .flatten import str_flatten
 from ._generate_grid import generate_grid
@@ -236,8 +237,8 @@ class DataSet(object):
         if type(self.current) is list:
             print("This DataSet object is a list. Please inspect individual files using nc_variables")
   
-        cdo_result = os.popen( "cdo showname " + self.current).read()
-        cdo_result = cdo_result.replace("\n", "")
+        cdo_result = subprocess.run("cdo showname " + ff, shell = True, capture_output = True)
+        cdo_result = str(cdo_result.stdout).replace("b'", "").replace("\\n", "").replace("'", "").strip()
         cdo_result = cdo_result.split()
   
         return(cdo_result)
