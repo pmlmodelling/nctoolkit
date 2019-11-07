@@ -24,7 +24,6 @@ def cor(self, var1 = None, var2 = None, method = "fld"):
     else:
         raise ValueError("This method only works on single files")
 
-
     if self.run == False:
         self.release()
 
@@ -35,6 +34,7 @@ def cor(self, var1 = None, var2 = None, method = "fld"):
 
     self.history.append(cdo_command)
     self.current = target
+    nc_safe.append(self.current)
 
     self.rename({var1:"cor"})
     self.set_unit({"cor":"-"})
