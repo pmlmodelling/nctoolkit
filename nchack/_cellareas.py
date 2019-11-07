@@ -1,6 +1,8 @@
 from ._runthis import run_this
 from ._runthis import run_cdo
 from ._temp_file import temp_file
+from ._cleanup import cleanup
+from ._session import nc_safe
 
 
 def cell_areas(self, cores = 1, join = True):
@@ -21,15 +23,30 @@ def cell_areas(self, cores = 1, join = True):
 
     if join:
         target = temp_file(".nc")
+
         cdo_command = "cdo -gridarea " + self.current + " " + target
-        self.history.append(cdo_command)
+
         run_cdo(cdo_command, target)
+
+        self.history.append(cdo_command)
         
         new_target = temp_file(".nc")
+
         cdo_command = "cdo -L -merge " + self.current + " " + target + " " + new_target
-        self.history.append(cdo_command)
+
         run_cdo(cdo_command, new_target)
+
+        self.history.append(cdo_command)
+
+        nc_safe.append(new_target)
+
         self.current = new_target
+
+        cleanup()
+
     else:
         run_this(cdo_command, self,  output = "ensemble", cores = cores)
+
+
+    self.set_unit({"cell_area": "m2"})
 
