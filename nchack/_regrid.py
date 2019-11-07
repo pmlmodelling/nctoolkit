@@ -1,4 +1,4 @@
-import os
+import subprocess
 import xarray as xr
 import pandas as pd
 
@@ -80,7 +80,9 @@ def regrid(self, grid = None, method = "bil", cores = 1):
     
     if type(self.current) is list:
         for ff in self.current:
-            cdo_result = os.popen( "cdo griddes " + ff).read()
+            #cdo_result = os.popen( "cdo griddes " + ff).read()
+            cdo_result = subprocess.run("cdo griddes " + ff, shell = True, capture_output = True)
+            cdo_result = str(cdo_result.stdout)
             if cdo_result in grid_split:
                 grid_split[cdo_result].append(ff)
             else:
