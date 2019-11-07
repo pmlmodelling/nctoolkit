@@ -1,4 +1,3 @@
-import os
 import subprocess
 from ._runthis import run_this
 from .flatten import str_flatten
@@ -43,14 +42,11 @@ def time_interp(self, start = None, end = None, resolution = "monthly",   cores 
         else:
             ff = self.current
         cdo_command = "cdo showdate " + ff
-        #start = os.popen(cdo_command).read().strip().split(" ")[0]
         start =  subprocess.run(cdo_command, shell = True, capture_output = True)
         start = str(start.stdout)
         start.replace("b'", "").strip().split(" ")[0]
 
-
     start = start.replace("/", "-")
-
 
     cdo_command = "-inttime,"+start +",12:00:00," + resolution
 
