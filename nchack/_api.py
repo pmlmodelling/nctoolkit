@@ -27,6 +27,8 @@ letters = string.ascii_lowercase
 session_stamp["stamp"] = "nchack" + "".join(random.choice(letters) for i in range(8)) + "nchack"
 session_stamp["temp_dir"] = "/tmp/"
 session_info["thread_safe"] = False 
+session_info["lazy"] = False
+print(session_info["lazy"])
 
 import atexit
 atexit.register(clean_all)
@@ -34,6 +36,10 @@ atexit.register(clean_all)
 # run temp_check to see if any files are held over from previous sessions
 temp_check()
 
+
+result = os.statvfs("/tmp/")
+session_info["size"] = result.f_frsize * result.f_bavail 
+session_info["latest_size"] = 0 
 
 def options(**kwargs):
     """
@@ -58,11 +64,6 @@ def options(**kwargs):
 
 
 
-
-result = os.statvfs("/tmp/")
-session_info["size"] = result.f_frsize * result.f_bavail 
-session_info["latest_size"] = 0 
-session_info["lazy"] = False
 
 
 
