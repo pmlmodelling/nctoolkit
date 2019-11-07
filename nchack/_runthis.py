@@ -118,7 +118,7 @@ def run_cdo(command, target, out_file = None):
                         print_result1 = True
 
                     if print_result1:
-                        print("CDO warning:" + x.replace("b'Warning:", ""))
+                        print("CDO warning:" + x.replace("b'Warning:", "").replace("Warning:",""))
     else:
         messages = str(result).split("\\n")
 
@@ -135,7 +135,7 @@ def run_cdo(command, target, out_file = None):
                     print_result = True
 
                 if print_result:
-                    print("CDO warning:" + x.replace("b'Warning:", ""))
+                    print("CDO warning:" + x.replace("b'Warning:", "").replace("Warning:", ""))
             
     if os.path.exists(target) == False:
         raise ValueError(command + " was not successful. Check output")
