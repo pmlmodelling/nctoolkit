@@ -1,5 +1,6 @@
 import os
 
+import subprocess
 from .flatten import str_flatten
 from ._runthis import run_this
 
@@ -73,7 +74,10 @@ def select_years(self, years,  cores = 1):
     if type(self.current) is list:
         new_current = []
         for ff in self.current:
-            cdo_result = os.popen( "cdo showyear " + ff).read()
+            out = subprocess.Popen("cdo showyear " + ff,shell = True, stdin = subprocess.PIPE,stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
+            cdo_result,ignore = out.communicate()
+            cdo_result = str(cdo_result)
+            cdo_result = cdo_result.replace("'", "").split("\\n")[1].strip()
             cdo_result = cdo_result.replace("\n", "")
             cdo_result = cdo_result.split()
             cdo_result = list(set(cdo_result))
