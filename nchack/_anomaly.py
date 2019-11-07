@@ -31,6 +31,8 @@ def annual_anomaly(self, var = None, baseline = None):
 
     """
 
+    # release if set to lazy
+
     if self.run == False:
         self.release()
 
