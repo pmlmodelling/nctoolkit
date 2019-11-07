@@ -3,6 +3,7 @@
 import copy
 import os
 import pandas as pd
+import subprocess
 from datetime import datetime
 
 from ._runthis import run_this
@@ -44,15 +45,19 @@ def merge(self, zip = False, match = ["year", "month", "day"]):
 
     all_times = []
     for ff in self.current:
-        ntime = int(os.popen( "cdo ntime " + ff).read().split("\n")[0])
+        cdo_result = subprocess.run("cdo ntime " + ff, shell = True, capture_output = True) 
+        cdo_result = str(cdo_result.stdout)
+        cdo_result = cdo_result.replace("b'", "").strip()
+        ntime = int(cdo_result.split("\\")[0])
         all_times.append(ntime)
     if len(set(all_times)) > 1:
         print("Warning: files to merge do not have the same number of time steps!")
 
     all_times = []
     for ff in self.current:
-        cdo_result = os.popen( "cdo showtimestamp " + ff).read()
-        cdo_result = cdo_result.replace("\n", "")
+        cdo_result = subprocess.run("cdo showtimestamp " + ff, shell = True, capture_output = True) 
+        cdo_result = str(cdo_result.stdout)
+        cdo_result = cdo_result.replace("b'", "").strip()
         cdo_result = cdo_result.split()
         cdo_result = pd.Series( (v for v in cdo_result) )
         all_times.append(cdo_result)
