@@ -47,22 +47,24 @@ def options(**kwargs):
 
     """
 
-    valid_keys = ["thread_safe"] 
+    valid_keys = ["thread_safe", "lazy"] 
     for key in kwargs:
-        if key in valid_keys:
-            if key == "thread_safe":
-                if type(kwargs[key]) is not bool: 
-                    raise AttributeError("thread_safe must be True or False")
-                else:
-                    session_info[key] = kwargs[key]
-        else:
+        if key not in valid_keys:
             raise AttributeError(key + " is not a valid option")
+        if type(kwargs[key]) is not bool: 
+            raise AttributeError("thread_safe must be True or False")
+        else:
+            session_info[key] = kwargs[key]
+
 
 
 
 result = os.statvfs("/tmp/")
 session_info["size"] = result.f_frsize * result.f_bavail 
 session_info["latest_size"] = 0 
+session_info["lazy"] = False
+
+
 
 def convert_bytes(num):
     """
@@ -154,7 +156,10 @@ class DataSet(object):
         self.current = start
         self.weights = None 
         self.grid = None 
-        self.run = True
+        if session_info["lazy"]:
+            self.run = False
+        else:
+            self.run = True
         self.hold_history = []
         self.merged = False
         self.released = False
