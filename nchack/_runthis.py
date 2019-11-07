@@ -107,6 +107,7 @@ def run_cdo(command, target, out_file = None):
             print(len(messages))
 
             missing_years = []
+            missing_months= []
             for x in messages:
                 if "Warning:" in x:
                     print_result1 = True
@@ -120,15 +121,23 @@ def run_cdo(command, target, out_file = None):
                         d = re.findall('\d{4}', x)
                         missing_years.append(d[0])
 
+                    pattern = re.compile(r"Month ([1-9][0-9]?|100) not found")
+                    if pattern.search(x):
+                        print_result1 = False
+                        d = re.findall('([1-9][0-9]?|100)', x)
+                        missing_months.append(d[0])
                     if print_result1:
                         print("CDO warning:" + x.replace("b'Warning:", "").replace("Warning:",""))
 
             if len(missing_years) >0:
                 print("CDO warning: Years " + str_flatten(missing_years, ",") + " are missing")
+            if len(missing_months) >0:
+                print("CDO warning: Months " + str_flatten(missing_months, ",") + " are missing")
     else:
         messages = str(result).split("\\n")
 
         missing_years = []
+        missing_months = []
         for x in messages:
             if "Warning:" in x:
                 print_result = True
@@ -143,11 +152,21 @@ def run_cdo(command, target, out_file = None):
                     missing_years.append(d[0])
                     print_result = False
 
+                pattern = re.compile(r"Month ([1-9][0-9]?|100) not found")
+
+                if pattern.search(x):
+                    d = re.findall('([1-9][0-9]?|100)', x)
+                    missing_months.append(d[0])
+                    print_result = False
+
                 if print_result:
                     print("CDO warning:" + x.replace("b'Warning:", "").replace("Warning:", ""))
             
         if len(missing_years) >0:
             print("CDO warning: Years " + str_flatten(missing_years, ",") + " are missing!")
+        if len(missing_months) >0:
+            print("CDO warning: Months " + str_flatten(missing_months, ",") + " are missing")
+
     if os.path.exists(target) == False:
         raise ValueError(command + " was not successful. Check output")
 
