@@ -1,7 +1,6 @@
 
-from ._session import nc_safe
 
-def safe_list(self):
+def safe_list():
     return nc_safe
 
 session_stamp = dict() 
