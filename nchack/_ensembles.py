@@ -70,9 +70,10 @@ def ensemble_nco(self, method, vars = None, ignore_time = False):
         if type(vars) is not list:
             raise ValueError("vars supplied is not a list or str!")
 
+    # generate a temp files
     target = temp_file("nc") 
 
-    
+    # generate the nco call 
     if ignore_time == False:
         if vars is None:
             nco_command = ("ncea -y " + method + " " + str_flatten(ff_ensemble, " ") + " " + target) 
@@ -84,13 +85,14 @@ def ensemble_nco(self, method, vars = None, ignore_time = False):
         else:
             nco_command = ("ncra -y " + method + " -v " + str_flatten(vars, ",") + " " + str_flatten(ff_ensemble, " ") + " " + target) 
 
+    # run the call
     target = run_nco(nco_command, target) 
 
+    #add the call to the history and tempfile to nc_safe
     self.history.append(nco_command)
 
-    if self.run:
-        self.current = target 
-
+    self.current = target 
+    nc_safe.append(self.current)
 
     # remove the original files from the safe list
     for ff in ff_ensemble:
