@@ -44,8 +44,8 @@ def phenology(self, var = None, cores = 1):
     #  create a new tracker for the phenologies
     # Then restrict the file to the var selected
 
-	if self.run == False:
-		self.release()
+    if self.run == False:
+        self.release()
     
     new_self = self.copy()
     
