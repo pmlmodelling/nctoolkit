@@ -94,7 +94,10 @@ def run_cdo(command, target, out_file = None):
             out.wait()
             result1,ignore = out.communicate()
             if str(result1).startswith("b'Error") or "HDF error" in str(result1) or out.returncode != 0:
-                raise ValueError(str(result).replace("b'","").replace("\\n", "").replace("'", ""))
+                if "Too many open files" in str(result1):
+                    raise ValueError("There are too many open files in CDO.  Check the files your OS allows to be open simultaneously in the Bourne shell with 'ulimit -n'")
+                else:
+                    raise ValueError(str(result).replace("b'","").replace("\\n", "").replace("'", ""))
             session_stamp["temp_dir"] = "/var/tmp/"
 
             # loop through the warnings
