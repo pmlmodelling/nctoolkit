@@ -1,4 +1,5 @@
 
+import subprocess
 from .flatten import str_flatten 
 from ._runthis import run_this
 import os
@@ -26,7 +27,9 @@ def cdo_command(self, command, cores = 1):
         raise ValueError("Command supplied is not a str")
 
     read = os.popen("cdo --operators").read()
-    cdo_methods = [x.split(" ")[0] for x in read.split("\n")]
+    read = subprocess.run("cdo --operators", shell = True, capture_output = True)
+    cdo_methods = [x.split(" ")[0].replace("b'", "") for x in str(read.stdout).split("\\n")]
+
     cdo_methods = [mm for mm in cdo_methods if len(mm) > 0]
 
     n_methods = 0
