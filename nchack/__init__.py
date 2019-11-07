@@ -10,6 +10,7 @@ from ._cleanup import clean_all
 from ._cleanup import deep_clean
 from ._cleanup import temp_check
 from ._session import safe_list
+from ._session import show_session
 
 
 from ._create_ensemble import create_ensemble
