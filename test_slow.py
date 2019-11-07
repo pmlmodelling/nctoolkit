@@ -20,7 +20,7 @@ class TestSelect(unittest.TestCase):
         self.assertEqual(x, 214.74716186523438)
 
     def test_regrid1(self):
-        ff = "/users/modellers/rwi/nchack/data/sst.mon.mean.nc"
+        ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
         tracker.split_year_month()
         tracker.merge_time()
