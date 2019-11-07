@@ -1,4 +1,5 @@
-import os
+
+import subprocess
 
 from ._runthis import run_this
 from .flatten import str_flatten
@@ -23,7 +24,8 @@ def bottom(self,  cores = 1):
     else:
         ff = self.current
 
-    n_levels = int(os.popen( "cdo nlevel " + ff).read().split("\n")[0])
+    cdo_result = subprocess.run("cdo nlevel " + ff, shell = True, capture_output = True)
+    n_levels = int(str(cdo_result.stdout).replace("b'", "").strip().replace("'", "").split("\\n")[0])
 
     cdo_command = "cdo -sellevidx," + str(n_levels)
 
