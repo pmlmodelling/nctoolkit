@@ -72,6 +72,8 @@ def select_years(self, years,  cores = 1):
 
 
     if type(self.current) is list:
+
+        n_removed = 0
         new_current = []
         for ff in self.current:
             out = subprocess.Popen("cdo showyear " + ff,shell = True, stdin = subprocess.PIPE,stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
@@ -86,9 +88,13 @@ def select_years(self, years,  cores = 1):
             if len(inter) > 0:
                 new_current.append(ff)
             if len(inter) == 0:
-                print("Warning: " + ff + " has none of the years, so has been removed!")
+                n_removed+=1
+                #print("Warning: " + ff + " has none of the years, so has been removed!")
         if len(new_current) == 0:
             raise ValueError("Data for none of the years is available!")
+
+        if n_removed >0:
+            print("A total of " +  str(n_removed) +  " files did not have valid years, so were removed!")
 
         self.current = new_current
         
