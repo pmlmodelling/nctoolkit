@@ -1,22 +1,10 @@
-import os
-import glob
-import copy
-import multiprocessing
-import copy
 
 from ._temp_file import temp_file
 from ._session import nc_safe
-from .flatten import str_flatten
-from ._select import select_variables
 from ._setters import set_longname
-from ._time_stat import mean
-from ._rename import rename
-from ._cdo_command import cdo_command 
-from ._expr import transmute
 from ._runthis import run_cdo
-from ._api import open_data
 
-def annual_anomaly(self, var = None, baseline = None):
+def annual_anomaly(self,  baseline = None):
     """
 
     Calculate annual anomalies based on a baseline period
@@ -24,68 +12,46 @@ def annual_anomaly(self, var = None, baseline = None):
     
     Parameters
     -------------
-    var : string
-        Variable to calculate the anomomaly for. This only works with single variables currently 
     baseline: list
-        Baseline years. An annual cimatology for these years is used to calculate the anomalies.
+        Baseline years. This needs to be the first and last year of the climatological period, Example [1985,2005] will give you a 20 year climatology from 1986 to 2005. 
 
     """
 
     # release if set to lazy
 
     if self.run == False:
+        lazy_eval = True
         self.release()
+    else:
+        lazy_eval = False
 
     if type(self.current) is not str:
         raise ValueError("Splitting the file by year did not work!")
 
-    if var is None:
-        if(len(self.variables) == 1):
-            var = self.variables[0]
-        else:
-            raise ValueError("This method currently only works with single variables. Please select one")
-
-    if type(var) is not str:
-        raise ValueError("This method currently only works with single variables")
-
     if type(baseline) is not list:
         raise ValueError("baseline years supplied is not a list")
 
-    # Calculate the yearly mean 
-    new_tracker = open_data(self.current) 
-    clim_tracker = open_data(self.current)
+    if type(baseline[0]) is not int:
+        raise ValueError("Provide a valid baseline")
+    if type(baseline[1]) is not int:
+        raise ValueError("Provide a vaid baseline")
 
-    new_tracker.select_variables(var)
-    new_tracker.rename({var:"observed"})
-    new_tracker.annual_mean()
+    target = temp_file("nc")
 
-    # calculate the climatology
+    cdo_command = "cdo -L sub -yearmean " + self.current + " -timmean -selyear," + str(baseline[0]) + "/" + str(baseline[1]) + " " + self.current  + " " + target
 
-    clim_tracker.select_variables(var)
-    clim_tracker.select_years(baseline)
-    clim_tracker.mean()
-    clim_tracker.rename({var:"base"})
+    target = run_cdo(cdo_command, target)
 
-    target = temp_file("nc") 
+    self.history.append(cdo_command)
 
-    os_command = "cdo -L -expr,'anomaly=observed-base' -merge " + new_tracker.current + " " + clim_tracker.current + " " + target
+    if self.current in nc_safe:
+        nc_safe.remove(self.current)
 
-    new_tracker.history.append(os_command)
-
-    target = run_cdo(os_command, target)
-
-    new_tracker.current = target
-
-    if os.path.exists(target) == False:
-        raise ValueError("Calculating the anomaly failed")
+    self.current = target
     nc_safe.append(target)
 
-    self.history = self.history + new_tracker.history
 
-    self.current = copy.deepcopy(new_tracker.current)
+    if lazy_eval:
+        self.run = False
 
-    nc_safe.append(self.current)
-
-    if os.path.exists(target) == False:
-        raise ValueError("Calculating the anomaly failed")
 
