@@ -45,7 +45,9 @@ session_info["latest_size"] = 0
 def options(**kwargs):
     """
     Define session options.
-    Set the options in the session. Available options are thread_safe. Set thread_safe = True if hdf5 was built to be thread safe.
+    Set the options in the session. Available options are thread_safe and lazy.
+    Set thread_safe = True if hdf5 was built to be thread safe.
+    Set lazy = True if you want methods to evaluate lazy by default.
 
     Parameters
     ---------------
