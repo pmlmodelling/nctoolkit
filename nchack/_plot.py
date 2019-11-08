@@ -3,6 +3,7 @@ from .flatten import str_flatten
 
 import pandas as pd, numpy as np
 import hvplot.pandas
+import hvplot.xarray
 import subprocess
 
 
