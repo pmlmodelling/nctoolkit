@@ -43,7 +43,10 @@ def autoplot(self, log = False, panel = False):
 
         df = self.to_xarray().to_dataframe()
 
-        return df.reset_index().melt("time").set_index("time").hvplot(groupby = "variable", logy = log)
+        if panel:
+            return df.reset_index().melt("time").set_index("time").hvplot(by = "variable", logy = log, subplots = True)
+        else:
+            return df.reset_index().melt("time").set_index("time").hvplot(groupby = "variable", logy = log, dynamic = True)
 
 
     if n_points > 1 and n_levels <= 1:
@@ -52,7 +55,7 @@ def autoplot(self, log = False, panel = False):
         lat_name = [x for x in str(out.stdout).replace("b'", "").split("\\n") if "yname" in x][0].split(" ")[-1]
 
         variables = self.variables
-        return self.to_xarray().hvplot.quadmesh(lon_name, lat_name, variables, dynamic = True, cmap = "viridis", logz = log)
+        return self.to_xarray().hvplot.image(lon_name, lat_name, variables, dynamic = False, cmap = "viridis", logz = log)
 
 
 
