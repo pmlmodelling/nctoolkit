@@ -29,6 +29,15 @@ def cor(self, var1 = None, var2 = None, method = "fld"):
 
     target = temp_file(".nc")
 
+
+    variables = self.variables
+
+    if var1 not in variables:
+        raise ValueError(var1 + " is not available in the DataSet")
+
+    if var2 not in variables:
+        raise ValueError(var2 + " is not available in the DataSet")
+
     cdo_command = "cdo -L -" + method + "cor -selname," +var1 + " " + self.current + " -selname," + var2 + " " + self.current + " " + target
     target = run_cdo(cdo_command, target)
 
