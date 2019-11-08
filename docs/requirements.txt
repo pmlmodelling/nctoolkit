@@ -5,5 +5,8 @@ nbsphinx==0.4.3
 sphinx_rtd_theme==0.4.3
 xarray
 pandas
+hvplot
+geoviews
+cartopy
 
 
