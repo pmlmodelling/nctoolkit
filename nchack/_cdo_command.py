@@ -43,6 +43,9 @@ def cdo_command(self, command, cores = 1):
     if n_methods > 1:
         raise ValueError("Errror: please supply one cdo method")
 
+    if command.startswith("cdo "):
+        command = command.replace("cdo ", " ")
+
     cdo_command = "cdo " + command + " "
 
     if "merge " in command or "mergetime " in command:
