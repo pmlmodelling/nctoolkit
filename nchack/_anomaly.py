@@ -31,6 +31,8 @@ def annual_anomaly(self,  baseline = None):
     if type(baseline) is not list:
         raise ValueError("baseline years supplied is not a list")
 
+    if len(baseline) > 2:
+        raise ValueError("More than 2 years in baseline. Please check.")
     if type(baseline[0]) is not int:
         raise ValueError("Provide a valid baseline")
     if type(baseline[1]) is not int:
