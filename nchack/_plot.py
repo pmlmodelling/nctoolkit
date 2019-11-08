@@ -41,7 +41,17 @@ def autoplot(self, log = False, panel = False):
 
     if n_times > 1 and n_points < 2 and n_levels <= 1:
 
-        df = self.to_xarray().to_dataframe()
+        df = self.to_xarray()
+
+        dim_dict = dict(df.dims)
+        to_go = []
+        for kk in dim_dict.keys():
+            if dim_dict[kk] == 1:
+                df = df.squeeze(kk)
+                to_go.append(kk)
+
+        df = df.to_dataframe()
+        df = df.drop(columns = to_go)
 
         if panel:
             return df.reset_index().melt("time").set_index("time").hvplot(by = "variable", logy = log, subplots = True)
