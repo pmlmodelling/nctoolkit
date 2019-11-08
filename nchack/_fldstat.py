@@ -4,7 +4,8 @@ from ._runthis import run_this
 def fldstat(self, stat = "mean",  cores = 1):
     """Method to calculate the spatial stat from a netcdf""" 
 
-    cdo_command = "cdo --reduce_dim -fld" + stat
+    #cdo_command = "cdo --reduce_dim -fld" + stat
+    cdo_command = "cdo -fld" + stat
 
     run_this(cdo_command, self,  output = "ensemble", cores = cores)
 
