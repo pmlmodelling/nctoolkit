@@ -33,11 +33,14 @@ def ensemble_percentile(self, p = 50):
     if type(self.current) is not list:
         raise ValueError("The current state of the dataset is not a list")
 
+    if type(p) not in [int, float]:
+        raise ValueError("p is a " + str(type(p)) + ", not an int or float")
+
     # This method cannot possibly be chained. Release it
     if self.run == False:
         self.release()
 
-    cdo_command = "cdo -enspctl," + str(p)
+    cdo_command = "cdo -enspctl," + str(p) + " "
 
     run_this(cdo_command, self, output = "one")
 

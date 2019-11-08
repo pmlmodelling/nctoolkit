@@ -112,6 +112,10 @@ def percentile(self, p = 50, cores = 1):
     if self.run == False:
         self.release()
 
+    if type(p) not in [int, float]:
+         raise ValueError("p is a " + str(type(p)) +  ", not int or float")
+
+
     target = temp_file("nc")
 
     cdo_command = "cdo -L -timpctl," + str(p) + " " + self.current + " -timmin " + self.current + " -timmax " + self.current + " "  + target
