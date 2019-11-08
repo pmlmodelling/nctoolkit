@@ -49,6 +49,17 @@ class TestSelect(unittest.TestCase):
 
         self.assertEqual(x, y)
 
+    def test_percentile(self):
+        ff = "data/sst.mon.mean.nc"
+        tracker = nc.open_data(ff)
+        tracker.clip(lon = [50, 60])
+        tracker.percentile(50)
+        tracker.spatial_mean()
+        x = tracker.to_xarray().sst.values[0][0][0].astype("float")
+        self.assertEqual(x, 19.51475715637207)
+
+
+
 if __name__ == '__main__':
     unittest.main()
 
