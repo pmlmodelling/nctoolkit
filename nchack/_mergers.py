@@ -9,16 +9,16 @@ from datetime import datetime
 from ._runthis import run_this
 
 
-def merge(self, zip = False, match = ["year", "month", "day"]):
+def merge(self, match = ["year", "month", "day"], zip = False):
 
     """
     Merge a multi-file ensemble into a single file. Merging will occur based on the time steps in the first file. This will only be effective if either you want to merge files with the same times or multi-time files with single time files.
 
     Parameters
     -------------
+    match: a list stating what must match in the netcdf files. Defaults to year/month/day. This list must be some combination of year/month/day. An error will be thrown if the elements of time in match do not match across all netcdf files. The only exception is if there is a single date file in the ensemble.
     zip : boolean
         If True, the resulting netcdf files are zipped. Defaults to False. 
-    match: a list stating what must match in the netcdf files. Defaults to year/month/day. This list must be some combination of year/month/day. An error will be thrown if the elements of time in match do not match across all netcdf files. The only exception is if there is a single date file in the ensemble.
 
     """
 
