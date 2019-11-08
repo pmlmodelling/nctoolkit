@@ -8,7 +8,7 @@ import subprocess
 
 
 
-def autoplot(self, panel = False): 
+def autoplot(self, log = False, panel = False): 
     """
     Autoplotting method 
 
@@ -43,7 +43,7 @@ def autoplot(self, panel = False):
 
         df = self.to_xarray().to_dataframe()
 
-        return df.reset_index().melt("time").set_index("time").hvplot(groupby = "variable")
+        return df.reset_index().melt("time").set_index("time").hvplot(groupby = "variable", logy = log)
 
 
     if n_points > 1 and n_levels <= 1:
@@ -52,7 +52,7 @@ def autoplot(self, panel = False):
         lat_name = [x for x in str(out.stdout).replace("b'", "").split("\\n") if "yname" in x][0].split(" ")[-1]
 
         variables = self.variables
-        return self.to_xarray().hvplot.quadmesh(lon_name, lat_name, variables, dynamic = True, cmap = "viridis")
+        return self.to_xarray().hvplot.quadmesh(lon_name, lat_name, variables, dynamic = True, cmap = "viridis", logz = log)
 
 
 
