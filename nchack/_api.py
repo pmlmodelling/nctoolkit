@@ -472,6 +472,8 @@ class DataSet(object):
 
     from ._time_sort import sort_times
     from ._safe import safe_list
+    
+    from._plot import autoplot
 
 
 
