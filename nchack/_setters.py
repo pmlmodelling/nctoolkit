@@ -73,7 +73,7 @@ def set_missing(self, value,  cores = 1):
     cleanup(keep = self.current)
 
 
-def set_unit(self, var_dict):
+def set_units(self, var_dict):
     """
     Set the units for variables 
 
@@ -122,7 +122,7 @@ def set_gridtype(self, grid):
 
 
 
-def set_attribute(self, att_dict):
+def set_attributes(self, att_dict):
     """
     Set Global attributes 
 
@@ -173,7 +173,7 @@ def set_attribute(self, att_dict):
 
 
 
-def set_longname(self, var_dict):
+def set_longnames(self, var_dict):
     """
     Set Global attributes 
 
