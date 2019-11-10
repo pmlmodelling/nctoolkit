@@ -46,7 +46,7 @@ def cor(self, var1 = None, var2 = None, method = "fld"):
     nc_safe.append(self.current)
 
     self.rename({var1:"cor"})
-    self.set_unit({"cor":"-"})
+    self.set_units({"cor":"-"})
 
     self.set_longnames({"cor":"Correlation between " + var1 +  " & " + var2})
 
