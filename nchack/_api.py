@@ -387,7 +387,7 @@ class DataSet(object):
     from ._dailyclim import daily_max_climatology
     from ._dailyclim import daily_range_climatology
 
-    from ._to_nc import to_netcdf
+    from ._to_nc import write_nc 
 
     from ._rename import rename 
 

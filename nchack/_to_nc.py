@@ -5,7 +5,7 @@ from ._runcommand import run_command
 from ._runthis import run_this
 from ._session import nc_safe
 
-def to_netcdf(self, out, zip = True, overwrite = False):
+def write_nc(self, out, zip = True, overwrite = False):
     """
     Save a dataset to a named file 
 
