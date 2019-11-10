@@ -5,7 +5,7 @@ import multiprocessing
 from ._temp_file import temp_file
 from .flatten import str_flatten
 from ._select import select_variables
-from ._setters import set_longname
+from ._setters import set_longnames
 from ._session import nc_safe
 from ._runthis import run_cdo
 
@@ -48,7 +48,7 @@ def cor(self, var1 = None, var2 = None, method = "fld"):
     self.rename({var1:"cor"})
     self.set_unit({"cor":"-"})
 
-    self.set_longname({"cor":"Correlation between " + var1 +  " & " + var2})
+    self.set_longnames({"cor":"Correlation between " + var1 +  " & " + var2})
 
 
 

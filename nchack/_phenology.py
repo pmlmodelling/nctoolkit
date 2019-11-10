@@ -6,9 +6,8 @@ from ._temp_file import temp_file
 from ._session import nc_safe
 from .flatten import str_flatten
 from ._select import select_variables
-from ._setters import set_longname
+from ._setters import set_longnames
 from ._cleanup import cleanup
-from ._setters import set_longname
 from ._runthis import run_cdo
 import copy
 
@@ -108,9 +107,9 @@ def phenology(self, var = None, cores = 1):
 
     # set the long name and unit
 
-    new_self.set_longname({"peak": "Timing of annual maximum"})
+    new_self.set_longnames({"peak": "Timing of annual maximum"})
 
-    new_self.set_unit({"peak": "Day of year"})
+    new_self.set_units({"peak": "Day of year"})
 
     self.current = copy.deepcopy(new_self.current )
     self.history+=copy.deepcopy(new_self.history)

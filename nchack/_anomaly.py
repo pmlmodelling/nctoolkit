@@ -1,7 +1,6 @@
 
 from ._temp_file import temp_file
 from ._session import nc_safe
-from ._setters import set_longname
 from ._runthis import run_cdo
 
 def annual_anomaly(self,  baseline = None):
