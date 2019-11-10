@@ -40,7 +40,7 @@ def nc_variables(ff):
     cdo_result.sort()
     return cdo_result
 
-def show_years(self):
+def years(self):
     cdo_result = subprocess.run("cdo showyear " + self.current, shell = True, capture_output = True)
     cdo_result = str(cdo_result.stdout).replace("\\n", "")
     cdo_result = cdo_result.replace("b'", "").strip()
@@ -51,7 +51,7 @@ def show_years(self):
     cdo_result.sort()
     return cdo_result
 
-def show_months(self):
+def months(self):
     cdo_result = subprocess.run("cdo showmon " + self.current, shell = True, capture_output = True)
     cdo_result = str(cdo_result.stdout).replace("\\n", "")
     cdo_result = cdo_result.replace("b'", "").strip()
@@ -62,16 +62,4 @@ def show_months(self):
     cdo_result.sort()
     return cdo_result
 
-
-
-def show_levels(self):
-    cdo_result = subprocess.run("cdo showlevel " + self.current, shell = True, capture_output = True)
-    cdo_result = str(cdo_result.stdout).replace("\\n", "")
-    cdo_result = cdo_result.replace("b'", "").strip()
-    cdo_result = cdo_result.replace("'", "").strip()
-    cdo_result = cdo_result.split()
-    cdo_result = list(set(cdo_result))
-    cdo_result =  [float(v) for v in cdo_result]
-    cdo_result.sort()
-    return cdo_result
 

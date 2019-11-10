@@ -316,8 +316,8 @@ Display methods
    DataSet.times
    DataSet.depths
    DataSet.numbers
-   DataSet.show_years
-   DataSet.show_months
+   DataSet.years
+   DataSet.months
    DataSet.levels
 
 Output methods
