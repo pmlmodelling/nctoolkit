@@ -318,7 +318,7 @@ Display methods
    DataSet.numbers
    DataSet.show_years
    DataSet.show_months
-   DataSet.show_levels
+   DataSet.levels
 
 Output methods
 ---------------------

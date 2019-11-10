@@ -15,7 +15,7 @@ def times(self):
 
     return cdo_result
 
-def depths(self):
+def levels(self):
     """
     Method to get the depths available in a netcdf file
     """
