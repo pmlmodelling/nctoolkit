@@ -54,9 +54,9 @@ def autoplot(self, log = False, panel = False):
         df = df.drop(columns = to_go)
 
         if panel:
-            return df.reset_index().melt("time").set_index("time").hvplot(by = "variable", logy = log, subplots = True)
+            return df.reset_index().set_index("time").loc[:, self.variables].reset_index().melt("time").set_index("time").hvplot(by = "variable", logy = log, subplots = True)
         else:
-            return df.reset_index().melt("time").set_index("time").hvplot(groupby = "variable", logy = log, dynamic = True)
+            return df.reset_index().set_index("time").loc[:, self.variables].reset_index().melt("time").set_index("time").hvplot(groupby = "variable", logy = log, dynamic = True)
 
 
     if n_points > 1 and n_levels <= 1:
