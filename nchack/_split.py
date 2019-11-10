@@ -7,14 +7,14 @@ from ._temp_file import temp_file
 from ._session import nc_safe
 from .flatten import str_flatten
 from ._select import select_variables
-from ._setters import set_longname
+from ._setters import set_longnames
 from ._session import session_stamp
 from ._session import session_info
 
 import copy
 
 
-def split(self, method = "year"):
+def split_cdo(self, method = "year"):
     """
     Method to split files by period 
     """
@@ -70,34 +70,28 @@ def split(self, method = "year"):
     self.current = new_files
 
 
-def split_year(self):
+def split(self, by = None):
     """
-    Split the ensemble based on years
-    Each file in the ensemble will be separated into new files based on years.
-
-    """
-    split(self, method = "year")
-
-def split_year_month(self):
-    """
-    Split the ensemble based on years and months
-    Each file in the ensemble will be separated into new files based on years and months.
-    """
-    split(self, method = "yearmon")
+    Split the ensemble 
+    Each file in the ensemble will be separated into new files based on the splitting argument.
+    Available by arguments are 'year', 'month', 'yearmonth', 'season', 'day'
 
 
-def split_day(self):
     """
-    Split the ensemble based on days
-    Each file in the ensemble will be separated into new files based on days.
-    """
-    split(self, method = "day")
 
-def split_season(self):
-    """
-    Split the ensemble based on season
-    Each file in the ensemble will be separated into new files based on season.
-    """
-    split(self, method = "seas")
+    if by == "year":
+        method = "year"
+
+    if by == "yearmonth":
+        method = "yearmon"
+
+    if by == "season":
+        method = "seas"
+
+    if by == "day":
+        method = "day"
+
+    split_cdo(self, method = method) 
+
 
 
