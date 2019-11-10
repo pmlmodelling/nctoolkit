@@ -393,10 +393,10 @@ class DataSet(object):
 
     from ._setters import set_date 
     from ._setters import set_missing
-    from ._setters import set_unit 
-    from ._setters import set_longname
+    from ._setters import set_units
+    from ._setters import set_longnames
     from ._setters import set_gridtype
-    from ._setters import set_attribute
+    from ._setters import set_attributes
     from ._setters import assign_coords
 
 
@@ -424,10 +424,9 @@ class DataSet(object):
     from ._rollstat import rolling_sum
 
     from ._show import times
-    from ._show import show_years 
-    from ._show import show_months
-    from ._show import show_levels
-    from ._show import depths
+    from ._show import years 
+    from ._show import months
+    from ._show import levels
 
     from ._fldstat import spatial_mean
     from ._fldstat import spatial_min
@@ -455,14 +454,9 @@ class DataSet(object):
 
     from ._phenology import phenology
 
-    from ._split import split_year
-    from ._split import split_year_month
-    #from ._split import split_month
-    from ._split import split_day
-    from ._split import split_season
+    from ._split import split
 
     from ._anomaly import annual_anomaly
-
 
     from ._masking import mask_lonlat
 
