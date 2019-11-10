@@ -51,7 +51,7 @@ def cell_areas(self, cores = 1, join = True):
         run_this(cdo_command, self,  output = "ensemble", cores = cores)
 
 
-    self.set_unit({"cell_area": "m2"})
+    self.set_units({"cell_area": "m2"})
 
 
     if lazy_eval:
