@@ -53,9 +53,9 @@ Netcdf file attribute modification
 .. autosummary::
    :toctree: generated/
 
-   DataSet.set_longname
+   DataSet.set_longnames
    DataSet.set_attributes
-   DataSet.set_unit
+   DataSet.set_units
    DataSet.set_gridtype
 
 Vertical/level methods
