@@ -40,7 +40,7 @@ class TestSelect(unittest.TestCase):
     def test_split1(self):
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
-        tracker.split_year()
+        tracker.split(by = "year")
         n_files = len(tracker.current)
         tracker.merge_time()
         tracker.select_years(list(range(1950, 1959))) 
@@ -58,7 +58,7 @@ class TestSelect(unittest.TestCase):
     def test_mergetime1(self):
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
-        tracker.split_year()
+        tracker.split(by = "year")
         n_files = len(tracker.current)
         tracker.lazy()
         tracker.merge_time()

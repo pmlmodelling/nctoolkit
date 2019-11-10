@@ -10,7 +10,7 @@ class TestSelect(unittest.TestCase):
     def test_clim1(self):
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
-        tracker.split_year()
+        tracker.split("year")
         tracker.ensemble_mean()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         tracker = nc.open_data(ff)
@@ -23,7 +23,7 @@ class TestSelect(unittest.TestCase):
     def test_clim2(self):
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
-        tracker.split_year()
+        tracker.split("year")
         tracker.clip(lon = [50, 60])
         tracker.ensemble_mean()
         tracker.spatial_mean()
