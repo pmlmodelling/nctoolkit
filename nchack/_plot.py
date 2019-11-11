@@ -5,6 +5,7 @@ import pandas as pd, numpy as np
 import hvplot.pandas
 import hvplot.xarray
 import subprocess
+import xarray as xr
 
 
 
@@ -37,7 +38,16 @@ def autoplot(self, log = False, panel = False):
     n_points = int(str(cdo_result.stdout).replace("b'", "").split("\\n")[0])
 
 
+    # Case when there is only a single map to show
+
+    if n_times <= 1 and n_points > 1 and n_levels <= 1 and len(self.variables) == 1:
+            data = self.to_xarray()
+            data = data.rename({self.variables[0]: "x"})
+            return data.x.plot()
+
+
     # Case when all you can plot is a time series
+
 
     if n_times > 1 and n_points < 2 and n_levels <= 1:
 
