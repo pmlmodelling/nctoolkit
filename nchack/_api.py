@@ -1,6 +1,6 @@
 import os
-import os
 import xarray as xr
+import pandas as pd
 import subprocess
 import sys
 from .flatten import str_flatten
@@ -10,6 +10,7 @@ from ._cleanup import cleanup
 from ._cleanup import clean_all
 from ._cleanup import deep_clean 
 from ._cleanup import temp_check 
+from netCDF4 import Dataset
 import copy
 
 from ._temp_file import temp_file
@@ -245,6 +246,38 @@ class DataSet(object):
   
         return(cdo_result)
 
+    @property
+    def variables_detailed(self):
+        """
+        Variables contained in an object's netcdf file.
+        This will check the netcfile's contents, if it is a single file DataSet object.
+        """
+        
+        if type(self.current) is list:
+            print("This DataSet object is a list. Please inspect individual files using nc_variables")
+  
+        cdo_result = subprocess.run("cdo showname " + self.current, shell = True, capture_output = True)
+        cdo_result = str(cdo_result.stdout).replace("b'", "").replace("\\n", "").replace("'", "").strip()
+        cdo_result = cdo_result.split()
+        dataset = Dataset(self.current)
+
+        longs = None
+        units = None
+        if "long_name" in str(dataset.variables[cdo_result[0]]):
+                longs = [dataset.variables[x].long_name for x in cdo_result]
+        if "units" in str(dataset.variables[cdo_result[0]]):
+                longs = [dataset.variables[x].units for x in cdo_result]
+
+        if longs is None and units is None:
+            return(cdo_result)
+
+        df = pd.DataFrame({"variable": cdo_result})
+        if longs is not None:
+            df["long_name"] = longs
+        if units is not None:
+            df["units"] = units
+        return df
+            
 
     @property
     def start(self):
