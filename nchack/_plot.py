@@ -89,7 +89,7 @@ def autoplot(self, log = False, panel = False):
         if self_max.values > 0 and self_min.values < 0:
             return self.to_xarray().hvplot.image(lon_name, lat_name, self.variables[0], dynamic = False,  logz = log, cmap = "seismic").redim.range(**{self.variables[0]:(-v_max,v_max)})
         else:
-            return self.to_xarray().hvplot.image(lon_name, lat_name, self.variables[0], dynamic = False,  logz = log, cmap = "viridis")
+            return self.to_xarray().hvplot.image(lon_name, lat_name, self.variables[0], dynamic = False,  logz = log, cmap = "viridis").redim.range(**{self.variables[0]:(-self_min.values, v_max)})
 
     if n_points > 1 and n_levels <= 1:
         out = subprocess.run("cdo griddes " + self.current, shell = True, capture_output = True)
