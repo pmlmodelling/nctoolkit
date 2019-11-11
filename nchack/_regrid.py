@@ -1,6 +1,7 @@
 import subprocess
 import xarray as xr
 import pandas as pd
+import os
 
 from ._temp_file import temp_file
 from ._api import open_data
