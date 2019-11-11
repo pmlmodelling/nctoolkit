@@ -3,7 +3,7 @@ from ._temp_file import temp_file
 from ._session import nc_safe
 from ._runthis import run_cdo
 
-def annual_anomaly(self,  baseline = None, change = "absolute"):
+def annual_anomaly(self,  baseline = None, change = "absolute", window = 1):
     """
 
     Calculate annual anomalies based on a baseline period
@@ -13,6 +13,10 @@ def annual_anomaly(self,  baseline = None, change = "absolute"):
     -------------
     baseline: list
         Baseline years. This needs to be the first and last year of the climatological period, Example [1985,2005] will give you a 20 year climatology from 1986 to 2005. 
+    change: str
+        Set to "absolute" or "relative", depending on whether you want the absolute or relative change to be calcualted.
+    window: int
+        A window for the anomaly. By default window = 1, i.e. the annual anomaly is calculated. If, for example, window = 20, the 20 year rolling means will be used to calculate the anomalies.
 
     """
 
@@ -40,9 +44,10 @@ def annual_anomaly(self,  baseline = None, change = "absolute"):
     target = temp_file("nc")
 
     if change == "absolute":
-        cdo_command = "cdo -L sub -yearmean " + self.current + " -timmean -selyear," + str(baseline[0]) + "/" + str(baseline[1]) + " " + self.current  + " " + target
+        cdo_command = "cdo -L sub -runmean," + str(window) + " -yearmean " + self.current + " -timmean -selyear," + str(baseline[0]) + "/" + str(baseline[1]) + " " + self.current  + " " + target
     else:
-        cdo_command = "cdo -L div -yearmean " + self.current + " -timmean -selyear," + str(baseline[0]) + "/" + str(baseline[1]) + " " + self.current  + " " + target
+        cdo_command = "cdo -L div -runmean," + str(window) + " -yearmean " + self.current + " -timmean -selyear," + str(baseline[0]) + "/" + str(baseline[1]) + " " + self.current  + " " + target
+        #cdo_command = "cdo -L div -yearmean " + self.current + " -timmean -selyear," + str(baseline[0]) + "/" + str(baseline[1]) + " " + self.current  + " " + target
 
     target = run_cdo(cdo_command, target)
 
