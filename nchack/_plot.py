@@ -48,7 +48,6 @@ def autoplot(self, log = False, panel = False):
 
     # Case when all you can plot is a time series
 
-
     if n_times > 1 and n_points < 2 and n_levels <= 1:
 
         df = self.to_xarray()
@@ -68,6 +67,19 @@ def autoplot(self, log = False, panel = False):
         else:
             return df.reset_index().set_index("time").loc[:, self.variables].reset_index().melt("time").set_index("time").hvplot(groupby = "variable", logy = log, dynamic = True)
 
+    if n_points > 1 and n_levels <= 1 & len(self.variables) == 1:
+        out = subprocess.run("cdo griddes " + self.current, shell = True, capture_output = True)
+        lon_name = [x for x in str(out.stdout).replace("b'", "").split("\\n") if "xname" in x][0].split(" ")[-1]
+        lat_name = [x for x in str(out.stdout).replace("b'", "").split("\\n") if "yname" in x][0].split(" ")[-1]
+
+        variables = self.variables
+        self_max = self.to_xarray().rename({self.variables[0]: "x"}).x.max()
+        self_min = self.to_xarray().rename({self.variables[0]: "x"}).x.min()
+        v_max = max(self_max.values, -self_min.values)
+        if self_max.values > 0 and self_min.values < 0:
+            return self.to_xarray().hvplot.image(lon_name, lat_name, self.variables[0], dynamic = False,  logz = log, cmap = "seismic").redim.range(**{self.variables[0]:(-v_max,v_max)})
+        else:
+            return self.to_xarray().hvplot.image(lon_name, lat_name, self.variables[0], dynamic = False,  logz = log, cmap = "viridis")
 
     if n_points > 1 and n_levels <= 1:
         out = subprocess.run("cdo griddes " + self.current, shell = True, capture_output = True)
