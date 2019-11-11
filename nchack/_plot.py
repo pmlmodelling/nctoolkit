@@ -46,9 +46,19 @@ def autoplot(self, log = False, panel = False):
             return data.x.plot()
 
 
-    # Case when all you can plot is a time series
+    # Case when all you can plot is a time series, but more than one variable
 
-    if n_times > 1 and n_points < 2 and n_levels <= 1:
+    if n_times > 1 and n_points < 2 and n_levels <= 1 and len(self.variables) == 1:
+
+        out = subprocess.run("cdo griddes " + self.current, shell = True, capture_output = True)
+        lon_name = [x for x in str(out.stdout).replace("b'", "").split("\\n") if "xname" in x][0].split(" ")[-1]
+        lat_name = [x for x in str(out.stdout).replace("b'", "").split("\\n") if "yname" in x][0].split(" ")[-1]
+        data = self.to_xarray()
+        data = data.squeeze([lon_name, lat_name])
+        data = data.rename({self.variables[0]: "x"})
+        return data.x.hvplot()
+
+    if n_times > 1 and n_points < 2 and n_levels <= 1 and len(self.variables) > 1:
 
         df = self.to_xarray()
 
