@@ -41,13 +41,9 @@ def create_ensemble(path = "", var = None, recursive = True):
             path = path + "/"
 
     if recursive:   
-        matches = []
-        for root, dirnames, filenames in os.walk(path + "/"):
-            for filename in fnmatch.filter(filenames, '*.nc'):
-                matches.append(os.path.join(root, filename))
-        files = matches
+        files = [f for f in glob.glob(path + "/**/*.nc", recursive=True)]
     else:
-        files = [f for f in glob.glob(path + "*.nc", recursive=True)]
+        files = [f for f in glob.glob(path + "*.nc")]
     
     if var is None:
         ensemble = copy.deepcopy(files)
