@@ -10,6 +10,7 @@ from ._generate_grid import generate_grid
 from .flatten import str_flatten
 from ._session import nc_safe
 from ._runthis import run_this
+from ._runthis import run_cdo
 
 def regrid(self, grid = None, method = "bil", cores = 1):
 
@@ -112,9 +113,9 @@ def regrid(self, grid = None, method = "bil", cores = 1):
         else:
             cdo_command = "cdo -gen" + method + ","+ self.grid + " " + tracker.current + " " +  weights_nc
 
-        os.system(cdo_command)
-        if os.path.exists(weights_nc) == False:
-            raise ValueError("Creation of weights failed!")
+        weights_nc = run_cdo(cdo_command, target = weights_nc)
+        #if os.path.exists(weights_nc) == False:
+        #    raise ValueError("Creation of weights failed!")
 
         cdo_command= "cdo -remap," + self.grid + "," + weights_nc 
 
