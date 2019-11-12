@@ -63,3 +63,18 @@ def months(self):
     return cdo_result
 
 
+
+def attributes(self):
+
+    out = subprocess.run("cdo showatts " + self.current, shell = True, capture_output = True)
+    for ll in str(out.stdout).replace("b'", "").split("\\n"):
+        print(ll)
+
+def global_attributes(self):
+
+    out = subprocess.run("cdo showattsglob " + self.current, shell = True, capture_output = True)
+    for ll in str(out.stdout).replace("b'", "").split("\\n"):
+        print(ll)
+
+
+
