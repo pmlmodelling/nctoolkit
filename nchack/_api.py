@@ -502,7 +502,10 @@ class DataSet(object):
     
     from._plot import autoplot
 
+    from._twofiles import add
     from._twofiles import multiply
+    from._twofiles import subtract
+    from._twofiles import divide
 
 
 
