@@ -2,6 +2,7 @@
     # add checker for date validity
 
 import os
+import re
 
 from ._temp_file import temp_file
 from ._session import nc_safe
@@ -195,9 +196,12 @@ def set_longnames(self, var_dict):
     
     # change the units in turn. This doesn't seem to be something you can chain?
 
+
     nco_command = "ncatted "
     for i in var_dict:
-        nco_command += "-a long_name," + i + ",o,c,'" + var_dict[i]+ "' "
+        i_dict = var_dict[i]
+        i_dict = i_dict.replace('"', "'")
+        nco_command += "-a long_name," + i + ',o,c,"' + i_dict   + '" '
 
     target = ""
     if type(self.start) is list:
