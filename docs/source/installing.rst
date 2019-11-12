@@ -6,7 +6,7 @@ Installation
 Python dependencies
 ---------------------
 
-- Python (2.7 or later)
+- Python (3.6 or later)
 - `numpy <http://www.numpy.org/>`__ (1.14 or later)
 - `pandas <http://pandas.pydata.org/>`__ (0.24 or later)
 - `xarray <http://xarray.pydata.org/en/stable/>`__ (0.14 or later)
