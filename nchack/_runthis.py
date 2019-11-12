@@ -33,6 +33,7 @@ def run_nco(command, target, out_file = None):
     out = subprocess.Popen(command,shell = True, stdin = subprocess.PIPE,stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
     result,ignore = out.communicate()
 
+
     if "(Abort)" in str(result):
         raise ValueError(str(result).replace("b'","").replace("\\n", "").replace("'", ""))
 
@@ -81,6 +82,9 @@ def run_cdo(command, target, out_file = None):
             raise ValueError(str(result).replace("b'","").replace("\\n", "").replace("'", ""))
         else:
             return out_file 
+
+    if "sellonlat" in command and "std::bad_alloc" in str(result):
+        raise ValueError("Is the horizontal grid very large? Consider setting cdo=False in clip!")
 
     if "(Abort)" in str(result):
         raise ValueError(str(result).replace("b'","").replace("\\n", "").replace("'", ""))
