@@ -147,7 +147,7 @@ def set_attributes(self, att_dict):
 
     nco_command = "ncatted -O -h "
     for i in att_dict:
-        nco_command += "-a " + i + ",global,o,c,'" + att_dict[i]+ "' "
+        nco_command += "-a " + i + ",global,o,c,'" + att_dict[i] + "' "
 
     target = ""
     if type(self.start) is list:
@@ -291,6 +291,66 @@ def assign_coords(self, lon_name = None, lat_name = None):
 
 
 
+
+
+
+
+
+
+
+def delete_attributes(self, atts):
+    """
+    Set Global attributes 
+
+    Parameters
+    -------------
+    atts : list or str
+        list or str of global attributes to remove.
+
+    """
+
+    if self.run == False:
+        ValueError("NCO methods do not work in hold mode")
+
+    if type(self.current) is not str:
+        ValueError("Method does not yet work with ensembles")
+
+    if type(atts) not in [str, list]:
+        ValueError("A dictionary has not been supplied!")
+    
+    # change the units in turn. This doesn't seem to be something you can chain?
+
+
+    nco_command = "ncatted "
+
+    if type(atts) is str:
+        atts = [atts]
+
+    for i in atts:
+        i_dict = i
+        nco_command += "-a " + i + ",global,d,, "
+
+    target = ""
+    if type(self.start) is list:
+        target = "" 
+    else:
+        if self.start == self.current:
+            target = temp_file("nc") 
+
+    nco_command+= self.current + " " + target
+
+    target = run_nco(nco_command, target)
+
+    if target != "":
+        nc_safe.remove(self.current)
+        self.current = target
+        nc_safe.append(self.current)
+
+    # clean up the directory
+    if self.run:
+        cleanup(keep = self.current)
+
+    self.history.append(nco_command)
 
 
 

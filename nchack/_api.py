@@ -430,6 +430,7 @@ class DataSet(object):
     from ._setters import set_longnames
     from ._setters import set_gridtype
     from ._setters import set_attributes
+    from ._setters import delete_attributes
     from ._setters import assign_coords
 
 
