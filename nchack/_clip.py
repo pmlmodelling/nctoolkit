@@ -2,6 +2,7 @@ from ._runthis import run_this
 from ._runthis import run_nco
 from ._temp_file import temp_file
 from .flatten import str_flatten
+from ._session import nc_safe
 import subprocess
 
 def clip(self, lon = [-180, 180], lat = [-90, 90], cdo = True, cores = 1):
@@ -55,7 +56,10 @@ def clip(self, lon = [-180, 180], lat = [-90, 90], cdo = True, cores = 1):
             nco_command = "ncea -d " + lat_name + "," + str(float(lat[0])) + "," + str(float(lat[1])) + " -d " + lon_name + "," + str(float(lon[0])) + "," + str(float(lon[1]))  + " " + self.current + " " + target
             target = run_nco(nco_command, target)
             self.history.append(nco_command)
+            if self.current in nc_safe:
+                nc_safe.remove(self.current)
             self.current = target
+            nc_safe.append(self.current)
     else:
         raise ValueError("The lonlat box supplied is not valid!")
 
