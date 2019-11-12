@@ -147,7 +147,7 @@ def set_attributes(self, att_dict):
 
     nco_command = "ncatted -O -h "
     for i in att_dict:
-        nco_command += "-a authors,global,o,c,'" + att_dict[i]+ "' "
+        nco_command += "-a " + i + ",global,o,c,'" + att_dict[i]+ "' "
 
     target = ""
     if type(self.start) is list:
