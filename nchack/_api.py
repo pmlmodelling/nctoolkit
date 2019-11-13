@@ -510,5 +510,7 @@ class DataSet(object):
     from._twofiles import subtract
     from._twofiles import divide
 
+    from._compare import compare_all
+
 
 
