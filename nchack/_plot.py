@@ -98,9 +98,9 @@ def autoplot(self, log = False, panel = False):
         self_min = self.to_xarray(decode_times = decode_times).rename({self.variables[0]: "x"}).x.min()
         v_max = max(self_max.values, -self_min.values)
         if self_max.values > 0 and self_min.values < 0:
-            return self.to_xarray(decode_times = decode_times).hvplot.image(lon_name, lat_name, self.variables[0], dynamic = False,  logz = log, cmap = "seismic").redim.range(**{self.variables[0]:(-v_max,v_max)})
+            return self.to_xarray(decode_times = decode_times).hvplot.image(lon_name, lat_name, self.variables[0], dynamic = True,  logz = log, cmap = "seismic").redim.range(**{self.variables[0]:(-v_max,v_max)})
         else:
-            return self.to_xarray(decode_times = decode_times).hvplot.image(lon_name, lat_name, self.variables[0], dynamic = False,  logz = log, cmap = "viridis").redim.range(**{self.variables[0]:(-self_min.values, v_max)})
+            return self.to_xarray(decode_times = decode_times).hvplot.image(lon_name, lat_name, self.variables[0], dynamic = True,  logz = log, cmap = "viridis").redim.range(**{self.variables[0]:(-self_min.values, v_max)})
 
     if n_points > 1 and n_levels <= 1:
         out = subprocess.run("cdo griddes " + self.current, shell = True, capture_output = True)
@@ -108,7 +108,7 @@ def autoplot(self, log = False, panel = False):
         lat_name = [x for x in str(out.stdout).replace("b'", "").split("\\n") if "yname" in x][0].split(" ")[-1]
 
         variables = self.variables
-        return self.to_xarray(decode_times = decode_times).hvplot.image(lon_name, lat_name, variables, dynamic = False, cmap = "viridis", logz = log)
+        return self.to_xarray(decode_times = decode_times).hvplot.image(lon_name, lat_name, variables, dynamic = True, cmap = "viridis", logz = log)
 
 
 
