@@ -1,4 +1,5 @@
 import os
+import warnings
 import xarray as xr
 import pandas as pd
 import subprocess
@@ -123,7 +124,7 @@ def open_data(x = None):
         orig_size = len(x)
         x = list(set(x))
         if len(x) < orig_size:
-            print("Warning: duplicates in data set have been removed!")
+            warnings.warn(message = "Duplicates in data set have been removed!")
 
     if type(x) is list:
         for ff in x:
@@ -335,6 +336,7 @@ class DataSet(object):
         """
         self.run = False 
         self.hold_history = copy.deepcopy(self.history)
+
 
     def copy(self):
         """
