@@ -1,5 +1,6 @@
 import unittest
 import nchack as nc
+nc.options(lazy= True)
 import pandas as pd
 import xarray as xr
 import os
@@ -17,13 +18,13 @@ class TestSelect(unittest.TestCase):
         tracker.annual_mean()
         tracker.mean()
         tracker.spatial_mean()
+        tracker.release()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         self.assertEqual(x, 18.360414505004883)
 
     def test_lazy1(self):
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
-        tracker.lazy()
         tracker.select_years(list(range(1950, 1959))) 
         tracker.select_months([1,2,3,4,5])
         tracker.clip(lon = [0,90])
@@ -50,6 +51,7 @@ class TestSelect(unittest.TestCase):
         tracker.annual_mean()
         tracker.mean()
         tracker.spatial_mean()
+        tracker.release()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         self.assertEqual(x, 18.360414505004883)
         self.assertEqual(n_files, 169)
@@ -60,7 +62,6 @@ class TestSelect(unittest.TestCase):
         tracker = nc.open_data(ff)
         tracker.split(by = "year")
         n_files = len(tracker.current)
-        tracker.lazy()
         tracker.merge_time()
         tracker.select_years(list(range(1950, 1959))) 
         tracker.select_months([1,2,3,4,5])
@@ -82,6 +83,7 @@ class TestSelect(unittest.TestCase):
         tracker.mean()
         tracker.ensemble_mean()
         tracker.spatial_mean()
+        tracker.release()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         self.assertEqual(x, 17.881811141967773)
 
@@ -127,6 +129,7 @@ class TestSelect(unittest.TestCase):
         tracker.seasonal_mean_climatology()
         tracker.select_months(2)
         tracker.spatial_mean()
+        tracker.release()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         self.assertEqual(x, 17.8525390625)
 
@@ -135,10 +138,12 @@ class TestSelect(unittest.TestCase):
         tracker1 = nc.open_data(ff)
         tracker2 = nc.open_data(ff)
         tracker2.rename({"sst": "tos"})
+        tracker2.release()
         tracker = nc.merge(tracker1, tracker2)
         tracker.transmute({"bias":"sst-tos"})
         tracker.mean()
         tracker.spatial_mean()
+        tracker.release()
         x = tracker.to_xarray().bias.values[0][0][0].astype("float")
         self.assertEqual(x, 0)
 
@@ -149,6 +154,7 @@ class TestSelect(unittest.TestCase):
         tracker.annual_anomaly(baseline = [1950, 1959])
         tracker.spatial_mean()
         tracker.mean()
+        tracker.release()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         self.assertEqual(x, -0.17559902369976044)
 
