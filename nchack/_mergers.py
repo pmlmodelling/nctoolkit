@@ -1,6 +1,11 @@
 
 
 import warnings
+def custom_formatwarning(msg, *args, **kwargs):
+    # ignore everything except the message
+    return str(msg) + '\n'
+
+warnings.formatwarning = custom_formatwarning
 import copy
 import os
 import pandas as pd

@@ -5,6 +5,7 @@ import multiprocessing
 import math
 import subprocess
 import re
+import sys
 
 from ._temp_file import temp_file
 from ._cleanup import cleanup
@@ -13,6 +14,15 @@ from .flatten import str_flatten
 from ._session import session_stamp
 from ._session import session_info
 
+#def warning_on_one_line(message, category, filename, lineno, file=None, line=None):
+    #return '%s:%s: %s: %s\n' % (filename, lineno, category.__name__, message)
+
+def custom_formatwarning(msg, *args, **kwargs):
+    # ignore everything except the message
+    return str(msg) + '\n'
+
+warnings.formatwarning = custom_formatwarning
+#warnings.formatwarning = warning_on_one_line
 
 def split_list(seq, num):
     avg = len(seq) / float(num)
@@ -135,9 +145,9 @@ def run_cdo(command, target, out_file = None):
                         warnings.warn(message = "CDO warning:" + x.replace("b'Warning:", "").replace("Warning:",""))
 
             if len(missing_years) >0:
-                warnings.warn(message = "CDO warning: Years " + str_flatten(missing_years, ",") + " are missing")
+                warnings.warn(message = "CDO warning: Years " + str_flatten(missing_years, ",") + " are missing", stacklevel = 2)
             if len(missing_months) >0:
-                warnings.warn(message = "CDO warning: Months " + str_flatten(missing_months, ",") + " are missing")
+                warnings.warn(message = "CDO warning: Months " + str_flatten(missing_months, ",") + " are missing", stacklevel = 2)
     else:
         messages = str(result).split("\\n")
 
@@ -168,9 +178,9 @@ def run_cdo(command, target, out_file = None):
                     warnings.warn(message = "CDO warning:" + x.replace("b'Warning:", "").replace("Warning:", ""))
             
         if len(missing_years) >0:
-            warnings.warn(message = "CDO warning: Years " + str_flatten(missing_years, ",") + " are missing!")
+            warnings.warn(message = "CDO warning: Years " + str_flatten(missing_years, ",") + " are missing!", category = Warning)
         if len(missing_months) >0:
-            warnings.warn(message = "CDO warning: Months " + str_flatten(missing_months, ",") + " are missing")
+            warnings.warn(message = "CDO warning: Months " + str_flatten(missing_months, ",") + " are missing", category = Warning)
 
     if os.path.exists(target) == False:
         raise ValueError(command + " was not successful. Check output")

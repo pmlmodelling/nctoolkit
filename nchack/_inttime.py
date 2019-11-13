@@ -1,5 +1,10 @@
 import subprocess
 import warnings
+def custom_formatwarning(msg, *args, **kwargs):
+    # ignore everything except the message
+    return str(msg) + '\n'
+
+warnings.formatwarning = custom_formatwarning
 from ._runthis import run_this
 from .flatten import str_flatten
 

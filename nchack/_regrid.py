@@ -1,5 +1,10 @@
 import subprocess
 import warnings
+def custom_formatwarning(msg, *args, **kwargs):
+    # ignore everything except the message
+    return str(msg) + '\n'
+
+warnings.formatwarning = custom_formatwarning
 import xarray as xr
 import pandas as pd
 import os
