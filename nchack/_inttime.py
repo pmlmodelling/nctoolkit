@@ -1,4 +1,5 @@
 import subprocess
+import warnings
 from ._runthis import run_this
 from .flatten import str_flatten
 
@@ -38,7 +39,7 @@ def time_interp(self, start = None, end = None, resolution = "monthly",   cores 
     if start is None:
         if type(self.current) is list:
             ff = self.current[0]
-            print("Warning: start date taken from first file in data set!")
+            warnings.warn(message = "The start date taken from first file in data set!")
         else:
             ff = self.current
         cdo_command = "cdo showdate " + ff
