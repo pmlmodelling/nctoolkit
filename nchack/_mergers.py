@@ -1,5 +1,6 @@
 
 
+import warnings
 import copy
 import os
 import pandas as pd
@@ -51,7 +52,7 @@ def merge(self, match = ["year", "month", "day"], zip = False):
         ntime = int(cdo_result.split("\\")[0])
         all_times.append(ntime)
     if len(set(all_times)) > 1:
-        print("Warning: files to merge do not have the same number of time steps!")
+        warnings.warn(message = "The files to merge do not have the same number of time steps!")
 
     all_times = []
     for ff in self.current:
