@@ -1,6 +1,7 @@
 # todo:
     # add checker for date validity
 
+import copy
 import os
 import re
 
@@ -175,6 +176,7 @@ def set_attributes(self, att_dict):
         cleanup(keep = self.current)
 
     self.history.append(nco_command)
+    self.hold_history = copy.deepcopy(self.history)
 
 
 
@@ -218,6 +220,9 @@ def set_longnames(self, var_dict):
     nco_command+= self.current + " " + target
 
     target = run_nco(nco_command, target)
+
+    self.history.append(nco_command)
+    self.hold_history = copy.deepcopy(self.history)
 
 
     if target != "":

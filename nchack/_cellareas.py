@@ -1,3 +1,4 @@
+import copy
 from ._runthis import run_this
 from ._runthis import run_cdo
 from ._temp_file import temp_file
@@ -40,6 +41,7 @@ def cell_areas(self, cores = 1, join = True):
         run_cdo(cdo_command, new_target)
 
         self.history.append(cdo_command)
+        self.hold_history = copy.deepcopy(self.history)
 
         nc_safe.append(new_target)
 

@@ -1,5 +1,6 @@
 
 import subprocess
+import warnings
 
 from ._runthis import run_this
 from .flatten import str_flatten
@@ -20,7 +21,7 @@ def bottom(self,  cores = 1):
     # pull the cdo command together, then run it or store it
     if type(self.current) is list:
         ff = self.current[0]
-        print("warning: first file in ensemble used to determine number of vertical levels")
+        warnings.warn(message = "The first file in ensemble used to determine number of vertical levels")
     else:
         ff = self.current
 

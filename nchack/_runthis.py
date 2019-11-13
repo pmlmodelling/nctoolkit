@@ -1,4 +1,5 @@
 import os
+import warnings
 import copy
 import multiprocessing
 import math
@@ -48,10 +49,10 @@ def run_nco(command, target, out_file = None):
                 raise ValueError(str(result).replace("b'","").replace("\\n", "").replace("'", ""))
             session_stamp["temp_dir"] = "/var/tmp/"
             if "Warning:" in str(result1):
-                print("NCO warning:" + str(result1))
+                warnings.warn(message = "NCO warning:" + str(result1))
     else:
         if "Warning:" in str(result):
-            print("NCO warning:" + str(result))
+            warnings.warn(message = "NCO warning:" + str(result))
             
     if target != "":
         if os.path.exists(target) == False:
@@ -131,12 +132,12 @@ def run_cdo(command, target, out_file = None):
                         d = re.findall('([1-9][0-9]?|100)', x)
                         missing_months.append(d[0])
                     if print_result1:
-                        print("CDO warning:" + x.replace("b'Warning:", "").replace("Warning:",""))
+                        warnings.warn(message = "CDO warning:" + x.replace("b'Warning:", "").replace("Warning:",""))
 
             if len(missing_years) >0:
-                print("CDO warning: Years " + str_flatten(missing_years, ",") + " are missing")
+                warnings.warn(message = "CDO warning: Years " + str_flatten(missing_years, ",") + " are missing")
             if len(missing_months) >0:
-                print("CDO warning: Months " + str_flatten(missing_months, ",") + " are missing")
+                warnings.warn(message = "CDO warning: Months " + str_flatten(missing_months, ",") + " are missing")
     else:
         messages = str(result).split("\\n")
 
@@ -164,12 +165,12 @@ def run_cdo(command, target, out_file = None):
                     print_result = False
 
                 if print_result:
-                    print("CDO warning:" + x.replace("b'Warning:", "").replace("Warning:", ""))
+                    warnings.warn(message = "CDO warning:" + x.replace("b'Warning:", "").replace("Warning:", ""))
             
         if len(missing_years) >0:
-            print("CDO warning: Years " + str_flatten(missing_years, ",") + " are missing!")
+            warnings.warn(message = "CDO warning: Years " + str_flatten(missing_years, ",") + " are missing!")
         if len(missing_months) >0:
-            print("CDO warning: Months " + str_flatten(missing_months, ",") + " are missing")
+            warnings.warn(message = "CDO warning: Months " + str_flatten(missing_months, ",") + " are missing")
 
     if os.path.exists(target) == False:
         raise ValueError(command + " was not successful. Check output")
@@ -198,7 +199,7 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
     if self.run:
 
         if (output == "ensemble" and type(self.current) == list) or (output == "ensemble" and type(self.current) == str):
-            new_history = self.hold_history
+            new_history = copy.deepcopy(self.hold_history)
 
             if type(self.current) == str:
                 file_list = [self.current]
@@ -263,13 +264,14 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
 
             if self.run:
                 cleanup()
+            self.hold_history = copy.deepcopy(self.history)
 
             return None
 
 
         if (output == "one" and type(self.current) == list):
 
-            new_history = self.hold_history
+            new_history = copy.deepcopy(self.hold_history)
 
             file_list = [self.current]
 
@@ -313,5 +315,6 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
             if self.run:
                 cleanup()
 
+            self.hold_history = copy.deepcopy(self.history)
 
 

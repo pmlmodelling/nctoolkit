@@ -93,6 +93,7 @@ def ensemble_nco(self, method, vars = None, ignore_time = False):
 
     #add the call to the history and tempfile to nc_safe
     self.history.append(nco_command)
+    self.hold_history = copy.deepcopy(self.history)
 
     self.current = target 
     nc_safe.append(self.current)

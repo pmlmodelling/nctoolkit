@@ -42,6 +42,7 @@ def cor(self, var1 = None, var2 = None, method = "fld"):
     target = run_cdo(cdo_command, target)
 
     self.history.append(cdo_command)
+    self.hold_history = copy.deepcopy(self.history)
     self.current = target
     nc_safe.append(self.current)
 
