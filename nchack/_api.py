@@ -469,6 +469,7 @@ class DataSet(object):
     from ._fldstat import spatial_max
     from ._fldstat import spatial_range
     from ._fldstat import spatial_sum
+    from ._fldstat import spatial_percentile
 
     from ._verticals import vertical_mean 
     from ._verticals import vertical_min

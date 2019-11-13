@@ -81,3 +81,26 @@ def spatial_sum(self, cores = 1):
 
     """
     return fldstat(self, stat = "sum", cores = cores)
+
+def spatial_percentile(self, p = 50, cores = 1):
+    """
+    Calculate the spatial sum of variables. This is performed for each time step.
+
+    Parameters
+    -------------
+    cores: int
+        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+    p: int or float
+        Percentile to calculate
+
+    """
+    if type(p) not in (int, float):
+        raise ValueError(p + " is not a valid percentile")
+
+    cdo_command = "cdo -fldpctl," + str(p) 
+
+    run_this(cdo_command, self,  output = "ensemble", cores = cores)
+
+
+
+
