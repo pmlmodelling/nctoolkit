@@ -1,4 +1,5 @@
 import subprocess
+import warnings
 import xarray as xr
 import pandas as pd
 import os
@@ -56,7 +57,7 @@ def regrid(self, grid = None, method = "bil", cores = 1):
             grid = grid.current
         else:
             grid = grid.current[0]
-            print("Warning: first file in dataset used for regridding!")
+            warnings.warn(message = "The first file in dataset used for regridding!")
         grid_type = "nc"
 
     if grid_type is None:
