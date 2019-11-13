@@ -21,6 +21,7 @@ def autoplot(self, log = False, panel = False):
 
     if self.run == False:
         self.release()
+        self.run = False 
 
     if type(self.current) is list:
         raise ValueError("You cannot view multiple files!")
@@ -114,4 +115,6 @@ def autoplot(self, log = False, panel = False):
     # Throw an error if case has not plotting method available yet
 
     raise ValueError("Autoplot method for this type of data is not yet available!")
+
+
 

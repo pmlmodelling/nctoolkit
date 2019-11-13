@@ -46,7 +46,6 @@ def set_date(self, year, month, day, step = None, base_year = 1900):
         cdo_command = "cdo -L -setreftime," + str(base_year) + "-01-01 -setdate," + str(year) + "-" + str(month) + "-" + str(day)
     else:
         cdo_command = "cdo -L -setreftime," + str(base_year) + "-01-01 -settaxis," + str(year) + "-" + str(month) + "-" + str(day) + ",12:00:00," + step + " -setcalendar,gregorian"
-        print(cdo_command)
         
 
     run_this(cdo_command, self,  output = "ensemble")
@@ -141,7 +140,8 @@ def set_attributes(self, att_dict):
     """
 
     if self.run == False:
-        ValueError("NCO methods do not work in hold mode")
+        self.release()
+        self.run = False
 
     if type(self.current) is not str:
         ValueError("Method does not yet work with ensembles")
@@ -193,7 +193,8 @@ def set_longnames(self, var_dict):
     """
 
     if self.run == False:
-        ValueError("NCO methods do not work in hold mode")
+        self.release()
+        self.run = False
 
     if type(self.current) is not str:
         ValueError("Method does not yet work with ensembles")

@@ -24,10 +24,8 @@ def annual_anomaly(self,  baseline = None, change = "absolute", window = 1):
     # release if set to lazy
 
     if self.run == False:
-        lazy_eval = True
         self.release()
-    else:
-        lazy_eval = False
+        self.run = False
 
     if type(self.current) is not str:
         raise ValueError("Splitting the file by year did not work!")
@@ -62,7 +60,5 @@ def annual_anomaly(self,  baseline = None, change = "absolute", window = 1):
     nc_safe.append(target)
 
 
-    if lazy_eval:
-        self.run = False
 
 

@@ -23,7 +23,7 @@ def cell_areas(self, cores = 1, join = True):
 
     if join and self.run == False:
         self.release()
-        lazy_eval = True
+        self.run = False 
 
     if join:
         target = temp_file(".nc")
@@ -56,8 +56,6 @@ def cell_areas(self, cores = 1, join = True):
     self.set_units({"cell_area": "m2"})
 
 
-    if lazy_eval:
-        self.run = False
 
 
 

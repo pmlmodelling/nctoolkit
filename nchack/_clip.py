@@ -21,6 +21,7 @@ def clip(self, lon = [-180, 180], lat = [-90, 90], cdo = True, cores = 1):
         Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
     """
 
+
     if  type(lon) is not list or type(lat) is not list:
         raise ValueError("Check that lon/lat ranges are tuples")
     
@@ -47,7 +48,9 @@ def clip(self, lon = [-180, 180], lat = [-90, 90], cdo = True, cores = 1):
         else:
             if type(self.current) is list:
                 raise ValueError("This method only works for single files at present")
-            self.release()
+            if self.run == False:
+                self.release()
+                self.run = False
             out = subprocess.run("cdo griddes " + self.current, shell = True, capture_output = True)
             lon_name = [x for x in str(out.stdout).replace("b'", "").split("\\n") if "xname" in x][0].split(" ")[-1]
             lat_name = [x for x in str(out.stdout).replace("b'", "").split("\\n") if "yname" in x][0].split(" ")[-1]
@@ -61,6 +64,7 @@ def clip(self, lon = [-180, 180], lat = [-90, 90], cdo = True, cores = 1):
                 nc_safe.remove(self.current)
             self.current = target
             nc_safe.append(self.current)
+            self.run = lazy_eval == False
     else:
         raise ValueError("The lonlat box supplied is not valid!")
 

@@ -10,6 +10,7 @@ def to_xarray(self, decode_times = True):
         Set to False if you do not want xarray to decode the times. Default is True. 
 
     """
+
     
     if type(self.current) is str:
         data = xr.open_dataset(self.current, decode_times = decode_times)

@@ -63,6 +63,7 @@ def ensemble_nco(self, method, vars = None, ignore_time = False):
     # This method cannot possibly be chained. Release it
     if self.run == False:
         self.release()
+        self.run = False 
 
     ff_ensemble = self.current
 

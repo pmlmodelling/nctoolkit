@@ -26,7 +26,6 @@ def phenology(self, var = None, cores = 1):
 
     """
 
-
     if var is None:
         raise ValueError("No var was supplied")
     if type(var) is not str:
@@ -44,6 +43,7 @@ def phenology(self, var = None, cores = 1):
 
     if self.run == False:
         self.release()
+        self.run = False
     
     start_files = copy.deepcopy(self.current)
 

@@ -19,7 +19,8 @@ def split_cdo(self, method = "year"):
     Method to split files by period 
     """
     if self.run == False:
-        raise ValueError("This cannot be run with held over commands. Please release commands prior to running")
+        self.release()
+        self.run = False
 
     if type(self.current) is str:
         ff_list = [self.current]

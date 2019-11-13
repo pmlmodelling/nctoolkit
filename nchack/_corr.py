@@ -26,9 +26,9 @@ def cor(self, var1 = None, var2 = None, method = "fld"):
 
     if self.run == False:
         self.release()
+        self.run = False
 
     target = temp_file(".nc")
-
 
     variables = self.variables
 

@@ -21,6 +21,8 @@ def release(self,  cores = 1, run_merge = True):
     # the first step is to set the run status to true
     if self.run:
         return("Warning: dataset is in run mode. Nothing to release")
+    if self.run == False and len(self.hold_history) == len(self.history):
+        return("Warning: dataset is in run mode. Nothing to release")
 
     if self.run == False:
         self.run = True

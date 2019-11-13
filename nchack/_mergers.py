@@ -29,14 +29,11 @@ def merge(self, match = ["year", "month", "day"], zip = False):
     if self.merged:
         raise ValueError("You cannot double chain merge methods!")
 
-    lazy_merger = copy.deepcopy(self.run)
-
     # Force a release if needed
     if self.run == False:
         self.release()
+        self.run = False
 
-    if lazy_merger == False:
-        self.lazy()
 
     if type(match) is list:
         match = [y.lower() for y in match]
@@ -90,7 +87,6 @@ def merge(self, match = ["year", "month", "day"], zip = False):
 
 
 
-
 def merge_time(self, zip = True):
 
     """
@@ -110,9 +106,7 @@ def merge_time(self, zip = True):
 
     if self.run == False and (len(self.history) > len(self.hold_history)):
         self.release()
-
-    if lazy_merger == False:
-        self.lazy()
+        self.run = False
 
     self.merged = True
 
