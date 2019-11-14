@@ -44,11 +44,11 @@ atexit.register(clean_all)
 # run temp_check to see if any files are held over from previous sessions
 temp_check()
 
-
 result = os.statvfs("/tmp/")
 session_info["size"] = result.f_frsize * result.f_bavail
 session_info["latest_size"] = 0
 session_info["cores"] = 1
+
 
 def options(**kwargs):
     """
@@ -71,15 +71,14 @@ def options(**kwargs):
             raise AttributeError(key + " is not a valid option")
         if type(kwargs[key]) is not bool:
             if key == "cores":
-                session_info[key] = kwargs[key]
+                if type(session_info[key]) is not int:
+                    session_info[key] = kwargs[key]
+                else:
+                    raise AttributeError("cores must be an int")
             else:
-                raise AttributeError("thread_safe must be True or False")
+                raise AttributeError(key + " is not valid session info!")
         else:
             session_info[key] = kwargs[key]
-
-
-
-
 
 
 def convert_bytes(num):
@@ -99,6 +98,7 @@ def file_size(file_path):
     if os.path.isfile(file_path):
         file_info = os.stat(file_path)
         return file_info.st_size
+
 
 
 def open_data(x = None):
@@ -149,6 +149,7 @@ def open_data(x = None):
             x = x[0]
 
     return DataSet(x)
+
 
 def merge(*trackers, match = ["year", "month", "day"]):
     all_files = []
@@ -454,7 +455,6 @@ class DataSet(object):
     from ._time_stat import var
     from ._time_stat import sum
     from ._time_stat import cum_sum
-    #from ._time_stat import percentile
 
     from ._release import release
 
@@ -512,6 +512,7 @@ class DataSet(object):
     from ._inttime import time_interp
 
     from ._cleanup import disk_clean
+
 
     from ._time_sort import sort_times
     from ._safe import safe_list
