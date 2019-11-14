@@ -88,7 +88,7 @@ def autoplot(self, log = False, panel = False):
         else:
             return df.reset_index().set_index("time").loc[:, self.variables].reset_index().melt("time").set_index("time").hvplot(groupby = "variable", logy = log, dynamic = True)
 
-    if n_points > 1 and n_levels <= 1 & len(self.variables) == 1:
+    if n_points > 1 and n_levels <= 1 and len(self.variables) == 1:
         out = subprocess.run("cdo griddes " + self.current, shell = True, capture_output = True)
         lon_name = [x for x in str(out.stdout).replace("b'", "").split("\\n") if "xname" in x][0].split(" ")[-1]
         lat_name = [x for x in str(out.stdout).replace("b'", "").split("\\n") if "yname" in x][0].split(" ")[-1]
@@ -102,7 +102,7 @@ def autoplot(self, log = False, panel = False):
         else:
             return self.to_xarray(decode_times = decode_times).hvplot.image(lon_name, lat_name, self.variables[0], dynamic = True,  logz = log, cmap = "viridis").redim.range(**{self.variables[0]:(-self_min.values, v_max)})
 
-    if n_points > 1 and n_levels <= 1:
+    if n_points > 1 and n_levels <= 1 and len(self.variables) > 1:
         out = subprocess.run("cdo griddes " + self.current, shell = True, capture_output = True)
         lon_name = [x for x in str(out.stdout).replace("b'", "").split("\\n") if "xname" in x][0].split(" ")[-1]
         lat_name = [x for x in str(out.stdout).replace("b'", "").split("\\n") if "yname" in x][0].split(" ")[-1]
