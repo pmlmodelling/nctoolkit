@@ -50,7 +50,7 @@ def run_nco(command, target, out_file = None):
 
     if "ERROR" in str(result):
        if target.startswith("/tmp/"):
-            new_target = target.replace("/tmp/", "/var/tmp/") 
+            new_target = target.replace("/tmp/", "/var/tmp/")
             command = command.replace(target, new_target)
             target = new_target
             out = subprocess.Popen(command,shell = True, stdin = subprocess.PIPE,stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
@@ -63,7 +63,7 @@ def run_nco(command, target, out_file = None):
     else:
         if "Warning:" in str(result):
             warnings.warn(message = "NCO warning:" + str(result))
-            
+
     if target != "":
         if os.path.exists(target) == False:
             raise ValueError(command + " was not successful. Check output")
@@ -86,13 +86,13 @@ def run_cdo(command, target, out_file = None):
     out = subprocess.Popen(command,shell = True, stdin = subprocess.PIPE,stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
     out.wait()
     result,ignore = out.communicate()
-    
+
 
     if out_file is not None:
         if str(result).startswith("b'Error") or "HDF error" in str(result) or out.returncode != 0:
             raise ValueError(str(result).replace("b'","").replace("\\n", "").replace("'", ""))
         else:
-            return out_file 
+            return out_file
 
     if "sellonlat" in command and "std::bad_alloc" in str(result):
         raise ValueError("Is the horizontal grid very large? Consider setting cdo=False in clip!")
@@ -102,10 +102,10 @@ def run_cdo(command, target, out_file = None):
 
     if str(result).startswith("b'Error") or "HDF error" in str(result) or out.returncode != 0:
        if target.startswith("/tmp/"):
-            new_target = target.replace("/tmp/", "/var/tmp/") 
+            new_target = target.replace("/tmp/", "/var/tmp/")
             command = command.replace(target, new_target)
             target = new_target
-        
+
             out = subprocess.Popen(command,shell = True, stdin = subprocess.PIPE,stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
             out.wait()
             result1,ignore = out.communicate()
@@ -176,7 +176,7 @@ def run_cdo(command, target, out_file = None):
 
                 if print_result:
                     warnings.warn(message = "CDO warning:" + x.replace("b'Warning:", "").replace("Warning:", ""))
-            
+
         if len(missing_years) >0:
             warnings.warn(message = "CDO warning: Years " + str_flatten(missing_years, ",") + " are missing!", category = Warning)
         if len(missing_months) >0:
@@ -192,7 +192,7 @@ def run_cdo(command, target, out_file = None):
 
 
 
-def run_this(os_command, self, silent = False, output = "one", cores = 1, n_operations = 1, zip = False, out_file = None):
+def run_this(os_command, self, silent = False, output = "one", cores = 1,  out_file = None):
 
     start_files = copy.deepcopy(self.current)
 
@@ -228,12 +228,12 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
             self.history = new_history
 
             for ff in file_list:
-    
+
                 if silent:
                     ff_command = os_command.replace("cdo ", "cdo -s ")
                 else:
                     ff_command = copy.deepcopy(os_command)
-    
+
                 target = temp_file("nc")
 
                 if out_file is not None:
@@ -244,7 +244,7 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
                 self.history.append(ff_command)
                 temp = pool.apply_async(run_cdo,[ff_command, target, out_file])
                 results[ff] = temp
-    
+
             pool.close()
             pool.join()
             new_current = []
@@ -253,7 +253,7 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
 
             if type(self.current) == str:
                 target_list = target_list[0]
-    
+
             self.current = copy.deepcopy(target_list)
 
             if type(self.current) is str:
@@ -261,7 +261,7 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
             else:
                 for ff in self.current:
                     nc_safe.append(ff)
-            
+
             if type(start_files) is str:
                 if start_files in nc_safe:
                     nc_safe.remove(start_files)
@@ -291,7 +291,7 @@ def run_this(os_command, self, silent = False, output = "one", cores = 1, n_oper
             target = temp_file("nc")
             os_command = os_command + " " +  str_flatten(self.current, " ") + " " + target
             os_command = os_command.replace("  ", " ")
-            
+
             if " --sortname " in os_command:
                 os_command = os_command.replace(" --sortname ", " ")
                 if "cdo -L" in os_command:
