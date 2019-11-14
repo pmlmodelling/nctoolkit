@@ -71,7 +71,7 @@ def options(**kwargs):
             raise AttributeError(key + " is not a valid option")
         if type(kwargs[key]) is not bool:
             if key == "cores":
-                if type(session_info[key]) is not int:
+                if type(session_info[key]) is int:
                     session_info[key] = kwargs[key]
                 else:
                     raise AttributeError("cores must be an int")
@@ -361,9 +361,10 @@ class DataSet(object):
                 nc_safe.append(ff)
         return new
 
-    def str_flatten(L, sep = ","):
-        result = sep.join(str(x) for x in L)
-        return(result)
+ #   def str_flatten(L, sep = ","):
+ #       result = sep.join(str(x) for x in L)
+ #       return(result)
+
     def __del__(self):
         if type(self.current) is str:
             if self.current in nc_safe:
