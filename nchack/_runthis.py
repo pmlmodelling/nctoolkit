@@ -195,6 +195,8 @@ def run_cdo(command, target, out_file = None):
 def run_this(os_command, self, silent = False, output = "one",  out_file = None):
 
     cores = session_info["cores"]
+    if type(cores) is not int:
+        raise ValueError("cores is " + cores + ", not an int. Fix using options!")
 
     start_files = copy.deepcopy(self.current)
 
