@@ -14,8 +14,8 @@ from ._generate_grid import generate_grid
 from ._session import nc_safe
 from ._cleanup import cleanup
 from ._cleanup import clean_all
-from ._cleanup import deep_clean 
-from ._cleanup import temp_check 
+from ._cleanup import deep_clean
+from ._cleanup import temp_check
 from netCDF4 import Dataset
 import copy
 
@@ -24,8 +24,8 @@ from ._temp_file import temp_file
 import random
 import string
 
-from ._create_ensemble import create_ensemble 
-from ._create_ensemble import generate_ensemble 
+from ._create_ensemble import create_ensemble
+from ._create_ensemble import generate_ensemble
 
 from ._show import nc_variables
 from ._session import session_stamp
@@ -35,7 +35,7 @@ from ._session import session_info
 letters = string.ascii_lowercase
 session_stamp["stamp"] = "nchack" + "".join(random.choice(letters) for i in range(8)) + "nchack"
 session_stamp["temp_dir"] = "/tmp/"
-session_info["thread_safe"] = False 
+session_info["thread_safe"] = False
 session_info["lazy"] = False
 
 import atexit
@@ -46,8 +46,9 @@ temp_check()
 
 
 result = os.statvfs("/tmp/")
-session_info["size"] = result.f_frsize * result.f_bavail 
-session_info["latest_size"] = 0 
+session_info["size"] = result.f_frsize * result.f_bavail
+session_info["latest_size"] = 0
+session_info["cores"] = 1
 
 def options(**kwargs):
     """
@@ -63,12 +64,16 @@ def options(**kwargs):
 
     """
 
-    valid_keys = ["thread_safe", "lazy"] 
+    valid_keys = ["thread_safe", "lazy", "cores"]
+
     for key in kwargs:
         if key not in valid_keys:
             raise AttributeError(key + " is not a valid option")
-        if type(kwargs[key]) is not bool: 
-            raise AttributeError("thread_safe must be True or False")
+        if type(kwargs[key]) is not bool:
+            if key == "cores":
+                session_info[key] = kwargs[key]
+            else:
+                raise AttributeError("thread_safe must be True or False")
         else:
             session_info[key] = kwargs[key]
 
@@ -83,7 +88,7 @@ def convert_bytes(num):
     """
     for x in ['bytes', 'KB', 'MB', 'GB', 'TB']:
         if num < 1000.0:
-            return str(num) + " " + x 
+            return str(num) + " " + x
         num /= 1000.0
 
 
@@ -99,7 +104,7 @@ def file_size(file_path):
 def open_data(x = None):
 
     """
-    Read netcdf data as a DataSet object 
+    Read netcdf data as a DataSet object
 
     Parameters
     ---------------
@@ -144,7 +149,7 @@ def open_data(x = None):
             x = x[0]
 
     return DataSet(x)
-    
+
 def merge(*trackers, match = ["year", "month", "day"]):
     all_files = []
     for tracker in trackers:
@@ -165,8 +170,8 @@ class DataSet(object):
         self.history = []
         self.start = start
         self.current = start
-        self.weights = None 
-        self.grid = None 
+        self.weights = None
+        self.grid = None
         if session_info["lazy"]:
             self.run = False
         else:
@@ -199,7 +204,7 @@ class DataSet(object):
 
     @property
     def size(self):
-        """The size of an object 
+        """The size of an object
         This will print the number of files, total size, and smallest and largest files in an DataSet object.
         """
         if type(self.current) is str:
@@ -208,11 +213,11 @@ class DataSet(object):
             print(result)
         else:
             all_sizes = []
-            
+
             smallest_file = ""
             largest_file = ""
-            min_size = 1e15 
-            max_size = -1 
+            min_size = 1e15
+            max_size = -1
 
             for ff in self.current:
 
@@ -233,7 +238,7 @@ class DataSet(object):
             result = "Number of files in ensemble: " + str(len(self.current)) + "\n"
             result = result + "Ensemble size: " + sum_size  + "\n"
             result = result + "Smallest file " + smallest_file + " has size "  + min_size  + "\n"
-            result = result + "Largest file " + largest_file + " has size "  + max_size 
+            result = result + "Largest file " + largest_file + " has size "  + max_size
             print(result)
 
     @property
@@ -242,14 +247,14 @@ class DataSet(object):
         Variables contained in an object's netcdf file.
         This will check the netcfile's contents, if it is a single file DataSet object.
         """
-        
+
         if type(self.current) is list:
             print("This DataSet object is a list. Please inspect individual files using nc_variables")
-  
+
         cdo_result = subprocess.run("cdo showname " + self.current, shell = True, capture_output = True)
         cdo_result = str(cdo_result.stdout).replace("b'", "").replace("\\n", "").replace("'", "").strip()
         cdo_result = cdo_result.split()
-  
+
         return(cdo_result)
 
     @property
@@ -258,10 +263,10 @@ class DataSet(object):
         Variables contained in an object's netcdf file.
         This will check the netcfile's contents, if it is a single file DataSet object.
         """
-        
+
         if type(self.current) is list:
             print("This DataSet object is a list. Please inspect individual files using nc_variables")
-  
+
         cdo_result = subprocess.run("cdo showname " + self.current, shell = True, capture_output = True)
         cdo_result = str(cdo_result.stdout).replace("b'", "").replace("\\n", "").replace("'", "").strip()
         cdo_result = cdo_result.split()
@@ -283,7 +288,7 @@ class DataSet(object):
         if units is not None:
             df["units"] = units
         return df
-            
+
 
     @property
     def start(self):
@@ -316,7 +321,7 @@ class DataSet(object):
     @property
     def history(self):
         """
-        The history of operations on the DataSet 
+        The history of operations on the DataSet
         """
         return self._history
 
@@ -327,7 +332,7 @@ class DataSet(object):
     @property
     def run(self):
         """
-        Is the object in run or lazy eval mode? 
+        Is the object in run or lazy eval mode?
         """
         return self._run
 
@@ -337,9 +342,9 @@ class DataSet(object):
 
     def lazy(self):
         """
-        Set the method evaluation mode to lazy 
+        Set the method evaluation mode to lazy
         """
-        self.run = False 
+        self.run = False
         self.hold_history = copy.deepcopy(self.history)
 
 
@@ -372,7 +377,7 @@ class DataSet(object):
     @start.deleter
     def start(self):
         raise AttributeError("You cannot delete the start point")
- 
+
     from ._toxarray import to_xarray
     from ._cellareas import cell_areas
     from ._regrid import regrid
@@ -390,16 +395,16 @@ class DataSet(object):
 
     from ._cdo_command import cdo_command
 
-    from ._expr import mutate 
-    from ._expr import transmute 
+    from ._expr import mutate
+    from ._expr import transmute
 
     from ._select import select_season
     from ._select import select_months
     from ._select import select_years
 
-    from ._seasstat import seasonal_mean 
+    from ._seasstat import seasonal_mean
     from ._seasstat import seasonal_min
-    from ._seasstat import seasonal_max 
+    from ._seasstat import seasonal_max
     from ._seasstat import seasonal_range
 
     from ._seasclim import seasonal_mean_climatology
@@ -407,9 +412,9 @@ class DataSet(object):
     from ._seasclim import seasonal_max_climatology
     from ._seasclim import seasonal_range_climatology
 
-    from ._yearlystat import annual_mean 
+    from ._yearlystat import annual_mean
     from ._yearlystat import annual_min
-    from ._yearlystat import annual_max 
+    from ._yearlystat import annual_max
     from ._yearlystat import annual_range
 
     from ._monstat import monthly_mean
@@ -427,11 +432,11 @@ class DataSet(object):
     from ._dailyclim import daily_max_climatology
     from ._dailyclim import daily_range_climatology
 
-    from ._to_nc import write_nc 
+    from ._to_nc import write_nc
 
-    from ._rename import rename 
+    from ._rename import rename
 
-    from ._setters import set_date 
+    from ._setters import set_date
     from ._setters import set_missing
     from ._setters import set_units
     from ._setters import set_longnames
@@ -441,7 +446,7 @@ class DataSet(object):
     from ._setters import assign_coords
 
 
-    from ._time_stat import mean 
+    from ._time_stat import mean
     from ._time_stat import percentile
     from ._time_stat import max
     from ._time_stat import min
@@ -449,13 +454,13 @@ class DataSet(object):
     from ._time_stat import var
     from ._time_stat import sum
     from ._time_stat import cum_sum
-    #from ._time_stat import percentile 
+    #from ._time_stat import percentile
 
-    from ._release import release 
+    from ._release import release
 
     from ._delete import remove_variables
 
-    from ._mergers import merge_time 
+    from ._mergers import merge_time
     from ._mergers import merge
 
     from ._rollstat import rolling_mean
@@ -465,7 +470,7 @@ class DataSet(object):
     from ._rollstat import rolling_sum
 
     from ._show import times
-    from ._show import years 
+    from ._show import years
     from ._show import months
     from ._show import levels
     from ._show import attributes
@@ -478,13 +483,13 @@ class DataSet(object):
     from ._fldstat import spatial_sum
     from ._fldstat import spatial_percentile
 
-    from ._verticals import vertical_mean 
+    from ._verticals import vertical_mean
     from ._verticals import vertical_min
     from ._verticals import vertical_max
     from ._verticals import vertical_range
     from ._verticals import surface
     from ._verticals import vertical_interp
-    from ._verticals import bottom 
+    from ._verticals import bottom
 
     from ._view import view
 
@@ -492,7 +497,7 @@ class DataSet(object):
 
     from ._checkers import check_dates
     from ._checkers import ensemble_check
-    
+
     from ._corr import cor_space
     from ._corr import cor_time
 
@@ -506,11 +511,11 @@ class DataSet(object):
 
     from ._inttime import time_interp
 
-    from ._cleanup import disk_clean 
+    from ._cleanup import disk_clean
 
     from ._time_sort import sort_times
     from ._safe import safe_list
-    
+
     from._plot import autoplot
 
     from._twofiles import add
