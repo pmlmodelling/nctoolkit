@@ -5,14 +5,10 @@ import warnings
 from ._runthis import run_this
 from .flatten import str_flatten
 
-def bottom(self,  cores = 1):
+def bottom(self):
     """
-    Extract the bottom level from a dataset 
+    Extract the bottom level from a dataset
 
-    Parameters
-    -------------
-    cores: int
-        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
     """
 
@@ -30,25 +26,20 @@ def bottom(self,  cores = 1):
 
     cdo_command = "cdo -sellevidx," + str(n_levels)
 
-    run_this(cdo_command, self,  output = "ensemble", cores = cores)
+    run_this(cdo_command, self,  output = "ensemble")
 
 
-def surface(self,  cores = 1):
+def surface(self):
     """
-    Extract the top/surface level from a dataset 
-
-    Parameters
-    -------------
-    cores: int
-        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+    Extract the top/surface level from a dataset
 
     """
 
     cdo_command = "cdo -sellevidx,1 "
-    run_this(cdo_command, self,  output = "ensemble", cores = cores)
+    run_this(cdo_command, self,  output = "ensemble")
 
 
-def vertical_interp(self, vert_depths = None,  cores = 1):
+def vertical_interp(self, vert_depths = None):
     """
     Verticaly interpolate a dataset based on given depths
 
@@ -56,15 +47,13 @@ def vertical_interp(self, vert_depths = None,  cores = 1):
     -------------
     vert_depths : list
         list of depths to vertical interpolate to
-    cores: int
-        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
     """
-     
+
     # below used for checking whether vertical remapping occurs
 
     vertical_remap = True
-       
+
     # first a quick fix for the case when there is only one vertical depth
 
     if vert_depths != None:
@@ -73,15 +62,15 @@ def vertical_interp(self, vert_depths = None,  cores = 1):
 
   #  if vert_depths == None:
   #      vertical_remap = False
-  #  
+  #
   #  if vert_depths != None:
   #      num_depths = len(self.depths())
   #      if num_depths < 2:
   #          print("There are none or one vertical depths in the file. Vertical interpolation not carried out.")
   #          vertical_remap = False
   #  if ((vert_depths != None) and vertical_remap):
-  #      available_depths = self.depths() 
-    
+  #      available_depths = self.depths()
+
     # Check if min/max depths are outside valid ranges. This should possibly be a warning, not error
     if vertical_remap:
    #     if (min(vert_depths) < min(available_depths)):
@@ -91,70 +80,51 @@ def vertical_interp(self, vert_depths = None,  cores = 1):
 
         vert_depths = str_flatten(vert_depths, ",")
         cdo_command = "cdo intlevel," + vert_depths
-        
-        run_this(cdo_command, self,  output = "ensemble", cores = cores)
+
+        run_this(cdo_command, self,  output = "ensemble")
 
      # throw error if cdo fails at this point
-    
-    
 
 
-def vertstat(self, stat = "mean",  cores = 1):
-    """Method to calculate the vertical mean from a function""" 
+
+
+def vertstat(self, stat = "mean"):
+    """Method to calculate the vertical mean from a function"""
     cdo_command = "cdo -vert" + stat
 
-    run_this(cdo_command, self,  output = "ensemble", cores = cores)
+    run_this(cdo_command, self,  output = "ensemble")
 
     # clean up the directory
 
-def vertical_mean(self,  cores = 1):
+def vertical_mean(self):
     """
-    Calculate the depth-averaged mean 
-
-    Parameters
-    -------------
-    cores: int
-        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+    Calculate the depth-averaged mean
 
     """
 
-    return vertstat(self, stat = "mean",  cores = cores)
+    return vertstat(self, stat = "mean")
 
-def vertical_min(self,  cores = 1):
+def vertical_min(self):
     """
-    Calculate the depth-averaged minimum 
-
-    Parameters
-    -------------
-    cores: int
-        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+    Calculate the depth-averaged minimum
 
     """
 
-    return vertstat(self, stat = "min",  cores = cores)
+    return vertstat(self, stat = "min")
 
-def vertical_max(self,  cores = 1):
+def vertical_max(self):
     """
-    Calculate the depth-averaged maximum 
-
-    Parameters
-    -------------
-    cores: int
-        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+    Calculate the depth-averaged maximum
 
     """
 
-    return vertstat(self, stat = "max",  cores = cores)
-    
-def vertical_range(self,  cores = 1):
-    """
-    Calculate the depth-averaged range 
+    return vertstat(self, stat = "max")
 
-    Parameters
-    -------------
-    cores: int
-        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+def vertical_range(self):
+    """
+    Calculate the depth-averaged range
+
 
     """
 
-    return vertstat(self, stat = "range",  cores = cores)
+    return vertstat(self, stat = "range")

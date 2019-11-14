@@ -1,7 +1,7 @@
 
 from ._runthis import run_this
 
-def rename(self, newnames, cores = 1):
+def rename(self, newnames):
     """
     Rename variables
 
@@ -9,8 +9,6 @@ def rename(self, newnames, cores = 1):
     -------------
     newnames : dict
         Dictionary with keys being old variable names and values being new variable names
-    cores: int
-        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
     """
 
@@ -19,14 +17,14 @@ def rename(self, newnames, cores = 1):
 
     # now, we need to loop through the renaming dictionary to get the cdo sub
     cdo_rename = ""
-    
+
     for key, value in newnames.items():
         cdo_rename +=  "," + key
         cdo_rename += "," + value
 
-    # need a check at this point for file validity     
-    cdo_command= "cdo -chname" + cdo_rename 
+    # need a check at this point for file validity
+    cdo_command= "cdo -chname" + cdo_rename
 
-    run_this(cdo_command, self, output = "ensemble", cores = cores)
+    run_this(cdo_command, self, output = "ensemble")
 
 

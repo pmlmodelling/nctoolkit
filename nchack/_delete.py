@@ -1,7 +1,7 @@
 from .flatten import str_flatten
 from ._runthis import run_this
 
-def remove_variables(self, vars, cores = 1):
+def remove_variables(self, vars):
     """
     Remove variables
 
@@ -9,8 +9,6 @@ def remove_variables(self, vars, cores = 1):
     -------------
     vars : str or list
         Variable or variables to be removed from the data set
-    cores: int
-        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
     """
 
@@ -18,8 +16,8 @@ def remove_variables(self, vars, cores = 1):
         vars = [vars]
 
     vars = str_flatten(vars, ",")
-    
+
     cdo_command = "cdo -delete,name=" + vars
-    run_this(cdo_command, self, output = "ensemble", cores = cores)
-    
-    
+    run_this(cdo_command, self, output = "ensemble")
+
+

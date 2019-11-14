@@ -18,19 +18,17 @@ from ._session import nc_safe
 from ._runthis import run_this
 from ._runthis import run_cdo
 
-def regrid(self, grid = None, method = "bil", cores = 1):
+def regrid(self, grid = None, method = "bil"):
 
     """
     Regrid a dataset for a target grid and remapping method
 
     Parameters
     -------------
-    grid : nchack.DataSet, xarray object, pandas data frame or netcdf file 
-        grid to remap to 
+    grid : nchack.DataSet, xarray object, pandas data frame or netcdf file
+        grid to remap to
     method : str
         remapping method. Defaults to "bil". Bilinear: "bil"; Nearest neighbour: "nn",....
-    cores: int
-        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
     """
 
@@ -46,7 +44,7 @@ def regrid(self, grid = None, method = "bil", cores = 1):
     # If the grid is an xarray object, we need to convert it to .nc
     if isinstance(grid, xr.Dataset):
         grid_type = "xr"
-        temp_nc = temp_file("nc") 
+        temp_nc = temp_file("nc")
         grid.to_netcdf(temp_nc)
         grid = temp_nc
 
@@ -71,12 +69,12 @@ def regrid(self, grid = None, method = "bil", cores = 1):
     # check that the remapping method is valid
     if (method in {"bil", "dis", "nn"}) == False:
         raise ValueError("remapping method is invalid. Please check")
-     
+
      # need code at this point to add missing grid if it's needed
-     
+
      # same with na_value stuff. But maybe that isn't really needed
      # a distraction?
-     
+
      # check the number of grids in the file
 
     # Do do the horizontal regridding
@@ -85,7 +83,7 @@ def regrid(self, grid = None, method = "bil", cores = 1):
 
     if type(self.current) is str:
         self.current = [self.current]
-    
+
     if type(self.current) is list:
         for ff in self.current:
             cdo_result = subprocess.run("cdo griddes " + ff, shell = True, capture_output = True)
@@ -111,7 +109,7 @@ def regrid(self, grid = None, method = "bil", cores = 1):
             raise ValueError("You cannot generate weights as part of a chain currently")
         tracker = open_data(grid_split[key])
 
-        weights_nc = temp_file("nc") 
+        weights_nc = temp_file("nc")
 
 
         if type(tracker.current) is list:
@@ -123,9 +121,9 @@ def regrid(self, grid = None, method = "bil", cores = 1):
         #if os.path.exists(weights_nc) == False:
         #    raise ValueError("Creation of weights failed!")
 
-        cdo_command= "cdo -remap," + self.grid + "," + weights_nc 
+        cdo_command= "cdo -remap," + self.grid + "," + weights_nc
 
-        run_this(cdo_command, tracker,  output = "ensemble", cores = cores)
+        run_this(cdo_command, tracker,  output = "ensemble")
         if type(tracker.current) is str:
             new_files += [tracker.current]
             nc_safe.append(tracker.current)
@@ -136,6 +134,6 @@ def regrid(self, grid = None, method = "bil", cores = 1):
         self.history.append(cdo_command)
         self.hold_history = copy.deepcopy(self.history)
 
-    self.current = new_files 
+    self.current = new_files
     if len(self.current) == 1:
         self.current = self.current[0]

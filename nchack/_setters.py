@@ -16,20 +16,18 @@ def set_date(self, year, month, day, step = None, base_year = 1900):
 
     """
     Set the date in a dataset
-    You should only do this if you have to fix/change a dataset with a single, not multiple dates. 
+    You should only do this if you have to fix/change a dataset with a single, not multiple dates.
 
     Parameters
     -------------
-    year : int 
+    year : int
         The year
-    month : int 
+    month : int
         The month
-    day : int 
+    day : int
         The day
     base_year : int
         The base year for time creation in the netcdf. Defaults to 1900.
-    cores: int
-        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
     """
 
@@ -46,22 +44,20 @@ def set_date(self, year, month, day, step = None, base_year = 1900):
         cdo_command = "cdo -L -setreftime," + str(base_year) + "-01-01 -setdate," + str(year) + "-" + str(month) + "-" + str(day)
     else:
         cdo_command = "cdo -L -setreftime," + str(base_year) + "-01-01 -settaxis," + str(year) + "-" + str(month) + "-" + str(day) + ",12:00:00," + step + " -setcalendar,gregorian"
-        
+
 
     run_this(cdo_command, self,  output = "ensemble")
 
 
 
-def set_missing(self, value,  cores = 1):
+def set_missing(self, value):
     """
     Set the missing value for a single number or a range
 
     Parameters
     -------------
     value : int or list
-        IIf int is supplied, this will be converted to a missing value. If a two variable list is supplied this will used for the range to to apply missing values to. 
-    cores: int
-        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+        IIf int is supplied, this will be converted to a missing value. If a two variable list is supplied this will used for the range to to apply missing values to.
 
     """
 
@@ -73,7 +69,7 @@ def set_missing(self, value,  cores = 1):
     if type(value) is list:
         cdo_command = "cdo -setrtomiss," + str(value[0]) + "," + str(value[1])
 
-    run_this(cdo_command, self,  output = "ensemble", cores = cores)
+    run_this(cdo_command, self,  output = "ensemble")
 
     # clean up the directory
     cleanup(keep = self.current)
@@ -81,7 +77,7 @@ def set_missing(self, value,  cores = 1):
 
 def set_units(self, var_dict):
     """
-    Set the units for variables 
+    Set the units for variables
 
     Parameters
     -------------
@@ -94,19 +90,19 @@ def set_units(self, var_dict):
     # Check that a dictionary has been supplied
     if type(var_dict) is not dict:
         ValueError("A dictionary has not been supplied!")
-    
+
     # change the units in turn. This doesn't seem to be something you can chain?
     for i in var_dict:
         cdo_command = ""
         cdo_command = cdo_command + " -setattribute," + i + "@units=" + '"' + var_dict[i]  + '"'
-        cdo_command = "cdo " + cdo_command 
+        cdo_command = "cdo " + cdo_command
         run_this(cdo_command, self,  output = "ensemble")
 
 
 
 def set_gridtype(self, grid):
     """
-    Set the grid type. Only use this if, for example, the grid is "generic" when it should be lonlat. 
+    Set the grid type. Only use this if, for example, the grid is "generic" when it should be lonlat.
 
     Parameters
     -------------
@@ -124,13 +120,13 @@ def set_gridtype(self, grid):
 
     cdo_command = "cdo -setgridtype," + grid
 
-    run_this(cdo_command, self,  output = "ensemble") 
+    run_this(cdo_command, self,  output = "ensemble")
 
 
 
 def set_attributes(self, att_dict):
     """
-    Set Global attributes 
+    Set Global attributes
 
     Parameters
     -------------
@@ -148,7 +144,7 @@ def set_attributes(self, att_dict):
 
     if type(att_dict) is not dict:
         ValueError("A dictionary has not been supplied!")
-    
+
     # change the units in turn. This doesn't seem to be something you can chain?
 
     nco_command = "ncatted -O -h "
@@ -157,10 +153,10 @@ def set_attributes(self, att_dict):
 
     target = ""
     if type(self.start) is list:
-        target = "" 
+        target = ""
     else:
         if self.start == self.current:
-            target = temp_file("nc") 
+            target = temp_file("nc")
 
     nco_command+= self.current + " " + target
 
@@ -183,7 +179,7 @@ def set_attributes(self, att_dict):
 
 def set_longnames(self, var_dict):
     """
-    Set Global attributes 
+    Set Global attributes
 
     Parameters
     -------------
@@ -201,7 +197,7 @@ def set_longnames(self, var_dict):
 
     if type(var_dict) is not dict:
         ValueError("A dictionary has not been supplied!")
-    
+
     # change the units in turn. This doesn't seem to be something you can chain?
 
 
@@ -213,10 +209,10 @@ def set_longnames(self, var_dict):
 
     target = ""
     if type(self.start) is list:
-        target = "" 
+        target = ""
     else:
         if self.start == self.current:
-            target = temp_file("nc") 
+            target = temp_file("nc")
 
     nco_command+= self.current + " " + target
 
@@ -245,7 +241,7 @@ def set_longnames(self, var_dict):
 
 def assign_coords(self, lon_name = None, lat_name = None):
     """
-    Assign coordinates to variables 
+    Assign coordinates to variables
 
     Parameters
     -------------
@@ -265,10 +261,10 @@ def assign_coords(self, lon_name = None, lat_name = None):
 
     if type(lat_name) is not str:
         ValueError("Method does not yet work with ensembles")
-    
+
     # change the units in turn. This doesn't seem to be something you can chain?
 
-    variables = self.variables 
+    variables = self.variables
 
     nco_command = "ncatted "
 
@@ -277,10 +273,10 @@ def assign_coords(self, lon_name = None, lat_name = None):
 
     target = ""
     if type(self.start) is list:
-        target = "" 
+        target = ""
     else:
         if self.start == self.current:
-            target = temp_file("nc") 
+            target = temp_file("nc")
 
     nco_command+= self.current + " " + target
 
@@ -311,7 +307,7 @@ def assign_coords(self, lon_name = None, lat_name = None):
 
 def delete_attributes(self, atts):
     """
-    Set Global attributes 
+    Set Global attributes
 
     Parameters
     -------------
@@ -328,7 +324,7 @@ def delete_attributes(self, atts):
 
     if type(atts) not in [str, list]:
         ValueError("A dictionary has not been supplied!")
-    
+
     # change the units in turn. This doesn't seem to be something you can chain?
 
 
@@ -343,10 +339,10 @@ def delete_attributes(self, atts):
 
     target = ""
     if type(self.start) is list:
-        target = "" 
+        target = ""
     else:
         if self.start == self.current:
-            target = temp_file("nc") 
+            target = temp_file("nc")
 
     nco_command+= self.current + " " + target
 

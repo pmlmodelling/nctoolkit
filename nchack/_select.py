@@ -4,24 +4,21 @@ import subprocess
 from .flatten import str_flatten
 from ._runthis import run_this
 
-def select_season(self, season,  cores = 1):
+def select_season(self, season):
     """
     Select season from a dataset
 
     Parameters
     -------------
     season : str
-        Season to select. TBC.....
-    cores: int
-        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
-
+        Season to select. One of "DJF", "MAM", "JJA", "SON"
     """
 
     cdo_command = "cdo -select,season=" + season
-    run_this(cdo_command, self,  output = "ensemble", cores = cores)
-    
+    run_this(cdo_command, self,  output = "ensemble")
 
-def select_months(self, months,  cores = 1):
+
+def select_months(self, months):
     """
     Select months from a dataset
     This method will subset the data to only contains months within the list given. A warning message will be provided when there are missing months.
@@ -29,9 +26,7 @@ def select_months(self, months,  cores = 1):
     Parameters
     -------------
     months : list or int
-        Month(s) to select. 
-    cores: int
-        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+        Month(s) to select.
 
     """
 
@@ -45,28 +40,26 @@ def select_months(self, months,  cores = 1):
         if x not in list(range(1, 13)):
             raise ValueError("Months supplied are not valid!")
 
-    months = str_flatten(months, ",") 
+    months = str_flatten(months, ",")
 
     cdo_command = "cdo -selmonth," + months + " "
-    run_this(cdo_command, self,  output = "ensemble", cores = cores)
-    
+    run_this(cdo_command, self,  output = "ensemble")
 
-def select_years(self, years,  cores = 1):
+
+def select_years(self, years):
     """
     Select years from a dataset
     This method will subset the data to only contains years within the list given. A warning message will be provided when there are missing years.
     Parameters
     -------------
     months : list or int
-        Month(s) to select. 
-    cores: int
-        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+        Month(s) to select.
 
     """
 
     if type(years) is not list:
         years = [years]
-    
+
     # convert years to int
     years = [int(x) for x in years]
 
@@ -97,24 +90,22 @@ def select_years(self, years,  cores = 1):
             print("A total of " +  str(n_removed) +  " files did not have valid years, so were removed!")
 
         self.current = new_current
-        
-    years = str_flatten(years, ",") 
+
+    years = str_flatten(years, ",")
 
     cdo_command = "cdo -selyear," + years
-    run_this(cdo_command, self,  output = "ensemble", cores = cores)
-    
-    
+    run_this(cdo_command, self,  output = "ensemble")
 
-def select_variables(self, vars = None,  cores = 1):
+
+
+def select_variables(self, vars = None):
     """
     Select variables from a dataset
 
     Parameters
     -------------
     months : list or int
-        Month(s) to select. 
-    cores: int
-        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+        Month(s) to select.
 
     """
 
@@ -125,16 +116,16 @@ def select_variables(self, vars = None,  cores = 1):
         vars_list = vars
 
     vars_list = str_flatten(vars_list, ",")
-    
+
     cdo_command = "cdo -selname," + vars_list
 
-    run_this(cdo_command, self,  output = "ensemble", cores = cores)
-    
-    
-def select_timestep(self, times,  cores = 1):
+    run_this(cdo_command, self,  output = "ensemble")
+
+
+def select_timestep(self, times):
     """
     This method should probably be removed
-    
+
     """
 
     if type(times) is not list:
@@ -145,9 +136,9 @@ def select_timestep(self, times,  cores = 1):
     times = [str(x) for x in times]
     times = str_flatten(times)
 
-    cdo_command = "cdo -seltimestep," + times 
+    cdo_command = "cdo -seltimestep," + times
 
-    run_this(cdo_command, self,  output = "ensemble", cores = cores)
+    run_this(cdo_command, self,  output = "ensemble")
 
 
 

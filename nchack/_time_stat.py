@@ -4,109 +4,75 @@ from ._session import nc_safe
 from ._temp_file import temp_file
 import os
 
-def time_stat(self, stat = "mean", cores = 1):
+def time_stat(self, stat = "mean"):
     """Method to calculate a stat over all time steps"""
     cdo_command = "cdo -tim" + stat
-    run_this(cdo_command, self,  output = "ensemble", cores = cores)
-    
-def sum(self,  cores = 1):
-    """
-    Calculate the sum of all values.  
+    run_this(cdo_command, self,  output = "ensemble")
 
-    Parameters
-    -------------
-    cores: int
-        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+def sum(self):
+    """
+    Calculate the sum of all values.
+
 
     """
-    return time_stat(self, stat = "sum",  cores = cores)
+    return time_stat(self, stat = "sum")
 
-def mean(self,  cores = 1):
+def mean(self):
     """
-    Calculate the mean of all values.  
-
-    Parameters
-    -------------
-    cores: int
-        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+    Calculate the mean of all values.
 
     """
-    return time_stat(self, stat = "mean",  cores = cores)
+    return time_stat(self, stat = "mean")
 
-def min(self,  cores = 1):
+def min(self):
     """
-    Calculate the minimums of all values.  
-
-    Parameters
-    -------------
-    cores: int
-        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+    Calculate the minimums of all values.
 
     """
-    return time_stat(self, stat = "min",  cores = cores)
+    return time_stat(self, stat = "min")
 
-def max(self,  cores = 1):
+def max(self):
     """
-    Calculate the maximums of all values.  
-
-    Parameters
-    -------------
-    cores: int
-        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+    Calculate the maximums of all values.
 
     """
-    return time_stat(self, stat = "max",  cores = cores)
+    return time_stat(self, stat = "max")
 
-def range(self,  cores = 1):
+def range(self):
     """
-    Calculate the ranges of all values.  
-
-    Parameters
-    -------------
-    cores: int
-        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+    Calculate the ranges of all values.
 
     """
-    return time_stat(self,stat = "range",  cores = cores)
+    return time_stat(self,stat = "range")
 
-def var(self,  cores = 1):
+def var(self):
     """
-    Calculate the variances of all values.  
-
-    Parameters
-    -------------
-    cores: int
-        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+    Calculate the variances of all values.
 
     """
-    return time_stat(self, stat = "var",  cores = cores)
+    return time_stat(self, stat = "var")
 
 
-def cum_sum(self,  cores = 1):
+def cum_sum(self):
     """
-    Calculate the cumulative sums of all values.  
-
-    Parameters
-    -------------
-    cores: int
-        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+    Calculate the cumulative sums of all values.
 
     """
 
-    cdo_command = "cdo -timcumsum" 
-    run_this(cdo_command, self,  output = "ensemble", cores = cores)
+    cdo_command = "cdo -timcumsum"
+    run_this(cdo_command, self,  output = "ensemble")
 
 
 
-def percentile(self, p = 50, cores = 1):
+def percentile(self, p = 50):
 
     """
-    Calculate the percentile of all values 
+    Calculate the percentile of all values
 
     Parameters
     -------------
     p: float or int
-        Percentile to calculate 
+        Percentile to calculate
 
     """
     if self.run == False:

@@ -1,59 +1,40 @@
 from ._runthis import run_this
 
-def yearlystat(self, stat = "mean",  cores = 1):
-    """Function to calculate the seasonal statistic from a function""" 
+def yearlystat(self, stat = "mean"):
+    """Function to calculate the seasonal statistic from a function"""
 
     cdo_command = "cdo -year" + stat
 
-    run_this(cdo_command, self,  output = "ensemble", cores = cores)
+    run_this(cdo_command, self,  output = "ensemble")
 
 
-    
 
-def annual_mean(self,  cores = 1):
+
+def annual_mean(self):
     """
-    Calculate the yearly mean 
+    Calculate the yearly mean
 
-    Parameters
-    -------------
-    cores: int
-        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
     """
-    return yearlystat(self, stat = "mean",  cores = cores)
+    return yearlystat(self, stat = "mean")
 
-def annual_min(self,  cores = 1):
+def annual_min(self):
     """
-    Calculate the yearly minimum 
-
-    Parameters
-    -------------
-    cores: int
-        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+    Calculate the yearly minimum
 
     """
-    return yearlystat(self, stat = "min",  cores = cores)
+    return yearlystat(self, stat = "min")
 
-def annual_max(self,  cores = 1):
+def annual_max(self):
     """
-    Calculate the yearly maximum 
-
-    Parameters
-    -------------
-    cores: int
-        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+    Calculate the yearly maximum
 
     """
-    return yearlystat(self, stat = "max",  cores = cores)
-    
-def annual_range(self,  cores = 1):
-    """
-    Calculate the yearly range 
+    return yearlystat(self, stat = "max")
 
-    Parameters
-    -------------
-    cores: int
-        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+def annual_range(self):
+    """
+    Calculate the yearly range
 
     """
-    return yearlystat(self, stat = "range",  cores = cores)
+    return yearlystat(self, stat = "range")

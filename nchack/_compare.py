@@ -62,7 +62,7 @@ def fix_expr(expression):
     raise ValueError(expression + " is not valid!")
 
 
-def compare_all(self, expression, cores = 1): 
+def compare_all(self, expression):
     """
     Compare all variables to a constant
 
@@ -71,17 +71,15 @@ def compare_all(self, expression, cores = 1):
     expression: str
         This a regular comparison such as "<0", ">0", "==0"
 
-    cores: int
-        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
     """
 
     expression = fix_expr(expression)
     cdo_command = "cdo -" + expression
-    run_this(cdo_command, self, output = "ensemble", cores = cores)
+    run_this(cdo_command, self, output = "ensemble")
 
 
 
 
 
 
-   
+

@@ -5,14 +5,12 @@ import copy
 from ._runthis import run_this
 from ._session import session_info
 
-def release(self,  cores = 1, run_merge = True):
+def release(self,  run_merge = True):
     """
-    Run all stored commands in a dataset 
+    Run all stored commands in a dataset
 
     Parameters
     -------------
-    cores: int
-        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
     run_merge: boolean
         Ignore this for now. This needs to be replaced by the keywords arg method
 
@@ -34,11 +32,11 @@ def release(self,  cores = 1, run_merge = True):
             cdo_command = "cdo "
 
         output_method = "ensemble"
-        
+
         if self.merged:
             output_method = "one"
 
-        run_this(cdo_command, self,  output = output_method, cores = cores)
+        run_this(cdo_command, self,  output = output_method)
         self.released = False
 
         self.run = False

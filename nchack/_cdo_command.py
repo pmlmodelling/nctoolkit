@@ -1,23 +1,21 @@
 
 import subprocess
-from .flatten import str_flatten 
+from .flatten import str_flatten
 from ._runthis import run_this
 
-def cdo_command(self, command, cores = 1):
+def cdo_command(self, command):
     """
     Apply a cdo command
 
     Parameters
     -------------
     command : string
-        cdo command to call. This must be of the form cdo command infile outfile, where cdo, infile and outfile are attached later. 
-    cores: int
-        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
+        cdo command to call. This must be of the form cdo command infile outfile, where cdo, infile and outfile are attached later.
 
     Returns
     -------------
     nchack.DataSet
-        Original data set with cdo command applied. 
+        Original data set with cdo command applied.
     """
 
     # First carry out some checks
@@ -58,5 +56,5 @@ def cdo_command(self, command, cores = 1):
         if " " + mm + "," in cdo_command:
             cdo_command = cdo_command.replace(" " + mm + ","," -" + mm + ",")
 
-    run_this(cdo_command, self, output = "ensemble", cores = cores)
+    run_this(cdo_command, self, output = "ensemble")
 

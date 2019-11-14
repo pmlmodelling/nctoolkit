@@ -21,7 +21,7 @@ def ensemble_percentile(self, p = 50):
 
     Parameters
     -------------
-    p : float or int 
+    p : float or int
         percentile to calculate
 
     """
@@ -63,7 +63,7 @@ def ensemble_nco(self, method, vars = None, ignore_time = False):
     # This method cannot possibly be chained. Release it
     if self.run == False:
         self.release()
-        self.run = False 
+        self.run = False
 
     ff_ensemble = self.current
 
@@ -75,28 +75,28 @@ def ensemble_nco(self, method, vars = None, ignore_time = False):
             raise ValueError("vars supplied is not a list or str!")
 
     # generate a temp files
-    target = temp_file("nc") 
+    target = temp_file("nc")
 
-    # generate the nco call 
+    # generate the nco call
     if ignore_time == False:
         if vars is None:
-            nco_command = ("ncea -y " + method + " " + str_flatten(ff_ensemble, " ") + " " + target) 
+            nco_command = ("ncea -y " + method + " " + str_flatten(ff_ensemble, " ") + " " + target)
         else:
-            nco_command = ("ncea -y " + method + " -v " + str_flatten(vars, ",") + " " + str_flatten(ff_ensemble, " ") + " " + target) 
+            nco_command = ("ncea -y " + method + " -v " + str_flatten(vars, ",") + " " + str_flatten(ff_ensemble, " ") + " " + target)
     else:
         if vars is None:
-            nco_command = ("ncra -y " + method + " " + str_flatten(ff_ensemble, " ") + " " + target) 
+            nco_command = ("ncra -y " + method + " " + str_flatten(ff_ensemble, " ") + " " + target)
         else:
-            nco_command = ("ncra -y " + method + " -v " + str_flatten(vars, ",") + " " + str_flatten(ff_ensemble, " ") + " " + target) 
+            nco_command = ("ncra -y " + method + " -v " + str_flatten(vars, ",") + " " + str_flatten(ff_ensemble, " ") + " " + target)
 
     # run the call
-    target = run_nco(nco_command, target) 
+    target = run_nco(nco_command, target)
 
     #add the call to the history and tempfile to nc_safe
     self.history.append(nco_command)
     self.hold_history = copy.deepcopy(self.history)
 
-    self.current = target 
+    self.current = target
     nc_safe.append(self.current)
 
     # remove the original files from the safe list
@@ -104,7 +104,7 @@ def ensemble_nco(self, method, vars = None, ignore_time = False):
         if ff in nc_safe:
             nc_safe.remove(ff)
 
-    
+
 
 def ensemble_min(self, vars = None, ignore_time = False):
     """
@@ -171,7 +171,7 @@ def ensemble_range(self):
     if self.run == False:
         self.release()
 
-    cdo_command = "cdo ensrange " 
+    cdo_command = "cdo ensrange "
 
     run_this(cdo_command, self)
 
@@ -208,7 +208,7 @@ def ensemble_mean_cdo(self,  vars = None):
         if type(vars) is not list:
             raise ValueError("vars supplied is not a list or str!")
 
-    
+
     cdo_command = "cdo -ensmean "
     self.history.append(cdo_command)
 

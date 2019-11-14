@@ -8,10 +8,10 @@ warnings.formatwarning = custom_formatwarning
 from ._runthis import run_this
 from .flatten import str_flatten
 
-def time_interp(self, start = None, end = None, resolution = "monthly",   cores = 1):
+def time_interp(self, start = None, end = None, resolution = "monthly"):
 
     """
-    Temporally interpolate variables based on date range and time resolution 
+    Temporally interpolate variables based on date range and time resolution
 
     Parameters
     -------------
@@ -21,8 +21,6 @@ def time_interp(self, start = None, end = None, resolution = "monthly",   cores 
         End date for interpolation. Needs to be of the form YYYY/MM/DD or YYYY-MM-DD
     resolution : str
         Time steps used for intpoleration. Needs to be "daily", "weekly", "monthly" or "yearly"
-    cores: int
-        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
     """
 
@@ -40,7 +38,7 @@ def time_interp(self, start = None, end = None, resolution = "monthly",   cores 
 
     if resolution == "yearly":
         resolution = "1year"
-    
+
     if start is None:
         if type(self.current) is list:
             ff = self.current[0]
@@ -62,5 +60,5 @@ def time_interp(self, start = None, end = None, resolution = "monthly",   cores 
         end = end.replace("/", "-")
         cdo_command = "cdo -L " + "-seldate," + start + "," + end + " " + cdo_command
 
-    run_this(cdo_command, self,  output = "ensemble", cores = cores)
+    run_this(cdo_command, self,  output = "ensemble")
 

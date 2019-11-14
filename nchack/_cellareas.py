@@ -6,14 +6,12 @@ from ._cleanup import cleanup
 from ._session import nc_safe
 
 
-def cell_areas(self, cores = 1, join = True):
+def cell_areas(self,  join = True):
     """
     Calculate the cell areas in square meters
 
     Parameters
     -------------
-    cores: int
-        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
     join: boolean
         Set to False if you only want the cell areas to be in the output. True joins the areas to the files.
 
@@ -23,7 +21,7 @@ def cell_areas(self, cores = 1, join = True):
 
     if join and self.run == False:
         self.release()
-        self.run = False 
+        self.run = False
 
     if join:
         target = temp_file(".nc")
@@ -33,7 +31,7 @@ def cell_areas(self, cores = 1, join = True):
         run_cdo(cdo_command, target)
 
         self.history.append(cdo_command)
-        
+
         new_target = temp_file(".nc")
 
         cdo_command = "cdo -L -merge " + self.current + " " + target + " " + new_target
@@ -50,7 +48,7 @@ def cell_areas(self, cores = 1, join = True):
         cleanup()
 
     else:
-        run_this(cdo_command, self,  output = "ensemble", cores = cores)
+        run_this(cdo_command, self,  output = "ensemble")
 
 
     self.set_units({"cell_area": "m2"})

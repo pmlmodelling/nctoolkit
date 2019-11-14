@@ -1,90 +1,79 @@
 
 from ._runthis import run_this
 
-def rollstat(self, window,  stat = "mean", cores = 1):
-    """Method to calculate the monthly statistic from a netcdf file""" 
+def rollstat(self, window,  stat = "mean"):
+    """Method to calculate the monthly statistic from a netcdf file"""
     if type(window) is float:
         window = int(window)
-        
+
     if type(window) is not int:
         raise ValueError("The window supplied is not numeric!")
-    
+
     cdo_command = "cdo -run" + stat + "," + str(window)
 
-    run_this(cdo_command, self, output = "ensemble", cores = cores)
+    run_this(cdo_command, self, output = "ensemble")
 
-    
 
-def rolling_mean(self, window, cores = 1):
+
+def rolling_mean(self, window):
 
     """
-    Calculate a rolling mean based on a window. 
+    Calculate a rolling mean based on a window.
 
     Parameters
     -------------
     window = int
         The size of the window for the calculation of the rolling mean
-    cores: int
-        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
     """
 
-    return rollstat(self, window = window, stat = "mean", cores = cores)
+    return rollstat(self, window = window, stat = "mean")
 
-def rolling_min(self, window, cores = 1):
+def rolling_min(self, window):
     """
-    Calculate a rolling minimum based on a window. 
+    Calculate a rolling minimum based on a window.
 
     Parameters
     -------------
     window = int
         The size of the window for the calculation of the rolling minimum
-    cores: int
-        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
     """
 
-    return rollstat(self, window = window, stat = "min", cores = cores)
+    return rollstat(self, window = window, stat = "min")
 
-def rolling_max(self, window, cores = 1):
+def rolling_max(self, window):
     """
-    Calculate a rolling maximum based on a window. 
+    Calculate a rolling maximum based on a window.
 
     Parameters
     -------------
     window = int
         The size of the window for the calculation of the rolling maximum
-    cores: int
-        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
     """
-    return rollstat(self, window = window, stat = "max", cores = cores)
-    
-def rolling_range(self, window, cores = 1):
+    return rollstat(self, window = window, stat = "max")
+
+def rolling_range(self, window):
     """
-    Calculate a rolling range based on a window. 
+    Calculate a rolling range based on a window.
 
     Parameters
     -------------
     window = int
         The size of the window for the calculation of the rolling range
-    cores: int
-        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
     """
-    return rollstat(self, window = window, stat = "range", cores = cores)
+    return rollstat(self, window = window, stat = "range")
 
-def rolling_sum(self, window, cores = 1):
+def rolling_sum(self, window):
     """
-    Calculate a rolling sum based on a window. 
+    Calculate a rolling sum based on a window.
 
     Parameters
     -------------
     window = int
         The size of the window for the calculation of the rolling sum
-    cores: int
-        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
-
     """
-    return rollstat(self, window = window, stat = "sum", cores = cores)
+    return rollstat(self, window = window, stat = "sum")
 

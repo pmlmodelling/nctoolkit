@@ -12,7 +12,7 @@ from ._runthis import run_cdo
 import copy
 
 
-def phenology(self, var = None, cores = 1):
+def phenology(self, var = None):
     """
     Calculate phenologies from a dataset. Each file in an ensemble must only cover a single year, and ideally have all days.
     This method currently only calculcates the day of year of the annual maximum.
@@ -21,8 +21,6 @@ def phenology(self, var = None, cores = 1):
     -------------
     var : str
         Variable to analyze.
-    cores: int
-        Number of cores to use if files are processed in parallel. Defaults to non-parallel operation 
 
     """
 
@@ -44,17 +42,17 @@ def phenology(self, var = None, cores = 1):
     if self.run == False:
         self.release()
         self.run = False
-    
+
     start_files = copy.deepcopy(self.current)
 
     new_self = self.copy()
-    
+
     new_self.select_variables(var)
 
     # Create the day of year
 
     doy_nc = temp_file("nc")
-    
+
     cdo_command = "cdo -L -timcumsum -chname," + var +   ",peak -setclonlatbox,1,-180,180,-90,90 " + new_self.current + " " + doy_nc
 
     new_self.history.append(cdo_command)
@@ -66,7 +64,7 @@ def phenology(self, var = None, cores = 1):
 
     # Find the max value of the var
 
-    max_nc = temp_file("nc") 
+    max_nc = temp_file("nc")
 
     cdo_command = "cdo -L -timmax -chname," + var + "," + var + "_max " + new_self.current + " " + max_nc
 
@@ -90,7 +88,7 @@ def phenology(self, var = None, cores = 1):
 
     # Now, calculate the timing of the annual maximum
 
-    phen_nc = temp_file("nc") 
+    phen_nc = temp_file("nc")
 
     cdo_command = "cdo -L -timmin -selname,peak -expr,'peak=peak + 365*(" + var + "<" + var + "_max)' " + out_nc + " " + phen_nc
 
