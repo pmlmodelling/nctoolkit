@@ -15,7 +15,7 @@ from datetime import datetime
 from ._runthis import run_this
 
 
-def merge(self, match = ["year", "month", "day"], zip = False):
+def merge(self, match = ["year", "month", "day"]):
 
     """
     Merge a multi-file ensemble into a single file. Merging will occur based on the time steps in the first file. This will only be effective if either you want to merge files with the same times or multi-time files with single time files.
@@ -23,8 +23,6 @@ def merge(self, match = ["year", "month", "day"], zip = False):
     Parameters
     -------------
     match: a list stating what must match in the netcdf files. Defaults to year/month/day. This list must be some combination of year/month/day. An error will be thrown if the elements of time in match do not match across all netcdf files. The only exception is if there is a single date file in the ensemble.
-    zip : boolean
-        If True, the resulting netcdf files are zipped. Defaults to False. 
 
     """
 
@@ -48,7 +46,7 @@ def merge(self, match = ["year", "month", "day"], zip = False):
 
     all_times = []
     for ff in self.current:
-        cdo_result = subprocess.run("cdo ntime " + ff, shell = True, capture_output = True) 
+        cdo_result = subprocess.run("cdo ntime " + ff, shell = True, capture_output = True)
         cdo_result = str(cdo_result.stdout)
         cdo_result = cdo_result.replace("b'", "").strip()
         ntime = int(cdo_result.split("\\")[0])
@@ -58,7 +56,7 @@ def merge(self, match = ["year", "month", "day"], zip = False):
 
     all_times = []
     for ff in self.current:
-        cdo_result = subprocess.run("cdo showtimestamp " + ff, shell = True, capture_output = True) 
+        cdo_result = subprocess.run("cdo showtimestamp " + ff, shell = True, capture_output = True)
         cdo_result = str(cdo_result.stdout)
         cdo_result = cdo_result.replace("b'", "").strip()
         cdo_result = cdo_result.split()
@@ -76,9 +74,9 @@ def merge(self, match = ["year", "month", "day"], zip = False):
             year = [datetime.strptime(v[0:10], "%Y-%m-%d").year for v in all_times[i]]
             day = [datetime.strptime(v[0:10], "%Y-%m-%d").day for v in all_times[i]]
             i_data = pd.DataFrame({"year":year, "month":month, "day":day})
-            i_data = i_data.loc[:, match] 
+            i_data = i_data.loc[:, match]
             all_df.append(i_data)
-    
+
     for i in range(1, len(all_df)):
         if all_df[0].equals(all_df[i]) == False:
             raise ValueError("Dates of data sets do not satisfy matching criteria!")
@@ -87,20 +85,16 @@ def merge(self, match = ["year", "month", "day"], zip = False):
 
     cdo_command = ("cdo -merge ")
 
-    run_this(cdo_command, self, output = "one", zip = zip) 
+    run_this(cdo_command, self, output = "one")
 
 
 
 
-def merge_time(self, zip = True):
+def merge_time(self):
 
     """
-    Time-based merging of a multi-file ensemble into a single file. This method is ideal if you have the same data split over multiple files covering different data sets. 
+    Time-based merging of a multi-file ensemble into a single file. This method is ideal if you have the same data split over multiple files covering different data sets.
 
-    Parameters
-    -------------
-    zip : boolean
-        If True, the resulting netcdf files are zipped. Defaults to False. 
 
     """
 
@@ -117,6 +111,6 @@ def merge_time(self, zip = True):
 
     cdo_command = "cdo --sortname -mergetime "
 
-    run_this(cdo_command, self,  output = "one", zip = zip) 
+    run_this(cdo_command, self,  output = "one")
 
 
