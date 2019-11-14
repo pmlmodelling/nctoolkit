@@ -9,19 +9,19 @@ import xarray as xr
 
 
 
-def autoplot(self, log = False, panel = False): 
+def autoplot(self, log = False, panel = False):
     """
-    Autoplotting method 
+    Autoplotting method
 
     Parameters
     -------------
     panel: boolean
-        Do you want a panel plot, if avaiable? 
+        Do you want a panel plot, if avaiable?
     """
 
     if self.run == False:
         self.release()
-        self.run = False 
+        self.run = False
 
     if type(self.current) is list:
         raise ValueError("You cannot view multiple files!")
@@ -42,7 +42,7 @@ def autoplot(self, log = False, panel = False):
     n_points = int(str(cdo_result.stdout).replace("b'", "").split("\\n")[0])
 
     decode_time = False
-    if n_times > 1:
+    if n_times >= 1:
         try:
             x = xr.open_dataset(self.current)
             decode_times = True
