@@ -192,7 +192,9 @@ def run_cdo(command, target, out_file = None):
 
 
 
-def run_this(os_command, self, silent = False, output = "one", cores = 1,  out_file = None):
+def run_this(os_command, self, silent = False, output = "one",  out_file = None):
+
+    cores = session_info["cores"]
 
     start_files = copy.deepcopy(self.current)
 
