@@ -41,5 +41,7 @@ def release(self,  cores = 1, run_merge = True):
         run_this(cdo_command, self,  output = output_method, cores = cores)
         self.released = False
 
+        self.run = False
+
 
 
