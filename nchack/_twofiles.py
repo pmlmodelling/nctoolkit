@@ -4,11 +4,15 @@ from ._temp_file import temp_file
 from .flatten import str_flatten
 from ._session import nc_safe 
 import subprocess
+import copy
 
 def operation(self, method = "mul", ff = None,  cores = 1):
 
     if type(self.current) is list:
         raise ValueError("This only works for single files presently")
+
+    if self.run == False:
+        self.release()
 
 
     target = temp_file(".nc")
