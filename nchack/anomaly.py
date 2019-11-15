@@ -8,7 +8,7 @@ def annual_anomaly(self,  baseline = None, change = "absolute", window = 1):
     """
 
     Calculate annual anomalies based on a baseline period
-    The anomoly is calculated by first calculating the climatological mean for the given baseline period. Annual means are then calculated for each year and the anomaly is calculated compared with the baseline mean.
+    The anomaly is derived by first calculating the climatological mean for the given baseline period. Annual means are then calculated for each year and the anomaly is calculated compared with the baseline mean.
 
     Parameters
     -------------
