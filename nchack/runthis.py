@@ -119,7 +119,6 @@ def run_cdo(command, target, out_file = None):
             # loop through the warnings
 
             messages = str(result1).split("\\n")
-            print(len(messages))
 
             missing_years = []
             missing_months= []
@@ -291,8 +290,11 @@ def run_this(os_command, self, silent = False, output = "one",  out_file = None)
 
             if self.released:
                 os_command = os_command + " " + self.history[-1].replace("cdo ", " ")
+                os_command = os_command.replace("  ", " ")
 
             target = temp_file("nc")
+            if out_file is not None:
+                target = out_file
             os_command = os_command + " " +  str_flatten(self.current, " ") + " " + target
             os_command = os_command.replace("  ", " ")
 
@@ -303,7 +305,9 @@ def run_this(os_command, self, silent = False, output = "one",  out_file = None)
                 else:
                     os_command = os_command.replace("cdo ", "cdo -L --sortname ")
 
-            target = run_cdo(os_command, target)
+
+
+            target = run_cdo(os_command, target, out_file)
             self.current = target
             self.history = new_history
             self.history.append(os_command)
