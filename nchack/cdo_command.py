@@ -12,10 +12,6 @@ def cdo_command(self, command):
     command : string
         cdo command to call. This must be of the form cdo command infile outfile, where cdo, infile and outfile are attached later.
 
-    Returns
-    -------------
-    nchack.DataSet
-        Original data set with cdo command applied.
     """
 
     # First carry out some checks
