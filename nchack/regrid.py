@@ -32,6 +32,9 @@ def regrid(self, grid = None, method = "bil"):
 
     """
 
+    if len(self.history) > len(self._hold_history):
+        self.release()
+
     if grid is None:
         raise ValueError("No grid was supplied")
 
