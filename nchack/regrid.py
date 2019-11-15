@@ -4,11 +4,6 @@ import copy
 import xarray as xr
 import pandas as pd
 import os
-def custom_formatwarning(msg, *args, **kwargs):
-    # ignore everything except the message
-    return str(msg) + '\n'
-
-warnings.formatwarning = custom_formatwarning
 
 from .temp_file import temp_file
 from .api import open_data
@@ -122,15 +117,15 @@ def regrid(self, grid = None, method = "bil"):
             cdo_command = "cdo -gen" + method + ","+ self.grid + " " + tracker.current + " " +  weights_nc
 
         weights_nc = run_cdo(cdo_command, target = weights_nc)
-        nc_safe.append(weights_nc)
         if os.path.exists(weights_nc) == False:
             raise ValueError("Creation of weights failed!")
 
         cdo_command= "cdo -remap," + self.grid + "," + weights_nc
 
         tracker.run = True
+        nc_safe.append(weights_nc)
         run_this(cdo_command, tracker,  output = "ensemble")
-        nc_safe.remove(weights_nc)
+        #nc_safe.remove(weights_nc)
 
         self.run = lazy_eval == False
 
