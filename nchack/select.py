@@ -82,12 +82,11 @@ def select_years(self, years):
                 new_current.append(ff)
             if len(inter) == 0:
                 n_removed+=1
-                #print("Warning: " + ff + " has none of the years, so has been removed!")
         if len(new_current) == 0:
             raise ValueError("Data for none of the years is available!")
 
         if n_removed >0:
-            print("A total of " +  str(n_removed) +  " files did not have valid years, so were removed!")
+            warning.warn(message = "A total of " +  str(n_removed) +  " files did not have valid years, so were removed from the dataset!")
 
         self.current = new_current
 
