@@ -1,14 +1,24 @@
+# import packages
 import os
+from netCDF4 import Dataset
+import copy
+import random
+import string
+import xarray as xr
+import pandas as pd
+import subprocess
+import sys
 import warnings
+import atexit
+
+# A custom format for warnings.
 def custom_formatwarning(msg, *args, **kwargs):
     # ignore everything except the message
     return str(msg) + '\n'
 
 warnings.formatwarning = custom_formatwarning
-import xarray as xr
-import pandas as pd
-import subprocess
-import sys
+
+# import functions from nchack
 from .flatten import str_flatten
 from .generate_grid import generate_grid
 from .session import nc_safe
@@ -16,38 +26,28 @@ from .cleanup import cleanup
 from .cleanup import clean_all
 from .cleanup import deep_clean
 from .cleanup import temp_check
-from netCDF4 import Dataset
-import copy
-
 from .temp_file import temp_file
-
-import random
-import string
-
 from .create_ensemble import create_ensemble
-from .create_ensemble import generate_ensemble
-
 from .show import nc_variables
 from .session import session_stamp
 from .session import session_info
 
-
+# set up the session info
 letters = string.ascii_lowercase
 session_stamp["stamp"] = "nchack" + "".join(random.choice(letters) for i in range(8)) + "nchack"
 session_stamp["temp_dir"] = "/tmp/"
 session_info["thread_safe"] = False
 session_info["lazy"] = False
-
-import atexit
-atexit.register(clean_all)
-
-# run temp_check to see if any files are held over from previous sessions
-temp_check()
-
 result = os.statvfs("/tmp/")
 session_info["size"] = result.f_frsize * result.f_bavail
 session_info["latest_size"] = 0
 session_info["cores"] = 1
+
+# register clean_all to clean temp files on exit
+atexit.register(clean_all)
+
+# run temp_check to see if any files are held over from previous sessions
+temp_check()
 
 
 def options(**kwargs):
@@ -102,16 +102,13 @@ def file_size(file_path):
 
 
 def open_data(x = None):
-
     """
     Read netcdf data as a DataSet object
 
     Parameters
     ---------------
-
     x : str or list
         A string or list of netcdf files. The function will check the files exist
-
     """
 
     if x == None:
@@ -165,7 +162,9 @@ def merge(*trackers, match = ["year", "month", "day"]):
     return result
 
 class DataSet(object):
-    """A tracker/log for manipulating netcdf files"""
+    """
+    A tracker/log for manipulating netcdf files
+    """
     def __init__(self, start = ""):
         """Initialize the starting file name etc"""
         self.history = []
