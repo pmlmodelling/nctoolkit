@@ -14,15 +14,6 @@ from .flatten import str_flatten
 from .session import session_stamp
 from .session import session_info
 
-#def warning_on_one_line(message, category, filename, lineno, file=None, line=None):
-    #return '%s:%s: %s: %s\n' % (filename, lineno, category.__name__, message)
-
-def custom_formatwarning(msg, *args, **kwargs):
-    # ignore everything except the message
-    return str(msg) + '\n'
-
-warnings.formatwarning = custom_formatwarning
-#warnings.formatwarning = warning_on_one_line
 
 def split_list(seq, num):
     avg = len(seq) / float(num)
