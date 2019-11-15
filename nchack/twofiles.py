@@ -19,7 +19,7 @@ def operation(self, method = "mul", ff = None):
     cdo_command = "cdo -L " + method + " "  + self.current + " " + ff + " " + target
     target = run_cdo(cdo_command, target)
     self.history.append(cdo_command)
-    self.hold_history = copy.deepcopy(self.history)
+    self._hold_history = copy.deepcopy(self.history)
     nc_safe.remove(self.current)
     self.current = target
     nc_safe.append(self.current)

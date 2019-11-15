@@ -103,7 +103,7 @@ def merge_time(self):
     if self.merged:
         raise ValueError("You cannot double chain merge methods!")
 
-    if self.run == False and (len(self.history) > len(self.hold_history)):
+    if self.run == False and (len(self.history) > len(self._hold_history)):
         self.release()
         self.run = False
 

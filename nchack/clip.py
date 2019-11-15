@@ -57,7 +57,7 @@ def clip(self, lon = [-180, 180], lat = [-90, 90], cdo = True):
             nco_command = "ncea -d " + lat_name + "," + str(float(lat[0])) + "," + str(float(lat[1])) + " -d " + lon_name + "," + str(float(lon[0])) + "," + str(float(lon[1]))  + " " + self.current + " " + target
             target = run_nco(nco_command, target)
             self.history.append(nco_command)
-            self.hold_history = copy.deepcopy(self.history)
+            self._hold_history = copy.deepcopy(self.history)
             if self.current in nc_safe:
                 nc_safe.remove(self.current)
             self.current = target

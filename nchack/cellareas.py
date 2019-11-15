@@ -39,7 +39,7 @@ def cell_areas(self,  join = True):
         run_cdo(cdo_command, new_target)
 
         self.history.append(cdo_command)
-        self.hold_history = copy.deepcopy(self.history)
+        self._hold_history = copy.deepcopy(self.history)
 
         nc_safe.append(new_target)
 

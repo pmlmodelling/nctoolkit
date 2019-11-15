@@ -172,7 +172,7 @@ def set_attributes(self, att_dict):
         cleanup(keep = self.current)
 
     self.history.append(nco_command)
-    self.hold_history = copy.deepcopy(self.history)
+    self._hold_history = copy.deepcopy(self.history)
 
 
 
@@ -219,7 +219,7 @@ def set_longnames(self, var_dict):
     target = run_nco(nco_command, target)
 
     self.history.append(nco_command)
-    self.hold_history = copy.deepcopy(self.history)
+    self._hold_history = copy.deepcopy(self.history)
 
 
     if target != "":

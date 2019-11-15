@@ -50,7 +50,7 @@ def split_cdo(self, method = "year"):
         os.system(cdo_command)
 
         self.history.append(cdo_command)
-        self.hold_history = copy.deepcopy(self.history)
+        self._hold_history = copy.deepcopy(self.history)
 
         # now, pull out the files generated
 

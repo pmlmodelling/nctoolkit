@@ -51,7 +51,7 @@ def annual_anomaly(self,  baseline = None, change = "absolute", window = 1):
     target = run_cdo(cdo_command, target)
 
     self.history.append(cdo_command)
-    self.hold_history = copy.deepcopy(self.history)
+    self._hold_history = copy.deepcopy(self.history)
 
     if self.current in nc_safe:
         nc_safe.remove(self.current)

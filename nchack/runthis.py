@@ -204,7 +204,7 @@ def run_this(os_command, self, silent = False, output = "one",  out_file = None)
         output = "ensemble"
 
     if self.run == False:
-        if len(self.hold_history) == len(self.history):
+        if len(self._hold_history) == len(self.history):
             self.history.append(os_command)
         else:
             self.history[-1] = os_command + " " + self.history[-1].replace("cdo ", " ")
@@ -213,7 +213,7 @@ def run_this(os_command, self, silent = False, output = "one",  out_file = None)
     if self.run:
 
         if (output == "ensemble" and type(self.current) == list) or (output == "ensemble" and type(self.current) == str):
-            new_history = copy.deepcopy(self.hold_history)
+            new_history = copy.deepcopy(self._hold_history)
 
             if type(self.current) == str:
                 file_list = [self.current]
@@ -278,14 +278,14 @@ def run_this(os_command, self, silent = False, output = "one",  out_file = None)
 
             if self.run:
                 cleanup()
-            self.hold_history = copy.deepcopy(self.history)
+            self._hold_history = copy.deepcopy(self.history)
 
             return None
 
 
         if (output == "one" and type(self.current) == list):
 
-            new_history = copy.deepcopy(self.hold_history)
+            new_history = copy.deepcopy(self._hold_history)
 
             file_list = [self.current]
 
@@ -329,6 +329,6 @@ def run_this(os_command, self, silent = False, output = "one",  out_file = None)
             if self.run:
                 cleanup()
 
-            self.hold_history = copy.deepcopy(self.history)
+            self._hold_history = copy.deepcopy(self.history)
 
 

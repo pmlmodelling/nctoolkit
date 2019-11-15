@@ -177,7 +177,7 @@ class DataSet(object):
             self.run = False
         else:
             self.run = True
-        self.hold_history = []
+        self._hold_history = []
         self.merged = False
         self.released = False
 
@@ -346,7 +346,7 @@ class DataSet(object):
         Set the method evaluation mode to lazy
         """
         self.run = False
-        self.hold_history = copy.deepcopy(self.history)
+        self._hold_history = copy.deepcopy(self.history)
 
 
     def copy(self):

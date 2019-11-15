@@ -111,7 +111,7 @@ def phenology(self, var = None):
 
     self.current = copy.deepcopy(new_self.current )
     self.history+=copy.deepcopy(new_self.history)
-    self.hold_history = copy.deepcopy(self.history)
+    self._hold_history = copy.deepcopy(self.history)
     nc_safe.append(self.current)
 
     nc_safe.remove(start_files)

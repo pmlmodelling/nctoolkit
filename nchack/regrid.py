@@ -132,7 +132,7 @@ def regrid(self, grid = None, method = "bil"):
             for ff in tracker.current:
                 nc_safe.append(ff)
         self.history.append(cdo_command)
-        self.hold_history = copy.deepcopy(self.history)
+        self._hold_history = copy.deepcopy(self.history)
 
     self.current = new_files
     if len(self.current) == 1:
