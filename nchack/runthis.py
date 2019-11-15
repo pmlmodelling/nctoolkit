@@ -191,7 +191,8 @@ def run_cdo(command, target, out_file = None):
 
 
 
-def run_this(os_command, self, silent = False, output = "one",  out_file = None):
+def run_this(os_command, self, output = "one",  out_file = None):
+
 
     cores = session_info["cores"]
     if type(cores) is not int:
@@ -231,11 +232,7 @@ def run_this(os_command, self, silent = False, output = "one",  out_file = None)
             self.history = new_history
 
             for ff in file_list:
-
-                if silent:
-                    ff_command = os_command.replace("cdo ", "cdo -s ")
-                else:
-                    ff_command = copy.deepcopy(os_command)
+                ff_command = os_command
 
                 target = temp_file("nc")
 
