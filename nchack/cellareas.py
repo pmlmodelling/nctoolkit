@@ -17,12 +17,15 @@ def cell_areas(self,  join = True):
 
     """
 
+    # Note whether the dataset is lazy
     lazy_eval = False
 
+    # release if you need to join the cell areas to the original file
     if join and self.run == False:
         self.release()
         self.run = False
 
+    # first run the join case
     if join:
         target = temp_file(".nc")
 
@@ -51,7 +54,8 @@ def cell_areas(self,  join = True):
         run_this(cdo_command, self,  output = "ensemble")
 
 
-    self.set_units({"cell_area": "m2"})
+    # add units
+    self.set_units({"cell_area": "m^2"})
 
 
 

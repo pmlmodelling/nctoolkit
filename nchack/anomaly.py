@@ -27,12 +27,13 @@ def annual_anomaly(self,  baseline = None, change = "absolute", window = 1):
         self.release()
         self.run = False
 
+    # throw an error if the dataset is an ensemble
     if type(self.current) is not str:
-        raise ValueError("Splitting the file by year did not work!")
+        raise ValueError("At present this only works for single files")
 
+    # check baseline is a list, etc.
     if type(baseline) is not list:
         raise ValueError("baseline years supplied is not a list")
-
     if len(baseline) > 2:
         raise ValueError("More than 2 years in baseline. Please check.")
     if type(baseline[0]) is not int:
@@ -40,19 +41,23 @@ def annual_anomaly(self,  baseline = None, change = "absolute", window = 1):
     if type(baseline[1]) is not int:
         raise ValueError("Provide a vaid baseline")
 
+    # create the target file
     target = temp_file("nc")
 
+    # generate the cdo command
     if change == "absolute":
         cdo_command = "cdo -L sub -runmean," + str(window) + " -yearmean " + self.current + " -timmean -selyear," + str(baseline[0]) + "/" + str(baseline[1]) + " " + self.current  + " " + target
     else:
         cdo_command = "cdo -L div -runmean," + str(window) + " -yearmean " + self.current + " -timmean -selyear," + str(baseline[0]) + "/" + str(baseline[1]) + " " + self.current  + " " + target
-        #cdo_command = "cdo -L div -yearmean " + self.current + " -timmean -selyear," + str(baseline[0]) + "/" + str(baseline[1]) + " " + self.current  + " " + target
 
+    # run the command and save the temp file
     target = run_cdo(cdo_command, target)
 
+    # update the history
     self.history.append(cdo_command)
     self._hold_history = copy.deepcopy(self.history)
 
+    # updat the safe lists and current file
     if self.current in nc_safe:
         nc_safe.remove(self.current)
 
