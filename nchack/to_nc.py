@@ -31,7 +31,7 @@ def write_nc(self, out, zip = True, overwrite = False):
         raise ValueError("The out file exists and overwrite is set to false")
 
 
-    if self.run:
+    if len(self.history) == len(self._hold_history):
         if zip:
             os.system("cdo -z zip_9 copy " + ff + " " + out)
         else:
