@@ -25,10 +25,13 @@ def select_months(self, months):
 
     Parameters
     -------------
-    months : list or int
+    months : list, range or int
         Month(s) to select.
 
     """
+
+    if type(months) is range:
+        months = list(months)
 
     if type(months) is not list:
         months = [months]
@@ -52,10 +55,13 @@ def select_years(self, years):
     This method will subset the data to only contains years within the list given. A warning message will be provided when there are missing years.
     Parameters
     -------------
-    months : list or int
+    months : list,range or int
         Month(s) to select.
 
     """
+
+    if type(years) is range:
+        years = list(years)
 
     if type(years) is not list:
         years = [years]
