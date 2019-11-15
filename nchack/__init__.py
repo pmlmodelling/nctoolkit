@@ -1,21 +1,21 @@
 
-from ._api import ( open_data ,
+from .api import ( open_data ,
     merge,
     options,
     DataSet
     )
 
-from ._cleanup import cleanup
-from ._cleanup import clean_all
-from ._cleanup import deep_clean
-from ._cleanup import temp_check
-from ._session import safe_list
-from ._session import show_session
+from .cleanup import cleanup
+from .cleanup import clean_all
+from .cleanup import deep_clean
+from .cleanup import temp_check
+from .session import safe_list
+from .session import show_session
 
 
-from ._create_ensemble import create_ensemble
-from ._create_ensemble import generate_ensemble
-from ._show import nc_variables
+from .create_ensemble import create_ensemble
+from .create_ensemble import generate_ensemble
+from .show import nc_variables
 
 
 
