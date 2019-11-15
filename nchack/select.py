@@ -1,5 +1,5 @@
 import os
-
+import warnings
 import subprocess
 from .flatten import str_flatten
 from .runthis import run_this
@@ -86,7 +86,7 @@ def select_years(self, years):
             raise ValueError("Data for none of the years is available!")
 
         if n_removed >0:
-            warning.warn(message = "A total of " +  str(n_removed) +  " files did not have valid years, so were removed from the dataset!")
+            warnings.warn(message = "A total of " +  str(n_removed) +  " files did not have valid years, so were removed from the dataset!")
 
         self.current = new_current
 
