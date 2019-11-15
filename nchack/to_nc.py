@@ -19,11 +19,17 @@ def write_nc(self, out, zip = True, overwrite = False):
     """
 
     ff = self.current
-    if type(ff) is not str:
-        raise ValueError("You cannot save multiple files!")
 
-    if os.path.exists(ff) == False:
-        raise ValueError("The current state of the dataset does not exist")
+    write = False
+
+    if type(ff) is str:
+        write = True
+
+    if self.merged:
+        write = True
+
+    if write == False:
+        raise ValueError("You cannot save multiple files!")
 
     # Check if outfile exists and overwrite is set to False
     # This should maybe be a warning, not an error
@@ -33,9 +39,24 @@ def write_nc(self, out, zip = True, overwrite = False):
 
     if len(self.history) == len(self._hold_history):
         if zip:
+            cdo_command = ("cdo -z zip_9 copy " + ff + " " + out)
             os.system("cdo -z zip_9 copy " + ff + " " + out)
+            self.history.append(cdo_command)
+            if self.current in nc_safe:
+                nc_safe.remove(self.current)
+            self.current = out
+            nc_safe.append(out)
+
         else:
+            cdo_command = ("cdo copy " + ff + " " + out)
             os.system("cdo copy " + ff + " " + out)
+            self.history.append(cdo_command)
+
+            if self.current in nc_safe:
+                nc_safe.remove(self.current)
+            self.current = out
+            nc_safe.append(out)
+
     else:
         if zip:
             cdo_command = "cdo -L -z zip_9 "
