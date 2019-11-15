@@ -1,13 +1,14 @@
 import subprocess
 import warnings
+import copy
+import xarray as xr
+import pandas as pd
+import os
 def custom_formatwarning(msg, *args, **kwargs):
     # ignore everything except the message
     return str(msg) + '\n'
 
 warnings.formatwarning = custom_formatwarning
-import xarray as xr
-import pandas as pd
-import os
 
 from .temp_file import temp_file
 from .api import open_data
@@ -31,6 +32,7 @@ def regrid(self, grid = None, method = "bil"):
         remapping method. Defaults to "bil". Bilinear: "bil"; Nearest neighbour: "nn",....
 
     """
+    lazy_eval = self.run == False
 
     if len(self.history) > len(self._hold_history):
         self.release()
@@ -68,6 +70,7 @@ def regrid(self, grid = None, method = "bil"):
 
     if grid_type is None:
         raise ValueError("grid supplied is not valid")
+
 
     # check that the remapping method is valid
     if (method in {"bil", "dis", "nn"}) == False:
@@ -108,8 +111,6 @@ def regrid(self, grid = None, method = "bil"):
     for key in grid_split:
         # first we need to generate the weights for remapping
         # and add this to the files created list and self.weights
-        if self.run == False:
-            raise ValueError("You cannot generate weights as part of a chain currently")
         tracker = open_data(grid_split[key])
 
         weights_nc = temp_file("nc")
@@ -121,12 +122,18 @@ def regrid(self, grid = None, method = "bil"):
             cdo_command = "cdo -gen" + method + ","+ self.grid + " " + tracker.current + " " +  weights_nc
 
         weights_nc = run_cdo(cdo_command, target = weights_nc)
-        #if os.path.exists(weights_nc) == False:
-        #    raise ValueError("Creation of weights failed!")
+        nc_safe.append(weights_nc)
+        if os.path.exists(weights_nc) == False:
+            raise ValueError("Creation of weights failed!")
 
         cdo_command= "cdo -remap," + self.grid + "," + weights_nc
 
+        tracker.run = True
         run_this(cdo_command, tracker,  output = "ensemble")
+        nc_safe.remove(weights_nc)
+
+        self.run = lazy_eval == False
+
         if type(tracker.current) is str:
             new_files += [tracker.current]
             nc_safe.append(tracker.current)
@@ -134,9 +141,17 @@ def regrid(self, grid = None, method = "bil"):
             new_files += tracker.current
             for ff in tracker.current:
                 nc_safe.append(ff)
-        self.history.append(cdo_command)
+        if type(tracker.history) is list:
+            self.history+=tracker.history
+        else:
+            self.history.append(tracker.history)
+
         self._hold_history = copy.deepcopy(self.history)
 
     self.current = new_files
     if len(self.current) == 1:
         self.current = self.current[0]
+
+
+
+
