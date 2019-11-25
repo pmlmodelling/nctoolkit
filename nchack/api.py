@@ -10,6 +10,7 @@ import subprocess
 import sys
 import warnings
 import atexit
+import multiprocessing as mp
 
 # A custom format for warnings.
 def custom_formatwarning(msg, *args, **kwargs):
@@ -72,6 +73,8 @@ def options(**kwargs):
         if type(kwargs[key]) is not bool:
             if key == "cores":
                 if type(session_info[key]) is int:
+                    if kwargs[key] > mp.cpu_count():
+                        raise ValueError(str(kwargs[key]) + " is greater than the number of system cores (" + str(mp.cpu_count()) + ")")
                     session_info[key] = kwargs[key]
                 else:
                     raise AttributeError("cores must be an int")
