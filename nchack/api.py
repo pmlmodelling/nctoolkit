@@ -132,7 +132,7 @@ def open_data(x = None):
 
     if type(x) is list:
         orig_size = len(x)
-        x = list(set(x))
+        x = list(dict.fromkeys(x))
         if len(x) < orig_size:
             warnings.warn(message = "Duplicates in data set have been removed!")
 
