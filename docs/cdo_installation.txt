@@ -1,0 +1,20 @@
+
+# Step one. Download from
+https://code.mpimet.mpg.de/projects/cdo/files
+
+# Step two. Unzip
+
+# Step three. Configure
+
+./configure --with-netcdf=yes --with-hdf5=/usr/include/hdf5/serial/hdf5.h
+
+# make
+
+make
+
+# install
+
+make install
+
+
+
