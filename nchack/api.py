@@ -151,7 +151,7 @@ def open_data(x = None):
     return DataSet(x)
 
 
-def merge(*trackers, match = ["year", "month", "day"]):
+def merge(*trackers):
     all_files = []
     for tracker in trackers:
         if "DataSet" in str(type(tracker)) == False:
@@ -163,7 +163,7 @@ def merge(*trackers, match = ["year", "month", "day"]):
         else:
             all_files += tracker.current
     result = open_data(all_files)
-    result.merge(match = match)
+    result.merge()
     return result
 
 class DataSet(object):
