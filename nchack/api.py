@@ -156,6 +156,8 @@ def merge(*trackers, match = ["year", "month", "day"]):
     for tracker in trackers:
         if "DataSet" in str(type(tracker)) == False:
             raise ValueError("Please check everything is an DataSet object!")
+        # make sure everything has been evaluated
+        tracker.release()
         if type(tracker.current) is str:
             all_files += [tracker.current]
         else:
