@@ -18,7 +18,7 @@ def release(self,  run_merge = True):
 
     # the first step is to set the run status to true
 
-    if self.run == False:
+    if self.run == False and (len(self.history) > len(self._hold_history)):
         self.run = True
         self.released = True
 
