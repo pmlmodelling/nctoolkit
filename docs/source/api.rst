@@ -326,7 +326,7 @@ Output methods
 .. autosummary::
    :toctree: generated/
 
-   DataSet.to_netcdf
+   DataSet.write_nc
    DataSet.to_xarray
    DataSet.zip
 

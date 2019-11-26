@@ -1,0 +1,6 @@
+
+
+
+It looks like this method might work for making terminating parallel processes smoother. Bottom method.
+
+https://programmer.group/ctrl-c-in-python-can-t-terminate-multiprocessing-pool-solution.html
