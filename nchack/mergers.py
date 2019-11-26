@@ -57,10 +57,13 @@ def merge(self, match = ["year", "month", "day"]):
         cdo_result = cdo_result.split()
         cdo_result = pd.Series( (v for v in cdo_result) )
         all_times.append(cdo_result)
-    all_times = [x for x in all_times if len(x) > 1]
 
-    if len(set([len(x) for x in all_times])) > 1:
-        raise ValueError("You are trying to merge data sets with an incompatible number of time steps")
+    for i in range(1, len(all_times)):
+        if len(all_times[i]) != len(all_times[0]) and len(all_times[i]) > 1:
+            raise ValueError("You are trying to merge data sets with an incompatible number of time steps")
+
+    # remove files with more than one time step in it
+    all_times = [x for x in all_times if len(x) > 1]
 
     all_df = []
     if len(all_times) > 1:
