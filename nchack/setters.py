@@ -214,7 +214,10 @@ def set_longnames(self, var_dict):
         if self.start == self.current:
             target = temp_file("nc")
 
-    nco_command+= self.current + " " + target
+    if target == "":
+        nco_command+= self.current
+    else:
+        nco_command+= self.current + " " + target
 
     target = run_nco(nco_command, target)
 
@@ -231,7 +234,6 @@ def set_longnames(self, var_dict):
     if self.run:
         cleanup(keep = self.current)
 
-    self.history.append(nco_command)
 
 
 
@@ -295,7 +297,7 @@ def assign_coords(self, lon_name = None, lat_name = None):
         cleanup(keep = self.current)
 
     self.history.append(nco_command)
-
+    self._hold_history = copy.deepcopy(self.history)
 
 
 
