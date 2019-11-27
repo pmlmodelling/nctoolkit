@@ -18,9 +18,7 @@ def split_cdo(self, method = "year"):
     """
     Method to split files by period
     """
-    if self.run == False:
-        self.release()
-        self.run = False
+    self.release()
 
     if type(self.current) is str:
         ff_list = [self.current]
@@ -76,9 +74,11 @@ def split(self, by = None):
     """
     Split the ensemble
     Each file in the ensemble will be separated into new files based on the splitting argument.
-    Available by arguments are 'year', 'month', 'yearmonth', 'season', 'day'
 
-
+    Parameters
+    --------------------
+    by : int
+        Available by arguments are 'year', 'month', 'yearmonth', 'season', 'day'
     """
 
     if by == "year":
