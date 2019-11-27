@@ -21,19 +21,19 @@ def clip(self, lon = [-180, 180], lat = [-90, 90], cdo = True):
 
 
     if  type(lon) is not list or type(lat) is not list:
-        raise ValueError("Check that lon/lat ranges are tuples")
+        raise TypeError("Check that lon/lat ranges are tuples")
 
     if ( type(lon[0]) is float  or  type(lon[0]) is int ) == False:
-        raise ValueError("Check lon")
+        raise TypeError("Check lon")
 
     if ( type(lon[1]) is float  or  type(lon[1]) is int ) == False:
-        raise ValueError("Check lon")
+        raise TypeError("Check lon")
 
     if ( type(lat[0]) is float  or  type(lat[0]) is int ) == False:
-        raise ValueError("Check lat")
+        raise TypeError("Check lat")
 
     if ( type(lat[1]) is float  or  type(lat[1]) is int ) == False:
-        raise ValueError("Check lat")
+        raise TypeError("Check lat")
 
     # now, clip to the lonlat box we need
 
@@ -45,7 +45,7 @@ def clip(self, lon = [-180, 180], lat = [-90, 90], cdo = True):
             run_this(cdo_command, self, output = "ensemble")
         else:
             if type(self.current) is list:
-                raise ValueError("This method only works for single files at present")
+                raise TypeError("This method only works for single files at present")
             if self.run == False:
                 self.release()
                 self.run = False

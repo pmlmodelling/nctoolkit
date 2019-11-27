@@ -13,7 +13,7 @@ def rename(self, newnames):
     """
 
     if type(newnames) is not dict:
-        raise ValueError("a dictionary was not supplied")
+        raise TypeError("a dictionary was not supplied")
 
     # now, we need to loop through the renaming dictionary to get the cdo sub
     cdo_rename = ""

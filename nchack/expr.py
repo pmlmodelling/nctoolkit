@@ -14,7 +14,7 @@ def fix_expr(expr):
         if x.startswith("@"):
             # We need to first check the local variable supplied is a numeric
             if (isinstance(eval("sys.modules['__main__']." + x.replace("@", "")), (int, float))) == False:
-                raise ValueError(x +  " is not numeric!")
+                raise TypeError(x +  " is not numeric!")
             new_expr +=  str(eval("sys.modules['__main__']." + x.replace("@", "")))
         else:
             new_expr +=  x
@@ -24,7 +24,7 @@ def expression(self, operations = None, method = "expr"):
     """Method to modify a netcdf file using expr"""
 
     if type(operations) is not dict:
-        raise ValueError("No expression was provided")
+        raise TypeError("No expression was provided")
 
     # first,we need to convert the operations dictionary to a cdo expression
 

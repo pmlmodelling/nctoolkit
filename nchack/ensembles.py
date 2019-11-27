@@ -31,10 +31,10 @@ def ensemble_percentile(self, p = 50):
 
     # Throw an error if there is only a single file in the tracker
     if type(self.current) is not list:
-        raise ValueError("The current state of the dataset is not a list")
+        raise TypeError("The current state of the dataset is not a list")
 
     if type(p) not in [int, float]:
-        raise ValueError("p is a " + str(type(p)) + ", not an int or float")
+        raise TypeError("p is a " + str(type(p)) + ", not an int or float")
 
     # This method cannot possibly be chained. Release it
     if self.run == False:

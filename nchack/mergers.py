@@ -22,7 +22,7 @@ def merge(self, match = ["year", "month", "day"]):
     """
 
     if type(self.current) is not list:
-        raise ValueError("The current state of the dataset is not a list")
+        raise TypeError("The current state of the dataset is not a list")
 
     if self.merged:
         raise ValueError("You cannot double chain merge methods!")

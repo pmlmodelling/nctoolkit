@@ -4,8 +4,8 @@ import pandas as pd
 
 def times(self):
     if type(self.current) is list:
-        raise ValueError("This presently only works for single file datasets")
-        
+        raise TypeError("This presently only works for single file datasets")
+
     cdo_result = subprocess.run("cdo showtimestamp " + self.current, shell = True, capture_output = True)
     cdo_result = str(cdo_result.stdout).replace("\\n", "")
     cdo_result = cdo_result.replace("b'", "").strip()

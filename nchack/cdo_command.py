@@ -11,13 +11,12 @@ def cdo_command(self, command):
     -------------
     command : string
         cdo command to call. This must be of the form cdo command infile outfile, where cdo, infile and outfile are attached later.
-
     """
 
-    # First carry out some checks
+    # First, check that the command is valid
 
     if type(command) is not str:
-        raise ValueError("Command supplied is not a str")
+        raise TypeError("Command supplied is not a str")
 
     read = subprocess.run("cdo --operators", shell = True, capture_output = True)
     cdo_methods = [x.split(" ")[0].replace("b'", "") for x in str(read.stdout).split("\\n")]
@@ -37,6 +36,7 @@ def cdo_command(self, command):
     if n_methods > 1:
         raise ValueError("Errror: please supply one cdo method")
 
+    # remove cdo from the command
     if command.startswith("cdo "):
         command = command.replace("cdo ", " ")
 

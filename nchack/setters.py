@@ -89,7 +89,7 @@ def set_units(self, var_dict):
 
     # Check that a dictionary has been supplied
     if type(var_dict) is not dict:
-        ValueError("A dictionary has not been supplied!")
+        TypeError("A dictionary has not been supplied!")
 
     # change the units in turn. This doesn't seem to be something you can chain?
     for i in var_dict:
@@ -140,10 +140,10 @@ def set_attributes(self, att_dict):
         self.run = False
 
     if type(self.current) is not str:
-        ValueError("Method does not yet work with ensembles")
+        TypeError("Method does not yet work with ensembles")
 
     if type(att_dict) is not dict:
-        ValueError("A dictionary has not been supplied!")
+        TypeError("A dictionary has not been supplied!")
 
     # change the units in turn. This doesn't seem to be something you can chain?
 
@@ -193,10 +193,10 @@ def set_longnames(self, var_dict):
         self.run = False
 
     if type(self.current) is not str:
-        ValueError("Method does not yet work with ensembles")
+        TypeError("Method does not yet work with ensembles")
 
     if type(var_dict) is not dict:
-        ValueError("A dictionary has not been supplied!")
+        TypeError("A dictionary has not been supplied!")
 
     # change the units in turn. This doesn't seem to be something you can chain?
 
@@ -259,10 +259,10 @@ def assign_coords(self, lon_name = None, lat_name = None):
         ValueError("NCO methods do not work in hold mode")
 
     if type(lon_name) is not str:
-        ValueError("Method does not yet work with ensembles")
+        TypeError("Method does not yet work with ensembles")
 
     if type(lat_name) is not str:
-        ValueError("Method does not yet work with ensembles")
+        TypeError("Method does not yet work with ensembles")
 
     # change the units in turn. This doesn't seem to be something you can chain?
 
@@ -322,10 +322,10 @@ def delete_attributes(self, atts):
         ValueError("NCO methods do not work in hold mode")
 
     if type(self.current) is not str:
-        ValueError("Method does not yet work with ensembles")
+        TypeError("Method does not yet work with ensembles")
 
     if type(atts) not in [str, list]:
-        ValueError("A dictionary has not been supplied!")
+        TypeError("A dictionary has not been supplied!")
 
     # change the units in turn. This doesn't seem to be something you can chain?
 

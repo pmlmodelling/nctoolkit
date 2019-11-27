@@ -7,7 +7,7 @@ def rollstat(self, window,  stat = "mean"):
         window = int(window)
 
     if type(window) is not int:
-        raise ValueError("The window supplied is not numeric!")
+        raise TypeError("The window supplied is not numeric!")
 
     cdo_command = "cdo -run" + stat + "," + str(window)
 

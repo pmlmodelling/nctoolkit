@@ -25,7 +25,7 @@ def temp_file(ext = ""):
         if ext is not None:
             target = actual_temp + os.path.basename(target)
             if type(ext) is not str:
-                raise ValueError("Extension supplied is not a str")
+                raise TypeError("Extension supplied is not a str")
             if ext.startswith("."):
                 target = target + ext
             else:

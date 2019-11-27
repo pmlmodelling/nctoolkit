@@ -24,7 +24,7 @@ def autoplot(self, log = False, panel = False):
         self.run = False
 
     if type(self.current) is list:
-        raise ValueError("You cannot view multiple files!")
+        raise TypeError("You cannot view multiple files!")
 
     cdo_result = subprocess.run("cdo ngrids " + self.current, shell = True, capture_output = True)
     n_grids = int(str(cdo_result.stdout).replace("b'", "").split("\\n")[0])

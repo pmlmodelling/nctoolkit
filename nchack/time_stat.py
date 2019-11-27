@@ -79,7 +79,7 @@ def percentile(self, p = 50):
         self.release()
 
     if type(p) not in [int, float]:
-         raise ValueError("p is a " + str(type(p)) +  ", not int or float")
+         raise TypeError("p is a " + str(type(p)) +  ", not int or float")
 
 
     target = temp_file("nc")

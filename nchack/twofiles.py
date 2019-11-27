@@ -9,7 +9,7 @@ import copy
 def operation(self, method = "mul", ff = None):
 
     if type(self.current) is list:
-        raise ValueError("This only works for single files presently")
+        raise TypeError("This only works for single files presently")
 
     if self.run == False:
         self.release()
@@ -41,7 +41,7 @@ def multiply(self, second = None):
         ff = second
 
     if type(ff) is not str:
-        raise ValueError("second must be a file path")
+        raise TypeError("second must be a file path")
 
     operation(self = self, method = "mul", ff = ff)
 
@@ -60,7 +60,7 @@ def subtract(self, second = None):
         ff = second
 
     if type(ff) is not str:
-        raise ValueError("second must be a file path")
+        raise TypeError("second must be a file path")
 
     operation(self = self, method = "sub", ff = ff)
 
@@ -80,7 +80,7 @@ def add(self, second = None):
         ff = second
 
     if type(ff) is not str:
-        raise ValueError("second must be a file path")
+        raise TypeError("second must be a file path")
 
     operation(self = self, method = "add", ff = ff)
 
@@ -101,7 +101,7 @@ def divide(self, second = None):
         ff = second
 
     if type(ff) is not str:
-        raise ValueError("second must be a file path")
+        raise TypeError("second must be a file path")
 
     operation(self = self, method = "divide", ff = ff)
 

@@ -27,14 +27,14 @@ def phenology(self, var = None):
     if var is None:
         raise ValueError("No var was supplied")
     if type(var) is not str:
-        raise ValueError("var is not a str")
+        raise TypeError("var is not a str")
 
     # First step is to check if the current file exists
     if type(self.current) is str:
         if os.path.exists(self.current) == False:
             raise ValueError("The file " + self.current + " does not exist!")
     else:
-        raise ValueError("This method only works on single files")
+        raise TypeError("This method only works on single files")
 
     #  create a new tracker for the phenologies
     # Then restrict the file to the var selected
