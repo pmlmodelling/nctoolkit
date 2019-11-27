@@ -40,7 +40,9 @@ def ensemble_percentile(self, p = 50):
 
 
 def ensemble_nco(self, method, vars = None, ignore_time = False):
-    """Method to calculate an ensemble stat from a list of files"""
+    """
+    NCO Method to calculate an ensemble stat from a list of files
+    """
 
     # This method cannot possibly be chained. Release it
     if self.run == False:
@@ -51,7 +53,7 @@ def ensemble_nco(self, method, vars = None, ignore_time = False):
 
     # Throw an error if there is only a single file in the tracker
     if type(ff_ensemble) is not list:
-        raise ValueError("The current state of the dataset is not a list")
+        raise TypeError("The current state of the dataset is not a list")
 
     ff_ensemble = self.current
 
@@ -60,7 +62,7 @@ def ensemble_nco(self, method, vars = None, ignore_time = False):
             vars = [vars]
 
         if type(vars) is not list:
-            raise ValueError("vars supplied is not a list or str!")
+            raise TypeError("vars supplied is not a list or str!")
 
     # generate a temp files
     target = temp_file("nc")
@@ -154,7 +156,7 @@ def ensemble_range(self):
 
     """
     if type(self.current) is not list:
-        raise ValueError("The current state of the dataset is not a list")
+        raise TypeError("The current state of the dataset is not a list")
 
     if self.run == False:
         self.release()
