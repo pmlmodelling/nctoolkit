@@ -5,6 +5,7 @@ from .runthis import run_this
 from .runthis import run_nco
 from .flatten import str_flatten
 from .session import nc_safe
+import warnings
 
 def ensemble_percentile(self, p = 50):
     """
@@ -39,19 +40,17 @@ def ensemble_percentile(self, p = 50):
 
 def ensemble_nco(self, method, vars = None, ignore_time = False):
     """Method to calculate an ensemble stat from a list of files"""
-    if self.merged:
-        raise ValueError("There is no point running this on a merged dataset. Check chains")
+
+    # This method cannot possibly be chained. Release it
+    if self.run == False:
+        self.release()
+        self.run = False
 
     ff_ensemble = copy.deepcopy(self.current)
 
     # Throw an error if there is only a single file in the tracker
     if type(ff_ensemble) is not list:
         raise ValueError("The current state of the dataset is not a list")
-
-    # This method cannot possibly be chained. Release it
-    if self.run == False:
-        self.release()
-        self.run = False
 
     ff_ensemble = self.current
 
