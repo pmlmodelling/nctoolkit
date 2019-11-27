@@ -74,6 +74,9 @@ def percentile(self, p = 50):
     """
     self.release()
 
+    if type(self.current) is not str:
+        raise TypeError("This method currently only works with single file datasets currently")
+
     if type(p) not in [int, float]:
          raise TypeError("p is a " + str(type(p)) +  ", not int or float")
 
