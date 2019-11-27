@@ -168,7 +168,7 @@ def merge(*datasets):
 
 class DataSet(object):
     """
-    A tracker/log for manipulating netcdf files
+    A modifiable ensemble of netcdf files
     """
     def __init__(self, start = ""):
         """Initialize the starting file name etc"""
