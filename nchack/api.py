@@ -151,17 +151,17 @@ def open_data(x = None):
     return DataSet(x)
 
 
-def merge(*trackers):
+def merge(*datasets):
     all_files = []
-    for tracker in trackers:
-        if "DataSet" in str(type(tracker)) == False:
+    for dataset in datasets:
+        if "DataSet" in str(type(dataset)) == False:
             raise ValueError("Please check everything is an DataSet object!")
         # make sure everything has been evaluated
-        tracker.release()
-        if type(tracker.current) is str:
-            all_files += [tracker.current]
+        dataset.release()
+        if type(dataset.current) is str:
+            all_files += [dataset.current]
         else:
-            all_files += tracker.current
+            all_files += dataset.current
     result = open_data(all_files)
     result.merge()
     return result
