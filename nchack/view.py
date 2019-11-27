@@ -3,9 +3,10 @@ import os
 
 def view(self):
     """
-    Open the current dataset's file in ncview 
-
+    Open the current dataset's file in ncview
     """
+    self.release()
+
     if type(self.current) is str:
         os.system("ncview " + self.current + "&")
     else:
