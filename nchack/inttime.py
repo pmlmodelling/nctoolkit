@@ -9,7 +9,6 @@ from .runthis import run_this
 from .flatten import str_flatten
 
 def time_interp(self, start = None, end = None, resolution = "monthly"):
-
     """
     Temporally interpolate variables based on date range and time resolution
 
@@ -21,7 +20,6 @@ def time_interp(self, start = None, end = None, resolution = "monthly"):
         End date for interpolation. Needs to be of the form YYYY/MM/DD or YYYY-MM-DD
     resolution : str
         Time steps used for intpoleration. Needs to be "daily", "weekly", "monthly" or "yearly"
-
     """
 
     if resolution not in ["daily", "weekly", "monthly", "yearly"]:

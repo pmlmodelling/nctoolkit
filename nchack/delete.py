@@ -9,7 +9,6 @@ def remove_variables(self, vars):
     -------------
     vars : str or list
         Variable or variables to be removed from the data set
-
     """
 
     if type(vars) is not list:

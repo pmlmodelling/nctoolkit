@@ -12,15 +12,15 @@ def fldstat(self, stat = "mean",):
 def spatial_mean(self):
     """
     Calculate an area weighted spatial mean of variables. This is performed for each time step.
-
     """
+
     return fldstat(self, stat = "mean")
 
 def spatial_mean(self):
     """
     Calculate an area weighted spatial mean of variables. This is performed for each time step.
-
     """
+
     return fldstat(self, stat = "mean")
 
 def spatial_min(self):
@@ -33,8 +33,6 @@ def spatial_min(self):
 def spatial_max(self):
     """
     Calculate a spatial maximum of variables. This is performed for each time step.
-
-
     """
 
     return fldstat(self, stat = "max")
@@ -42,29 +40,26 @@ def spatial_max(self):
 def spatial_range(self):
     """
     Calculate a spatial range of variables. This is performed for each time step.
-
-
     """
+
     return fldstat(self, stat = "range")
 
 def spatial_sum(self):
     """
     Calculate the spatial sum of variables. This is performed for each time step.
-
-
     """
+
     return fldstat(self, stat = "sum")
 
 def spatial_percentile(self, p = 50):
     """
     Calculate the spatial sum of variables. This is performed for each time step.
-
     Parameters
     -------------
     p: int or float
         Percentile to calculate
-
     """
+
     if type(p) not in (int, float):
         raise ValueError(p + " is not a valid percentile")
 

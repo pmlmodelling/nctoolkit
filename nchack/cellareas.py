@@ -13,7 +13,7 @@ def cell_areas(self,  join = True):
     Parameters
     -------------
     join: boolean
-        Set to False if you only want the cell areas to be in the output. True joins the areas to the files.
+        Set to False if you only want the cell areas to be in the output. join=True joins the areas to the files.
 
     """
 

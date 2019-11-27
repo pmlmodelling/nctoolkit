@@ -9,7 +9,6 @@ def rename(self, newnames):
     -------------
     newnames : dict
         Dictionary with keys being old variable names and values being new variable names
-
     """
 
     if type(newnames) is not dict:

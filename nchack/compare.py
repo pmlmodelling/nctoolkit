@@ -6,9 +6,10 @@ from .session import nc_safe
 import subprocess
 
 
-
-
 def fix_expr(expression):
+    """
+    Function to to convert operations to something cdo can handle
+    """
 
     # equal constant case
     if expression.startswith("=="):
@@ -70,7 +71,6 @@ def compare_all(self, expression):
     -------------
     expression: str
         This a regular comparison such as "<0", ">0", "==0"
-
     """
 
     expression = fix_expr(expression)

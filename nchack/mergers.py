@@ -74,12 +74,11 @@ def merge(self, match = ["year", "month", "day"]):
         if all_df[0].equals(all_df[i]) == False:
             raise ValueError("Dates of data sets do not satisfy matching criteria!")
 
-    self.merged = True
-
     cdo_command = ("cdo -merge ")
 
     run_this(cdo_command, self, output = "one")
 
+    self.merged = True
 
 
 
@@ -96,10 +95,9 @@ def merge_time(self):
     if self.merged:
         raise ValueError("You cannot double chain merge methods!")
 
-    self.merged = True
-
     cdo_command = "cdo --sortname -mergetime "
 
     run_this(cdo_command, self,  output = "one")
 
+    self.merged = True
 

@@ -7,18 +7,17 @@ import subprocess
 
 def clip(self, lon = [-180, 180], lat = [-90, 90], cdo = True):
     """
-    Clip to a rectangular longitude and latitude lat box
+    Clip to a rectangular longitude and latitude box
 
     Parameters
     -------------
     lon: list
-        The longitude range to select. This must be two variables, within -180 and 180.
+        The longitude range to select. This must be two variables, between -180 and 180.
     lat: list
-        The latitude range to select. This must be two variables, within -90 and 90.
+        The latitude range to select. This must be two variables, between -90 and 90.
     cdo: boolean
-        Do you want this to call CDO or NCO? Set to False if you want to call NCO. NCO is better at handling very large horizontal grids.
+        Do you want this to use CDO or NCO for clipping? Defaults to True. Set to False if you want to call NCO. NCO is better at handling very large horizontal grids.
     """
-
 
     if  type(lon) is not list or type(lat) is not list:
         raise TypeError("Check that lon/lat ranges are tuples")

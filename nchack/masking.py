@@ -11,7 +11,6 @@ def mask_lonlat(self, lon = [-180, 180], lat = [-90, 90]):
         Longitude range to mask. Must be of the form: [lon_min, lon_max]
     lat : list
         Latitude range to mask. Must be of the form: [lat_min, lat_max]
-
     """
 
     if (type(lon) is not list) or (type(lat) is not list):
