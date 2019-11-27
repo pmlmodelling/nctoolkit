@@ -25,12 +25,9 @@ def regrid(self, grid = None, method = "bil"):
         grid to remap to
     method : str
         remapping method. Defaults to "bil". Bilinear: "bil"; Nearest neighbour: "nn",....
-
     """
-    lazy_eval = self.run == False
 
-    if len(self.history) > len(self._hold_history):
-        self.release()
+    self.release()
 
     if grid is None:
         raise ValueError("No grid was supplied")
@@ -127,7 +124,6 @@ def regrid(self, grid = None, method = "bil"):
         run_this(cdo_command, tracker,  output = "ensemble")
         #nc_safe.remove(weights_nc)
 
-        self.run = lazy_eval == False
 
         if type(tracker.current) is str:
             new_files += [tracker.current]
