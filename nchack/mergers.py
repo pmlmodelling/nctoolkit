@@ -21,21 +21,16 @@ def merge(self, match = ["year", "month", "day"]):
 
     """
 
-    if type(self.current) is not list:
-        raise TypeError("The current state of the dataset is not a list")
-
-    if self.merged:
-        raise ValueError("You cannot double chain merge methods!")
-
     # Force a release if needed
     if self.run == False:
         self.release()
         self.run = False
 
+    if type(self.current) is not list:
+        raise TypeError("The current state of the dataset is not a list")
 
     if type(match) is list:
         match = [y.lower() for y in match]
-
 
     # Make sure the times in the files are compatiable, based on the match criteria
 
@@ -89,21 +84,17 @@ def merge(self, match = ["year", "month", "day"]):
 
 
 def merge_time(self):
-
     """
-    Time-based merging of a multi-file ensemble into a single file. This method is ideal if you have the same data split over multiple files covering different data sets.
-
-
+    Time-based merging of a multi-file ensemble into a single file
+    This method is ideal if you have the same data split over multiple files covering different data sets.
     """
-
-    lazy_merger = copy.deepcopy(self.run)
-
-    if self.merged:
-        raise ValueError("You cannot double chain merge methods!")
 
     if self.run == False and (len(self.history) > len(self._hold_history)):
         self.release()
         self.run = False
+
+    if self.merged:
+        raise ValueError("You cannot double chain merge methods!")
 
     self.merged = True
 
