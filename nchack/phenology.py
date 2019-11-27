@@ -21,7 +21,6 @@ def phenology(self, var = None):
     -------------
     var : str
         Variable to analyze.
-
     """
 
     if var is None:
@@ -30,10 +29,7 @@ def phenology(self, var = None):
         raise TypeError("var is not a str")
 
     # First step is to check if the current file exists
-    if type(self.current) is str:
-        if os.path.exists(self.current) == False:
-            raise ValueError("The file " + self.current + " does not exist!")
-    else:
+    if type(self.current) is not str:
         raise TypeError("This method only works on single files")
 
     #  create a new tracker for the phenologies
@@ -115,7 +111,6 @@ def phenology(self, var = None):
     nc_safe.append(self.current)
 
     nc_safe.remove(start_files)
-
 
     cleanup(self.current)
 
