@@ -26,6 +26,9 @@ def split_cdo(self, method = "year"):
         ff_list = self.current
 
     new_files = []
+
+    commands = []
+
     for ff in ff_list:
 
         # We need to split the file by name
@@ -47,8 +50,7 @@ def split_cdo(self, method = "year"):
 
         os.system(cdo_command)
 
-        self.history.append(cdo_command)
-        self._hold_history = copy.deepcopy(self.history)
+        commands.append(cdo_command)
 
         # now, pull out the files generated
 
@@ -65,6 +67,9 @@ def split_cdo(self, method = "year"):
 
         if counter == 0:
             raise ValueError("Splitting the file by year did not work!")
+
+    self.history+= commands
+    self._hold_history = copy.deepcopy(self.history)
 
     self.merged = False
     self.current = new_files
