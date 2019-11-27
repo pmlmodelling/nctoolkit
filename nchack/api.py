@@ -385,7 +385,6 @@ class DataSet(object):
     from .regrid import regrid
 
     from .ensembles import ensemble_mean
-    from .ensembles import ensemble_mean_cdo
     from .ensembles import ensemble_max
     from .ensembles import ensemble_min
     from .ensembles import ensemble_range

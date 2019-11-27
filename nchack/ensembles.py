@@ -21,6 +21,7 @@ def ensemble_percentile(self, p = 50):
     # This method cannot possibly be chained. Release it
     if self.run == False:
         self.release()
+        self.run = False
 
     # Throw an error if there is only a single file in the tracker
     if type(self.current) is not list:
@@ -161,49 +162,6 @@ def ensemble_range(self):
     cdo_command = "cdo ensrange "
 
     run_this(cdo_command, self)
-
-    self.merged = True
-
-def ensemble_mean_cdo(self,  vars = None):
-    """
-    Calculate an ensemble mean
-
-    Parameters
-    -------------
-    vars : str or list
-        variables to analyse. If this is not supplied all variables will be analysed.
-    ignore_time : boolean
-        If True time is ignored when the statistic is ignored. If False, the statistics is calculated for each time step; for example, if each file in the ensemble has 12 months of data the statistic will be calculated for each month.
-
-    """
-
-    if self.merged:
-        raise ValueError("There is no point running this on a merged dataset. Check chains")
-
-    ff_ensemble = self.current
-
-    # Throw an error if there is only a single file in the tracker
-    if type(ff_ensemble) is not list:
-        raise ValueError("The current state of the dataset is not a list")
-
-    ff_ensemble = self.current
-
-    if vars is not None:
-        if type(vars) == str:
-            vars = [vars]
-
-        if type(vars) is not list:
-            raise ValueError("vars supplied is not a list or str!")
-
-
-    cdo_command = "cdo -ensmean "
-    self.history.append(cdo_command)
-
-
-    if self.run:
-        run_this(cdo_command, self, output = "one")
-    else:
-        self.release(run_merge = False)
 
     self.merged = True
 
