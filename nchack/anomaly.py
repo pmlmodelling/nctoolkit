@@ -21,9 +21,7 @@ def annual_anomaly(self, baseline = None, metric = "absolute", window = 1):
 
     # release if set to lazy
 
-    if self.run == False:
-        self.release()
-        self.run = False
+    self.release()
 
     # throw an error if the dataset is an ensemble
     if type(self.current) is not str:

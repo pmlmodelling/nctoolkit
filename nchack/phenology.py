@@ -35,9 +35,7 @@ def phenology(self, var = None):
     #  create a new tracker for the phenologies
     # Then restrict the file to the var selected
 
-    if self.run == False:
-        self.release()
-        self.run = False
+    self.release()
 
     start_files = copy.deepcopy(self.current)
 

@@ -22,9 +22,7 @@ def merge(self, match = ["year", "month", "day"]):
     """
 
     # Force a release if needed
-    if self.run == False:
-        self.release()
-        self.run = False
+    self.release()
 
     if type(self.current) is not list:
         raise TypeError("The current state of the dataset is not a list")
@@ -88,9 +86,7 @@ def merge_time(self):
     This method is ideal if you have the same data split over multiple files covering different data sets.
     """
 
-    if self.run == False and (len(self.history) > len(self._hold_history)):
-        self.release()
-        self.run = False
+    self.release()
 
     if self.merged:
         raise ValueError("You cannot double chain merge methods!")

@@ -19,9 +19,7 @@ def ensemble_percentile(self, p = 50):
     """
 
     # This method cannot possibly be chained. Release it
-    if self.run == False:
-        self.release()
-        self.run = False
+    self.release()
 
     # Throw an error if there is only a single file in the tracker
     if type(self.current) is not list:
@@ -45,9 +43,7 @@ def ensemble_nco(self, method, vars = None, ignore_time = False):
     """
 
     # This method cannot possibly be chained. Release it
-    if self.run == False:
-        self.release()
-        self.run = False
+    self.release()
 
     ff_ensemble = copy.deepcopy(self.current)
 

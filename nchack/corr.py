@@ -22,9 +22,7 @@ def cor(self, var1 = None, var2 = None, method = "fld"):
         raise ValueError("This method only works on single files")
 
     # make sure everything has been evaluated
-    if self.run == False:
-        self.release()
-        self.run = False
+    self.release()
 
     # create the temp file for targeting
     target = temp_file(".nc")

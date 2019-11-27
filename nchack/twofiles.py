@@ -11,8 +11,7 @@ def operation(self, method = "mul", ff = None):
     if type(self.current) is list:
         raise TypeError("This only works for single files presently")
 
-    if self.run == False:
-        self.release()
+    self.release()
 
 
     target = temp_file(".nc")

@@ -23,7 +23,6 @@ def cell_areas(self,  join = True):
     # release if you need to join the cell areas to the original file
     if join and self.run == False:
         self.release()
-        self.run = False
 
     # first run the join case
     if join:

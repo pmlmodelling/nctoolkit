@@ -45,9 +45,8 @@ def clip(self, lon = [-180, 180], lat = [-90, 90], cdo = True):
         else:
             if type(self.current) is list:
                 raise TypeError("This method only works for single files at present")
-            if self.run == False:
-                self.release()
-                self.run = False
+            self.release()
+
             out = subprocess.run("cdo griddes " + self.current, shell = True, capture_output = True)
             lon_name = [x for x in str(out.stdout).replace("b'", "").split("\\n") if "xname" in x][0].split(" ")[-1]
             lat_name = [x for x in str(out.stdout).replace("b'", "").split("\\n") if "yname" in x][0].split(" ")[-1]

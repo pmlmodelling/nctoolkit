@@ -19,9 +19,7 @@ def autoplot(self, log = False, panel = False):
         Do you want a panel plot, if avaiable?
     """
 
-    if self.run == False:
-        self.release()
-        self.run = False
+    self.release()
 
     if type(self.current) is list:
         raise TypeError("You cannot view multiple files!")
