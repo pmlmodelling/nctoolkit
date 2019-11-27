@@ -6,28 +6,20 @@ from .runthis import run_nco
 from .flatten import str_flatten
 from .session import nc_safe
 
-
-# Ensemble methods all assume the structure of the input files are idential
-# So the time steps should be the same
-# e.g. it could be an ensemble of climate models with the same variables and same times
-# or it could be daily files for an entire year and you want the annual mean etc.
-# Is there a way to check the ensemble without it being slow?
-
-
-
 def ensemble_percentile(self, p = 50):
     """
     Calculate an ensemble percentile
+    This will calculate the percentles for each time step in the files. For example, if you had an ensemble of files where each file included 12 months of data, it would calculate the percentile for each month.
 
     Parameters
     -------------
     p : float or int
         percentile to calculate
-
     """
 
-    if self.merged:
-        raise ValueError("There is no point running this on a merged dataset. Check chains")
+    # This method cannot possibly be chained. Release it
+    if self.run == False:
+        self.release()
 
     # Throw an error if there is only a single file in the tracker
     if type(self.current) is not list:
@@ -35,10 +27,6 @@ def ensemble_percentile(self, p = 50):
 
     if type(p) not in [int, float]:
         raise TypeError("p is a " + str(type(p)) + ", not an int or float")
-
-    # This method cannot possibly be chained. Release it
-    if self.run == False:
-        self.release()
 
     cdo_command = "cdo -enspctl," + str(p) + " "
 
