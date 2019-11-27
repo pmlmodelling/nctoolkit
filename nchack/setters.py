@@ -135,9 +135,7 @@ def set_attributes(self, att_dict):
 
     """
 
-    if self.run == False:
-        self.release()
-        self.run = False
+    self.release()
 
     if type(self.current) is not str:
         TypeError("Method does not yet work with ensembles")
@@ -188,9 +186,7 @@ def set_longnames(self, var_dict):
 
     """
 
-    if self.run == False:
-        self.release()
-        self.run = False
+    self.release()
 
     if type(self.current) is not str:
         TypeError("Method does not yet work with ensembles")
@@ -255,8 +251,7 @@ def assign_coords(self, lon_name = None, lat_name = None):
 
     # add grid number check
 
-    if self.run == False:
-        ValueError("NCO methods do not work in hold mode")
+    self.release()
 
     if type(lon_name) is not str:
         TypeError("Method does not yet work with ensembles")
@@ -318,8 +313,7 @@ def delete_attributes(self, atts):
 
     """
 
-    if self.run == False:
-        ValueError("NCO methods do not work in hold mode")
+    self.release()
 
     if type(self.current) is not str:
         TypeError("Method does not yet work with ensembles")
