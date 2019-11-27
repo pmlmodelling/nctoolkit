@@ -35,7 +35,10 @@ def multiply(self, second = None):
         A dataset or netcdf file to multiply the current dataset by.
     """
 
+    self.release()
+
     if "api.DataSet" in str(type(second)):
+        second.release()
         ff = second.current
     else:
         ff = second
@@ -54,7 +57,11 @@ def subtract(self, second = None):
     second: DataSet or netcdf file
         A dataset or netcdf file to substract from the current dataset by
     """
+
+    self.release()
+
     if "api.DataSet" in str(type(second)):
+        second.release()
         ff = second.current
     else:
         ff = second
@@ -74,7 +81,10 @@ def add(self, second = None):
         A dataset or netcdf file to add to the current dataset by
     """
 
+    self.release()
+
     if "api.DataSet" in str(type(second)):
+        second.release()
         ff = second.current
     else:
         ff = second
@@ -95,7 +105,10 @@ def divide(self, second = None):
         A dataset or netcdf file to divide the current dataset by
     """
 
+    self.release()
+
     if "api.DataSet" in str(type(second)):
+        second.release()
         ff = second.current
     else:
         ff = second
