@@ -23,7 +23,7 @@ def ensemble_percentile(self, p = 50):
 
     # Throw an error if there is only a single file in the tracker
     if type(self.current) is not list:
-        raise TypeError("The current state of the dataset is not a list")
+        warnings.warn(message = "There is only one file in the dataset")
 
     if type(p) not in [int, float]:
         raise TypeError("p is a " + str(type(p)) + ", not an int or float")
@@ -49,7 +49,7 @@ def ensemble_nco(self, method, vars = None, ignore_time = False):
 
     # Throw an error if there is only a single file in the tracker
     if type(ff_ensemble) is not list:
-        raise TypeError("The current state of the dataset is not a list")
+        warnings.warn("There is only one file in the dataset")
 
     ff_ensemble = self.current
 

@@ -25,7 +25,8 @@ def merge(self, match = ["year", "month", "day"]):
     self.release()
 
     if type(self.current) is not list:
-        raise TypeError("The current state of the dataset is not a list")
+        warnings.warn(message("There is only file in the dataset. No need to merge!"))
+        return None
 
     if type(match) is list:
         match = [y.lower() for y in match]
@@ -87,6 +88,10 @@ def merge_time(self):
     """
 
     self.release()
+
+    if type(self.current) is not list:
+        warnings.warn(message("There is only file in the dataset. No need to merge!"))
+        return None
 
     if self.merged:
         raise ValueError("You cannot double chain merge methods!")
