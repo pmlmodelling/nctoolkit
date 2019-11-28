@@ -535,5 +535,10 @@ class DataSet(object):
 
     from .compare import compare_all
 
+    from .arith_all import divide_by_constant
+    from .arith_all import add_constant
+    from .arith_all import subtract_constant
+    from .arith_all import multiply_by_constant
+
 
 
