@@ -125,6 +125,7 @@ def open_data(x = None):
             if type(ff) is not str:
                 raise TypeError("You have not supplied an iterable made of file paths!")
 
+
     # check the files provided exist
     if type(x) is str:
         if os.path.exists(x) == False:
@@ -143,6 +144,8 @@ def open_data(x = None):
             warnings.warn(message = "Duplicates in data set have been removed!")
 
     if type(x) is list:
+        if len(x) == 0:
+            raise ValueError("You have not provided any files!")
         for ff in x:
             if os.path.exists(ff) == False:
                 raise ValueError("Data set " + ff + " does not exist!")
