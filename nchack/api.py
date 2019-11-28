@@ -111,15 +111,21 @@ def open_data(x = None):
     Parameters
     ---------------
     x : str or list
-        A string or list of netcdf files. The function will check the files exist
+        A string or list of netcdf files. The function will check the files exist. If x is not a list, but an iterable it will be converted to a list
     """
 
-    if x == None:
+    # make sure data has been supplied
+    if x is None:
             raise ValueError("No data was supplied!")
 
-    if (type(x) is str or type(x) is list) == False:
-            raise ValueError("Please supply string or list!")
+    # coerce an iterable to a list
+    if type(x) is not str:
+        x = [y for y in x]
+        for ff in x:
+            if type(ff) is not str:
+                raise TypeError("You have not supplied an iterable made of file paths!")
 
+    # check the files provided exist
     if type(x) is str:
         if os.path.exists(x) == False:
             raise ValueError("Data set " + x + " does not exist!")
