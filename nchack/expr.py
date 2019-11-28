@@ -34,7 +34,11 @@ def transmute(self, operations = None):
         for x in expr_split:
             if x.startswith("@"):
                 # We need to first check the local variable supplied is a numeric
-                new_x = inspect.currentframe().f_back.f_locals[x.replace("@", "")]
+                if x.replace("@", "") in inspect.currentframe().f_back.f_locals:
+                    new_x = inspect.currentframe().f_back.f_locals[x.replace("@", "")]
+                else:
+                    raise ValueError(str(x.replace("@", "")) + " is a local variable")
+
                 if isinstance(new_x, (int, float)) == False:
                     raise TypeError(x +  " is not numeric!")
                 new_expr +=  str(new_x)
@@ -81,7 +85,11 @@ def mutate(self, operations = None):
         for x in expr_split:
             if x.startswith("@"):
                 # We need to first check the local variable supplied is a numeric
-                new_x = inspect.currentframe().f_back.f_locals[x.replace("@", "")]
+                if x.replace("@", "") in inspect.currentframe().f_back.f_locals:
+                    new_x = inspect.currentframe().f_back.f_locals[x.replace("@", "")]
+                else:
+                    raise ValueError(str(x.replace("@", "")) + " is a local variable")
+
                 if isinstance(new_x, (int, float)) == False:
                     raise TypeError(x +  " is not numeric!")
                 new_expr +=  str(new_x)
