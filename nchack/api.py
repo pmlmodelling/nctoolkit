@@ -515,6 +515,7 @@ class DataSet(object):
     from .split import split
 
     from .anomaly import annual_anomaly
+    from .anomaly import monthly_anomaly
 
     from .masking import mask_lonlat
 

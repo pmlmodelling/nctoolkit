@@ -66,3 +66,61 @@ def annual_anomaly(self, baseline = None, metric = "absolute", window = 1):
 
 
 
+
+
+
+def monthly_anomaly(self, baseline = None):
+    """
+    Calculate monthly anomalies based on a baseline period
+    The anomaly is derived by first calculating the climatological monthly mean for the given baseline period. Monthly means are then calculated for each year and the anomaly is calculated compared with the baseline mean.
+
+    Parameters
+    -------------
+    baseline: list
+        Baseline years. This needs to be the first and last year of the climatological period. Example: a baseline of [1985,2005] will result in anomolies against  20 year climatology from 1986 to 2005.
+    """
+
+    # release if set to lazy
+
+    self.release()
+
+    # throw an error if the dataset is an ensemble
+    if type(self.current) is not str:
+        raise TypeError("At present this only works for single files")
+
+    # check baseline is a list, etc.
+    if type(baseline) is not list:
+        raise TypeError("baseline years supplied is not a list")
+    if len(baseline) > 2:
+        raise ValueError("More than 2 years in baseline. Please check.")
+    if type(baseline[0]) is not int:
+        raise TypeError("Provide a valid baseline")
+    if type(baseline[1]) is not int:
+        raise TypeError("Provide a vaid baseline")
+
+    # create the target file
+    target = temp_file("nc")
+
+
+    cdo_command = "cdo -L -ymonsub -monmean " + self.current +  " -ymonmean  -selyear," + str(baseline[0]) + "/" + str(baseline[1]) + " " + self.current + " " + target
+
+    # run the command and save the temp file
+    target = run_cdo(cdo_command, target)
+
+    # update the history
+    self.history.append(cdo_command)
+    self._hold_history = copy.deepcopy(self.history)
+
+    # updat the safe lists and current file
+    if self.current in nc_safe:
+        nc_safe.remove(self.current)
+
+    self.current = target
+    nc_safe.append(target)
+
+
+
+
+
+
+
