@@ -154,8 +154,7 @@ def ensemble_range(self):
     if type(self.current) is not list:
         raise TypeError("The current state of the dataset is not a list")
 
-    if self.run == False:
-        self.release()
+    self.release()
 
     cdo_command = "cdo ensrange "
 
