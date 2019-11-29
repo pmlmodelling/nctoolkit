@@ -11,7 +11,7 @@ class TestSelect(unittest.TestCase):
     def test_select(self):
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1950, 1959))) 
+        tracker.select_years(list(range(1950, 1959)))
         tracker.select_months([1,2,3,4,5])
         tracker.clip(lon = [0,90])
         tracker.clip(lat = [0,90])
@@ -25,7 +25,7 @@ class TestSelect(unittest.TestCase):
     def test_lazy1(self):
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1950, 1959))) 
+        tracker.select_years(list(range(1950, 1959)))
         tracker.select_months([1,2,3,4,5])
         tracker.clip(lon = [0,90])
         tracker.clip(lat = [0,90])
@@ -44,7 +44,7 @@ class TestSelect(unittest.TestCase):
         tracker.split(by = "year")
         n_files = len(tracker.current)
         tracker.merge_time()
-        tracker.select_years(list(range(1950, 1959))) 
+        tracker.select_years(list(range(1950, 1959)))
         tracker.select_months([1,2,3,4,5])
         tracker.clip(lon = [0,90])
         tracker.clip(lat = [0,90])
@@ -63,7 +63,7 @@ class TestSelect(unittest.TestCase):
         tracker.split(by = "year")
         n_files = len(tracker.current)
         tracker.merge_time()
-        tracker.select_years(list(range(1950, 1959))) 
+        tracker.select_years(list(range(1950, 1959)))
         tracker.select_months([1,2,3,4,5])
         tracker.clip(lon = [0,90])
         tracker.clip(lat = [0,90])
@@ -90,9 +90,8 @@ class TestSelect(unittest.TestCase):
     def test_transmute_1(self):
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
-        tracker.lazy()
         tracker.transmute({"sst":"sst+273.15"})
-        tracker.select_years(list(range(1950, 1959))) 
+        tracker.select_years(list(range(1950, 1959)))
         tracker.select_months([1,2,3,4,5])
         tracker.clip(lon = [0,90])
         tracker.clip(lat = [0,90])
@@ -108,9 +107,8 @@ class TestSelect(unittest.TestCase):
     def test_mutate_1(self):
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
-        tracker.lazy()
         tracker.mutate({"sst1":"sst+273.15"})
-        tracker.select_years(list(range(1950, 1959))) 
+        tracker.select_years(list(range(1950, 1959)))
         tracker.select_months([1,2,3,4,5])
         tracker.clip(lon = [0,90])
         tracker.clip(lat = [0,90])
