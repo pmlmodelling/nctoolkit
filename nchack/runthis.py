@@ -194,6 +194,7 @@ def run_this(os_command, self, output = "one",  out_file = None):
     if type(self.current) is str:
         output = "ensemble"
 
+#    if session_info["lazy"]
     if self.run == False:
         if len(self._hold_history) == len(self.history):
             self.history.append(os_command)
@@ -212,7 +213,7 @@ def run_this(os_command, self, output = "one",  out_file = None):
             else:
                 file_list = self.current
 
-            if self.released:
+            if len(self.history) > len(self._hold_history):
                 os_command = os_command + " " + self.history[-1].replace("cdo ", " ")
                 os_command = os_command.replace("  ", " ")
 
@@ -276,7 +277,7 @@ def run_this(os_command, self, output = "one",  out_file = None):
 
             file_list = [self.current]
 
-            if self.released:
+            if len(self.history) > len(self._hold_history):
                 os_command = os_command + " " + self.history[-1].replace("cdo ", " ")
                 os_command = os_command.replace("  ", " ")
 

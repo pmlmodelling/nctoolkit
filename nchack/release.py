@@ -20,7 +20,6 @@ def release(self,  run_merge = True):
 
     if self.run == False and (len(self.history) > len(self._hold_history)):
         self.run = True
-        self.released = True
 
         if (len(self.history) > len(self._hold_history)) and session_info["thread_safe"] == False:
             cdo_command = "cdo -L"
@@ -33,7 +32,6 @@ def release(self,  run_merge = True):
             output_method = "one"
 
         run_this(cdo_command, self,  output = output_method)
-        self.released = False
 
         self.run = False
 

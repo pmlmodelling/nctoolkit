@@ -192,7 +192,6 @@ class DataSet(object):
             self.run = True
         self._hold_history = []
         self.merged = False
-        self.released = False
 
     def __repr__(self):
         # tidy up the output first
