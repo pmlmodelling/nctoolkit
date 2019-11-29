@@ -21,7 +21,7 @@ def cell_areas(self,  join = True):
     lazy_eval = False
 
     # release if you need to join the cell areas to the original file
-    if join and self.run == False:
+    if join:
         self.release()
 
     # first run the join case
