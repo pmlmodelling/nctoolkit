@@ -18,8 +18,8 @@ def release(self,  run_merge = True):
 
     # the first step is to set the run status to true
 
-    if self.run == False and (len(self.history) > len(self._hold_history)):
-        self.run = True
+    if self._run == False and (len(self.history) > len(self._hold_history)):
+        self._run = True
 
         if (len(self.history) > len(self._hold_history)) and session_info["thread_safe"] == False:
             cdo_command = "cdo -L"
@@ -33,7 +33,7 @@ def release(self,  run_merge = True):
 
         run_this(cdo_command, self,  output = output_method)
 
-        self.run = False
+        self._run = False
 
 
 

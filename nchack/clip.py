@@ -60,7 +60,7 @@ def clip(self, lon = [-180, 180], lat = [-90, 90], cdo = True):
                 nc_safe.remove(self.current)
             self.current = target
             nc_safe.append(self.current)
-            self.run = lazy_eval == False
+            self._run = lazy_eval == False
     else:
         raise ValueError("The lonlat box supplied is not valid!")
 

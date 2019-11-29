@@ -63,11 +63,11 @@ def write_nc(self, out, zip = True, overwrite = False):
         else:
             cdo_command = "cdo -L "
 
-        self.run = True
+        self._run = True
 
 
         run_this(cdo_command, self, out_file = out)
-        self.run = False
+        self._run = False
 
     if os.path.exists(out) == False:
         raise ValueError("File zipping was not successful")

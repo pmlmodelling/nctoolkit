@@ -195,14 +195,14 @@ def run_this(os_command, self, output = "one",  out_file = None):
         output = "ensemble"
 
 #    if session_info["lazy"]
-    if self.run == False:
+    if self._run == False:
         if len(self._hold_history) == len(self.history):
             self.history.append(os_command)
         else:
             self.history[-1] = os_command + " " + self.history[-1].replace("cdo ", " ")
             self.history[-1] = self.history[-1].replace("  ", " ")
 
-    if self.run:
+    if self._run:
 
         if (output == "ensemble" and type(self.current) == list) or (output == "ensemble" and type(self.current) == str):
             new_history = copy.deepcopy(self._hold_history)
@@ -264,7 +264,7 @@ def run_this(os_command, self, output = "one",  out_file = None):
 
             self.disk_clean()
 
-            if self.run:
+            if self._run:
                 cleanup()
             self._hold_history = copy.deepcopy(self.history)
 
@@ -316,10 +316,10 @@ def run_this(os_command, self, output = "one",  out_file = None):
                     if ff in nc_safe:
                         nc_safe.remove(ff)
 
-            if self.run == True:
+            if self._run == True:
                 self.disk_clean()
 
-            if self.run:
+            if self._run:
                 cleanup()
 
             self._hold_history = copy.deepcopy(self.history)
