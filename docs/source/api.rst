@@ -29,12 +29,10 @@ Accessing attributes
 .. autosummary::
    :toctree: generated/
 
+   DataSet.size
    DataSet.start
    DataSet.current
    DataSet.history
-   DataSet.size
-   DataSet.run
-
 
 Variable modification 
 ---------------------
@@ -94,7 +92,6 @@ Evaluation setting
 .. autosummary::
    :toctree: generated/
 
-   DataSet.lazy
    DataSet.release
 
 
