@@ -9,7 +9,6 @@ import shutil
 
 from .session import nc_safe
 from .remove import nc_remove
-from .session import session_stamp
 from .session import session_info
 
 # keep is a file you do not want to delete
@@ -30,7 +29,7 @@ def cleanup(keep = None):
 
     mylist = [f for f in glob.glob("/tmp/" + "*.nc*")]
     mylist = mylist + [f for f in glob.glob("/var/tmp/" + "*.nc*")]
-    mylist = [f for f in mylist if session_stamp["stamp"] in f]
+    mylist = [f for f in mylist if session_info["stamp"] in f]
     for ff in mylist:
         candidates.append(ff)
 
@@ -56,12 +55,12 @@ def cleanup(keep = None):
     result = os.statvfs("/tmp/")
     result = result.f_frsize * result.f_bavail
     if result > session_info["size"]:
-        if session_stamp["temp_dir"] == "/var/tmp/":
-            session_stamp["temp_dir"] = "/tmp/"
+        if session_info["temp_dir"] == "/var/tmp/":
+            session_info["temp_dir"] = "/tmp/"
     session_info["size"] = result
 
     if session_info["size"] > 1.5 * session_info["latest_size"]:
-            session_stamp["temp_dir"] = "/tmp/"
+            session_info["temp_dir"] = "/tmp/"
 
 
 def clean_all():
@@ -85,7 +84,7 @@ def clean_all():
 
     mylist = [f for f in glob.glob("/tmp/" + "*.nc*")]
     mylist = mylist + [f for f in glob.glob("/var/tmp/" + "*.nc*")]
-    mylist = [f for f in mylist if session_stamp["stamp"] in f]
+    mylist = [f for f in mylist if session_info["stamp"] in f]
 
     for ff in mylist:
         candidates.append(ff)
@@ -152,7 +151,7 @@ def disk_clean(self, method = "year"):
     # First step is to figure out how much space is in /tmp
     # Do nothing if it is less than 0.5 GB
 
-    if session_stamp["temp_dir"] == "/tmp/":
+    if session_info["temp_dir"] == "/tmp/":
         result = os.statvfs("/tmp/")
         result = result.f_frsize * result.f_bavail
 
@@ -160,7 +159,7 @@ def disk_clean(self, method = "year"):
             return None
 
     # at this point we want to change the temp dir, though it probably has been already
-    session_stamp["temp_dir"] = "/var/tmp/"
+    session_info["temp_dir"] = "/var/tmp/"
     # get a list of the new file names
 
     # loop through the existing ones

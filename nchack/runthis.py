@@ -11,7 +11,6 @@ from .temp_file import temp_file
 from .cleanup import cleanup
 from .session import nc_safe
 from .flatten import str_flatten
-from .session import session_stamp
 from .session import session_info
 
 
@@ -48,7 +47,7 @@ def run_nco(command, target, out_file = None):
             result1,ignore = out.communicate()
             if "ERROR" in str(result1):
                 raise ValueError(str(result).replace("b'","").replace("\\n", "").replace("'", ""))
-            session_stamp["temp_dir"] = "/var/tmp/"
+            session_info["temp_dir"] = "/var/tmp/"
             if "Warning:" in str(result1):
                 warnings.warn(message = "NCO warning:" + str(result1))
     else:
@@ -105,7 +104,7 @@ def run_cdo(command, target, out_file = None):
                     raise ValueError("There are too many open files in CDO.  Check the files your OS allows to be open simultaneously in the Bourne shell with 'ulimit -n'")
                 else:
                     raise ValueError(str(result).replace("b'","").replace("\\n", "").replace("'", ""))
-            session_stamp["temp_dir"] = "/var/tmp/"
+            session_info["temp_dir"] = "/var/tmp/"
 
             # loop through the warnings
 

@@ -30,13 +30,12 @@ from .cleanup import temp_check
 from .temp_file import temp_file
 from .create_ensemble import create_ensemble
 from .show import nc_variables
-from .session import session_stamp
 from .session import session_info
 
 # set up the session info
 letters = string.ascii_lowercase
-session_stamp["stamp"] = "nchack" + "".join(random.choice(letters) for i in range(8)) + "nchack"
-session_stamp["temp_dir"] = "/tmp/"
+session_info["stamp"] = "nchack" + "".join(random.choice(letters) for i in range(8)) + "nchack"
+session_info["temp_dir"] = "/tmp/"
 session_info["thread_safe"] = False
 session_info["lazy"] = False
 result = os.statvfs("/tmp/")
@@ -181,9 +180,12 @@ class DataSet(object):
     """
     def __init__(self, start = ""):
         """Initialize the starting file name etc"""
+        # Attribuates of interest to users
         self.history = []
         self.start = start
         self.current = start
+
+        # attributes to the module, but not users (probably)
         self._weights = None
         self._grid = None
         if session_info["lazy"]:

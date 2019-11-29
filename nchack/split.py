@@ -8,7 +8,6 @@ from .session import nc_safe
 from .flatten import str_flatten
 from .select import select_variables
 from .setters import set_longnames
-from .session import session_stamp
 from .session import session_info
 
 import copy
@@ -36,13 +35,13 @@ def split_cdo(self, method = "year"):
         # But, first we need to check whether there is sufficient space in the output folder
         # If there isn't, we need to switch to the /var/tmp
 
-        if session_stamp["temp_dir"] == "/tmp/":
+        if session_info["temp_dir"] == "/tmp/":
             result = os.statvfs("/tmp/")
             result = result.f_frsize * result.f_bavail
             session_info["size"] = result
 
             if os.path.getsize(ff)*2 > session_info["size"]:
-                    session_stamp["temp_dir"] = "/var/tmp/"
+                    session_info["temp_dir"] = "/var/tmp/"
 
         split_base = temp_file()
 
