@@ -187,9 +187,9 @@ class DataSet(object):
         self.weights = None
         self.grid = None
         if session_info["lazy"]:
-            self.run = False
+            self._run = False
         else:
-            self.run = True
+            self._run = True
         self._hold_history = []
         self.merged = False
 
@@ -352,13 +352,6 @@ class DataSet(object):
     @run.setter
     def run(self, value):
         self._run = value
-
-    def lazy(self):
-        """
-        Set the method evaluation mode to lazy
-        """
-        self.run = False
-        self._hold_history = copy.deepcopy(self.history)
 
 
     def copy(self):
