@@ -184,8 +184,8 @@ class DataSet(object):
         self.history = []
         self.start = start
         self.current = start
-        self.weights = None
-        self.grid = None
+        self._weights = None
+        self._grid = None
         if session_info["lazy"]:
             self._run = False
         else:

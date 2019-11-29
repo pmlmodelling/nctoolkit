@@ -93,11 +93,11 @@ def regrid(self, grid = None, method = "bil"):
 
     if grid is not None:
                    # first generate the grid
-        if self.grid is None:
+        if self._grid is None:
             if grid_type == "df":
-                self.grid = generate_grid(grid)
+                self._grid = generate_grid(grid)
             else:
-                self.grid = grid
+                self._grid = grid
     new_files = []
 
     for key in grid_split:
@@ -109,15 +109,15 @@ def regrid(self, grid = None, method = "bil"):
 
 
         if type(tracker.current) is list:
-            cdo_command = "cdo -gen" + method + ","+ self.grid + " " + tracker.current[0] + " " +  weights_nc
+            cdo_command = "cdo -gen" + method + ","+ self._grid + " " + tracker.current[0] + " " +  weights_nc
         else:
-            cdo_command = "cdo -gen" + method + ","+ self.grid + " " + tracker.current + " " +  weights_nc
+            cdo_command = "cdo -gen" + method + ","+ self._grid + " " + tracker.current + " " +  weights_nc
 
         weights_nc = run_cdo(cdo_command, target = weights_nc)
         if os.path.exists(weights_nc) == False:
             raise ValueError("Creation of weights failed!")
 
-        cdo_command= "cdo -remap," + self.grid + "," + weights_nc
+        cdo_command= "cdo -remap," + self._grid + "," + weights_nc
 
         tracker.run = True
         nc_safe.append(weights_nc)
