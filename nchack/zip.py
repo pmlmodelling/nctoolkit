@@ -9,7 +9,7 @@ def zip(self):
 
     """
 
-    if self.run == True:
+    if len(self.history) == len(self._hold_history):
         cdo_command = "cdo -z zip copy "
     else:
         cdo_command = "cdo -z zip "
