@@ -50,6 +50,8 @@ def cell_areas(self,  join = True):
         cleanup()
 
     else:
+
+        cdo_command = "-gridarea"
         run_this(cdo_command, self,  output = "ensemble")
 
 
