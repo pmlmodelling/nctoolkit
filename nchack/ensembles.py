@@ -33,7 +33,7 @@ def ensemble_percentile(self, p = 50):
     run_this(cdo_command, self, output = "one")
 
     # clean up the directory
-    self.merged = True
+    self._merged = True
 
 
 
@@ -160,6 +160,6 @@ def ensemble_range(self):
 
     run_this(cdo_command, self)
 
-    self.merged = True
+    self._merged = True
 
 

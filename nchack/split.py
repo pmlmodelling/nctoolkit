@@ -71,7 +71,7 @@ def split_cdo(self, method = "year"):
     self.history+= commands
     self._hold_history = copy.deepcopy(self.history)
 
-    self.merged = False
+    self._merged = False
     self.current = new_files
 
 

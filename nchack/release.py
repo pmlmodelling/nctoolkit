@@ -28,7 +28,7 @@ def release(self,  run_merge = True):
 
         output_method = "ensemble"
 
-        if self.merged:
+        if self._merged:
             output_method = "one"
 
         run_this(cdo_command, self,  output = output_method)

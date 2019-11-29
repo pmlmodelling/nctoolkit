@@ -191,7 +191,7 @@ class DataSet(object):
         else:
             self._run = True
         self._hold_history = []
-        self.merged = False
+        self._merged = False
 
     def __repr__(self):
         # tidy up the output first

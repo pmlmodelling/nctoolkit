@@ -25,7 +25,7 @@ def write_nc(self, out, zip = True, overwrite = False):
     if type(ff) is str:
         write = True
 
-    if self.merged:
+    if self._merged:
         write = True
 
     if write == False:
