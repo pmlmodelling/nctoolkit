@@ -166,8 +166,7 @@ def set_attributes(self, att_dict):
         nc_safe.append(self.current)
 
     # clean up the directory
-    if self.run:
-        cleanup(keep = self.current)
+    cleanup(keep = self.current)
 
     self.history.append(nco_command)
     self._hold_history = copy.deepcopy(self.history)
@@ -227,8 +226,7 @@ def set_longnames(self, var_dict):
         nc_safe.append(self.current)
 
     # clean up the directory
-    if self.run:
-        cleanup(keep = self.current)
+    cleanup(keep = self.current)
 
 
 
@@ -288,8 +286,7 @@ def assign_coords(self, lon_name = None, lat_name = None):
         nc_safe.append(self.current)
 
     # clean up the directory
-    if self.run:
-        cleanup(keep = self.current)
+    cleanup(keep = self.current)
 
     self.history.append(nco_command)
     self._hold_history = copy.deepcopy(self.history)
@@ -350,8 +347,7 @@ def delete_attributes(self, atts):
         nc_safe.append(self.current)
 
     # clean up the directory
-    if self.run:
-        cleanup(keep = self.current)
+    cleanup(keep = self.current)
 
     self.history.append(nco_command)
 
