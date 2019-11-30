@@ -523,17 +523,13 @@ class DataSet(object):
 
     from .plot import autoplot
 
-    from .twofiles import add
-    from .twofiles import multiply
-    from .twofiles import subtract
-    from .twofiles import divide
 
     from .compare import compare_all
 
-    from .arith_all import divide_by_constant
-    from .arith_all import add_constant
-    from .arith_all import subtract_constant
-    from .arith_all import multiply_by_constant
+    from .add_etc import add
+    from .add_etc import subtract
+    from .add_etc import multiply
+    from .add_etc import divide
 
 
 
