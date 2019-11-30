@@ -124,6 +124,12 @@ Arithemetic methods
    DataSet.mutate
    DataSet.transmute
 
+   DataSet.add
+   DataSet.subtract
+   DataSet.multiply
+   DataSet.divide
+
+
 Ensemble statistics
 ---------------------
 
