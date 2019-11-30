@@ -57,7 +57,7 @@ def multiply(self, x = None):
         ff = x
 
     if type(ff) is not str:
-        raise TypeError("x must be a file path")
+        raise TypeError("You have not provided an int, float, dataset or file path!")
 
     operation(self = self, method = "mul", ff = ff)
 
@@ -83,7 +83,7 @@ def subtract(self, x = None):
         ff = x
 
     if type(ff) is not str:
-        raise TypeError("x must be a file path")
+        raise TypeError("You have not provided an int, float, dataset or file path!")
 
     operation(self = self, method = "sub", ff = ff)
 
@@ -108,7 +108,7 @@ def add(self, x = None):
         ff = x
 
     if type(ff) is not str:
-        raise TypeError("x must be a file path")
+        raise TypeError("You have not provided an int, float, dataset or file path!")
 
     operation(self = self, method = "add", ff = ff)
 
@@ -135,7 +135,7 @@ def divide(self, x = None):
         ff = x
 
     if type(ff) is not str:
-        raise TypeError("x must be a file path")
+        raise TypeError("You have not provided an int, float, dataset or file path!")
 
     operation(self = self, method = "divc", ff = ff)
 
