@@ -1,4 +1,13 @@
 
+
+# For hdf5
+ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4/hdf5-1.8.13.tar.gz
+https://tuxcoder.wordpress.com/2015/02/02/install-netcdf4-with-hdf5-in-ubuntu-linux/
+
+ ./configure --enable-threadsafe --with-pthread=/usr/include/,/usr/lib/x86_64-linux-gnu/
+
+
+
 # Step one. Download from
 https://code.mpimet.mpg.de/projects/cdo/files
 
@@ -6,7 +15,7 @@ https://code.mpimet.mpg.de/projects/cdo/files
 
 # Step three. Configure
 
-./configure --with-netcdf=yes --with-hdf5=/usr/include/hdf5/serial/hdf5.h
+./configure --with-netcdf=yes --with-hdf5=/usr/include/hdf5.h
 
 # make
 
