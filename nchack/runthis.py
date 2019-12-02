@@ -216,6 +216,10 @@ def run_this(os_command, self, output = "one",  out_file = None):
                 os_command = os_command + " " + self.history[-1].replace("cdo ", " ")
                 os_command = os_command.replace("  ", " ")
 
+
+            if session_info["thread_safe"]:
+                os_command = os_command.replace("-L ", " ")
+
             pool = multiprocessing.Pool(cores)
             target_list = []
             results = dict()
@@ -294,6 +298,8 @@ def run_this(os_command, self, output = "one",  out_file = None):
                     os_command = os_command.replace("cdo ", "cdo -L --sortname ")
 
 
+            if session_info["thread_safe"]:
+                os_command = os_command.replace("-L ", " ")
 
             target = run_cdo(os_command, target, out_file)
             self.current = target
