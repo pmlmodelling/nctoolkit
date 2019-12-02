@@ -159,7 +159,7 @@ def open_data(x = None):
     return DataSet(x)
 
 
-def merge(*datasets):
+def merge(*datasets, match = ["day", "year", "month"]):
     all_files = []
     for dataset in datasets:
         if "DataSet" in str(type(dataset)) == False:
@@ -171,7 +171,7 @@ def merge(*datasets):
         else:
             all_files += dataset.current
     result = open_data(all_files)
-    result.merge()
+    result.merge(match = match)
     return result
 
 class DataSet(object):
