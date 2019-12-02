@@ -18,8 +18,9 @@ def cdo_command(self, command):
     if type(command) is not str:
         raise TypeError("Command supplied is not a str")
 
-    read = subprocess.run("cdo --operators", shell = True, capture_output = True)
-    cdo_methods = [x.split(" ")[0].replace("b'", "") for x in str(read.stdout).split("\\n")]
+    read = subprocess.run("cdo --operators", shell = True,stdout=subprocess.PIPE,  stderr = subprocess.PIPE).stdout
+
+    cdo_methods = [x.split(" ")[0].replace("b'", "") for x in str(read).split("\\n")]
 
     cdo_methods = [mm for mm in cdo_methods if len(mm) > 0]
 

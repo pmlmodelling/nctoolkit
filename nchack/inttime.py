@@ -44,7 +44,7 @@ def time_interp(self, start = None, end = None, resolution = "monthly"):
         else:
             ff = self.current
         cdo_command = "cdo showdate " + ff
-        start =  subprocess.run(cdo_command, shell = True, capture_output = True)
+        start =  subprocess.run(cdo_command, shell = True, stdout=subprocess.PIPE, stderr =subprocess.PIPE)
         start = str(start.stdout)
         start.replace("b'", "").strip().split(" ")[0]
 

@@ -35,9 +35,8 @@ def merge(self, match = ["year", "month", "day"]):
 
     all_times = []
     for ff in self.current:
-        cdo_result = subprocess.run("cdo ntime " + ff, shell = True, capture_output = True)
-        cdo_result = str(cdo_result.stdout)
-        cdo_result = cdo_result.replace("b'", "").strip()
+        cdo_result = subprocess.run("cdo ntime " + ff, shell = True, stdout=subprocess.PIPE , stderr =subprocess.PIPE ).stdout
+        cdo_result = str(cdo_result).replace("b'", "").strip()
         ntime = int(cdo_result.split("\\")[0])
         all_times.append(ntime)
     if len(set(all_times)) > 1:
@@ -45,9 +44,8 @@ def merge(self, match = ["year", "month", "day"]):
 
     all_times = []
     for ff in self.current:
-        cdo_result = subprocess.run("cdo showtimestamp " + ff, shell = True, capture_output = True)
-        cdo_result = str(cdo_result.stdout)
-        cdo_result = cdo_result.replace("b'", "").strip()
+        cdo_result = subprocess.run("cdo showtimestamp " + ff, shell = True, stdout=subprocess.PIPE, stderr =subprocess.PIPE).stdout
+        cdo_result = str(cdo_result).replace("b'", "").strip()
         cdo_result = cdo_result.split()
         cdo_result = pd.Series( (v for v in cdo_result) )
         all_times.append(cdo_result)

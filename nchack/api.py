@@ -266,7 +266,7 @@ class DataSet(object):
         if type(self.current) is list:
             print("This DataSet object is a list. Please inspect individual files using nc_variables")
 
-        cdo_result = subprocess.run("cdo showname " + self.current, shell = True, capture_output = True)
+        cdo_result = subprocess.run("cdo showname " + self.current, shell = True, stdout=subprocess.PIPE , stderr=subprocess.PIPE  )
         cdo_result = str(cdo_result.stdout).replace("b'", "").replace("\\n", "").replace("'", "").strip()
         cdo_result = cdo_result.split()
 
@@ -282,7 +282,7 @@ class DataSet(object):
         if type(self.current) is list:
             print("This DataSet object is a list. Please inspect individual files using nc_variables")
 
-        cdo_result = subprocess.run("cdo showname " + self.current, shell = True, capture_output = True)
+        cdo_result = subprocess.run("cdo showname " + self.current, shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         cdo_result = str(cdo_result.stdout).replace("b'", "").replace("\\n", "").replace("'", "").strip()
         cdo_result = cdo_result.split()
         dataset = Dataset(self.current)

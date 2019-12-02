@@ -21,8 +21,8 @@ def bottom(self):
     else:
         ff = self.current
 
-    cdo_result = subprocess.run("cdo nlevel " + ff, shell = True, capture_output = True)
-    n_levels = int(str(cdo_result.stdout).replace("b'", "").strip().replace("'", "").split("\\n")[0])
+    cdo_result = subprocess.run("cdo nlevel " + ff, shell = True, stdout=subprocess.PIPE, stderr = subprocess.PIPE).stdout
+    n_levels = int(str(cdo_result).replace("b'", "").strip().replace("'", "").split("\\n")[0])
 
     cdo_command = "cdo -sellevidx," + str(n_levels)
 

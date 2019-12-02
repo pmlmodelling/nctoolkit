@@ -84,8 +84,8 @@ def regrid(self, grid = None, method = "bil"):
 
     if type(self.current) is list:
         for ff in self.current:
-            cdo_result = subprocess.run("cdo griddes " + ff, shell = True, capture_output = True)
-            cdo_result = str(cdo_result.stdout)
+            cdo_result = subprocess.run("cdo griddes " + ff, shell = True, stdout=subprocess.PIPE, stderr =subprocess.PIPE).stdout
+            cdo_result = str(cdo_result)
             if cdo_result in grid_split:
                 grid_split[cdo_result].append(ff)
             else:
