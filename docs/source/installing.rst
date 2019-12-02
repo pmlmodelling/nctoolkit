@@ -15,7 +15,7 @@ Python dependencies
 
 System dependencies
 ---------------------
-There are two main system dependencies: `Climate Data Operators<https://code.mpimet.mpg.de/projects/cdo/wiki>`__, and `NCO <http://nco.sourceforge.net/>`__. The easiest way to install them is using conda. This method will also ensure that the hdf5 libraries are threadsafe, which can lead to computational improvements using CDO. 
+There are two main system dependencies: `Climate Data Operators<https://code.mpimet.mpg.de/projects/cdo/wiki>`__, and `NCO <http://nco.sourceforge.net/>`__. The easiest way to install them is using conda. This method will also ensure that the hdf5 libraries are threadsafe, which can lead to computational improvements using CDO:
 
     $ conda install -c conda-forge cdo
 
