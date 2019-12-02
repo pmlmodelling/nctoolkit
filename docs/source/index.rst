@@ -22,8 +22,8 @@ Documentation
 
    installing
    basic_usage
-   lazy_methods 
    merging_notebook 
+   lazy_methods 
 
 **User Guide**
 
