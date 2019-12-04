@@ -3,6 +3,7 @@ import copy
 from .temp_file import temp_file
 from .session import nc_safe
 from .runthis import run_cdo
+from .cleanup import cleanup
 
 def annual_anomaly(self, baseline = None, metric = "absolute", window = 1):
     """
@@ -64,6 +65,8 @@ def annual_anomaly(self, baseline = None, metric = "absolute", window = 1):
     nc_safe.append(target)
 
 
+    cleanup()
+
 
 
 
@@ -119,6 +122,8 @@ def monthly_anomaly(self, baseline = None):
     nc_safe.append(target)
 
 
+
+    cleanup()
 
 
 
