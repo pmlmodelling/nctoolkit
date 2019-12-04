@@ -44,12 +44,26 @@ def spatial_range(self):
 
     return fldstat(self, stat = "range")
 
-def spatial_sum(self):
+def spatial_sum(self, by_area = False):
     """
     Calculate the spatial sum of variables. This is performed for each time step.
+
+    Parameters
+    --------------
+    by_area : boolean
+        Set to True if you want to multiply the values by the grid cell area before summing over space. Default is False.
     """
 
-    return fldstat(self, stat = "sum")
+    if by_area:
+        self.release()
+        if type(self.current) is list:
+            raise TypeError("This cannot be run with multiple files currently")
+
+        cdo_command = "cdo -fldsum -mul " + self.current  + " -gridarea "
+    else:
+        cdo_command = "cdo -fldsum"
+
+    run_this(cdo_command, self,  output = "ensemble")
 
 def spatial_percentile(self, p = 50):
     """
