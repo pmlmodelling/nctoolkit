@@ -9,7 +9,7 @@ import xarray as xr
 
 
 
-def autoplot(self, log = False, panel = False):
+def plot(self, log = False, panel = False):
     """
     Autoplotting method
 
