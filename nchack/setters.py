@@ -226,7 +226,7 @@ def set_longnames(self, var_dict):
         nc_safe.append(self.current)
 
     # clean up the directory
-    cleanup(keep = self.current)
+    cleanup()
 
 
 
