@@ -31,7 +31,7 @@ def levels(self):
 
 
 def nc_variables(ff):
-    cdo_result = subprocess.run("cdo showname" + ff, shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    cdo_result = subprocess.run("cdo showname " + ff, shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     cdo_result = str(cdo_result.stdout).replace("\\n", "")
     cdo_result = cdo_result.replace("b'", "").strip()
     cdo_result = cdo_result.replace("'", "").strip()
@@ -41,7 +41,7 @@ def nc_variables(ff):
     return cdo_result
 
 def years(self):
-    cdo_result = subprocess.run("cdo showyear" + self.current, shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    cdo_result = subprocess.run("cdo showyear " + self.current, shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     cdo_result = str(cdo_result.stdout).replace("\\n", "")
     cdo_result = cdo_result.replace("b'", "").strip()
     cdo_result = cdo_result.replace("'", "").strip()
