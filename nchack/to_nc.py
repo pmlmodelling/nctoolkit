@@ -3,6 +3,7 @@ import copy
 import shutil
 
 from .runcommand import run_command
+from .cleanup import cleanup
 from .runthis import run_this
 from .session import nc_safe
 
@@ -79,6 +80,8 @@ def write_nc(self, out, zip = True, overwrite = False):
         nc_safe.remove(ff)
 
     self.current = out
+
+    cleanup()
 
 
 
