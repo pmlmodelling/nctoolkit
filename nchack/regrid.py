@@ -29,6 +29,7 @@ def regrid(self, grid = None, method = "bil"):
 
     self.release()
 
+    del_grid = None
     if grid is None:
         raise ValueError("No grid was supplied")
 
@@ -44,6 +45,8 @@ def regrid(self, grid = None, method = "bil"):
         temp_nc = temp_file("nc")
         grid.to_netcdf(temp_nc)
         grid = temp_nc
+        del_grid = copy.deepcopy(grid)
+        nc_safe.append(del_grid)
 
     if type(grid) is str:
         if os.path.exists(grid) == False:
@@ -96,6 +99,8 @@ def regrid(self, grid = None, method = "bil"):
         if self._grid is None:
             if grid_type == "df":
                 self._grid = generate_grid(grid)
+                del_grid = copy.deepcopy(self._grid)
+                nc_safe.append(del_grid)
             else:
                 self._grid = grid
     new_files = []
@@ -120,9 +125,12 @@ def regrid(self, grid = None, method = "bil"):
         cdo_command= "cdo -remap," + self._grid + "," + weights_nc
 
         tracker.run = True
+
         nc_safe.append(weights_nc)
+
         run_this(cdo_command, tracker,  output = "ensemble")
-        #nc_safe.remove(weights_nc)
+
+        nc_safe.remove(weights_nc)
 
 
         if type(tracker.current) is str:
@@ -138,6 +146,11 @@ def regrid(self, grid = None, method = "bil"):
             self.history.append(tracker.history)
 
         self._hold_history = copy.deepcopy(self.history)
+
+    if del_grid is not None:
+        if del_grid in nc_safe:
+            nc_safe.remove(del_grid)
+
 
     self.current = new_files
     if len(self.current) == 1:
