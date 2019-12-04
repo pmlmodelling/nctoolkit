@@ -16,6 +16,8 @@ def times(self):
     return cdo_result
 
 def levels(self):
+    if type(self.current) is list:
+        raise TypeError("This presently only works for single file datasets")
     """
     Method to get the depths available in a netcdf file
     """
@@ -41,6 +43,8 @@ def nc_variables(ff):
     return cdo_result
 
 def years(self):
+    if type(self.current) is list:
+        raise TypeError("This presently only works for single file datasets")
     cdo_result = subprocess.run("cdo showyear " + self.current, shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     cdo_result = str(cdo_result.stdout).replace("\\n", "")
     cdo_result = cdo_result.replace("b'", "").strip()
@@ -52,6 +56,8 @@ def years(self):
     return cdo_result
 
 def months(self):
+    if type(self.current) is list:
+        raise TypeError("This presently only works for single file datasets")
     cdo_result = subprocess.run("cdo showmon " + self.current, shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     cdo_result = str(cdo_result.stdout).replace("\\n", "")
     cdo_result = cdo_result.replace("b'", "").strip()
@@ -65,12 +71,16 @@ def months(self):
 
 
 def attributes(self):
+    if type(self.current) is list:
+        raise TypeError("This presently only works for single file datasets")
 
     out = subprocess.run("cdo showatts " + self.current, shell = True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     for ll in str(out.stdout).replace("b'", "").split("\\n"):
         print(ll)
 
 def global_attributes(self):
+    if type(self.current) is list:
+        raise TypeError("This presently only works for single file datasets")
 
     out = subprocess.run("cdo showattsglob " + self.current, shell = True, stdout=subprocess.PIPE, stderr = subprocess.PIPE)
     for ll in str(out.stdout).replace("b'", "").split("\\n"):
