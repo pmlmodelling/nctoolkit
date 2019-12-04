@@ -18,12 +18,13 @@ def cor(self, var1 = None, var2 = None, method = "fld"):
     if var1 is None or var2 is None:
         raise ValueError("Both variables are not given")
 
+    self.release()
+
     # First step is to check if the current file exists
     if type(self.current) is not str:
         raise ValueError("This method only works on single files")
 
     # make sure everything has been evaluated
-    self.release()
 
     # create the temp file for targeting
     target = temp_file(".nc")
