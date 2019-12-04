@@ -4,6 +4,7 @@ from .temp_file import temp_file
 from .flatten import str_flatten
 from .session import nc_safe
 import subprocess
+import copy
 
 def clip(self, lon = [-180, 180], lat = [-90, 90], cdo = True):
     """
@@ -60,7 +61,7 @@ def clip(self, lon = [-180, 180], lat = [-90, 90], cdo = True):
                 nc_safe.remove(self.current)
             self.current = target
             nc_safe.append(self.current)
-            self._run = lazy_eval == False
+
     else:
         raise ValueError("The lonlat box supplied is not valid!")
 
