@@ -8,6 +8,7 @@ from .select import select_variables
 from .setters import set_longnames
 from .session import nc_safe
 from .runthis import run_cdo
+from .cleanup import cleanup
 
 import copy
 
@@ -50,6 +51,8 @@ def cor(self, var1 = None, var2 = None, method = "fld"):
     self.rename({var1:"cor"})
     self.set_units({"cor":"-"})
     self.set_longnames({"cor":"Correlation between " + var1 +  " & " + var2})
+
+    cleanup()
 
 
 

@@ -3,6 +3,7 @@ from .runthis import run_nco
 from .temp_file import temp_file
 from .flatten import str_flatten
 from .session import nc_safe
+from .cleanup import cleanup
 import subprocess
 import copy
 
@@ -61,6 +62,8 @@ def clip(self, lon = [-180, 180], lat = [-90, 90], cdo = True):
                 nc_safe.remove(self.current)
             self.current = target
             nc_safe.append(self.current)
+
+            cleanup()
 
     else:
         raise ValueError("The lonlat box supplied is not valid!")

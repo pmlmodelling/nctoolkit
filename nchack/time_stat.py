@@ -1,5 +1,6 @@
 from .runthis import run_this
 from .runthis import run_cdo
+from .cleanup import cleanup
 from .session import nc_safe
 from .temp_file import temp_file
 import os
@@ -92,6 +93,8 @@ def percentile(self, p = 50):
     self.current = target
 
     nc_safe.append(target)
+
+    cleanup()
 
 
 

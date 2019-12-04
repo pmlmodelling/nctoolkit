@@ -4,6 +4,7 @@ import copy
 import multiprocessing
 
 from .temp_file import temp_file
+from .cleanup import cleanup
 from .session import nc_safe
 from .flatten import str_flatten
 from .select import select_variables
@@ -72,6 +73,9 @@ def split_cdo(self, method = "year"):
 
     self._merged = False
     self.current = new_files
+
+
+    cleanup()
 
 
 def split(self, by = None):

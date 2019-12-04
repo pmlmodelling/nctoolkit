@@ -5,6 +5,7 @@ from .runthis import run_this
 from .runthis import run_nco
 from .flatten import str_flatten
 from .session import nc_safe
+from .cleanup import cleanup
 import warnings
 
 def ensemble_percentile(self, p = 50):
@@ -90,6 +91,7 @@ def ensemble_nco(self, method, vars = None, ignore_time = False):
         if ff in nc_safe:
             nc_safe.remove(ff)
 
+    cleanup()
 
 
 def ensemble_min(self, vars = None, ignore_time = False):
