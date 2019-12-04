@@ -42,6 +42,16 @@ def merge(self, match = ["year", "month", "day"]):
     if len(set(all_times)) > 1:
         warnings.warn(message = "The files to merge do not have the same number of time steps!")
 
+
+    all_grids = []
+    for ff in self.current:
+        cdo_result = subprocess.run("cdo griddes " + ff, shell = True, stdout=subprocess.PIPE, stderr =subprocess.PIPE).stdout
+        all_grids.append(cdo_result)
+
+    if len(set(all_grids)) > 1:
+        raise ValueError("The files in the dataset to do not have the same grid. Consider using regrid!")
+
+
     all_times = []
     for ff in self.current:
         cdo_result = subprocess.run("cdo showtimestamp " + ff, shell = True, stdout=subprocess.PIPE, stderr =subprocess.PIPE).stdout
