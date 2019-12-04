@@ -372,6 +372,8 @@ class DataSet(object):
         if type(self.current) is str:
             if self.current in nc_safe:
                 nc_safe.remove(self.current)
+            if self._weights in nc_safe:
+                nc_safe.remove(self._weights)
         else:
             for ff in self.current:
                 if ff in nc_safe:
