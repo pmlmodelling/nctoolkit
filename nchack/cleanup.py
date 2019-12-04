@@ -27,8 +27,8 @@ def cleanup(keep = None):
 
     candidates = []
 
-    mylist = [f for f in glob.glob("/tmp/" + "*.nc*")]
-    mylist = mylist + [f for f in glob.glob("/var/tmp/" + "*.nc*")]
+    mylist = [f for f in glob.glob("/tmp/*.*")]
+    mylist = mylist + [f for f in glob.glob("/var/tmp/*.*")]
     mylist = [f for f in mylist if session_info["stamp"] in f]
     for ff in mylist:
         candidates.append(ff)
