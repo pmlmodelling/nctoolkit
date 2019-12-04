@@ -6,6 +6,7 @@ import pandas as pd
 import os
 
 from .temp_file import temp_file
+from .cleanup import cleanup
 from .api import open_data
 
 from .generate_grid import generate_grid
@@ -56,6 +57,7 @@ def regrid(self, grid = None, method = "bil"):
         grid_type = "nc"
 
     if "DataSet" in str(type(grid)):
+        grid.release()
         if type(grid.current) is str:
             grid = grid.current
         else:
@@ -157,5 +159,6 @@ def regrid(self, grid = None, method = "bil"):
         self.current = self.current[0]
 
 
+    cleanup()
 
 
