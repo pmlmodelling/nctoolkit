@@ -1,4 +1,5 @@
 import os
+import copy
 import shutil
 
 from .runcommand import run_command
@@ -42,6 +43,7 @@ def write_nc(self, out, zip = True, overwrite = False):
             cdo_command = ("cdo -z zip_9 copy " + ff + " " + out)
             os.system("cdo -z zip_9 copy " + ff + " " + out)
             self.history.append(cdo_command)
+            self._hold_history = copy.deepcopy(self.history)
             if self.current in nc_safe:
                 nc_safe.remove(self.current)
             self.current = out
@@ -51,6 +53,7 @@ def write_nc(self, out, zip = True, overwrite = False):
             cdo_command = ("cdo copy " + ff + " " + out)
             os.system("cdo copy " + ff + " " + out)
             self.history.append(cdo_command)
+            self._hold_history = copy.deepcopy(self.history)
 
             if self.current in nc_safe:
                 nc_safe.remove(self.current)
