@@ -51,6 +51,10 @@ def cor(self, var1 = None, var2 = None, method = "fld"):
     # update the state of the dataset
     self.history.append(cdo_command)
     self._hold_history = copy.deepcopy(self.history)
+
+    if self.current in nc_safe:
+        nc_safe.remove(self.current)
+
     self.current = target
 
     # add the new file to the safe list
