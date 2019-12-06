@@ -158,7 +158,7 @@ def ensemble_range(self):
 
     self.release()
 
-    cdo_command = "cdo ensrange "
+    cdo_command = "cdo -ensrange "
 
     run_this(cdo_command, self)
 
