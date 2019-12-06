@@ -4,6 +4,7 @@ from .temp_file import temp_file
 from .flatten import str_flatten
 from .session import nc_safe
 from .show import nc_variables
+from .session import session_info
 import subprocess
 import copy
 
@@ -26,7 +27,13 @@ def operation(self, method = "mul", ff = None):
         raise ValueError("Check dataset or file you are using. It had more than one variables")
 
     target = temp_file(".nc")
+
     cdo_command = "cdo -L " + method + " "  + self.current + " " + ff + " " + target
+
+    if session_info["thread_safe"]:
+        cdo_command = cdo.command.replace("-L ", " ")
+
+
     target = run_cdo(cdo_command, target)
     self.history.append(cdo_command)
     self._hold_history = copy.deepcopy(self.history)
