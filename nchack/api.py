@@ -292,7 +292,7 @@ class DataSet(object):
         if "long_name" in str(dataset.variables[cdo_result[0]]):
                 longs = [dataset.variables[x].long_name for x in cdo_result]
         if "units" in str(dataset.variables[cdo_result[0]]):
-                longs = [dataset.variables[x].units for x in cdo_result]
+                units = [dataset.variables[x].units for x in cdo_result]
 
         if longs is None and units is None:
             return(cdo_result)
