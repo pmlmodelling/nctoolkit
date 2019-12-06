@@ -116,7 +116,7 @@ def deep_clean():
     ##mylist = mylist + [f for f in glob.glob("/usr/tmp/" + "*.nc*")]
     mylist = [f for f in mylist if "nchack" in f]
     for ff in mylist:
-        nc_remove(ff)
+        nc_remove(ff, deep = True)
 
 def temp_check():
     """

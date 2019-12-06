@@ -3,13 +3,15 @@ import os
 from .session import session_info
 
 
-def nc_remove(ff):
+def nc_remove(ff, deep = False):
     """
     Method for removing netcdf files.
     This is ultra-safe and makes sure the file is in the tmp directory before deleting
     """
-    if session_info["stamp"] not in ff:
-        raise ValueError("The file " + ff + " was not created during this session")
+
+    if deep != False:
+        if session_info["stamp"] not in ff:
+            raise ValueError("The file " + ff + " was not created during this session")
 
     if "nchack" not in ff:
         raise ValueError("The file " + ff + " was not created by nchack")
