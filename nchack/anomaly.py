@@ -2,8 +2,10 @@
 import copy
 from .temp_file import temp_file
 from .session import nc_safe
+from .session import session_info
 from .runthis import run_cdo
 from .cleanup import cleanup
+
 
 def annual_anomaly(self, baseline = None, metric = "absolute", window = 1):
     """
@@ -49,6 +51,11 @@ def annual_anomaly(self, baseline = None, metric = "absolute", window = 1):
         cdo_command = "cdo -L sub -runmean," + str(window) + " -yearmean " + self.current + " -timmean -selyear," + str(baseline[0]) + "/" + str(baseline[1]) + " " + self.current  + " " + target
     else:
         cdo_command = "cdo -L div -runmean," + str(window) + " -yearmean " + self.current + " -timmean -selyear," + str(baseline[0]) + "/" + str(baseline[1]) + " " + self.current  + " " + target
+
+
+    if session_info["thread_safe"]:
+        cdo_command = cdo_command.replace("-L "," ")
+
 
     # run the command and save the temp file
     target = run_cdo(cdo_command, target)
