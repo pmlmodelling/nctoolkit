@@ -10,7 +10,6 @@ import copy
 def arithall(self, stat = "divc", x = None):
     """Method to calculate the spatial stat from a netcdf"""
 
-    #cdo_command = "cdo --reduce_dim -fld" + stat
     cdo_command = "cdo -" + stat + "," + str(x)
 
     run_this(cdo_command, self,  output = "ensemble")
@@ -137,7 +136,7 @@ def divide(self, x = None):
     if type(ff) is not str:
         raise TypeError("You have not provided an int, float, dataset or file path!")
 
-    operation(self = self, method = "divc", ff = ff)
+    operation(self = self, method = "div", ff = ff)
 
 
 
