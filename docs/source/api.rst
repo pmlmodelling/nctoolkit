@@ -34,6 +34,15 @@ Accessing attributes
    DataSet.current
    DataSet.history
 
+Plotting
+------------------
+
+.. autosummary::
+   :toctree: generated/
+
+   DataSet.plot
+
+
 Variable modification 
 ---------------------
 
