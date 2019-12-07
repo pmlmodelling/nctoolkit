@@ -8,3 +8,6 @@ def show_session():
 
 session_info = dict()
 nc_safe = []
+
+nc_protected = []
+

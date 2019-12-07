@@ -23,6 +23,7 @@ warnings.formatwarning = custom_formatwarning
 from .flatten import str_flatten
 from .generate_grid import generate_grid
 from .session import nc_safe
+from .session import nc_protected
 from .cleanup import cleanup
 from .cleanup import clean_all
 from .cleanup import deep_clean
@@ -131,6 +132,7 @@ def open_data(x = None):
             raise ValueError("Data set " + x + " does not exist!")
         else:
             nc_safe.append(x)
+            nc_protected.append(x)
 
 
     # it's possible there are duplicates in the data
@@ -150,6 +152,7 @@ def open_data(x = None):
                 raise ValueError("Data set " + ff + " does not exist!")
             else:
                 nc_safe.append(ff)
+                nc_protected.append(x)
 
     # if there is only one file in the list, change it to a single file
     if type(x) is list:
