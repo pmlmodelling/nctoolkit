@@ -31,6 +31,7 @@ def run_nco(command, target, out_file = None):
     if (command.startswith("ncea ") or command.startswith("ncra ") or command.startswith("ncatted")) == False:
         raise ValueError("This is not a valid NCO command")
 
+
     out = subprocess.Popen(command,shell = True, stdin = subprocess.PIPE,stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
     result,ignore = out.communicate()
 
@@ -70,6 +71,14 @@ def run_nco(command, target, out_file = None):
 
 def run_cdo(command, target, out_file = None):
     command = command.strip()
+
+    # make sure the output file does not exist
+
+    if out_file is None:
+        if os.path.exists(command.split()[-1]):
+            raise ValueError("Attempting to overwrite file")
+
+
     if command.startswith("cdo ") == False:
         raise ValueError("The command does not start with cdo!")
 
