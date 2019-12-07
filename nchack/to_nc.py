@@ -2,7 +2,6 @@ import os
 import copy
 import shutil
 
-from .runcommand import run_command
 from .cleanup import cleanup
 from .runthis import run_this
 from .session import nc_safe
