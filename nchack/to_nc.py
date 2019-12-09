@@ -6,6 +6,7 @@ from .cleanup import cleanup
 from .runthis import run_this
 from .runthis import run_cdo
 from .session import nc_safe
+from .session import session_info
 
 def write_nc(self, out, zip = True, overwrite = False):
     """
@@ -38,6 +39,10 @@ def write_nc(self, out, zip = True, overwrite = False):
     if os.path.exists(out) and overwrite == False:
         raise ValueError("The out file exists and overwrite is set to false")
 
+    # If the output file exists, cdo cannot simultaneously have it opened and written to
+    if os.path.exists(out) and overwrite == True:
+        self.release()
+
 
     if len(self.history) == len(self._hold_history):
         if zip:
@@ -68,7 +73,6 @@ def write_nc(self, out, zip = True, overwrite = False):
             cdo_command = "cdo -L "
 
         self._run = True
-
 
         run_this(cdo_command, self, out_file = out)
         self._run = False
