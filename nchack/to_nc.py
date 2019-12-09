@@ -4,6 +4,7 @@ import shutil
 
 from .cleanup import cleanup
 from .runthis import run_this
+from .runthis import run_cdo
 from .session import nc_safe
 
 def write_nc(self, out, zip = True, overwrite = False):
@@ -41,7 +42,7 @@ def write_nc(self, out, zip = True, overwrite = False):
     if len(self.history) == len(self._hold_history):
         if zip:
             cdo_command = ("cdo -z zip_9 copy " + ff + " " + out)
-            os.system("cdo -z zip_9 copy " + ff + " " + out)
+            os.system(cdo_command)
             self.history.append(cdo_command)
             self._hold_history = copy.deepcopy(self.history)
             if self.current in nc_safe:
@@ -51,7 +52,7 @@ def write_nc(self, out, zip = True, overwrite = False):
 
         else:
             cdo_command = ("cdo copy " + ff + " " + out)
-            os.system("cdo copy " + ff + " " + out)
+            os.system(cdo_command)
             self.history.append(cdo_command)
             self._hold_history = copy.deepcopy(self.history)
 
