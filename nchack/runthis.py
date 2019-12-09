@@ -10,6 +10,7 @@ import sys
 from .temp_file import temp_file
 from .cleanup import cleanup
 from .session import nc_safe
+from .session import nc_protected
 from .flatten import str_flatten
 from .session import session_info
 
@@ -26,11 +27,16 @@ def split_list(seq, num):
     return out
 
 
-def run_nco(command, target, out_file = None):
+def run_nco(command, target, out_file = None, overwrite = False):
     command = command.strip()
     if (command.startswith("ncea ") or command.startswith("ncra ") or command.startswith("ncatted")) == False:
         raise ValueError("This is not a valid NCO command")
 
+    # Make sure it is not attempting to overwrite a protected file
+    if out_file is None:
+        if command.split()[-1] in nc_protected:
+            if overwrite == False:
+                raise ValueError("Attempting to overwrite an opened file")
 
     out = subprocess.Popen(command,shell = True, stdin = subprocess.PIPE,stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
     result,ignore = out.communicate()
@@ -69,14 +75,15 @@ def run_nco(command, target, out_file = None):
     return target
 
 
-def run_cdo(command, target, out_file = None):
+def run_cdo(command, target, out_file = None, overwrite = False):
     command = command.strip()
 
     # make sure the output file does not exist
 
     if out_file is None:
         if os.path.exists(command.split()[-1]):
-            raise ValueError("Attempting to overwrite file")
+            if overwrite == False:
+                raise ValueError("Attempting to overwrite file")
 
 
     if command.startswith("cdo ") == False:
