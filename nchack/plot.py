@@ -47,13 +47,6 @@ def plot(self, log = False, panel = False):
         except:
             decode_times = False
 
-    # Case when there is only a single map to show
-
-    if n_times <= 1 and n_points > 1 and n_levels <= 1 and len(self.variables) == 1:
-            data = self.to_xarray()
-            data = data.rename({self.variables[0]: "x"})
-            return data.x.plot()
-
 
     # Case when all you can plot is a time series, but more than one variable
 
@@ -95,7 +88,6 @@ def plot(self, log = False, panel = False):
         self_max = self.to_xarray().rename({self.variables[0]: "x"}).x.max()
         self_min = self.to_xarray().rename({self.variables[0]: "x"}).x.min()
         v_max = max(self_max.values, -self_min.values)
-        print(lon_name)
         if self_max.values > 0 and self_min.values < 0:
             return self.to_xarray().hvplot.image(lon_name, lat_name, self.variables[0], dynamic = True,  logz = log, cmap = "seismic").redim.range(**{self.variables[0]:(-v_max,v_max)})
         else:
