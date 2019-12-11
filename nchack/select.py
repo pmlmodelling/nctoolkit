@@ -70,6 +70,8 @@ def select_years(self, years):
     years = [int(x) for x in years]
 
 
+    select_years = False
+
     if type(self.current) is list:
 
         n_removed = 0
@@ -84,10 +86,17 @@ def select_years(self, years):
             cdo_result = list(set(cdo_result))
             cdo_result =  [int(v) for v in cdo_result]
             inter = [element for element in cdo_result if element in years]
+
             if len(inter) > 0:
                 new_current.append(ff)
             if len(inter) == 0:
                 n_removed+=1
+
+            # figure out if any of the files actually have years outide the period required
+            if len(inter) >0:
+                if len([element for element in cdo_result if element not in years])  >0:
+                    select_years = True
+
         if len(new_current) == 0:
             raise ValueError("Data for none of the years is available!")
 
@@ -96,10 +105,12 @@ def select_years(self, years):
 
         self.current = new_current
 
-    years = str_flatten(years, ",")
+    if select_years:
+        years = str_flatten(years, ",")
 
-    cdo_command = "cdo -selyear," + years
-    run_this(cdo_command, self,  output = "ensemble")
+        cdo_command = "cdo -selyear," + years
+
+        run_this(cdo_command, self,  output = "ensemble")
 
 
 
