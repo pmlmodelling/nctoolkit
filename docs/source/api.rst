@@ -340,6 +340,7 @@ Output methods
 
    DataSet.write_nc
    DataSet.to_xarray
+   DataSet.to_dataframe
    DataSet.zip
 
 Miscellaneous methods
