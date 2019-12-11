@@ -29,7 +29,7 @@ def ensemble_percentile(self, p = 50):
     if type(p) not in [int, float]:
         raise TypeError("p is a " + str(type(p)) + ", not an int or float")
 
-    cdo_command = "cdo -enspctl," + str(p) + " "
+    cdo_command = "cdo --sortname  -enspctl," + str(p) + " "
 
     run_this(cdo_command, self, output = "one")
 
@@ -158,7 +158,7 @@ def ensemble_range(self):
 
     self.release()
 
-    cdo_command = "cdo -ensrange "
+    cdo_command = "cdo --sortname -ensrange "
 
     run_this(cdo_command, self)
 
