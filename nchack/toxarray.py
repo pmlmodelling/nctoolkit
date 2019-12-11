@@ -53,5 +53,21 @@ def to_xarray(self, decode_times = True):
 
 
 
+def to_dataframe(self, decode_times = True):
+    """
+    Open a dataset as a pandas data frame
+
+    Parameters
+    -------------
+    decode_times: boolean
+        Set to False if you do not want xarray to decode the times prior to conversion to data frame. Default is True.
+
+    """
+    return self.to_xarray(decode_times = decode_times).to_dataframe()
+
+
+
+
+
 
 
