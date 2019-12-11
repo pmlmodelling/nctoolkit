@@ -137,6 +137,7 @@ def open_data(x = None):
 
     # it's possible there are duplicates in the data
     # Get rid of them..
+    # Note: This will also ensure the original list is deep copied
 
     if type(x) is list:
         orig_size = len(x)
@@ -389,6 +390,8 @@ class DataSet(object):
         raise AttributeError("You cannot delete the start point")
 
     from .toxarray import to_xarray
+    from .toxarray import to_dataframe
+
     from .cellareas import cell_areas
     from .regrid import regrid
 
