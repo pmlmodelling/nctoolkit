@@ -72,6 +72,10 @@ def select_years(self, years):
 
     select_years = False
 
+
+    if type(self.current) is str:
+        self.current = [self.current]
+
     if type(self.current) is list:
 
         n_removed = 0
@@ -104,6 +108,10 @@ def select_years(self, years):
             warnings.warn(message = "A total of " +  str(n_removed) +  " files did not have valid years, so were removed from the dataset!")
 
         self.current = new_current
+
+    if len(self.current) == 1:
+        self.current = self.current[0]
+
 
     if select_years:
         years = str_flatten(years, ",")
