@@ -364,6 +364,8 @@ class DataSet(object):
         """
         Make a deep copy of an DataSet object
         """
+        self.release()
+
         new = copy.deepcopy(self)
         if type(new.current) is str:
             nc_safe.append(new.current)
