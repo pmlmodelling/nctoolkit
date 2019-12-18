@@ -23,8 +23,11 @@ def operation(self, method = "mul", ff = None):
 
     self.release()
 
-    if len(nc_variables(ff)) > 1:
-        raise ValueError("Check dataset or file you are using. It had more than one variables")
+    if len(nc_variables(ff)) != len(nc_variables(self.current)) and len(nc_variables(ff)) != 1:
+        raise ValueError("Datasets have incompatible variable numbers for the operation!")
+
+
+
 
     target = temp_file(".nc")
 
