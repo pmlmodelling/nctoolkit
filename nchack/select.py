@@ -152,6 +152,9 @@ def select_timestep(self, times):
 
     """
 
+    if type(times) is range:
+        times = list(times)
+
     if type(times) is not list:
         times = [times]
     # all of the variables in months need to be converted to ints, just in case floats have been provided
