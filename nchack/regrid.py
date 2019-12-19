@@ -85,10 +85,12 @@ def regrid(self, grid = None, method = "bil"):
     grid_split = dict()
 
     if type(self.current) is str:
-        self.current = [self.current]
+        file_list = [self.current]
+    else:
+        file_list = self.current
 
-    if type(self.current) is list:
-        for ff in self.current:
+    if type(file_list) is list:
+        for ff in file_list:
             cdo_result = subprocess.run("cdo griddes " + ff, shell = True, stdout=subprocess.PIPE, stderr =subprocess.PIPE).stdout
             cdo_result = str(cdo_result)
             if cdo_result in grid_split:
