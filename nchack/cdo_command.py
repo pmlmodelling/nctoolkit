@@ -35,7 +35,7 @@ def cdo_command(self, command):
         raise ValueError("You have not supplied any cdo methods!")
 
     if n_methods > 1:
-        raise ValueError("Errror: please supply one cdo method")
+        raise ValueError("Errror: please supply only one cdo method")
 
     # remove cdo from the command
     if command.startswith("cdo "):
