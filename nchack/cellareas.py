@@ -14,7 +14,6 @@ def cell_areas(self,  join = True):
     -------------
     join: boolean
         Set to False if you only want the cell areas to be in the output. join=True adds the areas as a variable to the dataset.
-
     """
 
     # release if you need to join the cell areas to the original file
@@ -27,6 +26,8 @@ def cell_areas(self,  join = True):
     # first run the join case
     if join:
         target = temp_file(".nc")
+
+        orig_vars = self.variables
 
         cdo_command = "cdo -L -merge " + self.current + " -gridarea " + self.current + " " + target
         target = run_cdo(cdo_command, target)
@@ -49,7 +50,9 @@ def cell_areas(self,  join = True):
 
 
     # add units
-    self.set_units({"cell_area": "m^2"})
+    area_name = [vv for vv in self.variables if vv not in orig_vars]
+    area_name = area_name[0]
+    self.set_units({area_name: "m^2"})
 
 
 
