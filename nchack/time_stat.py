@@ -8,6 +8,7 @@ import os
 def time_stat(self, stat = "mean"):
     """Method to calculate a stat over all time steps"""
 
+    # create cdo command and run it
     cdo_command = "cdo -tim" + stat
     run_this(cdo_command, self,  output = "ensemble")
 
@@ -59,6 +60,7 @@ def cum_sum(self):
     Calculate the cumulative sums of all values.
     """
 
+    # create cdo command and runit
     cdo_command = "cdo -timcumsum"
     run_this(cdo_command, self,  output = "ensemble")
 
@@ -80,6 +82,9 @@ def percentile(self, p = 50):
 
     if type(p) not in [int, float]:
          raise TypeError("p is a " + str(type(p)) +  ", not int or float")
+
+    if p < 0 or p > 100:
+        raise ValueError("p: " + p + " is not between 0 and 100!")
 
     target = temp_file("nc")
 
