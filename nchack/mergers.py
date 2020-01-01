@@ -98,7 +98,7 @@ def merge_time(self):
     self.release()
 
     if type(self.current) is not list:
-        warnings.warn(message("There is only file in the dataset. No need to merge!"))
+        warnings.warn(message = "There is only file in the dataset. No need to merge!")
         return None
 
     if self._merged:
