@@ -59,7 +59,6 @@ def multiply(self, x = None):
     x: int, float, DataSet or netcdf file
         An int, float single file dataset or netcdf file to multiply the dataset by
     """
-    self.release()
 
     # 1: int, float multiplication
     if isinstance(x, (int, float)):
@@ -88,8 +87,6 @@ def subtract(self, x = None):
         An int, float single file dataset or netcdf file to subtract from the dataset
     """
 
-    self.release()
-
     # 1: int, float subtraction
     if isinstance(x, (int, float)):
         return arithall(self, stat = "subc", x = x)
@@ -116,8 +113,6 @@ def add(self, x = None):
     x: int, float, DataSet or netcdf file
         An int, float single file dataset or netcdf file to add to the dataset
     """
-
-    self.release()
 
     # 1: int, float addition
     if isinstance(x, (int, float)):
@@ -146,8 +141,6 @@ def divide(self, x = None):
     x: int, float, DataSet or netcdf file
         An int, float single file dataset or netcdf file to divide the dataset by
     """
-
-    self.release()
 
     # 1: int, float division
     if isinstance(x, (int, float)):
