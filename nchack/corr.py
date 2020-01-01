@@ -22,7 +22,8 @@ def cor(self, var1 = None, var2 = None, method = "fld"):
         if len(self.variables) == 2:
             var1 = self.variables[0]
             var2 = self.variables[1]
-        warnings.warn(message = "The first two variables in the dataset have been used to calculate the correlations")
+        else:
+            raise ValueError("Both variables are not given")
 
     if var1 is None or var2 is None:
         raise ValueError("Both variables are not given")
