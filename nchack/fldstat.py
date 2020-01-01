@@ -4,7 +4,6 @@ from .runthis import run_this
 def fldstat(self, stat = "mean",):
     """Method to calculate the spatial stat from a netcdf"""
 
-    #cdo_command = "cdo --reduce_dim -fld" + stat
     cdo_command = "cdo -fld" + stat
 
     run_this(cdo_command, self,  output = "ensemble")
@@ -76,6 +75,8 @@ def spatial_percentile(self, p = 50):
 
     if type(p) not in (int, float):
         raise ValueError(p + " is not a valid percentile")
+    if p < 0 or p > 100:
+        raise ValueError("p: " + p + " is not between 0 and 100!")
 
     cdo_command = "cdo -fldpctl," + str(p)
 
