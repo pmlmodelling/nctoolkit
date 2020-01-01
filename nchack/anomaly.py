@@ -22,7 +22,7 @@ def annual_anomaly(self, baseline = None, metric = "absolute", window = 1):
         A window for the anomaly. By default window = 1, i.e. the annual anomaly is calculated. If, for example, window = 20, the 20 year rolling means will be used to calculate the anomalies.
     """
 
-    # release if set to lazy
+    # This cannot possibly be threaded in cdo. Release it
 
     self.release()
 
@@ -39,6 +39,13 @@ def annual_anomaly(self, baseline = None, metric = "absolute", window = 1):
         raise TypeError("Provide a valid baseline")
     if type(baseline[1]) is not int:
         raise TypeError("Provide a vaid baseline")
+    if len([yy for yy in baseline if yy not in self.years()]) > 0:
+        raise ValueError("Check that the years in baseline are in the dataset!")
+    if baseline[1] < baseline[0]:
+        raise ValueError("Second baseline year is before the first!")
+
+
+
 
     # create the target file
     target = temp_file("nc")
