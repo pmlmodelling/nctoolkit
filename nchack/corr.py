@@ -76,7 +76,7 @@ def cor(self, var1 = None, var2 = None, method = "fld"):
 
 def cor_space(self, var1 = None, var2 = None):
     """
-    Calculate the correlation correct between two variables in space, and for each time step
+    Calculate the correlation correct between two variables in space, and for each time step. The correlation coefficient coefficient is calculated using values in all grid cells.
 
     Parameters
     -------------
@@ -90,7 +90,7 @@ def cor_space(self, var1 = None, var2 = None):
 
 def cor_time(self, var1 = None, var2 = None):
     """
-    Calculate the correlation correct in time between two variables, for each grid cell
+    Calculate the correlation correct in time between two variables. The correlation is calculated for each grid cell
 
     Parameters
     -------------

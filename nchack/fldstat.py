@@ -15,13 +15,6 @@ def spatial_mean(self):
 
     return fldstat(self, stat = "mean")
 
-def spatial_mean(self):
-    """
-    Calculate an area weighted spatial mean of variables. This is performed for each time step.
-    """
-
-    return fldstat(self, stat = "mean")
-
 def spatial_min(self):
     """
     Calculate a spatial minimum of variables. This is performed for each time step.
@@ -49,11 +42,11 @@ def spatial_sum(self, by_area = False):
 
     Parameters
     --------------
-    by_area : boolean
+    use_area : boolean
         Set to True if you want to multiply the values by the grid cell area before summing over space. Default is False.
     """
 
-    if by_area:
+    if use_area:
         self.release()
         if type(self.current) is list:
             raise TypeError("This cannot be run with multiple files currently")
@@ -70,7 +63,7 @@ def spatial_percentile(self, p = 50):
     Parameters
     -------------
     p: int or float
-        Percentile to calculate
+        Percentile to calculate. 0<=p<=100.
     """
 
     if type(p) not in (int, float):

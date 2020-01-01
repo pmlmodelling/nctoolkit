@@ -12,28 +12,28 @@ def ydaystat(self, stat = "mean"):
 
 def daily_mean_climatology(self):
     """
-    Calculate a daily mean climatology. This assumes times in files are directly comparable, so make sure the same number of days are in each file
+    Calculate a daily mean climatology
     """
 
     return ydaystat(self, stat = "mean")
 
 def daily_min_climatology(self):
     """
-    Calculate a daily minimum climatology. This assumes times in files are directly comparable, so make sure the same number of days are in each file
+    Calculate a daily minimum climatology
     """
 
     return ydaystat(self, stat = "min")
 
 def daily_max_climatology(self):
     """
-    Calculate a daily maximum climatology. This assumes times in files are directly comparable, so make sure the same number of days are in each file
+    Calculate a daily maximum climatology
     """
 
     return ydaystat(self,  stat = "max")
 
 def daily_range_climatology(self):
     """
-    Calculate a daily range climatology. This assumes times in files are directly comparable, so make sure the same number of days are in each file
+    Calculate a daily range climatology
     """
 
     return ydaystat(self, stat = "range")

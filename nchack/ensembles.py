@@ -16,7 +16,7 @@ def ensemble_percentile(self, p = 50):
     Parameters
     -------------
     p : float or int
-        percentile to calculate
+        percentile to calculate. 0<=p<=100.
     """
 
     # This method cannot possibly be chained. Release it
@@ -108,7 +108,7 @@ def ensemble_min(self, vars = None, ignore_time = False):
     vars : str or list
         variables to analyse. If this is not supplied all variables will be analysed.
     ignore_time : boolean
-        If True time is ignored when the statistic is ignored. If False, the statistics is calculated for each time step; for example, if each file in the ensemble has 12 months of data the statistic will be calculated for each month.
+        If True time is ignored when the statistic is ignored. If False, the statistic is calculated for each time step; for example, if each file in the ensemble has 12 months of data the statistic will be calculated for each month.
 
     """
 
@@ -123,7 +123,7 @@ def ensemble_max(self, vars = None, ignore_time = False):
     vars : str or list
         variables to analyse. If this is not supplied all variables will be analysed.
     ignore_time : boolean
-        If True time is ignored when the statistic is ignored. If False, the statistics is calculated for each time step; for example, if each file in the ensemble has 12 months of data the statistic will be calculated for each month.
+        If True time is ignored when the statistic is ignored. If False, the statistic is calculated for each time step; for example, if each file in the ensemble has 12 months of data the statistic will be calculated for each month.
 
     """
 
@@ -138,7 +138,7 @@ def ensemble_mean(self, vars = None, ignore_time = False):
     vars : str or list
         variables to analyse. If this is not supplied all variables will be analysed.
     ignore_time : boolean
-        If True time is ignored when the statistic is ignored. If False, the statistics is calculated for each time step; for example, if each file in the ensemble has 12 months of data the statistic will be calculated for each month.
+        If True time is ignored when the statistic is ignored. If False, the statistic is calculated for each time step; for example, if each file in the ensemble has 12 months of data the statistic will be calculated for each month.
 
     """
 
@@ -155,7 +155,7 @@ def ensemble_range(self):
     vars : str or list
         variables to analyse. If this is not supplied all variables will be analysed.
     ignore_time : boolean
-        If True time is ignored when the statistic is ignored. If False, the statistics is calculated for each time step; for example, if each file in the ensemble has 12 months of data the statistic will be calculated for each month.
+        If True time is ignored when the statistic is ignored. If False, the statistic is calculated for each time step; for example, if each file in the ensemble has 12 months of data the statistic will be calculated for each month.
 
     """
     if type(self.current) is not list:

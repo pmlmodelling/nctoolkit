@@ -59,7 +59,7 @@ def multiply(self, x = None):
     Parameters
     ------------
     x: int, float, DataSet or netcdf file
-        An int, float single file dataset or netcdf file to multiply the dataset by
+        An int, float, single file dataset or netcdf file to multiply the dataset by
     """
 
     # 1: int, float multiplication
@@ -86,7 +86,7 @@ def subtract(self, x = None):
     Parameters
     ------------
     x: int, float, DataSet or netcdf file
-        An int, float single file dataset or netcdf file to subtract from the dataset
+        An int, float, single file dataset or netcdf file to subtract from the dataset
     """
 
     # 1: int, float subtraction
@@ -113,7 +113,7 @@ def add(self, x = None):
     Parameters
     ------------
     x: int, float, DataSet or netcdf file
-        An int, float single file dataset or netcdf file to add to the dataset
+        An int, float, single file dataset or netcdf file to add to the dataset
     """
 
     # 1: int, float addition
@@ -141,7 +141,7 @@ def divide(self, x = None):
     Parameters
     ------------
     x: int, float, DataSet or netcdf file
-        An int, float single file dataset or netcdf file to divide the dataset by
+        An int, float, single file dataset or netcdf file to divide the dataset by
     """
 
     # 1: int, float division
