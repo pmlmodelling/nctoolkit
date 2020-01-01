@@ -69,6 +69,9 @@ def split_cdo(self, method = "year"):
         if counter == 0:
             raise ValueError("Splitting the file by year did not work!")
 
+        if ff in nc_safe:
+            nc_safe.remove(ff)
+
     self.history+= commands
     self._hold_history = copy.deepcopy(self.history)
 
