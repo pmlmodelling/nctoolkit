@@ -31,6 +31,7 @@ def cdo_command(self, command):
             if y.replace("-", "") in cdo_methods:
                 n_methods+=1
 
+    # throw error if command invalid
     if n_methods == 0:
         raise ValueError("You have not supplied any cdo methods!")
 
