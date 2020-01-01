@@ -13,13 +13,16 @@ def cell_areas(self,  join = True):
     Parameters
     -------------
     join: boolean
-        Set to False if you only want the cell areas to be in the output. join=True joins the areas to the files.
+        Set to False if you only want the cell areas to be in the output. join=True adds the areas as a variable to the dataset.
 
     """
 
     # release if you need to join the cell areas to the original file
     if join:
         self.release()
+
+        if type(self.current) is list:
+            raise TypeError("This only works with single file datasets at present!")
 
     # first run the join case
     if join:
