@@ -157,6 +157,22 @@ class TestSelect(unittest.TestCase):
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         self.assertEqual(x, -0.17559902369976044)
 
+    def test_arithall(self):
+        ff = "data/sst.mon.mean.nc"
+        tracker = nc.open_data(ff)
+        tracker.add(1)
+        tracker.subtract(1)
+        tracker.multiply(1)
+        tracker.spatial_mean()
+        tracker.mean()
+        tracker.release()
+        x = tracker.to_xarray().sst.values[0][0][0].astype("float")
+        tracker = nc.open_data(ff)
+        tracker.spatial_mean()
+        tracker.mean()
+        tracker.release()
+        y = tracker.to_xarray().sst.values[0][0][0].astype("float")
+        self.assertEqual(x, y)
 
 
 if __name__ == '__main__':
