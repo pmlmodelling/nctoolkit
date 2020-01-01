@@ -44,12 +44,10 @@ def annual_anomaly(self, baseline = None, metric = "absolute", window = 1):
     if baseline[1] < baseline[0]:
         raise ValueError("Second baseline year is before the first!")
 
-
-
-
     # create the target file
     target = temp_file("nc")
 
+    # check metric type
     if metric not in ["absolute", "relative"]:
         raise ValueError(metric + " is not a valid ype")
 
@@ -59,10 +57,9 @@ def annual_anomaly(self, baseline = None, metric = "absolute", window = 1):
     else:
         cdo_command = "cdo -L div -runmean," + str(window) + " -yearmean " + self.current + " -timmean -selyear," + str(baseline[0]) + "/" + str(baseline[1]) + " " + self.current  + " " + target
 
-
+    # modify the cdo command if threadsafe
     if session_info["thread_safe"]:
         cdo_command = cdo_command.replace("-L "," ")
-
 
     # run the command and save the temp file
     target = run_cdo(cdo_command, target)
@@ -71,7 +68,7 @@ def annual_anomaly(self, baseline = None, metric = "absolute", window = 1):
     self.history.append(cdo_command)
     self._hold_history = copy.deepcopy(self.history)
 
-    # updat the safe lists and current file
+    # update the safe lists and current file
     if self.current in nc_safe:
         nc_safe.remove(self.current)
 
@@ -114,6 +111,11 @@ def monthly_anomaly(self, baseline = None):
         raise TypeError("Provide a valid baseline")
     if type(baseline[1]) is not int:
         raise TypeError("Provide a vaid baseline")
+
+    if len([yy for yy in baseline if yy not in self.years()]) > 0:
+        raise ValueError("Check that the years in baseline are in the dataset!")
+    if baseline[1] < baseline[0]:
+        raise ValueError("Second baseline year is before the first!")
 
     # create the target file
     target = temp_file("nc")
