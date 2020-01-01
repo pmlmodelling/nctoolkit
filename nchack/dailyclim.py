@@ -5,6 +5,7 @@ def ydaystat(self, stat = "mean"):
     Method to calculate daily climatologies
     """
 
+    # create the cdo command and run it
     cdo_command = "cdo -yday" + stat
     run_this(cdo_command, self, output = "ensemble")
 
