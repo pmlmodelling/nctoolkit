@@ -17,9 +17,6 @@ def cell_areas(self,  join = True):
 
     """
 
-    # Note whether the dataset is lazy
-    lazy_eval = False
-
     # release if you need to join the cell areas to the original file
     if join:
         self.release()
