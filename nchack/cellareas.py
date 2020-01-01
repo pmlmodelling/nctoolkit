@@ -28,8 +28,6 @@ def cell_areas(self,  join = True):
     if join:
         target = temp_file(".nc")
 
-        cdo_command = "cdo -gridarea " + self.current + " " + target
-
         cdo_command = "cdo -L -merge " + self.current + " -gridarea " + self.current + " " + target
         target = run_cdo(cdo_command, target)
 
@@ -38,6 +36,8 @@ def cell_areas(self,  join = True):
 
         nc_safe.append(target)
 
+        if self.current in nc_safe:
+            nc_safe.remove(self.current)
         self.current = target
 
         cleanup()
