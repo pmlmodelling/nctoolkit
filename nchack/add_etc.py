@@ -9,35 +9,40 @@ import subprocess
 import copy
 
 def arithall(self, stat = "divc", x = None):
-    """Method to calculate the spatial stat from a netcdf"""
+    """Method to add, subtract etc. a constant from a dataset"""
 
+    # create the system command and run it
     cdo_command = "cdo -" + stat + "," + str(x)
 
     run_this(cdo_command, self,  output = "ensemble")
 
 
 def operation(self, method = "mul", ff = None):
+    """Method to add, subtract etc. a netcdf file from another one"""
 
     if type(self.current) is list:
         raise TypeError("This only works for single files presently")
 
     self.release()
 
+    # check that the datasets can actually be worked with
     if len(nc_variables(ff)) != len(nc_variables(self.current)) and len(nc_variables(ff)) != 1:
         raise ValueError("Datasets have incompatible variable numbers for the operation!")
 
-
-
-
+    # create the temp file
     target = temp_file(".nc")
 
+    # create the system call
     cdo_command = "cdo -L " + method + " "  + self.current + " " + ff + " " + target
 
+    # modify system call if threadsafe
     if session_info["thread_safe"]:
         cdo_command = cdo.command.replace("-L ", " ")
 
-
+    # run the system call
     target = run_cdo(cdo_command, target)
+
+    # update the history etc.
     self.history.append(cdo_command)
     self._hold_history = copy.deepcopy(self.history)
     nc_safe.remove(self.current)
@@ -55,10 +60,13 @@ def multiply(self, x = None):
         An int, float single file dataset or netcdf file to multiply the dataset by
     """
     self.release()
+
+    # 1: int, float multiplication
     if isinstance(x, (int, float)):
         return arithall(self, stat = "mulc", x = x)
 
-
+    # 2: dataset or netcdf file multiplication
+    # get the netcdf file(s)
     if "api.DataSet" in str(type(x)):
         x.release()
         ff = x.current
@@ -82,10 +90,12 @@ def subtract(self, x = None):
 
     self.release()
 
+    # 1: int, float subtraction
     if isinstance(x, (int, float)):
         return arithall(self, stat = "subc", x = x)
 
-
+    # 2: dataset or netcdf file subtraction
+    # get the netcdf file(s)
     if "api.DataSet" in str(type(x)):
         x.release()
         ff = x.current
@@ -109,9 +119,12 @@ def add(self, x = None):
 
     self.release()
 
+    # 1: int, float addition
     if isinstance(x, (int, float)):
         return arithall(self, stat = "addc", x = x)
 
+    # 2: dataset or netcdf file addition
+    # get the netcdf file(s)
     if "api.DataSet" in str(type(x)):
         x.release()
         ff = x.current
@@ -136,10 +149,12 @@ def divide(self, x = None):
 
     self.release()
 
+    # 1: int, float division
     if isinstance(x, (int, float)):
         return arithall(self, stat = "divc", x = x)
 
-
+    # 2: dataset or netcdf file division
+    # get the netcdf file(s)
     if "api.DataSet" in str(type(x)):
         x.release()
         ff = x.current
