@@ -1,9 +1,6 @@
-
 from .runthis import run_this
 import sys
 import inspect
-
-
 
 def transmute(self, operations = None):
     """
@@ -13,10 +10,7 @@ def transmute(self, operations = None):
     -------------
     operations : dict
         operations to apply. The keys are the new variables to generate. The values are the mathematical operations to carry out.
-
     """
-
-    method = "expr"
 
     if type(operations) is not dict:
         raise TypeError("No expression was provided")
@@ -47,13 +41,12 @@ def transmute(self, operations = None):
 
         expr.append(key + "=" + new_expr)
 
-
     expr = ";".join(expr)
     expr = expr.replace(" ", "" )
     expr = '"' + expr + '"'
 
-
-    cdo_command = "cdo -" + method + "," + expr
+    # create the cdo call and run it
+    cdo_command = "cdo -expr," + expr
     run_this(cdo_command, self, output = "ensemble")
 
 def mutate(self, operations = None):
@@ -64,11 +57,9 @@ def mutate(self, operations = None):
     -------------
     operations : dict
         operations to apply. The keys are the new variables to generate. The values are the mathematical operations to carry out.
-
     """
 
-    method = "aexpr"
-
+    # check operations is of valid type
     if type(operations) is not dict:
         raise TypeError("No expression was provided")
 
@@ -103,8 +94,8 @@ def mutate(self, operations = None):
     expr = expr.replace(" ", "" )
     expr = '"' + expr + '"'
 
-
-    cdo_command = "cdo -" + method + "," + expr
+    # create the cdo call and run it
+    cdo_command = "cdo -aexpr," + expr
     run_this(cdo_command, self, output = "ensemble")
 
 
