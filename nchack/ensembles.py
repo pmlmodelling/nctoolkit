@@ -29,6 +29,9 @@ def ensemble_percentile(self, p = 50):
     if type(p) not in [int, float]:
         raise TypeError("p is a " + str(type(p)) + ", not an int or float")
 
+    if p <0 or p > 100:
+        raise ValueError("p is not between 0 and 100!")
+
     cdo_command = "cdo --sortname  -enspctl," + str(p) + " "
 
     run_this(cdo_command, self, output = "one")
