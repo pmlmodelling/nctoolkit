@@ -120,7 +120,11 @@ def monthly_anomaly(self, baseline = None):
     # create the target file
     target = temp_file("nc")
 
+    # modify the cdo command if threadsafe
+    if session_info["thread_safe"]:
+        cdo_command = cdo_command.replace("-L "," ")
 
+    # create system command
     cdo_command = "cdo -L -ymonsub -monmean " + self.current +  " -ymonmean  -selyear," + str(baseline[0]) + "/" + str(baseline[1]) + " " + self.current + " " + target
 
     # run the command and save the temp file
