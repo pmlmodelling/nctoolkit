@@ -14,27 +14,23 @@ def seasstat(self, stat = "mean"):
 def seasonal_mean(self):
     """
     Calculate the seasonal mean for each year. Applies at the grid cell level.
-
     """
     return seasstat(self, stat = "mean")
 
 def seasonal_min(self):
     """
     Calculate the seasonal minimum for each year. Applies at the grid cell level.
-
     """
     return seasstat(self, stat = "min")
 
 def seasonal_max(self):
     """
     Calculate the seasonal maximum for each year. Applies at the grid cell level.
-
     """
     return seasstat(self, stat = "max")
 
 def seasonal_range(self):
     """
     Calculate the seasonal range for each year. Applies at the grid cell level.
-
     """
     return seasstat(self, stat = "range")

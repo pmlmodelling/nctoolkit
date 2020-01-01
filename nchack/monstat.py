@@ -13,7 +13,6 @@ def monthly_mean(self):
 
     """
     Calculate the monthly mean for each year/month combination in files. This applies to each file in an ensemble.
-
     """
 
     return monstat(self, stat = "mean")
@@ -28,8 +27,6 @@ def monthly_min(self):
 def monthly_max(self):
     """
     Calculate the monthly maximum for each year/month combination in files. This applies to each file in an ensemble.
-
-
     """
     return monstat(self, stat = "max")
 
@@ -37,7 +34,6 @@ def monthly_range(self):
 
     """
     Calculate the monthly range for each year/month combination in files. This applies to each file in an ensemble.
-
     """
 
     return monstat(self, stat = "range")

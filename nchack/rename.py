@@ -11,6 +11,7 @@ def rename(self, newnames):
         Dictionary with keys being old variable names and values being new variable names
     """
 
+    # check a dict was supplied
     if type(newnames) is not dict:
         raise TypeError("a dictionary was not supplied")
 
@@ -21,9 +22,8 @@ def rename(self, newnames):
         cdo_rename +=  "," + key
         cdo_rename += "," + value
 
-    # need a check at this point for file validity
+    # create the cdo call and run it
     cdo_command= "cdo -chname" + cdo_rename
-
     run_this(cdo_command, self, output = "ensemble")
 
 

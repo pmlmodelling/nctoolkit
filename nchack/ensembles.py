@@ -26,17 +26,19 @@ def ensemble_percentile(self, p = 50):
     if type(self.current) is not list:
         warnings.warn(message = "There is only one file in the dataset")
 
+    # make sure p is a number
     if type(p) not in [int, float]:
         raise TypeError("p is a " + str(type(p)) + ", not an int or float")
 
+    # check p is between 0 and 100
     if p <0 or p > 100:
         raise ValueError("p is not between 0 and 100!")
 
+    # create the cdo command and run it
     cdo_command = "cdo --sortname  -enspctl," + str(p) + " "
-
     run_this(cdo_command, self, output = "one")
 
-    # clean up the directory
+    # set the _merged attribute to True
     self._merged = True
 
 
@@ -53,9 +55,7 @@ def ensemble_nco(self, method, vars = None, ignore_time = False):
 
     # Throw an error if there is only a single file in the tracker
     if type(ff_ensemble) is not list:
-        warnings.warn("There is only one file in the dataset")
-
-    ff_ensemble = self.current
+        warnings.warn(message = "There is only one file in the dataset")
 
     if vars is not None:
         if type(vars) == str:

@@ -27,9 +27,9 @@ def select_months(self, months):
     -------------
     months : list, range or int
         Month(s) to select.
-
     """
 
+    # check validity of months
     if type(months) is range:
         months = list(months)
 

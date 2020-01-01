@@ -18,6 +18,7 @@ def split_cdo(self, method = "year"):
     """
     Method to split files by period
     """
+    # this cannot me chained. So release
     self.release()
 
     if type(self.current) is str:
