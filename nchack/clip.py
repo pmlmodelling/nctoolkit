@@ -14,9 +14,9 @@ def clip(self, lon = [-180, 180], lat = [-90, 90], cdo = True):
     Parameters
     -------------
     lon: list
-        The longitude range to select. This must be two variables, between -180 and 180.
+        The longitude range to select. This must be two variables, between -180 and 180 when cdo = True.
     lat: list
-        The latitude range to select. This must be two variables, between -90 and 90.
+        The latitude range to select. This must be two variables, between -90 and 90 when cdo = True.
     cdo: boolean
         Do you want this to use CDO or NCO for clipping? Defaults to True. Set to False if you want to call NCO. NCO is better at handling very large horizontal grids.
     """
@@ -44,35 +44,35 @@ def clip(self, lon = [-180, 180], lat = [-90, 90], cdo = True):
 
     # now, clip to the lonlat box we need
 
-    if lon[0] >= -180 and lon[1] <= 180 and lat[0] >= -90 and lat[1] <= 90:
-
-        if cdo:
+    if cdo:
+        if lon[0] >= -180 and lon[1] <= 180 and lat[0] >= -90 and lat[1] <= 90:
             lat_box = str_flatten(lon + lat)
             cdo_command = ("cdo -sellonlatbox," + lat_box)
             run_this(cdo_command, self, output = "ensemble")
+            return None
         else:
-            if type(self.current) is list:
-                raise TypeError("This method only works for single files at present")
-            self.release()
+            raise ValueError("The lonlat box supplied is not valid!")
 
-            out = subprocess.run("cdo griddes " + self.current, shell = True, stdout=subprocess.PIPE, stderr = subprocess.PIPE)
-            lon_name = [x for x in str(out.stdout).replace("b'", "").split("\\n") if "xname" in x][0].split(" ")[-1]
-            lat_name = [x for x in str(out.stdout).replace("b'", "").split("\\n") if "yname" in x][0].split(" ")[-1]
-            target = temp_file("nc")
+    self.release()
+    if type(self.current) is list:
+        raise TypeError("This method only works for single files at present")
 
-            nco_command = "ncea -d " + lat_name + "," + str(float(lat[0])) + "," + str(float(lat[1])) + " -d " + lon_name + "," + str(float(lon[0])) + "," + str(float(lon[1]))  + " " + self.current + " " + target
-            target = run_nco(nco_command, target)
-            self.history.append(nco_command)
-            self._hold_history = copy.deepcopy(self.history)
-            if self.current in nc_safe:
-                nc_safe.remove(self.current)
-            self.current = target
-            nc_safe.append(self.current)
+    out = subprocess.run("cdo griddes " + self.current, shell = True, stdout=subprocess.PIPE, stderr = subprocess.PIPE)
+    lon_name = [x for x in str(out.stdout).replace("b'", "").split("\\n") if "xname" in x][0].split(" ")[-1]
+    lat_name = [x for x in str(out.stdout).replace("b'", "").split("\\n") if "yname" in x][0].split(" ")[-1]
+    target = temp_file("nc")
 
-            cleanup()
+    nco_command = "ncea -d " + lat_name + "," + str(float(lat[0])) + "," + str(float(lat[1])) + " -d " + lon_name + "," + str(float(lon[0])) + "," + str(float(lon[1]))  + " " + self.current + " " + target
+    target = run_nco(nco_command, target)
+    self.history.append(nco_command)
+    self._hold_history = copy.deepcopy(self.history)
+    if self.current in nc_safe:
+        nc_safe.remove(self.current)
+    self.current = target
+    nc_safe.append(self.current)
 
-    else:
-        raise ValueError("The lonlat box supplied is not valid!")
+    cleanup()
+
 
 
 
