@@ -30,7 +30,7 @@ def cell_areas(self,  join = True):
 
         cdo_command = "cdo -gridarea " + self.current + " " + target
 
-        run_cdo(cdo_command, target)
+        target = run_cdo(cdo_command, target)
 
         self.history.append(cdo_command)
 
