@@ -94,6 +94,8 @@ def ensemble_nco(self, method, vars = None, ignore_time = False):
         if ff in nc_safe:
             nc_safe.remove(ff)
 
+    self._merged = True
+
     cleanup()
 
 
