@@ -71,9 +71,6 @@ def set_missing(self, value):
 
     run_this(cdo_command, self,  output = "ensemble")
 
-    # clean up the directory
-    cleanup(keep = self.current)
-
 
 def set_units(self, var_dict):
     """
