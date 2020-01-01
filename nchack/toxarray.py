@@ -10,7 +10,7 @@ def to_xarray(self, decode_times = True):
     Parameters
     -------------
     decode_times: boolean
-        Set to False if you do not want xarray to decode the times. Default is True.
+        Set to False if you do not want xarray to decode the times. Default is True. If xarray cannot decode times, CDO will be used.
 
     """
 
