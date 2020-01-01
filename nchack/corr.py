@@ -17,7 +17,6 @@ import warnings
 def cor(self, var1 = None, var2 = None, method = "fld"):
 
     self.release()
-
     if var1 is None or var2 is None:
         if len(self.variables) == 2:
             var1 = self.variables[0]
@@ -28,8 +27,13 @@ def cor(self, var1 = None, var2 = None, method = "fld"):
     if var1 is None or var2 is None:
         raise ValueError("Both variables are not given")
 
+    if var1 not in self.variables:
+        raise ValueError(var1 + " is not in the dataset")
 
-    # First step is to check if the current file exists
+    if var2 not in self.variables:
+        raise ValueError(var2 + " is not in the dataset")
+
+    #  Check that the dataset is only a single file
     if type(self.current) is not str:
         raise ValueError("This method only works on single files")
 
