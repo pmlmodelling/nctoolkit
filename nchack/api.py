@@ -521,7 +521,7 @@ class DataSet(object):
     from .anomaly import annual_anomaly
     from .anomaly import monthly_anomaly
 
-    from .masking import mask_lonlat
+    from .masking import mask_box
 
     from .inttime import time_interp
 

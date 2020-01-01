@@ -193,7 +193,7 @@ Masking methods
 .. autosummary::
    :toctree: generated/
 
-   DataSet.mask_lonlat
+   DataSet.mask_box
 
 
 

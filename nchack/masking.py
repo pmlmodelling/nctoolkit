@@ -1,7 +1,7 @@
 from .runthis import run_this
 from .flatten import str_flatten
 
-def mask_lonlat(self, lon = [-180, 180], lat = [-90, 90]):
+def mask_box(self, lon = [-180, 180], lat = [-90, 90]):
     """
     Mask a lon/lat box
 
