@@ -99,32 +99,35 @@ def vertstat(self, stat = "mean"):
 def vertical_mean(self):
     """
     Calculate the depth-averaged mean
-
     """
 
     return vertstat(self, stat = "mean")
 
 def vertical_min(self):
     """
-    Calculate the depth-averaged minimum
-
+    Calculate the vertical minimum of variable values
     """
 
     return vertstat(self, stat = "min")
 
 def vertical_max(self):
     """
-    Calculate the depth-averaged maximum
-
+    Calculate the vertical maximum of variable values
     """
 
     return vertstat(self, stat = "max")
 
 def vertical_range(self):
     """
-    Calculate the depth-averaged range
-
-
+    Calculate the vertical range of variable values
     """
 
     return vertstat(self, stat = "range")
+
+
+def vertical_sum(self):
+    """
+    Calculate the vertical sum of variable values
+    """
+
+    return vertstat(self, stat = "sum")
