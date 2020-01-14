@@ -10,26 +10,31 @@ def generate_grid(coords):
     grid_type = None
     grid_file = temp_file()
 
+
     lon_unique = np.unique(coords.iloc[:,0])
     lat_unique = np.unique(coords.iloc[:,1])
-    lon_step = (max(lon_unique) - min(lon_unique)) / (len(lon_unique) - 1)
-    lat_step = (max(lat_unique) - min(lat_unique)) / (len(lat_unique) - 1)
+    if len(coords) > 1:
+        lon_step = (max(lon_unique) - min(lon_unique)) / (len(lon_unique) - 1)
+        lat_step = (max(lat_unique) - min(lat_unique)) / (len(lat_unique) - 1)
 
-    if len(lon_unique) == 1:
-         lon_step = 0
-    if len(lat_unique) == 1:
-         lat_step = 0
-    x = np.arange(min(lon_unique), max(lon_unique) + lon_step, lon_step)
-    y = np.arange(min(lat_unique), max(lat_unique) + lat_step, lat_step)
+        if len(lon_unique) == 1:
+             lon_step = 0
+        if len(lat_unique) == 1:
+             lat_step = 0
+        x = np.arange(min(lon_unique), max(lon_unique) + lon_step, lon_step)
+        y = np.arange(min(lat_unique), max(lat_unique) + lat_step, lat_step)
 
-    if (np.array_equal(x, lon_unique) == False | np.array_equal(y, lat_unique) == False):
-         grid_type = "unstructured"
+        if (np.array_equal(x, lon_unique) == False | np.array_equal(y, lat_unique) == False):
+             grid_type = "unstructured"
 
-    # now figure out if it is lonlat
+        # now figure out if it is lonlat
 
-    if(len(coords) == (len(x) * len(y))):
-        grid_type = "lonlat"
-    else:
+        if(len(coords) == (len(x) * len(y))):
+            grid_type = "lonlat"
+        else:
+            grid_type = "unstructured"
+
+    if len(coords) == 1:
         grid_type = "unstructured"
 
     # now we need to generate the grid file for cdo
