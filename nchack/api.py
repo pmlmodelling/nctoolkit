@@ -488,6 +488,7 @@ class DataSet(object):
     from .show import levels
     from .show import attributes
     from .show import global_attributes
+    from .show import cf_checks
 
     from .fldstat import spatial_mean
     from .fldstat import spatial_min
