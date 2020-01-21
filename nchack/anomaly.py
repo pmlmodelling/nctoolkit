@@ -15,7 +15,7 @@ def annual_anomaly(self, baseline = None, metric = "absolute", window = 1):
     Parameters
     -------------
     baseline: list
-        Baseline years. This needs to be the first and last year of the climatological period. Example: a baseline of [1985,2005] will result in anomolies against the 20 year climatology from 1986 to 2005.
+        Baseline years. This needs to be the first and last year of the climatological period. Example: a baseline of [1980,1999] will result in anomolies against the 20 year climatology from 1980 to 1999.
     metric: str
         Set to "absolute" or "relative", depending on whether you want the absolute or relative anomaly to be calcualted.
     window: int
