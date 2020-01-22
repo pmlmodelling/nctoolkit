@@ -42,11 +42,11 @@ def spatial_sum(self, by_area = False):
 
     Parameters
     --------------
-    use_area : boolean
+    by_area : boolean
         Set to True if you want to multiply the values by the grid cell area before summing over space. Default is False.
     """
 
-    if use_area:
+    if by_area:
         self.release()
         if type(self.current) is list:
             raise TypeError("This cannot be run with multiple files currently")
