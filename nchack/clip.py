@@ -44,6 +44,11 @@ def clip(self, lon = [-180, 180], lat = [-90, 90], cdo = True):
 
     # now, clip to the lonlat box we need
 
+    if  lat[1] < lat[0]:
+        raise ValueError("Check lat order")
+    if  lon[1] < lon[0]:
+        raise ValueError("Check lon order")
+
     if cdo:
         if lon[0] >= -180 and lon[1] <= 180 and lat[0] >= -90 and lat[1] <= 90:
             lat_box = str_flatten(lon + lat)
