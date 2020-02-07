@@ -50,9 +50,13 @@ def cell_areas(self,  join = True):
 
 
     # add units
-    area_name = [vv for vv in self.variables if vv not in orig_vars]
-    area_name = area_name[0]
-    self.set_units({area_name: "m^2"})
+
+    if join:
+        area_name = [vv for vv in self.variables if vv not in orig_vars]
+        area_name = area_name[0]
+        self.set_units({area_name: "m^2"})
+    else:
+        self.set_units({"cell_area": "m^2"})
 
 
 
