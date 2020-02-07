@@ -1,6 +1,7 @@
 
 import subprocess
 import pandas as pd
+import numpy as np
 
 def times(self):
     if type(self.current) is list:
@@ -88,13 +89,20 @@ def global_attributes(self):
 
 
 
-def cf_checks(self, version = 1.6):
+def cf_checks(self, version = None):
     """
     Method to run the cf checker from the Met Office on files
     """
     self.release()
     if type(self.current) is list:
         raise TypeError("This presently only works for single file datasets")
+
+    if version is None:
+        version = 1.6
+        print("Using CF version 1.6")
+
+    if version not in np.arange(1.0, 1.8, 0.1):
+        raise ValueError("Version supplied is not valid!")
 
     version = str(version)
     command = "cfchecks " + "-v "  + version + " " + self.current
