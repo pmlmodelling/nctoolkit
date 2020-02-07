@@ -37,7 +37,7 @@ def operation(self, method = "mul", ff = None):
 
     # modify system call if threadsafe
     if session_info["thread_safe"]:
-        cdo_command = cdo.command.replace("-L ", " ")
+        cdo_command = cdo_command.replace("-L ", " ")
 
     # run the system call
     target = run_cdo(cdo_command, target)
