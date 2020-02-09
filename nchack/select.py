@@ -1,4 +1,3 @@
-import os
 import warnings
 import subprocess
 from .flatten import str_flatten
