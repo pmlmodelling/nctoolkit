@@ -76,16 +76,16 @@ def attributes(self):
         raise TypeError("This presently only works for single file datasets")
 
     out = subprocess.run("cdo showatts " + self.current, shell = True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    for ll in str(out.stdout).replace("b'", "").split("\\n"):
-        print(ll)
+    out = out.stdout.decode('utf-8')
+    return out
 
 def global_attributes(self):
     if type(self.current) is list:
         raise TypeError("This presently only works for single file datasets")
 
     out = subprocess.run("cdo showattsglob " + self.current, shell = True, stdout=subprocess.PIPE, stderr = subprocess.PIPE)
-    for ll in str(out.stdout).replace("b'", "").split("\\n"):
-        print(ll)
+    out = out.stdout.decode('utf-8')
+    return out
 
 
 
