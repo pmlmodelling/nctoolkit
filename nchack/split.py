@@ -67,7 +67,7 @@ def split_cdo(self, method = "year"):
                 counter+=1
 
         if counter == 0:
-            raise ValueError("Splitting the file by year did not work!")
+            raise ValueError("Splitting the file did not work!")
 
         if ff in nc_safe:
             nc_safe.remove(ff)
