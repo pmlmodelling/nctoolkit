@@ -47,7 +47,7 @@ def phenology(self, var = None):
 
     doy_nc = temp_file("nc")
 
-    cdo_command = "cdo -L -timcumsum -chname," + var +   ",peak -setclonlatbox,1,-180,180,-90,90 " + new_self.current + " " + doy_nc
+    cdo_command = "cdo -L -timcumsum -chname," + var +   ",peak -setclonlatbox,1,-180,180,-90,90 -selname," + var + " " + new_self.current + " " + doy_nc
 
     new_self.history.append(cdo_command)
 
@@ -60,7 +60,7 @@ def phenology(self, var = None):
 
     max_nc = temp_file("nc")
 
-    cdo_command = "cdo -L -timmax -chname," + var + "," + var + "_max " + new_self.current + " " + max_nc
+    cdo_command = "cdo -L -timmax -chname," + var + "," + var + "_max " + " -selname," + var + " " +  new_self.current + " " + max_nc
 
     new_self.history.append(cdo_command)
     max_nc = run_cdo(cdo_command, max_nc)
@@ -99,9 +99,13 @@ def phenology(self, var = None):
 
     # set the long name and unit
 
+
+    new_self._hold_history = copy.deepcopy(new_self.history)
+
     new_self.set_longnames({"peak": "Timing of annual maximum"})
 
     new_self.set_units({"peak": "Day of year"})
+    new_self.release()
 
     self.current = copy.deepcopy(new_self.current )
     self.history+=copy.deepcopy(new_self.history)
