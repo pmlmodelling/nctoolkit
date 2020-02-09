@@ -57,7 +57,10 @@ def cell_areas(self,  join = True):
         for x in new_commands:
             self.history.append(x)
 
-        self.current = new_files
+        if len(new_files) == 1:
+            self.current = new_files[0]
+        else:
+            self.current = new_files
 
         self._hold_history = copy.deepcopy(self.history)
 
