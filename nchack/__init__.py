@@ -9,7 +9,6 @@ from .cleanup import cleanup
 from .cleanup import clean_all
 from .cleanup import deep_clean
 from .cleanup import temp_check
-from .session import safe_list
 from .session import show_session
 
 
