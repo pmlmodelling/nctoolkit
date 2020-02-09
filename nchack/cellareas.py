@@ -4,6 +4,7 @@ from .runthis import run_cdo
 from .temp_file import temp_file
 from .cleanup import cleanup
 from .session import nc_safe
+from .show import nc_variables
 
 
 def cell_areas(self,  join = True):
@@ -20,26 +21,45 @@ def cell_areas(self,  join = True):
     if join:
         self.release()
 
-        if type(self.current) is list:
-            raise TypeError("This only works with single file datasets at present!")
 
     # first run the join case
     if join:
-        target = temp_file(".nc")
 
-        orig_vars = self.variables
+        if type(self.current) is str:
+            self.current = [self.current]
 
-        cdo_command = "cdo -L -merge " + self.current + " -gridarea " + self.current + " " + target
-        target = run_cdo(cdo_command, target)
 
-        self.history.append(cdo_command)
+        new_files = []
+        new_commands = []
+
+        for ff in self.current:
+
+            if "cell_area" in nc_variables(ff):
+                raise ValueError("cell_area is already a variable")
+
+
+            target = temp_file(".nc")
+
+
+            cdo_command = "cdo -L -merge " + ff + " -gridarea " + ff + " " + target
+            target = run_cdo(cdo_command, target)
+            new_files.append(target)
+
+            new_commands.append(cdo_command)
+
+            nc_safe.append(target)
+
+        for ff in self.current:
+            if ff in nc_safe:
+                nc_safe.remove(ff)
+
+
+        for x in new_commands:
+            self.history.append(x)
+
+        self.current = new_files
+
         self._hold_history = copy.deepcopy(self.history)
-
-        nc_safe.append(target)
-
-        if self.current in nc_safe:
-            nc_safe.remove(self.current)
-        self.current = target
 
         cleanup()
 
@@ -52,9 +72,7 @@ def cell_areas(self,  join = True):
     # add units
 
     if join:
-        area_name = [vv for vv in self.variables if vv not in orig_vars]
-        area_name = area_name[0]
-        self.set_units({area_name: "m^2"})
+        self.set_units({"cell_area": "m^2"})
     else:
         self.set_units({"cell_area": "m^2"})
 
