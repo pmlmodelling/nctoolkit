@@ -530,7 +530,6 @@ class DataSet(object):
 
 
     from .time_sort import sort_times
-    from .safe import safe_list
 
     from .plot import plot
 
