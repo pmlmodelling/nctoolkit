@@ -27,16 +27,9 @@ def cdo_command(self, command):
     n_methods = 0
 
     for x in command.split(" "):
-        for y in x.split(","):
-            if y.replace("-", "") in cdo_methods:
-                n_methods+=1
-
-    # throw error if command invalid
-    if n_methods == 0:
-        raise ValueError("You have not supplied any cdo methods!")
-
-    if n_methods > 1:
-        raise ValueError("Errror: please supply only one cdo method")
+        y = x.split(",")[0].replace("-", "")
+        if y not in cdo_methods:
+            raise ValueError("You have supplied an invalid cdo method:" + y )
 
     # remove cdo from the command
     if command.startswith("cdo "):
