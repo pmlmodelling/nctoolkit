@@ -44,31 +44,43 @@ def nc_variables(ff):
     return cdo_result
 
 def years(self):
-    if type(self.current) is list:
-        raise TypeError("This presently only works for single file datasets")
-    cdo_result = subprocess.run("cdo showyear " + self.current, shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    cdo_result = str(cdo_result.stdout).replace("\\n", "")
-    cdo_result = cdo_result.replace("b'", "").strip()
-    cdo_result = cdo_result.replace("'", "").strip()
-    cdo_result = cdo_result.split()
-    cdo_result = list(set(cdo_result))
-    cdo_result =  [int(v) for v in cdo_result]
-    cdo_result.sort()
-    return cdo_result
+
+    if type(self.current) is str:
+        file_list = [self.current]
+    else:
+        file_list = self.current
+    all_years = []
+    for ff in file_list:
+        cdo_result = subprocess.run("cdo showyear " + ff, shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        cdo_result = str(cdo_result.stdout).replace("\\n", "")
+        cdo_result = cdo_result.replace("b'", "").strip()
+        cdo_result = cdo_result.replace("'", "").strip()
+        cdo_result = cdo_result.split()
+        all_years+=cdo_result
+    all_years = list(set(all_years))
+    all_years =  [int(v) for v in all_years]
+    all_years.sort()
+    return all_years
+
 
 def months(self):
-    if type(self.current) is list:
-        raise TypeError("This presently only works for single file datasets")
-    cdo_result = subprocess.run("cdo showmon " + self.current, shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    cdo_result = str(cdo_result.stdout).replace("\\n", "")
-    cdo_result = cdo_result.replace("b'", "").strip()
-    cdo_result = cdo_result.replace("'", "").strip()
-    cdo_result = cdo_result.split()
-    cdo_result = list(set(cdo_result))
-    cdo_result =  [int(v) for v in cdo_result]
-    cdo_result.sort()
-    return cdo_result
 
+    if type(self.current) is str:
+        file_list = [self.current]
+    else:
+        file_list = self.current
+    all_months = []
+    for ff in file_list:
+        cdo_result = subprocess.run("cdo showmon " + ff, shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        cdo_result = str(cdo_result.stdout).replace("\\n", "")
+        cdo_result = cdo_result.replace("b'", "").strip()
+        cdo_result = cdo_result.replace("'", "").strip()
+        cdo_result = cdo_result.split()
+        all_months+=cdo_result
+    all_months = list(set(all_months))
+    all_months =  [int(v) for v in all_months]
+    all_months.sort()
+    return all_months
 
 
 def attributes(self):
@@ -86,28 +98,4 @@ def global_attributes(self):
     out = subprocess.run("cdo showattsglob " + self.current, shell = True, stdout=subprocess.PIPE, stderr = subprocess.PIPE)
     out = out.stdout.decode('utf-8')
     return out
-
-
-
-def cf_checks(self, version = None):
-    """
-    Method to run the cf checker from the Met Office on files
-    """
-    self.release()
-    if type(self.current) is list:
-        raise TypeError("This presently only works for single file datasets")
-
-    if version is None:
-        version = 1.6
-        print("Using CF version 1.6")
-
-    if version not in np.arange(1.0, 1.8, 0.1):
-        raise ValueError("Version supplied is not valid!")
-
-    version = str(version)
-    command = "cfchecks " + "-v "  + version + " " + self.current
-    out = subprocess.Popen(command,shell = True, stdin = subprocess.PIPE,stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
-    result,ignore = out.communicate()
-    print(result.decode())
-
 

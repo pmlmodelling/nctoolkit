@@ -488,7 +488,6 @@ class DataSet(object):
     from .show import levels
     from .show import attributes
     from .show import global_attributes
-    from .show import cf_checks
 
     from .fldstat import spatial_mean
     from .fldstat import spatial_min
@@ -542,6 +541,7 @@ class DataSet(object):
     from .add_etc import subtract
     from .add_etc import multiply
     from .add_etc import divide
+    from .cf_checks import cf_checks
 
 
 
