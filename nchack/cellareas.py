@@ -74,10 +74,7 @@ def cell_areas(self,  join = True):
 
     # add units
 
-    if join:
-        self.set_units({"cell_area": "m^2"})
-    else:
-        self.set_units({"cell_area": "m^2"})
+    self.set_units({"cell_area": "m^2"})
 
 
 
