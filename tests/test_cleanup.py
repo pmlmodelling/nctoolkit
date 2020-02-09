@@ -1,0 +1,26 @@
+import unittest
+import nchack as nc
+import pandas as pd
+import xarray as xr
+import os
+
+
+ff = "data/sst.mon.mean.nc"
+
+class TestSelect(unittest.TestCase):
+
+    def test_cleanall(self):
+        tracker = nc.open_data(ff)
+        tracker.select_timestep(0)
+        tracker.release()
+        safe = nc.safe_list()
+        nc.clean_all()
+        x = len([ff for ff in safe if os.path.exists(ff)])
+
+        self.assertEqual(x, 0)
+
+
+
+if __name__ == '__main__':
+    unittest.main()
+
