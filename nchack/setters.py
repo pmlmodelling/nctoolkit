@@ -199,17 +199,9 @@ def set_longnames(self, var_dict):
         i_dict = i_dict.replace('"', "'")
         nco_command += "-a long_name," + i + ',o,c,"' + i_dict   + '" '
 
-    target = ""
-    if type(self.start) is list:
-        target = ""
-    else:
-        if self.start == self.current:
-            target = temp_file("nc")
+    target = temp_file("nc")
 
-    if target == "":
-        nco_command+= self.current
-    else:
-        nco_command+= self.current + " " + target
+    nco_command+= self.current + " " + target
 
     target = run_nco(nco_command, target)
 
