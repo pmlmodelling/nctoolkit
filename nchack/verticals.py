@@ -79,7 +79,7 @@ def vertical_interp(self, vert_depths = None):
    #          raise ValueError("error: maximum depth supplied is too low")
 
         vert_depths = str_flatten(vert_depths, ",")
-        cdo_command = "cdo intlevel," + vert_depths
+        cdo_command = "cdo -intlevel," + vert_depths
 
         run_this(cdo_command, self,  output = "ensemble")
 
