@@ -173,12 +173,12 @@ def set_attributes(self, att_dict):
 
 def set_longnames(self, var_dict):
     """
-    Set Global attributes
+    Set long name
 
     Parameters
     -------------
     var_dict : dict
-        Dictionary with key, value pairs representing the attribute names and their long names
+        Dictionary with key, value pairs representing the variable names and their long names
 
     """
 
