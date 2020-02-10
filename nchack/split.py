@@ -93,6 +93,7 @@ def split(self, by = None):
         Available by arguments are 'year', 'month', 'yearmonth', 'season', 'day'
     """
 
+    method = None
     if by == "year":
         method = "year"
 
@@ -104,6 +105,8 @@ def split(self, by = None):
 
     if by == "day":
         method = "day"
+    if method is None:
+        raise ValueError("No valid split method supplied")
 
     split_cdo(self, method = method)
 
