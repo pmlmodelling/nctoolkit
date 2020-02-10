@@ -93,56 +93,6 @@ def set_units(self, var_dict):
 
 
 
-def set_attributes(self, att_dict):
-    """
-    Set Global attributes
-
-    Parameters
-    -------------
-    att_dict : dict
-        Dictionary with key, value pairs representing the attribute names and their long names
-
-    """
-
-    self.release()
-
-    if type(self.current) is not str:
-        TypeError("Method does not yet work with ensembles")
-
-    if type(att_dict) is not dict:
-        TypeError("A dictionary has not been supplied!")
-
-    # change the units in turn. This doesn't seem to be something you can chain?
-
-    nco_command = "ncatted -O -h "
-    for i in att_dict:
-        nco_command += "-a " + i + ",global,o,c,'" + att_dict[i] + "' "
-
-    target = ""
-    if type(self.start) is list:
-        target = ""
-    else:
-        if self.start == self.current:
-            target = temp_file("nc")
-
-    nco_command+= self.current + " " + target
-
-    target = run_nco(nco_command, target)
-
-    if target != "":
-        nc_safe.remove(self.current)
-        self.current = target
-        nc_safe.append(self.current)
-
-    # clean up the directory
-    cleanup(keep = self.current)
-
-    self.history.append(nco_command)
-    self._hold_history = copy.deepcopy(self.history)
-
-
-
-
 def set_longnames(self, var_dict):
     """
     Set long name
@@ -191,65 +141,6 @@ def set_longnames(self, var_dict):
 
 
 
-
-
-
-
-
-
-
-def delete_attributes(self, atts):
-    """
-    Set Global attributes
-
-    Parameters
-    -------------
-    atts : list or str
-        list or str of global attributes to remove.
-
-    """
-
-    self.release()
-
-    if type(self.current) is not str:
-        TypeError("Method does not yet work with ensembles")
-
-    if type(atts) not in [str, list]:
-        TypeError("A dictionary has not been supplied!")
-
-    # change the units in turn. This doesn't seem to be something you can chain?
-
-
-    nco_command = "ncatted "
-
-    if type(atts) is str:
-        atts = [atts]
-
-    for i in atts:
-        i_dict = i
-        nco_command += "-a " + i + ",global,d,, "
-
-    target = ""
-    if type(self.start) is list:
-        target = ""
-    else:
-        if self.start == self.current:
-            target = temp_file("nc")
-
-    nco_command+= self.current + " " + target
-
-    target = run_nco(nco_command, target)
-
-    if target != "":
-        nc_safe.remove(self.current)
-        self.current = target
-        nc_safe.append(self.current)
-
-    # clean up the directory
-    cleanup(keep = self.current)
-
-    self.history.append(nco_command)
-    self._hold_history = self.history
 
 
 

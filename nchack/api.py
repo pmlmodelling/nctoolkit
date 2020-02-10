@@ -454,8 +454,10 @@ class DataSet(object):
     from .setters import set_missing
     from .setters import set_units
     from .setters import set_longnames
-    from .setters import set_attributes
-    from .setters import delete_attributes
+
+
+    from .esoteric import set_attributes
+    from .esoteric import delete_attributes
 
     from .esoteric import assign_coords
     from .esoteric import set_gridtype
