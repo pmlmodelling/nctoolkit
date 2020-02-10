@@ -67,9 +67,9 @@ def spatial_percentile(self, p = 50):
     """
 
     if type(p) not in (int, float):
-        raise ValueError(p + " is not a valid percentile")
+        raise ValueError(str(p) + " is not a valid percentile")
     if p < 0 or p > 100:
-        raise ValueError("p: " + p + " is not between 0 and 100!")
+        raise ValueError("p: " + str(p) + " is not between 0 and 100!")
 
     cdo_command = "cdo -fldpctl," + str(p)
 
