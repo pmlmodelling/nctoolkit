@@ -37,6 +37,23 @@ class TestSelect(unittest.TestCase):
 
         self.assertEqual(x, ["sst", "tos"])
 
+    def test_localproblem(self):
+        tracker = nc.open_data(ff)
+        inc = "x"
+        with self.assertRaises(TypeError) as context:
+            tracker.transmute({"tos":"sst+@inc"})
+
+        with self.assertRaises(TypeError) as context:
+            tracker.mutate({"tos":"sst+@inc"})
+
+
+    def test_no_dict(self):
+        tracker = nc.open_data(ff)
+        with self.assertRaises(TypeError) as context:
+            tracker.mutate("test")
+
+        with self.assertRaises(TypeError) as context:
+            tracker.transmute("test")
 if __name__ == '__main__':
     unittest.main()
 

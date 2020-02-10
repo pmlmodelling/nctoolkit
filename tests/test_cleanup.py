@@ -13,7 +13,7 @@ class TestSelect(unittest.TestCase):
         tracker = nc.open_data(ff)
         tracker.select_timestep(0)
         tracker.release()
-        safe = nc.safe_list()
+        safe = nc.session.nc_safe
         nc.clean_all()
         x = len([ff for ff in safe if os.path.exists(ff)])
 

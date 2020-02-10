@@ -60,6 +60,13 @@ class TestSelect(unittest.TestCase):
 
         self.assertEqual(x, "temp")
 
+    def test_setattribute(self):
+        tracker = nc.open_data(ff)
+        tracker.set_attributes({"test123":"test"})
+        x = "test123" in tracker.global_attributes()
+
+
+        self.assertEqual(x, True)
 
 
 if __name__ == '__main__':
