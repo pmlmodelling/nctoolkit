@@ -528,9 +528,6 @@ class DataSet(object):
 
     from .cleanup import disk_clean
 
-
-    from .time_sort import sort_times
-
     from .plot import plot
 
 
