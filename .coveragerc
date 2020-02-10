@@ -1,0 +1,6 @@
+[run]
+omit = 
+    *tests*
+    nchack/checkers.py
+    nchack/view.py
+    nchack/cf_checks.py
