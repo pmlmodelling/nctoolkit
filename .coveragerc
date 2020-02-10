@@ -4,3 +4,6 @@ omit =
     nchack/checkers.py
     nchack/view.py
     nchack/cf_checks.py
+    nchack/esoteric.py
+[report]
+show_missing = True
