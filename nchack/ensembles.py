@@ -53,9 +53,13 @@ def ensemble_nco(self, method, vars = None, ignore_time = False):
 
     ff_ensemble = copy.deepcopy(self.current)
 
-    # Throw an error if there is only a single file in the tracker
     if type(ff_ensemble) is not list:
         warnings.warn(message = "There is only one file in the dataset")
+
+    if type(self.current) is str:
+        ff_ensemble = [copy.deepcopy(self.current)]
+
+    # Throw an error if there is only a single file in the tracker
 
     if vars is not None:
         if type(vars) == str:
@@ -158,8 +162,9 @@ def ensemble_range(self):
         If True time is ignored when the statistic is ignored. If False, the statistic is calculated for each time step; for example, if each file in the ensemble has 12 months of data the statistic will be calculated for each month.
 
     """
+
     if type(self.current) is not list:
-        raise TypeError("The current state of the dataset is not a list")
+        warnings.warn(message = "There is only one file in the dataset")
 
     self.release()
 
