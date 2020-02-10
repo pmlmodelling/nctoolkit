@@ -56,16 +56,11 @@ def set_missing(self, value):
 
     Parameters
     -------------
-    value : int or list
-        IIf int is supplied, this will be converted to a missing value. If a two variable list is supplied this will used for the range to to apply missing values to.
+    value : 2 variable list
+        Values between the two values (inclusive) of the list are set to missing.
 
     """
 
-    if type(value) is int:
-        value = float(value)
-
-    if type(value) is float:
-        cdo_command = "cdo -setctomiss," + str(value)
     if type(value) is list:
         cdo_command = "cdo -setrtomiss," + str(value[0]) + "," + str(value[1])
 
