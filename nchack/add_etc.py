@@ -20,36 +20,49 @@ def arithall(self, stat = "divc", x = None):
 def operation(self, method = "mul", ff = None):
     """Method to add, subtract etc. a netcdf file from another one"""
 
-    if type(self.current) is list:
-        raise TypeError("This only works for single files presently")
-
     self.release()
 
+    if type(self.current) is list:
+        ff_list = self.current
+    else:
+        ff_list = [self.current]
+
+    new_files = []
+    new_commands = []
+    for x in ff_list:
+
     # check that the datasets can actually be worked with
-    if len(nc_variables(ff)) != len(nc_variables(self.current)) and len(nc_variables(ff)) != 1:
-        raise ValueError("Datasets have incompatible variable numbers for the operation!")
+        if len(nc_variables(ff)) != len(nc_variables(x)) and len(nc_variables(ff)) != 1:
+            raise ValueError("Datasets have incompatible variable numbers for the operation!")
 
-    # create the temp file
-    target = temp_file(".nc")
+        # create the temp file
+        target = temp_file(".nc")
 
-    # create the system call
-    cdo_command = "cdo -L " + method + " "  + self.current + " " + ff + " " + target
+        # create the system call
+        cdo_command = "cdo -L " + method + " "  + x + " " + ff + " " + target
+        new_commands.append(cdo_command)
 
-    # modify system call if threadsafe
-    if session_info["thread_safe"]:
-        cdo_command = cdo_command.replace("-L ", " ")
+        # modify system call if threadsafe
+        if session_info["thread_safe"]:
+            cdo_command = cdo_command.replace("-L ", " ")
 
-    # run the system call
-    target = run_cdo(cdo_command, target)
+        # run the system call
+        target = run_cdo(cdo_command, target)
+        new_files.append(target)
 
     # update the history etc.
-    self.history.append(cdo_command)
+    self.history+=new_commands
     self._hold_history = copy.deepcopy(self.history)
-    if self.current in nc_safe:
-        nc_safe.remove(self.current)
+    for y in self.current:
+        if y in nc_safe:
+            nc_safe.remove(y)
 
-    self.current = target
-    nc_safe.append(self.current)
+    self.current = new_files
+    if len(self.current) == 1:
+        self.current = new_files[0]
+
+    for y in self.current:
+        nc_safe.append(y)
 
 
 
