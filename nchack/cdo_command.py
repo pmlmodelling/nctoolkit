@@ -18,6 +18,8 @@ def cdo_command(self, command):
     if type(command) is not str:
         raise TypeError("Command supplied is not a str")
 
+    if command.startswith("cdo "):
+        command = command.replace("cdo ", " ").strip()
     read = subprocess.run("cdo --operators", shell = True,stdout=subprocess.PIPE,  stderr = subprocess.PIPE).stdout
 
     cdo_methods = [x.split(" ")[0].replace("b'", "") for x in str(read).split("\\n")]
@@ -32,8 +34,6 @@ def cdo_command(self, command):
             raise ValueError("You have supplied an invalid cdo method:" + y )
 
     # remove cdo from the command
-    if command.startswith("cdo "):
-        command = command.replace("cdo ", " ")
 
     cdo_command = "cdo " + command + " "
 
