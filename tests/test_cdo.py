@@ -40,6 +40,20 @@ class TestSelect(unittest.TestCase):
         x = tracker.variables
         self.assertEqual(x, ["tos"])
 
+    def test_cdo5(self):
+        tracker = nc.open_data(ff)
+        tracker.mean()
+        tracker.spatial_mean()
+        x = tracker.to_dataframe().sst.values[0]
+        tracker = nc.open_data(ff)
+        tracker.split("year")
+        tracker.cdo_command("-mergetime")
+        tracker.mean()
+        tracker.spatial_mean()
+        y = tracker.to_dataframe().sst.values[0]
+
+
+        self.assertEqual(x, y)
 
 if __name__ == '__main__':
     unittest.main()

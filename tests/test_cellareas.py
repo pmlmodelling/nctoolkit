@@ -36,6 +36,23 @@ class TestSelect(unittest.TestCase):
 
         self.assertEqual(x, [ "cell_area"])
 
+    def test_cell_list(self):
+        tracker = nc.open_data(ff)
+        tracker.select_timestep([0,1])
+        tracker.split("yearmonth")
+        tracker.cell_areas(join = True)
+        tracker.merge_time()
+        tracker.release()
+        x = tracker.variables
+        self.assertEqual(x, [ "cell_area", "sst"])
+
+
+    def test_error(self):
+        tracker = nc.open_data(ff)
+        tracker.cell_areas(join=True)
+        with self.assertRaises(ValueError) as context:
+            tracker.cell_areas(join=True)
+
 if __name__ == '__main__':
     unittest.main()
 

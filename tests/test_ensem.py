@@ -11,7 +11,7 @@ class TestSelect(unittest.TestCase):
 
     def test_mean(self):
         data = nc.open_data(nc.create_ensemble("data/ensemble"))
-        data.ensemble_mean()
+        data.ensemble_mean(vars = "sst")
         data.spatial_mean()
         x = data.to_dataframe().sst.values[0].astype("float")
 
@@ -34,6 +34,34 @@ class TestSelect(unittest.TestCase):
 
         self.assertEqual(x, 16.691144943237305)
 
+    def test_ignore_time(self):
+        data = nc.open_data(nc.create_ensemble("data/ensemble"))
+        data.ensemble_mean(ignore_time = True)
+        data.spatial_mean()
+        x = data.to_dataframe().sst.values[0].astype("float")
+
+        data = nc.open_data(nc.create_ensemble("data/ensemble"))
+        data.merge_time()
+        data.mean()
+        data.spatial_mean()
+        y = data.to_dataframe().sst.values[0].astype("float")
+
+        self.assertEqual(x, y)
+
+    def test_ignore_time_2(self):
+        data = nc.open_data(nc.create_ensemble("data/ensemble"))
+        data.ensemble_mean(vars = "sst", ignore_time = True)
+        data.spatial_mean()
+        x = data.to_dataframe().sst.values[0].astype("float")
+
+        data = nc.open_data(nc.create_ensemble("data/ensemble"))
+        data.merge_time()
+        data.mean()
+        data.spatial_mean()
+        y = data.to_dataframe().sst.values[0].astype("float")
+
+        self.assertEqual(x, y)
+
 
     def test_range(self):
         data = nc.open_data(nc.create_ensemble("data/ensemble"))
@@ -52,6 +80,41 @@ class TestSelect(unittest.TestCase):
 
         self.assertEqual(x, 17.702301025390625)
 
+    def test_percent_error(self):
+        data = nc.open_data(nc.create_ensemble("data/ensemble"))
+        with self.assertRaises(TypeError) as context:
+            data.ensemble_percentile("a")
+
+    def test_percent_error1(self):
+        data = nc.open_data(nc.create_ensemble("data/ensemble"))
+        with self.assertRaises(ValueError) as context:
+            data.ensemble_percentile(129)
+
+    def test_mean_error(self):
+        data = nc.open_data(nc.create_ensemble("data/ensemble"))
+        with self.assertRaises(TypeError) as context:
+            data.ensemble_mean(vars = 1)
+
+
+    def test_warn(self):
+        data = nc.open_data(nc.create_ensemble("data/ensemble")[0])
+        with self.assertWarns(Warning):
+            data.ensemble_percentile(40)
+
+    def test_warn1(self):
+        data = nc.open_data(nc.create_ensemble("data/ensemble")[0])
+        with self.assertWarns(Warning):
+            data.ensemble_mean()
+
+    def test_warn2(self):
+        data = nc.open_data(nc.create_ensemble("data/ensemble")[0])
+        with self.assertWarns(Warning):
+            data.ensemble_range()
+
+    def test_warn2(self):
+        data = nc.open_data(nc.create_ensemble("data/ensemble")[0])
+        with self.assertWarns(Warning):
+            data.ensemble_range()
 
 
 if __name__ == '__main__':

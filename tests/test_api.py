@@ -14,11 +14,19 @@ class TestSelect(unittest.TestCase):
         x = nc.session.session_info["cores"]
         self.assertEqual(x, 6)
 
+    def test_cores_error(self):
+        with self.assertRaises(TypeError) as context:
+            nc.options(cores = 6.1)
+
 
     def test_options_error(self):
         with self.assertRaises(ValueError) as context:
             nc.options(cores = 1000)
 
+    def test_simplifying(self):
+        ff = "data/sst.mon.mean.nc"
+        with self.assertWarns(Warning):
+            data = nc.open_data([ff, ff])
 
 
 if __name__ == '__main__':

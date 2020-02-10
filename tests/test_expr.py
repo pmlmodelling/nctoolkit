@@ -46,6 +46,11 @@ class TestSelect(unittest.TestCase):
         with self.assertRaises(TypeError) as context:
             tracker.mutate({"tos":"sst+@inc"})
 
+        with self.assertRaises(ValueError) as context:
+            tracker.mutate({"tos":"sst+@x"})
+
+        with self.assertRaises(ValueError) as context:
+            tracker.transmute({"tos":"sst+@x"})
 
     def test_no_dict(self):
         tracker = nc.open_data(ff)

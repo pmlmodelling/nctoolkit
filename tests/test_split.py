@@ -39,7 +39,25 @@ class TestSelect(unittest.TestCase):
         y = len(tracker.current)
         self.assertEqual(y, 31)
 
+    def test_error(self):
+        from pathlib import Path
+        import os
+        out = nc.temp_file.temp_file() + ".nc"
+        Path(out).touch()
 
+        tracker = nc.open_data(out)
+        with self.assertRaises(ValueError) as context:
+            tracker.split("day")
+
+        os.remove(out)
+
+    def test_list(self):
+        tracker = nc.open_data(ff)
+        x = len(tracker.times())
+        tracker.split("year")
+        tracker.split("yearmonth")
+        y = len(tracker.current)
+        self.assertEqual(x, y)
 
 
 if __name__ == '__main__':

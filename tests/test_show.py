@@ -19,6 +19,14 @@ class TestSelect(unittest.TestCase):
 
         self.assertEqual(x, 12)
 
+    def test_times2(self):
+        tracker = nc.open_data(ff)
+        x = tracker.times()
+        tracker.split("year")
+        y = tracker.times()
+        self.assertEqual(x,y)
+
+
     def test_months(self):
         tracker = nc.open_data(ff)
         tracker.select_months([1,2])
