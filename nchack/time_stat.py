@@ -84,7 +84,7 @@ def percentile(self, p = 50):
          raise TypeError("p is a " + str(type(p)) +  ", not int or float")
 
     if p < 0 or p > 100:
-        raise ValueError("p: " + p + " is not between 0 and 100!")
+        raise ValueError("p: " + str(p) + " is not between 0 and 100!")
 
     target = temp_file("nc")
 
