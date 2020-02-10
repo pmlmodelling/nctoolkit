@@ -72,12 +72,12 @@ def options(**kwargs):
             raise AttributeError(key + " is not a valid option")
         if type(kwargs[key]) is not bool:
             if key == "cores":
-                if type(session_info[key]) is int:
+                if type(kwargs[key]) is int:
                     if kwargs[key] > mp.cpu_count():
                         raise ValueError(str(kwargs[key]) + " is greater than the number of system cores (" + str(mp.cpu_count()) + ")")
                     session_info[key] = kwargs[key]
                 else:
-                    raise AttributeError("cores must be an int")
+                    raise TypeError("cores must be an int")
             else:
                 raise AttributeError(key + " is not valid session info!")
         else:
