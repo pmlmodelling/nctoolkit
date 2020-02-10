@@ -31,7 +31,7 @@ def transmute(self, operations = None):
                 if x.replace("@", "") in inspect.currentframe().f_back.f_locals:
                     new_x = inspect.currentframe().f_back.f_locals[x.replace("@", "")]
                 else:
-                    raise ValueError(str(x.replace("@", "")) + " is a local variable")
+                    raise ValueError(str(x.replace("@", "")) + " is not a local variable")
 
                 if isinstance(new_x, (int, float)) == False:
                     raise TypeError(x +  " is not numeric!")
