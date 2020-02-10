@@ -4,6 +4,7 @@ from .cleanup import cleanup
 from .session import nc_safe
 from .temp_file import temp_file
 import os
+import copy
 
 def time_stat(self, stat = "mean"):
     """Method to calculate a stat over all time steps"""
@@ -77,8 +78,7 @@ def percentile(self, p = 50):
     """
     self.release()
 
-    if type(self.current) is not str:
-        raise TypeError("This method currently only works with single file datasets currently")
+
 
     if type(p) not in [int, float]:
          raise TypeError("p is a " + str(type(p)) +  ", not int or float")
@@ -86,18 +86,36 @@ def percentile(self, p = 50):
     if p < 0 or p > 100:
         raise ValueError("p: " + str(p) + " is not between 0 and 100!")
 
-    target = temp_file("nc")
+    if type(self.current) is list:
+        ff_list = self.current
+    else:
+        ff_list = [self.current]
 
-    cdo_command = "cdo -L -timpctl," + str(p) + " " + self.current + " -timmin " + self.current + " -timmax " + self.current + " "  + target
+    new_files = []
+    new_commands = []
+    for ff in ff_list:
+        target = temp_file("nc")
 
-    target = run_cdo(cdo_command, target)
+        cdo_command = "cdo -L -timpctl," + str(p) + " " + ff + " -timmin " + ff + " -timmax " + ff + " "  + target
 
-    if self.current in nc_safe:
-        nc_safe.remove(self.current)
+        target = run_cdo(cdo_command, target)
+        new_files.append(target)
+        new_commands.append(cdo_command)
 
-    self.current = target
+    self.history+=new_commands
+    self._hold_history = copy.deepcopy(self.history)
 
-    nc_safe.append(target)
+    for ff in self.current:
+        if ff in nc_safe:
+            nc_safe.remove(ff)
+
+    self.current = new_files
+
+    for ff in new_files:
+        nc_safe.append(ff)
+
+    if len(self.current) == 1:
+        self.current = self.current[0]
 
     cleanup()
 
