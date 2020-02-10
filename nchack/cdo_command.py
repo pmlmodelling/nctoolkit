@@ -35,17 +35,17 @@ def cdo_command(self, command):
 
     # remove cdo from the command
 
+    output = "ensemble"
     cdo_command = "cdo " + command + " "
 
-    if "merge " in command or "mergetime " in command:
+    if "merge " in cdo_command or "mergetime " in cdo_command:
         output = "one"
+        self._merged = True
 
     for mm in cdo_methods:
-        if " " + mm + " " in cdo_command:
-            cdo_command = cdo_command.replace(" " + mm + " ", " -" + mm + " ")
 
         if " " + mm + "," in cdo_command:
             cdo_command = cdo_command.replace(" " + mm + ","," -" + mm + ",")
 
-    run_this(cdo_command, self, output = "ensemble")
+    run_this(cdo_command, self, output = output)
 
