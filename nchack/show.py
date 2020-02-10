@@ -3,18 +3,37 @@ import subprocess
 import pandas as pd
 import numpy as np
 
+
 def times(self):
-    if type(self.current) is list:
-        raise TypeError("This presently only works for single file datasets")
 
-    cdo_result = subprocess.run("cdo showtimestamp " + self.current, shell = True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    cdo_result = str(cdo_result.stdout).replace("\\n", "")
-    cdo_result = cdo_result.replace("b'", "").strip()
-    cdo_result = cdo_result.replace("'", "").strip()
-    cdo_result = cdo_result.split()
-    cdo_result = pd.Series( (v for v in cdo_result) )
-
-    return cdo_result
+    if type(self.current) is str:
+        file_list = [self.current]
+    else:
+        file_list = self.current
+    all_times = []
+    for ff in file_list:
+        cdo_result = subprocess.run("cdo showtimestamp " + ff, shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        cdo_result = str(cdo_result.stdout).replace("\\n", "")
+        cdo_result = cdo_result.replace("b'", "").strip()
+        cdo_result = cdo_result.replace("'", "").strip()
+        cdo_result = cdo_result.split()
+        all_times+=cdo_result
+    all_times = list(set(all_times))
+    all_times.sort()
+    return all_times
+#
+#def times(self):
+#    if type(self.current) is list:
+#        raise TypeError("This presently only works for single file datasets")
+#
+#    cdo_result = subprocess.run("cdo showtimestamp " + self.current, shell = True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+#    cdo_result = str(cdo_result.stdout).replace("\\n", "")
+#    cdo_result = cdo_result.replace("b'", "").strip()
+#    cdo_result = cdo_result.replace("'", "").strip()
+#    cdo_result = cdo_result.split()
+#    cdo_result = pd.Series( (v for v in cdo_result) )
+#
+#    return cdo_result
 
 def levels(self):
     if type(self.current) is list:
