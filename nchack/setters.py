@@ -249,6 +249,7 @@ def delete_attributes(self, atts):
     cleanup(keep = self.current)
 
     self.history.append(nco_command)
+    self._hold_history = self.history
 
 
 
