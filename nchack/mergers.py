@@ -101,9 +101,6 @@ def merge_time(self):
         warnings.warn(message = "There is only file in the dataset. No need to merge!")
         return None
 
-    if self._merged:
-        raise ValueError("You cannot double chain merge methods!")
-
     cdo_command = "cdo --sortname -mergetime "
 
     run_this(cdo_command, self,  output = "one")
