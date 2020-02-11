@@ -58,11 +58,11 @@ def operation(self, method = "mul", ff = None):
             nc_safe.remove(y)
 
     self.current = new_files
+    for y in self.current:
+        nc_safe.append(y)
     if len(self.current) == 1:
         self.current = new_files[0]
 
-    for y in self.current:
-        nc_safe.append(y)
 
 
 
