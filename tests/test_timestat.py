@@ -18,6 +18,27 @@ class TestSelect(unittest.TestCase):
             tracker.percentile(p = 120)
 
 
+    def test_percentile(self):
+        tracker = nc.open_data(ff)
+        tracker.select_years(1990)
+        tracker.percentile(60)
+        tracker.spatial_mean()
+        x = tracker.to_dataframe().sst.values[0]
+
+        tracker = nc.open_data(ff)
+        tracker.select_years([1990, 1991])
+        tracker.split("year")
+        tracker.percentile(60)
+        tracker.merge_time()
+        tracker.select_years(1990)
+        tracker.spatial_mean()
+        y = tracker.to_dataframe().sst.values[0]
+
+        self.assertEqual(x,y)
+
+
+
+
     def test_sum(self):
         tracker = nc.open_data(ff)
         tracker.select_timestep(0)
