@@ -2,6 +2,7 @@
 import subprocess
 import pandas as pd
 import numpy as np
+import warnings
 
 
 def times(self):
@@ -36,12 +37,17 @@ def times(self):
 #    return cdo_result
 
 def levels(self):
-    if type(self.current) is list:
-        raise TypeError("This presently only works for single file datasets")
     """
     Method to get the depths available in a netcdf file
     """
-    cdo_result = subprocess.run("cdo showlevel " + self.current, shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    if type(self.current) is list:
+        warnings.warn(message = "Levels available in first file shown!")
+        ff = self.current[0]
+    else:
+        ff = self.current
+
+
+    cdo_result = subprocess.run("cdo showlevel " + ff, shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     cdo_result = str(cdo_result.stdout).replace("\\n", "")
     cdo_result = cdo_result.replace("b'", "").strip()
     cdo_result = cdo_result.replace("'", "").strip()
