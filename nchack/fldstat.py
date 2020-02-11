@@ -1,5 +1,10 @@
 
+from .session import nc_safe
+import copy
 from .runthis import run_this
+from .temp_file import temp_file
+from .runthis import run_cdo
+
 
 def fldstat(self, stat = "mean",):
     """Method to calculate the spatial stat from a netcdf"""
@@ -46,16 +51,48 @@ def spatial_sum(self, by_area = False):
         Set to True if you want to multiply the values by the grid cell area before summing over space. Default is False.
     """
 
-    if by_area:
-        self.release()
-        if type(self.current) is list:
-            raise TypeError("This cannot be run with multiple files currently")
+    if type(self.current) is str or by_area == False:
 
-        cdo_command = "cdo -fldsum -mul " + self.current  + " -gridarea "
-    else:
-        cdo_command = "cdo -fldsum"
+        if by_area:
+            self.release()
 
-    run_this(cdo_command, self,  output = "ensemble")
+            cdo_command = "cdo -fldsum -mul " + self.current  + " -gridarea "
+        else:
+            cdo_command = "cdo -fldsum"
+
+        run_this(cdo_command, self,  output = "ensemble")
+
+        return None
+
+
+    new_files = []
+    new_commands = []
+    for ff in self.current:
+
+        target = temp_file("nc")
+        cdo_command = "cdo -fldsum -mul " + ff  + " -gridarea " + ff + " " +  target
+        target = run_cdo(cdo_command, target = target)
+        new_files.append(target)
+        new_commands.append(cdo_command)
+
+
+    self.history+=new_commands
+    self._hold_history = copy.deepcopy(self.history)
+
+    for ff in self.current:
+        if ff in nc_safe:
+            nc_safe.remove(ff)
+
+    self.current = new_files
+
+    for ff in self.current:
+        nc_safe.append(ff)
+
+
+
+
+
+
 
 def spatial_percentile(self, p = 50):
     """
