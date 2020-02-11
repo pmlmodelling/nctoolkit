@@ -106,35 +106,52 @@ def set_longnames(self, var_dict):
 
     self.release()
 
-    if type(self.current) is not str:
-        TypeError("Method does not yet work with ensembles")
-
     if type(var_dict) is not dict:
         TypeError("A dictionary has not been supplied!")
 
     # change the units in turn. This doesn't seem to be something you can chain?
 
 
-    nco_command = "ncatted "
-    for i in var_dict:
-        i_dict = var_dict[i]
-        i_dict = i_dict.replace('"', "'")
-        nco_command += "-a long_name," + i + ',o,c,"' + i_dict   + '" '
+    if type(self.current) is list:
+        ff_list = self.current
+    else:
+        ff_list = [self.current]
 
-    target = temp_file("nc")
+    new_commands = []
+    new_files = []
 
-    nco_command+= self.current + " " + target
 
-    target = run_nco(nco_command, target)
+    for ff in ff_list:
+        nco_command = "ncatted "
+        for i in var_dict:
+            i_dict = var_dict[i]
+            i_dict = i_dict.replace('"', "'")
+            nco_command += "-a long_name," + i + ',o,c,"' + i_dict   + '" '
 
-    self.history.append(nco_command)
+        target = temp_file("nc")
+
+        nco_command+= ff + " " + target
+
+        target = run_nco(nco_command, target)
+
+        new_files.append(target)
+        new_commands.append(nco_command)
+
+    self.history+=new_commands
     self._hold_history = copy.deepcopy(self.history)
 
+    for ff in ff_list:
+        if ff in nc_safe:
+            nc_safe.remove(ff)
 
-    if target != "":
-        nc_safe.remove(self.current)
-        self.current = target
-        nc_safe.append(self.current)
+
+    self.current = new_files
+
+    for ff in self.current:
+        nc_safe.append(ff)
+
+    if len(self.current) == 1:
+        self.current = self.current[0]
 
     # clean up the directory
     cleanup()
