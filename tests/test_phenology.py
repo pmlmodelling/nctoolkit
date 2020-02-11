@@ -20,6 +20,17 @@ class TestSelect(unittest.TestCase):
 
         self.assertEqual(x, 5.104045391082764)
 
+
+
+    def test_error(self):
+        data = nc.open_data(ff)
+        with self.assertRaises(ValueError) as context:
+            data.phenology()
+
+    def test_typeerror(self):
+        data = nc.open_data(ff)
+        with self.assertRaises(TypeError) as context:
+            data.phenology(var = 1)
 if __name__ == '__main__':
     unittest.main()
 

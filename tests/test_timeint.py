@@ -49,6 +49,25 @@ class TestSelect(unittest.TestCase):
 
         self.assertEqual(x, 4)
 
+    def test_timeint4(self):
+        tracker = nc.open_data(ff)
+        tracker.time_interp(start = "2000/01/01",  resolution = "yearly")
+        tracker.release()
+
+        x = len(tracker.times())
+
+        self.assertEqual(x, 19)
+
+
+    def test_error(self):
+        tracker = nc.open_data(ff)
+        with self.assertRaises(ValueError) as context:
+            tracker.time_interp(start = "2000/01/01", end = "2003/01/01", resolution = "x")
+
+    def test_error2(self):
+        tracker = nc.open_data(ff)
+        with self.assertRaises(ValueError) as context:
+            tracker.time_interp(end = "2003/01/01", resolution = "daily")
 
 
 if __name__ == '__main__':

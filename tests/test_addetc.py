@@ -89,6 +89,21 @@ class TestSelect(unittest.TestCase):
 
         self.assertEqual(y, 1)
 
+    def test_op_list(self):
+        ff = "data/sst.mon.mean.nc"
+        data = nc.open_data(ff)
+        data.select_timestep(0)
+        new = nc.open_data(ff)
+        new.select_timestep([0,1])
+        new.split("yearmonth")
+        new.subtract(data)
+        new.merge_time()
+        new.select_timestep(0)
+        new.spatial_sum()
+        x = new.to_dataframe().sst.values[0].astype("float")
+        self.assertEqual(x,0.0)
+
+
     def test_subtract2(self):
         tracker = nc.open_data(ff)
         tracker.select_years(list(range(1950, 1951)))
@@ -258,6 +273,31 @@ class TestSelect(unittest.TestCase):
         ff2 = "data/2003.nc"
         with self.assertRaises(ValueError) as context:
             tracker.multiply(ff2)
+
+    def test_file_typeerror(self):
+        tracker = nc.open_data(ff)
+        ff2 = "data/2003.nc"
+        with self.assertRaises(TypeError) as context:
+            tracker.multiply([1,2])
+
+    def test_file_typeerror1(self):
+        tracker = nc.open_data(ff)
+        ff2 = "data/2003.nc"
+        with self.assertRaises(TypeError) as context:
+            tracker.subtract([1,2])
+
+    def test_file_typeerror2(self):
+        tracker = nc.open_data(ff)
+        ff2 = "data/2003.nc"
+        with self.assertRaises(TypeError) as context:
+            tracker.add([1,2])
+
+    def test_file_typeerror3(self):
+        tracker = nc.open_data(ff)
+        ff2 = "data/2003.nc"
+        with self.assertRaises(TypeError) as context:
+            tracker.divide([1,2])
+
 
 if __name__ == '__main__':
     unittest.main()

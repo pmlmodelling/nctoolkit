@@ -31,6 +31,81 @@ class TestSelect(unittest.TestCase):
 
         self.assertEqual(x, y)
 
+
+    def test_regrid_list(self):
+        tracker = nc.open_data(ff)
+        tracker.select_years(1990)
+        tracker.clip(lon = [0,90])
+        tracker.clip(lat = [0,90])
+        new = tracker.copy()
+        tracker.select_months(1)
+        tracker.spatial_mean()
+        x = tracker.to_dataframe().sst.values[0].astype("float")
+
+        tracker = nc.open_data(ff)
+        tracker.select_years(1990)
+        tracker.select_months(1)
+        new.split("yearmonth")
+        tracker.regrid(new, method = "nn")
+        tracker.spatial_mean()
+
+        y = tracker.to_dataframe().sst.values[0].astype("float")
+
+        self.assertEqual(x, y)
+
+    def test_invalid_method(self):
+        tracker = nc.open_data(ff)
+        with self.assertRaises(ValueError) as context:
+            tracker.regrid(tracker, method = "x")
+
+
+    def test_error11(self):
+        tracker = nc.open_data(ff)
+        with self.assertRaises(ValueError) as context:
+            tracker.regrid(grid = 1)
+
+    def test_error1(self):
+        tracker = nc.open_data(ff)
+        with self.assertRaises(ValueError) as context:
+            tracker.regrid("/tmp/stekancihwn.nc")
+
+    def test_error2(self):
+        tracker = nc.open_data(ff)
+        from pathlib import Path
+        import os
+        out = nc.temp_file.temp_file()
+        Path(out).touch()
+        with self.assertRaises(ValueError) as context:
+            tracker.regrid(out)
+        os.remove(out)
+
+
+    def test_xr(self):
+        tracker = nc.open_data(ff)
+        tracker.select_years(1990)
+        tracker.select_months(1)
+        tracker.clip(lon = [0,90])
+        tracker.clip(lat = [0,90])
+        new = tracker.copy()
+        tracker.spatial_mean()
+        x = tracker.to_dataframe().sst.values[0].astype("float")
+
+        tracker = nc.open_data(ff)
+        tracker.select_years(1990)
+        tracker.select_months(1)
+        xr_grid = new.to_xarray()
+        tracker.regrid(xr_grid, method = "nn")
+        tracker.spatial_mean()
+
+        y = tracker.to_dataframe().sst.values[0].astype("float")
+
+        self.assertEqual(x, y)
+
+
+
+
+
+
     def test_montherror(self):
         tracker = nc.open_data(ff)
         tracker.release()

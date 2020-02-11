@@ -23,7 +23,24 @@ class TestSelect(unittest.TestCase):
         x = tracker.to_dataframe().sst.values[0].astype("int")
 
 
-        self.assertEqual(x, 9512)
+    def test_compare_error(self):
+        tracker = nc.open_data(ff)
+        with self.assertRaises(ValueError) as context:
+            tracker.compare_all("==")
+        with self.assertRaises(ValueError) as context:
+            tracker.compare_all("<=")
+        with self.assertRaises(ValueError) as context:
+            tracker.compare_all(">=")
+
+        with self.assertRaises(ValueError) as context:
+            tracker.compare_all(">")
+        with self.assertRaises(ValueError) as context:
+            tracker.compare_all("<")
+        with self.assertRaises(ValueError) as context:
+            tracker.compare_all("")
+        with self.assertRaises(ValueError) as context:
+            tracker.compare_all("!=")
+
 
     def test_compare_all1(self):
         tracker = nc.open_data(ff)

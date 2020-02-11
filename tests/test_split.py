@@ -51,6 +51,12 @@ class TestSelect(unittest.TestCase):
 
         os.remove(out)
 
+    def test_error2(self):
+        tracker = nc.open_data(ff)
+        with self.assertRaises(ValueError) as context:
+            tracker.split("")
+
+
     def test_list(self):
         tracker = nc.open_data(ff)
         x = len(tracker.times())
