@@ -39,14 +39,6 @@ def plot(self, log = False, panel = False):
     cdo_result = subprocess.run("cdo ngridpoints " + self.current, shell = True, stdout=subprocess.PIPE, stderr = subprocess.PIPE)
     n_points = int(str(cdo_result.stdout).replace("b'", "").split("\\n")[0])
 
-    decode_time = False
-    if n_times >= 1:
-        try:
-            x = xr.open_dataset(self.current)
-            decode_times = True
-        except:
-            decode_times = False
-
 
     # Case when all you can plot is a time series, but more than one variable
 
