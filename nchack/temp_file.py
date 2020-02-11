@@ -22,17 +22,13 @@ def temp_file(ext = ""):
         target = tempfile.NamedTemporaryFile().name
         target = target.replace("tmp/", "tmp/" + session_info["stamp"])
 
-        if ext is not None:
-            target = actual_temp + os.path.basename(target)
-            if type(ext) is not str:
-                raise TypeError("Extension supplied is not a str")
-            if ext.startswith("."):
-                target = target + ext
-            else:
-                target = target + "." +  ext
-
+        target = actual_temp + os.path.basename(target)
+        if type(ext) is not str:
+            raise TypeError("Extension supplied is not a str")
+        if ext.startswith("."):
+            target = target + ext
         else:
-            target = actual_temp + os.path.basename(target)
+            target = target + "." +  ext
 
         return target
 
