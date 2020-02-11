@@ -53,9 +53,6 @@ def phenology(self, var = None):
 
     doy_nc = run_cdo(cdo_command, doy_nc)
 
-    if os.path.exists(doy_nc) == False:
-        raise ValueError("Creating day of year failed")
-
     # Find the max value of the var
 
     max_nc = temp_file("nc")
@@ -64,9 +61,6 @@ def phenology(self, var = None):
 
     new_self.history.append(cdo_command)
     max_nc = run_cdo(cdo_command, max_nc)
-
-    if os.path.exists(max_nc) == False:
-        raise ValueError("Calculating the max of " + var + " failed!")
 
     # We now need to merge the three  netcdf files
 
@@ -77,9 +71,6 @@ def phenology(self, var = None):
     new_self.history.append(cdo_command)
     out_nc = run_cdo(cdo_command, out_nc)
 
-    if os.path.exists(out_nc) == False:
-        raise ValueError("Merging netcdf files failed!")
-
     # Now, calculate the timing of the annual maximum
 
     phen_nc = temp_file("nc")
@@ -89,8 +80,6 @@ def phenology(self, var = None):
     new_self.history.append(cdo_command)
     phen_nc = run_cdo(cdo_command, phen_nc)
 
-    if os.path.exists(phen_nc) == False:
-        raise ValueError("Failed to merge files")
     nc_safe.remove(new_self.current)
 
     nc_safe.append(phen_nc)
