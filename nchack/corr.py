@@ -26,9 +26,6 @@ def cor(self, var1 = None, var2 = None, method = "fld"):
         else:
             raise ValueError("Both variables are not given")
 
-    if var1 is None or var2 is None:
-        raise ValueError("Both variables are not given")
-
     if var1 not in self.variables:
         raise ValueError(var1 + " is not in the dataset")
 
@@ -41,13 +38,6 @@ def cor(self, var1 = None, var2 = None, method = "fld"):
 
     # create the temp file for targeting
     target = temp_file(".nc")
-
-    # check that the variables selected are actually in the dataset
-    variables = self.variables
-    if var1 not in variables:
-        raise ValueError(var1 + " is not available in the DataSet")
-    if var2 not in variables:
-        raise ValueError(var2 + " is not available in the DataSet")
 
     # create the cdo command and run it
     cdo_command = "cdo -L -" + method + "cor -selname," +var1 + " " + self.current + " -selname," + var2 + " " + self.current + " " + target
