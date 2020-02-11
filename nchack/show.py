@@ -110,17 +110,23 @@ def months(self):
 
 def attributes(self):
     if type(self.current) is list:
-        raise TypeError("This presently only works for single file datasets")
+        warnings.warn(message = "Attributes for the first file shown!")
+        ff = self.current[0]
+    else:
+        ff = self.current
 
-    out = subprocess.run("cdo showatts " + self.current, shell = True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    out = subprocess.run("cdo showatts " + ff, shell = True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     out = out.stdout.decode('utf-8')
     return out
 
 def global_attributes(self):
     if type(self.current) is list:
-        raise TypeError("This presently only works for single file datasets")
+        warnings.warn(message = "Attributes for the first file shown!")
+        ff = self.current[0]
+    else:
+        ff = self.current
 
-    out = subprocess.run("cdo showattsglob " + self.current, shell = True, stdout=subprocess.PIPE, stderr = subprocess.PIPE)
+    out = subprocess.run("cdo showattsglob " + ff, shell = True, stdout=subprocess.PIPE, stderr = subprocess.PIPE)
     out = out.stdout.decode('utf-8')
     return out
 
