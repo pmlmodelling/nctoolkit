@@ -1,10 +1,4 @@
 import subprocess
-import warnings
-def custom_formatwarning(msg, *args, **kwargs):
-    # ignore everything except the message
-    return str(msg) + '\n'
-
-warnings.formatwarning = custom_formatwarning
 from .runthis import run_this
 from .flatten import str_flatten
 
@@ -17,7 +11,7 @@ def time_interp(self, start = None, end = None, resolution = "monthly"):
     start : str
         Start date for interpolation. Needs to be of the form YYYY/MM/DD or YYYY-MM-DD
     end : str
-        End date for interpolation. Needs to be of the form YYYY/MM/DD or YYYY-MM-DD
+        End date for interpolation. Needs to be of the form YYYY/MM/DD or YYYY-MM-DD. If end is not given interpolation will be to the final available time in the dataset
     resolution : str
         Time steps used for intpoleration. Needs to be "daily", "weekly", "monthly" or "yearly"
     """
@@ -38,15 +32,7 @@ def time_interp(self, start = None, end = None, resolution = "monthly"):
         resolution = "1year"
 
     if start is None:
-        if type(self.current) is list:
-            ff = self.current[0]
-            warnings.warn(message = "The start date taken from first file in data set!")
-        else:
-            ff = self.current
-        cdo_command = "cdo showdate " + ff
-        start =  subprocess.run(cdo_command, shell = True, stdout=subprocess.PIPE, stderr =subprocess.PIPE)
-        start = str(start.stdout)
-        start.replace("b'", "").strip().split(" ")[0]
+        raise ValueError("No start data supplied")
 
     start = start.replace("/", "-")
 
