@@ -83,7 +83,7 @@ class TestSelect(unittest.TestCase):
 
 
 
-    def test_clip14(self):
+    def test_nco(self):
         tracker = nc.open_data(ff)
         tracker.clip(lat = [0, 90], cdo = True)
         tracker.select_timestep(0)
@@ -97,6 +97,36 @@ class TestSelect(unittest.TestCase):
 
         self.assertEqual(x,y)
 
+    def test_nco2(self):
+        tracker = nc.open_data(ff)
+        tracker.clip(lon = [0, 90], cdo = True)
+        tracker.select_timestep(0)
+        tracker.spatial_mean()
+        x = tracker.to_dataframe().sst.values[0].astype("float")
+        tracker = nc.open_data(ff)
+        tracker.clip(lon = [0, 90],  cdo = False)
+        tracker.select_timestep(0)
+        tracker.spatial_mean()
+        y = tracker.to_dataframe().sst.values[0].astype("float")
+
+        self.assertEqual(x,y)
+
+    def test_nco3(self):
+        tracker = nc.open_data(ff)
+        tracker.clip(lon = [0, 90], cdo = True)
+        tracker.select_timestep(0)
+        tracker.spatial_mean()
+        x = tracker.to_dataframe().sst.values[0].astype("float")
+        tracker = nc.open_data(ff)
+        tracker.select_timestep([0,1])
+        tracker.split("yearmonth")
+        tracker.clip(lon = [0, 90],  cdo = False)
+        tracker.merge_time()
+        tracker.select_timestep(0)
+        tracker.spatial_mean()
+        y = tracker.to_dataframe().sst.values[0].astype("float")
+
+        self.assertEqual(x,y)
 
 if __name__ == '__main__':
     unittest.main()
