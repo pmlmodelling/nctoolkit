@@ -21,9 +21,17 @@ def to_xarray(self, decode_times = True):
             data = xr.open_dataset(self.current, decode_times = decode_times)
         else:
             data = xr.open_mfdataset(self.current, decode_times = decode_times)
-            return data
+        return data
 
-    cdo_times = True
+    cdo_times = False
+
+    try:
+        if type(self.current) is str:
+            test = xr.open_dataset(self.current, decode_times = decode_times)
+        else:
+            test = xr.open_mfdataset(self.current, decode_times = decode_times)
+    except:
+        cdo_times = True
 
     if cdo_times is False:
         if type(self.current) is str:
