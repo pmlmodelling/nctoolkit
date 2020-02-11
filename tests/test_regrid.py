@@ -156,9 +156,78 @@ class TestSelect(unittest.TestCase):
 
         self.assertEqual(x, y)
 
+    def test_single(self):
+
+        ff = "data/sst.mon.mean.nc"
+        data = nc.open_data(ff)
+        data.select_timestep(0)
+        grid = pd.DataFrame({"lon":[1.5], "lat":[55.5]})
+        data.regrid(grid)
+        x = data.to_dataframe().sst.values[0]
 
 
+        ff = "data/sst.mon.mean.nc"
+        data = nc.open_data(ff)
+        data.select_timestep(0)
+        grid = pd.DataFrame({"lon":[1.5], "lat":[55.5]})
+        data.clip(lon = [1.2, 1.7], lat = [55.2, 55.7])
+        y = data.to_dataframe().sst.values[0]
 
+        self.assertEqual(x,y)
+
+    def test_another_df(self):
+        ff = "data/sst.mon.mean.nc"
+        data = nc.open_data(ff)
+        data.select_timestep(0)
+        grid = pd.DataFrame({"lon":[1.5, 1.5], "lat":[55.5, 56.5]})
+        data.regrid(grid)
+        data.spatial_mean()
+        x = data.to_dataframe().sst.values[0]
+
+        ff = "data/sst.mon.mean.nc"
+        data = nc.open_data(ff)
+        data.select_timestep(0)
+        grid = pd.DataFrame({"lon":[1.5], "lat":[55.5]})
+        data.clip(lon = [1.2, 1.7], lat = [55.2, 56.7])
+        data.spatial_mean()
+        y = data.to_dataframe().sst.values[0]
+        self.assertEqual(x,y)
+
+    def test_another_df2(self):
+        ff = "data/sst.mon.mean.nc"
+        data = nc.open_data(ff)
+        data.select_timestep(0)
+        grid = pd.DataFrame({"lon":[1.5, 2.5], "lat":[55.5, 55.5]})
+        data.regrid(grid)
+        data.spatial_mean()
+        x = data.to_dataframe().sst.values[0]
+
+        ff = "data/sst.mon.mean.nc"
+        data = nc.open_data(ff)
+        data.select_timestep(0)
+        data.clip(lon = [1.2, 2.7], lat = [55.2, 55.7])
+        data.spatial_mean()
+        y = data.to_dataframe().sst.values[0]
+        self.assertEqual(x,y)
+        ff = "data/sst.mon.mean.nc"
+
+    def test_another_df3(self):
+        ff = "data/sst.mon.mean.nc"
+        data = nc.open_data(ff)
+        data.select_timestep(0)
+        grid = pd.DataFrame({"lon":[1.5, 1.5, 20], "lat":[55.5, 56.5, 56.5]})
+        data.regrid(grid, "nn")
+        data.clip(lon = [0, 2])
+        x = data.to_dataframe().sst.mean()
+
+        ff = "data/sst.mon.mean.nc"
+        data = nc.open_data(ff)
+        data.select_timestep(0)
+        grid = pd.DataFrame({"lon":[1.5], "lat":[55.5]})
+        data.clip(lon = [1.2, 1.7], lat = [55.2, 56.7])
+        y = data.to_dataframe().sst.mean()
+
+        self.assertEqual(x,y)
 
 if __name__ == '__main__':
     unittest.main()
