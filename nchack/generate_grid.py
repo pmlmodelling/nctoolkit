@@ -21,11 +21,16 @@ def generate_grid(coords):
              lon_step = 0
         if len(lat_unique) == 1:
              lat_step = 0
-        x = np.arange(min(lon_unique), max(lon_unique) + lon_step, lon_step)
-        y = np.arange(min(lat_unique), max(lat_unique) + lat_step, lat_step)
+        if lon_step > 0:
+            x = np.arange(min(lon_unique), max(lon_unique) + lon_step, lon_step)
+        else:
+            x = np.array(lon_unique)
 
-        if (np.array_equal(x, lon_unique) == False | np.array_equal(y, lat_unique) == False):
-             grid_type = "unstructured"
+        if lat_step > 0:
+            y = np.arange(min(lat_unique), max(lat_unique) + lat_step, lat_step)
+        else:
+            y = np.array(lat_unique)
+
 
         # now figure out if it is lonlat
 
@@ -33,6 +38,9 @@ def generate_grid(coords):
             grid_type = "lonlat"
         else:
             grid_type = "unstructured"
+
+        if (np.array_equal(x, lon_unique) == False | np.array_equal(y, lat_unique) == False):
+             grid_type = "unstructured"
 
     if len(coords) == 1:
         grid_type = "unstructured"
