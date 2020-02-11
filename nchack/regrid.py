@@ -144,10 +144,8 @@ def regrid(self, grid = None, method = "bil"):
             new_files += tracker.current
             for ff in tracker.current:
                 nc_safe.append(ff)
-        if type(tracker.history) is list:
-            self.history+=tracker.history
-        else:
-            self.history.append(tracker.history)
+
+        self.history+=tracker.history
 
         self._hold_history = copy.deepcopy(self.history)
 
