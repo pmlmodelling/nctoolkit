@@ -123,8 +123,6 @@ def regrid(self, grid = None, method = "bil"):
             cdo_command = "cdo -gen" + method + ","+ self._grid + " " + tracker.current + " " +  weights_nc
 
         weights_nc = run_cdo(cdo_command, target = weights_nc)
-        if os.path.exists(weights_nc) == False:
-            raise ValueError("Creation of weights failed!")
 
         cdo_command= "cdo -remap," + self._grid + "," + weights_nc
 
