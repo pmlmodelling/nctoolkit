@@ -12,7 +12,7 @@ from .runthis import run_this
 from .runthis import run_nco
 
 
-def set_date(self, year, month, day, step = None, base_year = 1900):
+def set_date(self, year, month, day,  base_year = 1900):
 
     """
     Set the date in a dataset
@@ -40,14 +40,9 @@ def set_date(self, year, month, day, step = None, base_year = 1900):
 
     if type(day) is not int:
         day = float(day)
-    if step is None:
-        cdo_command = "cdo -L -setreftime," + str(base_year) + "-01-01 -setdate," + str(year) + "-" + str(month) + "-" + str(day)
-    else:
-        cdo_command = "cdo -L -setreftime," + str(base_year) + "-01-01 -settaxis," + str(year) + "-" + str(month) + "-" + str(day) + ",12:00:00," + step + " -setcalendar,gregorian"
-
+    cdo_command = "cdo -L -setreftime," + str(base_year) + "-01-01 -setdate," + str(year) + "-" + str(month) + "-" + str(day)
 
     run_this(cdo_command, self,  output = "ensemble")
-
 
 
 def set_missing(self, value):
