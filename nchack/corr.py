@@ -9,6 +9,7 @@ from .setters import set_longnames
 from .session import nc_safe
 from .runthis import run_cdo
 from .cleanup import cleanup
+from .show import nc_variables
 
 import copy
 import warnings
@@ -16,44 +17,53 @@ import warnings
 
 def cor(self, var1 = None, var2 = None, method = "fld"):
 
+    if var1 is None or var2 is None:
+        raise ValueError("Both variables are not given")
+
     # this cannot be chained. So release
     self.release()
 
-    if var1 is None or var2 is None:
-        if len(self.variables) == 2:
-            var1 = self.variables[0]
-            var2 = self.variables[1]
-        else:
-            raise ValueError("Both variables are not given")
+    if type(self.current) is list:
+        ff_list = self.current
+    else:
+        ff_list = [self.current]
 
-    if var1 not in self.variables:
-        raise ValueError(var1 + " is not in the dataset")
+    new_files = []
+    new_commands = []
 
-    if var2 not in self.variables:
-        raise ValueError(var2 + " is not in the dataset")
+    for ff in ff_list:
+        if var1 not in nc_variables(ff):
+            raise ValueError(var1 + " is not in the dataset")
 
-    #  Check that the dataset is only a single file
-    if type(self.current) is not str:
-        raise ValueError("This method only works on single files")
+        if var2 not in nc_variables(ff):
+            raise ValueError(var2 + " is not in the dataset")
 
-    # create the temp file for targeting
-    target = temp_file(".nc")
+        # create the temp file for targeting
+        target = temp_file(".nc")
 
-    # create the cdo command and run it
-    cdo_command = "cdo -L -" + method + "cor -selname," +var1 + " " + self.current + " -selname," + var2 + " " + self.current + " " + target
-    target = run_cdo(cdo_command, target)
+        # create the cdo command and run it
+        cdo_command = "cdo -L -" + method + "cor -selname," +var1 + " " + ff + " -selname," + var2 + " " + ff + " " + target
+        target = run_cdo(cdo_command, target)
+
+        new_files.append(target)
+        new_commands.append(cdo_command)
 
     # update the state of the dataset
-    self.history.append(cdo_command)
+    self.history+=new_commands
     self._hold_history = copy.deepcopy(self.history)
 
-    if self.current in nc_safe:
-        nc_safe.remove(self.current)
+    for ff in self.current:
+        if ff in nc_safe:
+            nc_safe.remove(ff)
 
-    self.current = target
+    self.current = new_files
 
     # add the new file to the safe list
-    nc_safe.append(self.current)
+    for ff in self.current:
+        nc_safe.append(ff)
+
+    if len(self.current) == 1:
+        self.current = self.current[0]
 
     # tidy up the attributes of the netcdf file in the dataset
     self.rename({var1:"cor"})
