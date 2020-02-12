@@ -111,13 +111,6 @@ def monthly_anomaly(self, baseline = None):
         Baseline years. This needs to be the first and last year of the climatological period. Example: a baseline of [1985,2005] will result in anomolies against  20 year climatology from 1986 to 2005.
     """
 
-    # release if set to lazy
-
-
-    # throw an error if the dataset is an ensemble
-    if type(self.current) is not str:
-        raise TypeError("At present this only works for single files")
-
     # check baseline is a list, etc.
     if type(baseline) is not list:
         raise TypeError("baseline years supplied is not a list")
@@ -128,38 +121,58 @@ def monthly_anomaly(self, baseline = None):
     if type(baseline[1]) is not int:
         raise TypeError("Provide a vaid baseline")
 
-    if len([yy for yy in baseline if yy not in self.years()]) > 0:
-        raise ValueError("Check that the years in baseline are in the dataset!")
     if baseline[1] < baseline[0]:
         raise ValueError("Second baseline year is before the first!")
 
     self.release()
 
-    # create the target file
-    target = temp_file("nc")
+    if type(self.current) is list:
+        ff_list = self.current
+    else:
+        ff_list = [self.current]
 
+    new_files = []
+    new_commands = []
 
-    # create system command
-    cdo_command = "cdo -L -ymonsub -monmean " + self.current +  " -ymonmean  -selyear," + str(baseline[0]) + "/" + str(baseline[1]) + " " + self.current + " " + target
+    for ff in ff_list:
 
-    # modify the cdo command if threadsafe
-    if session_info["thread_safe"]:
-        cdo_command = cdo_command.replace("-L "," ")
+        if len([yy for yy in baseline if yy not in nc_years(ff)]) > 0:
+            raise ValueError("Check that the years in baseline are in the dataset!")
+        # create the target file
+        target = temp_file("nc")
+        # create system command
+        cdo_command = "cdo -L -ymonsub -monmean " + ff +  " -ymonmean  -selyear," + str(baseline[0]) + "/" + str(baseline[1]) + " " + ff + " " + target
 
-    # run the command and save the temp file
-    target = run_cdo(cdo_command, target)
+        # modify the cdo command if threadsafe
+        if session_info["thread_safe"]:
+            cdo_command = cdo_command.replace("-L "," ")
+
+        # run the command and save the temp file
+        target = run_cdo(cdo_command, target)
+
+        new_files.append(target)
+        new_commands.append(cdo_command)
 
     # update the history
-    self.history.append(cdo_command)
+    self.history+=new_commands
     self._hold_history = copy.deepcopy(self.history)
 
+
+
+
     # updat the safe lists and current file
-    if self.current in nc_safe:
-        nc_safe.remove(self.current)
+    for ff in ff_list:
+        if ff in nc_safe:
+            nc_safe.remove(ff)
 
-    self.current = target
-    nc_safe.append(target)
+    self.current = new_files
 
+    for ff in self.current:
+        nc_safe.append(ff)
+
+
+    if len(self.current) is 1:
+        self.current = self.current[0]
 
 
     cleanup()
