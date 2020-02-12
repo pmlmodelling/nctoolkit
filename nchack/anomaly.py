@@ -113,7 +113,6 @@ def monthly_anomaly(self, baseline = None):
 
     # release if set to lazy
 
-    self.release()
 
     # throw an error if the dataset is an ensemble
     if type(self.current) is not str:
@@ -133,6 +132,8 @@ def monthly_anomaly(self, baseline = None):
         raise ValueError("Check that the years in baseline are in the dataset!")
     if baseline[1] < baseline[0]:
         raise ValueError("Second baseline year is before the first!")
+
+    self.release()
 
     # create the target file
     target = temp_file("nc")
