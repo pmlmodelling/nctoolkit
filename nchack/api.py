@@ -31,6 +31,7 @@ from .cleanup import temp_check
 from .temp_file import temp_file
 from .create_ensemble import create_ensemble
 from .show import nc_variables
+from .show import nc_years
 from .session import session_info
 
 # set up the session info

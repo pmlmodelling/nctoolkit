@@ -15,6 +15,7 @@ from .session import show_session
 from .create_ensemble import create_ensemble
 from .create_ensemble import generate_ensemble
 from .show import nc_variables
+from .show import nc_years
 
 
 
