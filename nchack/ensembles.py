@@ -48,7 +48,16 @@ def ensemble_nco(self, method, vars = None, ignore_time = False):
     NCO Method to calculate an ensemble stat from a list of files
     """
 
+    # Throw an error if there is only a single file in the tracker
+
+    if vars is not None:
+        if type(vars) == str:
+            vars = [vars]
+
+        if type(vars) is not list:
+            raise TypeError("vars supplied is not a list or str!")
     # This method cannot possibly be chained. Release it
+
     self.release()
 
     ff_ensemble = copy.deepcopy(self.current)
@@ -58,15 +67,6 @@ def ensemble_nco(self, method, vars = None, ignore_time = False):
 
     if type(self.current) is str:
         ff_ensemble = [copy.deepcopy(self.current)]
-
-    # Throw an error if there is only a single file in the tracker
-
-    if vars is not None:
-        if type(vars) == str:
-            vars = [vars]
-
-        if type(vars) is not list:
-            raise TypeError("vars supplied is not a list or str!")
 
     # generate a temp files
     target = temp_file("nc")
