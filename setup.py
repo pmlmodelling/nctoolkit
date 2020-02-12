@@ -2,13 +2,15 @@ from setuptools import setup
 
 setup(name='nchack',
       version='0.1',
-      description='A python wrapper for CDO and NCDO',
-      url='tbc',
+      description='A general purpose python tool for manipulating, analyzing and plotting data from netcdf files',
+      url='https://readthedocs.org/projects/nchack/',
       author='Robert Wilson',
       author_email='rwi@pml.ac.uk',
       license='MIT',
       packages=['nchack'],
+      install_requires=['xarray','pandas','netcdf4','hvplot'],
       zip_safe=False)
+
 
 
 
