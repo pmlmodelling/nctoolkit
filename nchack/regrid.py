@@ -28,7 +28,6 @@ def regrid(self, grid = None, method = "bil"):
         remapping method. Defaults to "bil". Bilinear: "bil"; Nearest neighbour: "nn",....
     """
 
-    self.release()
 
     del_grid = None
     if grid is None:
@@ -83,6 +82,8 @@ def regrid(self, grid = None, method = "bil"):
     # Do do the horizontal regridding
 
     grid_split = dict()
+
+    self.release()
 
     if type(self.current) is str:
         file_list = [self.current]
