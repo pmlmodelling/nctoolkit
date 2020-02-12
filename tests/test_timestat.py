@@ -29,7 +29,6 @@ class TestSelect(unittest.TestCase):
         tracker.select_years([1990, 1991])
         tracker.split("year")
         tracker.percentile(60)
-        tracker.merge_time()
         tracker.select_years(1990)
         tracker.spatial_mean()
         y = tracker.to_dataframe().sst.values[0]

@@ -9,6 +9,18 @@ import os
 
 class TestSelect(unittest.TestCase):
 
+    def test_relative(self):
+        ff = "data/sst.mon.mean.nc"
+        tracker = nc.open_data(ff)
+        tracker.annual_anomaly(baseline = [1950, 1959])
+
+        tracker.annual_anomaly(baseline = [1950, 1959], metric = "relative", window= 10)
+        tracker.spatial_mean()
+        tracker.select_years(1954)
+
+        x = tracker.to_xarray().sst.values[0][0][0].astype("float")
+        self.assertEqual(x, 1.0)
+
     def test_anomaly(self):
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
