@@ -22,9 +22,6 @@ def annual_anomaly(self, baseline = None, metric = "absolute", window = 1):
         A window for the anomaly. By default window = 1, i.e. the annual anomaly is calculated. If, for example, window = 20, the 20 year rolling means will be used to calculate the anomalies.
     """
 
-    # This cannot possibly be threaded in cdo. Release it
-
-    self.release()
 
     # throw an error if the dataset is an ensemble
     if type(self.current) is not str:
@@ -50,6 +47,10 @@ def annual_anomaly(self, baseline = None, metric = "absolute", window = 1):
     # check metric type
     if metric not in ["absolute", "relative"]:
         raise ValueError(metric + " is not a valid ype")
+
+    # This cannot possibly be threaded in cdo. Release it
+
+    self.release()
 
     # generate the cdo command
     if metric == "absolute":
