@@ -5,6 +5,7 @@ from .session import nc_safe
 from .session import session_info
 from .runthis import run_cdo
 from .cleanup import cleanup
+from .show import nc_years
 
 
 def annual_anomaly(self, baseline = None, metric = "absolute", window = 1):
@@ -22,11 +23,6 @@ def annual_anomaly(self, baseline = None, metric = "absolute", window = 1):
         A window for the anomaly. By default window = 1, i.e. the annual anomaly is calculated. If, for example, window = 20, the 20 year rolling means will be used to calculate the anomalies.
     """
 
-
-    # throw an error if the dataset is an ensemble
-    if type(self.current) is not str:
-        raise TypeError("At present this only works for single files")
-
     # check baseline is a list, etc.
     if type(baseline) is not list:
         raise TypeError("baseline years supplied is not a list")
@@ -36,13 +32,9 @@ def annual_anomaly(self, baseline = None, metric = "absolute", window = 1):
         raise TypeError("Provide a valid baseline")
     if type(baseline[1]) is not int:
         raise TypeError("Provide a vaid baseline")
-    if len([yy for yy in baseline if yy not in self.years()]) > 0:
-        raise ValueError("Check that the years in baseline are in the dataset!")
     if baseline[1] < baseline[0]:
         raise ValueError("Second baseline year is before the first!")
 
-    # create the target file
-    target = temp_file("nc")
 
     # check metric type
     if metric not in ["absolute", "relative"]:
@@ -52,29 +44,53 @@ def annual_anomaly(self, baseline = None, metric = "absolute", window = 1):
 
     self.release()
 
-    # generate the cdo command
-    if metric == "absolute":
-        cdo_command = "cdo -L sub -runmean," + str(window) + " -yearmean " + self.current + " -timmean -selyear," + str(baseline[0]) + "/" + str(baseline[1]) + " " + self.current  + " " + target
+    if type(self.current) is list:
+        file_list = self.current
     else:
-        cdo_command = "cdo -L div -runmean," + str(window) + " -yearmean " + self.current + " -timmean -selyear," + str(baseline[0]) + "/" + str(baseline[1]) + " " + self.current  + " " + target
+        file_list = [self.current]
 
-    # modify the cdo command if threadsafe
-    if session_info["thread_safe"]:
-        cdo_command = cdo_command.replace("-L "," ")
+    new_files = []
+    new_commands = []
 
-    # run the command and save the temp file
-    target = run_cdo(cdo_command, target)
+    for ff in file_list:
+        # create the target file
+        target = temp_file("nc")
+
+        if len([yy for yy in baseline if yy not in nc_years(ff)]) > 0:
+            raise ValueError("Check that the years in baseline are in the dataset!")
+        # generate the cdo command
+        if metric == "absolute":
+            cdo_command = "cdo -L sub -runmean," + str(window) + " -yearmean " +  ff + " -timmean -selyear," + str(baseline[0]) + "/" + str(baseline[1]) + " " + ff  + " " + target
+        else:
+            cdo_command = "cdo -L div -runmean," + str(window) + " -yearmean " + ff + " -timmean -selyear," + str(baseline[0]) + "/" + str(baseline[1]) + " " + ff  + " " + target
+
+        # modify the cdo command if threadsafe
+        if session_info["thread_safe"]:
+            cdo_command = cdo_command.replace("-L "," ")
+
+        # run the command and save the temp file
+        target = run_cdo(cdo_command, target)
+
+        new_files.append(target)
+        new_commands.append(cdo_command)
 
     # update the history
-    self.history.append(cdo_command)
+    self.history+=new_commands
     self._hold_history = copy.deepcopy(self.history)
 
     # update the safe lists and current file
-    if self.current in nc_safe:
-        nc_safe.remove(self.current)
 
-    self.current = target
-    nc_safe.append(target)
+    for ff in file_list:
+        if ff in nc_safe:
+            nc_safe.remove(ff)
+
+    self.current = new_files
+
+    for ff in self.current:
+        nc_safe.append(ff)
+
+    if len(self.current) is 1:
+        self.current = self.current[0]
 
 
     cleanup()
