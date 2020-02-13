@@ -302,7 +302,29 @@ class DataSet(object):
         if longs is None and units is None:
             return(cdo_result)
 
-        df = pd.DataFrame({"variable": cdo_result})
+        out = subprocess.run("cdo sinfon " + self.current, shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        out = out.stdout.decode('utf-8')
+        out = out.split("\n")
+        out_inc = ["Grid coordinates :" in ff for ff in out]
+        var_det = []
+        i = 1
+        while True:
+            if out_inc[i]:
+                break
+            i+=1
+            var_det.append(out[i-1])
+
+        var_det = [ff.replace(":", "") for ff in var_det]
+        var_det = [" ".join(ff.split()) for ff in var_det]
+        var_det = [ff.replace("Parameter name", "variable").split(" ") for ff in var_det]
+        sales = var_det[1:]
+        labels = var_det[0]
+        df = pd.DataFrame.from_records(sales, columns=labels)
+        df = df.loc[:, ["Levels", "Points", "variable"]]
+        df = df.rename(columns = {"Levels":"levels", "Points":"points"})
+
+        df = pd.DataFrame({"variable": cdo_result}).merge(df)
+
         if longs is not None:
             df["long_name"] = longs
         if units is not None:
