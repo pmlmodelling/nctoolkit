@@ -8,7 +8,7 @@ setup(name='nchack',
       author_email='rwi@pml.ac.uk',
       license='MIT',
       packages=['nchack'],
-      install_requires=['xarray','pandas','netcdf4','hvplot'],
+      install_requires=['xarray','netcdf4','hvplot'],
       zip_safe=False)
 
 

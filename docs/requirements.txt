@@ -4,7 +4,6 @@ ipykernel==5.1.2
 nbsphinx==0.4.3
 sphinx_rtd_theme==0.4.3
 xarray
-pandas
 hvplot
 netCDF4
 
