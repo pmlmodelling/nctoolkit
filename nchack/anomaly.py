@@ -5,6 +5,7 @@ from .session import nc_safe
 from .session import session_info
 from .runthis import run_cdo
 from .cleanup import cleanup
+from .cleanup import disk_clean
 from .show import nc_years
 
 
@@ -95,6 +96,8 @@ def annual_anomaly(self, baseline = None, metric = "absolute", window = 1):
 
     cleanup()
 
+    self.disk_clean()
+
 
 
 
@@ -176,6 +179,7 @@ def monthly_anomaly(self, baseline = None):
 
 
     cleanup()
+    self.disk_clean()
 
 
 
