@@ -136,7 +136,7 @@ def temp_check():
 
 
 
-def disk_clean(self, method = "year"):
+def disk_clean(self):
     """
     Method to make sure /tmp is not clogged up after running an operation
     """
