@@ -4,6 +4,7 @@ from .temp_file import temp_file
 from .flatten import str_flatten
 from .session import nc_safe
 from .show import nc_variables
+    from .cleanup import cleanup
 from .session import session_info
 import subprocess
 import copy
@@ -63,6 +64,7 @@ def operation(self, method = "mul", ff = None):
     if len(self.current) == 1:
         self.current = new_files[0]
 
+    cleanup()
 
 
 
