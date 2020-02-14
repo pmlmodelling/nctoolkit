@@ -40,7 +40,6 @@ def operation(self, method = "mul", ff = None):
 
         # create the system call
         cdo_command = "cdo -L " + method + " "  + x + " " + ff + " " + target
-        new_commands.append(cdo_command)
 
         # modify system call if threadsafe
         if session_info["thread_safe"]:
@@ -49,6 +48,7 @@ def operation(self, method = "mul", ff = None):
         # run the system call
         target = run_cdo(cdo_command, target)
         new_files.append(target)
+        new_commands.append(cdo_command)
 
     # update the history etc.
     self.history+=new_commands
