@@ -4,7 +4,7 @@ from .temp_file import temp_file
 from .flatten import str_flatten
 from .session import nc_safe
 from .show import nc_variables
-    from .cleanup import cleanup
+from .cleanup import cleanup
 from .session import session_info
 import subprocess
 import copy
