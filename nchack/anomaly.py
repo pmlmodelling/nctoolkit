@@ -89,7 +89,7 @@ def annual_anomaly(self, baseline = None, metric = "absolute", window = 1):
     for ff in self.current:
         nc_safe.append(ff)
 
-    if len(self.current) is 1:
+    if len(self.current) == 1:
         self.current = self.current[0]
 
 
@@ -171,7 +171,7 @@ def monthly_anomaly(self, baseline = None):
         nc_safe.append(ff)
 
 
-    if len(self.current) is 1:
+    if len(self.current) == 1:
         self.current = self.current[0]
 
 

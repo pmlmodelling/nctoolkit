@@ -48,7 +48,7 @@ def plot(self, log = False, vars = None, panel = False):
         vars = self.variables
 
     if type(vars) is list:
-        if len(vars) is 1:
+        if len(vars) == 1:
             vars = vars[0]
 
 
