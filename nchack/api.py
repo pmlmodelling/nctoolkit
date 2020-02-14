@@ -329,6 +329,14 @@ class DataSet(object):
             df["long_name"] = longs
         if units is not None:
             df["units"] = units
+
+        df = (
+                df
+                .assign(levels = lambda x: x.levels.astype("int"))
+                .assign(points = lambda x: x.points.astype("int"))
+                )
+
+
         return df
 
 
