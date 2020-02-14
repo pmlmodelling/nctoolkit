@@ -4,6 +4,7 @@ import copy
 from .runthis import run_this
 from .temp_file import temp_file
 from .runthis import run_cdo
+from .cleanup import cleanup
 
 
 def fldstat(self, stat = "mean",):
@@ -89,6 +90,7 @@ def spatial_sum(self, by_area = False):
         nc_safe.append(ff)
 
 
+    cleanup()
 
 
 
