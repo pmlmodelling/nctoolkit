@@ -257,8 +257,8 @@ class DataSet(object):
             sum_size = convert_bytes(sum(all_sizes))
             result = "Number of files in ensemble: " + str(len(self.current)) + "\n"
             result = result + "Ensemble size: " + sum_size  + "\n"
-            result = result + "Smallest file " + smallest_file + " has size "  + min_size  + "\n"
-            result = result + "Largest file " + largest_file + " has size "  + max_size
+            result = result + "Smallest file: " + smallest_file + " has size "  + min_size  + "\n"
+            result = result + "Largest file: " + largest_file + " has size "  + max_size
             print(result)
 
     @property
