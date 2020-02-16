@@ -7,6 +7,7 @@ import os
 
 from .temp_file import temp_file
 from .cleanup import cleanup
+from .cleanup import disk_clean
 from .api import open_data
 
 from .generate_grid import generate_grid
@@ -159,5 +160,6 @@ def regrid(self, grid = None, method = "bil"):
 
 
     cleanup()
+    self.disk_clean()
 
 
