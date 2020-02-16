@@ -5,6 +5,7 @@ import multiprocessing
 
 from .temp_file import temp_file
 from .cleanup import cleanup
+from .cleanup import disk_clean
 from .session import nc_safe
 from .flatten import str_flatten
 from .select import select_variables
@@ -80,6 +81,7 @@ def split_cdo(self, method = "year"):
 
 
     cleanup()
+    self.disk_clean()
 
 
 def split(self, by = None):
