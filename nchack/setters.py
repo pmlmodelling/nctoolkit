@@ -8,6 +8,7 @@ import re
 from .temp_file import temp_file
 from .session import nc_safe
 from .cleanup import cleanup
+from .cleanup import disk_clean
 from .runthis import run_this
 from .runthis import run_nco
 
@@ -150,6 +151,7 @@ def set_longnames(self, var_dict):
 
     # clean up the directory
     cleanup()
+    self.disk_clean()
 
 
 
