@@ -3,6 +3,7 @@ from .runthis import run_this
 from .runthis import run_cdo
 from .temp_file import temp_file
 from .cleanup import cleanup
+from .cleanup import disk_clean
 from .session import nc_safe
 from .show import nc_variables
 
@@ -76,6 +77,10 @@ def cell_areas(self,  join = True):
 
     self.set_units({"cell_area": "m^2"})
 
+
+    if join:
+        self.release()
+        self.disk_clean()
 
 
 
