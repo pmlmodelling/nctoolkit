@@ -8,6 +8,7 @@ from .flatten import str_flatten
 from .select import select_variables
 from .setters import set_longnames
 from .cleanup import cleanup
+from .cleanup import disk_clean
 from .runthis import run_cdo
 import copy
 
@@ -105,6 +106,7 @@ def phenology(self, var = None):
 
     cleanup(self.current)
 
+    self.disk_clean()
 
 
 
