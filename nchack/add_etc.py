@@ -5,6 +5,7 @@ from .flatten import str_flatten
 from .session import nc_safe
 from .show import nc_variables
 from .cleanup import cleanup
+from .cleanup import disk_clean
 from .session import session_info
 import subprocess
 import copy
@@ -63,8 +64,8 @@ def operation(self, method = "mul", ff = None):
         nc_safe.append(y)
     if len(self.current) == 1:
         self.current = new_files[0]
-
     cleanup()
+    self.disk_clean()
 
 
 
