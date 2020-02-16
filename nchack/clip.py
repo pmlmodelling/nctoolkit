@@ -4,6 +4,7 @@ from .temp_file import temp_file
 from .flatten import str_flatten
 from .session import nc_safe
 from .cleanup import cleanup
+from .cleanup import disk_clean
 import subprocess
 import copy
 
@@ -106,6 +107,7 @@ def clip(self, lon = [-180, 180], lat = [-90, 90], cdo = True):
         self.current = self.current[0]
 
     cleanup()
+    self.disk_clean()
 
 
 
