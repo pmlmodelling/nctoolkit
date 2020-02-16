@@ -9,6 +9,7 @@ from .setters import set_longnames
 from .session import nc_safe
 from .runthis import run_cdo
 from .cleanup import cleanup
+from .cleanup import disk_clean
 from .show import nc_variables
 
 import copy
@@ -71,6 +72,7 @@ def cor(self, var1 = None, var2 = None, method = "fld"):
     self.set_longnames({"cor":"Correlation between " + var1 +  " & " + var2})
 
     cleanup()
+    self.disk_clean()
 
 
 
