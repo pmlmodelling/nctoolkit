@@ -6,6 +6,7 @@ from .runthis import run_nco
 from .flatten import str_flatten
 from .session import nc_safe
 from .cleanup import cleanup
+from .cleanup import disk_clean
 import warnings
 
 def ensemble_percentile(self, p = 50):
@@ -101,6 +102,7 @@ def ensemble_nco(self, method, vars = None, ignore_time = False):
     self._merged = True
 
     cleanup()
+    self.disk_clean()
 
 
 def ensemble_min(self, vars = None, ignore_time = False):
