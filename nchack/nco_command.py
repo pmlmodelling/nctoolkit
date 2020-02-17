@@ -21,26 +21,41 @@ def nco_command(self, command):
     # First, check that the command is valid
 
     if type(self.current) is list:
-        raise TypeError("This does not yet work with ensembles!")
-
+        ff_list = self.current
+    else:
+        ff_list = [self.current]
 
     if type(command) is not str:
         raise TypeError("Command supplied is not a str")
 
 
-    target = temp_file(".nc")
-
-    command = command + " " + self.current + " " + target
-
-    target = run_nco(command, target = target)
+    new_files = []
+    new_commands = []
 
 
-    if self.current in nc_safe:
-        nc_safe.remove(self.current)
+    for ff in ff_list:
 
-    self.current = target
+        target = temp_file(".nc")
 
-    nc_safe.append(self.current)
+        the_command = command + " " + ff + " " + target
+
+        target = run_nco(the_command, target = target)
+
+        new_files.append(target)
+        new_commands.append(the_command)
+
+
+    for ff in new_files:
+        if ff in nc_safe:
+            nc_safe.remove(ff)
+
+    self.current = new_files
+
+    for ff in self.current:
+        nc_safe.append(ff)
+
+    if len(self.current) == 1:
+        self.current = self.current[0]
 
     self.history.append(command)
     self._hold_history = copy.deepcopy(self.history)
