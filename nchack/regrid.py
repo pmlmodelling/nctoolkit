@@ -86,6 +86,14 @@ def regrid(self, grid = None, method = "bil"):
 
     self.release()
 
+
+    if type(self.current) is list:
+        orig_files = copy.deepcopy(self.current)
+    else:
+        orig_files = [copy.deepcopy(self.current)]
+
+
+
     if type(self.current) is str:
         file_list = [self.current]
     else:
@@ -157,6 +165,10 @@ def regrid(self, grid = None, method = "bil"):
     self.current = new_files
     if len(self.current) == 1:
         self.current = self.current[0]
+
+    for ff in orig_files:
+        if ff in nc_safe:
+            nc_safe.remove(ff)
 
 
     cleanup()
