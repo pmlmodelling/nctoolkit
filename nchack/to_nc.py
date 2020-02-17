@@ -20,11 +20,14 @@ def write_nc(self, out, zip = True, overwrite = False):
 
     """
 
-    ff = self.current
+    if type(self.current) is list:
+        ff = copy.deepcopy(self.current)
+    else:
+        ff = [copy.deepcopy(self.current)]
 
     write = False
 
-    if type(ff) is str:
+    if type(self.current) is str:
         write = True
 
     if self._merged:
@@ -45,7 +48,7 @@ def write_nc(self, out, zip = True, overwrite = False):
 
     if len(self.history) == len(self._hold_history):
         if zip:
-            cdo_command = ("cdo -z zip_9 copy " + ff + " " + out)
+            cdo_command = ("cdo -z zip_9 copy " + ff[0] + " " + out)
             os.system(cdo_command)
             self.history.append(cdo_command)
             self._hold_history = copy.deepcopy(self.history)
@@ -55,7 +58,7 @@ def write_nc(self, out, zip = True, overwrite = False):
             nc_safe.append(out)
 
         else:
-            cdo_command = ("cdo copy " + ff + " " + out)
+            cdo_command = ("cdo copy " + ff[0] + " " + out)
             os.system(cdo_command)
             self.history.append(cdo_command)
             self._hold_history = copy.deepcopy(self.history)
@@ -79,8 +82,9 @@ def write_nc(self, out, zip = True, overwrite = False):
     if os.path.exists(out) == False:
         raise ValueError("File zipping was not successful")
 
-    if ff in nc_safe:
-        nc_safe.remove(ff)
+    for FF in ff:
+        if ff in nc_safe:
+            nc_safe.remove(FF)
 
     self.current = out
 
