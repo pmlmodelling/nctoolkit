@@ -9,7 +9,7 @@ def nc_remove(ff, deep = False):
     This is ultra-safe and makes sure the file is in the tmp directory before deleting
     """
 
-    if deep != False:
+    if deep == False:
         if session_info["stamp"] not in ff:
             raise ValueError("The file " + ff + " was not created during this session")
 
