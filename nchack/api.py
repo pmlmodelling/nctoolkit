@@ -439,6 +439,7 @@ class DataSet(object):
     from .select import select_timestep
 
     from .cdo_command import cdo_command
+    from .nco_command import nco_command
 
     from .expr import mutate
     from .expr import transmute
