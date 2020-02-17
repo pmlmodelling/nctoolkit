@@ -1,6 +1,4 @@
-import subprocess
 from .runthis import run_this
-from .flatten import str_flatten
 
 def time_interp(self, start = None, end = None, resolution = "monthly"):
     """

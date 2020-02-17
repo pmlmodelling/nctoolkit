@@ -1,6 +1,5 @@
 import os
 from .runthis import run_this
-from .flatten import str_flatten
 import pandas as pd
 import calendar
 from datetime import datetime

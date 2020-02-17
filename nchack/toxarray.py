@@ -1,8 +1,6 @@
 import xarray as xr
 from datetime import datetime
 
-
-
 def to_xarray(self, decode_times = True):
     """
     Open a dataset as an xarray object

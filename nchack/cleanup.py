@@ -1,10 +1,6 @@
 
-import inspect
-import gc
 import os
 import glob
-import sys
-import copy
 import shutil
 
 from .session import nc_safe

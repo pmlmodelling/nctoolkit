@@ -1,6 +1,5 @@
 import os
 import copy
-import shutil
 
 from .cleanup import cleanup
 from .runthis import run_this

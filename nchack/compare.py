@@ -1,9 +1,4 @@
 from .runthis import run_this
-from .runthis import run_nco
-from .temp_file import temp_file
-from .flatten import str_flatten
-from .session import nc_safe
-import subprocess
 
 
 def fix_expr(expression):

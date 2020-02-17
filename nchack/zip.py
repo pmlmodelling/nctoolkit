@@ -1,5 +1,4 @@
 
-from .flatten import str_flatten
 from .cleanup import cleanup
 from .runthis import run_this
 

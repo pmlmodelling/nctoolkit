@@ -1,7 +1,5 @@
 
 import subprocess
-import pandas as pd
-import numpy as np
 
 def cf_checks(self, version = None):
     """

@@ -1,4 +1,3 @@
-import os
 import copy
 from .temp_file import temp_file
 from .runthis import run_this

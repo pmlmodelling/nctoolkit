@@ -1,7 +1,3 @@
-
-import os
-import copy
-
 from .runthis import run_this
 from .session import session_info
 

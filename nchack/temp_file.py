@@ -1,7 +1,6 @@
 import tempfile
 import os
 
-
 from .session import session_info
 
 def temp_file(ext = ""):

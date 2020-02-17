@@ -3,7 +3,6 @@ from .runthis import run_cdo
 from .cleanup import cleanup
 from .session import nc_safe
 from .temp_file import temp_file
-import os
 import copy
 
 def time_stat(self, stat = "mean"):

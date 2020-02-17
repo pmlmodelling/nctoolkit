@@ -1,5 +1,4 @@
 from .runthis import run_this
-import sys
 import inspect
 
 def transmute(self, operations = None):

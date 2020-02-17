@@ -1,14 +1,9 @@
 
-
 import warnings
-import copy
-import os
 import pandas as pd
 import subprocess
 from datetime import datetime
-
 from .runthis import run_this
-
 
 def merge(self, match = ["year", "month", "day"]):
 

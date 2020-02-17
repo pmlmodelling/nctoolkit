@@ -1,13 +1,11 @@
 from .runthis import run_this
 from .runthis import run_cdo
 from .temp_file import temp_file
-from .flatten import str_flatten
 from .session import nc_safe
 from .show import nc_variables
 from .cleanup import cleanup
 from .cleanup import disk_clean
 from .session import session_info
-import subprocess
 import copy
 
 def arithall(self, stat = "divc", x = None):

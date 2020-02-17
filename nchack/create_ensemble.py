@@ -3,7 +3,6 @@ import glob
 import os
 import copy
 import pandas as pd
-import fnmatch
 
 # function to find files in directory with a specified variable
 

@@ -1,6 +1,4 @@
-import os
 import copy
-import multiprocessing
 
 from .temp_file import temp_file
 from .session import nc_safe

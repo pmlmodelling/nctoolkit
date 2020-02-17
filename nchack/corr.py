@@ -1,19 +1,11 @@
-import os
 import copy
-import multiprocessing
 
 from .temp_file import temp_file
-from .flatten import str_flatten
-from .select import select_variables
-from .setters import set_longnames
 from .session import nc_safe
 from .runthis import run_cdo
 from .cleanup import cleanup
 from .cleanup import disk_clean
 from .show import nc_variables
-
-import copy
-import warnings
 
 
 def cor(self, var1 = None, var2 = None, method = "fld"):

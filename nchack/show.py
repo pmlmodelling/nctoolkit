@@ -1,7 +1,6 @@
 
 import subprocess
 import pandas as pd
-import numpy as np
 import warnings
 
 
@@ -32,7 +31,6 @@ def times(self):
 #    cdo_result = cdo_result.replace("b'", "").strip()
 #    cdo_result = cdo_result.replace("'", "").strip()
 #    cdo_result = cdo_result.split()
-#    cdo_result = pd.Series( (v for v in cdo_result) )
 #
 #    return cdo_result
 

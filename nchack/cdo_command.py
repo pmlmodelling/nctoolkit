@@ -1,6 +1,5 @@
 
 import subprocess
-from .flatten import str_flatten
 from .runthis import run_this
 
 def cdo_command(self, command):

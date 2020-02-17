@@ -2,8 +2,6 @@
     # add checker for date validity
 
 import copy
-import os
-import re
 
 from .temp_file import temp_file
 from .session import nc_safe
