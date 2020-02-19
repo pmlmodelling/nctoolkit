@@ -1,7 +1,9 @@
 import warnings
 import subprocess
 from .flatten import str_flatten
+from .session import nc_safe
 from .runthis import run_this
+from .cleanup import cleanup
 
 def select_season(self, season):
     """
@@ -75,6 +77,9 @@ def select_years(self, years):
     if type(self.current) is str:
         self.current = [self.current]
 
+
+    missing_files = 0
+
     if type(self.current) is list:
 
         n_removed = 0
@@ -94,11 +99,13 @@ def select_years(self, years):
                 new_current.append(ff)
             if len(inter) == 0:
                 n_removed+=1
+                if ff in nc_safe:
+                    nc_safe.remove(ff)
 
             # figure out if any of the files actually have years outide the period required
             if len(inter) >0:
                 if len([element for element in cdo_result if element not in years])  >0:
-                    select_years = True
+                    missing_files+=1
 
         if len(new_current) == 0:
             raise ValueError("Data for none of the years is available!")
@@ -108,16 +115,19 @@ def select_years(self, years):
 
         self.current = new_current
 
+
     if len(self.current) == 1:
         self.current = self.current[0]
 
 
-    if select_years:
+    if missing_files >0:
         years = str_flatten(years, ",")
 
         cdo_command = "cdo -selyear," + years
 
         run_this(cdo_command, self,  output = "ensemble")
+
+    cleanup()
 
 
 
