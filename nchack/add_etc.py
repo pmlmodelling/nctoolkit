@@ -53,7 +53,7 @@ def operation(self, method = "mul", ff = None):
     # update the history etc.
     self.history+=new_commands
     self._hold_history = copy.deepcopy(self.history)
-    for y in self.current:
+    for y in ff_list:
         if y in nc_safe:
             nc_safe.remove(y)
 
