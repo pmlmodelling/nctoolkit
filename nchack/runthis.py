@@ -53,7 +53,7 @@ def run_nco(command, target, out_file = None, overwrite = False):
             out = subprocess.Popen(command,shell = True, stdin = subprocess.PIPE,stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
             result1,ignore = out.communicate()
             if "ERROR" in str(result1):
-                raise ValueError(str(result).replace("b'","").replace("\\n", "").replace("'", ""))
+                raise ValueError(str(result1).replace("b'","").replace("\\n", "").replace("'", ""))
             session_info["temp_dir"] = "/var/tmp/"
             if "Warning:" in str(result1):
                 warnings.warn(message = "NCO warning:" + str(result1))
@@ -119,7 +119,7 @@ def run_cdo(command, target, out_file = None, overwrite = False):
                 if "Too many open files" in str(result1):
                     raise ValueError("There are too many open files in CDO.  Check the files your OS allows to be open simultaneously in the Bourne shell with 'ulimit -n'")
                 else:
-                    raise ValueError(str(result).replace("b'","").replace("\\n", "").replace("'", ""))
+                    raise ValueError(str(result1).replace("b'","").replace("\\n", "").replace("'", ""))
             session_info["temp_dir"] = "/var/tmp/"
 
             # loop through the warnings
