@@ -103,7 +103,7 @@ def percentile(self, p = 50):
     self.history+=new_commands
     self._hold_history = copy.deepcopy(self.history)
 
-    for ff in self.current:
+    for ff in ff_list:
         if ff in nc_safe:
             nc_safe.remove(ff)
 
