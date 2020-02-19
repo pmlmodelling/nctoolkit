@@ -23,6 +23,8 @@ class TestSelect(unittest.TestCase):
 
 
         self.assertEqual(x, ["sst", "cell_area"])
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_cell_areas2(self):
         tracker = nc.open_data(ff)
@@ -35,6 +37,8 @@ class TestSelect(unittest.TestCase):
 
 
         self.assertEqual(x, [ "cell_area"])
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_cell_list(self):
         tracker = nc.open_data(ff)
@@ -45,6 +49,8 @@ class TestSelect(unittest.TestCase):
         tracker.release()
         x = tracker.variables
         self.assertEqual(x, [ "cell_area", "sst"])
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
 
     def test_error(self):
@@ -52,6 +58,8 @@ class TestSelect(unittest.TestCase):
         tracker.cell_areas(join=True)
         with self.assertRaises(ValueError) as context:
             tracker.cell_areas(join=True)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
 if __name__ == '__main__':
     unittest.main()

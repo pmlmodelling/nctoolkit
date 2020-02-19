@@ -19,6 +19,8 @@ class TestSelect(unittest.TestCase):
 
 
         self.assertEqual(x, 5.104045391082764)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
 
 
@@ -26,11 +28,16 @@ class TestSelect(unittest.TestCase):
         data = nc.open_data(ff)
         with self.assertRaises(ValueError) as context:
             data.phenology()
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_typeerror(self):
         data = nc.open_data(ff)
         with self.assertRaises(TypeError) as context:
             data.phenology(var = 1)
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
+
 if __name__ == '__main__':
     unittest.main()
 

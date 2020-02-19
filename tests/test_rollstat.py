@@ -19,6 +19,8 @@ class TestSelect(unittest.TestCase):
         tracker.release()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         self.assertEqual(x,  18.092084884643555 )
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_max(self):
         tracker = nc.open_data(ff)
@@ -28,6 +30,8 @@ class TestSelect(unittest.TestCase):
         tracker.release()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         self.assertEqual(x,20.390228271484375)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_min(self):
         tracker = nc.open_data(ff)
@@ -38,6 +42,8 @@ class TestSelect(unittest.TestCase):
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         self.assertEqual(x, 16.16268539428711)
 
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_range(self):
         tracker = nc.open_data(ff)
@@ -47,6 +53,8 @@ class TestSelect(unittest.TestCase):
         tracker.release()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         self.assertEqual(x, 4.227542877197266)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_sum(self):
         tracker = nc.open_data(ff)
@@ -56,6 +64,8 @@ class TestSelect(unittest.TestCase):
         tracker.release()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         self.assertEqual(x, 180.9208526611328)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_float(self):
         tracker = nc.open_data(ff)
@@ -75,11 +85,15 @@ class TestSelect(unittest.TestCase):
 
 
         self.assertEqual(x, y)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_error(self):
         tracker = nc.open_data(ff)
         with self.assertRaises(TypeError) as context:
             tracker.rolling_sum(window = "x")
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
 
 if __name__ == '__main__':

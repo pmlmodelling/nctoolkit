@@ -24,6 +24,9 @@ class TestSelect(unittest.TestCase):
 
         self.assertEqual(x, ["tos"])
 
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
+
     def test_mutate(self):
         tracker = nc.open_data(ff)
         tracker.select_years(1990)
@@ -36,6 +39,8 @@ class TestSelect(unittest.TestCase):
 
 
         self.assertEqual(x, ["sst", "tos"])
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_localproblem(self):
         tracker = nc.open_data(ff)
@@ -51,6 +56,8 @@ class TestSelect(unittest.TestCase):
 
         with self.assertRaises(ValueError) as context:
             tracker.transmute({"tos":"sst+@x"})
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_no_dict(self):
         tracker = nc.open_data(ff)
@@ -59,6 +66,9 @@ class TestSelect(unittest.TestCase):
 
         with self.assertRaises(TypeError) as context:
             tracker.transmute("test")
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
+
 if __name__ == '__main__':
     unittest.main()
 

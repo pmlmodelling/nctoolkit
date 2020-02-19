@@ -16,12 +16,18 @@ class TestSelect(unittest.TestCase):
 
         with self.assertWarns(Warning):
             tracker.merge()
+        tracker.release()
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_warning1(self):
         tracker = nc.open_data(ff)
 
         with self.assertWarns(Warning):
             tracker.merge_time()
+        tracker.release()
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_warning2(self):
         nc.options(thread_safe = True)
@@ -36,6 +42,10 @@ class TestSelect(unittest.TestCase):
         with self.assertWarns(Warning):
             data.merge(match = "year")
 
+        data.release()
+
+        n = len(nc.session_files())
+        self.assertEqual(n, 3)
 
 
     def test_merge_time(self):
@@ -54,6 +64,8 @@ class TestSelect(unittest.TestCase):
         y = tracker.to_dataframe().sst.values[0]
 
         self.assertEqual(x,y)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_merge(self):
         nc.options(thread_safe = True)
@@ -68,6 +80,8 @@ class TestSelect(unittest.TestCase):
         data.spatial_mean()
         x = data.to_dataframe().test1.values[0]
         self.assertEqual(x, 0)
+        n = len(nc.session_files())
+        self.assertEqual(n, 2)
 
     def test_merge_error(self):
         nc.options(thread_safe = True)
@@ -84,6 +98,8 @@ class TestSelect(unittest.TestCase):
         data = nc.open_data([new.current, tracker.current])
         with self.assertRaises(ValueError) as context:
             data.merge()
+        n = len(nc.session_files())
+        self.assertEqual(n, 2)
 
     def test_merge_error1(self):
         nc.options(thread_safe = True)
@@ -100,6 +116,8 @@ class TestSelect(unittest.TestCase):
         data = nc.open_data([tracker.current, new.current])
         with self.assertRaises(ValueError) as context:
             data.merge(match = "month")
+        n = len(nc.session_files())
+        self.assertEqual(n, 2)
 
     def test_merge_error2(self):
         nc.options(thread_safe = True)
@@ -117,6 +135,8 @@ class TestSelect(unittest.TestCase):
         data = nc.open_data([new.current, tracker.current])
         with self.assertRaises(ValueError) as context:
             data.merge(match = "year")
+        n = len(nc.session_files())
+        self.assertEqual(n, 2)
 
     def test_merge_error3(self):
         nc.options(thread_safe = True)
@@ -134,6 +154,8 @@ class TestSelect(unittest.TestCase):
         data = nc.open_data([new.current, tracker.current])
         with self.assertRaises(ValueError) as context:
             data.merge(match = ["year", "month"])
+        n = len(nc.session_files())
+        self.assertEqual(n, 2)
 
     def test_merge_error4(self):
         nc.options(thread_safe = True)
@@ -150,6 +172,8 @@ class TestSelect(unittest.TestCase):
 
         with self.assertRaises(ValueError) as context:
             data.merge()
+        n = len(nc.session_files())
+        self.assertEqual(n, 2)
 
 
 

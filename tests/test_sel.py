@@ -17,6 +17,8 @@ class TestSelect(unittest.TestCase):
         tracker.release()
         x = tracker.months()
         self.assertEqual(x, [1,2,12])
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_months(self):
         tracker = nc.open_data(ff)
@@ -24,6 +26,8 @@ class TestSelect(unittest.TestCase):
         tracker.release()
         x = tracker.months()
         self.assertEqual(x, [1])
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
 
     def test_months2(self):
@@ -32,6 +36,8 @@ class TestSelect(unittest.TestCase):
         tracker.release()
         x = tracker.months()
         self.assertEqual(x, [1,2])
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_years(self):
         tracker = nc.open_data(ff)
@@ -40,6 +46,8 @@ class TestSelect(unittest.TestCase):
         x = tracker.years()
         self.assertEqual(x, [1990])
 
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
     def test_years_list(self):
         tracker = nc.open_data(ff)
         tracker.split("year")
@@ -47,6 +55,8 @@ class TestSelect(unittest.TestCase):
         tracker.release()
         x = tracker.years()
         self.assertEqual(x, [1990])
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_years1(self):
         tracker = nc.open_data(ff)
@@ -54,6 +64,8 @@ class TestSelect(unittest.TestCase):
         tracker.release()
         x = tracker.years()
         self.assertEqual(x, [1850])
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_years2(self):
         tracker = nc.open_data(ff)
@@ -61,6 +73,8 @@ class TestSelect(unittest.TestCase):
         tracker.release()
         x = tracker.years()
         self.assertEqual(x, [1990,1991, 1992])
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_years3(self):
         tracker = nc.open_data(ff)
@@ -70,6 +84,8 @@ class TestSelect(unittest.TestCase):
         tracker.release()
         x = tracker.years()
         self.assertEqual(x, [1850])
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_timestep(self):
         tracker = nc.open_data(ff)
@@ -77,6 +93,8 @@ class TestSelect(unittest.TestCase):
         tracker.release()
         x = tracker.years()
         self.assertEqual(x, [1850])
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_timestep2(self):
         tracker = nc.open_data(ff)
@@ -84,16 +102,22 @@ class TestSelect(unittest.TestCase):
         tracker.release()
         x = tracker.years()
         self.assertEqual(x, [1850, 1851])
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_montherror(self):
         tracker = nc.open_data(ff)
         with self.assertRaises(ValueError) as context:
             tracker.select_months(0)
+            n = len(nc.session_files())
+            self.assertEqual(n, 0)
 
     def test_missing_year(self):
         tracker = nc.open_data(ff)
         with self.assertRaises(ValueError) as context:
             tracker.select_years(1800)
+            n = len(nc.session_files())
+            self.assertEqual(n, 0)
 
     def test_var_list(self):
         tracker = nc.open_data(ff)
@@ -103,6 +127,8 @@ class TestSelect(unittest.TestCase):
         tracker.release()
         x = tracker.variables
         self.assertEqual(x, ["sst", "tos"])
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
 
 

@@ -31,6 +31,9 @@ class TestSelect(unittest.TestCase):
 
         self.assertEqual(x, y)
 
+        n = len(nc.session_files())
+        self.assertEqual(n, 2)
+
 
     def test_regrid_list(self):
         tracker = nc.open_data(ff)
@@ -52,22 +55,30 @@ class TestSelect(unittest.TestCase):
         y = tracker.to_dataframe().sst.values[0].astype("float")
 
         self.assertEqual(x, y)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1 + 12)
 
     def test_invalid_method(self):
         tracker = nc.open_data(ff)
         with self.assertRaises(ValueError) as context:
             tracker.regrid(tracker, method = "x")
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
 
     def test_error11(self):
         tracker = nc.open_data(ff)
         with self.assertRaises(ValueError) as context:
             tracker.regrid(grid = 1)
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_error1(self):
         tracker = nc.open_data(ff)
         with self.assertRaises(ValueError) as context:
             tracker.regrid("/tmp/stekancihwn.nc")
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_error2(self):
         tracker = nc.open_data(ff)
@@ -78,6 +89,8 @@ class TestSelect(unittest.TestCase):
         with self.assertRaises(ValueError) as context:
             tracker.regrid(out)
         os.remove(out)
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
 
     def test_xr(self):
@@ -100,6 +113,8 @@ class TestSelect(unittest.TestCase):
         y = tracker.to_dataframe().sst.values[0].astype("float")
 
         self.assertEqual(x, y)
+        n = len(nc.session_files())
+        self.assertEqual(n, 2)
 
 
 
@@ -112,6 +127,8 @@ class TestSelect(unittest.TestCase):
         with self.assertRaises(ValueError) as context:
             tracker.regrid()
 
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_regrid1(self):
         tracker = nc.open_data(ff)
@@ -132,6 +149,8 @@ class TestSelect(unittest.TestCase):
         y = tracker.to_dataframe().sst.values[0].astype("float")
 
         self.assertEqual(x, y)
+        n = len(nc.session_files())
+        self.assertEqual(n, 2)
 
     def test_regrid2(self):
         ff = "data/sst.mon.mean.nc"
@@ -155,6 +174,8 @@ class TestSelect(unittest.TestCase):
         y = tracker.to_dataframe().sst.values[0]
 
         self.assertEqual(x, y)
+        n = len(nc.session_files())
+        self.assertEqual(n, 2)
 
     def test_single(self):
 
@@ -174,6 +195,8 @@ class TestSelect(unittest.TestCase):
         y = data.to_dataframe().sst.values[0]
 
         self.assertEqual(x,y)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_another_df(self):
         ff = "data/sst.mon.mean.nc"
@@ -192,6 +215,8 @@ class TestSelect(unittest.TestCase):
         data.spatial_mean()
         y = data.to_dataframe().sst.values[0]
         self.assertEqual(x,y)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_another_df2(self):
         ff = "data/sst.mon.mean.nc"
@@ -210,6 +235,8 @@ class TestSelect(unittest.TestCase):
         y = data.to_dataframe().sst.values[0]
         self.assertEqual(x,y)
         ff = "data/sst.mon.mean.nc"
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_another_df3(self):
         ff = "data/sst.mon.mean.nc"
@@ -228,6 +255,8 @@ class TestSelect(unittest.TestCase):
         y = data.to_dataframe().sst.mean()
 
         self.assertEqual(x,y)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
 if __name__ == '__main__':
     unittest.main()

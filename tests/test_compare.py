@@ -19,6 +19,8 @@ class TestSelect(unittest.TestCase):
         tracker.compare_all("<=0")
         tracker.release()
         tracker.spatial_sum()
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
         x = tracker.to_dataframe().sst.values[0].astype("int")
 
@@ -41,6 +43,8 @@ class TestSelect(unittest.TestCase):
         with self.assertRaises(ValueError) as context:
             tracker.compare_all("!=")
 
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_compare_all1(self):
         tracker = nc.open_data(ff)
@@ -55,6 +59,8 @@ class TestSelect(unittest.TestCase):
 
         self.assertEqual(x, 9509)
 
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_compare_all2(self):
         tracker = nc.open_data(ff)
@@ -65,9 +71,10 @@ class TestSelect(unittest.TestCase):
         tracker.spatial_sum()
 
         x = tracker.to_dataframe().sst.values[0].astype("int")
-
-
         self.assertEqual(x, 34287)
+
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_compare_all3(self):
         tracker = nc.open_data(ff)
@@ -81,6 +88,8 @@ class TestSelect(unittest.TestCase):
 
 
         self.assertEqual(x, 3)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_compare_all4(self):
         tracker = nc.open_data(ff)
@@ -94,6 +103,8 @@ class TestSelect(unittest.TestCase):
 
 
         self.assertEqual(x, 43796)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
 
 
@@ -109,6 +120,8 @@ class TestSelect(unittest.TestCase):
 
 
         self.assertEqual(x, 34290)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
 
 if __name__ == '__main__':

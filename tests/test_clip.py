@@ -13,73 +13,101 @@ class TestSelect(unittest.TestCase):
         tracker = nc.open_data(ff)
         with self.assertRaises(ValueError) as context:
             tracker.clip(lon = [-390, 100])
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
 
     def test_clip1(self):
         tracker = nc.open_data(ff)
         with self.assertRaises(ValueError) as context:
             tracker.clip(lat = [-390, 100])
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_clip2(self):
         tracker = nc.open_data(ff)
         with self.assertRaises(ValueError) as context:
             tracker.clip(lat = [-390, 100, 1])
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_clip3(self):
         tracker = nc.open_data(ff)
 
         with self.assertRaises(ValueError) as context:
             tracker.clip(lat = [0, -10])
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_clip4(self):
         tracker = nc.open_data(ff)
         with self.assertRaises(ValueError) as context:
             tracker.clip(lon = [0, -10])
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_clipr5(self):
         tracker = nc.open_data(ff)
         with self.assertRaises(ValueError) as context:
             tracker.clip(lon = [-390, 100, 1])
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_clip6(self):
         tracker = nc.open_data(ff)
         with self.assertRaises(TypeError) as context:
             tracker.clip(lon = 1)
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_clip7(self):
         tracker = nc.open_data(ff)
         with self.assertRaises(TypeError) as context:
             tracker.clip(lat = 1)
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_clip8(self):
         tracker = nc.open_data(ff)
         with self.assertRaises(TypeError) as context:
             tracker.clip(lat = "1")
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_clip9(self):
         tracker = nc.open_data(ff)
         with self.assertRaises(TypeError) as context:
             tracker.clip(lat = "2")
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_clip10(self):
         tracker = nc.open_data(ff)
         with self.assertRaises(TypeError) as context:
             tracker.clip(lat = ["a",1 ])
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_clip11(self):
         tracker = nc.open_data(ff)
         with self.assertRaises(TypeError) as context:
             tracker.clip(lat = [2, "b" ])
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_clip12(self):
         tracker = nc.open_data(ff)
         with self.assertRaises(TypeError) as context:
             tracker.clip(lon = ["a",1 ])
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_clip13(self):
         tracker = nc.open_data(ff)
         with self.assertRaises(TypeError) as context:
             tracker.clip(lon = [2, "b" ])
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
 
 
@@ -96,6 +124,8 @@ class TestSelect(unittest.TestCase):
         y = tracker.to_dataframe().sst.values[0].astype("float")
 
         self.assertEqual(x,y)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_nco2(self):
         tracker = nc.open_data(ff)
@@ -110,6 +140,8 @@ class TestSelect(unittest.TestCase):
         y = tracker.to_dataframe().sst.values[0].astype("float")
 
         self.assertEqual(x,y)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_nco3(self):
         tracker = nc.open_data(ff)
@@ -127,6 +159,8 @@ class TestSelect(unittest.TestCase):
         y = tracker.to_dataframe().sst.values[0].astype("float")
 
         self.assertEqual(x,y)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
 if __name__ == '__main__':
     unittest.main()

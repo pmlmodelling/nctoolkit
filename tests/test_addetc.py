@@ -13,6 +13,7 @@ ff = "data/sst.mon.mean.nc"
 class TestSelect(unittest.TestCase):
 
     def test_add(self):
+        print(nc.session_files())
         tracker = nc.open_data(ff)
         tracker.select_years(list(range(1950, 1951)))
         tracker.select_months([1])
@@ -26,6 +27,9 @@ class TestSelect(unittest.TestCase):
         y = new.to_dataframe().sst.values[0]
 
         self.assertEqual(x + 1, y)
+
+        n = len(nc.session_files())
+        self.assertEqual(n, 2)
 
     def test_add2(self):
         tracker = nc.open_data(ff)
@@ -41,6 +45,8 @@ class TestSelect(unittest.TestCase):
         y = new.to_dataframe().sst.values[0]
 
         self.assertEqual(x + x, y)
+        n = len(nc.session_files())
+        self.assertEqual(n, 2)
 
     def test_add3(self):
         tracker = nc.open_data(ff)
@@ -56,6 +62,8 @@ class TestSelect(unittest.TestCase):
         y = new.to_dataframe().sst.values[0]
 
         self.assertEqual(x + x, y)
+        n = len(nc.session_files())
+        self.assertEqual(n, 2)
 
     def test_subtract(self):
         tracker = nc.open_data(ff)
@@ -72,6 +80,8 @@ class TestSelect(unittest.TestCase):
         y = new.to_dataframe().sst.values[0]
 
         self.assertEqual(y, 1)
+        n = len(nc.session_files())
+        self.assertEqual(n, 2)
 
     def test_subtract1(self):
         tracker = nc.open_data(ff)
@@ -88,6 +98,8 @@ class TestSelect(unittest.TestCase):
         y = new.to_dataframe().sst.values[0]
 
         self.assertEqual(y, 1)
+        n = len(nc.session_files())
+        self.assertEqual(n, 2)
 
     def test_op_list(self):
         ff = "data/sst.mon.mean.nc"
@@ -102,6 +114,8 @@ class TestSelect(unittest.TestCase):
         new.spatial_sum()
         x = new.to_dataframe().sst.values[0].astype("float")
         self.assertEqual(x,0.0)
+        n = len(nc.session_files())
+        self.assertEqual(n, 2)
 
 
     def test_subtract2(self):
@@ -118,6 +132,8 @@ class TestSelect(unittest.TestCase):
         y = new.to_dataframe().sst.values[0].astype("float")
 
         self.assertEqual(x - 1, y)
+        n = len(nc.session_files())
+        self.assertEqual(n, 2)
 
     def test_multiply(self):
         tracker = nc.open_data(ff)
@@ -133,6 +149,8 @@ class TestSelect(unittest.TestCase):
         y = new.to_dataframe().sst.values[0].astype("float")
 
         self.assertEqual(np.round(x * 10, 4).astype("float"), np.round(y, 4).astype("float"))
+        n = len(nc.session_files())
+        self.assertEqual(n, 2)
 
     def test_multiply1(self):
         tracker = nc.open_data(ff)
@@ -151,6 +169,8 @@ class TestSelect(unittest.TestCase):
         y = out.to_dataframe().sst.values[0]
 
         self.assertEqual(x, y*2)
+        n = len(nc.session_files())
+        self.assertEqual(n, 3)
 
 
     def test_multiply2(self):
@@ -170,6 +190,8 @@ class TestSelect(unittest.TestCase):
         y = out.to_dataframe().sst.values[0]
 
         self.assertEqual(x, y*2)
+        n = len(nc.session_files())
+        self.assertEqual(n, 3)
 
 
 
@@ -187,6 +209,8 @@ class TestSelect(unittest.TestCase):
         y = new.to_dataframe().sst.values[0].astype("float")
 
         self.assertEqual(np.round(x / 10, 4), np.round(y, 4))
+        n = len(nc.session_files())
+        self.assertEqual(n, 2)
 
 
     def test_divide1(self):
@@ -206,6 +230,8 @@ class TestSelect(unittest.TestCase):
         y = out.to_dataframe().sst.values[0]
 
         self.assertEqual(x, y/2)
+        n = len(nc.session_files())
+        self.assertEqual(n, 3)
 
 
     def test_divide2(self):
@@ -225,6 +251,8 @@ class TestSelect(unittest.TestCase):
         y = out.to_dataframe().sst.values[0]
 
         self.assertEqual(x, y/2)
+        n = len(nc.session_files())
+        self.assertEqual(n, 3)
 
 
 
@@ -233,18 +261,24 @@ class TestSelect(unittest.TestCase):
         ff2 = "data/2003.nc"
         with self.assertRaises(ValueError) as context:
             tracker.add(ff2)
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_file_incompat1(self):
         tracker = nc.open_data(ff)
         ff2 = "data/2003.nc"
         with self.assertRaises(ValueError) as context:
             tracker.subtract(ff2)
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_file_incompat2(self):
         tracker = nc.open_data(ff)
         ff2 = "data/2003.nc"
         with self.assertRaises(ValueError) as context:
             tracker.divide(ff2)
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
 
 
@@ -252,39 +286,53 @@ class TestSelect(unittest.TestCase):
         tracker = nc.open_data(ff)
         with self.assertRaises(ValueError) as context:
             tracker.multiply("xyz")
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_file_incompat4(self):
         tracker = nc.open_data(ff)
         with self.assertRaises(ValueError) as context:
             tracker.subtract("xyz")
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_file_incompat5(self):
         tracker = nc.open_data(ff)
         with self.assertRaises(ValueError) as context:
             tracker.add("xyz")
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_file_incompat6(self):
         tracker = nc.open_data(ff)
         with self.assertRaises(ValueError) as context:
             tracker.divide("xyz")
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_file_incompat7(self):
         tracker = nc.open_data(ff)
         ff2 = "data/2003.nc"
         with self.assertRaises(ValueError) as context:
             tracker.multiply(ff2)
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_file_typeerror(self):
         tracker = nc.open_data(ff)
         ff2 = "data/2003.nc"
         with self.assertRaises(TypeError) as context:
             tracker.multiply([1,2])
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_file_typeerror1(self):
         tracker = nc.open_data(ff)
         ff2 = "data/2003.nc"
         with self.assertRaises(TypeError) as context:
             tracker.subtract([1,2])
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_file_typeerror2(self):
         tracker = nc.open_data(ff)
@@ -292,11 +340,16 @@ class TestSelect(unittest.TestCase):
         with self.assertRaises(TypeError) as context:
             tracker.add([1,2])
 
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
+
     def test_file_typeerror3(self):
         tracker = nc.open_data(ff)
         ff2 = "data/2003.nc"
         with self.assertRaises(TypeError) as context:
             tracker.divide([1,2])
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
 
 if __name__ == '__main__':

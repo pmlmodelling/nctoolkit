@@ -24,6 +24,8 @@ class TestSelect(unittest.TestCase):
         y = tracker.months()[0]
 
         self.assertEqual(y, 1)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_setdate2(self):
         tracker = nc.open_data(ff)
@@ -38,6 +40,8 @@ class TestSelect(unittest.TestCase):
         y = tracker.months()[0]
 
         self.assertEqual(y, 1)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_setmissing(self):
         tracker = nc.open_data(ff)
@@ -50,6 +54,8 @@ class TestSelect(unittest.TestCase):
         x = tracker.to_dataframe().sst.values[0]
 
         self.assertEqual(x, -1.2176581621170044444)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_setunits(self):
         tracker = nc.open_data(ff)
@@ -61,21 +67,29 @@ class TestSelect(unittest.TestCase):
         x = tracker.variables_detailed.units[0]
 
         self.assertEqual(x, "C")
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_setunits2(self):
         tracker = nc.open_data(ff)
         with self.assertRaises(TypeError) as context:
             tracker.set_units("x")
+            n = len(nc.session_files())
+            self.assertEqual(n, 0)
 
     def test_setattributes_error(self):
         tracker = nc.open_data(ff)
         with self.assertRaises(TypeError) as context:
             tracker.set_attributes("x")
+            n = len(nc.session_files())
+            self.assertEqual(n, 0)
 
     def test_longname_error(self):
         tracker = nc.open_data(ff)
         with self.assertRaises(TypeError) as context:
             tracker.set_longnames("x")
+            n = len(nc.session_files())
+            self.assertEqual(n, 0)
 
 
     def test_setlongnames(self):
@@ -88,6 +102,8 @@ class TestSelect(unittest.TestCase):
         x = tracker.variables_detailed.long_name[0]
 
         self.assertEqual(x, "temp")
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_setlongnames2(self):
         tracker = nc.open_data(ff)
@@ -101,6 +117,8 @@ class TestSelect(unittest.TestCase):
         x = tracker.variables_detailed.long_name[0]
 
         self.assertEqual(x, "temp")
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
 
 
@@ -111,6 +129,8 @@ class TestSelect(unittest.TestCase):
 
 
         self.assertEqual(x, True)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_delete_attribute(self):
         tracker = nc.open_data(ff)
@@ -123,6 +143,8 @@ class TestSelect(unittest.TestCase):
         x = "test123" in tracker.global_attributes()
 
         self.assertEqual(x, False)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
 
 if __name__ == '__main__':

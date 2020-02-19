@@ -26,8 +26,10 @@ class TestSelect(unittest.TestCase):
         tracker.release()
         y = tracker.to_dataframe().sst.values[0]
 
-
         self.assertEqual(x,y)
+
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
 
 if __name__ == '__main__':

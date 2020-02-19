@@ -17,12 +17,16 @@ class TestSelect(unittest.TestCase):
         tracker.release()
         x = tracker.variables
         self.assertEqual(x, ["tos"])
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_montherror(self):
         tracker = nc.open_data(ff)
         tracker.release()
         with self.assertRaises(TypeError) as context:
             tracker.rename("sst")
+            n = len(nc.session_files())
+            self.assertEqual(n, 0)
 
 
 

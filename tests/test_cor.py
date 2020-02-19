@@ -17,6 +17,8 @@ class TestSelect(unittest.TestCase):
         x = tracker.to_dataframe().cor.values[0]
 
         self.assertEqual(x, 1.0)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_cor1(self):
         tracker = nc.open_data(ff)
@@ -26,6 +28,8 @@ class TestSelect(unittest.TestCase):
         x = tracker.to_dataframe().cor.values[0]
 
         self.assertEqual(x, 1.0)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_cor2(self):
         tracker = nc.open_data(ff)
@@ -41,6 +45,8 @@ class TestSelect(unittest.TestCase):
         x = tracker.to_dataframe().cor.values[0]
 
         self.assertEqual(x, 1.0)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
 
 
@@ -49,6 +55,8 @@ class TestSelect(unittest.TestCase):
         tracker = nc.open_data(ff)
         with self.assertRaises(ValueError) as context:
             tracker.cor_space()
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_error2(self):
         tracker = nc.open_data(ff)
@@ -56,6 +64,8 @@ class TestSelect(unittest.TestCase):
         tracker.mutate({"tos":"sst+273.15"})
         with self.assertRaises(ValueError) as context:
             tracker.cor_space(var1 = "x",  var2 = "y")
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_error3(self):
         tracker = nc.open_data(ff)
@@ -63,6 +73,8 @@ class TestSelect(unittest.TestCase):
         tracker.mutate({"tos":"sst+273.15"})
         with self.assertRaises(ValueError) as context:
             tracker.cor_space(var1 = "tos", var2 = "y")
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
 if __name__ == '__main__':
     unittest.main()

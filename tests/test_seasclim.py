@@ -26,6 +26,8 @@ class TestSelect(unittest.TestCase):
 
 
         self.assertEqual(x, y)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_max(self):
         ff = "data/sst.mon.mean.nc"
@@ -44,6 +46,8 @@ class TestSelect(unittest.TestCase):
 
 
         self.assertEqual(x, y)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_min(self):
         ff = "data/sst.mon.mean.nc"
@@ -62,6 +66,8 @@ class TestSelect(unittest.TestCase):
 
 
         self.assertEqual(x, y)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_range(self):
         ff = "data/sst.mon.mean.nc"
@@ -80,6 +86,8 @@ class TestSelect(unittest.TestCase):
 
 
         self.assertEqual(x, y)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
 
 if __name__ == '__main__':

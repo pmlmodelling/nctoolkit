@@ -20,6 +20,8 @@ class TestSelect(unittest.TestCase):
 
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         self.assertEqual(x, 1.0)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_anomaly(self):
         ff = "data/sst.mon.mean.nc"
@@ -29,6 +31,8 @@ class TestSelect(unittest.TestCase):
         tracker.spatial_mean()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         self.assertEqual(x, -0.049895286560058594)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_monthly(self):
         ff = "data/sst.mon.mean.nc"
@@ -38,36 +42,48 @@ class TestSelect(unittest.TestCase):
         tracker.spatial_mean()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         self.assertEqual(x, -0.28783664107322693)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_error1(self):
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
         with self.assertRaises(TypeError) as context:
             tracker.annual_anomaly(baseline = "x")
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_error2(self):
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
         with self.assertRaises(TypeError) as context:
             tracker.monthly_anomaly(baseline = "x")
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_error3(self):
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
         with self.assertRaises(ValueError) as context:
             tracker.annual_anomaly(baseline = [1,2,3])
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_error4(self):
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
         with self.assertRaises(ValueError) as context:
             tracker.monthly_anomaly(baseline = [1,2,3])
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_error5(self):
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
         with self.assertRaises(TypeError) as context:
             tracker.annual_anomaly(baseline = [1,"x"])
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
 
     def test_error6(self):
@@ -75,24 +91,32 @@ class TestSelect(unittest.TestCase):
         tracker = nc.open_data(ff)
         with self.assertRaises(TypeError) as context:
             tracker.annual_anomaly(baseline = ["x","x"])
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_error7(self):
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
         with self.assertRaises(ValueError) as context:
             tracker.annual_anomaly(baseline = [1990,1980])
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_error8(self):
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
         with self.assertRaises(ValueError) as context:
             tracker.annual_anomaly(baseline = [1000,1990])
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_error9(self):
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
         with self.assertRaises(ValueError) as context:
             tracker.annual_anomaly(baseline = [1980,1990], metric = "x")
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
 
     def test_error10(self):
@@ -100,6 +124,8 @@ class TestSelect(unittest.TestCase):
         tracker = nc.open_data(ff)
         with self.assertRaises(TypeError) as context:
             tracker.monthly_anomaly(baseline = [1,"x"])
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
 
     def test_error11(self):
@@ -107,18 +133,24 @@ class TestSelect(unittest.TestCase):
         tracker = nc.open_data(ff)
         with self.assertRaises(TypeError) as context:
             tracker.monthly_anomaly(baseline = ["x","x"])
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_error12(self):
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
         with self.assertRaises(ValueError) as context:
             tracker.monthly_anomaly(baseline = [1990,1980])
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_error13(self):
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
         with self.assertRaises(ValueError) as context:
             tracker.monthly_anomaly(baseline = [1000,1990])
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
 
 

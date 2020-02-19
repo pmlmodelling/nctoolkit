@@ -19,6 +19,8 @@ class TestSelect(unittest.TestCase):
         x = data.to_dataframe().sst.values[0].astype("float")
 
         self.assertEqual(x, 17.669960021972656)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_max(self):
         ff = "data/sst.mon.mean.nc"
@@ -28,6 +30,8 @@ class TestSelect(unittest.TestCase):
 
         x = data.to_dataframe().sst.values[0].astype("float")
         self.assertEqual(x, 30.30000114440918)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_min(self):
         ff = "data/sst.mon.mean.nc"
@@ -37,6 +41,8 @@ class TestSelect(unittest.TestCase):
 
         x = data.to_dataframe().sst.values[0].astype("float")
         self.assertEqual(x, -1.8540000915527344)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
 
     def test_range(self):
@@ -47,6 +53,8 @@ class TestSelect(unittest.TestCase):
 
         x = data.to_dataframe().sst.values[0].astype("float")
         self.assertEqual(x, 32.15399932861328)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_sum(self):
         ff = "data/sst.mon.mean.nc"
@@ -56,6 +64,8 @@ class TestSelect(unittest.TestCase):
 
         x = data.to_dataframe().sst.values[0].astype("float")
         self.assertEqual(x, 575101.3125)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
 
     def test_sum1(self):
@@ -66,6 +76,8 @@ class TestSelect(unittest.TestCase):
 
         x = data.to_dataframe().sst.values[0].astype("float")
         self.assertEqual(x, 6482955169955840.0 )
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_percent(self):
         ff = "data/sst.mon.mean.nc"
@@ -75,18 +87,24 @@ class TestSelect(unittest.TestCase):
 
         x = data.to_dataframe().sst.values[0].astype("float")
         self.assertEqual(x, 19.628000259399414)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_percent_error(self):
         ff = "data/sst.mon.mean.nc"
         data = nc.open_data(ff)
         with self.assertRaises(ValueError) as context:
             data.spatial_percentile(p = "x")
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_percent_error2(self):
         ff = "data/sst.mon.mean.nc"
         data = nc.open_data(ff)
         with self.assertRaises(ValueError) as context:
             data.spatial_percentile(p = 120)
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
 
     def test_ens(self):
@@ -113,6 +131,8 @@ class TestSelect(unittest.TestCase):
 
 
         self.assertEqual(x, y)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
 if __name__ == '__main__':
     unittest.main()

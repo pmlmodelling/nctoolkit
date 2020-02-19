@@ -20,6 +20,9 @@ class TestSelect(unittest.TestCase):
         self.assertEqual(x, -1.7077397108078003)
         self.assertEqual(x, y)
 
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
+
 
     def test_clim2(self):
         tracker = nc.open_data(ff)
@@ -36,6 +39,9 @@ class TestSelect(unittest.TestCase):
         self.assertEqual(x, 19.814777374267578)
         self.assertEqual(x, y)
 
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
+
     def test_cdocommand(self):
         tracker = nc.open_data(ff)
         tracker.select_months(1)
@@ -46,6 +52,9 @@ class TestSelect(unittest.TestCase):
         tracker.spatial_mean()
         y = tracker.to_xarray().sst.values[0][0][0].astype("float")
 
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
+
         self.assertEqual(x, y)
 
     def test_percentile(self):
@@ -55,6 +64,9 @@ class TestSelect(unittest.TestCase):
         tracker.spatial_mean()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         self.assertEqual(x, 19.51475715637207)
+
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
 
 

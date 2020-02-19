@@ -22,6 +22,8 @@ class TestSelect(unittest.TestCase):
         tracker.release()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         self.assertEqual(x, 18.360414505004883)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_lazy1(self):
         ff = "data/sst.mon.mean.nc"
@@ -38,12 +40,15 @@ class TestSelect(unittest.TestCase):
         y = len(tracker.history)
         self.assertEqual(x, 18.360414505004883)
         self.assertEqual(y, 1)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_split1(self):
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
         tracker.split(by = "year")
         n_files = len(tracker.current)
+        self.assertEqual(n_files, 169)
         tracker.merge_time()
         tracker.select_years(list(range(1950, 1959)))
         tracker.select_months([1,2,3,4,5])
@@ -53,9 +58,11 @@ class TestSelect(unittest.TestCase):
         tracker.mean()
         tracker.spatial_mean()
         tracker.release()
+        nc.cleanup()
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         self.assertEqual(x, 18.360414505004883)
-        self.assertEqual(n_files, 169)
 
 
     def test_mergetime1(self):
@@ -77,6 +84,8 @@ class TestSelect(unittest.TestCase):
         self.assertEqual(x, 18.360414505004883)
         self.assertEqual(n_files, 169)
         self.assertEqual(y, 2)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_ensemble_mean_1(self):
         ff = nc.create_ensemble("data/ensemble/")
@@ -87,6 +96,8 @@ class TestSelect(unittest.TestCase):
         tracker.release()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         self.assertEqual(x, 17.881811141967773)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_transmute_1(self):
         ff = "data/sst.mon.mean.nc"
@@ -104,6 +115,8 @@ class TestSelect(unittest.TestCase):
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         y = len(tracker.history)
         self.assertEqual(x, 18.360414505004883)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_mutate_1(self):
         ff = "data/sst.mon.mean.nc"
@@ -121,6 +134,8 @@ class TestSelect(unittest.TestCase):
         x = tracker.to_xarray().sst2.values[0][0][0].astype("float")
         y = len(tracker.history)
         self.assertEqual(x, 18.360414505004883)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_seasonal_clim1(self):
         ff = "data/sst.mon.mean.nc"
@@ -131,6 +146,8 @@ class TestSelect(unittest.TestCase):
         tracker.release()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         self.assertEqual(x, 17.8525390625)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_merge_rename(self):
         ff = "data/sst.mon.mean.nc"
@@ -145,6 +162,8 @@ class TestSelect(unittest.TestCase):
         tracker.release()
         x = tracker.to_xarray().bias.values[0][0][0].astype("float")
         self.assertEqual(x, 0)
+        n = len(nc.session_files())
+        self.assertEqual(n, 2)
 
     def test_anomaly(self):
         ff = "data/sst.mon.mean.nc"
@@ -156,6 +175,8 @@ class TestSelect(unittest.TestCase):
         tracker.release()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         self.assertEqual(x, -0.17559902369976044)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_arithall(self):
         ff = "data/sst.mon.mean.nc"
@@ -174,6 +195,8 @@ class TestSelect(unittest.TestCase):
         tracker.release()
         y = tracker.to_xarray().sst.values[0][0][0].astype("float")
         self.assertEqual(x, y)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
 
 if __name__ == '__main__':

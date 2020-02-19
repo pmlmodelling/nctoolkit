@@ -24,6 +24,8 @@ class TestSelect(unittest.TestCase):
         y = tracker.to_dataframe().sst.values[0]
 
         self.assertEqual(x,y)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_min(self):
         tracker = nc.open_data(ff)
@@ -39,6 +41,8 @@ class TestSelect(unittest.TestCase):
         y = tracker.to_dataframe().sst.values[0]
 
         self.assertEqual(x,y)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_max(self):
         tracker = nc.open_data(ff)
@@ -54,6 +58,8 @@ class TestSelect(unittest.TestCase):
         y = tracker.to_dataframe().sst.values[0]
 
         self.assertEqual(x,y)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
     def test_range(self):
         tracker = nc.open_data(ff)
@@ -69,6 +75,8 @@ class TestSelect(unittest.TestCase):
         y = tracker.to_dataframe().sst.values[0]
 
         self.assertEqual(x,y)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
 
 
