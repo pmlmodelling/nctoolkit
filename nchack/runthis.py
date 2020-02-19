@@ -209,7 +209,6 @@ def run_this(os_command, self, output = "one",  out_file = None):
     if type(self.current) is str:
         output = "ensemble"
 
-#    if session_info["lazy"]
     if self._run == False:
         if len(self._hold_history) == len(self.history):
             self.history.append(os_command)
@@ -283,8 +282,7 @@ def run_this(os_command, self, output = "one",  out_file = None):
 
             self.disk_clean()
 
-            if self._run:
-                cleanup()
+            cleanup()
             self._hold_history = copy.deepcopy(self.history)
 
             return None
@@ -337,11 +335,9 @@ def run_this(os_command, self, output = "one",  out_file = None):
                     if ff in nc_safe:
                         nc_safe.remove(ff)
 
-            if self._run == True:
-                self.disk_clean()
+            self.disk_clean()
 
-            if self._run:
-                cleanup()
+            cleanup()
 
             self._hold_history = copy.deepcopy(self.history)
 
