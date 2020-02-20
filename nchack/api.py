@@ -1,5 +1,6 @@
 # import packages
 import os
+import re
 from netCDF4 import Dataset
 import copy
 import random
@@ -131,6 +132,14 @@ def open_data(x = None):
     if type(x) is str:
         if os.path.exists(x) == False:
             raise ValueError("Data set " + x + " does not exist!")
+
+        out = subprocess.run("cdo sinfo " + x, shell = True, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+        if "Open failed" in out.stderr.decode("utf-8"):
+            mes = out.stderr.decode("utf-8").replace("cdo    sinfo: ", "").replace("<\n", "").replace("\n", "")
+            mes = re.sub(" +", " ", mes)
+            raise ValueError(mes)
+
+
         else:
             nc_safe.append(x)
             nc_protected.append(x)
@@ -150,6 +159,9 @@ def open_data(x = None):
         if len(x) == 0:
             raise ValueError("You have not provided any files!")
         for ff in x:
+
+
+
             if os.path.exists(ff) == False:
                 raise ValueError("Data set " + ff + " does not exist!")
             else:
