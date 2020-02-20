@@ -20,6 +20,10 @@ def write_nc(self, out, zip = True, overwrite = False):
 
     """
 
+    # If the output file exists, cdo cannot simultaneously have it opened and written to
+    if os.path.exists(out) and overwrite == True:
+        self.release()
+
     if type(self.current) is list:
         ff = copy.deepcopy(self.current)
     else:
@@ -41,9 +45,6 @@ def write_nc(self, out, zip = True, overwrite = False):
     if os.path.exists(out) and overwrite == False:
         raise ValueError("The out file exists and overwrite is set to false")
 
-    # If the output file exists, cdo cannot simultaneously have it opened and written to
-    if os.path.exists(out) and overwrite == True:
-        self.release()
 
 
     if len(self.history) == len(self._hold_history):
