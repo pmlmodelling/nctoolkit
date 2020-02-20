@@ -80,40 +80,38 @@ def select_years(self, years):
 
     missing_files = 0
 
-    if type(self.current) is list:
+    n_removed = 0
+    new_current = []
+    for ff in self.current:
+        out = subprocess.Popen("cdo showyear " + ff,shell = True, stdin = subprocess.PIPE,stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
+        cdo_result,ignore = out.communicate()
+        cdo_result = str(cdo_result)
+        cdo_result = cdo_result.replace("'", "").split("\\n")[1].strip()
+        cdo_result = cdo_result.replace("\n", "")
+        cdo_result = cdo_result.split()
+        cdo_result = list(set(cdo_result))
+        cdo_result =  [int(v) for v in cdo_result]
+        inter = [element for element in cdo_result if element in years]
 
-        n_removed = 0
-        new_current = []
-        for ff in self.current:
-            out = subprocess.Popen("cdo showyear " + ff,shell = True, stdin = subprocess.PIPE,stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
-            cdo_result,ignore = out.communicate()
-            cdo_result = str(cdo_result)
-            cdo_result = cdo_result.replace("'", "").split("\\n")[1].strip()
-            cdo_result = cdo_result.replace("\n", "")
-            cdo_result = cdo_result.split()
-            cdo_result = list(set(cdo_result))
-            cdo_result =  [int(v) for v in cdo_result]
-            inter = [element for element in cdo_result if element in years]
+        if len(inter) > 0:
+            new_current.append(ff)
+        if len(inter) == 0:
+            n_removed+=1
+            if ff in nc_safe:
+                nc_safe.remove(ff)
 
-            if len(inter) > 0:
-                new_current.append(ff)
-            if len(inter) == 0:
-                n_removed+=1
-                if ff in nc_safe:
-                    nc_safe.remove(ff)
+        # figure out if any of the files actually have years outide the period required
+        if len(inter) >0:
+            if len([element for element in cdo_result if element not in years])  >0:
+                missing_files+=1
 
-            # figure out if any of the files actually have years outide the period required
-            if len(inter) >0:
-                if len([element for element in cdo_result if element not in years])  >0:
-                    missing_files+=1
+    if len(new_current) == 0:
+        raise ValueError("Data for none of the years is available!")
 
-        if len(new_current) == 0:
-            raise ValueError("Data for none of the years is available!")
+    if n_removed >0:
+        warnings.warn(message = "A total of " +  str(n_removed) +  " files did not have valid years, so were removed from the dataset!")
 
-        if n_removed >0:
-            warnings.warn(message = "A total of " +  str(n_removed) +  " files did not have valid years, so were removed from the dataset!")
-
-        self.current = new_current
+    self.current = new_current
 
 
     if len(self.current) == 1:
