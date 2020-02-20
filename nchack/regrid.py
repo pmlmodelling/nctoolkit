@@ -52,8 +52,8 @@ def regrid(self, grid = None, method = "bil"):
     if type(grid) is str:
         if os.path.exists(grid) == False:
             raise ValueError("grid file supplied does not exist")
-        if grid.endswith(".nc") == False:
-            raise ValueError("grid file supplied is not a netcdf file!")
+        #if grid.endswith(".nc") == False:
+        #    raise ValueError("grid file supplied is not a netcdf file!")
         grid_type = "nc"
 
     if "DataSet" in str(type(grid)):
@@ -110,14 +110,14 @@ def regrid(self, grid = None, method = "bil"):
 
     if grid is not None:
                    # first generate the grid
-        if self._grid is None:
-            if grid_type == "df":
-                self._grid = generate_grid(grid)
-                del_grid = copy.deepcopy(self._grid)
-                nc_safe.append(del_grid)
-            else:
-                self._grid = grid
+        if grid_type == "df":
+            target_grid = generate_grid(grid)
+            del_grid = copy.deepcopy(target_grid)
+            nc_safe.append(del_grid)
+        else:
+            target_grid = grid
     new_files = []
+
 
     for key in grid_split:
         # first we need to generate the weights for remapping
@@ -128,13 +128,13 @@ def regrid(self, grid = None, method = "bil"):
 
 
         if type(tracker.current) is list:
-            cdo_command = "cdo -gen" + method + ","+ self._grid + " " + tracker.current[0] + " " +  weights_nc
+            cdo_command = "cdo -gen" + method + ","+ target_grid + " " + tracker.current[0] + " " +  weights_nc
         else:
-            cdo_command = "cdo -gen" + method + ","+ self._grid + " " + tracker.current + " " +  weights_nc
+            cdo_command = "cdo -gen" + method + ","+ target_grid + " " + tracker.current + " " +  weights_nc
 
         weights_nc = run_cdo(cdo_command, target = weights_nc)
 
-        cdo_command= "cdo -remap," + self._grid + "," + weights_nc
+        cdo_command= "cdo -remap," + target_grid + "," + weights_nc
 
         tracker.run = True
 
@@ -173,5 +173,6 @@ def regrid(self, grid = None, method = "bil"):
 
     cleanup()
     self.disk_clean()
+
 
 
