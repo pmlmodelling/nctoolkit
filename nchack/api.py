@@ -209,7 +209,6 @@ class DataSet(object):
 
         # attributes to the module, but not users (probably)
         self._weights = None
-        self._grid = None
         if session_info["lazy"]:
             self._run = False
         else:
@@ -592,6 +591,8 @@ class DataSet(object):
     from .add_etc import multiply
     from .add_etc import divide
     from .cf_checks import cf_checks
+
+    from .to_lonlat import to_lonlat
 
 
 
