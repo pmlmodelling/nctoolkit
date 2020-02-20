@@ -33,12 +33,12 @@ def set_date(self, year, month, day,  base_year = 1900):
     # check that the values supplied are valid
     # This will convert things to ints, and if it can't be done, throw an error
     if type(year) is not int:
-        year = float(year)
+        year = int(year)
     if type(month) is not int:
-        month = float(month)
+        month = int(month)
 
     if type(day) is not int:
-        day = float(day)
+        day = int(day)
     cdo_command = "cdo -L -setreftime," + str(base_year) + "-01-01 -setdate," + str(year) + "-" + str(month) + "-" + str(day)
 
     run_this(cdo_command, self,  output = "ensemble")
