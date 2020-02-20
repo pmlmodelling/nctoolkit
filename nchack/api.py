@@ -165,6 +165,11 @@ def open_data(x = None):
             if os.path.exists(ff) == False:
                 raise ValueError("Data set " + ff + " does not exist!")
             else:
+                out = subprocess.run("cdo sinfo " + ff, shell = True, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+                if "Open failed" in out.stderr.decode("utf-8"):
+                    mes = out.stderr.decode("utf-8").replace("cdo    sinfo: ", "").replace("<\n", "").replace("\n", "")
+                    mes = re.sub(" +", " ", mes)
+                    raise ValueError(mes)
                 nc_safe.append(ff)
                 nc_protected.append(x)
 
