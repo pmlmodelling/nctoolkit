@@ -43,6 +43,22 @@ class TestSelect(unittest.TestCase):
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 
+    def test_setdate3(self):
+        tracker = nc.open_data(ff)
+        tracker.select_years(list(range(1950, 1951)))
+        tracker.select_months([1])
+        tracker.set_date(year = 1990.0, month = 3.0, day = 1.0)
+        tracker.release()
+        x = tracker.years()[0]
+
+        self.assertEqual(x, 1990)
+
+        y = tracker.months()[0]
+
+        self.assertEqual(y, 3)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
+
     def test_setmissing(self):
         tracker = nc.open_data(ff)
         tracker.select_years(1990)
