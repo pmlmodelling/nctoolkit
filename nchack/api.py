@@ -282,7 +282,7 @@ class DataSet(object):
             min_size = 1e15
             max_size = -1
 
-            for ff in self.current:
+            for ff in self:
 
                 all_sizes.append(file_size(ff))
 
@@ -390,6 +390,7 @@ class DataSet(object):
         """
         return self._start
 
+
     @start.setter
     def start(self, value):
         if type(value) is str:
@@ -409,7 +410,11 @@ class DataSet(object):
         if type(value) is str:
             self._current = value
         if isinstance(value,list):
-            self._current = value
+            if len(value) > 1:
+                self._current = value
+            else:
+                self._current = value[0]
+
 
     @property
     def history(self):
@@ -444,7 +449,7 @@ class DataSet(object):
         if type(new.current) is str:
             nc_safe.append(new.current)
         else:
-            for ff in new.current:
+            for ff in new:
                 nc_safe.append(ff)
         return new
 
@@ -455,7 +460,7 @@ class DataSet(object):
             if self._weights in nc_safe:
                 nc_safe.remove(self._weights)
         else:
-            for ff in self.current:
+            for ff in self:
                 if ff in nc_safe:
                     nc_safe.remove(ff)
 
