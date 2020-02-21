@@ -626,5 +626,7 @@ class DataSet(object):
 
     from .to_lonlat import to_lonlat
 
+    from .reduce import reduce_dims
+
 
 
