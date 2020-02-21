@@ -22,14 +22,9 @@ def operation(self, method = "mul", ff = None):
 
     self.release()
 
-    if type(self.current) is list:
-        ff_list = self.current
-    else:
-        ff_list = [self.current]
-
     new_files = []
     new_commands = []
-    for x in ff_list:
+    for x in self:
 
     # check that the datasets can actually be worked with
         if len(nc_variables(ff)) != len(nc_variables(x)) and len(nc_variables(ff)) != 1:
@@ -53,7 +48,7 @@ def operation(self, method = "mul", ff = None):
     # update the history etc.
     self.history+=new_commands
     self._hold_history = copy.deepcopy(self.history)
-    for y in ff_list:
+    for y in self:
         if y in nc_safe:
             nc_safe.remove(y)
 
