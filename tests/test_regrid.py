@@ -88,7 +88,7 @@ class TestSelect(unittest.TestCase):
         Path(out).touch()
         with self.assertRaises(ValueError) as context:
             tracker.regrid(out)
-        os.remove(out)
+        #os.remove(out)
         n = len(nc.session_files())
         self.assertEqual(n, 0)
 
