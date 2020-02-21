@@ -199,6 +199,8 @@ def merge(*datasets, match = ["day", "year", "month"]):
     result.merge(match = match)
     return result
 
+
+
 class DataSet(object):
     """
     A modifiable ensemble of netcdf files
@@ -231,6 +233,15 @@ class DataSet(object):
             return 1
 
         return len(self.current)
+
+    def __iter__(self):
+        if type(self.current) is str:
+            yield self.current
+            return
+        if type(self.current) is list:
+            for ff in self.current:
+                yield ff
+            return
 
     def __repr__(self):
         # tidy up the output first
