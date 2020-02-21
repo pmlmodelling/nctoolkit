@@ -122,7 +122,7 @@ def regrid(self, grid = None, method = "bil"):
     for key in grid_split:
         # first we need to generate the weights for remapping
         # and add this to the files created list and self.weights
-        tracker = open_data(grid_split[key])
+        tracker = open_data(grid_split[key], suppress_messages = True)
 
         weights_nc = temp_file("nc")
 
