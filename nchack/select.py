@@ -73,16 +73,11 @@ def select_years(self, years):
 
     select_years = False
 
-
-    if type(self.current) is str:
-        self.current = [self.current]
-
-
     missing_files = 0
 
     n_removed = 0
     new_current = []
-    for ff in self.current:
+    for ff in self:
         out = subprocess.Popen("cdo showyear " + ff,shell = True, stdin = subprocess.PIPE,stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
         cdo_result,ignore = out.communicate()
         cdo_result = str(cdo_result)
@@ -112,11 +107,6 @@ def select_years(self, years):
         warnings.warn(message = "A total of " +  str(n_removed) +  " files did not have valid years, so were removed from the dataset!")
 
     self.current = new_current
-
-
-    if len(self.current) == 1:
-        self.current = self.current[0]
-
 
     if missing_files >0:
         years = str_flatten(years, ",")

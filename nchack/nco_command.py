@@ -20,20 +20,13 @@ def nco_command(self, command):
 
     # First, check that the command is valid
 
-    if type(self.current) is list:
-        ff_list = self.current
-    else:
-        ff_list = [self.current]
-
     if type(command) is not str:
         raise TypeError("Command supplied is not a str")
-
 
     new_files = []
     new_commands = []
 
-
-    for ff in ff_list:
+    for ff in self:
 
         target = temp_file(".nc")
 
@@ -44,25 +37,17 @@ def nco_command(self, command):
         new_files.append(target)
         new_commands.append(the_command)
 
-
-    for ff in new_files:
+    for ff in self:
         if ff in nc_safe:
             nc_safe.remove(ff)
 
     self.current = new_files
 
-    for ff in self.current:
+    for ff in self:
         nc_safe.append(ff)
-
-    if len(self.current) == 1:
-        self.current = self.current[0]
 
     self.history.append(command)
     self._hold_history = copy.deepcopy(self.history)
-
-
-
-
 
     self.disk_clean()
 

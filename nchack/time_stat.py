@@ -84,14 +84,9 @@ def percentile(self, p = 50):
 
     self.release()
 
-    if type(self.current) is list:
-        ff_list = self.current
-    else:
-        ff_list = [self.current]
-
     new_files = []
     new_commands = []
-    for ff in ff_list:
+    for ff in self:
         target = temp_file("nc")
 
         cdo_command = "cdo -L -timpctl," + str(p) + " " + ff + " -timmin " + ff + " -timmax " + ff + " "  + target
@@ -103,17 +98,14 @@ def percentile(self, p = 50):
     self.history+=new_commands
     self._hold_history = copy.deepcopy(self.history)
 
-    for ff in ff_list:
+    for ff in self:
         if ff in nc_safe:
             nc_safe.remove(ff)
 
     self.current = new_files
 
-    for ff in new_files:
+    for ff in self:
         nc_safe.append(ff)
-
-    if len(self.current) == 1:
-        self.current = self.current[0]
 
     cleanup()
 

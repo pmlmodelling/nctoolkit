@@ -22,25 +22,18 @@ def cell_areas(self,  join = True):
     if join:
         self.release()
 
-
     # first run the join case
     if join:
-
-        if type(self.current) is str:
-            self.current = [self.current]
-
 
         new_files = []
         new_commands = []
 
-        for ff in self.current:
+        for ff in self:
 
             if "cell_area" in nc_variables(ff):
                 raise ValueError("cell_area is already a variable")
 
-
             target = temp_file(".nc")
-
 
             cdo_command = "cdo -L -merge " + ff + " -gridarea " + ff + " " + target
             target = run_cdo(cdo_command, target)
@@ -50,18 +43,14 @@ def cell_areas(self,  join = True):
 
             nc_safe.append(target)
 
-        for ff in self.current:
+        for ff in self:
             if ff in nc_safe:
                 nc_safe.remove(ff)
-
 
         for x in new_commands:
             self.history.append(x)
 
-        if len(new_files) == 1:
-            self.current = new_files[0]
-        else:
-            self.current = new_files
+        self.current = new_files
 
         self._hold_history = copy.deepcopy(self.history)
 

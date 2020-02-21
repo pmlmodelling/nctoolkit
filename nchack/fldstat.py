@@ -69,7 +69,7 @@ def spatial_sum(self, by_area = False):
 
     new_files = []
     new_commands = []
-    for ff in self.current:
+    for ff in self:
 
         target = temp_file("nc")
         cdo_command = "cdo -fldsum -mul " + ff  + " -gridarea " + ff + " " +  target
@@ -81,13 +81,13 @@ def spatial_sum(self, by_area = False):
     self.history+=new_commands
     self._hold_history = copy.deepcopy(self.history)
 
-    for ff in self.current:
+    for ff in self:
         if ff in nc_safe:
             nc_safe.remove(ff)
 
     self.current = new_files
 
-    for ff in self.current:
+    for ff in self:
         nc_safe.append(ff)
 
 

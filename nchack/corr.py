@@ -16,15 +16,10 @@ def cor(self, var1 = None, var2 = None, method = "fld"):
     # this cannot be chained. So release
     self.release()
 
-    if type(self.current) is list:
-        ff_list = self.current
-    else:
-        ff_list = [self.current]
-
     new_files = []
     new_commands = []
 
-    for ff in ff_list:
+    for ff in self:
         if var1 not in nc_variables(ff):
             raise ValueError(var1 + " is not in the dataset")
 
@@ -45,18 +40,15 @@ def cor(self, var1 = None, var2 = None, method = "fld"):
     self.history+=new_commands
     self._hold_history = copy.deepcopy(self.history)
 
-    for ff in ff_list:
+    for ff in self:
         if ff in nc_safe:
             nc_safe.remove(ff)
 
     self.current = new_files
 
     # add the new file to the safe list
-    for ff in self.current:
+    for ff in self:
         nc_safe.append(ff)
-
-    if len(self.current) == 1:
-        self.current = self.current[0]
 
     # tidy up the attributes of the netcdf file in the dataset
     self.rename({var1:"cor"})

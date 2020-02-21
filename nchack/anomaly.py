@@ -45,15 +45,10 @@ def annual_anomaly(self, baseline = None, metric = "absolute", window = 1):
 
     self.release()
 
-    if type(self.current) is list:
-        file_list = self.current
-    else:
-        file_list = [self.current]
-
     new_files = []
     new_commands = []
 
-    for ff in file_list:
+    for ff in self:
         # create the target file
         target = temp_file("nc")
 
@@ -81,18 +76,14 @@ def annual_anomaly(self, baseline = None, metric = "absolute", window = 1):
 
     # update the safe lists and current file
 
-    for ff in file_list:
+    for ff in self:
         if ff in nc_safe:
             nc_safe.remove(ff)
 
     self.current = new_files
 
-    for ff in self.current:
+    for ff in self:
         nc_safe.append(ff)
-
-    if len(self.current) == 1:
-        self.current = self.current[0]
-
 
     cleanup()
 
@@ -170,7 +161,7 @@ def monthly_anomaly(self, baseline = None):
 
     self.current = new_files
 
-    for ff in self.current:
+    for ff in self:
         nc_safe.append(ff)
 
 

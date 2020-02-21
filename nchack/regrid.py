@@ -94,19 +94,13 @@ def regrid(self, grid = None, method = "bil"):
 
 
 
-    if type(self.current) is str:
-        file_list = [self.current]
-    else:
-        file_list = self.current
-
-    if type(file_list) is list:
-        for ff in file_list:
-            cdo_result = subprocess.run("cdo griddes " + ff, shell = True, stdout=subprocess.PIPE, stderr =subprocess.PIPE).stdout
-            cdo_result = str(cdo_result)
-            if cdo_result in grid_split:
-                grid_split[cdo_result].append(ff)
-            else:
-                grid_split[cdo_result] = [ff]
+    for ff in self:
+        cdo_result = subprocess.run("cdo griddes " + ff, shell = True, stdout=subprocess.PIPE, stderr =subprocess.PIPE).stdout
+        cdo_result = str(cdo_result)
+        if cdo_result in grid_split:
+            grid_split[cdo_result].append(ff)
+        else:
+            grid_split[cdo_result] = [ff]
 
     if grid is not None:
                    # first generate the grid
@@ -126,7 +120,6 @@ def regrid(self, grid = None, method = "bil"):
 
         weights_nc = temp_file("nc")
 
-
         if type(tracker.current) is list:
             cdo_command = "cdo -gen" + method + ","+ target_grid + " " + tracker.current[0] + " " +  weights_nc
         else:
@@ -144,13 +137,12 @@ def regrid(self, grid = None, method = "bil"):
 
         nc_safe.remove(weights_nc)
 
-
         if type(tracker.current) is str:
             new_files += [tracker.current]
             nc_safe.append(tracker.current)
         else:
             new_files += tracker.current
-            for ff in tracker.current:
+            for ff in tracker:
                 nc_safe.append(ff)
 
         self.history+=tracker.history
@@ -163,8 +155,6 @@ def regrid(self, grid = None, method = "bil"):
 
 
     self.current = new_files
-    if len(self.current) == 1:
-        self.current = self.current[0]
 
     for ff in orig_files:
         if ff in nc_safe:

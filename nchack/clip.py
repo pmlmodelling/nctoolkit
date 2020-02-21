@@ -61,15 +61,10 @@ def clip(self, lon = [-180, 180], lat = [-90, 90], cdo = True):
 
     self.release()
 
-    if type(self.current) is list:
-        ff_list = self.current
-    else:
-        ff_list = [self.current]
-
     new_files = []
     new_commands = []
 
-    for ff in ff_list:
+    for ff in self:
 
         out = subprocess.run("cdo griddes " + ff, shell = True, stdout=subprocess.PIPE, stderr = subprocess.PIPE)
         lon_name = [x for x in str(out.stdout).replace("b'", "").split("\\n") if "xname" in x][0].split(" ")[-1]
@@ -94,17 +89,14 @@ def clip(self, lon = [-180, 180], lat = [-90, 90], cdo = True):
     self.history+=new_commands
     self._hold_history = copy.deepcopy(self.history)
 
-    for ff in ff_list:
+    for ff in self:
         if ff in nc_safe:
             nc_safe.remove(ff)
 
     self.current = new_files
 
-    for ff in self.current:
+    for ff in self:
         nc_safe.append(ff)
-
-    if len(self.current) == 1:
-        self.current = self.current[0]
 
     cleanup()
     self.disk_clean()

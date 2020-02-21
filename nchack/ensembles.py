@@ -90,13 +90,14 @@ def ensemble_nco(self, method, vars = None, ignore_time = False):
     self.history.append(nco_command)
     self._hold_history = copy.deepcopy(self.history)
 
+    # remove the original files from the safe list
+    for ff in self:
+        if ff in nc_safe:
+            nc_safe.remove(ff)
+
     self.current = target
     nc_safe.append(self.current)
 
-    # remove the original files from the safe list
-    for ff in ff_ensemble:
-        if ff in nc_safe:
-            nc_safe.remove(ff)
 
     self._merged = True
 

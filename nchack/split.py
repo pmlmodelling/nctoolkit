@@ -19,16 +19,11 @@ def split_cdo(self, method = "year"):
     # this cannot me chained. So release
     self.release()
 
-    if type(self.current) is str:
-        ff_list = [self.current]
-    else:
-        ff_list = self.current
-
     new_files = []
 
     commands = []
 
-    for ff in ff_list:
+    for ff in self:
 
         # We need to split the file by name
 
@@ -75,7 +70,6 @@ def split_cdo(self, method = "year"):
 
     self._merged = False
     self.current = new_files
-
 
     cleanup()
     self.disk_clean()

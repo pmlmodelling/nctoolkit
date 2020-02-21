@@ -6,12 +6,8 @@ import warnings
 
 def times(self):
 
-    if type(self.current) is str:
-        file_list = [self.current]
-    else:
-        file_list = self.current
     all_times = []
-    for ff in file_list:
+    for ff in self:
         cdo_result = subprocess.run("cdo showtimestamp " + ff, shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         cdo_result = str(cdo_result.stdout).replace("\\n", "")
         cdo_result = cdo_result.replace("b'", "").strip()
@@ -82,12 +78,8 @@ def nc_variables(ff):
 
 def years(self):
 
-    if type(self.current) is str:
-        file_list = [self.current]
-    else:
-        file_list = self.current
     all_years = []
-    for ff in file_list:
+    for ff in self:
         cdo_result = subprocess.run("cdo showyear " + ff, shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         cdo_result = str(cdo_result.stdout).replace("\\n", "")
         cdo_result = cdo_result.replace("b'", "").strip()
@@ -102,12 +94,8 @@ def years(self):
 
 def months(self):
 
-    if type(self.current) is str:
-        file_list = [self.current]
-    else:
-        file_list = self.current
     all_months = []
-    for ff in file_list:
+    for ff in self:
         cdo_result = subprocess.run("cdo showmon " + ff, shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         cdo_result = str(cdo_result.stdout).replace("\\n", "")
         cdo_result = cdo_result.replace("b'", "").strip()

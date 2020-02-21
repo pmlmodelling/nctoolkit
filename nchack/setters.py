@@ -107,17 +107,10 @@ def set_longnames(self, var_dict):
 
     # change the units in turn. This doesn't seem to be something you can chain?
 
-
-    if type(self.current) is list:
-        ff_list = self.current
-    else:
-        ff_list = [self.current]
-
     new_commands = []
     new_files = []
 
-
-    for ff in ff_list:
+    for ff in self:
         nco_command = "ncatted "
         for i in var_dict:
             i_dict = var_dict[i]
@@ -136,18 +129,14 @@ def set_longnames(self, var_dict):
     self.history+=new_commands
     self._hold_history = copy.deepcopy(self.history)
 
-    for ff in ff_list:
+    for ff in self:
         if ff in nc_safe:
             nc_safe.remove(ff)
 
-
     self.current = new_files
 
-    for ff in self.current:
+    for ff in self:
         nc_safe.append(ff)
-
-    if len(self.current) == 1:
-        self.current = self.current[0]
 
     # clean up the directory
     cleanup()

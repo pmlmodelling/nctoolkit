@@ -66,7 +66,7 @@ def assign_coords(self, lon_name = None, lat_name = None):
     if type(self.start) is list:
         target = ""
     else:
-        if self.start == self.current:
+        if self.start == self:
             target = temp_file("nc")
 
     nco_command+= self.current + " " + target

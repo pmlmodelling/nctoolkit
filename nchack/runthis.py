@@ -269,7 +269,7 @@ def run_this(os_command, self, output = "one",  out_file = None):
             if type(self.current) is str:
                 nc_safe.append(self.current)
             else:
-                for ff in self.current:
+                for ff in self:
                     nc_safe.append(ff)
 
             if type(start_files) is str:
@@ -324,7 +324,7 @@ def run_this(os_command, self, output = "one",  out_file = None):
             if type(self.current) is str:
                 nc_safe.append(copy.deepcopy(self.current))
             else:
-                for ff in self.current:
+                for ff in self:
                     nc_safe.append(ff)
 
             if type(start_files) is str:

@@ -29,7 +29,7 @@ def merge(self, match = ["year", "month", "day"]):
     # Make sure the times in the files are compatiable, based on the match criteria
 
     all_times = []
-    for ff in self.current:
+    for ff in self:
         cdo_result = subprocess.run("cdo ntime " + ff, shell = True, stdout=subprocess.PIPE , stderr =subprocess.PIPE ).stdout
         cdo_result = str(cdo_result).replace("b'", "").strip()
         ntime = int(cdo_result.split("\\")[0])
@@ -39,7 +39,7 @@ def merge(self, match = ["year", "month", "day"]):
 
 
     all_grids = []
-    for ff in self.current:
+    for ff in self:
         cdo_result = subprocess.run("cdo griddes " + ff, shell = True, stdout=subprocess.PIPE, stderr =subprocess.PIPE).stdout
         all_grids.append(cdo_result)
 
@@ -48,7 +48,7 @@ def merge(self, match = ["year", "month", "day"]):
 
 
     all_times = []
-    for ff in self.current:
+    for ff in self:
         cdo_result = subprocess.run("cdo showtimestamp " + ff, shell = True, stdout=subprocess.PIPE, stderr =subprocess.PIPE).stdout
         cdo_result = str(cdo_result).replace("b'", "").strip()
         cdo_result = cdo_result.split()

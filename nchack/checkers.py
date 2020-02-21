@@ -29,7 +29,7 @@ def ensemble_check(tracker):
     """
 
     results = []
-    for ff in tracker.current:
+    for ff in tracker:
         cdo_result = os.popen( "cdo partab " + ff).read()
         results.append(cdo_result)
 
@@ -42,7 +42,7 @@ def ensemble_check(tracker):
 
     results = []
 
-    for ff in tracker.current:
+    for ff in tracker:
         cdo_result = os.popen( "cdo griddes " + ff).read()
         results.append(cdo_result)
 
