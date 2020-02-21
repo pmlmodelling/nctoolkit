@@ -106,7 +106,7 @@ def file_size(file_path):
 
 
 
-def open_data(x = None):
+def open_data(x = None, suppress_messages = False):
     """
     Read netcdf data as a DataSet object
 
@@ -156,7 +156,8 @@ def open_data(x = None):
             warnings.warn(message = "Duplicates in data set have been removed!")
 
     if type(x) is list:
-        print("Performing basic checks on ensemble files")
+        if suppress_messages == False:
+            print("Performing basic checks on ensemble files")
         if len(x) == 0:
             raise ValueError("You have not provided any files!")
 
@@ -172,7 +173,8 @@ def open_data(x = None):
                     raise ValueError(mes)
                 nc_safe.append(ff)
                 nc_protected.append(x)
-        print("Files pass checks")
+        if suppress_messages == False:
+            print("All files passed checks")
 
     # if there is only one file in the list, change it to a single file
     if type(x) is list:
@@ -216,6 +218,13 @@ class DataSet(object):
             self._run = True
         self._hold_history = []
         self._merged = False
+
+
+    def __getitem__(self, index):
+        if type(self.current) is str:
+            return self.current
+
+        return self.current[index]
 
     def __repr__(self):
         # tidy up the output first
