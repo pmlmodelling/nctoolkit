@@ -226,6 +226,12 @@ class DataSet(object):
 
         return self.current[index]
 
+    def __len__(self):
+        if type(self.current) is str:
+            return 1
+
+        return len(self.current)
+
     def __repr__(self):
         # tidy up the output first
         if isinstance(self.start,list):
