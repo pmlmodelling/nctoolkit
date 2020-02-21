@@ -53,21 +53,24 @@ class TestSelect(unittest.TestCase):
         out = nc.temp_file.temp_file() + ".nc"
         Path(out).touch()
 
-        tracker = nc.open_data(out)
         with self.assertRaises(ValueError) as context:
-            tracker.split("day")
+            tracker = nc.open_data(out)
 
         os.remove(out)
         n = len(nc.session_files())
         self.assertEqual(n, 0)
 
     def test_error2(self):
+        print(nc.session_files())
         tracker = nc.open_data(ff)
         with self.assertRaises(ValueError) as context:
             tracker.split("")
 
         n = len(nc.session_files())
         self.assertEqual(n, 0)
+
+
+
 
     def test_list(self):
         tracker = nc.open_data(ff)
