@@ -78,15 +78,17 @@ def select_years(self, years):
     n_removed = 0
     new_current = []
     for ff in self:
-        out = subprocess.Popen("cdo showyear " + ff,shell = True, stdin = subprocess.PIPE,stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
-        cdo_result,ignore = out.communicate()
-        cdo_result = str(cdo_result)
-        cdo_result = cdo_result.replace("'", "").split("\\n")[1].strip()
-        cdo_result = cdo_result.replace("\n", "")
+        cdo_result = subprocess.run("cdo showyear " + ff, shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        all_years = []
+        cdo_result = str(cdo_result.stdout).replace("\\n", "")
+        cdo_result = cdo_result.replace("b'", "").strip()
+        cdo_result = cdo_result.replace("'", "").strip()
         cdo_result = cdo_result.split()
-        cdo_result = list(set(cdo_result))
-        cdo_result =  [int(v) for v in cdo_result]
-        inter = [element for element in cdo_result if element in years]
+        all_years+=cdo_result
+        all_years = list(set(all_years))
+        all_years =  [int(v) for v in all_years]
+        inter = [element for element in all_years if element in years]
 
         if len(inter) > 0:
             new_current.append(ff)
