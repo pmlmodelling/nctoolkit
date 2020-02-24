@@ -157,7 +157,8 @@ def open_data(x = None, suppress_messages = False):
 
     if type(x) is list:
         if suppress_messages == False:
-            print("Performing basic checks on ensemble files")
+            if len(x) > 500:
+                print("Performing basic checks on ensemble files")
         if len(x) == 0:
             raise ValueError("You have not provided any files!")
 
@@ -174,7 +175,8 @@ def open_data(x = None, suppress_messages = False):
                 nc_safe.append(ff)
                 nc_protected.append(x)
         if suppress_messages == False:
-            print("All files passed checks")
+            if len(x) > 500:
+                print("All files passed checks")
 
     # if there is only one file in the list, change it to a single file
     if type(x) is list:
