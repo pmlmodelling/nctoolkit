@@ -1,5 +1,11 @@
+
+# The warnings in this method could be improved slightly. Possibly case of using mutate/transmute that will make warnings less tiday
+# Though CDO should always pick issues up
+
+
 from .flatten import str_flatten
 from .runthis import run_this
+from .show import nc_variables
 import warnings
 
 def remove_variables(self, vars):
@@ -15,9 +21,13 @@ def remove_variables(self, vars):
     if type(vars) is not list:
         vars = [vars]
 
-    missing_vars = [vv for vv in vars if vv not in self.variables]
+    orig_vars = []
+    for ff in self:
+        orig_vars += nc_variables(ff)
 
-    vars = [vv for vv in vars if vv in self.variables]
+    missing_vars = [vv for vv in vars if vv not in orig_vars]
+
+    vars = [vv for vv in vars if vv in orig_vars]
 
     if len(vars) == 0:
         warnings.warn(message = "None of the variables supplied are in the dataset")
