@@ -253,9 +253,7 @@ def run_this(os_command, self, output = "one",  out_file = None):
 
                 if "reduce_dim" in ff_command:
                     ff_command = ff_command.replace("reduce_dim", "").replace(" - ", " ").replace(" -- ", " ")
-                    ff_command = ff_command.replace("cdo ", "cdo --reduce_dim")
-                ff_command = ff_command.replace(" -reduce_dim ",  " --reduce_dim ")
-                ff_command = ff_command.replace(" reduce_dim ",  " --reduce_dim ")
+                    ff_command = ff_command.replace("cdo ", "cdo --reduce_dim ")
 
                 self.history.append(ff_command)
                 temp = pool.apply_async(run_cdo,[ff_command, target, out_file])
@@ -323,7 +321,7 @@ def run_this(os_command, self, output = "one",  out_file = None):
 
             if "reduce_dim" in os_command:
                 os_command = os_command.replace("reduce_dim", "").replace(" - ", " ").replace(" -- ", " ")
-                os_command = os_command.replace("cdo ", "cdo --reduce_dim")
+                os_command = os_command.replace("cdo ", "cdo --reduce_dim ")
 
 
             target = run_cdo(os_command, target, out_file)
