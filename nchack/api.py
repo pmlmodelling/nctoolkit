@@ -106,7 +106,7 @@ def file_size(file_path):
 
 
 
-def open_data(x = None, suppress_messages = False):
+def open_data(x = None, suppress_messages = False, checks = False):
     """
     Read netcdf data as a DataSet object
 
@@ -114,6 +114,8 @@ def open_data(x = None, suppress_messages = False):
     ---------------
     x : str or list
         A string or list of netcdf files. The function will check the files exist. If x is not a list, but an iterable it will be converted to a list
+    checks: boolean
+        Do you want basic checks to ensure cdo can read files?
     """
 
     # make sure data has been supplied
@@ -133,11 +135,12 @@ def open_data(x = None, suppress_messages = False):
         if os.path.exists(x) == False:
             raise ValueError("Data set " + x + " does not exist!")
 
-        out = subprocess.run("cdo sinfo " + x, shell = True, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
-        if "Open failed" in out.stderr.decode("utf-8"):
-            mes = out.stderr.decode("utf-8").replace("cdo    sinfo: ", "").replace("<\n", "").replace("\n", "")
-            mes = re.sub(" +", " ", mes)
-            raise ValueError(mes)
+        if checks:
+            out = subprocess.run("cdo sinfo " + x, shell = True, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+            if "Open failed" in out.stderr.decode("utf-8"):
+                mes = out.stderr.decode("utf-8").replace("cdo    sinfo: ", "").replace("<\n", "").replace("\n", "")
+                mes = re.sub(" +", " ", mes)
+                raise ValueError(mes)
 
 
         else:
@@ -156,9 +159,10 @@ def open_data(x = None, suppress_messages = False):
             warnings.warn(message = "Duplicates in data set have been removed!")
 
     if type(x) is list:
-        if suppress_messages == False:
-            if len(x) > 500:
-                print("Performing basic checks on ensemble files")
+        if checks:
+            if suppress_messages == False:
+                if len(x) > 500:
+                    print("Performing basic checks on ensemble files")
         if len(x) == 0:
             raise ValueError("You have not provided any files!")
 
@@ -167,16 +171,18 @@ def open_data(x = None, suppress_messages = False):
             if os.path.exists(ff) == False:
                 raise ValueError("Data set " + ff + " does not exist!")
             else:
-                out = subprocess.run("cdo sinfo " + ff, shell = True, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
-                if "Open failed" in out.stderr.decode("utf-8"):
-                    mes = out.stderr.decode("utf-8").replace("cdo    sinfo: ", "").replace("<\n", "").replace("\n", "")
-                    mes = re.sub(" +", " ", mes)
-                    raise ValueError(mes)
+                if checks:
+                    out = subprocess.run("cdo sinfo " + ff, shell = True, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+                    if "Open failed" in out.stderr.decode("utf-8"):
+                        mes = out.stderr.decode("utf-8").replace("cdo    sinfo: ", "").replace("<\n", "").replace("\n", "")
+                        mes = re.sub(" +", " ", mes)
+                        raise ValueError(mes)
                 nc_safe.append(ff)
                 nc_protected.append(x)
-        if suppress_messages == False:
-            if len(x) > 500:
-                print("All files passed checks")
+        if checks:
+            if suppress_messages == False:
+                if len(x) > 500:
+                    print("All files passed checks")
 
     # if there is only one file in the list, change it to a single file
     if type(x) is list:
