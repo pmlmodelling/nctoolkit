@@ -71,7 +71,6 @@ def assign_coords(self, lon_name = None, lat_name = None):
 
     nco_command+= self.current + " " + target
 
-    print(nco_command)
     return None
 
     target = run_nco(nco_command, target)
