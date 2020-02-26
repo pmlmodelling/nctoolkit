@@ -12,8 +12,10 @@ ff = "data/sst.mon.mean.nc"
 
 class TestSelect(unittest.TestCase):
 
+
+
+
     def test_add(self):
-        print(nc.session_files())
         tracker = nc.open_data(ff)
         tracker.select_years(list(range(1950, 1951)))
         tracker.select_months([1])
@@ -47,6 +49,28 @@ class TestSelect(unittest.TestCase):
         self.assertEqual(x + x, y)
         n = len(nc.session_files())
         self.assertEqual(n, 2)
+
+
+    def test_add_var(self):
+        tracker = nc.open_data(ff)
+        tracker.select_years(list(range(1950, 1951)))
+        tracker.select_months([1])
+        tracker.release()
+        new = tracker.copy()
+        tracker.mutate({"tos":"sst+1-1"})
+        tracker.release()
+        new.add(tracker, var = "tos")
+        new.spatial_mean()
+        tracker.spatial_mean()
+
+        x = tracker.to_dataframe().sst.values[0]
+        y = new.to_dataframe().sst.values[0]
+
+        self.assertEqual(x + x, y)
+        n = len(nc.session_files())
+        self.assertEqual(n, 2)
+
+
 
     def test_add3(self):
         tracker = nc.open_data(ff)

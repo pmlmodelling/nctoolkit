@@ -15,6 +15,7 @@ class TestSelect(unittest.TestCase):
 
     def test_remove_variables(self):
         tracker = nc.open_data(ff)
+        print("This: " + nc.nc_variables(ff)[0])
         tracker.select_years(list(range(1950, 1951)))
         tracker.select_months([1])
         tracker.set_date(year = 1990, month = 1, day = 1)
@@ -22,6 +23,7 @@ class TestSelect(unittest.TestCase):
         tracker.remove_variables("sst")
         tracker.release()
         x = tracker.variables
+        print(x)
 
         self.assertEqual(x, ["tos"])
 
