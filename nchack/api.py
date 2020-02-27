@@ -13,6 +13,7 @@ import warnings
 import atexit
 import multiprocessing as mp
 
+
 # A custom format for warnings.
 def custom_formatwarning(msg, *args, **kwargs):
     # ignore everything except the message
@@ -21,19 +22,20 @@ def custom_formatwarning(msg, *args, **kwargs):
 warnings.formatwarning = custom_formatwarning
 
 # import functions from nchack
-from .flatten import str_flatten
-from .generate_grid import generate_grid
-from .session import nc_safe
-from .session import nc_protected
 from .cleanup import cleanup
 from .cleanup import clean_all
 from .cleanup import deep_clean
 from .cleanup import temp_check
-from .temp_file import temp_file
 from .create_ensemble import create_ensemble
+from .flatten import str_flatten
+from .generate_grid import generate_grid
+from .runthis import run_cdo
+from .session import nc_safe
+from .session import nc_protected
+from .session import session_info
 from .show import nc_variables
 from .show import nc_years
-from .session import session_info
+from .temp_file import temp_file
 
 # set up the session info
 letters = string.ascii_lowercase
@@ -206,6 +208,32 @@ def merge(*datasets, match = ["day", "year", "month"]):
     result = open_data(all_files)
     result.merge(match = match)
     return result
+
+def cor_time(x = None, y = None):
+
+    if "DataSet" in str(type(x)) == False:
+        raise ValueError("Please check x is a dataset")
+        # make sure everything has been evaluated
+        x.release()
+
+    if "DataSet" in str(type(y)) == False:
+        raise ValueError("Please check y is a dataset")
+        # make sure everything has been evaluated
+        y.release()
+
+    if type(x.current) is not str or type(y.current) is not str:
+        raise TypeError("This method can only work for single variable data sets")
+
+    target = temp_file("nc")
+    command = "cdo -L timcor " + x.current + " " + y.current + " " + target
+    target = run_cdo(command, target = target)
+
+    data = open_data(target)
+
+    return data
+
+
+
 
 
 
@@ -499,6 +527,7 @@ class DataSet(object):
 
     from .expr import mutate
     from .expr import transmute
+    from .expr import sum_all
 
     from .select import select_season
     from .select import select_months
@@ -594,6 +623,7 @@ class DataSet(object):
     from .verticals import vertical_max
     from .verticals import vertical_range
     from .verticals import vertical_sum
+    #from .verticals import vertical_cum
     from .verticals import surface
     from .verticals import vertical_interp
     from .verticals import bottom
