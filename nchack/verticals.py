@@ -131,3 +131,10 @@ def vertical_sum(self):
     """
 
     return vertstat(self, stat = "sum")
+
+def vertical_cum(self):
+    """
+    Calculate the vertical sum of variable values
+    """
+
+    return vertstat(self, stat = "cum")
