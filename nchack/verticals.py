@@ -7,6 +7,8 @@ from .runthis import run_this
 from .flatten import str_flatten
 from .session import nc_safe
 from .api import open_data
+from .cleanup import cleanup
+
 
 def bottom(self):
     """
@@ -183,10 +185,14 @@ def bottom_mask(self):
     bottom.set_missing([0,0])
     bottom.release()
 
+    nc_safe.remove(self.current)
     self.current = copy.deepcopy(bottom.current)
     nc_safe.append(self.current)
+
     self.history = copy.deepcopy(bottom.history)
     self._hold_history = copy.deepcopy(self.history)
+
+    cleanup()
 
 
 
