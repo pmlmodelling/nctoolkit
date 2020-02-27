@@ -26,7 +26,12 @@ def transmute(self, operations = None):
 
     for key,value in operations.items():
 
+        for x in ["&&", "||"]:
+            if x in value:
+                raise ValueError("Invalid expression provided")
+
         new_x = ''.join((' {} '.format(el) if el in '=><+-/*^()&' else el for el in value)).replace(" &  & ", " && ").replace(" & ", " && ")
+        new_x = new_x.replace(" | ", " || ")
         expr_split = new_x.split(" ")
         new_expr = ""
 
@@ -74,8 +79,12 @@ def mutate(self, operations = None):
 
     for key,value in operations.items():
 
+        for x in ["&&", "||", "++", "--", "===", "^^", "//", ">>"]:
+            if x in value:
+                raise ValueError("Invalid expression provided")
+
         new_x = ''.join((' {} '.format(el) if el in '=><+-/*^()&' else el for el in value)).replace(" &  & ", " && ").replace(" & ", " && ")
-        #new_x = ''.join((' {} '.format(el) if el in '=><+-/*^()' else el for el in value))
+        new_x = new_x.replace(" | ", " || ")
         expr_split = new_x.split(" ")
         new_expr = ""
 
