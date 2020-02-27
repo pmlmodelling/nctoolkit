@@ -1,6 +1,12 @@
 from .runthis import run_this
 import inspect
 
+
+# todo
+# ensure methods work with all logical operators.
+# convert code for fixing expression to a function. Invitation to bugs currently
+
+
 def transmute(self, operations = None):
     """
     Create new variables using mathematical expressions, and drop original variables
@@ -20,7 +26,7 @@ def transmute(self, operations = None):
 
     for key,value in operations.items():
 
-        new_x = ''.join((' {} '.format(el) if el in '=><+-/*^()' else el for el in value))
+        new_x = ''.join((' {} '.format(el) if el in '=><+-/*^()&' else el for el in value)).replace(" &  & ", " && ").replace(" & ", " && ")
         expr_split = new_x.split(" ")
         new_expr = ""
 
@@ -68,7 +74,8 @@ def mutate(self, operations = None):
 
     for key,value in operations.items():
 
-        new_x = ''.join((' {} '.format(el) if el in '=><+-/*^()' else el for el in value))
+        new_x = ''.join((' {} '.format(el) if el in '=><+-/*^()&' else el for el in value)).replace(" &  & ", " && ").replace(" & ", " && ")
+        #new_x = ''.join((' {} '.format(el) if el in '=><+-/*^()' else el for el in value))
         expr_split = new_x.split(" ")
         new_expr = ""
 
