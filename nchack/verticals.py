@@ -138,3 +138,11 @@ def vertical_cum(self):
     """
 
     return vertstat(self, stat = "cum")
+
+def invert_levels(self):
+    """
+    Invert the levels of 3D variables
+    """
+    cdo_command = "cdo -invertlev"
+
+    run_this(cdo_command, self,  output = "ensemble")
