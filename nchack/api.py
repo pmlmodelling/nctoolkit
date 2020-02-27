@@ -527,6 +527,7 @@ class DataSet(object):
 
     from .expr import mutate
     from .expr import transmute
+    from .expr import assign
     from .expr import sum_all
 
     from .select import select_season
