@@ -119,6 +119,41 @@ class TestSelect(unittest.TestCase):
         n = len(nc.session_files())
         self.assertEqual(n, 2)
 
+
+    def test_bottom_mask(self):
+        data = nc.open_data("data/woa18_decav_t01_01.nc")
+        data.select_variables("t_an")
+        df1 = data.to_dataframe().reset_index()
+
+        data = nc.open_data("data/woa18_decav_t01_01.nc")
+        data.select_variables("t_an")
+        bottom = data.copy()
+        bottom.bottom_mask()
+        data.multiply(bottom)
+        data.vertical_max()
+
+        df2 = data.to_dataframe().reset_index().loc[:,["lon", "lat", "t_an"]].dropna().drop_duplicates()
+        df2 = df2.reset_index().drop(columns = "index")
+        x = (
+        df1
+        .loc[:, ["lon", "lat", "depth", "t_an"]]
+        .dropna()
+        .drop_duplicates()
+        # .rename(columns = {"t_an":"t_an2"})
+         .groupby(["lon", "lat"])
+             .tail(1)
+            .reset_index()
+            .drop(columns = ["index", "depth"])
+            .sort_values(["lon", "lat"])
+            .reset_index()
+            .drop(columns = "index")
+           .equals(df2.sort_values(["lon", "lat"]). reset_index().drop(columns = "index"))
+        )
+        self.assertEqual(x, True)
+
+
+
+
 if __name__ == '__main__':
     unittest.main()
 
