@@ -1,9 +1,12 @@
 
 import subprocess
+import copy
 import warnings
 
 from .runthis import run_this
 from .flatten import str_flatten
+from .session import nc_safe
+from .api import open_data
 
 def bottom(self):
     """
@@ -146,3 +149,45 @@ def invert_levels(self):
     cdo_command = "cdo -invertlev"
 
     run_this(cdo_command, self,  output = "ensemble")
+
+
+def bottom_mask(self):
+    """
+    Create a mask identifying the deepest cell without missing values.
+    1 identifies the deepest cell with non-missing values. Everything else is 0, or missing.
+    At present this method only uses the first available variable from netcdf files, so it may not be suitable for all data
+    """
+    self.release()
+
+    if type(self.current) is list:
+        raise TypeError("This only works for single file datasets")
+    data = open_data(self.current)
+
+    if len(data.variables_detailed.query("levels>1")) == 0:
+        raise ValueError("There is only one vertical level in this file!")
+
+    var_use = data.variables_detailed.query("levels>1").variable[0]
+    data.select_variables(var_use)
+    data.select_timestep(0)
+    data.set_missing([0,0])
+    data.transmute({"Wet":var_use +  " == " + var_use})
+    data.invert_levels()
+    data.release()
+    bottom = data.copy()
+    bottom.vertical_cum()
+    bottom.compare_all("==1")
+    bottom.multiply(data)
+    bottom.invert_levels()
+    bottom.rename({"Wet":"bottom"})
+    bottom.set_longnames({"bottom":"Identifier for cell nearest seabed"})
+    bottom.release()
+
+    self.current = copy.deepcopy(bottom.current)
+    nc_safe.append(self.current)
+    self.history = copy.deepcopy(bottom.history)
+    self._hold_history = copy.deepcopy(self.history)
+
+
+
+
+

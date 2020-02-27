@@ -627,6 +627,7 @@ class DataSet(object):
     from .verticals import surface
     from .verticals import vertical_interp
     from .verticals import bottom
+    from .verticals import bottom_mask
     from .verticals import invert_levels
 
     from .view import view
