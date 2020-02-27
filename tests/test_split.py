@@ -54,7 +54,7 @@ class TestSelect(unittest.TestCase):
         Path(out).touch()
 
         with self.assertRaises(ValueError) as context:
-            tracker = nc.open_data(out)
+            tracker = nc.open_data(out, checks = True)
 
         os.remove(out)
         n = len(nc.session_files())
