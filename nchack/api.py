@@ -623,7 +623,7 @@ class DataSet(object):
     from .verticals import vertical_max
     from .verticals import vertical_range
     from .verticals import vertical_sum
-    #from .verticals import vertical_cum
+    from .verticals import vertical_cum
     from .verticals import surface
     from .verticals import vertical_interp
     from .verticals import bottom
