@@ -180,6 +180,7 @@ def bottom_mask(self):
     bottom.invert_levels()
     bottom.rename({"Wet":"bottom"})
     bottom.set_longnames({"bottom":"Identifier for cell nearest seabed"})
+    bottom.set_missing([0,0])
     bottom.release()
 
     self.current = copy.deepcopy(bottom.current)
