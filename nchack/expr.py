@@ -99,4 +99,43 @@ def mutate(self, operations = None):
 
 
 
+def sum_all(self, drop = True):
+    """
+    Calculate the sum of all variables for each time step
+
+    Parameters
+    -------------
+    drop : boolean
+        Do you want to keep variables?
+    """
+
+    if type(self) is list:
+        raise TypeError("This only works for single files presently")
+
+    self.release()
+
+    if drop == True:
+        self.transmute({"total":"+".join(self.variables)})
+
+    else:
+        if "total" not in self.variables:
+            self.mutate({"total":"+".join(self.variables)})
+        else:
+            i = 0
+            while True:
+                if "total" + str(i) not in self.variables:
+                    break
+                i += 1
+            self.mutate({"total" + str(i):"+".join(self.variables)})
+
+
+
+
+
+
+
+
+
+
+
 
