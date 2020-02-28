@@ -490,15 +490,11 @@ class DataSet(object):
         return new
 
     def __del__(self):
-        if type(self.current) is str:
-            if self.current in nc_safe:
-                nc_safe.remove(self.current)
-            if self._weights in nc_safe:
+        if self._weights in nc_safe:
                 nc_safe.remove(self._weights)
-        else:
-            for ff in self:
-                if ff in nc_safe:
-                    nc_safe.remove(ff)
+        for ff in self:
+            if ff in nc_safe:
+                nc_safe.remove(ff)
 
         cleanup()
 
