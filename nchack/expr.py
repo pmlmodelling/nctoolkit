@@ -1,21 +1,13 @@
 from .runthis import run_this
 import inspect
+import copy
 
 
 # todo
 # ensure methods work with all logical operators.
 # convert code for fixing expression to a function. Invitation to bugs currently
 
-
-def transmute(self, operations = None):
-    """
-    Create new variables using mathematical expressions, and drop original variables
-
-    Parameters
-    -------------
-    operations : dict
-        operations to apply. The keys are the new variables to generate. The values are the mathematical operations to carry out.
-    """
+def fix_expression(operations = None, i_frame = None):
 
     if type(operations) is not dict:
         raise TypeError("No expression was provided")
@@ -38,8 +30,8 @@ def transmute(self, operations = None):
         for x in expr_split:
             if x.startswith("@"):
                 # We need to first check the local variable supplied is a numeric
-                if x.replace("@", "") in inspect.currentframe().f_back.f_locals:
-                    new_x = inspect.currentframe().f_back.f_locals[x.replace("@", "")]
+                if x.replace("@", "") in i_frame.f_back.f_locals:
+                    new_x = i_frame.f_back.f_locals[x.replace("@", "")]
                 else:
                     raise ValueError(str(x.replace("@", "")) + " is not a local variable")
 
@@ -55,62 +47,44 @@ def transmute(self, operations = None):
     expr = expr.replace(" ", "" )
     expr = '"' + expr + '"'
 
-    # create the cdo call and run it
-    cdo_command = "cdo -expr," + expr
-    run_this(cdo_command, self, output = "ensemble")
+    return expr
+
 
 def mutate(self, operations = None):
+
+    if type(operations) is not dict:
+        raise TypeError("No expression was provided")
+
+    frame = inspect.currentframe()
+
+    try:
+        expr = fix_expression(operations, i_frame = frame)
+    finally:
+        del frame
+    # create the cdo call and run it
+    cdo_command = "cdo -aexpr," + expr
+    run_this(cdo_command, self, output = "ensemble")
+
+
+def transmute(self, operations = None):
     """
-    Create new variables using mathematical expressions, and keep original variables
+    Create new variables using mathematical expressions, and drop original variables
 
     Parameters
     -------------
     operations : dict
         operations to apply. The keys are the new variables to generate. The values are the mathematical operations to carry out.
     """
-
-    # check operations is of valid type
-    if type(operations) is not dict:
-        raise TypeError("No expression was provided")
-
-    # first,we need to convert the operations dictionary to a cdo expression
-
-    expr = []
-
-    for key,value in operations.items():
-
-        for x in ["&&", "||", "++", "--", "===", "^^", "//", ">>"]:
-            if x in value:
-                raise ValueError("Invalid expression provided")
-
-        new_x = ''.join((' {} '.format(el) if el in '=><+-/*^()&' else el for el in value)).replace(" &  & ", " && ").replace(" & ", " && ")
-        new_x = new_x.replace(" | ", " || ")
-        expr_split = new_x.split(" ")
-        new_expr = ""
-
-        for x in expr_split:
-            if x.startswith("@"):
-                # We need to first check the local variable supplied is a numeric
-                if x.replace("@", "") in inspect.currentframe().f_back.f_locals:
-                    new_x = inspect.currentframe().f_back.f_locals[x.replace("@", "")]
-                else:
-                    raise ValueError(str(x.replace("@", "")) + " is a local variable")
-
-                if isinstance(new_x, (int, float)) == False:
-                    raise TypeError(x +  " is not numeric!")
-                new_expr +=  str(new_x)
-            else:
-                new_expr +=  x
-
-        expr.append(key + "=" + new_expr)
-
-
-    expr = ";".join(expr)
-    expr = expr.replace(" ", "" )
-    expr = '"' + expr + '"'
-
     # create the cdo call and run it
-    cdo_command = "cdo -aexpr," + expr
+
+    frame = inspect.currentframe()
+
+    try:
+        expr = fix_expression(operations, i_frame = frame)
+    finally:
+        del frame
+    # create the cdo call and run it
+    cdo_command = "cdo -expr," + expr
     run_this(cdo_command, self, output = "ensemble")
 
 
@@ -145,6 +119,18 @@ def sum_all(self, drop = True):
             self.mutate({"total" + str(i):"+".join(self.variables)})
 
 
+
+def assign(self, **kwargs):
+    for key in kwargs:
+        if callable(kwargs[key]) is False:
+            raise TypeError("You have not supplied a lambda function")
+        func_string1 = str(inspect.getsourcelines(kwargs[key])[0]).strip("['\\n']").split(" = ")[1].split(":")[0].split("lambda")[1].strip()
+        func_string2 = str(inspect.getsourcelines(kwargs[key])[0]).strip("['\\n']").split(" = ")[1].split(":")[1][:-1]
+        if ". " in func_string2:
+            raise TypeError("lambda function is invalid!")
+
+        print(func_string1)
+        print(func_string2)
 
 
 
