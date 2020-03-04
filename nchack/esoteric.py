@@ -47,6 +47,9 @@ def assign_coords(self, lon_name = None, lat_name = None):
 
     self.release()
 
+    if lon_name is None or lat_name is None:
+        TypeError("Please provide lon and lat names!")
+
     if type(lon_name) is not str:
         TypeError("Method does not yet work with ensembles")
 
