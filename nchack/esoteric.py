@@ -61,11 +61,9 @@ def assign_coords(self, lon_name = None, lat_name = None):
 
     # change the units in turn. This doesn't seem to be something you can chain?
 
-    variables = self.variables
-
     nco_command = "ncatted "
 
-    for vv in variables:
+    for vv in self.variables:
         nco_command += "-a coordinates,"+ vv + ",c,c,'" + lon_name + " " + lat_name + "' "
 
     target = ""
