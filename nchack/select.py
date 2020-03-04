@@ -77,7 +77,9 @@ def select_years(self, years):
 
     n_removed = 0
     new_current = []
+
     for ff in self:
+
         cdo_result = subprocess.run("cdo showyear " + ff, shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
         all_years = []
@@ -99,7 +101,7 @@ def select_years(self, years):
 
         # figure out if any of the files actually have years outide the period required
         if len(inter) >0:
-            if len([element for element in cdo_result if element not in years])  >0:
+            if len([yy for yy in all_years if yy not in years])  >0:
                 missing_files+=1
 
     if len(new_current) == 0:
