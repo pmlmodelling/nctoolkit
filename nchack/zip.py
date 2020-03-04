@@ -10,8 +10,6 @@ def zip(self):
     self._zip = True
 
     if len(self.history) == len(self._hold_history):
-        cdo_command = "cdo -z zip copy "
-    else:
-        cdo_command = "cdo -z zip "
-    run_this(cdo_command, self, output = "ensemble")
+        cdo_command = "copy "
+        run_this(cdo_command, self, output = "ensemble")
 
