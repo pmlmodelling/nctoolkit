@@ -47,6 +47,9 @@ def assign_coords(self, lon_name = None, lat_name = None):
 
     self.release()
 
+    if type(self.current) is list:
+        raise TypeError("This only works for single files currently")
+
     if lon_name is None or lat_name is None:
         TypeError("Please provide lon and lat names!")
 
@@ -69,12 +72,11 @@ def assign_coords(self, lon_name = None, lat_name = None):
     if type(self.start) is list:
         target = ""
     else:
-        if self.start == self:
+        if self.start == self.current:
             target = temp_file("nc")
 
     nco_command+= self.current + " " + target
 
-    #return None
 
     target = run_nco(nco_command, target)
 
