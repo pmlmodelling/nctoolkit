@@ -256,6 +256,7 @@ class DataSet(object):
             self._run = True
         self._hold_history = []
         self._merged = False
+        self._zip = False
 
 
     def __getitem__(self, index):
