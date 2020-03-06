@@ -153,7 +153,7 @@ def monthly_anomaly(self, baseline = None):
 
 
     # updat the safe lists and current file
-    for ff in self.current:
+    for ff in self:
         if ff in nc_safe:
             nc_safe.remove(ff)
 
