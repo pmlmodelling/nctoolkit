@@ -27,6 +27,26 @@ class TestSelect(unittest.TestCase):
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 
+    def test_sumall(self):
+        tracker = nc.open_data(ff)
+        tracker.select_years(1990)
+        tracker.select_months(1)
+        inc = 0
+        tracker.mutate({"tos":"sst+@inc"})
+        tracker.sum_all()
+        tracker.spatial_mean()
+        x = tracker.to_xarray().total.values[0][0][0].astype("float")
+
+        tracker = nc.open_data(ff)
+        tracker.select_years(1990)
+        tracker.select_months(1)
+        tracker.spatial_mean()
+        y = tracker.to_xarray().sst.values[0][0][0].astype("float")
+
+        self.assertEqual(x, y * 2)
+
+
+
     def test_mutate(self):
         tracker = nc.open_data(ff)
         tracker.select_years(1990)
