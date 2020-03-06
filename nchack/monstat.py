@@ -3,7 +3,7 @@ from .runthis import run_this
 
 def monstat(self,  stat = "mean"):
     """Method to calculate the monthly statistic from a netcdf file"""
-    cdo_command = "cdo -mon" + stat
+    cdo_command = f"cdo -mon{stat}"
 
     run_this(cdo_command, self,  output = "ensemble")
 

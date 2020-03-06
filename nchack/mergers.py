@@ -30,7 +30,7 @@ def merge(self, match = ["year", "month", "day"]):
 
     all_times = []
     for ff in self:
-        cdo_result = subprocess.run("cdo ntime " + ff, shell = True, stdout=subprocess.PIPE , stderr =subprocess.PIPE ).stdout
+        cdo_result = subprocess.run(f"cdo ntime {ff}", shell = True, stdout=subprocess.PIPE , stderr =subprocess.PIPE ).stdout
         cdo_result = str(cdo_result).replace("b'", "").strip()
         ntime = int(cdo_result.split("\\")[0])
         all_times.append(ntime)
@@ -40,7 +40,7 @@ def merge(self, match = ["year", "month", "day"]):
 
     all_grids = []
     for ff in self:
-        cdo_result = subprocess.run("cdo griddes " + ff, shell = True, stdout=subprocess.PIPE, stderr =subprocess.PIPE).stdout
+        cdo_result = subprocess.run(f"cdo griddes {ff}", shell = True, stdout=subprocess.PIPE, stderr =subprocess.PIPE).stdout
         all_grids.append(cdo_result)
 
     if len(set(all_grids)) > 1:
@@ -49,7 +49,7 @@ def merge(self, match = ["year", "month", "day"]):
 
     all_times = []
     for ff in self:
-        cdo_result = subprocess.run("cdo showtimestamp " + ff, shell = True, stdout=subprocess.PIPE, stderr =subprocess.PIPE).stdout
+        cdo_result = subprocess.run(f"cdo showtimestamp {ff}", shell = True, stdout=subprocess.PIPE, stderr =subprocess.PIPE).stdout
         cdo_result = str(cdo_result).replace("b'", "").strip()
         cdo_result = cdo_result.split()
         cdo_result = pd.Series( (v for v in cdo_result) )

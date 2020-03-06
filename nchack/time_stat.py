@@ -9,7 +9,7 @@ def time_stat(self, stat = "mean"):
     """Method to calculate a stat over all time steps"""
 
     # create cdo command and run it
-    cdo_command = "cdo -tim" + stat
+    cdo_command = f"cdo -tim{stat}"
     run_this(cdo_command, self,  output = "ensemble")
 
 def sum(self):

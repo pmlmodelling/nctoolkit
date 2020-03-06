@@ -49,7 +49,7 @@ def write_nc(self, out, zip = True, overwrite = False):
 
     if len(self.history) == len(self._hold_history):
         if zip:
-            cdo_command = ("cdo -z zip_9 copy " + ff[0] + " " + out)
+            cdo_command = (f"cdo -z zip_9 copy {ff[0]} {out}")
             os.system(cdo_command)
             self.history.append(cdo_command)
             self._hold_history = copy.deepcopy(self.history)
@@ -59,7 +59,7 @@ def write_nc(self, out, zip = True, overwrite = False):
             nc_safe.append(out)
 
         else:
-            cdo_command = ("cdo copy " + ff[0] + " " + out)
+            cdo_command = (f"cdo copy {ff[0]} {out}")
             os.system(cdo_command)
             self.history.append(cdo_command)
             self._hold_history = copy.deepcopy(self.history)

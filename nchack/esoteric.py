@@ -24,7 +24,7 @@ def set_gridtype(self, grid):
     if grid not in ["curvilinear", "unstructured", "dereference", "regular", "regularnn", "lonlat"]:
             raise ValueError("Grid type supplies is not supported")
 
-    cdo_command = "cdo -setgridtype," + grid
+    cdo_command = f"cdo -setgridtype,{grid}"
 
     run_this(cdo_command, self,  output = "ensemble")
 
@@ -74,7 +74,6 @@ def assign_coords(self, lon_name = None, lat_name = None):
             target = temp_file("nc")
 
     nco_command+= self.current + " " + target
-
 
     target = run_nco(nco_command, target)
 

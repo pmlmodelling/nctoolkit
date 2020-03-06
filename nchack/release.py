@@ -22,8 +22,7 @@ def release(self,  run_merge = True):
         else:
             cdo_command = "cdo "
         if self._zip:
-            cdo_command = cdo_command + " -z zip "
-    #    cdo_command = "cdo -z zip "
+            cdo_command = f"{cdo_command} -z zip "
 
         output_method = "ensemble"
 

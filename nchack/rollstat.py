@@ -11,7 +11,7 @@ def rollstat(self, window,  stat = "mean"):
         raise TypeError("The window supplied is not numeric!")
 
     # create the cdo call and run it
-    cdo_command = "cdo -run" + stat + "," + str(window)
+    cdo_command = f"cdo -run{stat},{str(window)}"
     run_this(cdo_command, self, output = "ensemble")
 
 

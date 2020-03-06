@@ -30,7 +30,7 @@ def ensemble_check(tracker):
 
     results = []
     for ff in tracker:
-        cdo_result = os.popen( "cdo partab " + ff).read()
+        cdo_result = os.popen(f"cdo partab {ff}").read()
         results.append(cdo_result)
 
     if len(list(set(results))) == 1:
@@ -43,7 +43,7 @@ def ensemble_check(tracker):
     results = []
 
     for ff in tracker:
-        cdo_result = os.popen( "cdo griddes " + ff).read()
+        cdo_result = os.popen(f"cdo griddes {ff}").read()
         results.append(cdo_result)
 
     if len(list(set(results))) == 1:
@@ -66,7 +66,7 @@ def check_dates(self):
 
     all_times = []
     for ff in ensemble:
-        cdo_result = os.popen( "cdo showdate " + ff).read()
+        cdo_result = os.popen(f"cdo showdate {ff}").read()
         cdo_result = cdo_result.replace("\n", "")
         cdo_result = cdo_result.split()
         cdo_result = pd.Series( (datetime.strptime(v, "%Y-%m-%d") for v in cdo_result) )

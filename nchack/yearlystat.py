@@ -3,7 +3,7 @@ from .runthis import run_this
 def yearlystat(self, stat = "mean"):
     """Function to calculate the seasonal statistic from a function"""
 
-    cdo_command = "cdo -year" + stat
+    cdo_command = f"cdo -year{stat}"
 
     run_this(cdo_command, self,  output = "ensemble")
 

@@ -69,7 +69,7 @@ def compare_all(self, expression):
     """
 
     expression = fix_expr(expression)
-    cdo_command = "cdo -" + expression
+    cdo_command = f"cdo -{expression}"
     run_this(cdo_command, self, output = "ensemble")
 
 

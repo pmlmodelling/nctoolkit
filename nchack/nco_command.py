@@ -30,7 +30,7 @@ def nco_command(self, command):
 
         target = temp_file(".nc")
 
-        the_command = command + " " + ff + " " + target
+        the_command = f"{command} {ff} {target}"
 
         target = run_nco(the_command, target = target)
 

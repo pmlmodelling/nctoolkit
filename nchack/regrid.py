@@ -95,7 +95,7 @@ def regrid(self, grid = None, method = "bil"):
 
 
     for ff in self:
-        cdo_result = subprocess.run("cdo griddes " + ff, shell = True, stdout=subprocess.PIPE, stderr =subprocess.PIPE).stdout
+        cdo_result = subprocess.run(f"cdo griddes {ff}", shell = True, stdout=subprocess.PIPE, stderr =subprocess.PIPE).stdout
         cdo_result = str(cdo_result)
         if cdo_result in grid_split:
             grid_split[cdo_result].append(ff)
@@ -121,13 +121,13 @@ def regrid(self, grid = None, method = "bil"):
         weights_nc = temp_file("nc")
 
         if type(tracker.current) is list:
-            cdo_command = "cdo -gen" + method + ","+ target_grid + " " + tracker.current[0] + " " +  weights_nc
+            cdo_command = f"cdo -gen{method},{target_grid} {tracker.current[0]} {weights_nc}"
         else:
-            cdo_command = "cdo -gen" + method + ","+ target_grid + " " + tracker.current + " " +  weights_nc
+            cdo_command = f"cdo -gen{method},{target_grid} {tracker.current} {weights_nc}"
 
         weights_nc = run_cdo(cdo_command, target = weights_nc)
 
-        cdo_command= "cdo -remap," + target_grid + "," + weights_nc
+        cdo_command= f"cdo -remap,{target_grid},{weights_nc}"
 
         tracker.run = True
 

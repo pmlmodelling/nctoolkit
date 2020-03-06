@@ -29,7 +29,7 @@ def bottom(self):
     cdo_result = subprocess.run("cdo nlevel " + ff, shell = True, stdout=subprocess.PIPE, stderr = subprocess.PIPE).stdout
     n_levels = int(str(cdo_result).replace("b'", "").strip().replace("'", "").split("\\n")[0])
 
-    cdo_command = "cdo -sellevidx," + str(n_levels)
+    cdo_command = f"cdo -sellevidx,{str(n_levels)}"
 
     run_this(cdo_command, self,  output = "ensemble")
 
@@ -84,7 +84,7 @@ def vertical_interp(self, vert_depths = None):
    #          raise ValueError("error: maximum depth supplied is too low")
 
         vert_depths = str_flatten(vert_depths, ",")
-        cdo_command = "cdo -intlevel," + vert_depths
+        cdo_command = f"cdo -intlevel,{vert_depths}"
 
         run_this(cdo_command, self,  output = "ensemble")
 
@@ -95,7 +95,7 @@ def vertical_interp(self, vert_depths = None):
 
 def vertstat(self, stat = "mean"):
     """Method to calculate the vertical mean from a function"""
-    cdo_command = "cdo -vert" + stat
+    cdo_command = f"cdo -vert{stat}"
 
     run_this(cdo_command, self,  output = "ensemble")
 

@@ -62,7 +62,7 @@ def mutate(self, operations = None):
     finally:
         del frame
     # create the cdo call and run it
-    cdo_command = "cdo -aexpr," + expr
+    cdo_command = f"cdo -aexpr,{expr}"
     run_this(cdo_command, self, output = "ensemble")
 
 

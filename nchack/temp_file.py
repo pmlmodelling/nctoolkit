@@ -27,7 +27,7 @@ def temp_file(ext = ""):
         if ext.startswith("."):
             target = target + ext
         else:
-            target = target + "." +  ext
+            target = f"{target}.{ext}"
 
         return target
 

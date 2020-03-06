@@ -35,14 +35,14 @@ def remove_variables(self, vars):
     else:
         if len(missing_vars) > 0:
             if len(missing_vars) > 1:
-                warnings.warn(message = str_flatten(missing_vars) + " are not in the dataset!")
+                warnings.warn(message = f"{str_flatten(missing_vars)} are not in the dataset!")
             else:
-                warnings.warn(message = str_flatten(missing_vars) + " is not in the dataset!")
+                warnings.warn(message = f"{str_flatten(missing_vars)} is not in the dataset!")
 
     vars = str_flatten(vars, ",")
 
     # create the cdo command and run it
-    cdo_command = "cdo -delete,name=" + vars
+    cdo_command = f"cdo -delete,name={vars}"
     run_this(cdo_command, self, output = "ensemble")
 
 

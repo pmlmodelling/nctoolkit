@@ -15,7 +15,7 @@ def select_season(self, season):
         Season to select. One of "DJF", "MAM", "JJA", "SON"
     """
 
-    cdo_command = "cdo -select,season=" + season
+    cdo_command = f"cdo -select,season={season}"
     run_this(cdo_command, self,  output = "ensemble")
 
 
@@ -46,7 +46,7 @@ def select_months(self, months):
 
     months = str_flatten(months, ",")
 
-    cdo_command = "cdo -selmonth," + months + " "
+    cdo_command = f"cdo -selmonth,{months}"
     run_this(cdo_command, self,  output = "ensemble")
 
 
@@ -80,7 +80,7 @@ def select_years(self, years):
 
     for ff in self:
 
-        cdo_result = subprocess.run("cdo showyear " + ff, shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        cdo_result = subprocess.run(f"cdo showyear {ff}", shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
         all_years = []
         cdo_result = str(cdo_result.stdout).replace("\\n", "")
@@ -115,7 +115,7 @@ def select_years(self, years):
     if missing_files >0:
         years = str_flatten(years, ",")
 
-        cdo_command = "cdo -selyear," + years
+        cdo_command = f"cdo -selyear,{years}"
 
         run_this(cdo_command, self,  output = "ensemble")
 
@@ -142,7 +142,7 @@ def select_variables(self, vars = None):
 
     vars_list = str_flatten(vars_list, ",")
 
-    cdo_command = "cdo -selname," + vars_list
+    cdo_command = f"cdo -selname,{vars_list}"
 
     run_this(cdo_command, self,  output = "ensemble")
 
@@ -164,7 +164,7 @@ def select_timestep(self, times):
     times = [str(x) for x in times]
     times = str_flatten(times)
 
-    cdo_command = "cdo -seltimestep," + times
+    cdo_command = f"cdo -seltimestep,{times}"
 
     run_this(cdo_command, self,  output = "ensemble")
 

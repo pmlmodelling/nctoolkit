@@ -39,7 +39,7 @@ def set_date(self, year, month, day,  base_year = 1900):
 
     if type(day) is not int:
         day = int(day)
-    cdo_command = "cdo -L -setreftime," + str(base_year) + "-01-01 -setdate," + str(year) + "-" + str(month) + "-" + str(day)
+    cdo_command = f"cdo -L -setreftime,{str(base_year)}-01-01 -setdate,{str(year)}-{str(month)}-{str(day)}"
 
     run_this(cdo_command, self,  output = "ensemble")
 
@@ -58,7 +58,7 @@ def set_missing(self, value):
         raise TypeError("Please supply a list!")
 
     if type(value) is list:
-        cdo_command = "cdo -setrtomiss," + str(value[0]) + "," + str(value[1])
+        cdo_command = f"cdo -setrtomiss,{str(value[0])},{str(value[1])}"
 
     run_this(cdo_command, self,  output = "ensemble")
 

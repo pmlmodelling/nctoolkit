@@ -4,7 +4,7 @@ from .runthis import run_this
 def seasstat(self, stat = "mean"):
     """Method to calculate the seasonal statistic from a function"""
 
-    cdo_command = "cdo -seas" + stat
+    cdo_command = f"cdo -seas{stat}"
 
     run_this(cdo_command, self,  output = "ensemble")
 

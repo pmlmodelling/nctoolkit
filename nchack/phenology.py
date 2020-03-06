@@ -46,7 +46,8 @@ def phenology(self, var = None):
 
     doy_nc = temp_file("nc")
 
-    cdo_command = "cdo -L -timcumsum -chname," + var +   ",peak -setclonlatbox,1,-180,180,-90,90 -selname," + var + " " + new_self.current + " " + doy_nc
+    #cdo_command = "cdo -L -timcumsum -chname," + var +   ",peak -setclonlatbox,1,-180,180,-90,90 -selname," + var + " " + new_self.current + " " + doy_nc
+    cdo_command = f"cdo -L -timcumsum -chname,{var},peak -setclonlatbox,1,-180,180,-90,90 -selname,{var} {new_self.current} {doy_nc}"
 
     new_self.history.append(cdo_command)
 
@@ -56,7 +57,7 @@ def phenology(self, var = None):
 
     max_nc = temp_file("nc")
 
-    cdo_command = "cdo -L -timmax -chname," + var + "," + var + "_max " + " -selname," + var + " " +  new_self.current + " " + max_nc
+    cdo_command = f"cdo -L -timmax -chname,{var},{var}_max -selname,{var} {new_self.current} {max_nc}"
 
     new_self.history.append(cdo_command)
     max_nc = run_cdo(cdo_command, max_nc)
@@ -65,7 +66,7 @@ def phenology(self, var = None):
 
     out_nc = temp_file("nc")
 
-    cdo_command = "cdo merge " + new_self.current + " " + max_nc + " " + doy_nc + " " + out_nc
+    cdo_command = f"cdo merge {new_self.current} {max_nc} {doy_nc} {out_nc}"
 
     new_self.history.append(cdo_command)
     out_nc = run_cdo(cdo_command, out_nc)
@@ -74,7 +75,7 @@ def phenology(self, var = None):
 
     phen_nc = temp_file("nc")
 
-    cdo_command = "cdo -L -timmin -selname,peak -expr,'peak=peak + 365*(" + var + "<" + var + "_max)' " + out_nc + " " + phen_nc
+    cdo_command = f"cdo -L -timmin -selname,peak -expr,'peak=peak + 365*({var}<{var}_max)' {out_nc} {phen_nc}"
 
     new_self.history.append(cdo_command)
     phen_nc = run_cdo(cdo_command, phen_nc)

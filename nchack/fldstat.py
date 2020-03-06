@@ -11,7 +11,7 @@ from .cleanup import disk_clean
 def fldstat(self, stat = "mean",):
     """Method to calculate the spatial stat from a netcdf"""
 
-    cdo_command = "cdo -fld" + stat
+    cdo_command = f"cdo -fld{stat}"
 
     run_this(cdo_command, self,  output = "ensemble")
 
@@ -58,7 +58,7 @@ def spatial_sum(self, by_area = False):
         if by_area:
             self.release()
 
-            cdo_command = "cdo -fldsum -mul " + self.current  + " -gridarea "
+            cdo_command = f"cdo -fldsum -mul {self.current} -gridarea "
         else:
             cdo_command = "cdo -fldsum"
 
@@ -72,7 +72,7 @@ def spatial_sum(self, by_area = False):
     for ff in self:
 
         target = temp_file("nc")
-        cdo_command = "cdo -fldsum -mul " + ff  + " -gridarea " + ff + " " +  target
+        cdo_command = f"cdo -fldsum -mul {ff} -gridarea {ff} {target}"
         target = run_cdo(cdo_command, target = target)
         new_files.append(target)
         new_commands.append(cdo_command)
@@ -108,11 +108,11 @@ def spatial_percentile(self, p = 50):
     """
 
     if type(p) not in (int, float):
-        raise ValueError(str(p) + " is not a valid percentile")
+        raise ValueError(f"{str(p)} is not a valid percentile")
     if p < 0 or p > 100:
-        raise ValueError("p: " + str(p) + " is not between 0 and 100!")
+        raise ValueError(f"p: {str(p)} is not between 0 and 100!")
 
-    cdo_command = "cdo -fldpctl," + str(p)
+    cdo_command = f"cdo -fldpctl,{str(p)}"
 
     run_this(cdo_command, self,  output = "ensemble")
 

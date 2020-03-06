@@ -35,7 +35,7 @@ def ensemble_percentile(self, p = 50):
         raise ValueError("p is not between 0 and 100!")
 
     # create the cdo command and run it
-    cdo_command = "cdo --sortname  -enspctl," + str(p) + " "
+    cdo_command = f"cdo --sortname  -enspctl,{p} "
     run_this(cdo_command, self, output = "one")
 
     # set the _merged attribute to True
@@ -74,14 +74,14 @@ def ensemble_nco(self, method, vars = None, ignore_time = False):
     # generate the nco call
     if ignore_time == False:
         if vars is None:
-            nco_command = ("ncea -y " + method + " " + str_flatten(ff_ensemble, " ") + " " + target)
+            nco_command = f'ncea -y {method} {str_flatten(ff_ensemble, " ")} {target}'
         else:
-            nco_command = ("ncea -y " + method + " -v " + str_flatten(vars, ",") + " " + str_flatten(ff_ensemble, " ") + " " + target)
+            nco_command = f'ncea -y {method} -v {str_flatten(vars, ",")} {str_flatten(ff_ensemble, " ")} {target}'
     else:
         if vars is None:
-            nco_command = ("ncra -y " + method + " " + str_flatten(ff_ensemble, " ") + " " + target)
+            nco_command = f'ncra -y {method} {str_flatten(ff_ensemble, " ")} {target}'
         else:
-            nco_command = ("ncra -y " + method + " -v " + str_flatten(vars, ",") + " " + str_flatten(ff_ensemble, " ") + " " + target)
+            nco_command = f'ncra -y {method} -v {str_flatten(vars, ",")} {str_flatten(ff_ensemble, " ")} {target}'
 
     # run the call
     target = run_nco(nco_command, target)

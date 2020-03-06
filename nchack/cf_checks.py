@@ -17,7 +17,7 @@ def cf_checks(self, version = None):
         raise ValueError("Version supplied is not valid!")
 
     version = str(version)
-    command = "cfchecks " + "-v "  + version + " " + self.current
+    command = f"cfchecks -v {version} {self.current}"
     out = subprocess.Popen(command,shell = True, stdin = subprocess.PIPE,stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
     result,ignore = out.communicate()
     return result.decode()

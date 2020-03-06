@@ -40,7 +40,7 @@ def split_cdo(self, method = "year"):
 
         split_base = temp_file()
 
-        cdo_command = "cdo -s -split" + method + " "  + ff +  " " + split_base
+        cdo_command = f"cdo -s -split{method} {ff} {split_base}"
 
         os.system(cdo_command)
 

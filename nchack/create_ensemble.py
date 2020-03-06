@@ -49,7 +49,7 @@ def create_ensemble(path = "", var = None, recursive = True):
     else:
         ensemble = []
         for ff in files:
-            cdo_result = os.popen( "cdo showname " + ff).read()
+            cdo_result = os.popen(f"cdo showname {ff}").read()
             cdo_result = cdo_result.replace("\n", "").strip().split(" ")
             if var in cdo_result:
                 ensemble.append(ff)
@@ -77,8 +77,8 @@ def generate_ensemble(path = "", recursive = True):
     ensemble = create_ensemble(path, recursive = recursive)
     all_info = []
     for ff in ensemble:
-        cdo_info = os.popen( "cdo sinfon " + ff).read()
-        cdo_times = os.popen( "cdo ntime " + ff).read()
+        cdo_info = os.popen(f"cdo sinfon {ff}").read()
+        cdo_times = os.popen(f"cdo ntime {ff}").read()
         cdo_times = cdo_times.replace("\n", "")
         cdo_times = int(cdo_times)
         # splitting by times is a bit tricky
@@ -103,10 +103,10 @@ def generate_ensemble(path = "", recursive = True):
     for i in range(0, len(unique_info)):
         i_files = all_info.merge(unique_info.iloc[i:i+1,:]).path.tolist()
         ff = i_files[0]
-        i_variables = os.popen( "cdo showname " + ff).read()
+        i_variables = os.popen(f"cdo showname {ff}").read()
         i_variables = i_variables.replace("\n", "").strip().split(" ")
 
-        i_levels = os.popen( "cdo nlevel " + ff).read()
+        i_levels = os.popen(f"cdo nlevel {ff}").read()
         i_levels = i_levels.split("\n")
         i_levels = int(i_levels[0])
 

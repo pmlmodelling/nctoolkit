@@ -125,10 +125,9 @@ def temp_check():
 
     if len(mylist) > 0:
         if len(mylist) == 1:
-            print(str(len(mylist)) +  " file was created by nchack in prior or current sessions. Consider running deep_clean!")
+            print(f"{len(mylist)} file was created by nchack in prior or current sessions. Consider running deep_clean!")
         else:
-            print(str(len(mylist)) +  " files were created by nchack in prior or current sessions. Consider running deep_clean!")
-
+            print(f"{len(mylist)} files were created by nchack in prior or current sessions. Consider running deep_clean!")
 
 
 

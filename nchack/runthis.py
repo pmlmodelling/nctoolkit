@@ -56,18 +56,18 @@ def run_nco(command, target, out_file = None, overwrite = False):
                 raise ValueError(str(result1).replace("b'","").replace("\\n", "").replace("'", ""))
             session_info["temp_dir"] = "/var/tmp/"
             if "Warning:" in str(result1):
-                warnings.warn(message = "NCO warning:" + str(result1))
+                warnings.warn(message = f"NCO warning: {str(result1)}")
     else:
         if "Warning:" in str(result):
-            warnings.warn(message = "NCO warning:" + str(result))
+            warnings.warn(message = f"NCO warning: {str(result)}")
 
     if target != "":
         if os.path.exists(target) == False:
-            raise ValueError(command + " was not successful. Check output")
+            raise ValueError(f"{command} was not successful. Check output")
     else:
         actual_target = command.split(" ")[-1].strip()
         if os.path.exists(actual_target) == False:
-            raise ValueError(command + " was not successful. Check output")
+            raise ValueError(f"{command} was not successful. Check output")
 
     if target != "":
         session_info["latest_size"] = os.path.getsize(target)
@@ -150,9 +150,9 @@ def run_cdo(command, target, out_file = None, overwrite = False):
                         warnings.warn(message = "CDO warning:" + x.replace("b'Warning:", "").replace("Warning:",""))
 
             if len(missing_years) >0:
-                warnings.warn(message = "CDO warning: Years " + str_flatten(missing_years, ",") + " are missing", stacklevel = 2)
+                warnings.warn(message = f'CDO warning: Years {str_flatten(missing_years, ",")} are missing', stacklevel = 2)
             if len(missing_months) >0:
-                warnings.warn(message = "CDO warning: Months " + str_flatten(missing_months, ",") + " are missing", stacklevel = 2)
+                warnings.warn(message = f'CDO warning: Months {str_flatten(missing_months, ",")} are missing', stacklevel = 2)
     else:
         messages = str(result).split("\\n")
 
@@ -183,12 +183,12 @@ def run_cdo(command, target, out_file = None, overwrite = False):
                     warnings.warn(message = "CDO warning:" + x.replace("b'Warning:", "").replace("Warning:", ""))
 
         if len(missing_years) >0:
-            warnings.warn(message = "CDO warning: Years " + str_flatten(missing_years, ",") + " are missing!", category = Warning)
+            warnings.warn(message = f'CDO warning: Years {str_flatten(missing_years, ",")} are missing!', category = Warning)
         if len(missing_months) >0:
-            warnings.warn(message = "CDO warning: Months " + str_flatten(missing_months, ",") + " are missing", category = Warning)
+            warnings.warn(message = f'CDO warning: Months {str_flatten(missing_months, ",")} are missing', category = Warning)
 
     if os.path.exists(target) == False:
-        raise ValueError(command + " was not successful. Check output")
+        raise ValueError(f"{command} was not successful. Check output")
 
     session_info["latest_size"] = os.path.getsize(target)
 
@@ -202,7 +202,7 @@ def run_this(os_command, self, output = "one",  out_file = None):
 
     cores = session_info["cores"]
     if type(cores) is not int:
-        raise ValueError("cores is " + cores + ", not an int. Fix using options!")
+        raise ValueError(f"cores is {cores} not an int. Fix using options!")
 
     start_files = copy.deepcopy(self.current)
 
@@ -228,7 +228,7 @@ def run_this(os_command, self, output = "one",  out_file = None):
                 file_list = self.current
 
             if len(self.history) > len(self._hold_history):
-                os_command = os_command + " " + self.history[-1].replace("cdo ", " ")
+                os_command = f'{os_command} {self.history[-1].replace("cdo ", " ")}'
                 os_command = os_command.replace("  ", " ")
 
 
@@ -248,7 +248,7 @@ def run_this(os_command, self, output = "one",  out_file = None):
 
                 if out_file is not None:
                     target = out_file
-                ff_command = ff_command + " " + ff + " " + target
+                ff_command = f"{ff_command} {ff} {target}"
                 ff_command = ff_command.replace("  ", " ")
 
                 if "reduce_dim" in ff_command:
@@ -299,7 +299,7 @@ def run_this(os_command, self, output = "one",  out_file = None):
             file_list = [self.current]
 
             if len(self.history) > len(self._hold_history):
-                os_command = os_command + " " + self.history[-1].replace("cdo ", " ")
+                os_command = f'{os_command} {self.history[-1].replace("cdo ", " ")}'
                 os_command = os_command.replace("  ", " ")
 
             target = temp_file("nc")

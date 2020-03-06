@@ -8,7 +8,7 @@ def times(self):
 
     all_times = []
     for ff in self:
-        cdo_result = subprocess.run("cdo showtimestamp " + ff, shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        cdo_result = subprocess.run(f"cdo showtimestamp {ff}", shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         cdo_result = str(cdo_result.stdout).replace("\\n", "")
         cdo_result = cdo_result.replace("b'", "").strip()
         cdo_result = cdo_result.replace("'", "").strip()
@@ -17,18 +17,7 @@ def times(self):
     all_times = list(set(all_times))
     all_times.sort()
     return all_times
-#
-#def times(self):
-#    if type(self.current) is list:
-#        raise TypeError("This presently only works for single file datasets")
-#
-#    cdo_result = subprocess.run("cdo showtimestamp " + self.current, shell = True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-#    cdo_result = str(cdo_result.stdout).replace("\\n", "")
-#    cdo_result = cdo_result.replace("b'", "").strip()
-#    cdo_result = cdo_result.replace("'", "").strip()
-#    cdo_result = cdo_result.split()
-#
-#    return cdo_result
+
 
 def levels(self):
     """
@@ -41,7 +30,7 @@ def levels(self):
         ff = self.current
 
 
-    cdo_result = subprocess.run("cdo showlevel " + ff, shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    cdo_result = subprocess.run(f"cdo showlevel {ff}", shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     cdo_result = str(cdo_result.stdout).replace("\\n", "")
     cdo_result = cdo_result.replace("b'", "").strip()
     cdo_result = cdo_result.replace("'", "").strip()
@@ -54,7 +43,7 @@ def levels(self):
 
 def nc_years(ff):
     all_years = []
-    cdo_result = subprocess.run("cdo showyear " + ff, shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    cdo_result = subprocess.run(f"cdo showyear {ff}", shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     cdo_result = str(cdo_result.stdout).replace("\\n", "")
     cdo_result = cdo_result.replace("b'", "").strip()
     cdo_result = cdo_result.replace("'", "").strip()
@@ -67,7 +56,7 @@ def nc_years(ff):
 
 
 def nc_variables(ff):
-    cdo_result = subprocess.run("cdo showname " + ff, shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    cdo_result = subprocess.run(f"cdo showname {ff}", shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     cdo_result = str(cdo_result.stdout).replace("\\n", "")
     cdo_result = cdo_result.replace("b'", "").strip()
     cdo_result = cdo_result.replace("'", "").strip()
@@ -80,7 +69,7 @@ def years(self):
 
     all_years = []
     for ff in self:
-        cdo_result = subprocess.run("cdo showyear " + ff, shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        cdo_result = subprocess.run(f"cdo showyear {ff}", shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         cdo_result = str(cdo_result.stdout).replace("\\n", "")
         cdo_result = cdo_result.replace("b'", "").strip()
         cdo_result = cdo_result.replace("'", "").strip()
@@ -96,7 +85,7 @@ def months(self):
 
     all_months = []
     for ff in self:
-        cdo_result = subprocess.run("cdo showmon " + ff, shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        cdo_result = subprocess.run(f"cdo showmon {ff}", shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         cdo_result = str(cdo_result.stdout).replace("\\n", "")
         cdo_result = cdo_result.replace("b'", "").strip()
         cdo_result = cdo_result.replace("'", "").strip()
@@ -115,7 +104,7 @@ def attributes(self):
     else:
         ff = self.current
 
-    out = subprocess.run("cdo showatts " + ff, shell = True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    out = subprocess.run(f"cdo showatts {ff}", shell = True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     out = out.stdout.decode('utf-8')
     return out
 
@@ -126,7 +115,7 @@ def global_attributes(self):
     else:
         ff = self.current
 
-    out = subprocess.run("cdo showattsglob " + ff, shell = True, stdout=subprocess.PIPE, stderr = subprocess.PIPE)
+    out = subprocess.run(f"cdo showattsglob {ff}", shell = True, stdout=subprocess.PIPE, stderr = subprocess.PIPE)
     out = out.stdout.decode('utf-8')
     return out
 
