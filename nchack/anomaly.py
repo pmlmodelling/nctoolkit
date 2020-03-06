@@ -39,7 +39,7 @@ def annual_anomaly(self, baseline = None, metric = "absolute", window = 1):
 
     # check metric type
     if metric not in ["absolute", "relative"]:
-        raise ValueError(metric + " is not a valid ype")
+        raise ValueError(f"{metric} is not a valid type")
 
     # This cannot possibly be threaded in cdo. Release it
 
@@ -56,9 +56,11 @@ def annual_anomaly(self, baseline = None, metric = "absolute", window = 1):
             raise ValueError("Check that the years in baseline are in the dataset!")
         # generate the cdo command
         if metric == "absolute":
-            cdo_command = "cdo -L sub -runmean," + str(window) + " -yearmean " +  ff + " -timmean -selyear," + str(baseline[0]) + "/" + str(baseline[1]) + " " + ff  + " " + target
+            #cdo_command = "cdo -L sub -runmean," + str(window) + " -yearmean " +  ff + " -timmean -selyear," + str(baseline[0]) + "/" + str(baseline[1]) + " " + ff  + " " + target
+            cdo_command = f"cdo -L sub -runmean,{window} -yearmean {ff} -timmean -selyear,{baseline[0]}/{baseline[1]} {ff} {target}"
         else:
-            cdo_command = "cdo -L div -runmean," + str(window) + " -yearmean " + ff + " -timmean -selyear," + str(baseline[0]) + "/" + str(baseline[1]) + " " + ff  + " " + target
+            #cdo_command = "cdo -L div -runmean," + str(window) + " -yearmean " + ff + " -timmean -selyear," + str(baseline[0]) + "/" + str(baseline[1]) + " " + ff  + " " + target
+            cdo_command = f"cdo -L div -runmean,{window} -yearmean {ff} -timmean -selyear,{baseline[0]}/{baseline[1]} {ff} {target}"
 
         # modify the cdo command if threadsafe
         if session_info["thread_safe"]:
@@ -120,22 +122,18 @@ def monthly_anomaly(self, baseline = None):
 
     self.release()
 
-    if type(self.current) is list:
-        ff_list = self.current
-    else:
-        ff_list = [self.current]
-
     new_files = []
     new_commands = []
 
-    for ff in ff_list:
+    for ff in self:
 
         if len([yy for yy in baseline if yy not in nc_years(ff)]) > 0:
             raise ValueError("Check that the years in baseline are in the dataset!")
         # create the target file
         target = temp_file("nc")
         # create system command
-        cdo_command = "cdo -L -ymonsub -monmean " + ff +  " -ymonmean  -selyear," + str(baseline[0]) + "/" + str(baseline[1]) + " " + ff + " " + target
+        #cdo_command = "cdo -L -ymonsub -monmean " + ff +  " -ymonmean  -selyear," + str(baseline[0]) + "/" + str(baseline[1]) + " " + ff + " " + target
+        cdo_command = f"cdo -L -ymonsub -monmean {ff} -ymonmean -selyear,{baseline[0]}/{baseline[1]} {ff} {target}"
 
         # modify the cdo command if threadsafe
         if session_info["thread_safe"]:
@@ -155,7 +153,7 @@ def monthly_anomaly(self, baseline = None):
 
 
     # updat the safe lists and current file
-    for ff in ff_list:
+    for ff in self.current:
         if ff in nc_safe:
             nc_safe.remove(ff)
 
