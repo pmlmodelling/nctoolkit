@@ -12,7 +12,7 @@ def arithall(self, stat = "divc", x = None):
     """Method to add, subtract etc. a constant from a dataset"""
 
     # create the system command and run it
-    cdo_command = "cdo -" + stat + "," + str(x)
+    cdo_command = f"cdo -{stat},{x}"
 
     run_this(cdo_command, self,  output = "ensemble")
 
@@ -44,9 +44,9 @@ def operation(self, method = "mul", ff = None, var = None):
 
         # create the system call
         if var is None:
-            cdo_command = "cdo -L " + method + " "  + x + " " + ff + " " + target
+            cdo_command = f"cdo -L {method} {x} {ff} {target}"
         else:
-            cdo_command = "cdo -L " + method + " "  + x + " -selname," + var + " " + ff + " " + target
+            cdo_command = f"cdo -L {method} {x} -selname,{var} {ff} {target}"
 
         # modify system call if threadsafe
         if session_info["thread_safe"]:
