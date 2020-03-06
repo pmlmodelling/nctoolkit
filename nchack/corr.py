@@ -19,7 +19,7 @@ def cor(self, var1 = None, var2 = None, method = "fld"):
 
     if type(var2) is list:
         if len(var2) == 1:
-            var1 = var1[0]
+            var2 = var2[0]
 
     # this cannot be chained. So release
     self.release()
@@ -29,16 +29,16 @@ def cor(self, var1 = None, var2 = None, method = "fld"):
 
     for ff in self:
         if var1 not in nc_variables(ff):
-            raise ValueError(var1 + " is not in the dataset")
+            raise ValueError(f"{var1} is not in the dataset")
 
         if var2 not in nc_variables(ff):
-            raise ValueError(var2 + " is not in the dataset")
+            raise ValueError(f"{var2} is not in the dataset")
 
         # create the temp file for targeting
         target = temp_file(".nc")
 
         # create the cdo command and run it
-        cdo_command = "cdo -L -" + method + "cor -selname," +var1 + " " + ff + " -selname," + var2 + " " + ff + " " + target
+        cdo_command = f"cdo -L -{method}cor -selname,{var1} {ff} -selname,{var2} {ff} {target}"
         target = run_cdo(cdo_command, target)
 
         new_files.append(target)
@@ -61,7 +61,7 @@ def cor(self, var1 = None, var2 = None, method = "fld"):
     # tidy up the attributes of the netcdf file in the dataset
     self.rename({var1:"cor"})
     self.set_units({"cor":"-"})
-    self.set_longnames({"cor":"Correlation between " + var1 +  " & " + var2})
+    self.set_longnames({"cor":f"Correlation between {var1} & {var2}"})
 
     cleanup()
     self.disk_clean()
