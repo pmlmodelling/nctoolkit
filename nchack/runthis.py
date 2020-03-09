@@ -46,8 +46,8 @@ def run_nco(command, target, out_file = None, overwrite = False):
             session_info["temp_dir"] == "/var/tmp/"
             if target.startswith("/tmp"):
                 new_target = target.replace("/tmp/", "/var/tmp")
-                target = target.replace("/tmp/", "/var/tmp/")
                 command = command.replace(target, new_target)
+                target = target.replace("/tmp/", "/var/tmp/")
 
     out = subprocess.Popen(command,shell = True, stdin = subprocess.PIPE,stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
     result,ignore = out.communicate()
@@ -104,8 +104,8 @@ def run_cdo(command, target, out_file = None, overwrite = False):
             session_info["temp_dir"] == "/var/tmp/"
             if target.startswith("/tmp"):
                 new_target = target.replace("/tmp/", "/var/tmp")
-                target = target.replace("/tmp/", "/var/tmp/")
                 command = command.replace(target, new_target)
+                target = target.replace("/tmp/", "/var/tmp/")
 
 
     if command.startswith("cdo ") == False:
