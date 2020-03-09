@@ -45,7 +45,7 @@ def run_nco(command, target, out_file = None, overwrite = False):
         if result < 1 * 1e9:
             session_info["temp_dir"] == "/var/tmp/"
             if target.startswith("/tmp"):
-                new_target = target.replace("/tmp/", "/var/tmp")
+                new_target = target.replace("/tmp/", "/var/tmp/")
                 command = command.replace(target, new_target)
                 target = target.replace("/tmp/", "/var/tmp/")
 
@@ -103,7 +103,7 @@ def run_cdo(command, target, out_file = None, overwrite = False):
         if result < 1 * 1e9:
             session_info["temp_dir"] == "/var/tmp/"
             if target.startswith("/tmp"):
-                new_target = target.replace("/tmp/", "/var/tmp")
+                new_target = target.replace("/tmp/", "/var/tmp/")
                 command = command.replace(target, new_target)
                 target = target.replace("/tmp/", "/var/tmp/")
 
