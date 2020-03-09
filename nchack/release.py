@@ -21,8 +21,8 @@ def release(self,  run_merge = True):
             cdo_command = "cdo -L"
         else:
             cdo_command = "cdo "
-        if self._zip:
-            cdo_command = f"{cdo_command} -z zip "
+        #if self._zip:
+        #    cdo_command = f"{cdo_command} -z zip "
 
         output_method = "ensemble"
 
