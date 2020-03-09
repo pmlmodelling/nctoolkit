@@ -344,12 +344,11 @@ def run_this(os_command, self, output = "one",  out_file = None):
             for ff in self:
                 all_sizes += file_size(ff)
 
-            if session_info["temp_dir"] == "/tmp/":
-                result = os.statvfs("/tmp/")
-                result = result.f_frsize * result.f_bavail
+            result = os.statvfs("/tmp/")
+            result = result.f_frsize * result.f_bavail
 
-                if result < (2 * all_sizes):
-                    session_info["temp_dir"] == "/var/tmp/"
+            if result < (2 * all_sizes):
+                session_info["temp_dir"] == "/var/tmp/"
 
             target = temp_file("nc")
 
