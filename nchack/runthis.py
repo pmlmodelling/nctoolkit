@@ -85,6 +85,15 @@ def run_cdo(command, target, out_file = None, overwrite = False):
             if overwrite == False:
                 raise ValueError("Attempting to overwrite file")
 
+    if session_info["temp_dir"] == "/tmp/":
+        result = os.statvfs("/tmp/")
+        result = result.f_frsize * result.f_bavail
+
+        if result < 1 * 1e9:
+            session_info["temp_dir"] == "/var/tmp/"
+            if target.startswith("/tmp"):
+                target = target.replace("/tmp/", "/var/tmp")
+
 
     if command.startswith("cdo ") == False:
         raise ValueError("The command does not start with cdo!")
