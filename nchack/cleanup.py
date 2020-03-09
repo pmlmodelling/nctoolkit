@@ -171,11 +171,10 @@ def disk_clean(self):
                 nc_safe.append(new_ff)
                 nc_safe.remove(ff)
                 shutil.copyfile(ff, new_ff)
-                self.current = [new_ff if file == ff else file for file in ff_list]
+                self.current = [new_ff if file == ff else file for file in self.current]
 
 
-
-    if type(self.current) is str:
+    if type(self.current) is list:
         self.current = self.current
     else:
         self.current = self.current[0]
