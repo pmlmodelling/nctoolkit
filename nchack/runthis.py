@@ -14,6 +14,15 @@ from .session import nc_protected
 from .flatten import str_flatten
 from .session import session_info
 
+def file_size(file_path):
+    """
+    A function to return file size
+    """
+    if os.path.isfile(file_path):
+        file_info = os.stat(file_path)
+        return file_info.st_size
+
+
 
 #def split_list(seq, num):
 #    avg = len(seq) / float(num)
@@ -328,7 +337,22 @@ def run_this(os_command, self, output = "one",  out_file = None):
                 os_command = f'{os_command} {self.history[-1].replace("cdo ", " ")}'
                 os_command = os_command.replace("  ", " ")
 
+
+            # ensure there is sufficient space in /tmp if it is to be used
+            all_sizes = 0
+
+            for ff in self:
+                all_sizes += file_size(ff)
+
+            if session_info["temp_dir"] == "/tmp/":
+                result = os.statvfs("/tmp/")
+                result = result.f_frsize * result.f_bavail
+
+                if result < (2 * all_sizes):
+                    session_info["temp_dir"] == "/var/tmp/"
+
             target = temp_file("nc")
+
             if out_file is not None:
                 target = out_file
             os_command = os_command + " " +  str_flatten(self.current, " ") + " " + target
