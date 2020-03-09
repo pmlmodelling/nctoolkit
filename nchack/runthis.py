@@ -38,6 +38,17 @@ def run_nco(command, target, out_file = None, overwrite = False):
             if overwrite == False:
                 raise ValueError("Attempting to overwrite an opened file")
 
+    if session_info["temp_dir"] == "/tmp/":
+        result = os.statvfs("/tmp/")
+        result = result.f_frsize * result.f_bavail
+
+        if result < 1 * 1e9:
+            session_info["temp_dir"] == "/var/tmp/"
+            if target.startswith("/tmp"):
+                new_target = target.replace("/tmp/", "/var/tmp")
+                target = target.replace("/tmp/", "/var/tmp")
+                command = command.replace(target, new_target)
+
     out = subprocess.Popen(command,shell = True, stdin = subprocess.PIPE,stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
     result,ignore = out.communicate()
 
@@ -92,7 +103,9 @@ def run_cdo(command, target, out_file = None, overwrite = False):
         if result < 1 * 1e9:
             session_info["temp_dir"] == "/var/tmp/"
             if target.startswith("/tmp"):
+                new_target = target.replace("/tmp/", "/var/tmp")
                 target = target.replace("/tmp/", "/var/tmp")
+                command = command.replace(target, new_target)
 
 
     if command.startswith("cdo ") == False:
