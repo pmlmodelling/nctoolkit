@@ -271,7 +271,8 @@ def run_this(os_command, self, output = "one",  out_file = None):
             target_list = []
             results = dict()
 
-            self.history = new_history
+
+#            self.history = new_history
 
             for ff in file_list:
                 ff_command = os_command
@@ -290,7 +291,7 @@ def run_this(os_command, self, output = "one",  out_file = None):
                 if self._zip:
                     ff_command = ff_command.replace("cdo ", "cdo -z zip ")
 
-                self.history.append(ff_command)
+                new_history.append(ff_command)
                 temp = pool.apply_async(run_cdo,[ff_command, target, out_file])
                 results[ff] = temp
 
@@ -303,7 +304,9 @@ def run_this(os_command, self, output = "one",  out_file = None):
             if type(self.current) == str:
                 target_list = target_list[0]
 
+            self.history = copy.deepcopy(new_history)
             self.current = copy.deepcopy(target_list)
+
 
             if type(self.current) is str:
                 nc_safe.append(self.current)
