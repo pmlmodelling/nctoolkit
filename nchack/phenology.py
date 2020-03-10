@@ -33,6 +33,9 @@ def phenology(self, var = None, metric = "middle"):
     if type(self.current) is not str:
         raise TypeError("This method only works on single files")
 
+    if len(self.years() > 1:
+        raise ValueError("This can only work with single year data currently")
+
 
     if metric == "middle":
         target = temp_file(".nc")
