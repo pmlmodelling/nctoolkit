@@ -11,7 +11,7 @@ from .runthis import run_cdo
 import copy
 
 
-def phenology(self, var = None):
+def phenology(self, var = None, metric = "middle"):
     """
     Calculate phenologies from a dataset. Each file in an ensemble must only cover a single year, and ideally have all days.
     This method currently only calculcates the day of year of the annual maximum.
@@ -27,14 +27,30 @@ def phenology(self, var = None):
     if type(var) is not str:
         raise TypeError("var is not a str")
 
+    self.release()
+
     # First step is to check if the current file exists
     if type(self.current) is not str:
         raise TypeError("This method only works on single files")
 
+
+    if metric == "middle":
+        target = temp_file(".nc")
+        command = f"cdo -L -timmin -setrtomiss,-10000,0 -expr,'middle=var*ctimestep()' -gt -timcumsum -chname,{var},var -selname,{var} {self.current} -divc,2 -seltimestep,365 -timcumsum -chname,{var},var -selname,{var} {self.current} {target}"
+
+        target = run_cdo(command, target = target)
+        self.history.append(command)
+        self._hold_history = copy.deepcopy(self.history)
+        self.current = target
+
+
+        return None
+
+
+
     #  create a new tracker for the phenologies
     # Then restrict the file to the var selected
 
-    self.release()
 
     start_files = copy.deepcopy(self.current)
 
