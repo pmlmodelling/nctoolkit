@@ -90,19 +90,19 @@ def plot(self, log = False, vars = None, panel = False):
         self_min = self.to_xarray().rename({vars: "x"}).x.min()
         v_max = max(self_max.values, -self_min.values)
         if self_max.values > 0 and self_min.values < 0:
-            #return self.to_xarray().hvplot.image(lon_name, lat_name, vars, dynamic = True,  logz = log, cmap = "seismic").redim.range(**{vars:(-v_max, v_max)})
-            return self.to_xarray().hvplot.quadmesh(lon_name, lat_name, vars, dynamic = True,  logz = log, cmap = "seismic").redim.range(**{vars:(-v_max, v_max)})
+            return self.to_xarray().hvplot.image(lon_name, lat_name, vars, dynamic = True,  logz = log, cmap = "seismic").redim.range(**{vars:(-v_max, v_max)})
+            #return self.to_xarray().hvplot.quadmesh(lon_name, lat_name, vars, dynamic = True,  logz = log, cmap = "seismic").redim.range(**{vars:(-v_max, v_max)})
         else:
-            #return self.to_xarray().hvplot.image(lon_name, lat_name, vars, dynamic = True,  logz = log, cmap = "viridis").redim.range(**{vars:(-self_min.values, v_max)})
-            return self.to_xarray().hvplot.quadmesh(lon_name, lat_name, vars, dynamic = True,  logz = log, cmap = "viridis").redim.range(**{vars:(-self_min.values, v_max)})
+            return self.to_xarray().hvplot.image(lon_name, lat_name, vars, dynamic = True,  logz = log, cmap = "viridis").redim.range(**{vars:(-self_min.values, v_max)})
+           # return self.to_xarray().hvplot.quadmesh(lon_name, lat_name, vars, dynamic = True,  logz = log, cmap = "viridis").redim.range(**{vars:(-self_min.values, v_max)})
 
     if n_points > 1 and n_levels <=1  and type(vars) is list:
         out = subprocess.run("cdo griddes " + self.current, shell = True, stdout=subprocess.PIPE, stderr =subprocess.PIPE)
         lon_name = [x for x in str(out.stdout).replace("b'", "").split("\\n") if "xname" in x][-1].split(" ")[-1]
         lat_name = [x for x in str(out.stdout).replace("b'", "").split("\\n") if "yname" in x][-1].split(" ")[-1]
 
-       # return self.to_xarray().hvplot.image(lon_name, lat_name, vars, dynamic = True, cmap = "viridis", logz = log)
-        return self.to_xarray().hvplot.quadmesh(lon_name, lat_name, vars, dynamic = True, cmap = "viridis", logz = log)
+        return self.to_xarray().hvplot.image(lon_name, lat_name, vars, dynamic = True, cmap = "viridis", logz = log)
+       # return self.to_xarray().hvplot.quadmesh(lon_name, lat_name, vars, dynamic = True, cmap = "viridis", logz = log)
 
 
 
