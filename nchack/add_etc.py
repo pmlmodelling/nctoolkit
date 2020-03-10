@@ -44,9 +44,9 @@ def operation(self, method = "mul", ff = None, var = None):
 
         # create the system call
         if var is None:
-            cdo_command = f"cdo -L {method} {x} {ff} {target}"
+            cdo_command = f"cdo -L -{method} {x} {ff} {target}"
         else:
-            cdo_command = f"cdo -L {method} {x} -selname,{var} {ff} {target}"
+            cdo_command = f"cdo -L -{method} {x} -selname,{var} {ff} {target}"
 
         # modify system call if threadsafe
         if session_info["thread_safe"]:
