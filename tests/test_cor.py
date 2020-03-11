@@ -20,6 +20,17 @@ class TestSelect(unittest.TestCase):
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 
+    def test_cor_list(self):
+        tracker = nc.open_data(ff)
+        tracker.select_timestep(1)
+        tracker.mutate({"tos":"sst+273.15"})
+        tracker.cor_space(var1 = ["tos"], var2 = ["sst"])
+        x = tracker.to_dataframe().cor.values[0]
+
+        self.assertEqual(x, 1.0)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
+
     def test_cor1(self):
         tracker = nc.open_data(ff)
         tracker.mutate({"tos":"sst+273.15"})

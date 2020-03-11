@@ -72,6 +72,9 @@ class TestSelect(unittest.TestCase):
 
 
 
+
+
+
     def test_add3(self):
         tracker = nc.open_data(ff)
         tracker.select_years(list(range(1950, 1951)))
@@ -313,6 +316,9 @@ class TestSelect(unittest.TestCase):
         n = len(nc.session_files())
         self.assertEqual(n, 0)
 
+
+
+
     def test_file_incompat4(self):
         tracker = nc.open_data(ff)
         with self.assertRaises(ValueError) as context:
@@ -374,6 +380,26 @@ class TestSelect(unittest.TestCase):
             tracker.divide([1,2])
         n = len(nc.session_files())
         self.assertEqual(n, 0)
+
+
+    def test_file_typeerror4(self):
+        tracker = nc.open_data(ff)
+        ff2 = "data/2003.nc"
+        with self.assertRaises(TypeError) as context:
+            tracker.divide([1,2])
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
+
+
+    def test_var_typeerror(self):
+        tracker = nc.open_data(ff)
+        with self.assertRaises(TypeError) as context:
+            tracker.add(tracker, var = 1)
+
+    def test_var_valueerror(self):
+        tracker = nc.open_data(ff)
+        with self.assertRaises(ValueError) as context:
+            tracker.add(tracker, var = "tos222")
 
 
 if __name__ == '__main__':

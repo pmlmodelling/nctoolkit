@@ -12,7 +12,7 @@ class TestSelect(unittest.TestCase):
     def test_clim1(self):
         data = nc.open_data(ff)
         data.select_timestep(list(range(0, 12)))
-        data.phenology("sst")
+        data.phenology("sst", metric = "peak")
         data.spatial_mean()
         x = data.to_dataframe().peak.values[0].astype("float")
 
@@ -27,7 +27,7 @@ class TestSelect(unittest.TestCase):
     def test_error(self):
         data = nc.open_data(ff)
         with self.assertRaises(ValueError) as context:
-            data.phenology()
+            data.phenology("sst", metric = "peak")
         n = len(nc.session_files())
         self.assertEqual(n, 0)
 
