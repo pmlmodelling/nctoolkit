@@ -1,13 +1,13 @@
 from .runthis import run_this
 
 import pandas as pd, numpy as np
-import hvplot.pandas
-import hvplot.xarray
 import subprocess
 
 
 
 def plot(self, log = False, vars = None, panel = False):
+    import hvplot.pandas
+    import hvplot.xarray
     """
     Autoplotting method
 
