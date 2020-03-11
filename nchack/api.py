@@ -43,6 +43,7 @@ session_info["stamp"] = "nchack" + "".join(random.choice(letters) for i in range
 session_info["temp_dir"] = "/tmp/"
 session_info["thread_safe"] = False
 session_info["lazy"] = False
+session_info["precision"] = None
 result = os.statvfs("/tmp/")
 session_info["size"] = result.f_frsize * result.f_bavail
 session_info["latest_size"] = 0
@@ -69,7 +70,7 @@ def options(**kwargs):
 
     """
 
-    valid_keys = ["thread_safe", "lazy", "cores"]
+    valid_keys = ["thread_safe", "lazy", "cores", "precision"]
 
     for key in kwargs:
         if key not in valid_keys:
@@ -83,7 +84,12 @@ def options(**kwargs):
                 else:
                     raise TypeError("cores must be an int")
             else:
-                raise AttributeError(key + " is not valid session info!")
+                if key == "precision":
+                    if kwargs[key] not in ["I8", "I16", "I32", "F32", "F64"]:
+                        raiseValueError("precision supplied is not valid!")
+                    session_info[key] = kwargs[key]
+                else:
+                    raise AttributeError(key + " is not valid session info!")
         else:
             session_info[key] = kwargs[key]
 
