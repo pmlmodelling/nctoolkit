@@ -100,6 +100,10 @@ def run_cdo(command, target, out_file = None, overwrite = False):
 
     # make sure the output file does not exist
 
+    if session_info["precision"] is not None:
+        command = command.replace("cdo ", "cdo -b " + session_info["precision"] + " ")
+
+
     if out_file is None:
         if os.path.exists(command.split()[-1]):
             if overwrite == False:
