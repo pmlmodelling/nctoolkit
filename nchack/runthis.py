@@ -298,8 +298,6 @@ def run_this(os_command, self, output = "one",  out_file = None):
                 if self._zip:
                     ff_command = ff_command.replace("cdo ", "cdo -z zip ")
 
-                print(ff_command)
-
                 new_history.append(ff_command)
                 temp = pool.apply_async(run_cdo,[ff_command, target, out_file])
                 results[ff] = temp
