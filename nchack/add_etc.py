@@ -7,6 +7,7 @@ from .cleanup import cleanup
 from .cleanup import disk_clean
 from .session import session_info
 import copy
+import os
 
 def arithall(self, stat = "divc", x = None):
     """Method to add, subtract etc. a constant from a dataset"""
@@ -21,59 +22,66 @@ def operation(self, method = "mul", ff = None, var = None):
     """Method to add, subtract etc. a netcdf file from another one"""
 
 
+    if ff is not None:
+        if os.path.exists(ff) == False:
+            raise ValueError(f"{ff} does not exist!")
+
+
     if var is not None:
         if type(var) is not str:
             raise TypeError("var supplied is not a string")
         if var not in nc_variables(ff):
             raise ValueError("var supplied is not available in the dataset")
 
+    if ff is not None:
+        nc_safe.append(ff)
+        self._safe.append(ff)
 
-    self.release()
 
-    new_files = []
-    new_commands = []
-    for x in self:
 
-    # check that the datasets can actually be worked with
-        if var is None:
-            if len(nc_variables(ff)) != len(nc_variables(x)) and len(nc_variables(ff)) != 1:
-                raise ValueError("Datasets have incompatible variable numbers for the operation!")
+    if len(self.history) == len(self._hold_history):
 
-        # create the temp file
-        target = temp_file(".nc")
+        for x in self:
 
-        # create the system call
-        if var is None:
-            cdo_command = f"cdo -L -{method} {x} {ff} {target}"
+        # check that the datasets can actually be worked with
+            if var is None:
+                if len(nc_variables(ff)) != len(nc_variables(x)) and len(nc_variables(ff)) != 1:
+                    raise ValueError("Datasets have incompatible variable numbers for the operation!")
+
+        prior_command = ""
+
+    else:
+
+        prior_command = self.history[-1].replace("cdo ", " ").replace("  ", " ")
+
+
+
+
+    if var is None:
+        if "infile09178" in prior_command:
+            cdo_command = f"cdo -{method} {prior_command} {ff}"
         else:
-            cdo_command = f"cdo -L -{method} {x} -selname,{var} {ff} {target}"
+            cdo_command = f"cdo -{method} {prior_command} infile09178 {ff}"
+    else:
+        if "infile09178" in prior_command:
+            cdo_command = f"cdo -{method} {prior_command} -selname,{var} {ff}"
+        else:
+            cdo_command = f"cdo -{method} {prior_command} infile09178 -selname,{var} {ff}"
 
-        # modify system call if threadsafe
-        if session_info["thread_safe"]:
-            cdo_command = cdo_command.replace("-L ", " ")
+    if session_info["lazy"] == False:
+        target = temp_file(".nc")
+        cdo_command += cdo_command + " " + target
+        run_cdo(cdo_command, target)
+        self.history.append(cdo_command)
+        self._hold_history = copy.deepcopy(self.history)
 
-        # run the system call
-        target = run_cdo(cdo_command, target)
-        new_files.append(target)
-        new_commands.append(cdo_command)
+    else:
+        if len(self.history) > len(self._hold_history):
+            self.history[-1] = cdo_command
+        else:
+            self.history.append(cdo_command)
 
-    # update the history etc.
-    self.history+=new_commands
-    self._hold_history = copy.deepcopy(self.history)
-    for y in self:
-        if y in nc_safe:
-            nc_safe.remove(y)
 
-    self.current = new_files
-
-    for y in self:
-        nc_safe.append(y)
-
-    self.current = new_files
-
-    cleanup()
-
-    self.disk_clean()
 
 
 

@@ -262,6 +262,7 @@ class DataSet(object):
             self._run = True
         self._hold_history = []
         self._merged = False
+        self._safe = []
         self._zip = False
 
 
@@ -500,6 +501,9 @@ class DataSet(object):
         if self._weights in nc_safe:
                 nc_safe.remove(self._weights)
         for ff in self:
+            if ff in nc_safe:
+                nc_safe.remove(ff)
+        for ff in self._safe:
             if ff in nc_safe:
                 nc_safe.remove(ff)
 

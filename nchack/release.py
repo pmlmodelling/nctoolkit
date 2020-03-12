@@ -1,5 +1,7 @@
 from .runthis import run_this
 from .session import session_info
+from .session import nc_safe
+from .cleanup import cleanup
 
 def release(self,  run_merge = True):
     """
@@ -17,10 +19,10 @@ def release(self,  run_merge = True):
     if self._run == False and (len(self.history) > len(self._hold_history)):
         self._run = True
 
-        if (len(self.history) > len(self._hold_history)) and session_info["thread_safe"] == False:
-            cdo_command = "cdo -L"
-        else:
-            cdo_command = "cdo "
+        #if (len(self.history) > len(self._hold_history)) and session_info["thread_safe"] == False:
+        #    cdo_command = "cdo -L"
+        #else:
+        cdo_command = "cdo "
         #if self._zip:
         #    cdo_command = f"{cdo_command} -z zip "
 
@@ -33,6 +35,15 @@ def release(self,  run_merge = True):
 
         self._run = False
         self._zip = False
+
+        if len(self._safe) > 0:
+            for ff in self._safe:
+                nc_safe.remove(ff)
+
+        self._safe = []
+
+        cleanup()
+
 
 
 

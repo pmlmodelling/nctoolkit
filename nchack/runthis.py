@@ -276,16 +276,19 @@ def run_this(os_command, self, output = "one",  out_file = None):
             results = dict()
 
 
-#            self.history = new_history
-
             for ff in file_list:
                 ff_command = os_command
+
+                ff_command = f"{ff_command} {ff} "
+                if "infile09178" in ff_command:
+                    ff_command = " ".join(ff_command.split(" ")[:-2])
+                    ff_command = ff_command.replace("infile09178", ff)
 
                 target = temp_file("nc")
 
                 if out_file is not None:
                     target = out_file
-                ff_command = f"{ff_command} {ff} {target}"
+                ff_command = f"{ff_command} {target}"
                 ff_command = ff_command.replace("  ", " ")
 
                 if "reduce_dim" in ff_command:
@@ -294,6 +297,8 @@ def run_this(os_command, self, output = "one",  out_file = None):
 
                 if self._zip:
                     ff_command = ff_command.replace("cdo ", "cdo -z zip ")
+
+                print(ff_command)
 
                 new_history.append(ff_command)
                 temp = pool.apply_async(run_cdo,[ff_command, target, out_file])
@@ -381,6 +386,10 @@ def run_this(os_command, self, output = "one",  out_file = None):
 
             if self._zip:
                 os_command = os_command.replace("cdo ", "cdo -z zip ")
+
+            if "infile09178" in os_command:
+                os_command = os_command.replace(ff, "")
+                os_command = os_command.replace("infile09178", ff)
 
 
             target = run_cdo(os_command, target, out_file)
