@@ -33,6 +33,25 @@ class TestSelect(unittest.TestCase):
         n = len(nc.session_files())
         self.assertEqual(n, 2)
 
+    def test_add_multiple(self):
+        tracker = nc.open_data(ff)
+        tracker.select_years(list(range(1950, 1951)))
+        tracker.select_months([1])
+        tracker.release()
+        new = tracker.copy()
+        new.add(tracker)
+        new.subtract(tracker)
+        new.subtract(tracker)
+        new.spatial_mean()
+
+        x = new.to_dataframe().sst.values[0]
+
+        self.assertEqual(x , 0)
+
+
+
+
+
     def test_add2(self):
         tracker = nc.open_data(ff)
         tracker.select_years(list(range(1950, 1951)))
