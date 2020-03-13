@@ -11,7 +11,7 @@ from .runthis import run_cdo
 import copy
 
 
-def phenology(self, var = None, metric = None):
+def phenology(self, var = None, metric = None, p = None):
     """
     Calculate phenologies from a dataset. Each file in an ensemble must only cover a single year, and ideally have all days.
     This method currently only calculcates the day of year of the annual maximum.
@@ -20,6 +20,10 @@ def phenology(self, var = None, metric = None):
     -------------
     var : str
         Variable to analyze.
+    metric : str
+        Must be peak, middle, start or end
+    p : str
+        Percentile to use for start or end
     """
 
     if metric is None:
@@ -69,6 +73,27 @@ def phenology(self, var = None, metric = None):
         self.current = target
 
         nc_safe.append(self.current)
+
+        return None
+
+    if metric == "start" or metric == "end":
+        if type(p) is not float:
+            raise TypeError("p is not float")
+
+        start = (100 - p)/100
+
+        target = temp_file(".nc")
+        command = f"cdo -L -timmin -setrtomiss,-10000,0 -expr,'middle=var*ctimestep()' -gt -timcumsum -chname,{var},var -selname,{var} {self.current} -multc,{start} -timsum -chname,{var},var -selname,{var} {self.current} {target}"
+
+        target = run_cdo(command, target = target)
+        self.history.append(command)
+        self._hold_history = copy.deepcopy(self.history)
+        if self.current in nc_safe:
+            nc_safe.remove(self.current)
+        self.current = target
+
+        nc_safe.append(self.current)
+
 
         return None
 
