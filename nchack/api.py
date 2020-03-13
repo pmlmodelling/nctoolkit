@@ -255,7 +255,6 @@ class DataSet(object):
         self.current = start
 
         # attributes to the module, but not users (probably)
-        self._weights = None
         if session_info["lazy"]:
             self._run = False
         else:
@@ -498,8 +497,6 @@ class DataSet(object):
         return new
 
     def __del__(self):
-        if self._weights in nc_safe:
-                nc_safe.remove(self._weights)
         for ff in self:
             if ff in nc_safe:
                 nc_safe.remove(ff)
