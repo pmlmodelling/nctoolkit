@@ -11,7 +11,7 @@ from .runthis import run_cdo
 import copy
 
 
-def phenology(self, var = None, metric = "middle"):
+def phenology(self, var = None, metric = None):
     """
     Calculate phenologies from a dataset. Each file in an ensemble must only cover a single year, and ideally have all days.
     This method currently only calculcates the day of year of the annual maximum.
@@ -21,6 +21,9 @@ def phenology(self, var = None, metric = "middle"):
     var : str
         Variable to analyze.
     """
+
+    if metric is None:
+        raise ValueError("No metric was supplied!")
 
     if var is None:
         raise ValueError("No var was supplied")
