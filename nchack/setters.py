@@ -129,14 +129,7 @@ def set_longnames(self, var_dict):
     self.history+=new_commands
     self._hold_history = copy.deepcopy(self.history)
 
-    for ff in self:
-        if ff in nc_safe:
-            nc_safe.remove(ff)
-
     self.current = new_files
-
-    for ff in self:
-        nc_safe.append(ff)
 
     # clean up the directory
     cleanup()

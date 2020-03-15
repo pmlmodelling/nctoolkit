@@ -92,8 +92,6 @@ def regrid(self, grid = None, method = "bil"):
     else:
         orig_files = [copy.deepcopy(self.current)]
 
-
-
     for ff in self:
         cdo_result = subprocess.run(f"cdo griddes {ff}", shell = True, stdout=subprocess.PIPE, stderr =subprocess.PIPE).stdout
         cdo_result = str(cdo_result)
@@ -139,11 +137,8 @@ def regrid(self, grid = None, method = "bil"):
 
         if type(tracker.current) is str:
             new_files += [tracker.current]
-            nc_safe.append(tracker.current)
         else:
             new_files += tracker.current
-            for ff in tracker:
-                nc_safe.append(ff)
 
         self.history+=tracker.history
 
@@ -153,13 +148,7 @@ def regrid(self, grid = None, method = "bil"):
         if del_grid in nc_safe:
             nc_safe.remove(del_grid)
 
-
     self.current = new_files
-
-    for ff in orig_files:
-        if ff in nc_safe:
-            nc_safe.remove(ff)
-
 
     cleanup()
     self.disk_clean()

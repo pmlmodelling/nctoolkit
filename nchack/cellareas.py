@@ -42,12 +42,6 @@ def cell_areas(self,  join = True):
 
             new_commands.append(cdo_command)
 
-            nc_safe.append(target)
-
-        for ff in self:
-            if ff in nc_safe:
-                nc_safe.remove(ff)
-
         for x in new_commands:
             self.history.append(x)
 
@@ -62,11 +56,9 @@ def cell_areas(self,  join = True):
         cdo_command = "-gridarea"
         run_this(cdo_command, self,  output = "ensemble")
 
-
     # add units
 
     self.set_units({"cell_area": "m^2"})
-
 
     if join:
         self.release()

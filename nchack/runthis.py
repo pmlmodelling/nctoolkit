@@ -266,8 +266,6 @@ def run_this(os_command, self, output = "one",  out_file = None):
                 os_command = f'{os_command} {self.history[-1].replace("cdo ", " ")}'
                 os_command = os_command.replace("  ", " ")
 
-
-
             if session_info["thread_safe"]:
                 os_command = os_command.replace("-L ", " ")
 
@@ -313,21 +311,6 @@ def run_this(os_command, self, output = "one",  out_file = None):
 
             self.history = copy.deepcopy(new_history)
             self.current = copy.deepcopy(target_list)
-
-
-            if type(self.current) is str:
-                nc_safe.append(self.current)
-            else:
-                for ff in self:
-                    nc_safe.append(ff)
-
-            if type(start_files) is str:
-                if start_files in nc_safe:
-                    nc_safe.remove(start_files)
-            else:
-                for ff in start_files:
-                    if ff in nc_safe:
-                        nc_safe.remove(ff)
 
             self.disk_clean()
 
@@ -394,21 +377,6 @@ def run_this(os_command, self, output = "one",  out_file = None):
             self.current = target
             self.history = new_history
             self.history.append(os_command)
-
-
-            if type(self.current) is str:
-                nc_safe.append(copy.deepcopy(self.current))
-            else:
-                for ff in self:
-                    nc_safe.append(ff)
-
-            if type(start_files) is str:
-                if start_files in nc_safe:
-                    nc_safe.remove(start_files)
-            else:
-                for ff in start_files:
-                    if ff in nc_safe:
-                        nc_safe.remove(ff)
 
             self.disk_clean()
 

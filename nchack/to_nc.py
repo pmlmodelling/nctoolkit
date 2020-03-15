@@ -53,10 +53,7 @@ def write_nc(self, out, zip = True, overwrite = False):
             os.system(cdo_command)
             self.history.append(cdo_command)
             self._hold_history = copy.deepcopy(self.history)
-            if self.current in nc_safe:
-                nc_safe.remove(self.current)
             self.current = out
-            nc_safe.append(out)
 
         else:
             cdo_command = (f"cdo copy {ff[0]} {out}")
@@ -64,10 +61,7 @@ def write_nc(self, out, zip = True, overwrite = False):
             self.history.append(cdo_command)
             self._hold_history = copy.deepcopy(self.history)
 
-            if self.current in nc_safe:
-                nc_safe.remove(self.current)
             self.current = out
-            nc_safe.append(out)
 
     else:
         if zip:
@@ -83,9 +77,6 @@ def write_nc(self, out, zip = True, overwrite = False):
     if os.path.exists(out) == False:
         raise ValueError("File zipping was not successful")
 
-    for FF in ff:
-        if ff in nc_safe:
-            nc_safe.remove(FF)
 
     self.current = out
 

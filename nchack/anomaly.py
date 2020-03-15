@@ -56,10 +56,8 @@ def annual_anomaly(self, baseline = None, metric = "absolute", window = 1):
             raise ValueError("Check that the years in baseline are in the dataset!")
         # generate the cdo command
         if metric == "absolute":
-            #cdo_command = "cdo -L sub -runmean," + str(window) + " -yearmean " +  ff + " -timmean -selyear," + str(baseline[0]) + "/" + str(baseline[1]) + " " + ff  + " " + target
             cdo_command = f"cdo -L sub -runmean,{window} -yearmean {ff} -timmean -selyear,{baseline[0]}/{baseline[1]} {ff} {target}"
         else:
-            #cdo_command = "cdo -L div -runmean," + str(window) + " -yearmean " + ff + " -timmean -selyear," + str(baseline[0]) + "/" + str(baseline[1]) + " " + ff  + " " + target
             cdo_command = f"cdo -L div -runmean,{window} -yearmean {ff} -timmean -selyear,{baseline[0]}/{baseline[1]} {ff} {target}"
 
         # modify the cdo command if threadsafe
@@ -76,16 +74,7 @@ def annual_anomaly(self, baseline = None, metric = "absolute", window = 1):
     self.history+=new_commands
     self._hold_history = copy.deepcopy(self.history)
 
-    # update the safe lists and current file
-
-    for ff in self:
-        if ff in nc_safe:
-            nc_safe.remove(ff)
-
     self.current = new_files
-
-    for ff in self:
-        nc_safe.append(ff)
 
     cleanup()
 
@@ -132,7 +121,6 @@ def monthly_anomaly(self, baseline = None):
         # create the target file
         target = temp_file("nc")
         # create system command
-        #cdo_command = "cdo -L -ymonsub -monmean " + ff +  " -ymonmean  -selyear," + str(baseline[0]) + "/" + str(baseline[1]) + " " + ff + " " + target
         cdo_command = f"cdo -L -ymonsub -monmean {ff} -ymonmean -selyear,{baseline[0]}/{baseline[1]} {ff} {target}"
 
         # modify the cdo command if threadsafe
@@ -149,23 +137,10 @@ def monthly_anomaly(self, baseline = None):
     self.history+=new_commands
     self._hold_history = copy.deepcopy(self.history)
 
-
-
-
-    # updat the safe lists and current file
-    for ff in self:
-        if ff in nc_safe:
-            nc_safe.remove(ff)
-
     self.current = new_files
-
-    for ff in self:
-        nc_safe.append(ff)
-
 
     if len(self.current) == 1:
         self.current = self.current[0]
-
 
     cleanup()
     self.disk_clean()

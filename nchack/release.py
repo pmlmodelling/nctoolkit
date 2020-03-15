@@ -38,7 +38,8 @@ def release(self,  run_merge = True):
 
         if len(self._safe) > 0:
             for ff in self._safe:
-                nc_safe.remove(ff)
+                if ff in nc_safe:
+                    nc_safe.remove(ff)
 
         self._safe = []
 

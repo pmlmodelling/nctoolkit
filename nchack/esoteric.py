@@ -78,9 +78,7 @@ def assign_coords(self, lon_name = None, lat_name = None):
     target = run_nco(nco_command, target)
 
     if target != "":
-        nc_safe.remove(self.current)
         self.current = target
-        nc_safe.append(self.current)
 
     # clean up the directory
     cleanup(keep = self.current)
@@ -129,9 +127,9 @@ def set_attributes(self, att_dict):
     target = run_nco(nco_command, target)
 
     if target != "":
-        nc_safe.remove(self.current)
+      #  nc_safe.remove(self.current)
         self.current = target
-        nc_safe.append(self.current)
+      #  nc_safe.append(self.current)
 
     # clean up the directory
     cleanup(keep = self.current)
@@ -181,9 +179,9 @@ def delete_attributes(self, atts):
     target = run_nco(nco_command, target)
 
     if target != "":
-        nc_safe.remove(self.current)
+   #     nc_safe.remove(self.current)
         self.current = target
-        nc_safe.append(self.current)
+   #     nc_safe.append(self.current)
 
     # clean up the directory
     cleanup(keep = self.current)

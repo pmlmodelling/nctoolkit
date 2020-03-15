@@ -56,14 +56,10 @@ def split_cdo(self, method = "year"):
         for x in mylist:
             if split_base in x:
                 new_files.append(x)
-                nc_safe.append(x)
                 counter+=1
 
         if counter == 0:
             raise ValueError("Splitting the file did not work!")
-
-        if ff in nc_safe:
-            nc_safe.remove(ff)
 
     self.history+= commands
     self._hold_history = copy.deepcopy(self.history)

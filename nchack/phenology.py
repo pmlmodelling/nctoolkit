@@ -43,20 +43,29 @@ def phenology(self, var = None, metric = None, p = None):
     if len(self.years()) > 1:
         raise ValueError("This can only work with single year data currently")
 
-
     if metric == "middle":
-        target = temp_file(".nc")
-        command = f"cdo -L -timmin -setrtomiss,-10000,0 -expr,'middle=var*ctimestep()' -gt -timcumsum -chname,{var},var -selname,{var} {self.current} -divc,2 -timsum -chname,{var},var -selname,{var} {self.current} {target}"
 
-        target = run_cdo(command, target = target)
-        self.history.append(command)
+        new_files = []
+        new_commands = []
+
+        for ff in self:
+
+            target = temp_file(".nc")
+            command = f"cdo -L -timmin -setrtomiss,-10000,0 -expr,'middle=var*ctimestep()' -gt -timcumsum -chname,{var},var -selname,{var} {ff} -divc,2 -timsum -chname,{var},var -selname,{var} {self.current} {target}"
+
+            target = run_cdo(command, target = target)
+
+            new_files.append(ff)
+            new_commands.append(ff)
+
+
+        self.history.append(new_commands)
         self._hold_history = copy.deepcopy(self.history)
-        if self.current in nc_safe:
-            nc_safe.remove(self.current)
-        self.current = target
 
-        nc_safe.append(self.current)
+        self.current = new_files
 
+        if len(self.current) == 1:
+            self.current = self.current[0]
 
         return None
 
@@ -68,11 +77,7 @@ def phenology(self, var = None, metric = None, p = None):
         self.history.append(command)
         self._hold_history = copy.deepcopy(self.history)
 
-        if self.current in nc_safe:
-            nc_safe.remove(self.current)
         self.current = target
-
-        nc_safe.append(self.current)
 
         return None
 
@@ -88,16 +93,9 @@ def phenology(self, var = None, metric = None, p = None):
         target = run_cdo(command, target = target)
         self.history.append(command)
         self._hold_history = copy.deepcopy(self.history)
-        if self.current in nc_safe:
-            nc_safe.remove(self.current)
         self.current = target
 
-        nc_safe.append(self.current)
-
-
         return None
-
-
 
     cleanup(self.current)
 

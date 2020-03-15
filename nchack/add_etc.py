@@ -26,7 +26,6 @@ def operation(self, method = "mul", ff = None, var = None):
         if os.path.exists(ff) == False:
             raise ValueError(f"{ff} does not exist!")
 
-
     if var is not None:
         if type(var) is not str:
             raise TypeError("var supplied is not a string")
@@ -36,8 +35,6 @@ def operation(self, method = "mul", ff = None, var = None):
     if ff is not None:
         nc_safe.append(ff)
         self._safe.append(ff)
-
-
 
     if len(self.history) == len(self._hold_history):
 
@@ -53,9 +50,6 @@ def operation(self, method = "mul", ff = None, var = None):
     else:
 
         prior_command = self.history[-1].replace("cdo ", " ").replace("  ", " ")
-
-
-
 
     if var is None:
         if "infile09178" in prior_command:
@@ -80,8 +74,6 @@ def operation(self, method = "mul", ff = None, var = None):
             self.history[-1] = cdo_command
         else:
             self.history.append(cdo_command)
-
-
 
 
 

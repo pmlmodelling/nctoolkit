@@ -252,7 +252,7 @@ class DataSet(object):
         # Attribuates of interest to users
         self.history = []
         self.start = start
-        self.current = start
+        self._current = start
 
         # attributes to the module, but not users (probably)
         if session_info["lazy"]:
@@ -450,13 +450,20 @@ class DataSet(object):
 
     @current.setter
     def current(self, value):
+        for ff in self:
+            if ff in nc_safe:
+                nc_safe.remove(ff)
+
         if type(value) is str:
+            nc_safe.append(value)
             self._current = value
         if isinstance(value,list):
             if len(value) > 1:
                 self._current = value
             else:
                 self._current = value[0]
+            for ff in value:
+                nc_safe.append(ff)
 
 
     @property

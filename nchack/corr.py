@@ -48,15 +48,7 @@ def cor(self, var1 = None, var2 = None, method = "fld"):
     self.history+=new_commands
     self._hold_history = copy.deepcopy(self.history)
 
-    for ff in self:
-        if ff in nc_safe:
-            nc_safe.remove(ff)
-
     self.current = new_files
-
-    # add the new file to the safe list
-    for ff in self:
-        nc_safe.append(ff)
 
     # tidy up the attributes of the netcdf file in the dataset
     self.rename({var1:"cor"})

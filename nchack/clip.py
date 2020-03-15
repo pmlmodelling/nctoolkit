@@ -71,7 +71,6 @@ def clip(self, lon = [-180, 180], lat = [-90, 90], cdo = True):
         lat_name = [x for x in str(out.stdout).replace("b'", "").split("\\n") if "yname" in x][0].split(" ")[-1]
         target = temp_file("nc")
 
-
         nco_command = "ncea -d " + lat_name + "," + str(float(lat[0])) + "," + str(float(lat[1])) + " -d " + lon_name + "," + str(float(lon[0])) + "," + str(float(lon[1]))  + " " + ff + " " + target
         if lon == [-180, 180]:
             nco_command = "ncea -d " + lat_name + "," + str(float(lat[0])) + "," + str(float(lat[1])) +  " " + ff + " " + target
@@ -85,18 +84,10 @@ def clip(self, lon = [-180, 180], lat = [-90, 90], cdo = True):
 
         new_files.append(target)
 
-
     self.history+=new_commands
     self._hold_history = copy.deepcopy(self.history)
 
-    for ff in self:
-        if ff in nc_safe:
-            nc_safe.remove(ff)
-
     self.current = new_files
-
-    for ff in self:
-        nc_safe.append(ff)
 
     cleanup()
     self.disk_clean()

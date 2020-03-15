@@ -185,9 +185,7 @@ def bottom_mask(self):
     bottom.set_missing([0,0])
     bottom.release()
 
-    nc_safe.remove(self.current)
     self.current = copy.deepcopy(bottom.current)
-    nc_safe.append(self.current)
 
     self.history = copy.deepcopy(bottom.history)
     self._hold_history = copy.deepcopy(self.history)

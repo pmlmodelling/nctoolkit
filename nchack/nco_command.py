@@ -37,14 +37,7 @@ def nco_command(self, command):
         new_files.append(target)
         new_commands.append(the_command)
 
-    for ff in self:
-        if ff in nc_safe:
-            nc_safe.remove(ff)
-
     self.current = new_files
-
-    for ff in self:
-        nc_safe.append(ff)
 
     self.history.append(command)
     self._hold_history = copy.deepcopy(self.history)
