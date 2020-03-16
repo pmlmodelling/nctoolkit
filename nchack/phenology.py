@@ -109,6 +109,6 @@ def phenology(self, var = None, metric = None, p = None):
         return None
 
 
-    rise ValueError("You have not supplied a valid metric")
+    raise ValueError("You have not supplied a valid metric")
 
 
