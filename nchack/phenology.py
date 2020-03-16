@@ -80,7 +80,7 @@ def phenology(self, var = None, metric = None, p = None):
         if type(p) is not float:
             raise TypeError("p is not float")
 
-        start = (100 - p)/100
+        start = (p)/100
         new_files = []
         new_commands = []
 
@@ -109,6 +109,6 @@ def phenology(self, var = None, metric = None, p = None):
         return None
 
 
-    raise ValueError("You have not supplied a valid metric")
+    rise ValueError("You have not supplied a valid metric")
 
 
