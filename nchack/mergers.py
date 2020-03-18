@@ -3,6 +3,7 @@ import warnings
 import pandas as pd
 import subprocess
 from datetime import datetime
+from .session import session_info
 from .runthis import run_this
 
 def merge(self, match = ["year", "month", "day"]):
@@ -80,7 +81,8 @@ def merge(self, match = ["year", "month", "day"]):
 
     run_this(cdo_command, self, output = "one")
 
-    self._merged = True
+    if session_info["lazy"]:
+        self._merged = True
 
 
 
@@ -100,5 +102,6 @@ def merge_time(self):
 
     run_this(cdo_command, self,  output = "one")
 
-    self._merged = True
+    if session_info["lazy"]:
+        self._merged = True
 
