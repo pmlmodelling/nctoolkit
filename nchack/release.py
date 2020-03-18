@@ -33,6 +33,8 @@ def release(self,  run_merge = True):
 
         run_this(cdo_command, self,  output = output_method)
 
+        self._merged = False
+
         self._run = False
         self._zip = False
 
