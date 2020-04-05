@@ -1,6 +1,6 @@
 import unittest
 import nchack as nc
-nc.options(lazy= True)
+nc.options(lazy= False)
 nc.options(thread_safe = True)
 import pandas as pd
 import xarray as xr
@@ -13,6 +13,19 @@ ff = "data/sst.mon.mean.nc"
 class TestSelect(unittest.TestCase):
 
 
+    def test_merger(self):
+        new = nc.open_data(ff)
+        tracker = nc.open_data(ff)
+        tracker.split("year")
+        tracker.merge_time()
+        tracker.subtract(new)
+        tracker.mean()
+        x = tracker.to_dataframe().sst.values[0]
+
+        self.assertEqual(x, 0)
+
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
 
 
     def test_add(self):
@@ -69,6 +82,22 @@ class TestSelect(unittest.TestCase):
         n = len(nc.session_files())
         self.assertEqual(n, 2)
 
+    def test_add21(self):
+        tracker = nc.open_data(ff)
+        tracker.select_years(list(range(1950, 1951)))
+        tracker.select_months([1])
+        tracker.release()
+        new = tracker.copy()
+        new.add(tracker, "sst")
+        new.spatial_mean()
+        tracker.spatial_mean()
+
+        x = tracker.to_dataframe().sst.values[0]
+        y = new.to_dataframe().sst.values[0]
+
+        self.assertEqual(x + x, y)
+        n = len(nc.session_files())
+        self.assertEqual(n, 2)
 
     def test_add_var(self):
         tracker = nc.open_data(ff)
@@ -90,10 +119,6 @@ class TestSelect(unittest.TestCase):
         self.assertEqual(n, 2)
 
 
-
-
-
-
     def test_add3(self):
         tracker = nc.open_data(ff)
         tracker.select_years(list(range(1950, 1951)))
@@ -110,6 +135,27 @@ class TestSelect(unittest.TestCase):
         self.assertEqual(x + x, y)
         n = len(nc.session_files())
         self.assertEqual(n, 2)
+
+
+
+    def test_add4(self):
+        nc.options(lazy = False)
+        tracker = nc.open_data(ff)
+        tracker.select_years(list(range(1950, 1951)))
+        tracker.select_months([1])
+        tracker.release()
+        new = tracker.copy()
+        new.add(tracker.current)
+        new.spatial_mean()
+        tracker.spatial_mean()
+
+        x = tracker.to_dataframe().sst.values[0]
+        y = new.to_dataframe().sst.values[0]
+
+        self.assertEqual(x + x, y)
+        n = len(nc.session_files())
+        self.assertEqual(n, 2)
+        nc.options(lazy = True)
 
     def test_subtract(self):
         tracker = nc.open_data(ff)
@@ -300,6 +346,25 @@ class TestSelect(unittest.TestCase):
         n = len(nc.session_files())
         self.assertEqual(n, 3)
 
+    def test_divide3(self):
+        tracker = nc.open_data(ff)
+        tracker.select_years(list(range(1950, 1951)))
+        tracker.select_months([1])
+        tracker.release()
+        new = tracker.copy()
+        new.add(2)
+        new.subtract(tracker.current)
+        out = tracker.copy()
+        tracker.divide(new)
+        tracker.spatial_mean()
+        out.spatial_mean()
+
+        x = tracker.to_dataframe().sst.values[0]
+        y = out.to_dataframe().sst.values[0]
+
+        self.assertEqual(x, y/2)
+        n = len(nc.session_files())
+        self.assertEqual(n, 3)
 
 
     def test_file_incompat(self):

@@ -3,6 +3,7 @@ import nchack as nc
 import pandas as pd
 import xarray as xr
 import os
+nc.options(lazy = False)
 
 
 ff = "data/sst.mon.mean.nc"
