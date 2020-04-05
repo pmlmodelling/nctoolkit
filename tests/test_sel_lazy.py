@@ -1,6 +1,6 @@
 import unittest
 import nchack as nc
-nc.options(lazy= True)
+nc.options(lazy= False)
 nc.options(thread_safe = True)
 import pandas as pd
 import xarray as xr

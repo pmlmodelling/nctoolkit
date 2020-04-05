@@ -65,6 +65,26 @@ class TestSelect(unittest.TestCase):
         x = nc.api.file_size(ff)
         self.assertEqual(x, 525893626)
 
+
+    def test_cortime(self):
+        ff = "data/sst.mon.mean.nc"
+        data = nc.open_data(ff)
+        data2 = nc.open_data(ff)
+        test = nc.cor_time(data, data2)
+        test.mean()
+        test.spatial_mean()
+        x = test.to_dataframe().sst.values[0]
+        self.assertEqual(x, 1)
+
+        x = nc.open_data(ff)
+        with self.assertRaises(TypeError) as context:
+            test = nc.cor_time(x, "y")
+
+        with self.assertRaises(TypeError) as context:
+            test = nc.cor_time("y", x)
+
+
+
     def test_open_data(self):
         ff = "data/sst.mon.mean.nc"
         x = nc.open_data(ff)

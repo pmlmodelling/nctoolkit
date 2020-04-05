@@ -1,6 +1,6 @@
 import unittest
 import nchack as nc
-nc.options(lazy= True)
+nc.options(lazy= False)
 nc.options(thread_safe = True)
 import pandas as pd
 import xarray as xr
@@ -46,6 +46,41 @@ class TestSelect(unittest.TestCase):
         self.assertEqual(x, y * 2)
 
 
+    def test_sumall_1(self):
+        tracker = nc.open_data(ff)
+        tracker.select_years(1990)
+        tracker.select_months(1)
+        inc = 0
+        tracker.mutate({"tos":"sst+@inc"})
+        tracker.sum_all(drop = False)
+        tracker.spatial_mean()
+        x = tracker.to_xarray().total.values[0][0][0].astype("float")
+
+        tracker = nc.open_data(ff)
+        tracker.select_years(1990)
+        tracker.select_months(1)
+        tracker.spatial_mean()
+        y = tracker.to_xarray().sst.values[0][0][0].astype("float")
+
+        self.assertEqual(x, y * 2)
+
+    def test_sumall_2(self):
+        tracker = nc.open_data(ff)
+        tracker.select_years(1990)
+        tracker.select_months(1)
+        inc = 0
+        tracker.mutate({"total":"sst+@inc"})
+        tracker.sum_all(drop = False)
+        tracker.spatial_mean()
+        x = tracker.to_xarray().total0.values[0][0][0].astype("float")
+
+        tracker = nc.open_data(ff)
+        tracker.select_years(1990)
+        tracker.select_months(1)
+        tracker.spatial_mean()
+        y = tracker.to_xarray().sst.values[0][0][0].astype("float")
+
+        self.assertEqual(x, y * 2)
 
     def test_mutate(self):
         tracker = nc.open_data(ff)

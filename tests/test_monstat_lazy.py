@@ -3,7 +3,7 @@ import nchack as nc
 import pandas as pd
 import xarray as xr
 import os
-nc.options(lazy = True)
+nc.options(lazy = False)
 
 
 ff = "data/2003.nc"
