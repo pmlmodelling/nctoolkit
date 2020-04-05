@@ -139,9 +139,6 @@ def monthly_anomaly(self, baseline = None):
 
     self.current = new_files
 
-    if len(self.current) == 1:
-        self.current = self.current[0]
-
     cleanup()
     self.disk_clean()
 
