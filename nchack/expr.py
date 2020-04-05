@@ -120,20 +120,6 @@ def sum_all(self, drop = True):
 
 
 
-def assign(self, **kwargs):
-    for key in kwargs:
-        if callable(kwargs[key]) is False:
-            raise TypeError("You have not supplied a lambda function")
-        func_string1 = str(inspect.getsourcelines(kwargs[key])[0]).strip("['\\n']").split(" = ")[1].split(":")[0].split("lambda")[1].strip()
-        func_string2 = str(inspect.getsourcelines(kwargs[key])[0]).strip("['\\n']").split(" = ")[1].split(":")[1][:-1]
-        if ". " in func_string2:
-            raise TypeError("lambda function is invalid!")
-
-        print(func_string1)
-        print(func_string2)
-
-
-
 
 
 
