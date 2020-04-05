@@ -218,12 +218,12 @@ def merge(*datasets, match = ["day", "year", "month"]):
 def cor_time(x = None, y = None):
 
     if "DataSet" in str(type(x)) == False:
-        raise ValueError("Please check x is a dataset")
+        raise TypeError("Please check x is a dataset")
         # make sure everything has been evaluated
         x.release()
 
     if "DataSet" in str(type(y)) == False:
-        raise ValueError("Please check y is a dataset")
+        raise TypeError("Please check y is a dataset")
         # make sure everything has been evaluated
         y.release()
 
