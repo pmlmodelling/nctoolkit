@@ -113,7 +113,7 @@ def sum_all(self, drop = True):
         else:
             i = 0
             while True:
-                if "total" + str(i) not in self.variables:
+                if f"total{i}" not in self.variables:
                     break
                 i += 1
             self.mutate({"total" + str(i):"+".join(self.variables)})
