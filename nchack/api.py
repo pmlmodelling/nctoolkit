@@ -217,15 +217,17 @@ def merge(*datasets, match = ["day", "year", "month"]):
 
 def cor_time(x = None, y = None):
 
-    if "DataSet" in str(type(x)) == False:
+
+    if ("DataSet" in str(type(x))) == False:
         raise TypeError("Please check x is a dataset")
         # make sure everything has been evaluated
-        x.release()
+    x.release()
 
-    if "DataSet" in str(type(y)) == False:
+    if ("DataSet" in str(type(y))) == False:
         raise TypeError("Please check y is a dataset")
         # make sure everything has been evaluated
-        y.release()
+
+    y.release()
 
     if type(x.current) is not str or type(y.current) is not str:
         raise TypeError("This method can only work for single variable data sets")
