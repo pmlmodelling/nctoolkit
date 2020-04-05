@@ -21,6 +21,9 @@ def arithall(self, stat = "divc", x = None):
 def operation(self, method = "mul", ff = None, var = None):
     """Method to add, subtract etc. a netcdf file from another one"""
 
+    if self._merged:
+        self.release()
+
 
     if ff is not None:
         if os.path.exists(ff) == False:
@@ -32,7 +35,8 @@ def operation(self, method = "mul", ff = None, var = None):
         if var not in nc_variables(ff):
             raise ValueError("var supplied is not available in the dataset")
 
-    if ff is not None:
+    # make sure the ff file is not removed from safe list in subsequent actions prior to release
+    if ff is not None and session_info["lazy"]:
         nc_safe.append(ff)
         self._safe.append(ff)
 
@@ -63,10 +67,22 @@ def operation(self, method = "mul", ff = None, var = None):
             cdo_command = f"cdo -{method} {prior_command} infile09178 -selname,{var} {ff}"
 
     if session_info["lazy"] == False:
-        target = temp_file(".nc")
-        cdo_command += cdo_command + " " + target
-        run_cdo(cdo_command, target)
-        self.history.append(cdo_command)
+
+        new_files = []
+        new_commands = []
+
+        for ff in self:
+
+            target = temp_file(".nc")
+            the_command = cdo_command.replace("infile09178", ff) + " " + target
+            target = run_cdo(the_command, target)
+            new_files.append(target)
+            new_commands.append(the_command)
+
+        for cc in new_commands:
+            self.history.append(cc)
+
+        self.current = new_files
         self._hold_history = copy.deepcopy(self.history)
 
     else:
@@ -74,6 +90,8 @@ def operation(self, method = "mul", ff = None, var = None):
             self.history[-1] = cdo_command
         else:
             self.history.append(cdo_command)
+
+    cleanup()
 
 
 
