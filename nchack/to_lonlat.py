@@ -87,8 +87,8 @@ def to_lonlat(self, lon = None, lat = None, res = None, method = "bil"):
 
     grid_file = temp_file()[0:-2]
 
-    xsize = int((lon[1] - lon[0])/res[0])
-    ysize = int((lat[1] - lat[0])/res[1])
+    xsize = int((lon[1] - lon[0])/res[0]) + 1
+    ysize = int((lat[1] - lat[0])/res[1]) + 1
     lon_step = res[0]
     lat_step = res[1]
     f = open(grid_file, 'w')
