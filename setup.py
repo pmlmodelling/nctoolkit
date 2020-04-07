@@ -8,7 +8,7 @@ setup(name='nchack',
       author_email='rwi@pml.ac.uk',
       license='MIT',
       packages=['nchack'],
-      install_requires=['xarray','netcdf4','hvplot', "dask"],
+      install_requires=['xarray','netcdf4','hvplot', "dask", "pyviz"],
       zip_safe=False)
 
 
