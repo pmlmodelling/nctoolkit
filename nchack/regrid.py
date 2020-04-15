@@ -140,7 +140,7 @@ def regrid(self, grid = None, method = "bil"):
         else:
             new_files += tracker.current
 
-        for ff in new_files:
+        for ff in tracker:
             if ff not in nc_safe:
                 nc_safe.append(ff)
 
@@ -152,9 +152,7 @@ def regrid(self, grid = None, method = "bil"):
         if del_grid in nc_safe:
             nc_safe.remove(del_grid)
 
-    for ff in new_files:
-        if ff in nc_safe:
-            nc_safe.remove(ff)
+
     self.current = new_files
 
     cleanup()
