@@ -74,6 +74,12 @@ def phenology(self, var = None, metric = None, p = None):
         if metric == "middle":
             p = 50.0
 
+        if (metric == "start") and (p is None):
+            p = 25.0
+
+        if (metric == "end") and (p is None):
+            p = 75.0
+
         if type(p) is int:
             p = float(p)
 
