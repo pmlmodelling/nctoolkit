@@ -1,10 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-## Contributing [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/esta/issues)
-
-
-![code coverage](coverage.svg)
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/esta/issues) ![code coverage](coverage.svg)
 
 
 # nchack - easy tools for manipulating netcdf data in Python
