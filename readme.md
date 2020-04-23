@@ -4,7 +4,7 @@
 ## Contributing [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/esta/issues)
 
 
-!(covarage.svg)
+![code coverage](covarage.svg)
 
 
 # nchack - easy tools for manipulating netcdf data in Python
