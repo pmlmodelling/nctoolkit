@@ -34,6 +34,9 @@ class TestSelect(unittest.TestCase):
         n = len(nc.session_files())
         self.assertEqual(n, 2)
 
+    def test_empty(self):
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_regrid_list(self):
         tracker = nc.open_data(ff)

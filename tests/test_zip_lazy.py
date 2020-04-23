@@ -9,6 +9,9 @@ import numpy as np
 
 
 class TestSelect(unittest.TestCase):
+    def test_empty(self):
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_zip1(self):
         ff = "data/sst.mon.mean.nc"

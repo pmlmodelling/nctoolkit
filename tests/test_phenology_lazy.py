@@ -10,6 +10,9 @@ ff = "data/sst.mon.mean.nc"
 
 class TestSelect(unittest.TestCase):
 
+    def test_empty(self):
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
     def test_clim1(self):
         data = nc.open_data(ff)
         data.select_timestep(list(range(0, 12)))

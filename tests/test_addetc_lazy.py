@@ -485,6 +485,25 @@ class TestSelect(unittest.TestCase):
         with self.assertRaises(ValueError) as context:
             tracker.add(tracker, var = "tos222")
 
+    def test_lazy_add(self):
+        tracker = nc.open_data(ff)
+        tracker.select_years(list(range(1950, 1951)))
+        tracker.select_months([1])
+        tracker.release()
+        new = tracker.copy()
+        #tracker.spatial_mean()
+        new.add(tracker, "sst")
+        new.subtract(tracker, "sst")
+        new.subtract(tracker, "sst")
+        new.spatial_mean()
+
+        x = new.to_dataframe().sst.values[0]
+
+        self.assertEqual(x , 0)
+
+    def test_empty(self):
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
 if __name__ == '__main__':
     unittest.main()

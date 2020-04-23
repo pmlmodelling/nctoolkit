@@ -11,6 +11,9 @@ ff = "data/sst.mon.mean.nc"
 
 class TestSelect(unittest.TestCase):
 
+    def test_empty(self):
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
     def test_mean(self):
         ff = "data/sst.mon.mean.nc"
         data = nc.open_data(ff)

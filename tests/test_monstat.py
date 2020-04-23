@@ -9,6 +9,9 @@ nc.options(lazy = False)
 ff = "data/2003.nc"
 
 class TestSelect(unittest.TestCase):
+    def test_empty(self):
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_mean(self):
         tracker = nc.open_data(ff)

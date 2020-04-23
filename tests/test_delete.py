@@ -13,6 +13,9 @@ ff = "data/sst.mon.mean.nc"
 
 class TestSelect(unittest.TestCase):
 
+    def test_empty(self):
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
     def test_remove_variables(self):
         tracker = nc.open_data(ff)
         print("This: " + nc.nc_variables(ff)[0])

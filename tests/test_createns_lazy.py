@@ -9,6 +9,9 @@ import os
 
 class TestSelect(unittest.TestCase):
 
+    def test_empty(self):
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
     def test_generate(self):
         x = nc.generate_ensemble("data/ensemble_merge")
 

@@ -153,6 +153,9 @@ class TestSelect(unittest.TestCase):
         self.assertEqual(n, 0)
 
 
+    def test_empty(self):
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
 
 

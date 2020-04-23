@@ -9,6 +9,9 @@ nc.options(lazy = False)
 ff = "data/sst.mon.mean.nc"
 
 class TestSelect(unittest.TestCase):
+    def test_empty(self):
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_release(self):
         nc.options(thread_safe = True)

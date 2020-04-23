@@ -33,6 +33,9 @@ class TestSelect(unittest.TestCase):
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 
+    def test_empty(self):
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
     def test_min(self):
         ff = "data/sst.mon.mean.nc"
         data = nc.open_data(ff)

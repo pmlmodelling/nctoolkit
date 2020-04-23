@@ -12,6 +12,9 @@ ff = "data/sst.mon.mean.nc"
 
 class TestSelect(unittest.TestCase):
 
+    def test_empty(self):
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
     def test_compare_all(self):
         tracker = nc.open_data(ff)
         tracker.select_years(list(range(1950, 1951)))

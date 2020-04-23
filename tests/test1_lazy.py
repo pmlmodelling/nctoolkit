@@ -69,6 +69,9 @@ class TestSelect(unittest.TestCase):
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 
+    def test_empty(self):
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
 
 if __name__ == '__main__':

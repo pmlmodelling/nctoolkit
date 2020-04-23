@@ -106,6 +106,7 @@ class TestSelect(unittest.TestCase):
         self.assertEqual(n, 1)
 
     def test_bottom_error(self):
+        n = len(nc.session_files())
         ff = "data/woa18_decav_t01_01.nc"
         tracker = nc.open_data(ff)
 
@@ -116,8 +117,9 @@ class TestSelect(unittest.TestCase):
         test = nc.open_data([tracker.current, new.current])
         with self.assertWarns(Warning):
             test.bottom()
+            test.release()
         n = len(nc.session_files())
-        self.assertEqual(n, 2)
+        self.assertEqual(n, 4)
 
 
     def test_bottom_mask(self):
@@ -151,8 +153,21 @@ class TestSelect(unittest.TestCase):
         )
         self.assertEqual(x, True)
 
+    def test_bottom_mask_error(self):
+        data = nc.open_data(nc.create_ensemble("data/ensemble"))
 
+        with self.assertRaises(TypeError) as context:
+            data.bottom_mask()
 
+    def test_bottom_mask_error2(self):
+        data = nc.open_data(nc.create_ensemble("data/ensemble"))
+
+        with self.assertRaises(ValueError) as context:
+            data.merge_time()
+            data.bottom_mask()
+    def test_empty(self):
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
 if __name__ == '__main__':
     unittest.main()
