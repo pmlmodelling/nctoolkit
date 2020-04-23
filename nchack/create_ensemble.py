@@ -25,10 +25,6 @@ def create_ensemble(path = "", var = None, recursive = True):
         A list of files
     """
 
-
-    def intersection(lst1, lst2):
-        lst3 = [value for value in lst1 if value in lst2]
-        return lst3
     # make sure the path exists
 
     if os.path.exists(path) == False:
