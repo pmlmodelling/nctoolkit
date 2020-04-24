@@ -10,7 +10,10 @@ import copy
 import os
 
 def arithall(self, stat = "divc", x = None):
-    """Method to add, subtract etc. a constant from a dataset"""
+    """
+    Method to add, subtract etc. a constant from a dataset
+    This is used by add etc.
+    """
 
     # create the system command and run it
     cdo_command = f"cdo -{stat},{x}"
@@ -19,16 +22,21 @@ def arithall(self, stat = "divc", x = None):
 
 
 def operation(self, method = "mul", ff = None, var = None):
-    """Method to add, subtract etc. a netcdf file from another one"""
+    """
+    Method to add, subtract etc. a netcdf file from another one
+    This is used by add etc.
+    """
 
+    # If the dataset has to be merged, then this operation will not work without releasing it first
     if self._merged:
         self.release()
 
-
+    # throw error if the file to operate with does not exist
     if ff is not None:
         if os.path.exists(ff) == False:
             raise ValueError(f"{ff} does not exist!")
 
+    # throw error if there is a problem with var
     if var is not None:
         if type(var) is not str:
             raise TypeError("var supplied is not a string")
@@ -55,6 +63,9 @@ def operation(self, method = "mul", ff = None, var = None):
 
         prior_command = self.history[-1].replace("cdo ", " ").replace("  ", " ")
 
+    # we need to make sure you can chain multiple adds etc.#
+    # hacky approach below will do this
+
     if var is None:
         if "infile09178" in prior_command:
             cdo_command = f"cdo -{method} {prior_command} {ff}"
@@ -66,6 +77,7 @@ def operation(self, method = "mul", ff = None, var = None):
         else:
             cdo_command = f"cdo -{method} {prior_command} infile09178 -selname,{var} {ff}"
 
+    # run the command if not lazy
     if session_info["lazy"] == False:
 
         new_files = []
@@ -85,6 +97,7 @@ def operation(self, method = "mul", ff = None, var = None):
         self.current = new_files
         self._hold_history = copy.deepcopy(self.history)
 
+    # update history if lazy
     else:
         if len(self.history) > len(self._hold_history):
             self.history[-1] = cdo_command
@@ -101,7 +114,7 @@ def multiply(self, x = None, var = None):
     Parameters
     ------------
     x: int, float, DataSet or netcdf file
-        An int, float, single file dataset or netcdf file to multiply the dataset by
+        An int, float, single file dataset or netcdf file to multiply the dataset by. If multiplying by a dataset or single file there must only be a single variable in it, unless var is supplied.
     var: str
         A variable in the x to multiply the dataset by
     """
@@ -130,7 +143,7 @@ def subtract(self, x = None, var = None):
     Parameters
     ------------
     x: int, float, DataSet or netcdf file
-        An int, float, single file dataset or netcdf file to subtract from the dataset
+        An int, float, single file dataset or netcdf file to subtract from the dataset. If a dataset or netcdf is supplied this must only have one variable, unless var is provided.
     var: str
         A variable in the x to use for the operation
     """
@@ -159,7 +172,7 @@ def add(self, x = None, var = None):
     Parameters
     ------------
     x: int, float, DataSet or netcdf file
-        An int, float, single file dataset or netcdf file to add to the dataset
+        An int, float, single file dataset or netcdf file to add to the dataset. If a dataset or netcdf file is supplied, this must have only one variable, unless var is provided.
     var: str
         A variable in the x to use for the operation
     """
@@ -185,11 +198,11 @@ def add(self, x = None, var = None):
 
 def divide(self, x = None, var = None):
     """
-    Divide the data in the current dataset by the data in another dataset or netcdf file
+    Divide the data
     Parameters
     ------------
     x: int, float, DataSet or netcdf file
-        An int, float, single file dataset or netcdf file to divide the dataset by
+        An int, float, single file dataset or netcdf file to divide the dataset by. If a dataset or netcdf file is supplied, this must have only one variable, unless var is provided.
     var: str
         A variable in the x to use for the operation
     """

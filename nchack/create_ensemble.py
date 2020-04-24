@@ -14,8 +14,6 @@ def create_ensemble(path = "", var = None, recursive = True):
     -------------
     path: str
         The system to search for netcdf files
-    var: str
-        The variable the ensemble files must contain. This is ignored if not set.
     recursive : boolean
         True/False depending on whether you want to search the path recursively. Defaults to True.
 
@@ -40,17 +38,10 @@ def create_ensemble(path = "", var = None, recursive = True):
     else:
         files = [f for f in glob.glob(path + "*.nc")]
 
-    if var is None:
-        ensemble = copy.deepcopy(files)
-    else:
-        ensemble = []
-        for ff in files:
-            cdo_result = os.popen(f"cdo showname {ff}").read()
-            cdo_result = cdo_result.replace("\n", "").strip().split(" ")
-            if var in cdo_result:
-                ensemble.append(ff)
+    if len(files) == 0:
+        raise ValueError("There is no data in the target directory")
 
-    return ensemble
+    return files
 
 def generate_ensemble(path = "", recursive = True):
 
