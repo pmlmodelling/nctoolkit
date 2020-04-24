@@ -243,8 +243,6 @@ def run_this(os_command, self, output = "one",  out_file = None):
 
     cores = session_info["cores"]
 
-    start_files = copy.deepcopy(self.current)
-
     if type(self.current) is str:
         output = "ensemble"
 
