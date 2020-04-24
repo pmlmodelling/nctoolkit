@@ -86,7 +86,7 @@ def options(**kwargs):
             else:
                 if key == "precision":
                     if kwargs[key] not in ["I8", "I16", "I32", "F32", "F64"]:
-                        raiseValueError("precision supplied is not valid!")
+                        raise ValueError("precision supplied is not valid!")
                     session_info[key] = kwargs[key]
                 else:
                     raise AttributeError(key + " is not valid session info!")
