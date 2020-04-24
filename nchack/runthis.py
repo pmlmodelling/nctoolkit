@@ -130,6 +130,9 @@ def run_cdo(command, target, out_file = None, overwrite = False):
 
 
     if out_file is not None:
+        if "HDF5 library version mismatched error" in str(result):
+            raise ValueError("The HDF5 header files used to compile this application do not matchthe version used by the HDF5 library to which this application is linked. This is likely because of a conda problem.")
+
         if str(result).startswith("b'Error") or "HDF error" in str(result) or out.returncode != 0:
             raise ValueError(str(result).replace("b'","").replace("\\n", "").replace("'", ""))
         else:
@@ -140,6 +143,9 @@ def run_cdo(command, target, out_file = None, overwrite = False):
 
     if "(Abort)" in str(result):
         raise ValueError(str(result).replace("b'","").replace("\\n", "").replace("'", ""))
+
+    if "HDF5 library version mismatched error" in str(result):
+        raise ValueError("The HDF5 header files used to compile this application do not matchthe version used by the HDF5 library to which this application is linked. This is likely because of a conda problem.")
 
     if str(result).startswith("b'Error") or "HDF error" in str(result) or out.returncode != 0:
        if target.startswith("/tmp/"):
