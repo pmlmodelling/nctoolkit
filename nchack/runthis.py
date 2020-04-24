@@ -242,8 +242,6 @@ def run_this(os_command, self, output = "one",  out_file = None):
 
 
     cores = session_info["cores"]
-    if type(cores) is not int:
-        raise ValueError(f"cores is {cores} not an int. Fix using options!")
 
     start_files = copy.deepcopy(self.current)
 
