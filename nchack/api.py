@@ -203,7 +203,7 @@ def merge(*datasets, match = ["day", "year", "month"]):
     all_files = []
     for dataset in datasets:
         if "DataSet" in str(type(dataset)) == False:
-            raise ValueError("Please check everything is a DataSet object!")
+            raise TypeError("Please check everything is a DataSet object!")
         # make sure everything has been evaluated
         dataset.release()
         if type(dataset.current) is str:
