@@ -318,7 +318,7 @@ class DataSet(object):
         if type(self.current) is str:
             result = "Number of files: 1\n"
             result = result + "File size: " + convert_bytes(file_size(self.current))
-            print(result)
+            return result
         else:
             all_sizes = []
 
@@ -347,7 +347,7 @@ class DataSet(object):
             result = result + "Ensemble size: " + sum_size  + "\n"
             result = result + "Smallest file: " + smallest_file + " has size "  + min_size  + "\n"
             result = result + "Largest file: " + largest_file + " has size "  + max_size
-            print(result)
+            return result
 
     @property
     def variables(self):
