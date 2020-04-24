@@ -186,10 +186,6 @@ def open_data(x = None, suppress_messages = False, checks = False):
                         raise ValueError(mes)
                 nc_safe.append(ff)
                 nc_protected.append(x)
-        if checks:
-            if suppress_messages == False:
-                if len(x) > 500:
-                    print("All files passed checks")
 
     # if there is only one file in the list, change it to a single file
     if type(x) is list:
@@ -202,7 +198,7 @@ def open_data(x = None, suppress_messages = False, checks = False):
 def merge(*datasets, match = ["day", "year", "month"]):
     all_files = []
     for dataset in datasets:
-        if "DataSet" in str(type(dataset)) == False:
+        if ("DataSet" in str(type(dataset))) == False:
             raise TypeError("Please check everything is a DataSet object!")
         # make sure everything has been evaluated
         dataset.release()
