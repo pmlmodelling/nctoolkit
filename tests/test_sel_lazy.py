@@ -1,6 +1,6 @@
 import unittest
 import nchack as nc
-nc.options(lazy= False)
+nc.options(lazy= True)
 nc.options(thread_safe = True)
 import pandas as pd
 import xarray as xr
@@ -13,6 +13,15 @@ class TestSelect(unittest.TestCase):
     def test_empty(self):
         n = len(nc.session_files())
         self.assertEqual(n, 0)
+
+
+    def test_strvar(self):
+        tracker = nc.open_data(ff)
+        tracker.mutate({"tos":"sst+1"})
+        tracker.select_variables("tos")
+        tracker.release()
+        x = tracker.variables
+        self.assertEqual(x, ["tos"])
 
     def test_season(self):
         tracker = nc.open_data(ff)
@@ -134,6 +143,16 @@ class TestSelect(unittest.TestCase):
         self.assertEqual(n, 1)
 
 
+    def test_ensemble(self):
+        tracker = nc.open_data(ff)
+        tracker.split("year")
+        tracker.merge_time()
+        tracker.select_years(1990)
+        tracker.release()
+        x = tracker.years()
+        print(x)
+
+        self.assertEqual(x, [1990])
 
 
 

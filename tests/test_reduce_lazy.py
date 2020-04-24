@@ -3,7 +3,7 @@ import nchack as nc
 import pandas as pd
 import xarray as xr
 import os
-nc.options(lazy = False)
+nc.options(lazy = True)
 
 
 
@@ -20,11 +20,21 @@ class TestSelect(unittest.TestCase):
         tracker.mean()
         tracker.reduce_dims()
         n = len(tracker.times())
-        print(nc.session.session_info)
+        print(tracker.history)
         self.assertEqual(n, 0)
         nc.options(lazy = True)
 
 
+    def test_reduce2(self):
+        nc.options(lazy = True)
+        tracker = nc.open_data(ff)
+        tracker.mean()
+        tracker.reduce_dims()
+        tracker.release()
+        print(tracker.history)
+        n = len(tracker.times())
+        self.assertEqual(n, 0)
+        nc.options(lazy = True)
 
 
 if __name__ == '__main__':

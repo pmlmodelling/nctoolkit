@@ -37,10 +37,20 @@ class TestSelect(unittest.TestCase):
         with self.assertRaises(TypeError) as context:
             data = nc.open_data([1,2])
 
+    def test_options_setting(self):
+        nc.options(precision = "F64")
+        x = nc.session.session_info["precision"]
+        self.assertEqual(x, "F64")
+
+        nc.options(precision = "F32")
+
 
     def test_options_error(self):
         with self.assertRaises(ValueError) as context:
             nc.options(cores = 1000)
+
+        with self.assertRaises(ValueError) as context:
+            nc.options(precision = "I2")
 
     def test_empty_list(self):
         with self.assertRaises(ValueError) as context:
@@ -85,6 +95,97 @@ class TestSelect(unittest.TestCase):
         test = z.variables
 
         self.assertEqual(test, ["sst", "tos"])
+
+    def test_size(self):
+        ff = "data/sst.mon.mean.nc"
+        data = nc.open_data(ff)
+        x = "File size: 525.893626 MB" in data.size
+        self.assertEqual(x, True)
+        data.split("year")
+        x = "Number of files in ensemble: 169" in data.size
+        self.assertEqual(x, True)
+
+    def test_repr(self):
+        ff = "data/sst.mon.mean.nc"
+        data = nc.open_data(ff)
+        x = "operations: 0" in str(data)
+        self.assertEqual(x, True)
+        data.spatial_mean()
+        x = "operations: 1" in str(data)
+        self.assertEqual(x, True)
+
+        data = nc.open_data(nc.create_ensemble("data/ensemble"))
+        x = "start: 169 member ensemble" in str(data)
+        self.assertEqual(x, True)
+
+    def test_variables_detailed(self):
+        ff = "data/sst.mon.mean.nc"
+        data = nc.open_data(ff)
+        x = data.variables_detailed.query("variable == 'sst'").long_name.values
+        self.assertEqual(x, "Monthly Means of Global Sea Surface Temperature")
+
+
+    def test_cor_time(self):
+        ff = "data/sst.mon.mean.nc"
+        data = nc.open_data(ff)
+        test = nc.cor_time(data, data)
+        test.spatial_mean()
+        x = test.to_dataframe().sst.values[0].astype("float")
+        self.assertEqual(x, 1)
+        data = nc.open_data(ff)
+        with self.assertRaises(TypeError) as context:
+            test = nc.cor_time("y", data)
+        with self.assertRaises(TypeError) as context:
+            test = nc.cor_time(data,"y")
+
+        data.split("year")
+        with self.assertRaises(TypeError) as context:
+            test = nc.cor_time(data,data)
+
+    def test_delstart(self):
+        ff = "data/sst.mon.mean.nc"
+        data = nc.open_data(ff)
+
+        with self.assertRaises(AttributeError) as context:
+            del data.start
+
+    def test_copy(self):
+        data = nc.open_data(nc.create_ensemble("data/ensemble"))
+        files = data.current
+        test = data.copy()
+        del data
+
+        x = len([ff for ff in nc.session.nc_safe if ff not in files])
+        self.assertEqual(x, 0)
+
+    def test_len(self):
+        data = nc.open_data(nc.create_ensemble("data/ensemble"))
+        x = len(data)
+        self.assertEqual(x, 169)
+        data = nc.open_data(nc.create_ensemble("data/ensemble"))
+        data.merge_time()
+        data.release()
+        x = len(data)
+        self.assertEqual(x, 1)
+
+    def test_getitem(self):
+        data = nc.open_data(nc.create_ensemble("data/ensemble"))
+        x = data[0]
+        self.assertEqual(x, data.current[0])
+
+        data = nc.open_data(nc.create_ensemble("data/ensemble")[0])
+        x = data[0]
+        self.assertEqual(x, data.current)
+
+    def test_mergeerror(self):
+        data = nc.open_data(nc.create_ensemble("data/ensemble")[0])
+
+        with self.assertRaises(TypeError) as context:
+            test = nc.merge(data, "x")
+    def test_opendatamissing(self):
+
+        with self.assertRaises(ValueError) as context:
+            data = nc.open_data(["nchack/clip.py", "nchack/regrid.py"], checks = True)
 
 
 

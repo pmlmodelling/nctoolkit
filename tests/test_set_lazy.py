@@ -76,6 +76,19 @@ class TestSelect(unittest.TestCase):
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 
+
+    def test_setmissing2(self):
+        tracker = nc.open_data(ff)
+        tracker.set_missing([100, 100])
+        x = tracker.history
+
+        tracker = nc.open_data(ff)
+        tracker.set_missing(100)
+        y = tracker.history
+
+
+
+
     def test_setunits(self):
         tracker = nc.open_data(ff)
         tracker.select_years(1990)
@@ -88,6 +101,13 @@ class TestSelect(unittest.TestCase):
         self.assertEqual(x, "C")
         n = len(nc.session_files())
         self.assertEqual(n, 1)
+
+    def test_setmissing3(self):
+        tracker = nc.open_data(ff)
+        with self.assertRaises(TypeError) as context:
+            tracker.set_missing("x")
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_setunits2(self):
         tracker = nc.open_data(ff)

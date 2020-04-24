@@ -127,6 +127,33 @@ class TestSelect(unittest.TestCase):
         n = len(nc.session_files())
         self.assertEqual(n, 0)
 
+
+
+
+    def test_badexpr1(self):
+        tracker = nc.open_data(ff)
+        with self.assertRaises(ValueError) as context:
+            tracker.mutate({"test":"sst&&1"})
+
+    def test_doublesumall(self):
+        tracker = nc.open_data(ff)
+        tracker.sum_all()
+        tracker.sum_all(drop = False)
+        tracker.release()
+        x = "total0" in tracker.variables
+        self.assertEqual(x, True)
+        tracker.sum_all(drop = False)
+        tracker.release()
+        x = "total1" in tracker.variables
+        self.assertEqual(x, True)
+
+    def test_error233(self):
+        tracker = nc.open_data(ff)
+        tracker.split("year")
+        with self.assertRaises(TypeError) as context:
+            tracker.sum_all()
+
+
 if __name__ == '__main__':
     unittest.main()
 

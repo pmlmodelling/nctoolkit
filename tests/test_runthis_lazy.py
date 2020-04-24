@@ -32,6 +32,14 @@ class TestSelect(unittest.TestCase):
             out_file = nc.runthis.run_cdo(cdo_command, target = out_file)
 
         os.remove(out_file)
+
+    def test_nco_invalid(self):
+        ff = "data/sst.mon.mean.nc"
+
+        out_file = nc.temp_file.temp_file(".nc")
+        with self.assertRaises(ValueError) as context:
+            out_file = nc.runthis.run_nco("test", target = out_file)
+
 if __name__ == '__main__':
     unittest.main()
 

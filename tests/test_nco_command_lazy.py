@@ -20,7 +20,6 @@ class TestSelect(unittest.TestCase):
 
         data = nc.open_data(nc.create_ensemble("data/ensemble"))
         data.nco_command("ncea -y mean", ensemble = True)
-        print(data.current)
         data.spatial_mean()
         y = data.to_dataframe().sst.values[0].astype("float")
 
@@ -44,6 +43,18 @@ class TestSelect(unittest.TestCase):
         y = data.to_dataframe().sst.values[0].astype("float")
 
         self.assertEqual(x, y)
+
+    def test_command_error(self):
+
+        data = nc.open_data(nc.create_ensemble("data/ensemble"))
+
+        with self.assertRaises(TypeError) as context:
+            data.nco_command(1)
+
+        with self.assertRaises(ValueError) as context:
+            data.nco_command("test")
+
+
 
 if __name__ == '__main__':
     unittest.main()
