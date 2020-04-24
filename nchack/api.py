@@ -366,7 +366,7 @@ class DataSet(object):
         """
 
         if type(self.current) is list:
-            print("This DataSet object is a list. Please inspect individual files using nc_variables")
+            return "This DataSet object is a list. Please inspect individual files using nc_variables"
 
         cdo_result = subprocess.run("cdo showname " + self.current, shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         cdo_result = str(cdo_result.stdout).replace("b'", "").replace("\\n", "").replace("'", "").strip()
