@@ -36,7 +36,7 @@ def to_lonlat(self, lon = None, lat = None, res = None, method = "bil"):
     """
 
     if  type(lon) is not list or type(lat) is not list:
-        raise TypeError("Check that lon/lat ranges are tuples")
+        raise TypeError("Check that lon/lat ranges are lists")
 
     if len(lon) > 2:
         raise ValueError("lon is a list of more than 2 variables")
