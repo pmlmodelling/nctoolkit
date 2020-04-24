@@ -50,12 +50,15 @@ def set_missing(self, value):
 
     Parameters
     -------------
-    value : 2 variable list
-        Values between the two values (inclusive) of the list are set to missing. If you want a single value to be set to missing, repeat the value in the list.
+    value : 2 variable list or int/float
+        If int/float provided the missing value will be set to that. if a list provided, values between the two values (inclusive) of the list are set to missing.
 
     """
+    if (type(value) is float) or (type(value) is int):
+        value = [value, value]
+
     if type(value) is not list:
-        raise TypeError("Please supply a list!")
+        raise TypeError("Please supply a list, int or float!")
 
     if type(value) is list:
         cdo_command = f"cdo -setrtomiss,{str(value[0])},{str(value[1])}"
