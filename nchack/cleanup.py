@@ -97,7 +97,7 @@ def clean_all():
 
     for dd in delete_these:
         if os.path.exists(dd):
-            nc_remove(dd)
+            nc_remove(dd, deep = True)
 
 
 
