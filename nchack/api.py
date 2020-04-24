@@ -169,8 +169,7 @@ def open_data(x = None, suppress_messages = False, checks = False):
     if type(x) is list:
         if checks:
             if suppress_messages == False:
-                if len(x) > 500:
-                    print("Performing basic checks on ensemble files")
+                warnings.warn("Performing basic checks on ensemble files")
         if len(x) == 0:
             raise ValueError("You have not provided any files!")
 
