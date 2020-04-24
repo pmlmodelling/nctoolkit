@@ -291,19 +291,12 @@ class DataSet(object):
     def __repr__(self):
         # tidy up the output first
         if isinstance(self.start,list):
-            if len(self.start) > 10:
-                start = ">10 ensemble member"
-                start = str(len(self.start)) + " member ensemble"
-            else:
-                start = str_flatten(self.start)
+            start = str(len(self.start)) + " member ensemble"
         if type(self.start) == str:
             start = self.start
 
         if isinstance(self.current,list):
-            if len(self.current) > 10:
-                current = str(len(self.current)) + " member ensemble"
-            else:
-                current = str_flatten(self.current)
+            current = str(len(self.current)) + " member ensemble"
         if type(self.current) == str:
             current = self.current
 
