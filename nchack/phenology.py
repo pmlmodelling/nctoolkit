@@ -60,8 +60,6 @@ def phenology(self, var = None, metric = None, p = None):
 
         self.current = new_files
 
-        if len(self.current) == 1:
-            self.current = self.current[0]
 
         cleanup()
         return None
@@ -108,8 +106,6 @@ def phenology(self, var = None, metric = None, p = None):
 
         self.current = new_files
 
-        if len(self.current) == 1:
-            self.current = self.current[0]
         cleanup()
 
         return None
