@@ -25,10 +25,10 @@ def clip(self, lon = [-180, 180], lat = [-90, 90], cdo = True):
     if  type(lon) is not list or type(lat) is not list:
         raise TypeError("Check that lon/lat ranges are tuples")
 
-    if len(lon) > 2:
+    if len(lon) != 2:
         raise ValueError("lon is a list of more than 2 variables")
 
-    if len(lat) > 2:
+    if len(lat) != 2:
         raise ValueError("lat is a list of more than 2 variables")
 
     if ( type(lon[0]) is float  or  type(lon[0]) is int ) == False:
