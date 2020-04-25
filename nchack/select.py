@@ -64,7 +64,7 @@ def select_months(self, months = None):
     run_this(cdo_command, self,  output = "ensemble")
 
 
-def select_years(self, years):
+def select_years(self, years = None):
     """
     Select years from a dataset
     This method will subset the data to only contains years within the list given. A warning message will be provided when there are missing years.
@@ -74,6 +74,8 @@ def select_years(self, years):
         Month(s) to select.
 
     """
+    if years is None:
+        raise ValueError("Please supply years")
 
     if type(years) is range:
         years = list(years)
