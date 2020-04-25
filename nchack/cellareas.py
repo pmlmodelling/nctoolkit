@@ -18,6 +18,9 @@ def cell_areas(self,  join = True):
         Set to False if you only want the cell areas to be in the output. join=True adds the areas as a variable to the dataset.
     """
 
+    if isinstance(join, bool) == False:
+        raise TypeError("join is not boolean")
+
     # release if you need to join the cell areas to the original file
     if join:
         self.release()
