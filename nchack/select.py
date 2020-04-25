@@ -13,6 +13,7 @@ def select_season(self, season = None):
     -------------
     season : str
         Season to select. One of "DJF", "MAM", "JJA", "SON"
+        #change this to the below?
         #Season to select. One of "winter", "spring", "summer", "autumn"
     """
 
@@ -29,7 +30,7 @@ def select_season(self, season = None):
     run_this(cdo_command, self,  output = "ensemble")
 
 
-def select_months(self, months):
+def select_months(self, months = None):
     """
     Select months from a dataset
     This method will subset the data to only contains months within the list given. A warning message will be provided when there are missing months.
@@ -39,6 +40,9 @@ def select_months(self, months):
     months : list, range or int
         Month(s) to select.
     """
+
+    if months is None:
+        raise ValueError("Please supply months")
 
     # check validity of months
     if type(months) is range:
