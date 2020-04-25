@@ -103,6 +103,11 @@ def set_units(self, var_dict):
 
     # change the units in turn. This doesn't seem to be something you can chain?
     for i in var_dict:
+        if type(i) is not str:
+            raise TypeError("key,values in var_dict are not strings")
+        if type(var_dict[i]) is not str:
+            raise TypeError("key,values in var_dict are not strings")
+
         cdo_command = ""
         cdo_command = cdo_command + " -setattribute," + i + "@units=" + '"' + var_dict[i]  + '"'
         cdo_command = "cdo " + cdo_command
