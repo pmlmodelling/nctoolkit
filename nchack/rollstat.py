@@ -1,9 +1,12 @@
 
 from .runthis import run_this
 
-def rollstat(self, window,  stat = "mean"):
+def rollstat(self, window = None,  stat = "mean"):
     """Method to calculate the monthly statistic from a netcdf file"""
     # check window supplied is valid
+
+    if window is None:
+        raise ValueError("No windows was supplied")
 
     if type(window) is not int:
         raise TypeError("The window supplied is not numeric!")

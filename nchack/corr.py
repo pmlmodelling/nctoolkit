@@ -14,10 +14,10 @@ def cor(self, var1 = None, var2 = None, method = "fld"):
         raise ValueError("Both variables are not given")
 
     if type(var1) is not str:
-        raise ValueError("var1 is not a str")
+        raise TypeError("var1 is not a str")
 
     if type(var2) is not str:
-        raise ValueError("var2 is not a str")
+        raise TypeError("var2 is not a str")
 
     # this cannot be chained. So release
     self.release()

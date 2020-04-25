@@ -13,9 +13,20 @@ def merge(self, match = ["year", "month", "day"]):
 
     Parameters
     -------------
-    match: a list stating what must match in the netcdf files. Defaults to year/month/day. This list must be some combination of year/month/day. An error will be thrown if the elements of time in match do not match across all netcdf files. The only exception is if there is a single date file in the ensemble.
+    match: list, str
+    a list or str stating what must match in the netcdf files. Defaults to year/month/day. This list must be some combination of year/month/day. An error will be thrown if the elements of time in match do not match across all netcdf files. The only exception is if there is a single date file in the ensemble.
 
     """
+
+    if type(match) is str:
+        match = [match]
+
+    if type(match) is not list:
+        raise TypeError("match supplied is not a list")
+
+    for mm in match:
+        if type(mm) is not str:
+            raise TypeError(f"{ff} from match is not a list")
 
     if type(match) is list:
         match = [y.lower() for y in match]

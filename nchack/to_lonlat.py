@@ -36,11 +36,11 @@ def to_lonlat(self, lon = None, lat = None, res = None, method = "bil"):
     """
 
     if lon is None:
-        raise ValueErorr("Please supply lon")
+        raise ValueError("Please supply lon")
     if lat is None:
-        raise ValueErorr("Please supply lat")
+        raise ValueError("Please supply lat")
     if res is None:
-        raise ValueErorr("Please supply res")
+        raise ValueError("Please supply res")
 
     if  (type(lon) is not list) or (type(lat) is not list):
         raise TypeError("Check that lon/lat ranges are lists")
@@ -70,7 +70,7 @@ def to_lonlat(self, lon = None, lat = None, res = None, method = "bil"):
     if type(res) is int:
         res = float(res)
 
-    if type(res) is not float and type(res) is not list:
+    if (type(res) is not float) and (type(res) is not list):
         raise TypeError("res supplied is not valid")
 
     if type(res) is float:

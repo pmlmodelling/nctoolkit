@@ -1,5 +1,7 @@
 from .runthis import run_this
 
+# to do. Some padding needs to be added in case something like 2000/1/1 is provided.
+
 def time_interp(self, start = None, end = None, resolution = "monthly"):
     """
     Temporally interpolate variables based on date range and time resolution

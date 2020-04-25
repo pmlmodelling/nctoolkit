@@ -32,12 +32,12 @@ def clip(self, lon = [-180, 180], lat = [-90, 90], cdo = True):
         raise ValueError("lat is a list of more than 2 variables")
 
     for ll in lon:
-        if (type(ll) is not int) or (type(ll) is not float):
-            raise ValueError(f"{ff} from lon is not a float or int")
+        if (type(ll) is not int) and (type(ll) is not float):
+            raise TypeError(f"{ll} from lon is not a float or int")
 
     for ll in lat:
-        if (type(ll) is not int) or (type(ll) is not float):
-            raise ValueError(f"{ff} from lat is not a float or int")
+        if (type(ll) is not int) and (type(ll) is not float):
+            raise TypeError(f"{ll} from lat is not a float or int")
 
 
     # now, clip to the lonlat box we need

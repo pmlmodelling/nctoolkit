@@ -297,8 +297,6 @@ def run_this(os_command, self, output = "one",  out_file = None):
                     else:
                         os_command = os_command.replace("cdo ", "cdo -L --sortname ")
 
-
-
                 if "reduce_dim" in ff_command:
                     ff_command = ff_command.replace("reduce_dim", "").replace(" - ", " ").replace(" -- ", " ")
                     ff_command = ff_command.replace("cdo ", "cdo --reduce_dim ")

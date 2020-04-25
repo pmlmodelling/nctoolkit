@@ -68,7 +68,7 @@ def compare_all(self, expression = None):
         This a regular comparison such as "<0", ">0", "==0"
     """
 
-    if expression = None:
+    if expression is None:
         raise ValueError("No expression supplied")
 
     if type(expression) is not str:

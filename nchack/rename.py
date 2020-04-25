@@ -19,6 +19,10 @@ def rename(self, newnames):
     cdo_rename = ""
 
     for key, value in newnames.items():
+        if type(key) is not str:
+            raise TypeError(f"{key} is not a str")
+        if type(value) is not str:
+            raise TypeError(f"{value} is not a str")
         cdo_rename +=  "," + key
         cdo_rename += "," + value
 

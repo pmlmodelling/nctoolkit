@@ -164,7 +164,7 @@ def select_variables(self, vars = None):
     else:
         vars_list = vars
 
-    for vv in var_list:
+    for vv in vars_list:
         if type(vv) is not str:
             raise ValueError(f"{vv} is not a str")
 
