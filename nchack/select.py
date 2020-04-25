@@ -97,8 +97,6 @@ def select_years(self, years = None):
         n_removed = 0
         new_current = []
 
-
-
         for ff in self:
 
             cdo_result = subprocess.run(f"cdo showyear {ff}", shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -156,8 +154,8 @@ def select_variables(self, vars = None):
 
     Parameters
     -------------
-    months : list or int
-        Month(s) to select.
+    vars : list or str
+        Variable(s) to select.
 
     """
 
