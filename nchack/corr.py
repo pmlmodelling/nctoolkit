@@ -10,16 +10,14 @@ from .show import nc_variables
 
 def cor(self, var1 = None, var2 = None, method = "fld"):
 
-    if var1 is None or var2 is None:
+    if (var1 is None) or (var2 is None):
         raise ValueError("Both variables are not given")
 
-    if type(var1) is list:
-        if len(var1) == 1:
-            var1 = var1[0]
+    if type(var1) is not str:
+        raise ValueError("var1 is not a str")
 
-    if type(var2) is list:
-        if len(var2) == 1:
-            var2 = var2[0]
+    if type(var2) is not str:
+        raise ValueError("var2 is not a str")
 
     # this cannot be chained. So release
     self.release()

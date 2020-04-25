@@ -20,6 +20,10 @@ def ensemble_percentile(self, p = None):
     """
 
     # make sure p is a number
+
+    if p is None:
+        raise ValueError("p was not supplied")
+
     if type(p) not in [int, float]:
         raise TypeError(f"p is a {type(p)}, not an int or float")
 
