@@ -159,11 +159,14 @@ def select_variables(self, vars = None):
 
     """
 
-
     if type(vars) is str:
         vars_list = [vars]
     else:
         vars_list = vars
+
+    for vv in var_list:
+        if type(vv) is not str:
+            raise ValueError(f"{vv} is not a str")
 
     vars_list = str_flatten(vars_list, ",")
 
