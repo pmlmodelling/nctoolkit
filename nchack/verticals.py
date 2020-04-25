@@ -50,8 +50,8 @@ def vertical_interp(self, vert_depths = None):
 
     Parameters
     -------------
-    vert_depths : list
-        list of depths to vertical interpolate to
+    vert_depths : list, int or str
+        list of depths to vertical interpolate to. These must be floats or ints.
 
     """
 
@@ -60,38 +60,21 @@ def vertical_interp(self, vert_depths = None):
 
     # below used for checking whether vertical remapping occurs
 
-    vertical_remap = True
 
     # first a quick fix for the case when there is only one vertical depth
 
-    if vert_depths != None:
-        if (type(vert_depths) == int) or (type(vert_depths) == float):
-            vert_depths = {vert_depths}
+    if (type(vert_depths) == int) or (type(vert_depths) == float):
+        vert_depths = {vert_depths}
 
-  #  if vert_depths == None:
-  #      vertical_remap = False
-  #
-  #  if vert_depths != None:
-  #      num_depths = len(self.depths())
-  #      if num_depths < 2:
-  #          print("There are none or one vertical depths in the file. Vertical interpolation not carried out.")
-  #          vertical_remap = False
-  #  if ((vert_depths != None) and vertical_remap):
-  #      available_depths = self.depths()
+    for vv in vert_depths:
+        if (type(vv) is not float) and (type(vv) is not int):
+            raise TypeError(f"{vv} is not a valid depth")
 
-    # Check if min/max depths are outside valid ranges. This should possibly be a warning, not error
-    if vertical_remap:
-   #     if (min(vert_depths) < min(available_depths)):
-   #          raise ValueError("error:minimum depth supplied is too low")
-   #     if (max(vert_depths) > max(available_depths)):
-   #          raise ValueError("error: maximum depth supplied is too low")
+    vert_depths = str_flatten(vert_depths, ",")
+    cdo_command = f"cdo -intlevel,{vert_depths}"
 
-        vert_depths = str_flatten(vert_depths, ",")
-        cdo_command = f"cdo -intlevel,{vert_depths}"
+    run_this(cdo_command, self,  output = "ensemble")
 
-        run_this(cdo_command, self,  output = "ensemble")
-
-     # throw error if cdo fails at this point
 
 
 
