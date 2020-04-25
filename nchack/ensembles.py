@@ -8,7 +8,7 @@ from .cleanup import cleanup
 from .cleanup import disk_clean
 import warnings
 
-def ensemble_percentile(self, p = 50):
+def ensemble_percentile(self, p = None):
     """
     Calculate an ensemble percentile
     This will calculate the percentles for each time step in the files. For example, if you had an ensemble of files where each file included 12 months of data, it would calculate the percentile for each month.
