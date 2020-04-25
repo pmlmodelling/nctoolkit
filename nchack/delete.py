@@ -24,6 +24,10 @@ def remove_variables(self, vars = None):
     if type(vars) is not list:
         vars = [vars]
 
+    for vv in vars:
+        if type(vv) is not str:
+            raise TypeError(f"{vv} is not a str")
+
     orig_vars = []
     for ff in self:
         orig_vars += nc_variables(ff)
