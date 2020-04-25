@@ -9,7 +9,7 @@ from .session import nc_safe
 from .flatten import str_flatten
 
 
-def nco_command(self, command, ensemble = False):
+def nco_command(self, command = None, ensemble = False):
     """
     Apply a cdo command
 
@@ -22,6 +22,8 @@ def nco_command(self, command, ensemble = False):
     """
 
     # First, check that the command is valid
+    if command is None:
+        raise TypeError("Please supply a command")
 
     if type(command) is not str:
         raise TypeError("Command supplied is not a str")
