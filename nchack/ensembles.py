@@ -23,6 +23,10 @@ def ensemble_percentile(self, p = 50):
     if type(p) not in [int, float]:
         raise TypeError("p is a " + str(type(p)) + ", not an int or float")
 
+    # check p is between 0 and 100
+    if p <0 or p > 100:
+        raise ValueError("p is not between 0 and 100!")
+
     # This method cannot possibly be chained. Release it
     self.release()
 
@@ -31,9 +35,6 @@ def ensemble_percentile(self, p = 50):
         warnings.warn(message = "There is only one file in the dataset")
 
 
-    # check p is between 0 and 100
-    if p <0 or p > 100:
-        raise ValueError("p is not between 0 and 100!")
 
     # create the cdo command and run it
     cdo_command = f"cdo --sortname  -enspctl,{p} "
