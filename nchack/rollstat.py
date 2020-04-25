@@ -8,6 +8,9 @@ def rollstat(self, window,  stat = "mean"):
     if type(window) is not int:
         raise TypeError("The window supplied is not numeric!")
 
+    if window < 1:
+        raise TypeError(f"{window} is not a valid window!")
+
     # create the cdo call and run it
     cdo_command = f"cdo -run{stat},{str(window)}"
     run_this(cdo_command, self, output = "ensemble")
