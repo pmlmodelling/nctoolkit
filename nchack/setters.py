@@ -55,7 +55,7 @@ def set_date(self, year = None, month = None, day = None,  base_year = 1900):
     run_this(cdo_command, self,  output = "ensemble")
 
 
-def set_missing(self, value):
+def set_missing(self, value = None):
     """
     Set the missing value for a single number or a range
 
@@ -65,6 +65,10 @@ def set_missing(self, value):
         If int/float provided the missing value will be set to that. if a list provided, values between the two values (inclusive) of the list are set to missing.
 
     """
+
+    if value is None:
+        raise TypeError("Please supply missing value")
+
     if (type(value) is float) or (type(value) is int):
         value = [value, value]
 
@@ -73,6 +77,10 @@ def set_missing(self, value):
 
     if type(value) is list:
         cdo_command = f"cdo -setrtomiss,{str(value[0])},{str(value[1])}"
+
+    for vv in value:
+        if (type(vv) is not float) and (type(vv) is not int):
+            raise TypeError(f"{vv} is not an int or float")
 
     run_this(cdo_command, self,  output = "ensemble")
 
