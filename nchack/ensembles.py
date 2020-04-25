@@ -21,7 +21,7 @@ def ensemble_percentile(self, p = 50):
 
     # make sure p is a number
     if type(p) not in [int, float]:
-        raise TypeError("p is a " + str(type(p)) + ", not an int or float")
+        raise TypeError(f"p is a {type(p)}, not an int or float")
 
     # check p is between 0 and 100
     if p <0 or p > 100:
