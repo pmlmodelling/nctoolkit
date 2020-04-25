@@ -19,6 +19,10 @@ def ensemble_percentile(self, p = 50):
         percentile to calculate. 0<=p<=100.
     """
 
+    # make sure p is a number
+    if type(p) not in [int, float]:
+        raise TypeError("p is a " + str(type(p)) + ", not an int or float")
+
     # This method cannot possibly be chained. Release it
     self.release()
 
@@ -26,9 +30,6 @@ def ensemble_percentile(self, p = 50):
     if type(self.current) is not list:
         warnings.warn(message = "There is only one file in the dataset")
 
-    # make sure p is a number
-    if type(p) not in [int, float]:
-        raise TypeError("p is a " + str(type(p)) + ", not an int or float")
 
     # check p is between 0 and 100
     if p <0 or p > 100:
