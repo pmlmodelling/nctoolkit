@@ -56,7 +56,7 @@ def select_months(self, months = None):
         if type(x) is not int:
             raise ValueError(f"{x} is not an int")
         if x not in list(range(1, 13)):
-            raise ValueError("Months supplied are not valid!")
+            raise ValueError(f"{x} is not a month")
 
     months = str_flatten(months, ",")
 
