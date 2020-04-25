@@ -84,8 +84,10 @@ def select_years(self, years = None):
         years = [years]
 
     # convert years to int
-    years = [int(x) for x in years]
 
+    for yy in years:
+        if type(yy) is not int:
+            raise ValueError(f"{yy} is not an int")
 
     if self._merged == False:
         select_years = False
