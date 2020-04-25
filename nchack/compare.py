@@ -58,7 +58,7 @@ def fix_expr(expression):
     raise ValueError(expression + " is not valid!")
 
 
-def compare_all(self, expression):
+def compare_all(self, expression = None):
     """
     Compare all variables to a constant
 
@@ -67,6 +67,12 @@ def compare_all(self, expression):
     expression: str
         This a regular comparison such as "<0", ">0", "==0"
     """
+
+    if expression = None:
+        raise ValueError("No expression supplied")
+
+    if type(expression) is not str:
+        raise TypeError("Expression supplied is not str")
 
     expression = fix_expr(expression)
     cdo_command = f"cdo -{expression}"
