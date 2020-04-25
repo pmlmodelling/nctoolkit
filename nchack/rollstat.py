@@ -4,8 +4,6 @@ from .runthis import run_this
 def rollstat(self, window,  stat = "mean"):
     """Method to calculate the monthly statistic from a netcdf file"""
     # check window supplied is valid
-    if type(window) is float:
-        window = int(window)
 
     if type(window) is not int:
         raise TypeError("The window supplied is not numeric!")
