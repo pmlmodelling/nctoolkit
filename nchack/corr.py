@@ -32,6 +32,8 @@ def cor(self, var1 = None, var2 = None, method = "fld"):
         if var2 not in nc_variables(ff):
             raise ValueError(f"{var2} is not in the dataset")
 
+    for ff in self:
+
         # create the temp file for targeting
         target = temp_file(".nc")
 
