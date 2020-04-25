@@ -27,6 +27,10 @@ def merge(self, match = ["year", "month", "day"]):
     if type(match) is list:
         match = [y.lower() for y in match]
 
+    if len([x for x in match if x not in ["year", "month", "day"]]) > 0:
+        raise ValueError("match supplied is not valid")
+
+
     # Make sure the times in the files are compatiable, based on the match criteria
 
     all_times = []
