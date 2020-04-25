@@ -51,17 +51,14 @@ def to_lonlat(self, lon = None, lat = None, res = None, method = "bil"):
     if len(lat) != 2:
         raise ValueError("lat is a list of more than 2 variables")
 
-    if ( type(lon[0]) is float  or  type(lon[0]) is int ) == False:
-        raise TypeError("Check lon")
+    for ll in lon:
+        if (type(ll) is not int) and (type(ll) is not float):
+            raise TypeError(f"{ll} from lon is not an int or float")
 
-    if ( type(lon[1]) is float  or  type(lon[1]) is int ) == False:
-        raise TypeError("Check lon")
+    for ll in lat:
+        if (type(ll) is not int) and (type(ll) is not float):
+            raise TypeError(f"{ll} from lat is not an int or float")
 
-    if ( type(lat[0]) is float  or  type(lat[0]) is int ) == False:
-        raise TypeError("Check lat")
-
-    if ( type(lat[1]) is float  or  type(lat[1]) is int ) == False:
-        raise TypeError("Check lat")
 
     # now, clip to the lonlat box we need
 
