@@ -140,6 +140,10 @@ def set_longnames(self, var_dict):
     for ff in self:
         nco_command = "ncatted "
         for i in var_dict:
+            if type(i) is not str:
+                raise TypeError("key,values in var_dict are not strings")
+            if type(var_dict[i]) is not str:
+                raise TypeError("key,values in var_dict are not strings")
             i_dict = var_dict[i]
             i_dict = i_dict.replace('"', "'")
             nco_command += "-a long_name," + i + ',o,c,"' + i_dict   + '" '
