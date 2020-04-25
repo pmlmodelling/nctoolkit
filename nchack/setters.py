@@ -85,7 +85,7 @@ def set_missing(self, value = None):
     run_this(cdo_command, self,  output = "ensemble")
 
 
-def set_units(self, var_dict):
+def set_units(self, var_dict = None):
     """
     Set the units for variables
 
@@ -96,6 +96,8 @@ def set_units(self, var_dict):
 
     """
 
+    if var_dict is None:
+        raise TypeError("Please supply var_dict")
 
     # Check that a dictionary has been supplied
     if type(var_dict) is not dict:
@@ -116,7 +118,7 @@ def set_units(self, var_dict):
 
 
 
-def set_longnames(self, var_dict):
+def set_longnames(self, var_dict = None):
     """
     Set long name
 
@@ -126,6 +128,8 @@ def set_longnames(self, var_dict):
         Dictionary with key, value pairs representing the variable names and their long names
 
     """
+    if var_dict is None:
+        raise TypeError("Please supply var_dict")
 
     self.release()
 
