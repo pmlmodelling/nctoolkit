@@ -2,7 +2,7 @@
 import subprocess
 from .runthis import run_this
 
-def cdo_command(self, command):
+def cdo_command(self, command = None):
     """
     Apply a cdo command
 
@@ -13,6 +13,8 @@ def cdo_command(self, command):
     """
 
     # First, check that the command is valid
+    if command is None:
+        raise ValueError("Please supply a command")
 
     if type(command) is not str:
         raise TypeError("Command supplied is not a str")
