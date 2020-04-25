@@ -5,7 +5,7 @@ from .session import nc_safe
 from .runthis import run_this
 from .cleanup import cleanup
 
-def select_season(self, season):
+def select_season(self, season = None):
     """
     Select season from a dataset
 
@@ -13,7 +13,17 @@ def select_season(self, season):
     -------------
     season : str
         Season to select. One of "DJF", "MAM", "JJA", "SON"
+        #Season to select. One of "winter", "spring", "summer", "autumn"
     """
+
+    if season is None:
+        raise ValueError("No season supplied")
+
+    if type(season) is not str:
+        raise ValueError("No season supplied")
+
+    if season not in ["DJF", "MAM", "JJA", "SON"]:
+        raise ValueError("Invalid season supplied")
 
     cdo_command = f"cdo -select,season={season}"
     run_this(cdo_command, self,  output = "ensemble")
