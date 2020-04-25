@@ -52,9 +52,9 @@ def select_months(self, months = None):
         months = [months]
     # all of the variables in months need to be converted to ints, just in case floats have been provided
 
-    months = [int(x) for x in months]
-
     for x in months:
+        if type(x) is not int:
+            raise ValueError(f"{x} is not an int")
         if x not in list(range(1, 13)):
             raise ValueError("Months supplied are not valid!")
 
