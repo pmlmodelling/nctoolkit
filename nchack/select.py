@@ -21,7 +21,7 @@ def select_season(self, season = None):
         raise ValueError("No season supplied")
 
     if type(season) is not str:
-        raise ValueError("No season supplied")
+        raise TypeError("No season supplied")
 
     if season not in ["DJF", "MAM", "JJA", "SON"]:
         raise ValueError("Invalid season supplied")
@@ -158,6 +158,9 @@ def select_variables(self, vars = None):
         Variable(s) to select.
 
     """
+
+    if vars is None:
+        raise ValueError("vars was not supplied")
 
     if type(vars) is str:
         vars_list = [vars]
