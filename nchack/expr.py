@@ -18,6 +18,11 @@ def fix_expression(operations = None, i_frame = None):
 
     for key,value in operations.items():
 
+        if type(key) is not str:
+            raise TypeError(f"{key} is not a str")
+        if type(value) is not str:
+            raise TypeError(f"{value} is not a str")
+
         for x in ["&&", "||"]:
             if x in value:
                 raise ValueError("Invalid expression provided")
