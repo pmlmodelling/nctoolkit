@@ -11,7 +11,7 @@ from .runthis import run_this
 from .runthis import run_nco
 
 
-def set_date(self, year, month, day,  base_year = 1900):
+def set_date(self, year = None, month = None, day = None,  base_year = 1900):
 
     """
     Set the date in a dataset
@@ -30,15 +30,26 @@ def set_date(self, year, month, day,  base_year = 1900):
 
     """
 
+    if year is None:
+        raise TypeError("Please supply a year")
+
+    if month is None:
+        raise TypeError("Please supply a month")
+
+    if day is None:
+        raise TypeError("Please supply a day")
+
+
     # check that the values supplied are valid
     # This will convert things to ints, and if it can't be done, throw an error
     if type(year) is not int:
-        year = int(year)
+        raise TypeError(f"year supplied is not an int")
     if type(month) is not int:
-        month = int(month)
+        raise TypeError(f"month supplied is not an int")
 
     if type(day) is not int:
-        day = int(day)
+        raise TypeError(f"day supplied is not an int")
+
     cdo_command = f"cdo -L -setreftime,{str(base_year)}-01-01 -setdate,{str(year)}-{str(month)}-{str(day)}"
 
     run_this(cdo_command, self,  output = "ensemble")
