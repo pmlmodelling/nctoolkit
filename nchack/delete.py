@@ -8,7 +8,7 @@ from .runthis import run_this
 from .show import nc_variables
 import warnings
 
-def remove_variables(self, vars):
+def remove_variables(self, vars = None):
     """
     Remove variables
 
@@ -17,6 +17,9 @@ def remove_variables(self, vars):
     vars : str or list
         Variable or variables to be removed from the data set. Variables that are listed but not in the dataset will be ignored
     """
+
+    if vars is None:
+        raise ValueError("Please supplied vars")
 
     if type(vars) is not list:
         vars = [vars]
