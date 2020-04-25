@@ -177,8 +177,12 @@ def select_variables(self, vars = None):
 
 def select_timestep(self, times):
     """
-    This method should probably be removed
+    Select timesteps from a dataset
 
+    Parameters
+    -------------
+    times : list or int
+        time step(s) to select. For example, if you wanted the first time step set times = 0.
     """
 
     if type(times) is range:
