@@ -17,19 +17,18 @@ def merge(self, match = ["year", "month", "day"]):
 
     """
 
-    # Force a release if needed
-    self.release()
-
-    if type(self.current) is not list:
-        warnings.warn(message = "There is only one file in the dataset. No need to merge!")
-        return None
-
     if type(match) is list:
         match = [y.lower() for y in match]
 
     if len([x for x in match if x not in ["year", "month", "day"]]) > 0:
         raise ValueError("match supplied is not valid")
 
+    # Force a release if needed
+    self.release()
+
+    if type(self.current) is not list:
+        warnings.warn(message = "There is only one file in the dataset. No need to merge!")
+        return None
 
     # Make sure the times in the files are compatiable, based on the match criteria
 
