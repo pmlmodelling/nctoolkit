@@ -186,6 +186,13 @@ def select_timestep(self, times):
 
     if type(times) is not list:
         times = [times]
+
+    for tt in times:
+        if type(tt) is not int:
+            raise ValueError(f"{tt} is not an int")
+        if tt < 0:
+            raise ValueError(f"{tt} is not a valid timestep")
+
     # all of the variables in months need to be converted to ints, just in case floats have been provided
 
     times = [int(x) + 1 for x in times]
