@@ -110,7 +110,7 @@ def monthly_anomaly(self, baseline = None):
     # check baseline is a list, etc.
     if type(baseline) is not list:
         raise TypeError("baseline years supplied is not a list")
-    if len(baseline) > 2:
+    if len(baseline) != 2:
         raise ValueError("More than 2 years in baseline. Please check.")
     if type(baseline[0]) is not int:
         raise TypeError("Provide a valid baseline")
