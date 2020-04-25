@@ -55,6 +55,9 @@ def vertical_interp(self, vert_depths = None):
 
     """
 
+    if vert_depths is None:
+        raise ValueError("Please supply vertical depths")
+
     # below used for checking whether vertical remapping occurs
 
     vertical_remap = True
