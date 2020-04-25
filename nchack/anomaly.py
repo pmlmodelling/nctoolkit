@@ -24,6 +24,12 @@ def annual_anomaly(self, baseline = None, metric = "absolute", window = 1):
         A window for the anomaly. By default window = 1, i.e. the annual anomaly is calculated. If, for example, window = 20, the 20 year rolling means will be used to calculate the anomalies.
     """
 
+    if type(window) is not int:
+        raise TypeError("window is not an int")
+
+    if window <= 0:
+        raise TypeError("window is not valid")
+
     # check baseline is a list, etc.
     if type(baseline) is not list:
         raise TypeError("baseline years supplied is not a list")
