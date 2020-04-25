@@ -70,8 +70,8 @@ def select_years(self, years = None):
     This method will subset the data to only contains years within the list given. A warning message will be provided when there are missing years.
     Parameters
     -------------
-    months : list,range or int
-        Month(s) to select.
+    years : list,range or int
+        Years(s) to select. These should be integers
 
     """
     if years is None:
