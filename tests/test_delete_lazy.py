@@ -53,6 +53,19 @@ class TestSelect(unittest.TestCase):
         with self.assertWarns(Warning):
             tracker.remove_variables(["tos", "test", "test2"])
 
+
+
+    def test_remove_error(self):
+        tracker = nc.open_data(ff)
+        with self.assertRaises(ValueError) as context:
+            tracker.remove_variables()
+        with self.assertRaises(TypeError) as context:
+            tracker.remove_variables([1])
+
+
+
+
+
 if __name__ == '__main__':
     unittest.main()
 

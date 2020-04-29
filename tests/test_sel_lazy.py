@@ -121,8 +121,57 @@ class TestSelect(unittest.TestCase):
         tracker = nc.open_data(ff)
         with self.assertRaises(ValueError) as context:
             tracker.select_months(0)
-            n = len(nc.session_files())
-            self.assertEqual(n, 0)
+
+        with self.assertRaises(TypeError) as context:
+            tracker.select_season(0)
+
+        with self.assertRaises(ValueError) as context:
+            tracker.select_months()
+
+        with self.assertRaises(ValueError) as context:
+            tracker.select_months(-1)
+
+        with self.assertRaises(TypeError) as context:
+            tracker.select_months(1.0)
+
+        with self.assertRaises(TypeError) as context:
+            tracker.select_years(1.0)
+
+        with self.assertRaises(ValueError) as context:
+            tracker.select_years()
+
+        with self.assertRaises(TypeError) as context:
+            tracker.select_years(0.1)
+
+        with self.assertRaises(TypeError) as context:
+            tracker.select_variables(0.1)
+
+        with self.assertRaises(TypeError) as context:
+            tracker.select_variables([0.1])
+
+        with self.assertRaises(ValueError) as context:
+            tracker.select_variables()
+
+        with self.assertRaises(ValueError) as context:
+            tracker.select_timestep()
+
+        with self.assertRaises(TypeError) as context:
+            tracker.select_timestep(0.1)
+
+        with self.assertRaises(ValueError) as context:
+            tracker.select_timestep(-1)
+
+
+
+        with self.assertRaises(ValueError) as context:
+            tracker.select_season()
+
+        with self.assertRaises(ValueError) as context:
+            tracker.select_season("x")
+
+
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_missing_year(self):
         tracker = nc.open_data(ff)

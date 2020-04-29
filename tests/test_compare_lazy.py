@@ -46,6 +46,12 @@ class TestSelect(unittest.TestCase):
         with self.assertRaises(ValueError) as context:
             tracker.compare_all("!=")
 
+        with self.assertRaises(ValueError) as context:
+            tracker.compare_all()
+
+        with self.assertRaises(TypeError) as context:
+            tracker.compare_all(1)
+
         n = len(nc.session_files())
         self.assertEqual(n, 0)
 

@@ -21,6 +21,11 @@ class TestSelect(unittest.TestCase):
         n = len(nc.session_files())
         self.assertEqual(n, 0)
 
+    def test_cdo_nocommand(self):
+        tracker = nc.open_data(ff)
+        with self.assertRaises(ValueError) as context:
+            tracker.cdo_command()
+
     def test_cdo1(self):
         tracker = nc.open_data(ff)
         with self.assertRaises(TypeError) as context:

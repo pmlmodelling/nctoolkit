@@ -100,6 +100,10 @@ class TestSelect(unittest.TestCase):
             data.spatial_percentile(p = "x")
         n = len(nc.session_files())
         self.assertEqual(n, 0)
+        ff = "data/sst.mon.mean.nc"
+        data = nc.open_data(ff)
+        with self.assertRaises(TypeError) as context:
+            data.spatial_sum(by_area = 1)
 
     def test_percent_error2(self):
         ff = "data/sst.mon.mean.nc"

@@ -153,6 +153,12 @@ class TestSelect(unittest.TestCase):
         with self.assertRaises(TypeError) as context:
             tracker.sum_all()
 
+        tracker = nc.open_data(ff)
+        with self.assertRaises(TypeError) as context:
+            tracker.mutate({"x":1})
+        with self.assertRaises(TypeError) as context:
+            tracker.mutate({2:1})
+
 
 if __name__ == '__main__':
     unittest.main()

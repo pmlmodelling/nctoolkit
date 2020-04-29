@@ -34,7 +34,7 @@ class TestSelect(unittest.TestCase):
         tracker = nc.open_data(ff)
         tracker.select_years(list(range(1950, 1951)))
         tracker.select_months([1])
-        tracker.set_date(year = 1990.0, month = 1.0, day = 1.0)
+        tracker.set_date(year = 1990, month = 1, day = 1)
         tracker.release()
         x = tracker.years()[0]
 
@@ -50,7 +50,7 @@ class TestSelect(unittest.TestCase):
         tracker = nc.open_data(ff)
         tracker.select_years(list(range(1950, 1951)))
         tracker.select_months([1])
-        tracker.set_date(year = 1990.0, month = 3.0, day = 1.0)
+        tracker.set_date(year = 1990, month = 3, day = 1)
         tracker.release()
         x = tracker.years()[0]
 
@@ -106,6 +106,57 @@ class TestSelect(unittest.TestCase):
         tracker = nc.open_data(ff)
         with self.assertRaises(TypeError) as context:
             tracker.set_missing("x")
+
+        with self.assertRaises(ValueError) as context:
+            tracker.set_date()
+
+        with self.assertRaises(ValueError) as context:
+            tracker.set_date(year = 1990)
+
+        with self.assertRaises(ValueError) as context:
+            tracker.set_date(year = 1990, month = 1)
+
+
+        with self.assertRaises(ValueError) as context:
+            tracker.set_date(year = 1990, month = 1)
+
+        with self.assertRaises(ValueError) as context:
+            tracker.set_missing()
+
+        with self.assertRaises(ValueError) as context:
+            tracker.set_units()
+
+        with self.assertRaises(TypeError) as context:
+            tracker.set_units({"x":1})
+
+        with self.assertRaises(TypeError) as context:
+            tracker.set_units({1:1})
+
+
+        with self.assertRaises(ValueError) as context:
+            tracker.set_longnames()
+
+        with self.assertRaises(TypeError) as context:
+            tracker.set_longnames({"x":1})
+
+        with self.assertRaises(TypeError) as context:
+            tracker.set_longnames({1:1})
+
+        with self.assertRaises(TypeError) as context:
+            tracker.set_date(year = 1990, month = "x", day = 1)
+
+        with self.assertRaises(TypeError) as context:
+            tracker.set_date(year = "x", month = "x", day = 1)
+
+        with self.assertRaises(TypeError) as context:
+            tracker.set_date(year = 1, month = 1, day = "x")
+
+        with self.assertRaises(TypeError) as context:
+            tracker.set_missing([1,"x"])
+
+
+
+
         n = len(nc.session_files())
         self.assertEqual(n, 0)
 

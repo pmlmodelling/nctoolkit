@@ -9,7 +9,7 @@ import os
 
 ff = "data/sst.mon.mean.nc"
 
-class TestSelect(unittest.TestCase):
+class TestSplit(unittest.TestCase):
     def test_empty(self):
         n = len(nc.session_files())
         self.assertEqual(n, 0)
@@ -58,6 +58,11 @@ class TestSelect(unittest.TestCase):
 
         with self.assertRaises(ValueError) as context:
             tracker = nc.open_data(out, checks = True)
+
+        tracker = nc.open_data(out)
+        with self.assertRaises(ValueError) as context:
+            tracker.split()
+
 
         os.remove(out)
         n = len(nc.session_files())

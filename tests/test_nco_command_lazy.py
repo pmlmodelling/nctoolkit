@@ -53,6 +53,8 @@ class TestSelect(unittest.TestCase):
 
         with self.assertRaises(ValueError) as context:
             data.nco_command("test")
+        with self.assertRaises(ValueError) as context:
+            data.nco_command()
 
 
 

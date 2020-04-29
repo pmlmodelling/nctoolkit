@@ -159,6 +159,12 @@ class TestSelect(unittest.TestCase):
         with self.assertRaises(TypeError) as context:
             data.bottom_mask()
 
+        with self.assertRaises(ValueError) as context:
+            data.vertical_interp()
+
+        with self.assertRaises(TypeError) as context:
+            data.vertical_interp(["x"])
+
     def test_bottom_mask_error2(self):
         data = nc.open_data(nc.create_ensemble("data/ensemble"))
 

@@ -9,7 +9,7 @@ import os
 
 ff = "data/sst.mon.mean.nc"
 
-class TestSelect(unittest.TestCase):
+class TestTolonat(unittest.TestCase):
 
     def test_empty(self):
         n = len(nc.session_files())
@@ -38,8 +38,40 @@ class TestSelect(unittest.TestCase):
 
     def test_lonlat2(self):
         tracker = nc.open_data(ff)
+
         with self.assertRaises(TypeError) as context:
+            tracker.to_lonlat(lon = 1, lat = 2, res = 1)
+
+        with self.assertRaises(ValueError) as context:
             tracker.to_lonlat(lon = 1, lat = 2)
+
+        with self.assertRaises(ValueError) as context:
+            tracker.to_lonlat(lat = 1)
+
+        with self.assertRaises(ValueError) as context:
+            tracker.to_lonlat(lon = 1)
+
+        with self.assertRaises(ValueError) as context:
+            tracker.to_lonlat(lon = 1, lat = 1)
+
+        with self.assertRaises(ValueError) as context:
+            tracker.to_lonlat(lon = [1,2])
+
+
+        with self.assertRaises(ValueError) as context:
+            tracker.to_lonlat(lon = [1,2],  res = [1, -1])
+
+
+        with self.assertRaises(ValueError) as context:
+            tracker.to_lonlat(lon = [1,2], lat = [1,2])
+
+
+        with self.assertRaises(ValueError) as context:
+            tracker.to_lonlat(lon = [1], lat = [1,2], res = [1, -1])
+
+
+        with self.assertRaises(ValueError) as context:
+            tracker.to_lonlat(lon = [1,1], lat = [1], res = [1, -1])
 
         with self.assertRaises(ValueError) as context:
             tracker.to_lonlat(lon = [1,2], lat = [1,2], res = [1, -1])
@@ -57,19 +89,19 @@ class TestSelect(unittest.TestCase):
             tracker.to_lonlat(lon = [1,2], lat = [1,2], res = ["test", 1])
 
         with self.assertRaises(TypeError) as context:
-            tracker.to_lonlat(lon = [1, "x"], lat = [1,2])
+            tracker.to_lonlat(lon = [1, "x"], lat = [1,2], res = 1)
 
         with self.assertRaises(TypeError) as context:
-            tracker.to_lonlat(lon = ["x", 1], lat = [1, "y"])
+            tracker.to_lonlat(lon = ["x", 1], lat = [1, "y"], res = 1)
 
         with self.assertRaises(TypeError) as context:
-            tracker.to_lonlat(lon = [2, "x"], lat = [1, "y"])
+            tracker.to_lonlat(lon = [2, "x"], lat = [1, "y"], res = 1)
 
         with self.assertRaises(TypeError) as context:
-            tracker.to_lonlat(lon = [1, 1], lat = ["y", 1])
+            tracker.to_lonlat(lon = [1, 1], lat = ["y", 1], res = 1)
 
         with self.assertRaises(TypeError) as context:
-            tracker.to_lonlat(lon = [1, 1], lat = [1, "y"])
+            tracker.to_lonlat(lon = [1, 1], lat = [1, "y"], res = 1)
 
         with self.assertRaises(TypeError) as context:
             tracker.to_lonlat(lon = [1, 2], lat = [1, 2], res = "test")
@@ -78,13 +110,13 @@ class TestSelect(unittest.TestCase):
             tracker.to_lonlat(lon = [1, 2,3], lat = [1, 2])
 
         with self.assertRaises(ValueError) as context:
-            tracker.to_lonlat(lon = [1, 2], lat = [1, 2,3])
+            tracker.to_lonlat(lon = [1, 2], lat = [1, 2,3], res = 1)
 
         with self.assertRaises(ValueError) as context:
-            tracker.to_lonlat(lon = [2, 1], lat = [1, 2])
+            tracker.to_lonlat(lon = [2, 1], lat = [1, 2], res = 1)
 
         with self.assertRaises(ValueError) as context:
-            tracker.to_lonlat(lon = [1, 2], lat = [2, 1])
+            tracker.to_lonlat(lon = [1, 2], lat = [2, 1], res = 1)
 
     def test_lonlat4(self):
         tracker = nc.open_data(ff)

@@ -61,6 +61,8 @@ class TestSelect(unittest.TestCase):
         tracker.cell_areas(join=True)
         with self.assertRaises(ValueError) as context:
             tracker.cell_areas(join=True)
+        with self.assertRaises(TypeError) as context:
+            tracker.cell_areas(join="x")
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 

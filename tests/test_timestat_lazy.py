@@ -19,6 +19,9 @@ class TestSelect(unittest.TestCase):
             tracker.percentile(p = "x")
 
         with self.assertRaises(ValueError) as context:
+            tracker.percentile()
+
+        with self.assertRaises(ValueError) as context:
             tracker.percentile(p = 120)
 
 

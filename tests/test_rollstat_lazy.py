@@ -80,7 +80,7 @@ class TestSelect(unittest.TestCase):
 
 
         tracker = nc.open_data(ff)
-        tracker.rolling_sum(window = 10.0)
+        tracker.rolling_sum(window = 10)
         tracker.select_years(2000)
         tracker.spatial_mean()
         tracker.release()
@@ -95,6 +95,17 @@ class TestSelect(unittest.TestCase):
         tracker = nc.open_data(ff)
         with self.assertRaises(TypeError) as context:
             tracker.rolling_sum(window = "x")
+
+        with self.assertRaises(ValueError) as context:
+            tracker.rolling_sum()
+
+        with self.assertRaises(ValueError) as context:
+            tracker.rolling_sum(window = 0)
+
+        with self.assertRaises(ValueError) as context:
+            tracker.rolling_sum(window = -1)
+
+
         n = len(nc.session_files())
         self.assertEqual(n, 0)
 

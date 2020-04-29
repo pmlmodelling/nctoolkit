@@ -23,13 +23,20 @@ class TestSelect(unittest.TestCase):
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 
-    def test_montherror(self):
+    def test_rename_error(self):
         tracker = nc.open_data(ff)
         tracker.release()
         with self.assertRaises(TypeError) as context:
             tracker.rename("sst")
-            n = len(nc.session_files())
-            self.assertEqual(n, 0)
+        with self.assertRaises(TypeError) as context:
+            tracker.rename({"sst":1})
+        with self.assertRaises(TypeError) as context:
+            tracker.rename({1:1})
+
+
+
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
 
 

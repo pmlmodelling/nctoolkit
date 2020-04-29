@@ -4,7 +4,7 @@ import pandas as pd
 import xarray as xr
 import os
 
-nc.options(lazy = False)
+nc.options(lazy = True)
 
 ff = "data/sst.mon.mean.nc"
 
@@ -71,7 +71,6 @@ class TestSelect(unittest.TestCase):
         self.assertEqual(n, 1)
 
     def test_merge(self):
-        nc.options(thread_safe = True)
         tracker = nc.open_data(ff)
         tracker.release()
         new = tracker.copy()
@@ -87,7 +86,6 @@ class TestSelect(unittest.TestCase):
         self.assertEqual(n, 2)
 
     def test_merge_error(self):
-        nc.options(thread_safe = True)
         tracker = nc.open_data(ff)
         tracker.select_timestep([0,1,2])
         tracker.release()
@@ -105,7 +103,6 @@ class TestSelect(unittest.TestCase):
         self.assertEqual(n, 2)
 
     def test_merge_error1(self):
-        nc.options(thread_safe = True)
         tracker = nc.open_data(ff)
         tracker.select_timestep([0])
         tracker.release()
@@ -119,8 +116,22 @@ class TestSelect(unittest.TestCase):
         data = nc.open_data([tracker.current, new.current])
         with self.assertRaises(ValueError) as context:
             data.merge(match = "month")
+
+        with self.assertRaises(TypeError) as context:
+            data.merge( match = [1])
+
+        with self.assertRaises(ValueError) as context:
+            data.merge( match = "test")
+
+        with self.assertRaises(ValueError) as context:
+            data.merge()
+
+        with self.assertRaises(TypeError) as context:
+            data = nc.open_data([tracker.current, new.current], match = 1)
+
         n = len(nc.session_files())
-        self.assertEqual(n, 2)
+
+        tracker = nc.open_data(ff)
 
     def test_merge_error2(self):
         nc.options(thread_safe = True)

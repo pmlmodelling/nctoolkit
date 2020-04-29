@@ -1,6 +1,6 @@
 import unittest
 import nchack as nc
-nc.options(lazy= False)
+nc.options(lazy= True)
 nc.options(thread_safe = True)
 import pandas as pd
 import xarray as xr
@@ -149,6 +149,10 @@ class TestSelect(unittest.TestCase):
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 
+    def test_pnone(self):
+        data = nc.open_data(nc.create_ensemble("data/ensemble"))
+        with self.assertRaises(ValueError) as context:
+            data.ensemble_percentile()
 
 if __name__ == '__main__':
     unittest.main()

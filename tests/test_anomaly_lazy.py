@@ -7,7 +7,7 @@ import xarray as xr
 import os
 
 
-class TestSelect(unittest.TestCase):
+class TestAnomaly(unittest.TestCase):
 
     def test_relative(self):
         ff = "data/sst.mon.mean.nc"
@@ -156,6 +156,14 @@ class TestSelect(unittest.TestCase):
     def test_empty(self):
         n = len(nc.session_files())
         self.assertEqual(n, 0)
+
+    def test_error_window(self):
+        ff = "data/sst.mon.mean.nc"
+        tracker = nc.open_data(ff)
+        with self.assertRaises(TypeError) as context:
+            tracker.annual_anomaly(baseline = [1950, 1959], window = "x")
+        with self.assertRaises(TypeError) as context:
+            tracker.annual_anomaly(baseline = [1950, 1959], window = 0)
 
 
 
