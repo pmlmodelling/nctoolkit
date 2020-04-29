@@ -669,5 +669,7 @@ class DataSet(object):
 
     from .reduce import reduce_dims
 
+    from .reduce_grid import reduce_grid
+
 
 
