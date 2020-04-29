@@ -1,6 +1,6 @@
 import unittest
 import nchack as nc
-nc.options(lazy= False)
+nc.options(lazy= True)
 nc.options(thread_safe = True)
 import pandas as pd
 import xarray as xr
@@ -155,30 +155,6 @@ class TestRegrid(unittest.TestCase):
         n = len(nc.session_files())
         self.assertEqual(n, 2)
 
-    def test_regrid2(self):
-        ff = "data/sst.mon.mean.nc"
-        grid = nc.open_data(ff)
-        grid.select_timestep(0)
-        grid.clip(lon = [0, 90], lat = [0, 90])
-
-        tracker = nc.open_data(ff)
-        tracker.select_years(1850)
-        tracker.mean()
-        tracker.regrid(grid)
-        tracker.spatial_mean()
-        x = tracker.to_dataframe().sst.values[0]
-
-        tracker = nc.open_data(ff)
-        tracker.select_years(1850)
-        tracker.split("yearmonth")
-        tracker.regrid(grid)
-        tracker.ensemble_mean()
-        tracker.spatial_mean()
-        y = tracker.to_dataframe().sst.values[0]
-
-        self.assertEqual(x, y)
-        n = len(nc.session_files())
-        self.assertEqual(n, 2)
 
     def test_single(self):
 

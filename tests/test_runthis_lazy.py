@@ -17,7 +17,7 @@ class TestRunthis(unittest.TestCase):
         ff = "data/sst.mon.mean.nc"
 
         out_file = nc.temp_file.temp_file(".nc")
-        cdo_command = "cdo selyear,1800,1900 " + ff + " " + out_file
+        cdo_command = "cdo selyear,1800,1970 " + ff + " " + out_file
         with self.assertWarns(Warning):
             out_file = nc.runthis.run_cdo(cdo_command, target = out_file)
 

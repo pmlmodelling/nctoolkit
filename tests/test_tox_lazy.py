@@ -1,6 +1,6 @@
 import unittest
 import nchack as nc
-nc.options(lazy= False)
+nc.options(lazy= True)
 nc.options(thread_safe = True)
 import pandas as pd
 import xarray as xr
@@ -18,7 +18,7 @@ class TestToxar(unittest.TestCase):
         tracker.split("yearmonth")
         x = tracker.to_xarray(decode_times = True).time.dt.year.values[0]
 
-        self.assertEqual(x, 1850)
+        self.assertEqual(x, 1970)
 
 
 
@@ -33,7 +33,7 @@ class TestToxar(unittest.TestCase):
         tracker.select_timestep([0])
         x = tracker.to_xarray(decode_times = True).time.dt.year.values[0]
 
-        self.assertEqual(x, 1850)
+        self.assertEqual(x, 1970)
 
     def test_df(self):
         tracker = nc.open_data(ff)

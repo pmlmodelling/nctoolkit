@@ -1,6 +1,6 @@
 import unittest
 import nchack as nc
-nc.options(lazy= False)
+nc.options(lazy= True)
 nc.options(thread_safe = True)
 import pandas as pd
 import xarray as xr
@@ -13,10 +13,6 @@ class TestCreate(unittest.TestCase):
         n = len(nc.session_files())
         self.assertEqual(n, 0)
 
-    def test_generate(self):
-        x = nc.generate_ensemble("data/ensemble_merge")
-
-        self.assertEqual(len(x), 2)
 
     def test_generate1(self):
         x = nc.generate_ensemble("data/ensemble")

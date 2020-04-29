@@ -18,7 +18,7 @@ class TestEnsemble(unittest.TestCase):
         data.spatial_mean()
         x = data.to_dataframe().sst.values[0].astype("float")
 
-        self.assertEqual(x, 17.846817016601562)
+        self.assertEqual(x, 17.996946334838867)
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 
@@ -29,7 +29,7 @@ class TestEnsemble(unittest.TestCase):
         data.spatial_mean()
         x = data.to_dataframe().sst.values[0].astype("float")
 
-        self.assertEqual(x, 19.37936782836914)
+        self.assertEqual(x, 19.205900192260742)
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 
@@ -39,7 +39,7 @@ class TestEnsemble(unittest.TestCase):
         data.spatial_mean()
         x = data.to_dataframe().sst.values[0].astype("float")
 
-        self.assertEqual(x, 16.691144943237305)
+        self.assertEqual(x, 16.958738327026367)
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 
@@ -82,7 +82,7 @@ class TestEnsemble(unittest.TestCase):
         data.spatial_mean()
         x = data.to_dataframe().sst.values[0].astype("float")
 
-        self.assertEqual(x, 2.6882216930389404)
+        self.assertEqual(x, 2.2471628189086914 )
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 
@@ -93,7 +93,7 @@ class TestEnsemble(unittest.TestCase):
         data.spatial_mean()
         x = data.to_dataframe().sst.values[0].astype("float")
 
-        self.assertEqual(x, 17.702301025390625)
+        self.assertEqual(x, 17.851171493530273)
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 

@@ -1,6 +1,6 @@
 import unittest
 import nchack as nc
-nc.options(lazy= False)
+nc.options(lazy= True)
 nc.options(thread_safe = True)
 import pandas as pd
 import xarray as xr
@@ -77,7 +77,7 @@ class TestApi(unittest.TestCase):
     def test_file_size(self):
         ff = "data/sst.mon.mean.nc"
         x = nc.api.file_size(ff)
-        self.assertEqual(x, 525893626)
+        self.assertEqual(x,  41073246)
 
     def test_open_data(self):
         ff = "data/sst.mon.mean.nc"
@@ -99,10 +99,11 @@ class TestApi(unittest.TestCase):
     def test_size(self):
         ff = "data/sst.mon.mean.nc"
         data = nc.open_data(ff)
-        x = "File size: 525.893626 MB" in data.size
+        x = "File size: 41.073246 MB" in data.size
+        print(data.size)
         self.assertEqual(x, True)
         data.split("year")
-        x = "Number of files in ensemble: 169" in data.size
+        x = "Number of files in ensemble: 30" in data.size
         self.assertEqual(x, True)
 
     def test_repr(self):
@@ -115,7 +116,8 @@ class TestApi(unittest.TestCase):
         self.assertEqual(x, True)
 
         data = nc.open_data(nc.create_ensemble("data/ensemble"))
-        x = "start: 169 member ensemble" in str(data)
+        x = "start: 60 member ensemble" in str(data)
+        print(str(data))
         self.assertEqual(x, True)
 
     def test_variables_detailed(self):
@@ -161,7 +163,7 @@ class TestApi(unittest.TestCase):
     def test_len(self):
         data = nc.open_data(nc.create_ensemble("data/ensemble"))
         x = len(data)
-        self.assertEqual(x, 169)
+        self.assertEqual(x, 60)
         data = nc.open_data(nc.create_ensemble("data/ensemble"))
         data.merge_time()
         data.release()

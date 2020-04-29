@@ -3,7 +3,7 @@ import nchack as nc
 import pandas as pd
 import xarray as xr
 import os
-nc.options(lazy = False)
+nc.options(lazy = True)
 
 
 ff = "data/sst.mon.mean.nc"
@@ -72,7 +72,7 @@ class TestTimestat(unittest.TestCase):
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0].astype("float")
 
-        self.assertEqual(x, 3.090454578399658)
+        self.assertEqual(x,  3.3688883781433105)
 
     def test_cum_sum(self):
         tracker = nc.open_data(ff)
@@ -82,7 +82,7 @@ class TestTimestat(unittest.TestCase):
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0].astype("float")
 
-        self.assertEqual(x, 12.710070610046387)
+        self.assertEqual(x,  12.964875221252441)
 
 
 

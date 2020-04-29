@@ -1,6 +1,6 @@
 import unittest
 import nchack as nc
-nc.options(lazy= False)
+nc.options(lazy= True)
 nc.options(thread_safe = True)
 import pandas as pd
 import xarray as xr
@@ -16,7 +16,7 @@ class TestSetters(unittest.TestCase):
 
     def test_setdate(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1950, 1951)))
+        tracker.select_years(list(range(1970, 1971)))
         tracker.select_months([1])
         tracker.set_date(year = 1990, month = 1, day = 1)
         tracker.release()
@@ -32,7 +32,7 @@ class TestSetters(unittest.TestCase):
 
     def test_setdate2(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1950, 1951)))
+        tracker.select_years(list(range(1970, 1971)))
         tracker.select_months([1])
         tracker.set_date(year = 1990, month = 1, day = 1)
         tracker.release()
@@ -48,7 +48,7 @@ class TestSetters(unittest.TestCase):
 
     def test_setdate3(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1950, 1951)))
+        tracker.select_years(list(range(1970, 1971)))
         tracker.select_months([1])
         tracker.set_date(year = 1990, month = 3, day = 1)
         tracker.release()

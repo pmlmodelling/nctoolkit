@@ -1,6 +1,6 @@
 import unittest
 import nchack as nc
-nc.options(lazy= False)
+nc.options(lazy= True)
 nc.options(thread_safe = True)
 import pandas as pd
 import xarray as xr
@@ -21,7 +21,7 @@ class TestFldsta(unittest.TestCase):
         data.spatial_mean()
         x = data.to_dataframe().sst.values[0].astype("float")
 
-        self.assertEqual(x, 17.669960021972656)
+        self.assertEqual(x,  18.02419662475586)
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 
@@ -32,7 +32,7 @@ class TestFldsta(unittest.TestCase):
         data.spatial_max()
 
         x = data.to_dataframe().sst.values[0].astype("float")
-        self.assertEqual(x, 30.30000114440918)
+        self.assertEqual(x, 30.430002212524414)
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 
@@ -43,7 +43,7 @@ class TestFldsta(unittest.TestCase):
         data.spatial_min()
 
         x = data.to_dataframe().sst.values[0].astype("float")
-        self.assertEqual(x, -1.8540000915527344)
+        self.assertEqual(x, -1.8530000448226929)
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 
@@ -55,7 +55,7 @@ class TestFldsta(unittest.TestCase):
         data.spatial_range()
 
         x = data.to_dataframe().sst.values[0].astype("float")
-        self.assertEqual(x, 32.15399932861328)
+        self.assertEqual(x, 32.28300094604492)
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 
@@ -66,7 +66,7 @@ class TestFldsta(unittest.TestCase):
         data.spatial_sum()
 
         x = data.to_dataframe().sst.values[0].astype("float")
-        self.assertEqual(x, 575101.3125)
+        self.assertEqual(x,  586924.6875)
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 
@@ -78,7 +78,7 @@ class TestFldsta(unittest.TestCase):
         data.spatial_sum(by_area = True)
 
         x = data.to_dataframe().sst.values[0].astype("float")
-        self.assertEqual(x, 6482955169955840.0 )
+        self.assertEqual(x,6612921954074624.0)
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 
@@ -89,7 +89,7 @@ class TestFldsta(unittest.TestCase):
         data.spatial_percentile(p = 60)
 
         x = data.to_dataframe().sst.values[0].astype("float")
-        self.assertEqual(x, 19.628000259399414)
+        self.assertEqual(x, 19.700000762939453)
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 

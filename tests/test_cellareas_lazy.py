@@ -1,6 +1,6 @@
 import unittest
 import nchack as nc
-nc.options(lazy= False)
+nc.options(lazy= True)
 nc.options(thread_safe = True)
 import pandas as pd
 import xarray as xr
@@ -17,7 +17,7 @@ class TestCell(unittest.TestCase):
         self.assertEqual(n, 0)
     def test_cell_areas(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1950, 1951)))
+        tracker.select_years(list(range(1970, 1971)))
         tracker.select_months([1])
         tracker.release()
 
@@ -31,7 +31,7 @@ class TestCell(unittest.TestCase):
 
     def test_cell_areas2(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1950, 1951)))
+        tracker.select_years(list(range(1970, 1971)))
         tracker.select_months([1])
         tracker.cell_areas(join = False)
         tracker.release()

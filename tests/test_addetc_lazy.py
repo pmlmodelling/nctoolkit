@@ -1,6 +1,6 @@
 import unittest
 import nchack as nc
-nc.options(lazy= False)
+nc.options(lazy= True)
 nc.options(thread_safe = True)
 import pandas as pd
 import xarray as xr
@@ -30,7 +30,7 @@ class TestAddetc(unittest.TestCase):
 
     def test_add(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1950, 1951)))
+        tracker.select_years(list(range(1970, 1971)))
         tracker.select_months([1])
         tracker.release()
         new = tracker.copy()
@@ -48,7 +48,7 @@ class TestAddetc(unittest.TestCase):
 
     def test_add_multiple(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1950, 1951)))
+        tracker.select_years(list(range(1970, 1971)))
         tracker.select_months([1])
         tracker.release()
         new = tracker.copy()
@@ -67,7 +67,7 @@ class TestAddetc(unittest.TestCase):
 
     def test_add2(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1950, 1951)))
+        tracker.select_years(list(range(1970, 1971)))
         tracker.select_months([1])
         tracker.release()
         new = tracker.copy()
@@ -84,7 +84,7 @@ class TestAddetc(unittest.TestCase):
 
     def test_add21(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1950, 1951)))
+        tracker.select_years(list(range(1970, 1971)))
         tracker.select_months([1])
         tracker.release()
         new = tracker.copy()
@@ -101,7 +101,7 @@ class TestAddetc(unittest.TestCase):
 
     def test_add_var(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1950, 1951)))
+        tracker.select_years(list(range(1970, 1971)))
         tracker.select_months([1])
         tracker.release()
         new = tracker.copy()
@@ -121,7 +121,7 @@ class TestAddetc(unittest.TestCase):
 
     def test_add3(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1950, 1951)))
+        tracker.select_years(list(range(1970, 1971)))
         tracker.select_months([1])
         tracker.release()
         new = tracker.copy()
@@ -141,7 +141,7 @@ class TestAddetc(unittest.TestCase):
     def test_add4(self):
         nc.options(lazy = False)
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1950, 1951)))
+        tracker.select_years(list(range(1970, 1971)))
         tracker.select_months([1])
         tracker.release()
         new = tracker.copy()
@@ -159,7 +159,7 @@ class TestAddetc(unittest.TestCase):
 
     def test_subtract(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1950, 1951)))
+        tracker.select_years(list(range(1970, 1971)))
         tracker.select_months([1])
         tracker.release()
         new = tracker.copy()
@@ -177,7 +177,7 @@ class TestAddetc(unittest.TestCase):
 
     def test_subtract1(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1950, 1951)))
+        tracker.select_years(list(range(1970, 1971)))
         tracker.select_months([1])
         tracker.release()
         new = tracker.copy()
@@ -212,7 +212,7 @@ class TestAddetc(unittest.TestCase):
 
     def test_subtract2(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1950, 1951)))
+        tracker.select_years(list(range(1970, 1971)))
         tracker.select_months([1])
         tracker.release()
         new = tracker.copy()
@@ -229,7 +229,7 @@ class TestAddetc(unittest.TestCase):
 
     def test_multiply(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1950, 1951)))
+        tracker.select_years(list(range(1970, 1971)))
         tracker.select_months([1])
         tracker.release()
         new = tracker.copy()
@@ -246,7 +246,7 @@ class TestAddetc(unittest.TestCase):
 
     def test_multiply1(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1950, 1951)))
+        tracker.select_years(list(range(1970, 1971)))
         tracker.select_months([1])
         tracker.release()
         new = tracker.copy()
@@ -267,7 +267,7 @@ class TestAddetc(unittest.TestCase):
 
     def test_multiply2(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1950, 1951)))
+        tracker.select_years(list(range(1970, 1971)))
         tracker.select_months([1])
         tracker.release()
         new = tracker.copy()
@@ -289,7 +289,7 @@ class TestAddetc(unittest.TestCase):
 
     def test_divide(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1950, 1951)))
+        tracker.select_years(list(range(1970, 1971)))
         tracker.select_months([1])
         tracker.release()
         new = tracker.copy()
@@ -307,7 +307,7 @@ class TestAddetc(unittest.TestCase):
 
     def test_divide1(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1950, 1951)))
+        tracker.select_years(list(range(1970, 1971)))
         tracker.select_months([1])
         tracker.release()
         new = tracker.copy()
@@ -328,7 +328,7 @@ class TestAddetc(unittest.TestCase):
 
     def test_divide2(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1950, 1951)))
+        tracker.select_years(list(range(1970, 1971)))
         tracker.select_months([1])
         tracker.release()
         new = tracker.copy()
@@ -348,7 +348,7 @@ class TestAddetc(unittest.TestCase):
 
     def test_divide3(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1950, 1951)))
+        tracker.select_years(list(range(1970, 1971)))
         tracker.select_months([1])
         tracker.release()
         new = tracker.copy()
@@ -487,7 +487,7 @@ class TestAddetc(unittest.TestCase):
 
     def test_lazy_add(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1950, 1951)))
+        tracker.select_years(list(range(1970, 1971)))
         tracker.select_months([1])
         tracker.release()
         new = tracker.copy()

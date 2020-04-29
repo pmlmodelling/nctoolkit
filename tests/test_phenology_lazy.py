@@ -3,7 +3,7 @@ import nchack as nc
 import pandas as pd
 import xarray as xr
 import os
-nc.options(lazy = False)
+nc.options(lazy = True)
 
 
 ff = "data/sst.mon.mean.nc"
@@ -21,7 +21,7 @@ class TestPhenol(unittest.TestCase):
 
         x = data.to_dataframe().peak.values[0].astype("float")
 
-        self.assertEqual(x, 5.104045391082764)
+        self.assertEqual(x,  4.852420330047607)
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 

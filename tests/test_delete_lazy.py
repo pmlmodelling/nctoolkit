@@ -1,6 +1,6 @@
 import unittest
 import nchack as nc
-nc.options(lazy= False)
+nc.options(lazy= True)
 nc.options(thread_safe = True)
 import pandas as pd
 import xarray as xr
@@ -19,7 +19,7 @@ class TestDelete(unittest.TestCase):
     def test_remove_variables(self):
         tracker = nc.open_data(ff)
         print("This: " + nc.nc_variables(ff)[0])
-        tracker.select_years(list(range(1950, 1951)))
+        tracker.select_years(list(range(1970, 1971)))
         tracker.select_months([1])
         tracker.set_date(year = 1990, month = 1, day = 1)
         tracker.mutate({"tos":"sst+273.15"})

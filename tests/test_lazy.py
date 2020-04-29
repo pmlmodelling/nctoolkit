@@ -1,6 +1,6 @@
 import unittest
 import nchack as nc
-nc.options(lazy= False)
+nc.options(lazy= True)
 nc.options(thread_safe = True)
 import pandas as pd
 import xarray as xr
@@ -15,7 +15,7 @@ class TestLazy(unittest.TestCase):
     def test_select(self):
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1950, 1959)))
+        tracker.select_years(list(range(1970, 1979)))
         tracker.select_months([1,2,3,4,5])
         tracker.clip(lon = [0,90])
         tracker.clip(lat = [0,90])
@@ -24,14 +24,14 @@ class TestLazy(unittest.TestCase):
         tracker.spatial_mean()
         tracker.release()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
-        self.assertEqual(x, 18.360414505004883)
+        self.assertEqual(x,18.435571670532227)
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 
     def test_lazy1(self):
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1950, 1959)))
+        tracker.select_years(list(range(1970, 1979)))
         tracker.select_months([1,2,3,4,5])
         tracker.clip(lon = [0,90])
         tracker.clip(lat = [0,90])
@@ -41,7 +41,7 @@ class TestLazy(unittest.TestCase):
         tracker.release()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         y = len(tracker.history)
-        self.assertEqual(x, 18.360414505004883)
+        self.assertEqual(x,18.435571670532227)
         self.assertEqual(y, 1)
         n = len(nc.session_files())
         self.assertEqual(n, 1)
@@ -51,9 +51,9 @@ class TestLazy(unittest.TestCase):
         tracker = nc.open_data(ff)
         tracker.split(by = "year")
         n_files = len(tracker.current)
-        self.assertEqual(n_files, 169)
+        self.assertEqual(n_files, 30)
         tracker.merge_time()
-        tracker.select_years(list(range(1950, 1959)))
+        tracker.select_years(list(range(1970, 1979)))
         tracker.select_months([1,2,3,4,5])
         tracker.clip(lon = [0,90])
         tracker.clip(lat = [0,90])
@@ -65,7 +65,7 @@ class TestLazy(unittest.TestCase):
         n = len(nc.session_files())
         self.assertEqual(n, 1)
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
-        self.assertEqual(x, 18.360414505004883)
+        self.assertEqual(x, 18.435571670532227)
 
 
     def test_mergetime1(self):
@@ -74,7 +74,7 @@ class TestLazy(unittest.TestCase):
         tracker.split(by = "year")
         n_files = len(tracker.current)
         tracker.merge_time()
-        tracker.select_years(list(range(1950, 1959)))
+        tracker.select_years(list(range(1970, 1979)))
         tracker.select_months([1,2,3,4,5])
         tracker.clip(lon = [0,90])
         tracker.clip(lat = [0,90])
@@ -84,8 +84,8 @@ class TestLazy(unittest.TestCase):
         tracker.release()
         y = len(tracker.history)
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
-        self.assertEqual(x, 18.360414505004883)
-        self.assertEqual(n_files, 169)
+        self.assertEqual(x, 18.435571670532227)
+        self.assertEqual(n_files, 30)
         self.assertEqual(y, 2)
         n = len(nc.session_files())
         self.assertEqual(n, 1)
@@ -98,7 +98,7 @@ class TestLazy(unittest.TestCase):
         tracker.spatial_mean()
         tracker.release()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
-        self.assertEqual(x, 17.881811141967773)
+        self.assertEqual(x, 18.0283203125)
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 
@@ -106,7 +106,7 @@ class TestLazy(unittest.TestCase):
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
         tracker.transmute({"sst":"sst+273.15"})
-        tracker.select_years(list(range(1950, 1959)))
+        tracker.select_years(list(range(1970, 1979)))
         tracker.select_months([1,2,3,4,5])
         tracker.clip(lon = [0,90])
         tracker.clip(lat = [0,90])
@@ -117,7 +117,7 @@ class TestLazy(unittest.TestCase):
         tracker.release()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         y = len(tracker.history)
-        self.assertEqual(x, 18.360414505004883)
+        self.assertEqual(x,  18.435571670532227)
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 
@@ -125,7 +125,7 @@ class TestLazy(unittest.TestCase):
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
         tracker.mutate({"sst1":"sst+273.15"})
-        tracker.select_years(list(range(1950, 1959)))
+        tracker.select_years(list(range(1970, 1979)))
         tracker.select_months([1,2,3,4,5])
         tracker.clip(lon = [0,90])
         tracker.clip(lat = [0,90])
@@ -136,7 +136,7 @@ class TestLazy(unittest.TestCase):
         tracker.release()
         x = tracker.to_xarray().sst2.values[0][0][0].astype("float")
         y = len(tracker.history)
-        self.assertEqual(x, 18.360414505004883)
+        self.assertEqual(x, 18.435571670532227)
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 
@@ -148,7 +148,7 @@ class TestLazy(unittest.TestCase):
         tracker.spatial_mean()
         tracker.release()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
-        self.assertEqual(x, 17.8525390625)
+        self.assertEqual(x, 17.9996280670166)
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 
@@ -172,12 +172,12 @@ class TestLazy(unittest.TestCase):
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
         tracker.clip(lon = [-80, 20], lat = [30, 80])
-        tracker.annual_anomaly(baseline = [1950, 1959])
+        tracker.annual_anomaly(baseline = [1970, 1979])
         tracker.spatial_mean()
         tracker.mean()
         tracker.release()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
-        self.assertEqual(x, -0.17559902369976044)
+        self.assertEqual(x, 0.11958891153335571)
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 

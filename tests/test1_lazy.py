@@ -3,7 +3,7 @@ import nchack as nc
 import pandas as pd
 import xarray as xr
 import os
-nc.options(lazy = False)
+nc.options(lazy = True)
 
 
 ff = "data/sst.mon.mean.nc"
@@ -18,7 +18,7 @@ class TestOne(unittest.TestCase):
         tracker = nc.open_data(ff)
         tracker.monthly_mean_climatology()
         y = tracker.to_xarray().sst.values[0][0][0].astype("float")
-        self.assertEqual(x, -1.7077397108078003)
+        self.assertEqual(x, -1.7026667594909668)
         self.assertEqual(x, y)
 
         n = len(nc.session_files())
@@ -37,7 +37,7 @@ class TestOne(unittest.TestCase):
         tracker.clip(lon = [50, 60])
         tracker.spatial_mean()
         y = tracker.to_xarray().sst.values[0][0][0].astype("float")
-        self.assertEqual(x, 19.814777374267578)
+        self.assertEqual(x, 20.050094604492188 )
         self.assertEqual(x, y)
 
         n = len(nc.session_files())
@@ -64,7 +64,7 @@ class TestOne(unittest.TestCase):
         tracker.percentile(50)
         tracker.spatial_mean()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
-        self.assertEqual(x, 19.51475715637207)
+        self.assertEqual(x, 19.71255874633789)
 
         n = len(nc.session_files())
         self.assertEqual(n, 1)

@@ -1,6 +1,6 @@
 import unittest
 import nchack as nc
-nc.options(lazy= False)
+nc.options(lazy= True)
 nc.options(thread_safe = True)
 import pandas as pd
 import xarray as xr
@@ -21,7 +21,7 @@ class TestSplit(unittest.TestCase):
         y = len(tracker.current)
         self.assertEqual(x, y)
         n = len(nc.session_files())
-        self.assertEqual(n, 169)
+        self.assertEqual(n, 30)
 
     def test_yearmon(self):
         tracker = nc.open_data(ff)
