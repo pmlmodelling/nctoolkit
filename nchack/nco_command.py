@@ -23,7 +23,7 @@ def nco_command(self, command = None, ensemble = False):
 
     # First, check that the command is valid
     if command is None:
-        raise TypeError("Please supply a command")
+        raise ValueError("Please supply a command")
 
     if type(command) is not str:
         raise TypeError("Command supplied is not a str")

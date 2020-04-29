@@ -54,7 +54,7 @@ def select_months(self, months = None):
 
     for x in months:
         if type(x) is not int:
-            raise ValueError(f"{x} is not an int")
+            raise TypeError(f"{x} is not an int")
         if x not in list(range(1, 13)):
             raise ValueError(f"{x} is not a month")
 
@@ -87,7 +87,7 @@ def select_years(self, years = None):
 
     for yy in years:
         if type(yy) is not int:
-            raise ValueError(f"{yy} is not an int")
+            raise TypeError(f"{yy} is not an int")
 
     if self._merged == False:
         select_years = False
@@ -169,7 +169,7 @@ def select_variables(self, vars = None):
 
     for vv in vars_list:
         if type(vv) is not str:
-            raise ValueError(f"{vv} is not a str")
+            raise TypeError(f"{vv} is not a str")
 
     vars_list = str_flatten(vars_list, ",")
 
@@ -178,7 +178,7 @@ def select_variables(self, vars = None):
     run_this(cdo_command, self,  output = "ensemble")
 
 
-def select_timestep(self, times):
+def select_timestep(self, times = None):
     """
     Select timesteps from a dataset
 
@@ -188,6 +188,9 @@ def select_timestep(self, times):
         time step(s) to select. For example, if you wanted the first time step set times = 0.
     """
 
+    if times is None:
+        raise ValueError("Please supply times")
+
     if type(times) is range:
         times = list(times)
 
@@ -196,7 +199,7 @@ def select_timestep(self, times):
 
     for tt in times:
         if type(tt) is not int:
-            raise ValueError(f"{tt} is not an int")
+            raise TypeError(f"{tt} is not an int")
         if tt < 0:
             raise ValueError(f"{tt} is not a valid timestep")
 

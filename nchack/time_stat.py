@@ -76,7 +76,7 @@ def percentile(self, p = None):
         Percentile to calculate
     """
     if p is None:
-         raise TypeError("Please supply p")
+         raise ValueError("Please supply p")
 
     if type(p) not in [int, float]:
          raise TypeError("p is a " + str(type(p)) +  ", not int or float")

@@ -26,7 +26,7 @@ def merge(self, match = ["year", "month", "day"]):
 
     for mm in match:
         if type(mm) is not str:
-            raise TypeError(f"{ff} from match is not a list")
+            raise TypeError(f"{mm} from match is not a list")
 
     if type(match) is list:
         match = [y.lower() for y in match]

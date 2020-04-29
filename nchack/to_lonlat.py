@@ -42,7 +42,7 @@ def to_lonlat(self, lon = None, lat = None, res = None, method = "bil"):
     if res is None:
         raise ValueError("Please supply res")
 
-    if  (type(lon) is not list) or (type(lat) is not list):
+    if  (type(lon) is not list) and (type(lat) is not list):
         raise TypeError("Check that lon/lat ranges are lists")
 
     if len(lon) != 2:

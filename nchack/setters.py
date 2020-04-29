@@ -31,13 +31,13 @@ def set_date(self, year = None, month = None, day = None,  base_year = 1900):
     """
 
     if year is None:
-        raise TypeError("Please supply a year")
+        raise ValueError("Please supply a year")
 
     if month is None:
-        raise TypeError("Please supply a month")
+        raise ValueError("Please supply a month")
 
     if day is None:
-        raise TypeError("Please supply a day")
+        raise ValueError("Please supply a day")
 
 
     # check that the values supplied are valid
@@ -67,7 +67,7 @@ def set_missing(self, value = None):
     """
 
     if value is None:
-        raise TypeError("Please supply missing value")
+        raise ValueError("Please supply missing value")
 
     if (type(value) is float) or (type(value) is int):
         value = [value, value]
@@ -97,7 +97,7 @@ def set_units(self, var_dict = None):
     """
 
     if var_dict is None:
-        raise TypeError("Please supply var_dict")
+        raise ValueError("Please supply var_dict")
 
     # Check that a dictionary has been supplied
     if type(var_dict) is not dict:
@@ -129,7 +129,7 @@ def set_longnames(self, var_dict = None):
 
     """
     if var_dict is None:
-        raise TypeError("Please supply var_dict")
+        raise ValueError("Please supply var_dict")
 
     self.release()
 
