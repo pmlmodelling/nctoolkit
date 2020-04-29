@@ -10,7 +10,7 @@ import os
 ff = "data/sst.mon.mean.nc"
 ff1 = "data/woa18_decav_t01_01.nc"
 
-class TestSelect(unittest.TestCase):
+class TestToxar(unittest.TestCase):
 
     def test_xarray1(self):
         tracker = nc.open_data(ff)

@@ -8,7 +8,7 @@ nc.options(lazy = False)
 
 ff = "data/sst.mon.mean.nc"
 
-class TestSelect(unittest.TestCase):
+class TestClip(unittest.TestCase):
 
     def test_clip(self):
         tracker = nc.open_data(ff)

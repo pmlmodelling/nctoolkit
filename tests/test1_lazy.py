@@ -8,7 +8,7 @@ nc.options(lazy = False)
 
 ff = "data/sst.mon.mean.nc"
 
-class TestSelect(unittest.TestCase):
+class TestOne(unittest.TestCase):
 
     def test_clim1(self):
         tracker = nc.open_data(ff)

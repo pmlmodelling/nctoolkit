@@ -7,7 +7,7 @@ import os
 
 ff = "data/sst.mon.mean.nc"
 
-class TestSelect(unittest.TestCase):
+class TestClean(unittest.TestCase):
 
     def test_cleanall(self):
         safe = nc.session.nc_safe

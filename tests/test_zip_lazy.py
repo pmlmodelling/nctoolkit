@@ -8,7 +8,7 @@ import os
 import numpy as np
 
 
-class TestSelect(unittest.TestCase):
+class TestZip(unittest.TestCase):
     def test_empty(self):
         n = len(nc.session_files())
         self.assertEqual(n, 0)

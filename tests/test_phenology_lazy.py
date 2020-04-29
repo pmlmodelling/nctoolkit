@@ -8,7 +8,7 @@ nc.options(lazy = False)
 
 ff = "data/sst.mon.mean.nc"
 
-class TestSelect(unittest.TestCase):
+class TestPhenol(unittest.TestCase):
 
     def test_empty(self):
         n = len(nc.session_files())

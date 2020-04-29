@@ -8,7 +8,7 @@ import os
 import warnings
 
 
-class TestSelect(unittest.TestCase):
+class TestRunthis(unittest.TestCase):
 
     def test_empty(self):
         n = len(nc.session_files())

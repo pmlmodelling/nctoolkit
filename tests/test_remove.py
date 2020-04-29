@@ -7,7 +7,7 @@ import os
 
 ff = "data/sst.mon.mean.nc"
 
-class TestSelect(unittest.TestCase):
+class TestRemove(unittest.TestCase):
 
     def test_remove_error(self):
         with self.assertRaises(ValueError) as context:

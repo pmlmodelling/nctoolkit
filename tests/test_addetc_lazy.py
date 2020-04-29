@@ -10,7 +10,7 @@ import os
 
 ff = "data/sst.mon.mean.nc"
 
-class TestSelect(unittest.TestCase):
+class TestAddetc(unittest.TestCase):
 
 
     def test_merger(self):

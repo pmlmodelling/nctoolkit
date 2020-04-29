@@ -8,7 +8,7 @@ import os
 import warnings
 
 
-class TestSelect(unittest.TestCase):
+class TestVerts(unittest.TestCase):
 
     def test_mean(self):
         ff = "data/woa18_decav_t01_01.nc"
