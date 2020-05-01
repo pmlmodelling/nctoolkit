@@ -59,5 +59,4 @@ install:
 script:
   - which cdo
   - cdo --version 
-  - cdo showyear data/sst.mon.mean.nc
-    #- pytest
+  - pytest
