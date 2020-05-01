@@ -27,7 +27,7 @@ install:
     - wget https://code.mpimet.mpg.de/attachments/download/20826/cdo-1.9.8.tar.gz 
     - tar -xvzf cdo-1.9.8.tar.gz
     - cd cdo-1.9.8
-    - ./configure -with-netcdf=/opt/cdo-install -with-hdf5=/opt/cdo-install
+    - ./configure -with-netcdf -with-hdf5
     - sudo make 
     - sudo make install
     - cd ..
