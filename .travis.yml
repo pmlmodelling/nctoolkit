@@ -7,6 +7,9 @@ python:
 before_install:
     - sudo apt-get -y install cdo
     - sudo apt-get -y install nco
+    - sudo apt-get -y install libnetcdf-dev libnetcdff-dev
+    - sudo apt-get -y install libhdf5-serial-dev
+
 
 addons:
     apt:
