@@ -28,4 +28,4 @@ before_install:
 script:
   - which cdo
   - cdo --version 
-    #- pytest
+  - pytest
