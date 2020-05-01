@@ -12,8 +12,7 @@ before_install:
     - sudo apt install cdo
     - sudo apt install nco
 addons:
-    apt:
-        update: true
+    cdo: "1.9.8"
 install:
 - python setup.py install
 # command to run tests
