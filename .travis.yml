@@ -6,7 +6,7 @@ python:
 #
 before_install:
     - sudo apt-get -y update
-    - sudo apt-get -y install antlr libantlr-dev libnetcdf11 netcdf-bin udunits-bin libudunits2-0 libudunits2-dev
+      #- sudo apt-get -y install antlr libantlr-dev libnetcdf11 netcdf-bin udunits-bin libudunits2-0 libudunits2-dev
     - sudo apt-get -y install libnetcdf-dev libnetcdff-dev
     - sudo apt-get -y install libhdf5-dev
     - sudo apt-get -y install cdo
