@@ -5,19 +5,17 @@ python:
 # command to install dependencies
 #
 before_install:
-    - sudo apt update
-    - sudo apt install cdo
-    - sudo apt install nco
+    - sudo apt-get -y install cdo
+    - sudo apt-get -y install nco
 
-#addons:
-#    packages:
-#        nco
-#        cdo: "1.9.8"
+addons:
+    apt:
+        update: true
+
 install:
 - python setup.py install
 # command to run tests
 script:
   - which cdo
   - cdo --version 
-  - which cdo-bin 
     #- pytest
