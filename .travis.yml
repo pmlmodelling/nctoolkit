@@ -30,6 +30,7 @@ install:
     - ./configure
     - sudo make 
     - sudo make install
+    - cd ..
 
     - python setup.py install
 # command to run tests
