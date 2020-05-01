@@ -4,19 +4,19 @@ python:
   - "3.6"      # current default Python on Travis CI
 # command to install dependencies
 #
-before_install:
-    - sudo apt-get -y install libnetcdf-dev libnetcdff-dev
-    - sudo apt-get -y install libhdf5-serial-dev
-    - sudo apt-get -y install cdo
-    - sudo apt-get -y install nco
-
-
-addons:
-    apt:
-        update: true
-cach:
-    apt: true
-
+#before_install:
+#    - sudo apt-get -y install libnetcdf-dev libnetcdff-dev
+#    - sudo apt-get -y install libhdf5-serial-dev
+#    - sudo apt-get -y install cdo
+#    - sudo apt-get -y install nco
+#
+#
+#addons:
+#    apt:
+#        update: true
+#cach:
+#    apt: true
+#
 install:
 - python setup.py install
 # command to run tests
