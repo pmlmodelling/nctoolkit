@@ -9,8 +9,8 @@ python:
 #
 before_install:
     - sudo apt-get update
-    - sudo apt-get -y install cdo
-    - sudo apt-get -y install nco
+    - sudo apt-get install cdo
+    - sudo apt-get install nco
 install:
 - python setup.py install
 # command to run tests
