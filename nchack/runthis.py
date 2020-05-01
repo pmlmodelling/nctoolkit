@@ -270,6 +270,8 @@ def run_this(os_command, self, output = "one",  out_file = None):
 
             if session_info["thread_safe"]:
                 os_command = os_command.replace("-L ", " ")
+            else:
+                os_command = os_command.replace("-L ", " ").replace("cdo ", "cdo -L ")
 
             pool = multiprocessing.Pool(cores)
             target_list = []
@@ -368,6 +370,8 @@ def run_this(os_command, self, output = "one",  out_file = None):
 
             if session_info["thread_safe"]:
                 os_command = os_command.replace("-L ", " ")
+            else:
+                os_command = os_command.replace("-L ", " ").replace("cdo ", "cdo -L ")
 
             if "reduce_dim" in os_command:
                 os_command = os_command.replace("reduce_dim", "").replace(" - ", " ").replace(" -- ", " ")
