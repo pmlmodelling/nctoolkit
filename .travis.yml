@@ -14,8 +14,8 @@ before_install:
 addons:
     apt:
         packages:
-            -cdo
-            -nco
+            - cdo
+            - nco
 install:
 - python setup.py install
 # command to run tests
