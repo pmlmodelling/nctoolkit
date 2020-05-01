@@ -7,12 +7,7 @@ python:
   - "nightly"  # nightly build
 # command to install dependencies
 #
-#before_install:
-#    - sudo apt update
-#    - sudo apt install cdo
-#    - sudo apt install nco
 addons:
-    cdo: "1.9.8"
     packages:
         nco
         cdo: "1.9.8"
