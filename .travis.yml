@@ -11,6 +11,8 @@ before_install:
 addons:
     apt:
         update: true
+cach:
+    apt: true
 
 install:
 - python setup.py install
