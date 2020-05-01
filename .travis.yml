@@ -22,8 +22,8 @@ before_install:
 #cach:
 #    apt: true
 #
-#install:
-#- python setup.py install
+install:
+    - python setup.py install
 # command to run tests
 script:
   - which cdo
