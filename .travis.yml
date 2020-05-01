@@ -28,7 +28,7 @@ install:
     - tar -xvzf cdo-1.9.8.tar.gz
     - cd cdo-1.9.8
     - ./configure
-    - sudo make & make check & make install
+    - sudo make && make check && make install
 
     - python setup.py install
 # command to run tests
