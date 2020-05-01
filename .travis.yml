@@ -8,9 +8,14 @@ python:
 # command to install dependencies
 #
 before_install:
-    - sudo apt-get update
-    - sudo apt-get install cdo
-    - sudo apt-get install nco
+    - sudo apt update
+    - sudo apt install cdo
+    - sudo apt install nco
+addons:
+    apt:
+        packages:
+            -cdo
+            -nco
 install:
 - python setup.py install
 # command to run tests
