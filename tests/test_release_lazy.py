@@ -14,7 +14,6 @@ class TestRelease(unittest.TestCase):
         self.assertEqual(n, 0)
 
     def test_release(self):
-        nc.options(thread_safe = True)
         tracker = nc.open_data(ff)
         tracker.split(("year"))
         tracker.merge_time()
@@ -22,7 +21,6 @@ class TestRelease(unittest.TestCase):
         tracker.spatial_mean()
         tracker.release()
         x = tracker.to_dataframe().sst.values[0]
-        nc.options(thread_safe = False)
         tracker = nc.open_data(ff)
         tracker.select_timestep(0)
         tracker.spatial_mean()

@@ -14,7 +14,6 @@ class TestMerge(unittest.TestCase):
         self.assertEqual(n, 0)
 
     def test_warning(self):
-        nc.options(thread_safe = True)
         tracker = nc.open_data(ff)
 
         with self.assertWarns(Warning):
@@ -33,7 +32,6 @@ class TestMerge(unittest.TestCase):
         self.assertEqual(n, 0)
 
     def test_warning2(self):
-        nc.options(thread_safe = True)
         tracker = nc.open_data(ff)
         tracker.select_timestep([0,1,2])
         tracker.release()
@@ -52,7 +50,6 @@ class TestMerge(unittest.TestCase):
 
 
     def test_merge_time(self):
-        nc.options(thread_safe = True)
         tracker = nc.open_data(ff)
         tracker.split("year")
         tracker.merge_time()
@@ -134,7 +131,6 @@ class TestMerge(unittest.TestCase):
         tracker = nc.open_data(ff)
 
     def test_merge_error2(self):
-        nc.options(thread_safe = True)
         tracker = nc.open_data(ff)
         tracker.select_timestep([0,1,2])
         tracker.release()
@@ -153,7 +149,6 @@ class TestMerge(unittest.TestCase):
         self.assertEqual(n, 2)
 
     def test_merge_error3(self):
-        nc.options(thread_safe = True)
         tracker = nc.open_data(ff)
         tracker.select_timestep([0, 1])
         tracker.release()
@@ -172,7 +167,6 @@ class TestMerge(unittest.TestCase):
         self.assertEqual(n, 2)
 
     def test_merge_error4(self):
-        nc.options(thread_safe = True)
         tracker = nc.open_data(ff)
         tracker.release()
         new = tracker.copy()
