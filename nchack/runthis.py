@@ -98,6 +98,10 @@ def run_nco(command, target, out_file = None, overwrite = False):
 def run_cdo(command, target, out_file = None, overwrite = False):
     command = command.strip()
 
+    if session_info["thread_safe"] == False:
+        command = command.replace("-L ", " ").replace("cdo ", "cdo -L ")
+
+
     # make sure the output file does not exist
 
     if session_info["precision"] is not None:
