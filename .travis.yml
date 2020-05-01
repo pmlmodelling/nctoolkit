@@ -30,7 +30,6 @@ install:
     - ./configure -with-zlib=/opt/cdo-install -prefix=/opt/cdo-install CFLAGS=-fPIC
 
     - sudo make 
-    - sudo make check
     - sudo make install
     - cd ..
 
@@ -39,7 +38,6 @@ install:
     - cd netcdf-4.4.0/ 
     - CPPFLAGS=-I/opt/cdo-install/include LDFLAGS=-L/opt/cdo-install/lib ./configure -prefix=/opt/cdo-install CFLAGS=-fPIC 
     - sudo make 
-    - sudo make check
     - sudo make install
 
     - cd ..
