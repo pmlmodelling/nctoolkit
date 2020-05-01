@@ -13,9 +13,7 @@ before_install:
     - sudo apt install nco
 addons:
     apt:
-        packages:
-            - cdo
-            - nco
+        update: true
 install:
 - python setup.py install
 # command to run tests
