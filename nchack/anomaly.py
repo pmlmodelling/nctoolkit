@@ -66,13 +66,9 @@ def annual_anomaly(self, baseline = None, metric = "absolute", window = 1):
             raise ValueError("Check that the years in baseline are in the dataset!")
         # generate the cdo command
         if metric == "absolute":
-            cdo_command = f"cdo -L sub -runmean,{window} -yearmean {ff} -timmean -selyear,{baseline[0]}/{baseline[1]} {ff} {target}"
+            cdo_command = f"cdo sub -runmean,{window} -yearmean {ff} -timmean -selyear,{baseline[0]}/{baseline[1]} {ff} {target}"
         else:
-            cdo_command = f"cdo -L div -runmean,{window} -yearmean {ff} -timmean -selyear,{baseline[0]}/{baseline[1]} {ff} {target}"
-
-        # modify the cdo command if threadsafe
-        if session_info["thread_safe"]:
-            cdo_command = cdo_command.replace("-L "," ")
+            cdo_command = f"cdo div -runmean,{window} -yearmean {ff} -timmean -selyear,{baseline[0]}/{baseline[1]} {ff} {target}"
 
         # run the command and save the temp file
         target = run_cdo(cdo_command, target)
@@ -131,11 +127,7 @@ def monthly_anomaly(self, baseline = None):
         # create the target file
         target = temp_file("nc")
         # create system command
-        cdo_command = f"cdo -L -ymonsub -monmean {ff} -ymonmean -selyear,{baseline[0]}/{baseline[1]} {ff} {target}"
-
-        # modify the cdo command if threadsafe
-        if session_info["thread_safe"]:
-            cdo_command = cdo_command.replace("-L "," ")
+        cdo_command = f"cdo -ymonsub -monmean {ff} -ymonmean -selyear,{baseline[0]}/{baseline[1]} {ff} {target}"
 
         # run the command and save the temp file
         target = run_cdo(cdo_command, target)

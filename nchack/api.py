@@ -228,7 +228,7 @@ def cor_time(x = None, y = None):
         raise TypeError("This method can only work for single variable data sets")
 
     target = temp_file("nc")
-    command = "cdo -L timcor " + x.current + " " + y.current + " " + target
+    command = "cdo timcor " + x.current + " " + y.current + " " + target
     target = run_cdo(command, target = target)
 
     data = open_data(target)

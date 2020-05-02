@@ -39,10 +39,10 @@ def time_interp(self, start = None, end = None, resolution = "monthly"):
     cdo_command = f"-inttime,{start},12:00:00,{resolution}"
 
     if end is None:
-        cdo_command = f"cdo -L {cdo_command}"
+        cdo_command = f"cdo {cdo_command}"
     else:
         end = end.replace("/", "-")
-        cdo_command = f"cdo -L -seldate,{start},{end} {cdo_command}"
+        cdo_command = f"cdo -seldate,{start},{end} {cdo_command}"
 
     run_this(cdo_command, self,  output = "ensemble")
 

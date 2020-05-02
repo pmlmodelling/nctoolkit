@@ -48,7 +48,7 @@ def phenology(self, var = None, metric = None, p = None):
                 raise ValueError("This can only work with single year data currently")
 
             target = temp_file(".nc")
-            command = f"cdo -L -timmin -setrtomiss,-10000,0 -expr,'peak=var*ctimestep()' -eq -chname,{var},var -selname,{var} {ff} -timmax -chname,{var},var -selname,{var} {ff} {target}"
+            command = f"cdo -timmin -setrtomiss,-10000,0 -expr,'peak=var*ctimestep()' -eq -chname,{var},var -selname,{var} {ff} -timmax -chname,{var},var -selname,{var} {ff} {target}"
 
             target = run_cdo(command, target = target)
 
@@ -94,7 +94,7 @@ def phenology(self, var = None, metric = None, p = None):
                 raise ValueError("This can only work with single year data currently")
 
             target = temp_file(".nc")
-            command = f"cdo -L -timmin -setrtomiss,-10000,0 -expr,'{metric}=var*ctimestep()' -gt -timcumsum -chname,{var},var -selname,{var} {ff} -mulc,{start} -timsum -chname,{var},var -selname,{var} {ff} {target}"
+            command = f"cdo -timmin -setrtomiss,-10000,0 -expr,'{metric}=var*ctimestep()' -gt -timcumsum -chname,{var},var -selname,{var} {ff} -mulc,{start} -timsum -chname,{var},var -selname,{var} {ff} {target}"
 
             target = run_cdo(command, target = target)
 

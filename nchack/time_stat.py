@@ -91,7 +91,7 @@ def percentile(self, p = None):
     for ff in self:
         target = temp_file("nc")
 
-        cdo_command = "cdo -L -timpctl," + str(p) + " " + ff + " -timmin " + ff + " -timmax " + ff + " "  + target
+        cdo_command = "cdo -timpctl," + str(p) + " " + ff + " -timmin " + ff + " -timmax " + ff + " "  + target
 
         target = run_cdo(cdo_command, target)
         new_files.append(target)

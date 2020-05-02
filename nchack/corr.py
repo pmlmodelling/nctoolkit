@@ -38,7 +38,7 @@ def cor(self, var1 = None, var2 = None, method = "fld"):
         target = temp_file(".nc")
 
         # create the cdo command and run it
-        cdo_command = f"cdo -L -{method}cor -selname,{var1} {ff} -selname,{var2} {ff} {target}"
+        cdo_command = f"cdo -{method}cor -selname,{var1} {ff} -selname,{var2} {ff} {target}"
         target = run_cdo(cdo_command, target)
 
         new_files.append(target)

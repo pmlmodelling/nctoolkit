@@ -65,9 +65,9 @@ def write_nc(self, out, zip = True, overwrite = False):
 
     else:
         if zip:
-            cdo_command = "cdo -L -z zip_9 "
+            cdo_command = "cdo -z zip_9 "
         else:
-            cdo_command = "cdo -L "
+            cdo_command = "cdo "
 
         self._run = True
 

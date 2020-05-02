@@ -38,8 +38,7 @@ def cell_areas(self,  join = True):
 
             target = temp_file(".nc")
 
-            #cdo_command = "cdo -L -merge " + ff + " -gridarea " + ff + " " + target
-            cdo_command = f"cdo -L -merge {ff} -gridarea {ff} {target}"
+            cdo_command = f"cdo -merge {ff} -gridarea {ff} {target}"
             target = run_cdo(cdo_command, target)
             new_files.append(target)
 

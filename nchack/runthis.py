@@ -100,6 +100,8 @@ def run_cdo(command, target, out_file = None, overwrite = False):
 
     if session_info["thread_safe"] == False:
         command = command.replace("-L ", " ").replace("cdo ", "cdo -L ")
+    else:
+        command = command.replace("-L ", " ")
 
 
     # make sure the output file does not exist
@@ -272,11 +274,6 @@ def run_this(os_command, self, output = "one",  out_file = None):
                 os_command = f'{os_command} {self.history[-1].replace("cdo ", " ")}'
                 os_command = os_command.replace("  ", " ")
 
-            if session_info["thread_safe"]:
-                os_command = os_command.replace("-L ", " ")
-            else:
-                os_command = os_command.replace("-L ", " ").replace("cdo ", "cdo -L ")
-
             pool = multiprocessing.Pool(cores)
             target_list = []
             results = dict()
@@ -298,10 +295,7 @@ def run_this(os_command, self, output = "one",  out_file = None):
                 ff_command = ff_command.replace("  ", " ")
                 if " --sortname " in os_command:
                     os_command = os_command.replace(" --sortname ", " ")
-                    if "cdo -L" in os_command:
-                        os_command = os_command.replace("cdo -L ", "cdo -L --sortname ")
-                    else:
-                        os_command = os_command.replace("cdo ", "cdo -L --sortname ")
+                    os_command = os_command.replace("cdo  ", "cdo --sortname ")
 
                 if "reduce_dim" in ff_command:
                     ff_command = ff_command.replace("reduce_dim", "").replace(" - ", " ").replace(" -- ", " ")
@@ -366,16 +360,7 @@ def run_this(os_command, self, output = "one",  out_file = None):
 
             if " --sortname " in os_command:
                 os_command = os_command.replace(" --sortname ", " ")
-                if "cdo -L" in os_command:
-                    os_command = os_command.replace("cdo -L ", "cdo -L --sortname ")
-                else:
-                    os_command = os_command.replace("cdo ", "cdo -L --sortname ")
-
-
-            if session_info["thread_safe"]:
-                os_command = os_command.replace("-L ", " ")
-            else:
-                os_command = os_command.replace("-L ", " ").replace("cdo ", "cdo -L ")
+                os_command = os_command.replace("cdo ", "cdo --sortname ")
 
             if "reduce_dim" in os_command:
                 os_command = os_command.replace("reduce_dim", "").replace(" - ", " ").replace(" -- ", " ")
