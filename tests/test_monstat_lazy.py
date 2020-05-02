@@ -22,7 +22,7 @@ class TestMonst(unittest.TestCase):
         x = tracker.to_dataframe().analysed_sst.values[0].astype("float")
 
 
-        self.assertEqual(x,  286.9499816894531)
+        self.assertEqual(x,  283.1600036621094)
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 
@@ -35,7 +35,7 @@ class TestMonst(unittest.TestCase):
         x = tracker.to_dataframe().analysed_sst.values[0].astype("float")
 
 
-        self.assertEqual(x, 286.19000244140625)
+        self.assertEqual(x, 282.57000732421875)
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 
@@ -48,7 +48,7 @@ class TestMonst(unittest.TestCase):
         x = tracker.to_dataframe().analysed_sst.values[0].astype("float")
 
 
-        self.assertEqual(x, 287.67999267578125)
+        self.assertEqual(x, 283.72998046875)
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 
@@ -61,7 +61,7 @@ class TestMonst(unittest.TestCase):
         x = tracker.to_dataframe().analysed_sst.values[0].astype("float")
 
 
-        self.assertEqual(x, 1.480010986328125)
+        self.assertEqual(x, 1.160003662109375)
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 

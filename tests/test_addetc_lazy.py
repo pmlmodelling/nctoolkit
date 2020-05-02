@@ -369,26 +369,35 @@ class TestAddetc(unittest.TestCase):
     def test_file_incompat(self):
         tracker = nc.open_data(ff)
         ff2 = "data/2003.nc"
+        data2 = nc.open_data(ff2)
+        data2.mutate({"tos":"analysed_sst + 2"})
+        data2.release()
         with self.assertRaises(ValueError) as context:
-            tracker.add(ff2)
+            tracker.add(data2.current)
         n = len(nc.session_files())
-        self.assertEqual(n, 0)
+        self.assertEqual(n, 1)
 
     def test_file_incompat1(self):
         tracker = nc.open_data(ff)
         ff2 = "data/2003.nc"
+        data2 = nc.open_data(ff2)
+        data2.mutate({"tos":"analysed_sst + 2"})
+        data2.release()
         with self.assertRaises(ValueError) as context:
-            tracker.subtract(ff2)
+            tracker.subtract(data2)
         n = len(nc.session_files())
-        self.assertEqual(n, 0)
+        self.assertEqual(n, 1)
 
     def test_file_incompat2(self):
         tracker = nc.open_data(ff)
         ff2 = "data/2003.nc"
+        data2 = nc.open_data(ff2)
+        data2.mutate({"tos":"analysed_sst + 2"})
+        data2.release()
         with self.assertRaises(ValueError) as context:
-            tracker.divide(ff2)
+            tracker.divide(data2)
         n = len(nc.session_files())
-        self.assertEqual(n, 0)
+        self.assertEqual(n, 1)
 
 
 
@@ -426,10 +435,13 @@ class TestAddetc(unittest.TestCase):
     def test_file_incompat7(self):
         tracker = nc.open_data(ff)
         ff2 = "data/2003.nc"
+        data2 = nc.open_data(ff2)
+        data2.mutate({"tos":"analysed_sst+2"})
+        data2.release()
         with self.assertRaises(ValueError) as context:
-            tracker.multiply(ff2)
+            tracker.multiply(data2)
         n = len(nc.session_files())
-        self.assertEqual(n, 0)
+        self.assertEqual(n, 1)
 
     def test_file_typeerror(self):
         tracker = nc.open_data(ff)
