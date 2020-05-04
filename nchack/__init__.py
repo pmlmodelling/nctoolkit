@@ -2,6 +2,7 @@
 from .api import ( open_data ,
     merge,
     cor_time,
+    cor_space,
     options,
     DataSet
     )
