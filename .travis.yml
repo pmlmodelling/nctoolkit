@@ -5,6 +5,9 @@ python:
 # command to install dependencies
 #
 before_install:
+    - pip install -U pip
+    - pip install -U pytest
+    - pip install codecov
     - sudo apt-get -y update
       #- sudo apt-get -y install libudunits2-0
       #- sudo apt-get -y install libudunits2-dev
@@ -61,3 +64,6 @@ script:
     #- cdo --version 
   - ncks --version 
   - pytest
+
+after_success:
+    - codecov
