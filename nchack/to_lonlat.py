@@ -82,9 +82,9 @@ def to_lonlat(self, lon = None, lat = None, res = None, method = "bil"):
         if type(res[1]) is int:
             res[1] = float(res[1])
 
-        if type(res[0]) is not float or type(res[1]) is not float:
+        if (type(res[0]) is not float) or (type(res[1]) is not float):
             raise TypeError("res supplied is not valid")
-        if res[0] <= 0 or res[1] <= 0:
+        if (res[0] <= 0) or (res[1] <= 0):
             raise ValueError("Check res supplied are positive values")
 
     # create the grid and save it to temp

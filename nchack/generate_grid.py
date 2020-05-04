@@ -31,7 +31,7 @@ def generate_grid(coords):
 
         # now figure out if it is lonlat
 
-        if(len(coords) == (len(x) * len(y))):
+        if (len(coords) == (len(x) * len(y))):
             grid_type = "lonlat"
         else:
             grid_type = "unstructured"

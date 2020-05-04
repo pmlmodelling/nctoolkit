@@ -44,7 +44,7 @@ def operation(self, method = "mul", ff = None, var = None):
             raise ValueError("var supplied is not available in the dataset")
 
     # make sure the ff file is not removed from safe list in subsequent actions prior to release
-    if ff is not None and session_info["lazy"]:
+    if (ff is not None) and (session_info["lazy"]):
         nc_safe.append(ff)
         self._safe.append(ff)
 
@@ -54,7 +54,7 @@ def operation(self, method = "mul", ff = None, var = None):
 
         # check that the datasets can actually be worked with
             if var is None:
-                if len(nc_variables(ff)) != len(nc_variables(x)) and len(nc_variables(ff)) != 1:
+                if (len(nc_variables(ff)) != len(nc_variables(x))) and (len(nc_variables(ff)) != 1):
                     raise ValueError("Datasets have incompatible variable numbers for the operation!")
 
         prior_command = ""

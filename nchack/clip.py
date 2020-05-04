@@ -22,7 +22,7 @@ def clip(self, lon = [-180, 180], lat = [-90, 90], cdo = True):
         Do you want this to use CDO or NCO for clipping? Defaults to True. Set to False if you want to call NCO. NCO is better at handling very large horizontal grids.
     """
 
-    if  type(lon) is not list or type(lat) is not list:
+    if  (type(lon) is not list) or (type(lat) is not list):
         raise TypeError("Check that lon/lat ranges are tuples")
 
     if len(lon) != 2:
@@ -48,7 +48,7 @@ def clip(self, lon = [-180, 180], lat = [-90, 90], cdo = True):
         raise ValueError("Check lon order")
 
     if cdo:
-        if lon[0] >= -180 and lon[1] <= 180 and lat[0] >= -90 and lat[1] <= 90:
+        if (lon[0] >= -180) and (lon[1] <= 180) and (lat[0] >= -90) and (lat[1] <= 90):
             lat_box = str_flatten(lon + lat)
             cdo_command = ("cdo -sellonlatbox," + lat_box)
             run_this(cdo_command, self, output = "ensemble")

@@ -139,12 +139,12 @@ def run_cdo(command, target, out_file = None, overwrite = False):
         if "HDF5 library version mismatched error" in str(result):
             raise ValueError("The HDF5 header files used to compile this application do not matchthe version used by the HDF5 library to which this application is linked. This is likely because of a conda problem.")
 
-        if str(result).startswith("b'Error") or "HDF error" in str(result) or out.returncode != 0:
+        if str(result).startswith("b'Error") or ("HDF error" in str(result)) or (out.returncode != 0):
             raise ValueError(str(result).replace("b'","").replace("\\n", "").replace("'", ""))
         else:
             return out_file
 
-    if "sellonlat" in command and "std::bad_alloc" in str(result):
+    if ("sellonlat" in command) and ("std::bad_alloc" in str(result)):
         raise ValueError("Is the horizontal grid very large? Consider setting cdo=False in clip!")
 
     if "(Abort)" in str(result):
@@ -153,7 +153,7 @@ def run_cdo(command, target, out_file = None, overwrite = False):
     if "HDF5 library version mismatched error" in str(result):
         raise ValueError("The HDF5 header files used to compile this application do not matchthe version used by the HDF5 library to which this application is linked. This is likely because of a conda problem.")
 
-    if str(result).startswith("b'Error") or "HDF error" in str(result) or out.returncode != 0:
+    if (str(result).startswith("b'Error")) or ("HDF error" in str(result)) or (out.returncode != 0):
        if target.startswith("/tmp/"):
             new_target = target.replace("/tmp/", "/var/tmp/")
             command = command.replace(target, new_target)
@@ -162,7 +162,7 @@ def run_cdo(command, target, out_file = None, overwrite = False):
             out = subprocess.Popen(command,shell = True, stdin = subprocess.PIPE,stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
             out.wait()
             result1,ignore = out.communicate()
-            if str(result1).startswith("b'Error") or "HDF error" in str(result1) or out.returncode != 0:
+            if (str(result1).startswith("b'Error")) or ("HDF error" in str(result1)) or (out.returncode != 0):
                 if "Too many open files" in str(result1):
                     raise ValueError("There are too many open files in CDO.  Check the files your OS allows to be open simultaneously in the Bourne shell with 'ulimit -n'")
                 else:
@@ -178,7 +178,7 @@ def run_cdo(command, target, out_file = None, overwrite = False):
             for x in messages:
                 if "Warning:" in x:
                     print_result1 = True
-                    if "merge" in x and "Duplicate entry of parameter" in str(x):
+                    if ("merge" in x) and ("Duplicate entry of parameter" in str(x)):
                         print_result1 = False
 
                     # deal with warning messages for selecting months
@@ -208,7 +208,7 @@ def run_cdo(command, target, out_file = None, overwrite = False):
         for x in messages:
             if "Warning:" in x:
                 print_result = True
-                if "merge" in x and "Duplicate entry of parameter" in str(x):
+                if ("merge" in x) and ("Duplicate entry of parameter" in str(x)):
                     print_result = False
 
                 # deal with warning messages for selecting months
@@ -261,7 +261,7 @@ def run_this(os_command, self, output = "one",  out_file = None):
 
     if self._run:
 
-        if (output == "ensemble" and type(self.current) == list) or (output == "ensemble" and type(self.current) == str):
+        if ((output == "ensemble") and (type(self.current) == list)) or ((output == "ensemble") and (type(self.current) == str)):
             new_history = copy.deepcopy(self._hold_history)
 
             if type(self.current) == str:
@@ -328,7 +328,7 @@ def run_this(os_command, self, output = "one",  out_file = None):
             return None
 
 
-        if (output == "one" and type(self.current) == list):
+        if (output == "one") and (type(self.current) == list):
 
             new_history = copy.deepcopy(self._hold_history)
 

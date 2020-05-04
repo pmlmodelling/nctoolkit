@@ -16,15 +16,10 @@ def release(self,  run_merge = True):
 
     # the first step is to set the run status to true
 
-    if self._run == False and (len(self.history) > len(self._hold_history)):
+    if (self._run == False) and (len(self.history) > len(self._hold_history)):
         self._run = True
 
-        #if (len(self.history) > len(self._hold_history)) and session_info["thread_safe"] == False:
-        #    cdo_command = "cdo -L"
-        #else:
         cdo_command = "cdo "
-        #if self._zip:
-        #    cdo_command = f"{cdo_command} -z zip "
 
         output_method = "ensemble"
 

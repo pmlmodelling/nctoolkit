@@ -50,7 +50,7 @@ def assign_coords(self, lon_name = None, lat_name = None):
     if type(self.current) is list:
         raise TypeError("This only works for single files currently")
 
-    if lon_name is None or lat_name is None:
+    if (lon_name is None) or (lat_name is None):
         TypeError("Please provide lon and lat names!")
 
     if type(lon_name) is not str:

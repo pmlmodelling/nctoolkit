@@ -67,7 +67,7 @@ def phenology(self, var = None, metric = None, p = None):
 
 
 
-    if metric == "start" or metric == "end" or metric == "middle":
+    if (metric == "start") or (metric == "end") or (metric == "middle"):
 
         if metric == "middle":
             p = 50.0

@@ -21,7 +21,7 @@ def write_nc(self, out, zip = True, overwrite = False):
     """
 
     # If the output file exists, cdo cannot simultaneously have it opened and written to
-    if os.path.exists(out) and overwrite == True:
+    if (os.path.exists(out)) and (overwrite == True):
         self.release()
 
     if type(self.current) is list:
@@ -42,7 +42,7 @@ def write_nc(self, out, zip = True, overwrite = False):
 
     # Check if outfile exists and overwrite is set to False
     # This should maybe be a warning, not an error
-    if os.path.exists(out) and overwrite == False:
+    if (os.path.exists(out)) and (overwrite == False):
         raise ValueError("The out file exists and overwrite is set to false")
 
 

@@ -39,7 +39,7 @@ def cdo_command(self, command = None):
     output = "ensemble"
     cdo_command = "cdo " + command + " "
 
-    if "merge " in cdo_command or "mergetime " in cdo_command:
+    if ("merge " in cdo_command) or ("mergetime " in cdo_command):
         output = "one"
         self._merged = True
 

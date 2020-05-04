@@ -56,7 +56,7 @@ def spatial_sum(self, by_area = False):
     if isinstance(by_area, bool) == False:
         raise TypeError("by_area is not boolean")
 
-    if type(self.current) is str or by_area == False:
+    if (type(self.current)) is str or (by_area == False):
 
         if by_area:
             self.release()
@@ -104,7 +104,7 @@ def spatial_percentile(self, p = 50):
 
     if type(p) not in (int, float):
         raise ValueError(f"{str(p)} is not a valid percentile")
-    if p < 0 or p > 100:
+    if (p < 0) or (p > 100):
         raise ValueError(f"p: {str(p)} is not between 0 and 100!")
 
     cdo_command = f"cdo -fldpctl,{str(p)}"

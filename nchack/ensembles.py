@@ -28,7 +28,7 @@ def ensemble_percentile(self, p = None):
         raise TypeError(f"p is a {type(p)}, not an int or float")
 
     # check p is between 0 and 100
-    if p <0 or p > 100:
+    if (p < 0) or (p > 100):
         raise ValueError("p is not between 0 and 100!")
 
     # This method cannot possibly be chained. Release it

@@ -71,7 +71,7 @@ def merge(self, match = ["year", "month", "day"]):
         all_times.append(cdo_result)
 
     for i in range(1, len(all_times)):
-        if len(all_times[i]) != len(all_times[0]) and len(all_times[i]) > 1:
+        if (len(all_times[i]) != len(all_times[0])) and (len(all_times[i]) > 1):
             raise ValueError("You are trying to merge data sets with an incompatible number of time steps")
 
     # remove files with more than one time step in it

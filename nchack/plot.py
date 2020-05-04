@@ -52,7 +52,7 @@ def plot(self, log = False, vars = None, panel = False):
 
     # Case when all you can plot is a time series, but more than one variable
 
-    if n_times > 1 and n_points < 2 and n_levels <= 1 and type(vars) is str:
+    if (n_times > 1) and (n_points < 2) and (n_levels <= 1) and (type(vars) is str):
 
         out = subprocess.run("cdo griddes " + self.current, shell = True, stdout=subprocess.PIPE, stderr =subprocess.PIPE)
         lon_name = [x for x in str(out.stdout).replace("b'", "").split("\\n") if "xname" in x][0].split(" ")[-1]
@@ -62,7 +62,7 @@ def plot(self, log = False, vars = None, panel = False):
         data = data.rename({vars: "x"})
         return data.x.hvplot()
 
-    if n_times > 1 and n_points < 2 and n_levels <= 1 and type(vars) is list:
+    if (n_times > 1) and (n_points < 2) and (n_levels <= 1) and (type(vars) is list):
 
         df = self.to_xarray()
 
@@ -81,7 +81,7 @@ def plot(self, log = False, vars = None, panel = False):
         else:
             return df.reset_index().set_index("time").loc[:, vars].reset_index().melt("time").set_index("time").hvplot(groupby = "variable", logy = log, dynamic = True)
 
-    if n_points > 1 and type(vars) is str:
+    if (n_points > 1) and (type(vars) is str):
         out = subprocess.run("cdo griddes " + self.current, shell = True, stdout=subprocess.PIPE, stderr = subprocess.PIPE)
         lon_name = [x for x in str(out.stdout).replace("b'", "").split("\\n") if "xname" in x][-1].split(" ")[-1]
         lat_name = [x for x in str(out.stdout).replace("b'", "").split("\\n") if "yname" in x][-1].split(" ")[-1]
@@ -89,14 +89,14 @@ def plot(self, log = False, vars = None, panel = False):
         self_max = self.to_xarray().rename({vars: "x"}).x.max()
         self_min = self.to_xarray().rename({vars: "x"}).x.min()
         v_max = max(self_max.values, -self_min.values)
-        if self_max.values > 0 and self_min.values < 0:
+        if (self_max.values > 0) and (self_min.values < 0):
             return self.to_xarray().hvplot.image(lon_name, lat_name, vars, dynamic = True,  logz = log, cmap = "seismic").redim.range(**{vars:(-v_max, v_max)})
             #return self.to_xarray().hvplot.quadmesh(lon_name, lat_name, vars, dynamic = True,  logz = log, cmap = "seismic").redim.range(**{vars:(-v_max, v_max)})
         else:
             return self.to_xarray().hvplot.image(lon_name, lat_name, vars, dynamic = True,  logz = log, cmap = "viridis").redim.range(**{vars:(-self_min.values, v_max)})
            # return self.to_xarray().hvplot.quadmesh(lon_name, lat_name, vars, dynamic = True,  logz = log, cmap = "viridis").redim.range(**{vars:(-self_min.values, v_max)})
 
-    if n_points > 1 and n_levels <=1  and type(vars) is list:
+    if (n_points > 1) and (n_levels <= 1) and (type(vars) is list):
         out = subprocess.run("cdo griddes " + self.current, shell = True, stdout=subprocess.PIPE, stderr =subprocess.PIPE)
         lon_name = [x for x in str(out.stdout).replace("b'", "").split("\\n") if "xname" in x][-1].split(" ")[-1]
         lat_name = [x for x in str(out.stdout).replace("b'", "").split("\\n") if "yname" in x][-1].split(" ")[-1]

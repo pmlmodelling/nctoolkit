@@ -55,7 +55,7 @@ def cleanup(keep = None):
             session_info["temp_dir"] = "/tmp/"
     session_info["size"] = result
 
-    if session_info["size"] > 1.5 * session_info["latest_size"]:
+    if session_info["size"] > (1.5 * session_info["latest_size"]):
             session_info["temp_dir"] = "/tmp/"
 
 
