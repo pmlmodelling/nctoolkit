@@ -210,31 +210,90 @@ def merge(*datasets, match = ["day", "year", "month"]):
     result.merge(match = match)
     return result
 
-def cor_time(x = None, y = None):
 
+
+def cor_time(x = None, y = None):
 
     if ("DataSet" in str(type(x))) == False:
         raise TypeError("Please check x is a dataset")
-        # make sure everything has been evaluated
-    x.release()
 
     if ("DataSet" in str(type(y))) == False:
         raise TypeError("Please check y is a dataset")
         # make sure everything has been evaluated
 
-    y.release()
+    a = x.copy()
+    b = y.copy()
 
-    if type(x.current) is not str or type(y.current) is not str:
-        raise TypeError("This method can only work for single variable data sets")
+
+    a.release()
+    b.release()
+
+    ab_vars = [value for value in a.variables if value in b.variables]
+
+    if len(ab_vars) < len(a.variables):
+        a.select_variables(ab_vars)
+        print("Only using a subset of variables from x")
+        a.release()
+
+    if len(ab_vars) < len(b.variables):
+        b.select_variables(ab_vars)
+        print("Only using a subset of variables from y")
+        b.release()
+
+
+    #if type(x.current) is not str or type(y.current) is not str:
+        #raise TypeError("This method can only work for single variable data sets")
 
     target = temp_file("nc")
-    command = "cdo timcor " + x.current + " " + y.current + " " + target
+    command = "cdo timcor " + a.current + " " + b.current + " " + target
     target = run_cdo(command, target = target)
 
     data = open_data(target)
 
     return data
 
+
+
+
+def cor_space(x = None, y = None):
+
+    if ("DataSet" in str(type(x))) == False:
+        raise TypeError("Please check x is a dataset")
+
+    if ("DataSet" in str(type(y))) == False:
+        raise TypeError("Please check y is a dataset")
+        # make sure everything has been evaluated
+
+    a = x.copy()
+    b = y.copy()
+
+
+    a.release()
+    b.release()
+
+    ab_vars = [value for value in a.variables if value in b.variables]
+
+    if len(ab_vars) < len(a.variables):
+        a.select_variables(ab_vars)
+        print("Only using a subset of variables from x")
+        a.release()
+
+    if len(ab_vars) < len(b.variables):
+        b.select_variables(ab_vars)
+        print("Only using a subset of variables from y")
+        b.release()
+
+
+    #if type(x.current) is not str or type(y.current) is not str:
+        #raise TypeError("This method can only work for single variable data sets")
+
+    target = temp_file("nc")
+    command = "cdo fldcor " + a.current + " " + b.current + " " + target
+    target = run_cdo(command, target = target)
+
+    data = open_data(target)
+
+    return data
 
 
 
