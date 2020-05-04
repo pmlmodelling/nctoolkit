@@ -20,10 +20,11 @@ class TestSession(unittest.TestCase):
 
         self.assertEqual(x, True)
 
-        nc.options(cores = 3)
+        nc.options(cores = 2)
         x = nc.session.session_info["cores"]
+        nc.options(cores = 1)
 
-        self.assertEqual(x, 3)
+        self.assertEqual(x, 2)
 
 
 if __name__ == '__main__':

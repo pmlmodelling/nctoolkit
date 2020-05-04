@@ -13,9 +13,9 @@ class TestApi(unittest.TestCase):
         self.assertEqual(n, 0)
 
     def test_cores(self):
-        nc.options(cores = 6)
+        nc.options(cores = 2)
         x = nc.session.session_info["cores"]
-        self.assertEqual(x, 6)
+        self.assertEqual(x, 2)
 
     def test_cores_error(self):
         with self.assertRaises(TypeError) as context:

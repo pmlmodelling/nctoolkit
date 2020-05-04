@@ -11,13 +11,13 @@ ff1 = "data/woa18_decav_t01_01.nc"
 
 class TestToxar(unittest.TestCase):
 
-    def test_xarray1(self):
-        tracker = nc.open_data(ff)
-        tracker.select_timestep([0,1])
-        tracker.split("yearmonth")
-        x = tracker.to_xarray(decode_times = True).time.dt.year.values[0]
+    #def test_xarray1(self):
+    #    tracker = nc.open_data(ff)
+    #    tracker.select_timestep([0,1])
+    #    tracker.split("yearmonth")
+    #    x = tracker.to_xarray(decode_times = True).time.dt.year.values[0]
 
-        self.assertEqual(x, 1970)
+    #    self.assertEqual(x, 1970)
 
 
 

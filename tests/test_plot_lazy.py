@@ -13,11 +13,11 @@ class TestPlot(unittest.TestCase):
         n = len(nc.session_files())
         self.assertEqual(n, 0)
 
-    def test_plot1(self):
-        tracker = nc.open_data(ff)
-        x = str(type(tracker.plot()))
-        x = "holoviews.core.spaces.DynamicMap" in x
-        self.assertEqual(x,True)
+    #def test_plot1(self):
+    #    tracker = nc.open_data(ff)
+    #    x = str(type(tracker.plot()))
+    #    x = "holoviews.core.spaces.DynamicMap" in x
+    #    self.assertEqual(x,True)
 
     def test_plot2(self):
         tracker = nc.open_data(ff)
