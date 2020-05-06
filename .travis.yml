@@ -39,14 +39,10 @@ install:
     - cd ..
 
 
-      #- wget https://code.mpimet.mpg.de/attachments/download/20826/cdo-1.9.8.tar.gz 
-    - wget https://code.mpimet.mpg.de/attachments/download/20124/cdo-1.9.7.1.tar.gz
-      #- tar -xvzf cdo-1.9.8.tar.gz > /dev/null 2>&1
-    - tar -xvzf cdo-1.9.7.1.tar.gz > /dev/null 2>&1
-      #- cd cdo-1.9.8
-    - cd cdo-1.9.7.1
+    - wget https://code.mpimet.mpg.de/attachments/download/20826/cdo-1.9.8.tar.gz 
+    - tar -xvzf cdo-1.9.8.tar.gz > /dev/null 2>&1
+    - cd cdo-1.9.8
     - ./configure -with-netcdf=/opt/cdo-install -with-hdf5=/opt/cdo-install  > /dev/null 2>&1
- 
     - sudo make  > /dev/null 2>&1
     - sudo make install 
     - cd ..
