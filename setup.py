@@ -14,8 +14,8 @@ cdo_check = subprocess.run("cdo --version", shell = True,stdout=subprocess.PIPE,
 cdo_check = str(cdo_check.stderr).replace("\\n", "")
 cdo_check = cdo_check.replace("b'", "").strip()
 cdo_version = cdo_check.split("(")[0].strip().split(" ")[-1]
-if cdo_version not in ["1.9.8"]:
-    raise ValueError("Please install cdo version 1.9.8 or above")
+#if cdo_version not in ["1.9.8"]:
+#    raise ValueError("Please install cdo version 1.9.8 or above")
 
 setup(name='nchack',
       version='0.1',
@@ -25,7 +25,7 @@ setup(name='nchack',
       author_email='rwi@pml.ac.uk',
       license='MIT',
       packages=['nchack'],
-      install_requires=['xarray','netcdf4', "dask[complete]", "hvplot"],
+      install_requires=['xarray','netcdf4', "dask", "hvplot"],
       zip_safe=False)
 
 
