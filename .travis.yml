@@ -48,7 +48,7 @@ install:
     - ./configure -with-netcdf=/opt/cdo-install -with-hdf5=/opt/cdo-install  > /dev/null 2>&1
  
     - sudo make  > /dev/null 2>&1
-    - sudo make install > /dev/null 2>&1
+    - sudo make install 
     - cd ..
 
     - python setup.py install > /dev/null 2>&1
