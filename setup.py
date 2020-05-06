@@ -8,7 +8,7 @@ cdo_check = subprocess.run("which cdo", shell = True,stdout=subprocess.PIPE, std
 cdo_check = str(cdo_check.stdout).replace("\\n", "")
 cdo_check = cdo_check.replace("b'", "").strip()
 if len(cdo_check) < 2:
-    raise ValueError("Please install cdo")
+    print("Please install cdo")
 
 cdo_check = subprocess.run("cdo --version", shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 cdo_check = str(cdo_check.stderr).replace("\\n", "")
