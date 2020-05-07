@@ -18,7 +18,7 @@ class TestRollstat(unittest.TestCase):
         tracker.rolling_mean(window = 10)
         tracker.select_years(1990)
         tracker.spatial_mean()
-        tracker.release()
+        tracker.run()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         self.assertEqual(x,  18.077280044555664)
         n = len(nc.session_files())
@@ -29,7 +29,7 @@ class TestRollstat(unittest.TestCase):
         tracker.rolling_max(window = 10)
         tracker.select_years(1990)
         tracker.spatial_mean()
-        tracker.release()
+        tracker.run()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         self.assertEqual(x, 20.302736282348633)
         n = len(nc.session_files())
@@ -40,7 +40,7 @@ class TestRollstat(unittest.TestCase):
         tracker.rolling_min(window = 10)
         tracker.select_years(1990)
         tracker.spatial_mean()
-        tracker.release()
+        tracker.run()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         self.assertEqual(x,  16.211519241333008)
 
@@ -52,7 +52,7 @@ class TestRollstat(unittest.TestCase):
         tracker.rolling_range(window = 10)
         tracker.select_years(1990)
         tracker.spatial_mean()
-        tracker.release()
+        tracker.run()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         self.assertEqual(x, 4.091217517852783)
         n = len(nc.session_files())
@@ -63,7 +63,7 @@ class TestRollstat(unittest.TestCase):
         tracker.rolling_sum(window = 10)
         tracker.select_years(1990)
         tracker.spatial_mean()
-        tracker.release()
+        tracker.run()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         self.assertEqual(x,  180.77279663085938)
         n = len(nc.session_files())
@@ -74,7 +74,7 @@ class TestRollstat(unittest.TestCase):
         tracker.rolling_sum(window = 10)
         tracker.select_years(1990)
         tracker.spatial_mean()
-        tracker.release()
+        tracker.run()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
 
 
@@ -82,7 +82,7 @@ class TestRollstat(unittest.TestCase):
         tracker.rolling_sum(window = 10)
         tracker.select_years(1990)
         tracker.spatial_mean()
-        tracker.release()
+        tracker.run()
         y = tracker.to_xarray().sst.values[0][0][0].astype("float")
 
 

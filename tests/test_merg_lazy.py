@@ -18,7 +18,7 @@ class TestMerge(unittest.TestCase):
 
         with self.assertWarns(Warning):
             tracker.merge()
-        tracker.release()
+        tracker.run()
         n = len(nc.session_files())
         self.assertEqual(n, 0)
 
@@ -27,23 +27,23 @@ class TestMerge(unittest.TestCase):
 
         with self.assertWarns(Warning):
             tracker.merge_time()
-        tracker.release()
+        tracker.run()
         n = len(nc.session_files())
         self.assertEqual(n, 0)
 
     def test_warning2(self):
         tracker = nc.open_data(ff)
         tracker.select_timestep([0,1,2])
-        tracker.release()
+        tracker.run()
         new = nc.open_data(ff)
         new.select_timestep([0])
         new.rename({"sst":"tos"})
-        new.release()
+        new.run()
         data = nc.open_data([tracker.current, new.current])
         with self.assertWarns(Warning):
             data.merge(match = "year")
 
-        data.release()
+        data.run()
 
         n = len(nc.session_files())
         self.assertEqual(n, 3)
@@ -69,10 +69,10 @@ class TestMerge(unittest.TestCase):
 
     def test_merge(self):
         tracker = nc.open_data(ff)
-        tracker.release()
+        tracker.run()
         new = tracker.copy()
         new.rename({"sst":"tos"})
-        new.release()
+        new.run()
         data = nc.open_data([new.current, tracker.current])
         data.merge()
         data.mutate({"test1":"tos-sst"})
@@ -85,14 +85,14 @@ class TestMerge(unittest.TestCase):
     def test_merge_error(self):
         tracker = nc.open_data(ff)
         tracker.select_timestep([0,1,2])
-        tracker.release()
+        tracker.run()
         new = tracker.copy()
 
         new = nc.open_data(ff)
         new.select_timestep(112)
-        new.release()
+        new.run()
         new.rename({"sst":"tos"})
-        new.release()
+        new.run()
         data = nc.open_data([new.current, tracker.current])
         with self.assertRaises(ValueError) as context:
             data.merge()
@@ -102,14 +102,14 @@ class TestMerge(unittest.TestCase):
     def test_merge_error1(self):
         tracker = nc.open_data(ff)
         tracker.select_timestep([0])
-        tracker.release()
+        tracker.run()
         new = tracker.copy()
 
         new = nc.open_data(ff)
         new.select_timestep([0,1,2])
-        new.release()
+        new.run()
         new.rename({"sst":"tos"})
-        new.release()
+        new.run()
         data = nc.open_data([tracker.current, new.current])
         with self.assertRaises(ValueError) as context:
             data.merge(match = "month")
@@ -133,15 +133,15 @@ class TestMerge(unittest.TestCase):
     def test_merge_error2(self):
         tracker = nc.open_data(ff)
         tracker.select_timestep([0,1,2])
-        tracker.release()
+        tracker.run()
         new = tracker.copy()
 
         new = nc.open_data(ff)
         new.select_timestep(112)
-        new.release()
+        new.run()
         new.rename({"sst":"tos"})
         new.clip(lon = [50, 80])
-        new.release()
+        new.run()
         data = nc.open_data([new.current, tracker.current])
         with self.assertRaises(ValueError) as context:
             data.merge(match = "year")
@@ -151,15 +151,15 @@ class TestMerge(unittest.TestCase):
     def test_merge_error3(self):
         tracker = nc.open_data(ff)
         tracker.select_timestep([0, 1])
-        tracker.release()
+        tracker.run()
         new = tracker.copy()
 
         new = nc.open_data(ff)
         new.select_timestep([3,4])
-        new.release()
+        new.run()
         new.rename({"sst":"tos"})
         new.clip(lon = [50, 80])
-        new.release()
+        new.run()
         data = nc.open_data([new.current, tracker.current])
         with self.assertRaises(ValueError) as context:
             data.merge(match = ["year", "month"])
@@ -168,13 +168,13 @@ class TestMerge(unittest.TestCase):
 
     def test_merge_error4(self):
         tracker = nc.open_data(ff)
-        tracker.release()
+        tracker.run()
         new = tracker.copy()
         new.rename({"sst":"tos"})
         new.select_timestep([1,2,3,4])
         tracker.select_timestep([0,2,3,4])
-        tracker.release()
-        new.release()
+        tracker.run()
+        new.run()
 
         data = nc.open_data([new.current, tracker.current])
 

@@ -136,7 +136,7 @@ class TestEnsemble(unittest.TestCase):
         data = nc.open_data(nc.create_ensemble("data/ensemble")[0])
         with self.assertWarns(Warning):
             data.ensemble_range()
-        data.release()
+        data.run()
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 
@@ -144,7 +144,7 @@ class TestEnsemble(unittest.TestCase):
         data = nc.open_data(nc.create_ensemble("data/ensemble")[0])
         with self.assertWarns(Warning):
             data.ensemble_range()
-        data.release()
+        data.run()
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 

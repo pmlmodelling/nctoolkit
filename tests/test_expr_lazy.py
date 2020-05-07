@@ -19,7 +19,7 @@ class TestExpr(unittest.TestCase):
         tracker.select_months(1)
         inc = 273.15
         tracker.transmute({"tos":"sst+@inc"})
-        tracker.release()
+        tracker.run()
         x = tracker.variables
 
 
@@ -90,7 +90,7 @@ class TestExpr(unittest.TestCase):
         tracker.select_months(1)
         inc = 273.15
         tracker.mutate({"tos":"sst+@inc"})
-        tracker.release()
+        tracker.run()
         x = tracker.variables
 
 
@@ -138,11 +138,11 @@ class TestExpr(unittest.TestCase):
         tracker = nc.open_data(ff)
         tracker.sum_all()
         tracker.sum_all(drop = False)
-        tracker.release()
+        tracker.run()
         x = "total0" in tracker.variables
         self.assertEqual(x, True)
         tracker.sum_all(drop = False)
-        tracker.release()
+        tracker.run()
         x = "total1" in tracker.variables
         self.assertEqual(x, True)
 

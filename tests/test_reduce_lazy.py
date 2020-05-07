@@ -30,7 +30,7 @@ class TestReduce(unittest.TestCase):
         tracker = nc.open_data(ff)
         tracker.mean()
         tracker.reduce_dims()
-        tracker.release()
+        tracker.run()
         print(tracker.history)
         n = len(tracker.times())
         self.assertEqual(n, 0)

@@ -31,7 +31,7 @@ class TestTonnc(unittest.TestCase):
         ff1 = nc.temp_file.temp_file(".nc")
         data = nc.open_data(ff)
         data.select_timestep(0)
-        data.release()
+        data.run()
         data.write_nc(ff1, zip = False)
         data1 = nc.open_data(ff1)
 
@@ -47,7 +47,7 @@ class TestTonnc(unittest.TestCase):
         ff1 = nc.temp_file.temp_file(".nc")
         data = nc.open_data(ff)
         data.select_timestep(0)
-        data.release()
+        data.run()
         data.write_nc(ff1, zip = False)
 
         data1 = nc.open_data(ff1)
@@ -59,7 +59,7 @@ class TestTonnc(unittest.TestCase):
         ff1 = nc.temp_file.temp_file(".nc")
         data = nc.open_data(ff)
         data.select_timestep(0)
-        data.release()
+        data.run()
         data.write_nc(ff1, zip = True)
 
         data1 = nc.open_data(ff1)

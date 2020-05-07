@@ -19,7 +19,7 @@ class TestCompare(unittest.TestCase):
         tracker.select_years(list(range(1970, 1971)))
         tracker.select_months([1])
         tracker.compare_all("<=0")
-        tracker.release()
+        tracker.run()
         tracker.spatial_sum()
         n = len(nc.session_files())
         self.assertEqual(n, 1)
@@ -59,7 +59,7 @@ class TestCompare(unittest.TestCase):
         tracker.select_years(list(range(1970, 1971)))
         tracker.select_months([1])
         tracker.compare_all("<0")
-        tracker.release()
+        tracker.run()
         tracker.spatial_sum()
 
         x = tracker.to_dataframe().sst.values[0].astype("int")
@@ -75,7 +75,7 @@ class TestCompare(unittest.TestCase):
         tracker.select_years(list(range(1970, 1971)))
         tracker.select_months([1])
         tracker.compare_all(">0")
-        tracker.release()
+        tracker.run()
         tracker.spatial_sum()
 
         x = tracker.to_dataframe().sst.values[0].astype("int")
@@ -89,7 +89,7 @@ class TestCompare(unittest.TestCase):
         tracker.select_years(list(range(1970, 1971)))
         tracker.select_months([1])
         tracker.compare_all("==0")
-        tracker.release()
+        tracker.run()
         tracker.spatial_sum()
 
         x = tracker.to_dataframe().sst.values[0].astype("int")
@@ -104,7 +104,7 @@ class TestCompare(unittest.TestCase):
         tracker.select_years(list(range(1970, 1971)))
         tracker.select_months([1])
         tracker.compare_all("!=0")
-        tracker.release()
+        tracker.run()
         tracker.spatial_sum()
 
         x = tracker.to_dataframe().sst.values[0].astype("int")
@@ -121,7 +121,7 @@ class TestCompare(unittest.TestCase):
         tracker.select_years(list(range(1970, 1971)))
         tracker.select_months([1])
         tracker.compare_all(">=0")
-        tracker.release()
+        tracker.run()
         tracker.spatial_sum()
 
         x = tracker.to_dataframe().sst.values[0].astype("int")

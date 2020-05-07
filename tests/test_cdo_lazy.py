@@ -43,7 +43,7 @@ class TestCdo(unittest.TestCase):
     def test_cdo3(self):
         tracker = nc.open_data(ff)
         tracker.cdo_command("chname,sst,tos")
-        tracker.release()
+        tracker.run()
         x = tracker.variables
         self.assertEqual(x, ["tos"])
         n = len(nc.session_files())
@@ -52,7 +52,7 @@ class TestCdo(unittest.TestCase):
     def test_cdo4(self):
         tracker = nc.open_data(ff)
         tracker.cdo_command("cdo -chname,sst,tos")
-        tracker.release()
+        tracker.run()
         x = tracker.variables
         self.assertEqual(x, ["tos"])
         n = len(nc.session_files())

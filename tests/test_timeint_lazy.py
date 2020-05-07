@@ -17,7 +17,7 @@ class TestTimeint(unittest.TestCase):
     def test_timeint(self):
         tracker = nc.open_data(ff)
         tracker.time_interp(start = "1990/01/01", end = "1990/31/01", resolution = "daily")
-        tracker.release()
+        tracker.run()
 
         x = len(tracker.times())
 
@@ -28,7 +28,7 @@ class TestTimeint(unittest.TestCase):
     def test_timeint1(self):
         tracker = nc.open_data(ff)
         tracker.time_interp(start = "1991/01/01", end = "1991/31/01", resolution = "weekly")
-        tracker.release()
+        tracker.run()
 
         x = len(tracker.times())
 
@@ -39,7 +39,7 @@ class TestTimeint(unittest.TestCase):
     def test_timeint2(self):
         tracker = nc.open_data(ff)
         tracker.time_interp(start = "1990/01/01", end = "1990/31/01", resolution = "monthly")
-        tracker.release()
+        tracker.run()
 
         x = len(tracker.times())
 
@@ -51,7 +51,7 @@ class TestTimeint(unittest.TestCase):
     def test_timeint3(self):
         tracker = nc.open_data(ff)
         tracker.time_interp(start = "1990/01/01", end = "1993/01/01", resolution = "yearly")
-        tracker.release()
+        tracker.run()
 
         x = len(tracker.times())
 
@@ -62,7 +62,7 @@ class TestTimeint(unittest.TestCase):
     def test_timeint4(self):
         tracker = nc.open_data(ff)
         tracker.time_interp(start = "1990/01/01",  resolution = "yearly")
-        tracker.release()
+        tracker.run()
 
         x = len(tracker.times())
 

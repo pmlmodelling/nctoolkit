@@ -125,7 +125,7 @@ class TestRegrid(unittest.TestCase):
 
     def test_montherror(self):
         tracker = nc.open_data(ff)
-        tracker.release()
+        tracker.run()
         with self.assertRaises(ValueError) as context:
             tracker.regrid()
 

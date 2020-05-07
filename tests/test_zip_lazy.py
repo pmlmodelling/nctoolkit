@@ -16,11 +16,11 @@ class TestZip(unittest.TestCase):
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
         tracker.select_timestep(0)
-        tracker.release()
+        tracker.run()
         new = tracker.copy()
         x = os.path.getsize(tracker.current)
         tracker.zip()
-        tracker.release()
+        tracker.run()
         y = os.path.getsize(tracker.current)
         z =  0.8 * x > y
 
@@ -40,11 +40,11 @@ class TestZip(unittest.TestCase):
         tracker = nc.open_data(ff)
         tracker.select_timestep(0)
         tracker.zip()
-        tracker.release()
+        tracker.run()
         new = tracker.copy()
         x = os.path.getsize(tracker.current)
         tracker.zip()
-        tracker.release()
+        tracker.run()
         y = os.path.getsize(tracker.current)
         z =  np.round(x/  y, 1).astype("float")
 

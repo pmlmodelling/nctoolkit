@@ -90,7 +90,7 @@ class TestApi(unittest.TestCase):
         y = nc.open_data(ff)
         y.rename({"sst":"tos"})
         z = nc.merge(x,y)
-        z.release()
+        z.run()
         test = z.variables
 
         self.assertEqual(test, ["sst", "tos"])
@@ -165,7 +165,7 @@ class TestApi(unittest.TestCase):
         self.assertEqual(x, 60)
         data = nc.open_data(nc.create_ensemble("data/ensemble"))
         data.merge_time()
-        data.release()
+        data.run()
         x = len(data)
         self.assertEqual(x, 1)
 

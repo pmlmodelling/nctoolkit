@@ -18,7 +18,7 @@ class TestCell(unittest.TestCase):
         tracker = nc.open_data(ff)
         tracker.select_years(list(range(1970, 1971)))
         tracker.select_months([1])
-        tracker.release()
+        tracker.run()
 
         tracker.cell_areas()
         x = tracker.variables
@@ -33,7 +33,7 @@ class TestCell(unittest.TestCase):
         tracker.select_years(list(range(1970, 1971)))
         tracker.select_months([1])
         tracker.cell_areas(join = False)
-        tracker.release()
+        tracker.run()
 
         x = tracker.variables
 
@@ -48,7 +48,7 @@ class TestCell(unittest.TestCase):
         tracker.split("yearmonth")
         tracker.cell_areas(join = True)
         tracker.merge_time()
-        tracker.release()
+        tracker.run()
         x = tracker.variables
         self.assertEqual(x, [ "cell_area", "sst"])
         n = len(nc.session_files())

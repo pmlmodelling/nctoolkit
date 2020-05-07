@@ -16,7 +16,7 @@ class TestShow(unittest.TestCase):
     def test_times(self):
         tracker = nc.open_data(ff)
         tracker.select_timestep(range(0,12))
-        tracker.release()
+        tracker.run()
         x = len(tracker.times())
 
         self.assertEqual(x, 12)
@@ -32,7 +32,7 @@ class TestShow(unittest.TestCase):
     def test_months(self):
         tracker = nc.open_data(ff)
         tracker.select_months([1,2])
-        tracker.release()
+        tracker.run()
         x = tracker.months()
 
         self.assertEqual(x, [1,2])
@@ -42,7 +42,7 @@ class TestShow(unittest.TestCase):
         tracker.select_years([1990, 1991])
         tracker.select_months([1,2])
         tracker.split("year")
-        tracker.release()
+        tracker.run()
         x = tracker.months()
 
         self.assertEqual(x, [1,2])
@@ -51,7 +51,7 @@ class TestShow(unittest.TestCase):
     def test_years(self):
         tracker = nc.open_data(ff)
         tracker.select_years([1990,1999])
-        tracker.release()
+        tracker.run()
         x = tracker.years()
 
         self.assertEqual(x, [1990,1999])

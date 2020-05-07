@@ -24,7 +24,7 @@ class TestRemove(unittest.TestCase):
 
         data = nc.open_data(ff)
         data.mean()
-        data.release()
+        data.run()
         with self.assertRaises(ValueError) as context:
             nc.remove.nc_remove(data.current)
 

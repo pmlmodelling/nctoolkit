@@ -14,7 +14,7 @@ class TestClean(unittest.TestCase):
         print(safe)
         tracker = nc.open_data(ff)
         tracker.select_timestep(0)
-        tracker.release()
+        tracker.run()
         safe = nc.session.nc_safe
         nc.clean_all()
         x = len([ff for ff in safe if os.path.exists(ff)])

@@ -24,7 +24,7 @@ class TestDelete(unittest.TestCase):
         tracker.mutate({"tos":"sst+273.15"})
         tracker.remove_variables("sst")
         print(tracker.history)
-        tracker.release()
+        tracker.run()
         x = tracker.variables
         print(x)
 
@@ -33,7 +33,7 @@ class TestDelete(unittest.TestCase):
     def test_remove_variables1(self):
         tracker = nc.open_data(ff)
         tracker.select_timestep(0)
-        tracker.release()
+        tracker.run()
         with self.assertWarns(Warning):
             tracker.remove_variables("tos")
 
@@ -41,7 +41,7 @@ class TestDelete(unittest.TestCase):
         tracker = nc.open_data(ff)
         tracker.select_timestep(0)
         tracker.mutate({"tos":"sst+1"})
-        tracker.release()
+        tracker.run()
         with self.assertWarns(Warning):
             tracker.remove_variables(["tos", "test"])
 
@@ -49,7 +49,7 @@ class TestDelete(unittest.TestCase):
         tracker = nc.open_data(ff)
         tracker.select_timestep(0)
         tracker.mutate({"tos":"sst+1"})
-        tracker.release()
+        tracker.run()
         with self.assertWarns(Warning):
             tracker.remove_variables(["tos", "test", "test2"])
 

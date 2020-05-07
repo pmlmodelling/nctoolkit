@@ -18,7 +18,7 @@ class TestSetters(unittest.TestCase):
         tracker.select_years(list(range(1970, 1971)))
         tracker.select_months([1])
         tracker.set_date(year = 1990, month = 1, day = 1)
-        tracker.release()
+        tracker.run()
         x = tracker.years()[0]
 
         self.assertEqual(x, 1990)
@@ -34,7 +34,7 @@ class TestSetters(unittest.TestCase):
         tracker.select_years(list(range(1970, 1971)))
         tracker.select_months([1])
         tracker.set_date(year = 1990, month = 1, day = 1)
-        tracker.release()
+        tracker.run()
         x = tracker.years()[0]
 
         self.assertEqual(x, 1990)
@@ -50,7 +50,7 @@ class TestSetters(unittest.TestCase):
         tracker.select_years(list(range(1970, 1971)))
         tracker.select_months([1])
         tracker.set_date(year = 1990, month = 3, day = 1)
-        tracker.release()
+        tracker.run()
         x = tracker.years()[0]
 
         self.assertEqual(x, 1990)
@@ -68,7 +68,7 @@ class TestSetters(unittest.TestCase):
 
         tracker.set_missing([0, 1000])
         tracker.spatial_mean()
-        tracker.release()
+        tracker.run()
         x = tracker.to_dataframe().sst.values[0]
 
         self.assertEqual(x, -1.2176581621170044444)
@@ -94,7 +94,7 @@ class TestSetters(unittest.TestCase):
         tracker.select_months([1])
 
         tracker.set_units({"sst":"C"})
-        tracker.release()
+        tracker.run()
         x = tracker.variables_detailed.units[0]
 
         self.assertEqual(x, "C")
@@ -187,7 +187,7 @@ class TestSetters(unittest.TestCase):
         tracker.select_months([1])
 
         tracker.set_longnames({"sst":"temp"})
-        tracker.release()
+        tracker.run()
         x = tracker.variables_detailed.long_name[0]
 
         self.assertEqual(x, "temp")
@@ -201,7 +201,7 @@ class TestSetters(unittest.TestCase):
 
         tracker.set_longnames({"sst":"temp"})
         tracker.merge_time()
-        tracker.release()
+        tracker.run()
 
         x = tracker.variables_detailed.long_name[0]
 

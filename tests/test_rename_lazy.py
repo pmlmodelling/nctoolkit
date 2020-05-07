@@ -16,7 +16,7 @@ class TestRename(unittest.TestCase):
     def test_rename(self):
         tracker = nc.open_data(ff)
         tracker.rename({"sst":"tos"})
-        tracker.release()
+        tracker.run()
         x = tracker.variables
         self.assertEqual(x, ["tos"])
         n = len(nc.session_files())
@@ -24,7 +24,7 @@ class TestRename(unittest.TestCase):
 
     def test_rename_error(self):
         tracker = nc.open_data(ff)
-        tracker.release()
+        tracker.run()
         with self.assertRaises(TypeError) as context:
             tracker.rename("sst")
         with self.assertRaises(TypeError) as context:

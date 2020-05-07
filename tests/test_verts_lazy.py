@@ -112,11 +112,11 @@ class TestVerts(unittest.TestCase):
         tracker.select_variables("t_an")
         new = tracker.copy()
         new.rename({"t_an":"test"})
-        new.release()
+        new.run()
         test = nc.open_data([tracker.current, new.current])
         with self.assertWarns(Warning):
             test.bottom()
-            test.release()
+            test.run()
         n = len(nc.session_files())
         self.assertEqual(n, 4)
 
