@@ -21,17 +21,17 @@ class TestCalls(unittest.TestCase):
         data.cell_areas(join = True)
 
         self.assertEqual(len(data.history), 2)
-        self.assertTrue("cdo -merge data/sst.mon.mean.nc -gridarea data/sst.mon.mean.nc" in data.history[0])
-        self.assertTrue('cdo -setattribute,cell_area@units="m^2' in data.history[1])
+        self.assertTrue("cdo -L -merge data/sst.mon.mean.nc -gridarea data/sst.mon.mean.nc" in data.history[0])
+        self.assertTrue('cdo -L -setattribute,cell_area@units="m^2' in data.history[1])
 
-        self.assertEqual(data.history[0].split(" ")[4], data.history[0].split(" ")[2])
+        self.assertEqual(data.history[0].split(" ")[6], data.history[1].split(" ")[3])
 
 
     def test_clipcall(self):
         data = nc.open_data(ff)
         data.clip(lon = [0, 90], lat = [0,90])
 
-        self.assertEqual(data.history[0], 'cdo -sellonlatbox,0,90,0,90')
+        self.assertEqual(data.history[0], 'cdo -L -sellonlatbox,0,90,0,90')
 
     def test_selectvariablescall(self):
         data = nc.open_data(ff)
@@ -214,7 +214,7 @@ class TestCalls(unittest.TestCase):
 
         data = nc.open_data(ff)
         data.set_units({"sst":"tos"})
-        self.assertEqual(data.history[0], 'cdo  -setattribute,sst@units="tos"')
+        self.assertEqual(data.history[0], 'cdo -setattribute,sst@units="tos"')
 
         data = nc.open_data(ff)
         data.set_missing([0,0])
@@ -313,16 +313,16 @@ class TestCalls(unittest.TestCase):
         data = nc.open_data(ff)
         data.cor_time("sst", "sst")
         self.assertEqual(len(data.history), 3)
-        self.assertTrue('cdo -timcor -selname,sst data/sst.mon.mean.nc -selname,sst data/sst.mon.mean.nc' in data.history[0])
-        self.assertTrue('cdo -setattribute,cor@units="-" -chname,sst,cor' in data.history[1])
+        self.assertTrue('cdo -L -timcor -selname,sst data/sst.mon.mean.nc -selname,sst data/sst.mon.mean.nc' in data.history[0])
+        self.assertTrue('cdo -L -setattribute,cor@units="-" -chname,sst,cor' in data.history[1])
         self.assertTrue('ncatted -a long_name,cor,o,c,"Correlation between sst & sst"' in data.history[2])
 
 
         data = nc.open_data(ff)
         data.cor_space("sst", "sst")
         self.assertEqual(len(data.history), 3)
-        self.assertTrue('cdo -fldcor -selname,sst data/sst.mon.mean.nc -selname,sst data/sst.mon.mean.nc' in data.history[0])
-        self.assertTrue('cdo -setattribute,cor@units="-" -chname,sst,cor' in data.history[1])
+        self.assertTrue('cdo -L -fldcor -selname,sst data/sst.mon.mean.nc -selname,sst data/sst.mon.mean.nc' in data.history[0])
+        self.assertTrue('cdo -L -setattribute,cor@units="-" -chname,sst,cor' in data.history[1])
         self.assertTrue('ncatted -a long_name,cor,o,c,"Correlation between sst & sst"' in data.history[2])
 
         data = nc.open_data(ff)
@@ -331,12 +331,12 @@ class TestCalls(unittest.TestCase):
 
         data = nc.open_data(ff)
         data.annual_anomaly(baseline = [1970, 1979], window = 10)
-        self.assertTrue('cdo sub -runmean,10 -yearmean data/sst.mon.mean.nc -timmean -selyear,1970/1979 data/sst.mon.mean.nc' in data.history[0])
+        self.assertTrue('cdo -L sub -runmean,10 -yearmean data/sst.mon.mean.nc -timmean -selyear,1970/1979 data/sst.mon.mean.nc' in data.history[0])
 
 
         data = nc.open_data(ff)
         data.monthly_anomaly(baseline = [1970, 1979])
-        self.assertTrue('cdo -ymonsub -monmean data/sst.mon.mean.nc -ymonmean -selyear,1970/1979 data/sst.mon.mean.nc' in data.history[0])
+        self.assertTrue('cdo -L -ymonsub -monmean data/sst.mon.mean.nc -ymonmean -selyear,1970/1979 data/sst.mon.mean.nc' in data.history[0])
 
         data = nc.open_data(ff)
         data.compare_all("<0")
