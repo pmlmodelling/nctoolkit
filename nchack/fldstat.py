@@ -93,7 +93,7 @@ def spatial_sum(self, by_area = False):
 
 
 
-def spatial_percentile(self, p = 50):
+def spatial_percentile(self, p = None):
     """
     Calculate the spatial sum of variables. This is performed for each time step.
     Parameters
@@ -101,6 +101,9 @@ def spatial_percentile(self, p = 50):
     p: int or float
         Percentile to calculate. 0<=p<=100.
     """
+
+    if p is None:
+        raise ValueError("Please supply a percentile")
 
     if type(p) not in (int, float):
         raise ValueError(f"{str(p)} is not a valid percentile")

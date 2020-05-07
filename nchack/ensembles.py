@@ -39,7 +39,7 @@ def ensemble_percentile(self, p = None):
         warnings.warn(message = "There is only one file in the dataset")
 
     # create the cdo command and run it
-    cdo_command = f"cdo --sortname  -enspctl,{p} "
+    cdo_command = f"cdo --sortname -enspctl,{p}"
     run_this(cdo_command, self, output = "one")
 
     # set the _merged attribute to True

@@ -92,7 +92,7 @@ def operation(self, method = "mul", ff = None, var = None):
             new_commands.append(the_command)
 
         for cc in new_commands:
-            self.history.append(cc)
+            self.history.append(cc.replace("  ", " "))
 
         self.current = new_files
         self._hold_history = copy.deepcopy(self.history)

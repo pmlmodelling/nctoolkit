@@ -9,9 +9,9 @@ def reduce_dims(self):
     """
 
     if len(self.history) == len(self._hold_history):
-        cdo_command = "cdo --reduce_dim copy "
+        cdo_command = "cdo --reduce_dim copy"
     else:
-        cdo_command = "cdo --reduce_dim "
+        cdo_command = "cdo --reduce_dim"
 
     run_this(cdo_command, self, output = "ensemble")
 
