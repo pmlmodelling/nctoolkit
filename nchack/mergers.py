@@ -91,7 +91,7 @@ def merge(self, match = ["year", "month", "day"]):
         if all_df[0].equals(all_df[i]) == False:
             raise ValueError("Dates of data sets do not satisfy matching criteria!")
 
-    cdo_command = ("cdo -merge ")
+    cdo_command = ("cdo -merge")
 
     run_this(cdo_command, self, output = "one")
 
@@ -112,7 +112,7 @@ def merge_time(self):
         warnings.warn(message = "There is only file in the dataset. No need to merge!")
         return None
 
-    cdo_command = "cdo --sortname -mergetime "
+    cdo_command = "cdo --sortname -mergetime"
 
     run_this(cdo_command, self,  output = "one")
 
