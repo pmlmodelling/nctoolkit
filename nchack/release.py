@@ -16,8 +16,8 @@ def release(self,  run_merge = True):
 
     # the first step is to set the run status to true
 
-    if (self._run == False) and (len(self.history) > len(self._hold_history)):
-        self._run = True
+    if (self._execute == False) and (len(self.history) > len(self._hold_history)):
+        self._execute = True
 
         cdo_command = "cdo "
 
@@ -30,7 +30,7 @@ def release(self,  run_merge = True):
 
         self._merged = False
 
-        self._run = False
+        self._execute = False
         self._zip = False
 
         if len(self._safe) > 0:

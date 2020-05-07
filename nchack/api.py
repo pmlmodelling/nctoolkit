@@ -312,9 +312,9 @@ class DataSet(object):
 
         # attributes to the module, but not users (probably)
         if session_info["lazy"]:
-            self._run = False
+            self._execute = False
         else:
-            self._run = True
+            self._execute = True
         self._hold_history = []
         self._merged = False
         self._safe = []
@@ -525,17 +525,6 @@ class DataSet(object):
     @history.setter
     def history(self, value):
         self._history = value
-
-    @property
-    def run(self):
-        """
-        Is the object in run or lazy eval mode?
-        """
-        return self._run
-
-    @run.setter
-    def run(self, value):
-        self._run = value
 
 
     def copy(self):

@@ -127,7 +127,7 @@ def regrid(self, grid = None, method = "bil"):
 
         cdo_command= f"cdo -remap,{target_grid},{weights_nc}"
 
-        tracker.run = True
+        tracker._execute = True
 
         nc_safe.append(weights_nc)
 
