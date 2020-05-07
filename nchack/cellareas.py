@@ -1,5 +1,6 @@
 import copy
 from .runthis import run_this
+from .runthis import tidy_command
 from .runthis import run_cdo
 from .temp_file import temp_file
 from .cleanup import cleanup
@@ -39,6 +40,7 @@ def cell_areas(self,  join = True):
             target = temp_file(".nc")
 
             cdo_command = f"cdo -merge {ff} -gridarea {ff} {target}"
+            cdo_command = tidy_command(cdo_command)
             target = run_cdo(cdo_command, target)
             new_files.append(target)
 

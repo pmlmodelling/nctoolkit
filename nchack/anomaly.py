@@ -4,6 +4,7 @@ from .temp_file import temp_file
 from .session import nc_safe
 from .session import session_info
 from .runthis import run_cdo
+from .runthis import tidy_command
 from .cleanup import cleanup
 from .cleanup import disk_clean
 from .show import nc_years
@@ -71,6 +72,8 @@ def annual_anomaly(self, baseline = None, metric = "absolute", window = 1):
             cdo_command = f"cdo div -runmean,{window} -yearmean {ff} -timmean -selyear,{baseline[0]}/{baseline[1]} {ff} {target}"
 
         # run the command and save the temp file
+
+        cdo_command = tidy_command(cdo_command)
         target = run_cdo(cdo_command, target)
 
         # updae the new files and commands
@@ -128,6 +131,8 @@ def monthly_anomaly(self, baseline = None):
         target = temp_file("nc")
         # create system command
         cdo_command = f"cdo -ymonsub -monmean {ff} -ymonmean -selyear,{baseline[0]}/{baseline[1]} {ff} {target}"
+
+        cdo_command = tidy_command(cdo_command)
 
         # run the command and save the temp file
         target = run_cdo(cdo_command, target)

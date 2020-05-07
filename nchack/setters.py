@@ -110,9 +110,7 @@ def set_units(self, var_dict = None):
         if type(var_dict[i]) is not str:
             raise TypeError("key,values in var_dict are not strings")
 
-        cdo_command = ""
-        cdo_command = cdo_command + " -setattribute," + i + "@units=" + '"' + var_dict[i]  + '"'
-        cdo_command = "cdo " + cdo_command
+        cdo_command = f'cdo -setattribute,{i}@units="{var_dict[i]}"'
         run_this(cdo_command, self,  output = "ensemble")
 
 

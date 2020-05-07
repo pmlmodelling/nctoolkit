@@ -24,16 +24,29 @@ def file_size(file_path):
 
 
 
-#def split_list(seq, num):
-#    avg = len(seq) / float(num)
-#    out = []
-#    last = 0.0
-#
-#    while last < len(seq):
-#        out.append(seq[int(last):int(last + avg)])
-#        last += avg
-#
-#    return out
+def tidy_command(command):
+
+    if session_info["precision"] is not None:
+        command = command.replace("cdo ", "cdo -b " + session_info["precision"] + " ")
+
+    command = command.replace("  ", " ")
+
+    if " --sortname " in command:
+        command = command.replace(" --sortname ", " ")
+        command = command.replace("cdo ", "cdo --sortname ")
+
+    if "reduce_dim" in command:
+        command = command.replace("reduce_dim", "").replace(" - ", " ").replace(" -- ", " ")
+        command = command.replace("cdo ", "cdo --reduce_dim ")
+
+    command = command.strip()
+
+    if session_info["thread_safe"] == False:
+        command = command.replace("-L ", " ").replace("cdo ", "cdo -L ")
+    else:
+        command = command.replace("-L ", " ")
+
+    return command
 
 
 def run_nco(command, target, out_file = None, overwrite = False):
@@ -96,19 +109,11 @@ def run_nco(command, target, out_file = None, overwrite = False):
 
 
 def run_cdo(command, target, out_file = None, overwrite = False):
-    command = command.strip()
-
-    if session_info["thread_safe"] == False:
-        command = command.replace("-L ", " ").replace("cdo ", "cdo -L ")
-    else:
-        command = command.replace("-L ", " ")
 
 
     # make sure the output file does not exist
 
-    if session_info["precision"] is not None:
-        command = command.replace("cdo ", "cdo -b " + session_info["precision"] + " ")
-
+    command = tidy_command(command)
 
     if out_file is None:
         if os.path.exists(command.split()[-1]):
@@ -301,6 +306,8 @@ def run_this(os_command, self, output = "one",  out_file = None):
                     ff_command = ff_command.replace("reduce_dim", "").replace(" - ", " ").replace(" -- ", " ")
                     ff_command = ff_command.replace("cdo ", "cdo --reduce_dim ")
 
+                ff_command = tidy_command(ff_command)
+
                 if self._zip:
                     ff_command = ff_command.replace("cdo ", "cdo -z zip ")
 
@@ -355,17 +362,8 @@ def run_this(os_command, self, output = "one",  out_file = None):
 
             if out_file is not None:
                 target = out_file
+
             os_command = os_command + " " +  str_flatten(self.current, " ") + " " + target
-            os_command = os_command.replace("  ", " ")
-
-            if " --sortname " in os_command:
-                os_command = os_command.replace(" --sortname ", " ")
-                os_command = os_command.replace("cdo ", "cdo --sortname ")
-
-            if "reduce_dim" in os_command:
-                os_command = os_command.replace("reduce_dim", "").replace(" - ", " ").replace(" -- ", " ")
-                os_command = os_command.replace("cdo ", "cdo --reduce_dim ")
-
             if self._zip:
                 os_command = os_command.replace("cdo ", "cdo -z zip ")
 
@@ -373,6 +371,7 @@ def run_this(os_command, self, output = "one",  out_file = None):
                 os_command = os_command.replace(ff, "")
                 os_command = os_command.replace("infile09178", ff)
 
+            os_command = tidy_command(os_command)
 
             target = run_cdo(os_command, target, out_file)
             self.current = target

@@ -3,6 +3,7 @@ import copy
 from .temp_file import temp_file
 from .session import nc_safe
 from .runthis import run_cdo
+from .runthis import tidy_command
 from .cleanup import cleanup
 from .cleanup import disk_clean
 from .show import nc_variables
@@ -39,6 +40,7 @@ def cor(self, var1 = None, var2 = None, method = "fld"):
 
         # create the cdo command and run it
         cdo_command = f"cdo -{method}cor -selname,{var1} {ff} -selname,{var2} {ff} {target}"
+        cdo_command = tidy_command(cdo_command)
         target = run_cdo(cdo_command, target)
 
         new_files.append(target)

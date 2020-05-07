@@ -1,5 +1,6 @@
 from .runthis import run_this
 from .runthis import run_nco
+from .runthis import tidy_command
 from .temp_file import temp_file
 from .flatten import str_flatten
 from .session import nc_safe
@@ -51,6 +52,8 @@ def clip(self, lon = [-180, 180], lat = [-90, 90], cdo = True):
         if (lon[0] >= -180) and (lon[1] <= 180) and (lat[0] >= -90) and (lat[1] <= 90):
             lat_box = str_flatten(lon + lat)
             cdo_command = ("cdo -sellonlatbox," + lat_box)
+            cdo_command = tidy_command(cdo_command)
+
             run_this(cdo_command, self, output = "ensemble")
             return None
         else:
