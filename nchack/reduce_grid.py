@@ -32,7 +32,7 @@ def reduce_grid(self, mask):
 
     targeted_mask = open_data(target)
     targeted_mask.cdo_command("-setmisstoc,0")
-    targeted_mask.release()
+    targeted_mask.run()
 
     cdo_command = f"cdo -reducegrid,{targeted_mask.current}"
 

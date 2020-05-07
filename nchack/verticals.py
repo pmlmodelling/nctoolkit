@@ -145,7 +145,7 @@ def bottom_mask(self):
     1 identifies the deepest cell with non-missing values. Everything else is 0, or missing.
     At present this method only uses the first available variable from netcdf files, so it may not be suitable for all data
     """
-    self.release()
+    self.run()
 
     if type(self.current) is list:
         raise TypeError("This only works for single file datasets")
@@ -160,7 +160,7 @@ def bottom_mask(self):
     data.set_missing([0,0])
     data.transmute({"Wet":var_use +  " == " + var_use})
     data.invert_levels()
-    data.release()
+    data.run()
     bottom = data.copy()
     bottom.vertical_cum()
     bottom.compare_all("==1")
@@ -169,7 +169,7 @@ def bottom_mask(self):
     bottom.rename({"Wet":"bottom"})
     bottom.set_longnames({"bottom":"Identifier for cell nearest seabed"})
     bottom.set_missing([0,0])
-    bottom.release()
+    bottom.run()
 
     self.current = copy.deepcopy(bottom.current)
 

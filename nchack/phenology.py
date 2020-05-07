@@ -35,7 +35,7 @@ def phenology(self, var = None, metric = None, p = None):
     if type(var) is not str:
         raise TypeError("var is not a str")
 
-    self.release()
+    self.run()
 
 
     if metric == "peak":

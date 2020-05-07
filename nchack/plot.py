@@ -21,7 +21,7 @@ def plot(self, log = False, vars = None, panel = False):
         Do you want a panel plot, if avaiable?
     """
 
-    self.release()
+    self.run()
 
 
     if type(self.current) is list:

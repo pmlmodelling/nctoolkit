@@ -20,7 +20,7 @@ def cor(self, var1 = None, var2 = None, method = "fld"):
         raise TypeError("var2 is not a str")
 
     # this cannot be chained. So release
-    self.release()
+    self.run()
 
     new_files = []
     new_commands = []

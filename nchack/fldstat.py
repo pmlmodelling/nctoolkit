@@ -59,7 +59,7 @@ def spatial_sum(self, by_area = False):
     if (type(self.current)) is str or (by_area == False):
 
         if by_area:
-            self.release()
+            self.run()
 
             cdo_command = f"cdo -fldsum -mul {self.current} -gridarea "
         else:

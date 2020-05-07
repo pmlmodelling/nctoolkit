@@ -131,7 +131,7 @@ def set_longnames(self, var_dict = None):
     if var_dict is None:
         raise ValueError("Please supply var_dict")
 
-    self.release()
+    self.run()
 
     if type(var_dict) is not dict:
         TypeError("A dictionary has not been supplied!")

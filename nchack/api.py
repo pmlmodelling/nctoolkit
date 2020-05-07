@@ -201,7 +201,7 @@ def merge(*datasets, match = ["day", "year", "month"]):
         if ("DataSet" in str(type(dataset))) == False:
             raise TypeError("Please check everything is a DataSet object!")
         # make sure everything has been evaluated
-        dataset.release()
+        dataset.run()
         if type(dataset.current) is str:
             all_files += [dataset.current]
         else:
@@ -225,20 +225,20 @@ def cor_time(x = None, y = None):
     b = y.copy()
 
 
-    a.release()
-    b.release()
+    a.run()
+    b.run()
 
     ab_vars = [value for value in a.variables if value in b.variables]
 
     if len(ab_vars) < len(a.variables):
         a.select_variables(ab_vars)
         print("Only using a subset of variables from x")
-        a.release()
+        a.run()
 
     if len(ab_vars) < len(b.variables):
         b.select_variables(ab_vars)
         print("Only using a subset of variables from y")
-        b.release()
+        b.run()
 
 
     #if type(x.current) is not str or type(y.current) is not str:
@@ -268,20 +268,20 @@ def cor_space(x = None, y = None):
     b = y.copy()
 
 
-    a.release()
-    b.release()
+    a.run()
+    b.run()
 
     ab_vars = [value for value in a.variables if value in b.variables]
 
     if len(ab_vars) < len(a.variables):
         a.select_variables(ab_vars)
         print("Only using a subset of variables from x")
-        a.release()
+        a.run()
 
     if len(ab_vars) < len(b.variables):
         b.select_variables(ab_vars)
         print("Only using a subset of variables from y")
-        b.release()
+        b.run()
 
 
     #if type(x.current) is not str or type(y.current) is not str:
@@ -531,7 +531,7 @@ class DataSet(object):
         """
         Make a deep copy of an DataSet object
         """
-        self.release()
+        self.run()
 
         new = copy.deepcopy(self)
         if type(new.current) is str:
@@ -641,6 +641,7 @@ class DataSet(object):
     from .time_stat import cum_sum
 
     from .release import release
+    from .release import run
 
     from .delete import remove_variables
 

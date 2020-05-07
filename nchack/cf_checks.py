@@ -5,7 +5,7 @@ def cf_checks(self, version = None):
     """
     Method to run the cf checker from the Met Office on files
     """
-    self.release()
+    self.run()
     if type(self.current) is list:
         raise TypeError("This presently only works for single file datasets")
 

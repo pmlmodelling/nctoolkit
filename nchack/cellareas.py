@@ -23,7 +23,7 @@ def cell_areas(self,  join = True):
 
     # release if you need to join the cell areas to the original file
     if join:
-        self.release()
+        self.run()
 
     # first run the join case
     if join:
@@ -63,7 +63,7 @@ def cell_areas(self,  join = True):
     self.set_units({"cell_area": "m^2"})
 
     if join:
-        self.release()
+        self.run()
         self.disk_clean()
 
 

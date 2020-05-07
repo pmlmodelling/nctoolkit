@@ -12,7 +12,7 @@ def to_xarray(self, decode_times = True):
 
     """
 
-    self.release()
+    self.run()
 
     if decode_times is False:
         if type(self.current) is str:

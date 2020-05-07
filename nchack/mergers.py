@@ -35,7 +35,7 @@ def merge(self, match = ["year", "month", "day"]):
         raise ValueError("match supplied is not valid")
 
     # Force a release if needed
-    self.release()
+    self.run()
 
     if type(self.current) is not list:
         warnings.warn(message = "There is only one file in the dataset. No need to merge!")
@@ -106,7 +106,7 @@ def merge_time(self):
     This method is ideal if you have the same data split over multiple files covering different data sets.
     """
 
-    self.release()
+    self.run()
 
     if type(self.current) is not list:
         warnings.warn(message = "There is only file in the dataset. No need to merge!")

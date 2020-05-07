@@ -104,7 +104,7 @@ def sum_all(self, drop = True):
         Do you want to keep variables?
     """
 
-    self.release()
+    self.run()
 
     if (type(self.current) is list) and (self._merged == False):
         raise TypeError("This only works for single files presently")

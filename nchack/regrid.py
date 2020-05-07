@@ -57,7 +57,7 @@ def regrid(self, grid = None, method = "bil"):
         grid_type = "nc"
 
     if "DataSet" in str(type(grid)):
-        grid.release()
+        grid.run()
         if type(grid.current) is str:
             grid = grid.current
         else:
@@ -84,7 +84,7 @@ def regrid(self, grid = None, method = "bil"):
 
     grid_split = dict()
 
-    self.release()
+    self.run()
 
 
     if type(self.current) is list:

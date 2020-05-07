@@ -45,7 +45,7 @@ def assign_coords(self, lon_name = None, lat_name = None):
 
     # add grid number check
 
-    self.release()
+    self.run()
 
     if type(self.current) is list:
         raise TypeError("This only works for single files currently")
@@ -101,7 +101,7 @@ def set_attributes(self, att_dict):
 
     """
 
-    self.release()
+    self.run()
 
     if type(self.current) is not str:
         TypeError("Method does not yet work with ensembles")
@@ -147,7 +147,7 @@ def delete_attributes(self, atts):
         list or str of global attributes to remove.
     """
 
-    self.release()
+    self.run()
 
     if type(self.current) is not str:
         TypeError("Method does not yet work with ensembles")

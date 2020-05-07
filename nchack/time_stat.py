@@ -84,7 +84,7 @@ def percentile(self, p = None):
     if (p < 0) or (p > 100):
         raise ValueError("p: " + str(p) + " is not between 0 and 100!")
 
-    self.release()
+    self.run()
 
     new_files = []
     new_commands = []

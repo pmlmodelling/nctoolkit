@@ -5,7 +5,7 @@ def view(self):
     """
     Open the current dataset's file in ncview
     """
-    self.release()
+    self.run()
 
     if type(self.current) is str:
         os.system("ncview " + self.current + "&")

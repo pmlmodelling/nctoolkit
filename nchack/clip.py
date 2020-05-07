@@ -56,7 +56,7 @@ def clip(self, lon = [-180, 180], lat = [-90, 90], cdo = True):
         else:
             raise ValueError("The lonlat box supplied is not valid!")
 
-    self.release()
+    self.run()
 
     new_files = []
     new_commands = []

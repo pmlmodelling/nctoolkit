@@ -27,9 +27,9 @@ def operation(self, method = "mul", ff = None, var = None):
     This is used by add etc.
     """
 
-    # If the dataset has to be merged, then this operation will not work without releasing it first
+    # If the dataset has to be merged, then this operation will not work without running it first
     if self._merged:
-        self.release()
+        self.run()
 
     # throw error if the file to operate with does not exist
     if ff is not None:
@@ -43,7 +43,7 @@ def operation(self, method = "mul", ff = None, var = None):
         if var not in nc_variables(ff):
             raise ValueError("var supplied is not available in the dataset")
 
-    # make sure the ff file is not removed from safe list in subsequent actions prior to release
+    # make sure the ff file is not removed from safe list in subsequent actions prior to running
     if (ff is not None) and (session_info["lazy"]):
         nc_safe.append(ff)
         self._safe.append(ff)
@@ -126,7 +126,7 @@ def multiply(self, x = None, var = None):
     # 2: dataset or netcdf file multiplication
     # get the netcdf file(s)
     if "api.DataSet" in str(type(x)):
-        x.release()
+        x.run()
         ff = x.current
     else:
         ff = x
@@ -155,7 +155,7 @@ def subtract(self, x = None, var = None):
     # 2: dataset or netcdf file subtraction
     # get the netcdf file(s)
     if "api.DataSet" in str(type(x)):
-        x.release()
+        x.run()
         ff = x.current
     else:
         ff = x
@@ -184,7 +184,7 @@ def add(self, x = None, var = None):
     # 2: dataset or netcdf file addition
     # get the netcdf file(s)
     if "api.DataSet" in str(type(x)):
-        x.release()
+        x.run()
         ff = x.current
     else:
         ff = x
@@ -214,7 +214,7 @@ def divide(self, x = None, var = None):
     # 2: dataset or netcdf file division
     # get the netcdf file(s)
     if "api.DataSet" in str(type(x)):
-        x.release()
+        x.run()
         ff = x.current
     else:
         ff = x

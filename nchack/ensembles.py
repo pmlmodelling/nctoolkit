@@ -32,7 +32,7 @@ def ensemble_percentile(self, p = None):
         raise ValueError("p is not between 0 and 100!")
 
     # This method cannot possibly be chained. Release it
-    self.release()
+    self.run()
 
     # Throw an error if there is only a single file in the tracker
     if type(self.current) is not list:
@@ -62,7 +62,7 @@ def ensemble_nco(self, method, vars = None, ignore_time = False):
             raise TypeError("vars supplied is not a list or str!")
     # This method cannot possibly be chained. Release it
 
-    self.release()
+    self.run()
 
     ff_ensemble = copy.deepcopy(self.current)
 
@@ -165,7 +165,7 @@ def ensemble_range(self):
     if type(self.current) is not list:
         warnings.warn(message = "There is only one file in the dataset")
 
-    self.release()
+    self.run()
 
     cdo_command = "cdo --sortname -ensrange"
 

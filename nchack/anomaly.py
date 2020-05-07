@@ -48,7 +48,7 @@ def annual_anomaly(self, baseline = None, metric = "absolute", window = 1):
 
     # This cannot possibly be threaded in cdo. Release it
 
-    self.release()
+    self.run()
 
     # calculate the anomalies for each file
     # this is not parallelized yet
@@ -115,7 +115,7 @@ def monthly_anomaly(self, baseline = None):
     if baseline[1] < baseline[0]:
         raise ValueError("Second baseline year is before the first!")
 
-    self.release()
+    self.run()
 
     new_files = []
     new_commands = []
