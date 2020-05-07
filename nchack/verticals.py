@@ -40,7 +40,7 @@ def surface(self):
 
     """
 
-    cdo_command = "cdo -sellevidx,1 "
+    cdo_command = "cdo -sellevidx,1"
     run_this(cdo_command, self,  output = "ensemble")
 
 
