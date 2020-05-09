@@ -73,7 +73,7 @@ class TestVerts(unittest.TestCase):
         ff = "data/woa18_decav_t01_01.nc"
         tracker = nc.open_data(ff)
         tracker.select_variables("t_an")
-        tracker.vertical_interp(vert_depths=10)
+        tracker.vertical_interp(10)
         x =tracker.to_dataframe().t_an.values[0].astype("float")
         n = len(nc.session_files())
         self.assertEqual(n, 1)
