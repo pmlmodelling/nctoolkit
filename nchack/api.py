@@ -728,9 +728,6 @@ class DataSet(object):
 
     from .zip import zip
 
-    from .checkers import check_dates
-    from .checkers import ensemble_check
-
     from .corr import cor_space
     from .corr import cor_time
 
