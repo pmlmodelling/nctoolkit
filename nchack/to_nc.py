@@ -18,6 +18,9 @@ def write_nc(self, out, zip=True, overwrite=False):
         output file name
     zip : boolean
         True/False depending on whether you want to zip the file. Defaults to True.
+    overwrite : boolean
+        If out file exists, do you want to overwrite it?
+
 
     """
 
