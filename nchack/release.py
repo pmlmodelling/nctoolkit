@@ -4,14 +4,9 @@ from .session import nc_safe
 from .cleanup import cleanup
 
 
-def run(self, run_merge=True):
+def run(self):
     """
     Run all stored commands in a dataset
-
-    Parameters
-    -------------
-    run_merge: boolean
-        Ignore this for now. This needs to be replaced by the keywords arg method
 
     """
 
@@ -44,7 +39,7 @@ def run(self, run_merge=True):
         cleanup()
 
 
-def release(self, run_merge=True):
+def release(self):
     """
     Run all stored commands in a dataset
 
