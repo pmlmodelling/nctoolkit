@@ -1,4 +1,3 @@
-
 import subprocess
 import copy
 from .temp_file import temp_file
@@ -9,7 +8,7 @@ from .session import nc_safe
 from .flatten import str_flatten
 
 
-def nco_command(self, command = None, ensemble = False):
+def nco_command(self, command=None, ensemble=False):
     """
     Apply a cdo command
 
@@ -38,23 +37,22 @@ def nco_command(self, command = None, ensemble = False):
 
             the_command = f"{command} {ff} {target}"
 
-            target = run_nco(the_command, target = target)
+            target = run_nco(the_command, target=target)
 
             new_files.append(target)
             new_commands.append(the_command)
 
     else:
-            target = temp_file(".nc")
+        target = temp_file(".nc")
 
-            files = str_flatten(self.current, " ")
+        files = str_flatten(self.current, " ")
 
-            the_command = f"{command} {files} {target}"
+        the_command = f"{command} {files} {target}"
 
-            target = run_nco(the_command, target = target)
+        target = run_nco(the_command, target=target)
 
-            new_files.append(target)
-            new_commands.append(the_command)
-
+        new_files.append(target)
+        new_commands.append(the_command)
 
     self.current = new_files
 
@@ -62,6 +60,3 @@ def nco_command(self, command = None, ensemble = False):
     self._hold_history = copy.deepcopy(self.history)
 
     self.disk_clean()
-
-
-

@@ -1,5 +1,5 @@
-
 from .runthis import run_this
+
 
 def rename(self, newnames):
     """
@@ -23,11 +23,9 @@ def rename(self, newnames):
             raise TypeError(f"{key} is not a str")
         if type(value) is not str:
             raise TypeError(f"{value} is not a str")
-        cdo_rename +=  "," + key
+        cdo_rename += "," + key
         cdo_rename += "," + value
 
     # create the cdo call and run it
-    cdo_command= "cdo -chname" + cdo_rename
-    run_this(cdo_command, self, output = "ensemble")
-
-
+    cdo_command = "cdo -chname" + cdo_rename
+    run_this(cdo_command, self, output="ensemble")

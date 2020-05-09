@@ -1,4 +1,3 @@
-
 # The warnings in this method could be improved slightly. Possibly case of using mutate/transmute that will make warnings less tiday
 # Though CDO should always pick issues up
 
@@ -8,7 +7,8 @@ from .runthis import run_this
 from .show import nc_variables
 import warnings
 
-def remove_variables(self, vars = None):
+
+def remove_variables(self, vars=None):
     """
     Remove variables
 
@@ -37,19 +37,21 @@ def remove_variables(self, vars = None):
     vars = [vv for vv in vars if vv in orig_vars]
 
     if len(vars) == 0:
-        warnings.warn(message = "None of the variables supplied are in the dataset")
+        warnings.warn(message="None of the variables supplied are in the dataset")
         return None
     else:
         if len(missing_vars) > 0:
             if len(missing_vars) > 1:
-                warnings.warn(message = f"{str_flatten(missing_vars)} are not in the dataset!")
+                warnings.warn(
+                    message=f"{str_flatten(missing_vars)} are not in the dataset!"
+                )
             else:
-                warnings.warn(message = f"{str_flatten(missing_vars)} is not in the dataset!")
+                warnings.warn(
+                    message=f"{str_flatten(missing_vars)} is not in the dataset!"
+                )
 
     vars = str_flatten(vars, ",")
 
     # create the cdo command and run it
     cdo_command = f"cdo -delete,name={vars}"
-    run_this(cdo_command, self, output = "ensemble")
-
-
+    run_this(cdo_command, self, output="ensemble")

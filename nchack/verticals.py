@@ -1,4 +1,3 @@
-
 import subprocess
 import copy
 import warnings
@@ -22,16 +21,22 @@ def bottom(self):
     # pull the cdo command together, then run it or store it
     if type(self.current) is list:
         ff = self.current[0]
-        warnings.warn(message = "The first file in ensemble used to determine number of vertical levels")
+        warnings.warn(
+            message="The first file in ensemble used to determine number of vertical levels"
+        )
     else:
         ff = self.current
 
-    cdo_result = subprocess.run("cdo nlevel " + ff, shell = True, stdout=subprocess.PIPE, stderr = subprocess.PIPE).stdout
-    n_levels = int(str(cdo_result).replace("b'", "").strip().replace("'", "").split("\\n")[0])
+    cdo_result = subprocess.run(
+        "cdo nlevel " + ff, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+    ).stdout
+    n_levels = int(
+        str(cdo_result).replace("b'", "").strip().replace("'", "").split("\\n")[0]
+    )
 
     cdo_command = f"cdo -sellevidx,{str(n_levels)}"
 
-    run_this(cdo_command, self,  output = "ensemble")
+    run_this(cdo_command, self, output="ensemble")
 
 
 def surface(self):
@@ -41,10 +46,10 @@ def surface(self):
     """
 
     cdo_command = "cdo -sellevidx,1"
-    run_this(cdo_command, self,  output = "ensemble")
+    run_this(cdo_command, self, output="ensemble")
 
 
-def vertical_interp(self, vert_depths = None):
+def vertical_interp(self, vert_depths=None):
     """
     Verticaly interpolate a dataset based on given depths
 
@@ -60,7 +65,6 @@ def vertical_interp(self, vert_depths = None):
 
     # below used for checking whether vertical remapping occurs
 
-
     # first a quick fix for the case when there is only one vertical depth
 
     if (type(vert_depths) == int) or (type(vert_depths) == float):
@@ -73,47 +77,48 @@ def vertical_interp(self, vert_depths = None):
     vert_depths = str_flatten(vert_depths, ",")
     cdo_command = f"cdo -intlevel,{vert_depths}"
 
-    run_this(cdo_command, self,  output = "ensemble")
+    run_this(cdo_command, self, output="ensemble")
 
 
-
-
-
-def vertstat(self, stat = "mean"):
+def vertstat(self, stat="mean"):
     """Method to calculate the vertical mean from a function"""
     cdo_command = f"cdo -vert{stat}"
 
-    run_this(cdo_command, self,  output = "ensemble")
+    run_this(cdo_command, self, output="ensemble")
 
     # clean up the directory
+
 
 def vertical_mean(self):
     """
     Calculate the depth-averaged mean
     """
 
-    return vertstat(self, stat = "mean")
+    return vertstat(self, stat="mean")
+
 
 def vertical_min(self):
     """
     Calculate the vertical minimum of variable values
     """
 
-    return vertstat(self, stat = "min")
+    return vertstat(self, stat="min")
+
 
 def vertical_max(self):
     """
     Calculate the vertical maximum of variable values
     """
 
-    return vertstat(self, stat = "max")
+    return vertstat(self, stat="max")
+
 
 def vertical_range(self):
     """
     Calculate the vertical range of variable values
     """
 
-    return vertstat(self, stat = "range")
+    return vertstat(self, stat="range")
 
 
 def vertical_sum(self):
@@ -121,14 +126,16 @@ def vertical_sum(self):
     Calculate the vertical sum of variable values
     """
 
-    return vertstat(self, stat = "sum")
+    return vertstat(self, stat="sum")
+
 
 def vertical_cum(self):
     """
     Calculate the vertical sum of variable values
     """
 
-    return vertstat(self, stat = "cum")
+    return vertstat(self, stat="cum")
+
 
 def invert_levels(self):
     """
@@ -136,7 +143,7 @@ def invert_levels(self):
     """
     cdo_command = "cdo -invertlev"
 
-    run_this(cdo_command, self,  output = "ensemble")
+    run_this(cdo_command, self, output="ensemble")
 
 
 def bottom_mask(self):
@@ -157,8 +164,8 @@ def bottom_mask(self):
     var_use = data.variables_detailed.query("levels>1").variable[0]
     data.select_variables(var_use)
     data.select_timestep(0)
-    data.set_missing([0,0])
-    data.transmute({"Wet":var_use +  " == " + var_use})
+    data.set_missing([0, 0])
+    data.transmute({"Wet": var_use + " == " + var_use})
     data.invert_levels()
     data.run()
     bottom = data.copy()
@@ -166,9 +173,9 @@ def bottom_mask(self):
     bottom.compare_all("==1")
     bottom.multiply(data)
     bottom.invert_levels()
-    bottom.rename({"Wet":"bottom"})
-    bottom.set_longnames({"bottom":"Identifier for cell nearest seabed"})
-    bottom.set_missing([0,0])
+    bottom.rename({"Wet": "bottom"})
+    bottom.set_longnames({"bottom": "Identifier for cell nearest seabed"})
+    bottom.set_missing([0, 0])
     bottom.run()
 
     self.current = copy.deepcopy(bottom.current)
@@ -177,8 +184,3 @@ def bottom_mask(self):
     self._hold_history = copy.deepcopy(self.history)
 
     cleanup()
-
-
-
-
-

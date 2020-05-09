@@ -5,7 +5,8 @@ from .session import nc_safe
 from .runthis import run_this
 from .cleanup import cleanup
 
-def select_season(self, season = None):
+
+def select_season(self, season=None):
     """
     Select season from a dataset
 
@@ -27,10 +28,10 @@ def select_season(self, season = None):
         raise ValueError("Invalid season supplied")
 
     cdo_command = f"cdo -select,season={season}"
-    run_this(cdo_command, self,  output = "ensemble")
+    run_this(cdo_command, self, output="ensemble")
 
 
-def select_months(self, months = None):
+def select_months(self, months=None):
     """
     Select months from a dataset
     This method will subset the data to only contains months within the list given. A warning message will be provided when there are missing months.
@@ -61,10 +62,10 @@ def select_months(self, months = None):
     months = str_flatten(months, ",")
 
     cdo_command = f"cdo -selmonth,{months}"
-    run_this(cdo_command, self,  output = "ensemble")
+    run_this(cdo_command, self, output="ensemble")
 
 
-def select_years(self, years = None):
+def select_years(self, years=None):
     """
     Select years from a dataset
     This method will subset the data to only contains years within the list given. A warning message will be provided when there are missing years.
@@ -99,56 +100,64 @@ def select_years(self, years = None):
 
         for ff in self:
 
-            cdo_result = subprocess.run(f"cdo showyear {ff}", shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            cdo_result = subprocess.run(
+                f"cdo showyear {ff}",
+                shell=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+            )
 
             all_years = []
             cdo_result = str(cdo_result.stdout).replace("\\n", "")
             cdo_result = cdo_result.replace("b'", "").strip()
             cdo_result = cdo_result.replace("'", "").strip()
             cdo_result = cdo_result.split()
-            all_years+=cdo_result
+            all_years += cdo_result
             all_years = list(set(all_years))
-            all_years =  [int(v) for v in all_years]
+            all_years = [int(v) for v in all_years]
             inter = [element for element in all_years if element in years]
 
             if len(inter) > 0:
                 new_current.append(ff)
             if len(inter) == 0:
-                n_removed+=1
+                n_removed += 1
                 if ff in nc_safe:
                     nc_safe.remove(ff)
 
             # figure out if any of the files actually have years outide the period required
-            if len(inter) >0:
-                if len([yy for yy in all_years if yy not in years])  >0:
-                    missing_files+=1
+            if len(inter) > 0:
+                if len([yy for yy in all_years if yy not in years]) > 0:
+                    missing_files += 1
 
         if len(new_current) == 0:
             raise ValueError("Data for none of the years is available!")
 
-        if n_removed >0:
-            warnings.warn(message = "A total of " +  str(n_removed) +  " files did not have valid years, so were removed from the dataset!")
+        if n_removed > 0:
+            warnings.warn(
+                message="A total of "
+                + str(n_removed)
+                + " files did not have valid years, so were removed from the dataset!"
+            )
 
         self.current = new_current
 
-        if missing_files >0:
+        if missing_files > 0:
             years = str_flatten(years, ",")
 
             cdo_command = f"cdo -selyear,{years}"
 
-            run_this(cdo_command, self,  output = "ensemble")
+            run_this(cdo_command, self, output="ensemble")
     else:
-            years = str_flatten(years, ",")
+        years = str_flatten(years, ",")
 
-            cdo_command = f"cdo -selyear,{years}"
+        cdo_command = f"cdo -selyear,{years}"
 
-            run_this(cdo_command, self,  output = "ensemble")
+        run_this(cdo_command, self, output="ensemble")
 
     cleanup()
 
 
-
-def select_variables(self, vars = None):
+def select_variables(self, vars=None):
     """
     Select variables from a dataset
 
@@ -175,10 +184,10 @@ def select_variables(self, vars = None):
 
     cdo_command = f"cdo -selname,{vars_list}"
 
-    run_this(cdo_command, self,  output = "ensemble")
+    run_this(cdo_command, self, output="ensemble")
 
 
-def select_timestep(self, times = None):
+def select_timestep(self, times=None):
     """
     Select timesteps from a dataset
 
@@ -211,7 +220,4 @@ def select_timestep(self, times = None):
 
     cdo_command = f"cdo -seltimestep,{times}"
 
-    run_this(cdo_command, self,  output = "ensemble")
-
-
-
+    run_this(cdo_command, self, output="ensemble")

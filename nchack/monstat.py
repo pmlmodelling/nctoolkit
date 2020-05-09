@@ -1,12 +1,11 @@
-
 from .runthis import run_this
 
-def monstat(self,  stat = "mean"):
+
+def monstat(self, stat="mean"):
     """Method to calculate the monthly statistic from a netcdf file"""
     cdo_command = f"cdo -mon{stat}"
 
-    run_this(cdo_command, self,  output = "ensemble")
-
+    run_this(cdo_command, self, output="ensemble")
 
 
 def monthly_mean(self):
@@ -15,20 +14,23 @@ def monthly_mean(self):
     Calculate the monthly mean for each year/month combination in files. This applies to each file in an ensemble.
     """
 
-    return monstat(self, stat = "mean")
+    return monstat(self, stat="mean")
+
 
 def monthly_min(self):
     """
     Calculate the monthly minimums for each year/month combination in files. This applies to each file in an ensemble.
 
     """
-    return monstat(self, stat = "min")
+    return monstat(self, stat="min")
+
 
 def monthly_max(self):
     """
     Calculate the monthly maximum for each year/month combination in files. This applies to each file in an ensemble.
     """
-    return monstat(self, stat = "max")
+    return monstat(self, stat="max")
+
 
 def monthly_range(self):
 
@@ -36,5 +38,4 @@ def monthly_range(self):
     Calculate the monthly range for each year/month combination in files. This applies to each file in an ensemble.
     """
 
-    return monstat(self, stat = "range")
-
+    return monstat(self, stat="range")

@@ -6,6 +6,7 @@ from .cleanup import cleanup
 from .runthis import run_this
 from .runthis import run_nco
 
+
 def set_gridtype(self, grid):
     """
     Set the grid type. Only use this if, for example, the grid is "generic" when it should be lonlat.
@@ -17,21 +18,25 @@ def set_gridtype(self, grid):
 
     """
 
-
     # check that the values supplied are valid
     # This will convert things to ints, and if it can't be done, throw an error
 
-    if grid not in ["curvilinear", "unstructured", "dereference", "regular", "regularnn", "lonlat"]:
-            raise ValueError("Grid type supplies is not supported")
+    if grid not in [
+        "curvilinear",
+        "unstructured",
+        "dereference",
+        "regular",
+        "regularnn",
+        "lonlat",
+    ]:
+        raise ValueError("Grid type supplies is not supported")
 
     cdo_command = f"cdo -setgridtype,{grid}"
 
-    run_this(cdo_command, self,  output = "ensemble")
+    run_this(cdo_command, self, output="ensemble")
 
 
-
-
-def assign_coords(self, lon_name = None, lat_name = None):
+def assign_coords(self, lon_name=None, lat_name=None):
     """
     Assign coordinates to variables
 
@@ -64,7 +69,9 @@ def assign_coords(self, lon_name = None, lat_name = None):
     nco_command = "ncatted "
 
     for vv in self.variables:
-        nco_command += "-a coordinates,"+ vv + ",c,c,'" + lon_name + " " + lat_name + "' "
+        nco_command += (
+            "-a coordinates," + vv + ",c,c,'" + lon_name + " " + lat_name + "' "
+        )
 
     target = ""
     if type(self.start) is list:
@@ -73,7 +80,7 @@ def assign_coords(self, lon_name = None, lat_name = None):
         if self.start == self.current:
             target = temp_file("nc")
 
-    nco_command+= self.current + " " + target
+    nco_command += self.current + " " + target
 
     target = run_nco(nco_command, target)
 
@@ -81,13 +88,10 @@ def assign_coords(self, lon_name = None, lat_name = None):
         self.current = target
 
     # clean up the directory
-    cleanup(keep = self.current)
+    cleanup(keep=self.current)
 
     self.history.append(nco_command)
     self._hold_history = copy.deepcopy(self.history)
-
-
-
 
 
 def set_attributes(self, att_dict):
@@ -122,17 +126,17 @@ def set_attributes(self, att_dict):
         if self.start == self.current:
             target = temp_file("nc")
 
-    nco_command+= self.current + " " + target
+    nco_command += self.current + " " + target
 
     target = run_nco(nco_command, target)
 
     if target != "":
-      #  nc_safe.remove(self.current)
+        #  nc_safe.remove(self.current)
         self.current = target
-      #  nc_safe.append(self.current)
+    #  nc_safe.append(self.current)
 
     # clean up the directory
-    cleanup(keep = self.current)
+    cleanup(keep=self.current)
 
     self.history.append(nco_command)
     self._hold_history = copy.deepcopy(self.history)
@@ -157,7 +161,6 @@ def delete_attributes(self, atts):
 
     # change the units in turn. This doesn't seem to be something you can chain?
 
-
     nco_command = "ncatted "
 
     if type(atts) is str:
@@ -174,16 +177,16 @@ def delete_attributes(self, atts):
         if self.start == self.current:
             target = temp_file("nc")
 
-    nco_command+= self.current + " " + target
+    nco_command += self.current + " " + target
 
     target = run_nco(nco_command, target)
 
     if target != "":
-   #     nc_safe.remove(self.current)
+        #     nc_safe.remove(self.current)
         self.current = target
-   #     nc_safe.append(self.current)
+    #     nc_safe.append(self.current)
 
     # clean up the directory
-    cleanup(keep = self.current)
+    cleanup(keep=self.current)
 
     self.history.append(nco_command)

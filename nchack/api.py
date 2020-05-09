@@ -17,7 +17,8 @@ import multiprocessing as mp
 # A custom format for warnings.
 def custom_formatwarning(msg, *args, **kwargs):
     # ignore everything except the message
-    return str(msg) + '\n'
+    return str(msg) + "\n"
+
 
 warnings.formatwarning = custom_formatwarning
 
@@ -39,7 +40,9 @@ from .temp_file import temp_file
 
 # set up the session info
 letters = string.ascii_lowercase
-session_info["stamp"] = "nchack" + "".join(random.choice(letters) for i in range(8)) + "nchack"
+session_info["stamp"] = (
+    "nchack" + "".join(random.choice(letters) for i in range(8)) + "nchack"
+)
 session_info["temp_dir"] = "/tmp/"
 session_info["thread_safe"] = False
 session_info["lazy"] = False
@@ -79,7 +82,12 @@ def options(**kwargs):
             if key == "cores":
                 if type(kwargs[key]) is int:
                     if kwargs[key] > mp.cpu_count():
-                        raise ValueError(str(kwargs[key]) + " is greater than the number of system cores (" + str(mp.cpu_count()) + ")")
+                        raise ValueError(
+                            str(kwargs[key])
+                            + " is greater than the number of system cores ("
+                            + str(mp.cpu_count())
+                            + ")"
+                        )
                     session_info[key] = kwargs[key]
                 else:
                     raise TypeError("cores must be an int")
@@ -98,7 +106,7 @@ def convert_bytes(num):
     """
      A function to make file size human readable
     """
-    for x in ['bytes', 'KB', 'MB', 'GB', 'TB']:
+    for x in ["bytes", "KB", "MB", "GB", "TB"]:
         if num < 1000.0:
             return str(num) + " " + x
         num /= 1000.0
@@ -113,8 +121,7 @@ def file_size(file_path):
         return file_info.st_size
 
 
-
-def open_data(x = None, suppress_messages = False, checks = False):
+def open_data(x=None, suppress_messages=False, checks=False):
     """
     Read netcdf data as a DataSet object
 
@@ -128,7 +135,7 @@ def open_data(x = None, suppress_messages = False, checks = False):
 
     # make sure data has been supplied
     if x is None:
-            raise ValueError("No data was supplied!")
+        raise ValueError("No data was supplied!")
 
     # coerce an iterable to a list
     if type(x) is not str:
@@ -137,24 +144,31 @@ def open_data(x = None, suppress_messages = False, checks = False):
             if type(ff) is not str:
                 raise TypeError("You have not supplied an iterable made of file paths!")
 
-
     # check the files provided exist
     if type(x) is str:
         if os.path.exists(x) == False:
             raise ValueError("Data set " + x + " does not exist!")
 
         if checks:
-            out = subprocess.run("cdo sinfo " + x, shell = True, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+            out = subprocess.run(
+                "cdo sinfo " + x,
+                shell=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+            )
             if "Open failed" in out.stderr.decode("utf-8"):
-                mes = out.stderr.decode("utf-8").replace("cdo    sinfo: ", "").replace("<\n", "").replace("\n", "")
+                mes = (
+                    out.stderr.decode("utf-8")
+                    .replace("cdo    sinfo: ", "")
+                    .replace("<\n", "")
+                    .replace("\n", "")
+                )
                 mes = re.sub(" +", " ", mes)
                 raise ValueError(mes)
-
 
         else:
             nc_safe.append(x)
             nc_protected.append(x)
-
 
     # it's possible there are duplicates in the data
     # Get rid of them..
@@ -164,7 +178,7 @@ def open_data(x = None, suppress_messages = False, checks = False):
         orig_size = len(x)
         x = list(dict.fromkeys(x))
         if len(x) < orig_size:
-            warnings.warn(message = "Duplicates in data set have been removed!")
+            warnings.warn(message="Duplicates in data set have been removed!")
 
     if type(x) is list:
         if checks:
@@ -179,9 +193,19 @@ def open_data(x = None, suppress_messages = False, checks = False):
                 raise ValueError("Data set " + ff + " does not exist!")
             else:
                 if checks:
-                    out = subprocess.run("cdo sinfo " + ff, shell = True, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+                    out = subprocess.run(
+                        "cdo sinfo " + ff,
+                        shell=True,
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.PIPE,
+                    )
                     if "Open failed" in out.stderr.decode("utf-8"):
-                        mes = out.stderr.decode("utf-8").replace("cdo    sinfo: ", "").replace("<\n", "").replace("\n", "")
+                        mes = (
+                            out.stderr.decode("utf-8")
+                            .replace("cdo    sinfo: ", "")
+                            .replace("<\n", "")
+                            .replace("\n", "")
+                        )
                         mes = re.sub(" +", " ", mes)
                         raise ValueError(mes)
                 nc_safe.append(ff)
@@ -195,7 +219,7 @@ def open_data(x = None, suppress_messages = False, checks = False):
     return DataSet(x)
 
 
-def merge(*datasets, match = ["day", "year", "month"]):
+def merge(*datasets, match=["day", "year", "month"]):
     all_files = []
     for dataset in datasets:
         if ("DataSet" in str(type(dataset))) == False:
@@ -207,12 +231,11 @@ def merge(*datasets, match = ["day", "year", "month"]):
         else:
             all_files += dataset.current
     result = open_data(all_files)
-    result.merge(match = match)
+    result.merge(match=match)
     return result
 
 
-
-def cor_time(x = None, y = None):
+def cor_time(x=None, y=None):
 
     if ("DataSet" in str(type(x))) == False:
         raise TypeError("Please check x is a dataset")
@@ -223,7 +246,6 @@ def cor_time(x = None, y = None):
 
     a = x.copy()
     b = y.copy()
-
 
     a.run()
     b.run()
@@ -240,22 +262,19 @@ def cor_time(x = None, y = None):
         print("Only using a subset of variables from y")
         b.run()
 
-
-    #if type(x.current) is not str or type(y.current) is not str:
-        #raise TypeError("This method can only work for single variable data sets")
+    # if type(x.current) is not str or type(y.current) is not str:
+    # raise TypeError("This method can only work for single variable data sets")
 
     target = temp_file("nc")
     command = "cdo timcor " + a.current + " " + b.current + " " + target
-    target = run_cdo(command, target = target)
+    target = run_cdo(command, target=target)
 
     data = open_data(target)
 
     return data
 
 
-
-
-def cor_space(x = None, y = None):
+def cor_space(x=None, y=None):
 
     if ("DataSet" in str(type(x))) == False:
         raise TypeError("Please check x is a dataset")
@@ -266,7 +285,6 @@ def cor_space(x = None, y = None):
 
     a = x.copy()
     b = y.copy()
-
 
     a.run()
     b.run()
@@ -283,27 +301,24 @@ def cor_space(x = None, y = None):
         print("Only using a subset of variables from y")
         b.run()
 
-
-    #if type(x.current) is not str or type(y.current) is not str:
-        #raise TypeError("This method can only work for single variable data sets")
+    # if type(x.current) is not str or type(y.current) is not str:
+    # raise TypeError("This method can only work for single variable data sets")
 
     target = temp_file("nc")
     command = "cdo fldcor " + a.current + " " + b.current + " " + target
-    target = run_cdo(command, target = target)
+    target = run_cdo(command, target=target)
 
     data = open_data(target)
 
     return data
-
-
-
 
 
 class DataSet(object):
     """
     A modifiable ensemble of netcdf files
     """
-    def __init__(self, start = ""):
+
+    def __init__(self, start=""):
         """Initialize the starting file name etc"""
         # Attribuates of interest to users
         self.history = []
@@ -319,7 +334,6 @@ class DataSet(object):
         self._merged = False
         self._safe = []
         self._zip = False
-
 
     def __getitem__(self, index):
         if type(self.current) is str:
@@ -344,18 +358,24 @@ class DataSet(object):
 
     def __repr__(self):
         # tidy up the output first
-        if isinstance(self.start,list):
+        if isinstance(self.start, list):
             start = str(len(self.start)) + " member ensemble"
         if type(self.start) == str:
             start = self.start
 
-        if isinstance(self.current,list):
+        if isinstance(self.current, list):
             current = str(len(self.current)) + " member ensemble"
         if type(self.current) == str:
             current = self.current
 
-        return "<nchack.DataSet>:\nstart: " + start + "\ncurrent: " + current + "\noperations: " + str(len(self.history))
-
+        return (
+            "<nchack.DataSet>:\nstart: "
+            + start
+            + "\ncurrent: "
+            + current
+            + "\noperations: "
+            + str(len(self.history))
+        )
 
     @property
     def size(self):
@@ -391,9 +411,16 @@ class DataSet(object):
 
             sum_size = convert_bytes(sum(all_sizes))
             result = "Number of files in ensemble: " + str(len(self.current)) + "\n"
-            result = result + "Ensemble size: " + sum_size  + "\n"
-            result = result + "Smallest file: " + smallest_file + " has size "  + min_size  + "\n"
-            result = result + "Largest file: " + largest_file + " has size "  + max_size
+            result = result + "Ensemble size: " + sum_size + "\n"
+            result = (
+                result
+                + "Smallest file: "
+                + smallest_file
+                + " has size "
+                + min_size
+                + "\n"
+            )
+            result = result + "Largest file: " + largest_file + " has size " + max_size
             return result
 
     @property
@@ -404,13 +431,26 @@ class DataSet(object):
         """
 
         if type(self.current) is list:
-            raise TypeError("This DataSet object is a list. Please inspect individual files using nc_variables")
+            raise TypeError(
+                "This DataSet object is a list. Please inspect individual files using nc_variables"
+            )
 
-        cdo_result = subprocess.run("cdo showname " + self.current, shell = True, stdout=subprocess.PIPE , stderr=subprocess.PIPE  )
-        cdo_result = str(cdo_result.stdout).replace("b'", "").replace("\\n", "").replace("'", "").strip()
+        cdo_result = subprocess.run(
+            "cdo showname " + self.current,
+            shell=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        cdo_result = (
+            str(cdo_result.stdout)
+            .replace("b'", "")
+            .replace("\\n", "")
+            .replace("'", "")
+            .strip()
+        )
         cdo_result = cdo_result.split()
 
-        return(cdo_result)
+        return cdo_result
 
     @property
     def variables_detailed(self):
@@ -422,23 +462,39 @@ class DataSet(object):
         if type(self.current) is list:
             return "This DataSet object is a list. Please inspect individual files using nc_variables"
 
-        cdo_result = subprocess.run("cdo showname " + self.current, shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        cdo_result = str(cdo_result.stdout).replace("b'", "").replace("\\n", "").replace("'", "").strip()
+        cdo_result = subprocess.run(
+            "cdo showname " + self.current,
+            shell=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        cdo_result = (
+            str(cdo_result.stdout)
+            .replace("b'", "")
+            .replace("\\n", "")
+            .replace("'", "")
+            .strip()
+        )
         cdo_result = cdo_result.split()
         dataset = Dataset(self.current)
 
         longs = None
         units = None
         if "long_name" in str(dataset.variables[cdo_result[0]]):
-                longs = [dataset.variables[x].long_name for x in cdo_result]
+            longs = [dataset.variables[x].long_name for x in cdo_result]
         if "units" in str(dataset.variables[cdo_result[0]]):
-                units = [dataset.variables[x].units for x in cdo_result]
+            units = [dataset.variables[x].units for x in cdo_result]
 
         if longs is None and units is None:
-            return(cdo_result)
+            return cdo_result
 
-        out = subprocess.run("cdo sinfon " + self.current, shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        out = out.stdout.decode('utf-8')
+        out = subprocess.run(
+            "cdo sinfon " + self.current,
+            shell=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        out = out.stdout.decode("utf-8")
         out = out.split("\n")
         out_inc = ["Grid coordinates :" in ff for ff in out]
         var_det = []
@@ -446,17 +502,19 @@ class DataSet(object):
         while True:
             if out_inc[i]:
                 break
-            i+=1
-            var_det.append(out[i-1])
+            i += 1
+            var_det.append(out[i - 1])
 
         var_det = [ff.replace(":", "") for ff in var_det]
         var_det = [" ".join(ff.split()) for ff in var_det]
-        var_det = [ff.replace("Parameter name", "variable").split(" ") for ff in var_det]
+        var_det = [
+            ff.replace("Parameter name", "variable").split(" ") for ff in var_det
+        ]
         sales = var_det[1:]
         labels = var_det[0]
         df = pd.DataFrame.from_records(sales, columns=labels)
         df = df.loc[:, ["Levels", "Points", "variable"]]
-        df = df.rename(columns = {"Levels":"levels", "Points":"points"})
+        df = df.rename(columns={"Levels": "levels", "Points": "points"})
 
         df = pd.DataFrame({"variable": cdo_result}).merge(df)
 
@@ -465,15 +523,11 @@ class DataSet(object):
         if units is not None:
             df["units"] = units
 
-        df = (
-                df
-                .assign(levels = lambda x: x.levels.astype("int"))
-                .assign(points = lambda x: x.points.astype("int"))
-                )
-
+        df = df.assign(levels=lambda x: x.levels.astype("int")).assign(
+            points=lambda x: x.points.astype("int")
+        )
 
         return df
-
 
     @property
     def start(self):
@@ -482,12 +536,11 @@ class DataSet(object):
         """
         return self._start
 
-
     @start.setter
     def start(self, value):
         if type(value) is str:
             self._start = value
-        if isinstance(value,list):
+        if isinstance(value, list):
             self._start = value
 
     @property
@@ -506,14 +559,13 @@ class DataSet(object):
         if type(value) is str:
             nc_safe.append(value)
             self._current = value
-        if isinstance(value,list):
+        if isinstance(value, list):
             if len(value) > 1:
                 self._current = value
             else:
                 self._current = value[0]
             for ff in value:
                 nc_safe.append(ff)
-
 
     @property
     def history(self):
@@ -525,7 +577,6 @@ class DataSet(object):
     @history.setter
     def history(self, value):
         self._history = value
-
 
     def copy(self):
         """
@@ -621,15 +672,11 @@ class DataSet(object):
     from .setters import set_units
     from .setters import set_longnames
 
-
     from .esoteric import set_attributes
     from .esoteric import delete_attributes
 
     from .esoteric import assign_coords
     from .esoteric import set_gridtype
-
-
-
 
     from .time_stat import mean
     from .time_stat import percentile
@@ -705,7 +752,6 @@ class DataSet(object):
 
     from .plot import plot
 
-
     from .compare import compare_all
 
     from .add_etc import add
@@ -719,6 +765,3 @@ class DataSet(object):
     from .reduce import reduce_dims
 
     from .reduce_grid import reduce_grid
-
-
-

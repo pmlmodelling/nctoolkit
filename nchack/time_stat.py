@@ -5,54 +5,61 @@ from .session import nc_safe
 from .temp_file import temp_file
 import copy
 
-def time_stat(self, stat = "mean"):
+
+def time_stat(self, stat="mean"):
     """Method to calculate a stat over all time steps"""
 
     # create cdo command and run it
     cdo_command = f"cdo -tim{stat}"
-    run_this(cdo_command, self,  output = "ensemble")
+    run_this(cdo_command, self, output="ensemble")
+
 
 def sum(self):
     """
     Calculate the sum of all values.
     """
 
-    return time_stat(self, stat = "sum")
+    return time_stat(self, stat="sum")
+
 
 def mean(self):
     """
     Calculate the mean of all values.
     """
 
-    return time_stat(self, stat = "mean")
+    return time_stat(self, stat="mean")
+
 
 def min(self):
     """
     Calculate the minimums of all values.
     """
 
-    return time_stat(self, stat = "min")
+    return time_stat(self, stat="min")
+
 
 def max(self):
     """
     Calculate the maximums of all values.
     """
 
-    return time_stat(self, stat = "max")
+    return time_stat(self, stat="max")
+
 
 def range(self):
     """
     Calculate the ranges of all values.
     """
 
-    return time_stat(self,stat = "range")
+    return time_stat(self, stat="range")
+
 
 def var(self):
     """
     Calculate the variances of all values.
     """
 
-    return time_stat(self, stat = "var")
+    return time_stat(self, stat="var")
 
 
 def cum_sum(self):
@@ -62,11 +69,10 @@ def cum_sum(self):
 
     # create cdo command and runit
     cdo_command = "cdo -timcumsum"
-    run_this(cdo_command, self,  output = "ensemble")
+    run_this(cdo_command, self, output="ensemble")
 
 
-
-def percentile(self, p = None):
+def percentile(self, p=None):
     """
     Calculate the percentile of all values
 
@@ -76,10 +82,10 @@ def percentile(self, p = None):
         Percentile to calculate
     """
     if p is None:
-         raise ValueError("Please supply p")
+        raise ValueError("Please supply p")
 
     if type(p) not in [int, float]:
-         raise TypeError("p is a " + str(type(p)) +  ", not int or float")
+        raise TypeError("p is a " + str(type(p)) + ", not int or float")
 
     if (p < 0) or (p > 100):
         raise ValueError("p: " + str(p) + " is not between 0 and 100!")
@@ -91,21 +97,26 @@ def percentile(self, p = None):
     for ff in self:
         target = temp_file("nc")
 
-        cdo_command = "cdo -timpctl," + str(p) + " " + ff + " -timmin " + ff + " -timmax " + ff + " "  + target
+        cdo_command = (
+            "cdo -timpctl,"
+            + str(p)
+            + " "
+            + ff
+            + " -timmin "
+            + ff
+            + " -timmax "
+            + ff
+            + " "
+            + target
+        )
 
         target = run_cdo(cdo_command, target)
         new_files.append(target)
         new_commands.append(cdo_command)
 
-    self.history+=new_commands
+    self.history += new_commands
     self._hold_history = copy.deepcopy(self.history)
 
     self.current = new_files
 
     cleanup()
-
-
-
-
-
-

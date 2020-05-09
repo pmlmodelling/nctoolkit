@@ -1,6 +1,6 @@
-
 from .cleanup import cleanup
 from .runthis import run_this
+
 
 def zip(self):
     """
@@ -11,5 +11,4 @@ def zip(self):
 
     if len(self.history) == len(self._hold_history):
         cdo_command = "cdo copy "
-        run_this(cdo_command, self, output = "ensemble")
-
+        run_this(cdo_command, self, output="ensemble")

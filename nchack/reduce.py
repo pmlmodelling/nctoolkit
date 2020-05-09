@@ -1,6 +1,6 @@
-
 from .cleanup import cleanup
 from .runthis import run_this
+
 
 def reduce_dims(self):
     """
@@ -13,5 +13,4 @@ def reduce_dims(self):
     else:
         cdo_command = "cdo --reduce_dim"
 
-    run_this(cdo_command, self, output = "ensemble")
-
+    run_this(cdo_command, self, output="ensemble")

@@ -12,7 +12,7 @@ from .session import session_info
 import copy
 
 
-def split_cdo(self, method = "year"):
+def split_cdo(self, method="year"):
     """
     Method to split files by period
     """
@@ -35,8 +35,8 @@ def split_cdo(self, method = "year"):
             result = result.f_frsize * result.f_bavail
             session_info["size"] = result
 
-            if os.path.getsize(ff)*2 > session_info["size"]:
-                    session_info["temp_dir"] = "/var/tmp/"
+            if os.path.getsize(ff) * 2 > session_info["size"]:
+                session_info["temp_dir"] = "/var/tmp/"
 
         split_base = temp_file()
 
@@ -56,12 +56,12 @@ def split_cdo(self, method = "year"):
         for x in mylist:
             if split_base in x:
                 new_files.append(x)
-                counter+=1
+                counter += 1
 
         if counter == 0:
             raise ValueError("Splitting the file did not work!")
 
-    self.history+= commands
+    self.history += commands
     self._hold_history = copy.deepcopy(self.history)
 
     self._merged = False
@@ -71,7 +71,7 @@ def split_cdo(self, method = "year"):
     self.disk_clean()
 
 
-def split(self, by = None):
+def split(self, by=None):
     """
     Split the ensemble
     Each file in the ensemble will be separated into new files based on the splitting argument.
@@ -98,7 +98,4 @@ def split(self, by = None):
     if by == "day":
         method = "day"
 
-    split_cdo(self, method = method)
-
-
-
+    split_cdo(self, method=method)

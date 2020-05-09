@@ -9,7 +9,8 @@ from .cleanup import disk_clean
 import subprocess
 import copy
 
-def clip(self, lon = [-180, 180], lat = [-90, 90], cdo = True):
+
+def clip(self, lon=[-180, 180], lat=[-90, 90], cdo=True):
     """
     Clip to a rectangular longitude and latitude box
 
@@ -23,7 +24,7 @@ def clip(self, lon = [-180, 180], lat = [-90, 90], cdo = True):
         Do you want this to use CDO or NCO for clipping? Defaults to True. Set to False if you want to call NCO. NCO is better at handling very large horizontal grids.
     """
 
-    if  (type(lon) is not list) or (type(lat) is not list):
+    if (type(lon) is not list) or (type(lat) is not list):
         raise TypeError("Check that lon/lat ranges are tuples")
 
     if len(lon) != 2:
@@ -40,21 +41,20 @@ def clip(self, lon = [-180, 180], lat = [-90, 90], cdo = True):
         if (type(ll) is not int) and (type(ll) is not float):
             raise TypeError(f"{ll} from lat is not a float or int")
 
-
     # now, clip to the lonlat box we need
 
-    if  lat[1] < lat[0]:
+    if lat[1] < lat[0]:
         raise ValueError("Check lat order")
-    if  lon[1] < lon[0]:
+    if lon[1] < lon[0]:
         raise ValueError("Check lon order")
 
     if cdo:
         if (lon[0] >= -180) and (lon[1] <= 180) and (lat[0] >= -90) and (lat[1] <= 90):
             lat_box = str_flatten(lon + lat)
-            cdo_command = ("cdo -sellonlatbox," + lat_box)
+            cdo_command = "cdo -sellonlatbox," + lat_box
             cdo_command = tidy_command(cdo_command)
 
-            run_this(cdo_command, self, output = "ensemble")
+            run_this(cdo_command, self, output="ensemble")
             return None
         else:
             raise ValueError("The lonlat box supplied is not valid!")
@@ -66,17 +66,65 @@ def clip(self, lon = [-180, 180], lat = [-90, 90], cdo = True):
 
     for ff in self:
 
-        out = subprocess.run(f"cdo griddes {ff}", shell = True, stdout=subprocess.PIPE, stderr = subprocess.PIPE)
-        lon_name = [x for x in str(out.stdout).replace("b'", "").split("\\n") if "xname" in x][0].split(" ")[-1]
-        lat_name = [x for x in str(out.stdout).replace("b'", "").split("\\n") if "yname" in x][0].split(" ")[-1]
+        out = subprocess.run(
+            f"cdo griddes {ff}",
+            shell=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        lon_name = [
+            x for x in str(out.stdout).replace("b'", "").split("\\n") if "xname" in x
+        ][0].split(" ")[-1]
+        lat_name = [
+            x for x in str(out.stdout).replace("b'", "").split("\\n") if "yname" in x
+        ][0].split(" ")[-1]
         target = temp_file("nc")
 
-        nco_command = "ncea -d " + lat_name + "," + str(float(lat[0])) + "," + str(float(lat[1])) + " -d " + lon_name + "," + str(float(lon[0])) + "," + str(float(lon[1]))  + " " + ff + " " + target
+        nco_command = (
+            "ncea -d "
+            + lat_name
+            + ","
+            + str(float(lat[0]))
+            + ","
+            + str(float(lat[1]))
+            + " -d "
+            + lon_name
+            + ","
+            + str(float(lon[0]))
+            + ","
+            + str(float(lon[1]))
+            + " "
+            + ff
+            + " "
+            + target
+        )
         if lon == [-180, 180]:
-            nco_command = "ncea -d " + lat_name + "," + str(float(lat[0])) + "," + str(float(lat[1])) +  " " + ff + " " + target
+            nco_command = (
+                "ncea -d "
+                + lat_name
+                + ","
+                + str(float(lat[0]))
+                + ","
+                + str(float(lat[1]))
+                + " "
+                + ff
+                + " "
+                + target
+            )
 
         if lat == [-90, 90]:
-            nco_command = "ncea  -d " + lon_name + "," + str(float(lon[0])) + "," + str(float(lon[1]))  + " " + ff + " " + target
+            nco_command = (
+                "ncea  -d "
+                + lon_name
+                + ","
+                + str(float(lon[0]))
+                + ","
+                + str(float(lon[1]))
+                + " "
+                + ff
+                + " "
+                + target
+            )
 
         target = run_nco(nco_command, target)
 
@@ -84,15 +132,10 @@ def clip(self, lon = [-180, 180], lat = [-90, 90], cdo = True):
 
         new_files.append(target)
 
-    self.history+=new_commands
+    self.history += new_commands
     self._hold_history = copy.deepcopy(self.history)
 
     self.current = new_files
 
     cleanup()
     self.disk_clean()
-
-
-
-
-

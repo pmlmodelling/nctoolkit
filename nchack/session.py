@@ -1,10 +1,10 @@
-
 import glob
 import os
 
 
 def show_session():
     return session_info
+
 
 session_info = dict()
 nc_safe = []
@@ -26,6 +26,3 @@ def session_files():
     candidates = [x for x in candidates if os.path.exists(x)]
 
     return candidates
-
-
-

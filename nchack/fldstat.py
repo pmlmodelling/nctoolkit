@@ -1,4 +1,3 @@
-
 from .session import nc_safe
 import copy
 from .runthis import run_this
@@ -8,42 +7,49 @@ from .cleanup import cleanup
 from .cleanup import disk_clean
 
 
-def fldstat(self, stat = "mean",):
+def fldstat(
+    self, stat="mean",
+):
     """Method to calculate the spatial stat from a netcdf"""
 
     cdo_command = f"cdo -fld{stat}"
 
-    run_this(cdo_command, self,  output = "ensemble")
+    run_this(cdo_command, self, output="ensemble")
+
 
 def spatial_mean(self):
     """
     Calculate an area weighted spatial mean of variables. This is performed for each time step.
     """
 
-    return fldstat(self, stat = "mean")
+    return fldstat(self, stat="mean")
+
 
 def spatial_min(self):
     """
     Calculate a spatial minimum of variables. This is performed for each time step.
 
     """
-    return fldstat(self, stat = "min")
+    return fldstat(self, stat="min")
+
 
 def spatial_max(self):
     """
     Calculate a spatial maximum of variables. This is performed for each time step.
     """
 
-    return fldstat(self, stat = "max")
+    return fldstat(self, stat="max")
+
 
 def spatial_range(self):
     """
     Calculate a spatial range of variables. This is performed for each time step.
     """
 
-    return fldstat(self, stat = "range")
+    return fldstat(self, stat="range")
 
-def spatial_sum(self, by_area = False):
+
+def spatial_sum(self, by_area=False):
     """
     Calculate the spatial sum of variables. This is performed for each time step.
 
@@ -65,10 +71,9 @@ def spatial_sum(self, by_area = False):
         else:
             cdo_command = "cdo -fldsum"
 
-        run_this(cdo_command, self,  output = "ensemble")
+        run_this(cdo_command, self, output="ensemble")
 
         return None
-
 
     new_files = []
     new_commands = []
@@ -76,12 +81,11 @@ def spatial_sum(self, by_area = False):
 
         target = temp_file("nc")
         cdo_command = f"cdo -fldsum -mul {ff} -gridarea {ff} {target}"
-        target = run_cdo(cdo_command, target = target)
+        target = run_cdo(cdo_command, target=target)
         new_files.append(target)
         new_commands.append(cdo_command)
 
-
-    self.history+=new_commands
+    self.history += new_commands
     self._hold_history = copy.deepcopy(self.history)
 
     self.current = new_files
@@ -90,10 +94,7 @@ def spatial_sum(self, by_area = False):
     self.disk_clean()
 
 
-
-
-
-def spatial_percentile(self, p = None):
+def spatial_percentile(self, p=None):
     """
     Calculate the spatial sum of variables. This is performed for each time step.
     Parameters
@@ -112,8 +113,4 @@ def spatial_percentile(self, p = None):
 
     cdo_command = f"cdo -fldpctl,{str(p)}"
 
-    run_this(cdo_command, self,  output = "ensemble")
-
-
-
-
+    run_this(cdo_command, self, output="ensemble")

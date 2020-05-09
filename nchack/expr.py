@@ -7,7 +7,8 @@ import copy
 # ensure methods work with all logical operators.
 # convert code for fixing expression to a function. Invitation to bugs currently
 
-def fix_expression(operations = None, i_frame = None):
+
+def fix_expression(operations=None, i_frame=None):
 
     if type(operations) is not dict:
         raise TypeError("No expression was provided")
@@ -16,7 +17,7 @@ def fix_expression(operations = None, i_frame = None):
 
     expr = []
 
-    for key,value in operations.items():
+    for key, value in operations.items():
 
         if type(key) is not str:
             raise TypeError(f"{key} is not a str")
@@ -27,7 +28,11 @@ def fix_expression(operations = None, i_frame = None):
             if x in value:
                 raise ValueError("Invalid expression provided")
 
-        new_x = ''.join((' {} '.format(el) if el in '=><+-/*^()&' else el for el in value)).replace(" &  & ", " && ").replace(" & ", " && ")
+        new_x = (
+            "".join((" {} ".format(el) if el in "=><+-/*^()&" else el for el in value))
+            .replace(" &  & ", " && ")
+            .replace(" & ", " && ")
+        )
         new_x = new_x.replace(" | ", " || ")
         expr_split = new_x.split(" ")
         new_expr = ""
@@ -38,24 +43,26 @@ def fix_expression(operations = None, i_frame = None):
                 if x.replace("@", "") in i_frame.f_back.f_locals:
                     new_x = i_frame.f_back.f_locals[x.replace("@", "")]
                 else:
-                    raise ValueError(str(x.replace("@", "")) + " is not a local variable")
+                    raise ValueError(
+                        str(x.replace("@", "")) + " is not a local variable"
+                    )
 
                 if isinstance(new_x, (int, float)) == False:
-                    raise TypeError(x +  " is not numeric!")
-                new_expr +=  str(new_x)
+                    raise TypeError(x + " is not numeric!")
+                new_expr += str(new_x)
             else:
-                new_expr +=  x
+                new_expr += x
 
         expr.append(key + "=" + new_expr)
 
     expr = ";".join(expr)
-    expr = expr.replace(" ", "" )
+    expr = expr.replace(" ", "")
     expr = '"' + expr + '"'
 
     return expr
 
 
-def mutate(self, operations = None):
+def mutate(self, operations=None):
 
     if type(operations) is not dict:
         raise TypeError("No expression was provided")
@@ -63,15 +70,15 @@ def mutate(self, operations = None):
     frame = inspect.currentframe()
 
     try:
-        expr = fix_expression(operations, i_frame = frame)
+        expr = fix_expression(operations, i_frame=frame)
     finally:
         del frame
     # create the cdo call and run it
     cdo_command = f"cdo -aexpr,{expr}"
-    run_this(cdo_command, self, output = "ensemble")
+    run_this(cdo_command, self, output="ensemble")
 
 
-def transmute(self, operations = None):
+def transmute(self, operations=None):
     """
     Create new variables using mathematical expressions, and drop original variables
 
@@ -85,16 +92,15 @@ def transmute(self, operations = None):
     frame = inspect.currentframe()
 
     try:
-        expr = fix_expression(operations, i_frame = frame)
+        expr = fix_expression(operations, i_frame=frame)
     finally:
         del frame
     # create the cdo call and run it
     cdo_command = "cdo -expr," + expr
-    run_this(cdo_command, self, output = "ensemble")
+    run_this(cdo_command, self, output="ensemble")
 
 
-
-def sum_all(self, drop = True):
+def sum_all(self, drop=True):
     """
     Calculate the sum of all variables for each time step
 
@@ -109,27 +115,16 @@ def sum_all(self, drop = True):
     if (type(self.current) is list) and (self._merged == False):
         raise TypeError("This only works for single files presently")
 
-
     if drop == True:
-        self.transmute({"total":"+".join(self.variables)})
+        self.transmute({"total": "+".join(self.variables)})
 
     else:
         if "total" not in self.variables:
-            self.mutate({"total":"+".join(self.variables)})
+            self.mutate({"total": "+".join(self.variables)})
         else:
             i = 0
             while True:
                 if f"total{i}" not in self.variables:
                     break
                 i += 1
-            self.mutate({"total" + str(i):"+".join(self.variables)})
-
-
-
-
-
-
-
-
-
-
+            self.mutate({"total" + str(i): "+".join(self.variables)})

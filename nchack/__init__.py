@@ -1,11 +1,4 @@
-
-from .api import ( open_data ,
-    merge,
-    cor_time,
-    cor_space,
-    options,
-    DataSet
-    )
+from .api import open_data, merge, cor_time, cor_space, options, DataSet
 
 from .cleanup import cleanup
 from .cleanup import clean_all
@@ -19,6 +12,3 @@ from .create_ensemble import generate_ensemble
 from .show import nc_variables
 from .show import nc_years
 from .session import session_files
-
-
-

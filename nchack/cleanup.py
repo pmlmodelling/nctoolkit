@@ -1,4 +1,3 @@
-
 import os
 import glob
 import shutil
@@ -9,7 +8,8 @@ from .session import session_info
 
 # keep is a file you do not want to delete
 
-def cleanup(keep = None):
+
+def cleanup(keep=None):
     """
     Temp file cleaner
 
@@ -40,7 +40,13 @@ def cleanup(keep = None):
 
     # finally, to be ultra-safe, we will make sure all of the files to be deleted are in the temporary folder
 
-    delete_these = [v for v in delete_these if v.startswith("/tmp/") or v.startswith("/var/tmp/") or v.startswith("/usr/tmp/")]
+    delete_these = [
+        v
+        for v in delete_these
+        if v.startswith("/tmp/")
+        or v.startswith("/var/tmp/")
+        or v.startswith("/usr/tmp/")
+    ]
 
     delete_these = [x for x in delete_these if os.path.exists(x)]
 
@@ -56,7 +62,7 @@ def cleanup(keep = None):
     session_info["size"] = result
 
     if session_info["size"] > (1.5 * session_info["latest_size"]):
-            session_info["temp_dir"] = "/tmp/"
+        session_info["temp_dir"] = "/tmp/"
 
 
 def clean_all():
@@ -93,13 +99,17 @@ def clean_all():
 
     # finally, to be ultra-safe, we will make sure all of the files to be deleted are in a temporary folder
 
-    delete_these = [v for v in delete_these if v.startswith("/tmp/") or v.startswith("/var/tmp/") or v.startswith("/usr/tmp/")]
+    delete_these = [
+        v
+        for v in delete_these
+        if v.startswith("/tmp/")
+        or v.startswith("/var/tmp/")
+        or v.startswith("/usr/tmp/")
+    ]
 
     for dd in delete_these:
         if os.path.exists(dd):
-            nc_remove(dd, deep = True)
-
-
+            nc_remove(dd, deep=True)
 
 
 def deep_clean():
@@ -112,7 +122,8 @@ def deep_clean():
     ##mylist = mylist + [f for f in glob.glob("/usr/tmp/" + "*.nc*")]
     mylist = [f for f in mylist if "nchack" in f]
     for ff in mylist:
-        nc_remove(ff, deep = True)
+        nc_remove(ff, deep=True)
+
 
 def temp_check():
     """
@@ -125,10 +136,13 @@ def temp_check():
 
     if len(mylist) > 0:
         if len(mylist) == 1:
-            print(f"{len(mylist)} file was created by nchack in prior or current sessions. Consider running deep_clean!")
+            print(
+                f"{len(mylist)} file was created by nchack in prior or current sessions. Consider running deep_clean!"
+            )
         else:
-            print(f"{len(mylist)} files were created by nchack in prior or current sessions. Consider running deep_clean!")
-
+            print(
+                f"{len(mylist)} files were created by nchack in prior or current sessions. Consider running deep_clean!"
+            )
 
 
 def disk_clean(self):
@@ -159,20 +173,19 @@ def disk_clean(self):
 
     # loop through the existing ones
     for ff in ff_list:
-    # check if the file is in /var/tmp
-    # if it is, keep it that way
-    # check the space remaining the /tmp
+        # check if the file is in /var/tmp
+        # if it is, keep it that way
+        # check the space remaining the /tmp
         result = os.statvfs("/tmp/")
         result = result.f_frsize * result.f_bavail
-    # if there is less than 0.5 GB left, move the file to /var/tmp
+        # if there is less than 0.5 GB left, move the file to /var/tmp
         if result < 0.5 * 1e9:
             if ff.startswith("/tmp/"):
-                new_ff =  ff.replace("/tmp/", "/var/tmp/")
+                new_ff = ff.replace("/tmp/", "/var/tmp/")
                 nc_safe.append(new_ff)
                 nc_safe.remove(ff)
                 shutil.copyfile(ff, new_ff)
                 self.current = [new_ff if file == ff else file for file in self.current]
-
 
     if type(self.current) is list:
         self.current = self.current
@@ -180,5 +193,3 @@ def disk_clean(self):
         self.current = self.current[0]
 
     cleanup()
-
-

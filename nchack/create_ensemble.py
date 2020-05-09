@@ -1,4 +1,3 @@
-
 import glob
 import os
 import copy
@@ -6,7 +5,8 @@ import pandas as pd
 
 # function to find files in directory with a specified variable
 
-def create_ensemble(path = "", var = None, recursive = True):
+
+def create_ensemble(path="", var=None, recursive=True):
     """
     Generate an ensemble
 
@@ -43,7 +43,8 @@ def create_ensemble(path = "", var = None, recursive = True):
 
     return files
 
-def generate_ensemble(path = "", recursive = True):
+
+def generate_ensemble(path="", recursive=True):
 
     """
     A candidate ensemble generator. Ensembles are generated based on the distinct variable, time and grids available in the files detected in the given path.
@@ -61,7 +62,7 @@ def generate_ensemble(path = "", recursive = True):
         A list of potential ensembles.
     """
 
-    ensemble = create_ensemble(path, recursive = recursive)
+    ensemble = create_ensemble(path, recursive=recursive)
     all_info = []
     for ff in ensemble:
         cdo_info = os.popen(f"cdo sinfon {ff}").read()
@@ -79,16 +80,16 @@ def generate_ensemble(path = "", recursive = True):
         if cdo_times > 12:
             cdo_times = 3
 
-        cdo_info = cdo_info[0:cdo_info.find("Time coord")]
-        df = pd.DataFrame({"path":[ff], "info":[cdo_info], "times": [cdo_times]} )
+        cdo_info = cdo_info[0 : cdo_info.find("Time coord")]
+        df = pd.DataFrame({"path": [ff], "info": [cdo_info], "times": [cdo_times]})
         all_info.append(df)
     all_info = pd.concat(all_info)
-    unique_info = all_info.drop(columns = ["path"]).drop_duplicates()
+    unique_info = all_info.drop(columns=["path"]).drop_duplicates()
 
     all_ensembles = []
 
     for i in range(0, len(unique_info)):
-        i_files = all_info.merge(unique_info.iloc[i:i+1,:]).path.tolist()
+        i_files = all_info.merge(unique_info.iloc[i : i + 1, :]).path.tolist()
         ff = i_files[0]
         i_variables = os.popen(f"cdo showname {ff}").read()
         i_variables = i_variables.replace("\n", "").strip().split(" ")
@@ -97,7 +98,12 @@ def generate_ensemble(path = "", recursive = True):
         i_levels = i_levels.split("\n")
         i_levels = int(i_levels[0])
 
-        i_dict = {"path": i_files, "variables":i_variables, "n_files": len(i_files),  "n_levels": i_levels}
+        i_dict = {
+            "path": i_files,
+            "variables": i_variables,
+            "n_files": len(i_files),
+            "n_levels": i_levels,
+        }
         all_ensembles.append(i_dict)
 
     return all_ensembles

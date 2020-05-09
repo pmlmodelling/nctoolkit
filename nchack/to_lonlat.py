@@ -17,7 +17,8 @@ from .runthis import run_this
 from .runthis import run_cdo
 from .regrid import regrid
 
-def to_lonlat(self, lon = None, lat = None, res = None, method = "bil"):
+
+def to_lonlat(self, lon=None, lat=None, res=None, method="bil"):
 
     """
     Regrid a dataset to a regular lonlat grid
@@ -42,7 +43,7 @@ def to_lonlat(self, lon = None, lat = None, res = None, method = "bil"):
     if res is None:
         raise ValueError("Please supply res")
 
-    if  (type(lon) is not list) and (type(lat) is not list):
+    if (type(lon) is not list) and (type(lat) is not list):
         raise TypeError("Check that lon/lat ranges are lists")
 
     if len(lon) != 2:
@@ -59,12 +60,11 @@ def to_lonlat(self, lon = None, lat = None, res = None, method = "bil"):
         if (type(ll) is not int) and (type(ll) is not float):
             raise TypeError(f"{ll} from lat is not an int or float")
 
-
     # now, clip to the lonlat box we need
 
-    if  lat[1] < lat[0]:
+    if lat[1] < lat[0]:
         raise ValueError("Check lat order")
-    if  lon[1] < lon[0]:
+    if lon[1] < lon[0]:
         raise ValueError("Check lon order")
 
     if type(res) is int:
@@ -91,11 +91,11 @@ def to_lonlat(self, lon = None, lat = None, res = None, method = "bil"):
 
     grid_file = temp_file()[0:-2]
 
-    xsize = int((lon[1] - lon[0])/res[0]) + 1
-    ysize = int((lat[1] - lat[0])/res[1]) + 1
+    xsize = int((lon[1] - lon[0]) / res[0]) + 1
+    ysize = int((lat[1] - lat[0]) / res[1]) + 1
     lon_step = res[0]
     lat_step = res[1]
-    f = open(grid_file, 'w')
+    f = open(grid_file, "w")
     f.write("gridtype = lonlat\n")
     f.write("xsize = " + str(xsize) + "\n")
     f.write("ysize = " + str(ysize) + "\n")
@@ -108,14 +108,14 @@ def to_lonlat(self, lon = None, lat = None, res = None, method = "bil"):
     f.write("ylongname = " + "Latitude" + "\n")
     f.write("yunits = " + "degrees_north" + "\n")
 
-    f.write("xinc = " + str(lon_step) +"\n")
-    f.write("yinc = " + str(lat_step) +  "\n")
+    f.write("xinc = " + str(lon_step) + "\n")
+    f.write("yinc = " + str(lat_step) + "\n")
     f.close()
 
     nc_safe.append(grid_file)
 
     # call regrid
-    self.regrid(grid = grid_file, method = method)
+    self.regrid(grid=grid_file, method=method)
 
     nc_safe.remove(grid_file)
 

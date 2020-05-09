@@ -8,7 +8,8 @@ from .cleanup import cleanup
 from .cleanup import disk_clean
 import warnings
 
-def ensemble_percentile(self, p = None):
+
+def ensemble_percentile(self, p=None):
     """
     Calculate an ensemble percentile
     This will calculate the percentles for each time step in the files. For example, if you had an ensemble of files where each file included 12 months of data, it would calculate the percentile for each month.
@@ -36,18 +37,17 @@ def ensemble_percentile(self, p = None):
 
     # Throw an error if there is only a single file in the tracker
     if type(self.current) is not list:
-        warnings.warn(message = "There is only one file in the dataset")
+        warnings.warn(message="There is only one file in the dataset")
 
     # create the cdo command and run it
     cdo_command = f"cdo --sortname -enspctl,{p}"
-    run_this(cdo_command, self, output = "one")
+    run_this(cdo_command, self, output="one")
 
     # set the _merged attribute to True
     self._merged = True
 
 
-
-def ensemble_nco(self, method, vars = None, ignore_time = False):
+def ensemble_nco(self, method, vars=None, ignore_time=False):
     """
     NCO Method to calculate an ensemble stat from a list of files
     """
@@ -67,7 +67,7 @@ def ensemble_nco(self, method, vars = None, ignore_time = False):
     ff_ensemble = copy.deepcopy(self.current)
 
     if type(ff_ensemble) is not list:
-        warnings.warn(message = "There is only one file in the dataset")
+        warnings.warn(message="There is only one file in the dataset")
 
     if type(self.current) is str:
         ff_ensemble = [copy.deepcopy(self.current)]
@@ -90,7 +90,7 @@ def ensemble_nco(self, method, vars = None, ignore_time = False):
     # run the call
     target = run_nco(nco_command, target)
 
-    #add the call to the history and tempfile to nc_safe
+    # add the call to the history and tempfile to nc_safe
     self.history.append(nco_command)
     self._hold_history = copy.deepcopy(self.history)
 
@@ -102,7 +102,7 @@ def ensemble_nco(self, method, vars = None, ignore_time = False):
     self.disk_clean()
 
 
-def ensemble_min(self, vars = None, ignore_time = False):
+def ensemble_min(self, vars=None, ignore_time=False):
     """
     Calculate an ensemble minimum
 
@@ -115,9 +115,10 @@ def ensemble_min(self, vars = None, ignore_time = False):
 
     """
 
-    return ensemble_nco(self, "min", ignore_time = ignore_time, vars = vars)
+    return ensemble_nco(self, "min", ignore_time=ignore_time, vars=vars)
 
-def ensemble_max(self, vars = None, ignore_time = False):
+
+def ensemble_max(self, vars=None, ignore_time=False):
     """
     Calculate an ensemble maximum
 
@@ -130,9 +131,10 @@ def ensemble_max(self, vars = None, ignore_time = False):
 
     """
 
-    return ensemble_nco(self, "max", ignore_time = ignore_time, vars = vars)
+    return ensemble_nco(self, "max", ignore_time=ignore_time, vars=vars)
 
-def ensemble_mean(self, vars = None, ignore_time = False):
+
+def ensemble_mean(self, vars=None, ignore_time=False):
     """
     Calculate an ensemble mean
 
@@ -145,8 +147,7 @@ def ensemble_mean(self, vars = None, ignore_time = False):
 
     """
 
-    return ensemble_nco(self, "mean", ignore_time = ignore_time, vars = vars)
-
+    return ensemble_nco(self, "mean", ignore_time=ignore_time, vars=vars)
 
 
 def ensemble_range(self):
@@ -163,7 +164,7 @@ def ensemble_range(self):
     """
 
     if type(self.current) is not list:
-        warnings.warn(message = "There is only one file in the dataset")
+        warnings.warn(message="There is only one file in the dataset")
 
     self.run()
 
@@ -172,5 +173,3 @@ def ensemble_range(self):
     run_this(cdo_command, self)
 
     self._merged = True
-
-

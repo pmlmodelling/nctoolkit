@@ -1,5 +1,5 @@
 # todo:
-    # add checker for date validity
+# add checker for date validity
 
 import copy
 
@@ -11,7 +11,7 @@ from .runthis import run_this
 from .runthis import run_nco
 
 
-def set_date(self, year = None, month = None, day = None,  base_year = 1900):
+def set_date(self, year=None, month=None, day=None, base_year=1900):
 
     """
     Set the date in a dataset
@@ -39,7 +39,6 @@ def set_date(self, year = None, month = None, day = None,  base_year = 1900):
     if day is None:
         raise ValueError("Please supply a day")
 
-
     # check that the values supplied are valid
     # This will convert things to ints, and if it can't be done, throw an error
     if type(year) is not int:
@@ -52,10 +51,10 @@ def set_date(self, year = None, month = None, day = None,  base_year = 1900):
 
     cdo_command = f"cdo -setreftime,{str(base_year)}-01-01 -setdate,{str(year)}-{str(month)}-{str(day)}"
 
-    run_this(cdo_command, self,  output = "ensemble")
+    run_this(cdo_command, self, output="ensemble")
 
 
-def set_missing(self, value = None):
+def set_missing(self, value=None):
     """
     Set the missing value for a single number or a range
 
@@ -82,10 +81,10 @@ def set_missing(self, value = None):
         if (type(vv) is not float) and (type(vv) is not int):
             raise TypeError(f"{vv} is not an int or float")
 
-    run_this(cdo_command, self,  output = "ensemble")
+    run_this(cdo_command, self, output="ensemble")
 
 
-def set_units(self, var_dict = None):
+def set_units(self, var_dict=None):
     """
     Set the units for variables
 
@@ -111,12 +110,10 @@ def set_units(self, var_dict = None):
             raise TypeError("key,values in var_dict are not strings")
 
         cdo_command = f'cdo -setattribute,{i}@units="{var_dict[i]}"'
-        run_this(cdo_command, self,  output = "ensemble")
+        run_this(cdo_command, self, output="ensemble")
 
 
-
-
-def set_longnames(self, var_dict = None):
+def set_longnames(self, var_dict=None):
     """
     Set long name
 
@@ -148,18 +145,18 @@ def set_longnames(self, var_dict = None):
                 raise TypeError("key,values in var_dict are not strings")
             i_dict = var_dict[i]
             i_dict = i_dict.replace('"', "'")
-            nco_command += "-a long_name," + i + ',o,c,"' + i_dict   + '" '
+            nco_command += "-a long_name," + i + ',o,c,"' + i_dict + '" '
 
         target = temp_file("nc")
 
-        nco_command+= ff + " " + target
+        nco_command += ff + " " + target
 
         target = run_nco(nco_command, target)
 
         new_files.append(target)
         new_commands.append(nco_command)
 
-    self.history+=new_commands
+    self.history += new_commands
     self._hold_history = copy.deepcopy(self.history)
 
     self.current = new_files
@@ -167,11 +164,3 @@ def set_longnames(self, var_dict = None):
     # clean up the directory
     cleanup()
     self.disk_clean()
-
-
-
-
-
-
-
-

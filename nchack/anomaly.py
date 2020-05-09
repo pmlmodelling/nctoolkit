@@ -1,4 +1,3 @@
-
 import copy
 from .temp_file import temp_file
 from .session import nc_safe
@@ -10,7 +9,7 @@ from .cleanup import disk_clean
 from .show import nc_years
 
 
-def annual_anomaly(self, baseline = None, metric = "absolute", window = 1):
+def annual_anomaly(self, baseline=None, metric="absolute", window=1):
     """
     Calculate annual anomalies based on a baseline period
     The anomaly is derived by first calculating the climatological annual mean for the given baseline period. Annual means are then calculated for each year and the anomaly is calculated compared with the baseline mean. This will be calculated on a per-file basis in a multi-file dataset.
@@ -81,7 +80,7 @@ def annual_anomaly(self, baseline = None, metric = "absolute", window = 1):
         new_commands.append(cdo_command)
 
     # update the history
-    self.history+=new_commands
+    self.history += new_commands
     self._hold_history = copy.deepcopy(self.history)
 
     self.current = new_files
@@ -91,11 +90,7 @@ def annual_anomaly(self, baseline = None, metric = "absolute", window = 1):
     self.disk_clean()
 
 
-
-
-
-
-def monthly_anomaly(self, baseline = None):
+def monthly_anomaly(self, baseline=None):
     """
     Calculate monthly anomalies based on a baseline period
     The anomaly is derived by first calculating the climatological monthly mean for the given baseline period. Monthly means are then calculated for each year and the anomaly is calculated compared with the baseline mean. This is calculated separately for each file in a multi-file dataset.
@@ -141,15 +136,10 @@ def monthly_anomaly(self, baseline = None):
         new_commands.append(cdo_command)
 
     # update the history
-    self.history+=new_commands
+    self.history += new_commands
     self._hold_history = copy.deepcopy(self.history)
 
     self.current = new_files
 
     cleanup()
     self.disk_clean()
-
-
-
-
-

@@ -12,7 +12,7 @@ from .show import nc_years
 import copy
 
 
-def phenology(self, var = None, metric = None, p = None):
+def phenology(self, var=None, metric=None, p=None):
     """
     Calculate phenologies from a dataset. Each file in an ensemble must only cover a single year, and ideally have all days.
     This method currently only calculcates the day of year of the annual maximum.
@@ -37,7 +37,6 @@ def phenology(self, var = None, metric = None, p = None):
 
     self.run()
 
-
     if metric == "peak":
 
         new_files = []
@@ -50,7 +49,7 @@ def phenology(self, var = None, metric = None, p = None):
             target = temp_file(".nc")
             command = f"cdo -timmin -setrtomiss,-10000,0 -expr,'peak=var*ctimestep()' -eq -chname,{var},var -selname,{var} {ff} -timmax -chname,{var},var -selname,{var} {ff} {target}"
 
-            target = run_cdo(command, target = target)
+            target = run_cdo(command, target=target)
 
             new_files.append(target)
             new_commands.append(command)
@@ -60,12 +59,8 @@ def phenology(self, var = None, metric = None, p = None):
 
         self.current = new_files
 
-
         cleanup()
         return None
-
-
-
 
     if (metric == "start") or (metric == "end") or (metric == "middle"):
 
@@ -84,7 +79,7 @@ def phenology(self, var = None, metric = None, p = None):
         if type(p) is not float:
             raise TypeError("p is not float")
 
-        start = (p)/100
+        start = (p) / 100
         new_files = []
         new_commands = []
 
@@ -96,7 +91,7 @@ def phenology(self, var = None, metric = None, p = None):
             target = temp_file(".nc")
             command = f"cdo -timmin -setrtomiss,-10000,0 -expr,'{metric}=var*ctimestep()' -gt -timcumsum -chname,{var},var -selname,{var} {ff} -mulc,{start} -timsum -chname,{var},var -selname,{var} {ff} {target}"
 
-            target = run_cdo(command, target = target)
+            target = run_cdo(command, target=target)
 
             new_files.append(target)
             new_commands.append(command)
@@ -110,7 +105,4 @@ def phenology(self, var = None, metric = None, p = None):
 
         return None
 
-
     raise ValueError("You have not supplied a valid metric")
-
-

@@ -9,7 +9,8 @@ from .session import session_info
 import copy
 import os
 
-def arithall(self, stat = "divc", x = None):
+
+def arithall(self, stat="divc", x=None):
     """
     Method to add, subtract etc. a constant from a dataset
     This is used by add etc.
@@ -18,10 +19,10 @@ def arithall(self, stat = "divc", x = None):
     # create the system command and run it
     cdo_command = f"cdo -{stat},{x}"
 
-    run_this(cdo_command, self,  output = "ensemble")
+    run_this(cdo_command, self, output="ensemble")
 
 
-def operation(self, method = "mul", ff = None, var = None):
+def operation(self, method="mul", ff=None, var=None):
     """
     Method to add, subtract etc. a netcdf file from another one
     This is used by add etc.
@@ -52,10 +53,14 @@ def operation(self, method = "mul", ff = None, var = None):
 
         for x in self:
 
-        # check that the datasets can actually be worked with
+            # check that the datasets can actually be worked with
             if var is None:
-                if (len(nc_variables(ff)) != len(nc_variables(x))) and (len(nc_variables(ff)) != 1):
-                    raise ValueError("Datasets have incompatible variable numbers for the operation!")
+                if (len(nc_variables(ff)) != len(nc_variables(x))) and (
+                    len(nc_variables(ff)) != 1
+                ):
+                    raise ValueError(
+                        "Datasets have incompatible variable numbers for the operation!"
+                    )
 
         prior_command = ""
 
@@ -64,7 +69,7 @@ def operation(self, method = "mul", ff = None, var = None):
         prior_command = self.history[-1].replace("cdo ", " ").replace("  ", " ")
 
     # we need to make sure you can chain multiple adds etc.#
-    # hacky approach below will do this
+    # the approach below will work, but can probably be improved on
 
     if var is None:
         if "infile09178" in prior_command:
@@ -75,7 +80,9 @@ def operation(self, method = "mul", ff = None, var = None):
         if "infile09178" in prior_command:
             cdo_command = f"cdo -{method} {prior_command} -selname,{var} {ff}"
         else:
-            cdo_command = f"cdo -{method} {prior_command} infile09178 -selname,{var} {ff}"
+            cdo_command = (
+                f"cdo -{method} {prior_command} infile09178 -selname,{var} {ff}"
+            )
 
     # run the command if not lazy
     if session_info["lazy"] == False:
@@ -107,8 +114,7 @@ def operation(self, method = "mul", ff = None, var = None):
     cleanup()
 
 
-
-def multiply(self, x = None, var = None):
+def multiply(self, x=None, var=None):
     """
     Multiply a dataset
     Parameters
@@ -121,7 +127,7 @@ def multiply(self, x = None, var = None):
 
     # 1: int, float multiplication
     if isinstance(x, (int, float)):
-        return arithall(self, stat = "mulc", x = x)
+        return arithall(self, stat="mulc", x=x)
 
     # 2: dataset or netcdf file multiplication
     # get the netcdf file(s)
@@ -134,10 +140,10 @@ def multiply(self, x = None, var = None):
     if type(ff) is not str:
         raise TypeError("You have not provided an int, float, dataset or file path!")
 
-    operation(self = self, method = "mul", ff = ff, var = var)
+    operation(self=self, method="mul", ff=ff, var=var)
 
 
-def subtract(self, x = None, var = None):
+def subtract(self, x=None, var=None):
     """
     Subtract from a dataset
     Parameters
@@ -150,7 +156,7 @@ def subtract(self, x = None, var = None):
 
     # 1: int, float subtraction
     if isinstance(x, (int, float)):
-        return arithall(self, stat = "subc", x = x)
+        return arithall(self, stat="subc", x=x)
 
     # 2: dataset or netcdf file subtraction
     # get the netcdf file(s)
@@ -163,10 +169,10 @@ def subtract(self, x = None, var = None):
     if type(ff) is not str:
         raise TypeError("You have not provided an int, float, dataset or file path!")
 
-    operation(self = self, method = "sub", ff = ff, var = var)
+    operation(self=self, method="sub", ff=ff, var=var)
 
 
-def add(self, x = None, var = None):
+def add(self, x=None, var=None):
     """
     Add to a dataset
     Parameters
@@ -179,7 +185,7 @@ def add(self, x = None, var = None):
 
     # 1: int, float addition
     if isinstance(x, (int, float)):
-        return arithall(self, stat = "addc", x = x)
+        return arithall(self, stat="addc", x=x)
 
     # 2: dataset or netcdf file addition
     # get the netcdf file(s)
@@ -192,11 +198,10 @@ def add(self, x = None, var = None):
     if type(ff) is not str:
         raise TypeError("You have not provided an int, float, dataset or file path!")
 
-    operation(self = self, method = "add", ff = ff, var = var)
+    operation(self=self, method="add", ff=ff, var=var)
 
 
-
-def divide(self, x = None, var = None):
+def divide(self, x=None, var=None):
     """
     Divide the data
     Parameters
@@ -209,7 +214,7 @@ def divide(self, x = None, var = None):
 
     # 1: int, float division
     if isinstance(x, (int, float)):
-        return arithall(self, stat = "divc", x = x)
+        return arithall(self, stat="divc", x=x)
 
     # 2: dataset or netcdf file division
     # get the netcdf file(s)
@@ -222,8 +227,4 @@ def divide(self, x = None, var = None):
     if type(ff) is not str:
         raise TypeError("You have not provided an int, float, dataset or file path!")
 
-    operation(self = self, method = "div", ff = ff, var = var)
-
-
-
-
+    operation(self=self, method="div", ff=ff, var=var)

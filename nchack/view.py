@@ -1,5 +1,5 @@
-
 import os
+
 
 def view(self):
     """
@@ -11,4 +11,3 @@ def view(self):
         os.system("ncview " + self.current + "&")
     else:
         print("You cannot send multiple files to ncview!")
-

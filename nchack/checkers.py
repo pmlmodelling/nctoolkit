@@ -5,11 +5,13 @@ import calendar
 from datetime import datetime
 import time
 
+
 def year_days(x):
     if calendar.isleap(x):
         return 366
     else:
         return 365
+
 
 # Ensemble methods all assume the structure of the input files are idential
 # So the time steps should be the same
@@ -55,8 +57,6 @@ def ensemble_check(tracker):
         print("the same grid is not available in all files")
 
 
-
-
 def check_dates(self):
     "A function to check if sufficient dates are available in a file or ensemble"
     if type(self.current) is str:
@@ -69,24 +69,18 @@ def check_dates(self):
         cdo_result = os.popen(f"cdo showdate {ff}").read()
         cdo_result = cdo_result.replace("\n", "")
         cdo_result = cdo_result.split()
-        cdo_result = pd.Series( (datetime.strptime(v, "%Y-%m-%d") for v in cdo_result) )
+        cdo_result = pd.Series((datetime.strptime(v, "%Y-%m-%d") for v in cdo_result))
         all_times.append(cdo_result)
 
     all_times = pd.concat(all_times)
 
-    if len(all_times)/len(all_times.drop_duplicates()) > 1:
+    if len(all_times) / len(all_times.drop_duplicates()) > 1:
         print("There are duplicate times")
-    df = pd.DataFrame({"date":all_times})
+    df = pd.DataFrame({"date": all_times})
     df["year"] = [x.year for x in all_times]
     df = df.groupby("year").size().reset_index()
     df.columns = ["year", "dates_available"]
     df["days_in_year"] = [year_days(x) for x in df.year]
     df = df.filter(["year", "days_in_year", "dates_available"])
 
-    return(df)
-
-
-
-
-
-
+    return df

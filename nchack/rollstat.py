@@ -1,7 +1,7 @@
-
 from .runthis import run_this
 
-def rollstat(self, window = None,  stat = "mean"):
+
+def rollstat(self, window=None, stat="mean"):
     """Method to calculate the monthly statistic from a netcdf file"""
     # check window supplied is valid
 
@@ -16,11 +16,10 @@ def rollstat(self, window = None,  stat = "mean"):
 
     # create the cdo call and run it
     cdo_command = f"cdo -run{stat},{str(window)}"
-    run_this(cdo_command, self, output = "ensemble")
+    run_this(cdo_command, self, output="ensemble")
 
 
-
-def rolling_mean(self, window = None):
+def rolling_mean(self, window=None):
 
     """
     Calculate a rolling mean based on a window.
@@ -32,9 +31,10 @@ def rolling_mean(self, window = None):
 
     """
 
-    return rollstat(self, window = window, stat = "mean")
+    return rollstat(self, window=window, stat="mean")
 
-def rolling_min(self, window = None):
+
+def rolling_min(self, window=None):
     """
     Calculate a rolling minimum based on a window.
 
@@ -45,9 +45,10 @@ def rolling_min(self, window = None):
 
     """
 
-    return rollstat(self, window = window, stat = "min")
+    return rollstat(self, window=window, stat="min")
 
-def rolling_max(self, window = None):
+
+def rolling_max(self, window=None):
     """
     Calculate a rolling maximum based on a window.
 
@@ -57,9 +58,10 @@ def rolling_max(self, window = None):
         The size of the window for the calculation of the rolling maximum
 
     """
-    return rollstat(self, window = window, stat = "max")
+    return rollstat(self, window=window, stat="max")
 
-def rolling_range(self, window = None):
+
+def rolling_range(self, window=None):
     """
     Calculate a rolling range based on a window.
 
@@ -69,9 +71,10 @@ def rolling_range(self, window = None):
         The size of the window for the calculation of the rolling range
 
     """
-    return rollstat(self, window = window, stat = "range")
+    return rollstat(self, window=window, stat="range")
 
-def rolling_sum(self, window = None):
+
+def rolling_sum(self, window=None):
     """
     Calculate a rolling sum based on a window.
 
@@ -80,5 +83,4 @@ def rolling_sum(self, window = None):
     window = int
         The size of the window for the calculation of the rolling sum
     """
-    return rollstat(self, window = window, stat = "sum")
-
+    return rollstat(self, window=window, stat="sum")

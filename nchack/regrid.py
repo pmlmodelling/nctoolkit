@@ -16,7 +16,8 @@ from .session import nc_safe
 from .runthis import run_this
 from .runthis import run_cdo
 
-def regrid(self, grid = None, method = "bil"):
+
+def regrid(self, grid=None, method="bil"):
 
     """
     Regrid a dataset for a target grid and remapping method
@@ -28,7 +29,6 @@ def regrid(self, grid = None, method = "bil"):
     method : str
         remapping method. Defaults to "bil". Bilinear: "bil"; Nearest neighbour: "nn",....
     """
-
 
     del_grid = None
     if grid is None:
@@ -52,7 +52,7 @@ def regrid(self, grid = None, method = "bil"):
     if type(grid) is str:
         if os.path.exists(grid) == False:
             raise ValueError("grid file supplied does not exist")
-        #if grid.endswith(".nc") == False:
+        # if grid.endswith(".nc") == False:
         #    raise ValueError("grid file supplied is not a netcdf file!")
         grid_type = "nc"
 
@@ -62,23 +62,22 @@ def regrid(self, grid = None, method = "bil"):
             grid = grid.current
         else:
             grid = grid.current[0]
-            warnings.warn(message = "The first file in dataset used for regridding!")
+            warnings.warn(message="The first file in dataset used for regridding!")
         grid_type = "nc"
 
     if grid_type is None:
         raise ValueError("grid supplied is not valid")
 
-
     # check that the remapping method is valid
     if (method in {"bil", "dis", "nn"}) == False:
         raise ValueError("remapping method is invalid. Please check")
 
-     # need code at this point to add missing grid if it's needed
+    # need code at this point to add missing grid if it's needed
 
-     # same with na_value stuff. But maybe that isn't really needed
-     # a distraction?
+    # same with na_value stuff. But maybe that isn't really needed
+    # a distraction?
 
-     # check the number of grids in the file
+    # check the number of grids in the file
 
     # Do do the horizontal regridding
 
@@ -86,14 +85,18 @@ def regrid(self, grid = None, method = "bil"):
 
     self.run()
 
-
     if type(self.current) is list:
         orig_files = copy.deepcopy(self.current)
     else:
         orig_files = [copy.deepcopy(self.current)]
 
     for ff in self:
-        cdo_result = subprocess.run(f"cdo griddes {ff}", shell = True, stdout=subprocess.PIPE, stderr =subprocess.PIPE).stdout
+        cdo_result = subprocess.run(
+            f"cdo griddes {ff}",
+            shell=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        ).stdout
         cdo_result = str(cdo_result)
         if cdo_result in grid_split:
             grid_split[cdo_result].append(ff)
@@ -101,7 +104,7 @@ def regrid(self, grid = None, method = "bil"):
             grid_split[cdo_result] = [ff]
 
     if grid is not None:
-                   # first generate the grid
+        # first generate the grid
         if grid_type == "df":
             target_grid = generate_grid(grid)
             del_grid = copy.deepcopy(target_grid)
@@ -110,28 +113,31 @@ def regrid(self, grid = None, method = "bil"):
             target_grid = grid
     new_files = []
 
-
     for key in grid_split:
         # first we need to generate the weights for remapping
         # and add this to the files created list and self.weights
-        tracker = open_data(grid_split[key], suppress_messages = True)
+        tracker = open_data(grid_split[key], suppress_messages=True)
 
         weights_nc = temp_file("nc")
 
         if type(tracker.current) is list:
-            cdo_command = f"cdo -gen{method},{target_grid} {tracker.current[0]} {weights_nc}"
+            cdo_command = (
+                f"cdo -gen{method},{target_grid} {tracker.current[0]} {weights_nc}"
+            )
         else:
-            cdo_command = f"cdo -gen{method},{target_grid} {tracker.current} {weights_nc}"
+            cdo_command = (
+                f"cdo -gen{method},{target_grid} {tracker.current} {weights_nc}"
+            )
 
-        weights_nc = run_cdo(cdo_command, target = weights_nc)
+        weights_nc = run_cdo(cdo_command, target=weights_nc)
 
-        cdo_command= f"cdo -remap,{target_grid},{weights_nc}"
+        cdo_command = f"cdo -remap,{target_grid},{weights_nc}"
 
         tracker._execute = True
 
         nc_safe.append(weights_nc)
 
-        run_this(cdo_command, tracker,  output = "ensemble")
+        run_this(cdo_command, tracker, output="ensemble")
 
         nc_safe.remove(weights_nc)
 
@@ -143,14 +149,13 @@ def regrid(self, grid = None, method = "bil"):
         for ff in new_files:
             nc_safe.append(ff)
 
-        self.history+=tracker.history
+        self.history += tracker.history
 
         self._hold_history = copy.deepcopy(self.history)
 
     if del_grid is not None:
         if del_grid in nc_safe:
             nc_safe.remove(del_grid)
-
 
     for ff in new_files:
         if ff in nc_safe:
@@ -160,6 +165,3 @@ def regrid(self, grid = None, method = "bil"):
 
     cleanup()
     self.disk_clean()
-
-
-

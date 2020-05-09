@@ -9,7 +9,7 @@ from .session import nc_safe
 from .show import nc_variables
 
 
-def cell_areas(self,  join = True):
+def cell_areas(self, join=True):
     """
     Calculate the cell areas in square meters
 
@@ -58,7 +58,7 @@ def cell_areas(self,  join = True):
     else:
 
         cdo_command = "-gridarea"
-        run_this(cdo_command, self,  output = "ensemble")
+        run_this(cdo_command, self, output="ensemble")
 
     # add units
 
@@ -67,7 +67,3 @@ def cell_areas(self,  join = True):
     if join:
         self.run()
         self.disk_clean()
-
-
-
-

@@ -7,7 +7,8 @@ from .runthis import run_cdo
 from .session import nc_safe
 from .session import session_info
 
-def write_nc(self, out, zip = True, overwrite = False):
+
+def write_nc(self, out, zip=True, overwrite=False):
     """
     Save a dataset to a named file
 
@@ -45,18 +46,16 @@ def write_nc(self, out, zip = True, overwrite = False):
     if (os.path.exists(out)) and (overwrite == False):
         raise ValueError("The out file exists and overwrite is set to false")
 
-
-
     if len(self.history) == len(self._hold_history):
         if zip:
-            cdo_command = (f"cdo -z zip_9 copy {ff[0]} {out}")
+            cdo_command = f"cdo -z zip_9 copy {ff[0]} {out}"
             os.system(cdo_command)
             self.history.append(cdo_command)
             self._hold_history = copy.deepcopy(self.history)
             self.current = out
 
         else:
-            cdo_command = (f"cdo copy {ff[0]} {out}")
+            cdo_command = f"cdo copy {ff[0]} {out}"
             os.system(cdo_command)
             self.history.append(cdo_command)
             self._hold_history = copy.deepcopy(self.history)
@@ -71,16 +70,12 @@ def write_nc(self, out, zip = True, overwrite = False):
 
         self._execute = True
 
-        run_this(cdo_command, self, out_file = out)
+        run_this(cdo_command, self, out_file=out)
         self._execute = False
 
     if os.path.exists(out) == False:
         raise ValueError("File zipping was not successful")
 
-
     self.current = out
 
     cleanup()
-
-
-

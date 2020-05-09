@@ -3,7 +3,8 @@ from .session import session_info
 from .session import nc_safe
 from .cleanup import cleanup
 
-def run(self,  run_merge = True):
+
+def run(self, run_merge=True):
     """
     Run all stored commands in a dataset
 
@@ -26,7 +27,7 @@ def run(self,  run_merge = True):
         if self._merged:
             output_method = "one"
 
-        run_this(cdo_command, self,  output = output_method)
+        run_this(cdo_command, self, output=output_method)
 
         self._merged = False
 
@@ -43,8 +44,7 @@ def run(self,  run_merge = True):
         cleanup()
 
 
-
-def release(self,  run_merge = True):
+def release(self, run_merge=True):
     """
     Run all stored commands in a dataset
 
@@ -67,7 +67,7 @@ def release(self,  run_merge = True):
         if self._merged:
             output_method = "one"
 
-        run_this(cdo_command, self,  output = output_method)
+        run_this(cdo_command, self, output=output_method)
 
         self._merged = False
 
@@ -82,10 +82,3 @@ def release(self,  run_merge = True):
         self._safe = []
 
         cleanup()
-
-
-
-
-
-
-
