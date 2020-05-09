@@ -63,6 +63,14 @@ def fix_expression(operations=None, i_frame=None):
 
 
 def mutate(self, operations=None):
+    """
+    Create new variables using mathematical expressions, and keep original variables
+
+    Parameters
+    -------------
+    operations : dict
+        operations to apply. The keys are the new variables to generate. The values are the mathematical operations to carry out.
+    """
 
     if type(operations) is not dict:
         raise TypeError("No expression was provided")
