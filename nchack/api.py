@@ -301,9 +301,6 @@ def cor_space(x=None, y=None):
         print("Only using a subset of variables from y")
         b.run()
 
-    # if type(x.current) is not str or type(y.current) is not str:
-    # raise TypeError("This method can only work for single variable data sets")
-
     target = temp_file("nc")
     command = "cdo fldcor " + a.current + " " + b.current + " " + target
     target = run_cdo(command, target=target)

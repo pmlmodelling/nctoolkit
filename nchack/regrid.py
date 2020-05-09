@@ -52,8 +52,6 @@ def regrid(self, grid=None, method="bil"):
     if type(grid) is str:
         if os.path.exists(grid) == False:
             raise ValueError("grid file supplied does not exist")
-        # if grid.endswith(".nc") == False:
-        #    raise ValueError("grid file supplied is not a netcdf file!")
         grid_type = "nc"
 
     if "DataSet" in str(type(grid)):
@@ -72,12 +70,7 @@ def regrid(self, grid=None, method="bil"):
     if (method in {"bil", "dis", "nn"}) == False:
         raise ValueError("remapping method is invalid. Please check")
 
-    # need code at this point to add missing grid if it's needed
-
-    # same with na_value stuff. But maybe that isn't really needed
-    # a distraction?
-
-    # check the number of grids in the file
+    # check the number of grids in the dataset
 
     # Do do the horizontal regridding
 

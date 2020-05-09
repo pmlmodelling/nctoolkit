@@ -1,5 +1,3 @@
-# todo:
-# add checker for date validity
 
 import copy
 

@@ -149,7 +149,6 @@ def plot(self, log=False, vars=None, panel=False):
                 )
                 .redim.range(**{vars: (-v_max, v_max)})
             )
-            # return self.to_xarray().hvplot.quadmesh(lon_name, lat_name, vars, dynamic = True,  logz = log, cmap = "seismic").redim.range(**{vars:(-v_max, v_max)})
         else:
             return (
                 self.to_xarray()
@@ -158,7 +157,6 @@ def plot(self, log=False, vars=None, panel=False):
                 )
                 .redim.range(**{vars: (-self_min.values, v_max)})
             )
-        # return self.to_xarray().hvplot.quadmesh(lon_name, lat_name, vars, dynamic = True,  logz = log, cmap = "viridis").redim.range(**{vars:(-self_min.values, v_max)})
 
     if (n_points > 1) and (n_levels <= 1) and (type(vars) is list):
         out = subprocess.run(
@@ -177,7 +175,6 @@ def plot(self, log=False, vars=None, panel=False):
         return self.to_xarray().hvplot.image(
             lon_name, lat_name, vars, dynamic=True, cmap="viridis", logz=log
         )
-    # return self.to_xarray().hvplot.quadmesh(lon_name, lat_name, vars, dynamic = True, cmap = "viridis", logz = log)
 
     # Throw an error if case has not plotting method available yet
 
