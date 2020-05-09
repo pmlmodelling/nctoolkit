@@ -49,33 +49,33 @@ def surface(self):
     run_this(cdo_command, self, output="ensemble")
 
 
-def vertical_interp(self, vert_depths=None):
+def vertical_interp(self, levels=None):
     """
     Verticaly interpolate a dataset based on given depths
 
     Parameters
     -------------
-    vert_depths : list, int or str
-        list of depths to vertical interpolate to. These must be floats or ints.
+    levels : list, int or str
+        list of vertical levels, for example depths for an ocan model, to vertical interpolate to. These must be floats or ints.
 
     """
 
-    if vert_depths is None:
+    if levels is None:
         raise ValueError("Please supply vertical depths")
 
     # below used for checking whether vertical remapping occurs
 
     # first a quick fix for the case when there is only one vertical depth
 
-    if (type(vert_depths) == int) or (type(vert_depths) == float):
-        vert_depths = {vert_depths}
+    if (type(levels) == int) or (type(levels) == float):
+        levels = {levels}
 
-    for vv in vert_depths:
+    for vv in levels:
         if (type(vv) is not float) and (type(vv) is not int):
             raise TypeError(f"{vv} is not a valid depth")
 
-    vert_depths = str_flatten(vert_depths, ",")
-    cdo_command = f"cdo -intlevel,{vert_depths}"
+    levels = str_flatten(levels, ",")
+    cdo_command = f"cdo -intlevel,{levels}"
 
     run_this(cdo_command, self, output="ensemble")
 
