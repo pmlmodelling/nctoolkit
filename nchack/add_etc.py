@@ -116,7 +116,8 @@ def operation(self, method="mul", ff=None, var=None):
         self.current = new_files
         self._hold_history = copy.deepcopy(self.history)
         cleanup()
-        self._safe.remove(ff)
+        if ff in self._safe:
+            self._safe.remove(ff)
 
     # update history if lazy
     else:
