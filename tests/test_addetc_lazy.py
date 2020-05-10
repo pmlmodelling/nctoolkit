@@ -331,6 +331,7 @@ class TestAddetc(unittest.TestCase):
         print(nc.session_files())
 
         x = tracker.to_dataframe().sst.values[0]
+        print(nc.session_files())
         y = out.to_dataframe().sst.values[0]
         print(nc.session_files())
 

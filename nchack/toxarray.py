@@ -1,5 +1,6 @@
 import xarray as xr
 from datetime import datetime
+from .cleanup.py import cleanup
 
 
 def to_xarray(self, decode_times=True):
@@ -55,6 +56,8 @@ def to_xarray(self, decode_times=True):
     else:
         data = xr.open_mfdataset(self.current, decode_times=decode_times)
         return data
+
+    cleanup()
 
 
 def to_dataframe(self, decode_times=True):
