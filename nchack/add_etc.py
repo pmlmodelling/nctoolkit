@@ -101,10 +101,10 @@ def operation(self, method="mul", ff=None, var=None):
         new_files = []
         new_commands = []
 
-        for ff in self:
+        for FF in self:
 
             target = temp_file(".nc")
-            the_command = cdo_command.replace("infile09178", ff) + " " + target
+            the_command = cdo_command.replace("infile09178", FF) + " " + target
             the_command = tidy_command(the_command)
             target = run_cdo(the_command, target)
             new_files.append(target)
@@ -116,7 +116,7 @@ def operation(self, method="mul", ff=None, var=None):
         self.current = new_files
         self._hold_history = copy.deepcopy(self.history)
         cleanup()
-        self._safe = []
+        self._safe.remove(ff)
 
     # update history if lazy
     else:
