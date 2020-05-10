@@ -8,10 +8,19 @@ from .cleanup import cleanup
 from .cleanup import disk_clean
 
 
+cdo_version = def():
+    cdo_check = subprocess.run("cdo --version", shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    cdo_check = str(cdo_check.stderr).replace("\\n", "")
+    cdo_check = cdo_check.replace("b'", "").strip()
+    return cdo_check.split("(")[0].strip().split(" ")[-1]
+
+
 def fldstat(
     self, stat="mean",
 ):
     """Method to calculate the spatial stat from a netcdf"""
+    if cdo_version() in ["1.9.3"]:
+        self.run()
 
     cdo_command = f"cdo -fld{stat}"
 
