@@ -26,6 +26,8 @@ def fldstat(
     cdo_command = f"cdo -fld{stat}"
 
     run_this(cdo_command, self, output="ensemble")
+    if cdo_version() in ["1.9.3"]:
+        self.run()
 
 
 def spatial_mean(self):
