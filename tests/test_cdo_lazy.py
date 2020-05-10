@@ -8,6 +8,13 @@ import os
 
 ff = "data/sst.mon.mean.nc"
 
+def cdo_version():
+    cdo_check = subprocess.run("cdo --version", shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    cdo_check = str(cdo_check.stderr).replace("\\n", "")
+    cdo_check = cdo_check.replace("b'", "").strip()
+    return cdo_check.split("(")[0].strip().split(" ")[-1]
+
+
 class TestCdo(unittest.TestCase):
 
     def test_empty(self):
@@ -59,6 +66,8 @@ class TestCdo(unittest.TestCase):
         self.assertEqual(n, 1)
 
     def test_cdo5(self):
+        if cdo_version() in ["1.9.3"]:
+            return None
         tracker = nc.open_data(ff)
         tracker.mean()
         tracker.spatial_mean()
