@@ -10,6 +10,7 @@ before_install:
     - pip install codecov
     - sudo apt-get -y update
     - sudo apt-get -y install nco
+    - sudo apt-get -y install cdo
 #
 #
 #addons:
@@ -20,39 +21,39 @@ before_install:
 #
 install:
 
-    - wget ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4/hdf5-1.8.13.tar.gz
-    - tar -xvf hdf5-1.8.13.tar.gz> /dev/null 2>&1
-    - cd hdf5-1.8.13/> /dev/null 2>&1
-    - ./configure -with-zlib=/opt/cdo-install -prefix=/opt/cdo-install CFLAGS=-fPIC > /dev/null 2>&1
+    #  - wget ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4/hdf5-1.8.13.tar.gz
+    #  - tar -xvf hdf5-1.8.13.tar.gz> /dev/null 2>&1
+    #  - cd hdf5-1.8.13/> /dev/null 2>&1
+    #  - ./configure -with-zlib=/opt/cdo-install -prefix=/opt/cdo-install CFLAGS=-fPIC > /dev/null 2>&1
 
-    - sudo make > /dev/null 2>&1
-    - sudo make install> /dev/null 2>&1
-    - cd ..
+    #  - sudo make > /dev/null 2>&1
+    #  - sudo make install> /dev/null 2>&1
+    #  - cd ..
 
-    - wget ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4.4.0.tar.gz
-    - tar -xvf netcdf-4.4.0.tar.gz  > /dev/null 2>&1
-    - cd netcdf-4.4.0/ 
-    - CPPFLAGS=-I/opt/cdo-install/include LDFLAGS=-L/opt/cdo-install/lib ./configure -prefix=/opt/cdo-install CFLAGS=-fPIC  > /dev/null 2>&1
-    - sudo make  > /dev/null 2>&1
-    - sudo make install > /dev/null 2>&1
+    #  - wget ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4.4.0.tar.gz
+    #  - tar -xvf netcdf-4.4.0.tar.gz  > /dev/null 2>&1
+    #  - cd netcdf-4.4.0/ 
+    #  - CPPFLAGS=-I/opt/cdo-install/include LDFLAGS=-L/opt/cdo-install/lib ./configure -prefix=/opt/cdo-install CFLAGS=-fPIC  > /dev/null 2>&1
+    #  - sudo make  > /dev/null 2>&1
+    #  - sudo make install > /dev/null 2>&1
 
-    - cd ..
+    #  - cd ..
 
 
-    - wget https://code.mpimet.mpg.de/attachments/download/20826/cdo-1.9.8.tar.gz 
-    - tar -xvzf cdo-1.9.8.tar.gz > /dev/null 2>&1
-    - cd cdo-1.9.8
-    - ./configure -with-netcdf=/opt/cdo-install -with-hdf5=/opt/cdo-install  > /dev/null 2>&1
-    - sudo make  > /dev/null 2>&1
-    - sudo make install 
-    - cd ..
+    #  - wget https://code.mpimet.mpg.de/attachments/download/20826/cdo-1.9.8.tar.gz 
+    #  - tar -xvzf cdo-1.9.8.tar.gz > /dev/null 2>&1
+    #  - cd cdo-1.9.8
+    #  - ./configure -with-netcdf=/opt/cdo-install -with-hdf5=/opt/cdo-install  > /dev/null 2>&1
+    #  - sudo make  > /dev/null 2>&1
+    #  - sudo make install 
+    #  - cd ..
 
     - python setup.py install > /dev/null 2>&1
 # command to run tests
 script:
     # - which cdo
     #- cdo --version 
-  - ncks --version 
+    #- ncks --version 
   - pytest
 
 after_success:
