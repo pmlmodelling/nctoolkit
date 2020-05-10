@@ -1,4 +1,5 @@
 import copy
+import subprocess
 from .runthis import run_this
 from .runthis import tidy_command
 from .runthis import run_cdo
@@ -26,6 +27,15 @@ def cell_areas(self, join=True):
     if join:
         self.run()
 
+
+    #get the cdo version
+
+    cdo_check = subprocess.run("cdo --version", shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    cdo_check = str(cdo_check.stderr).replace("\\n", "")
+    cdo_check = cdo_check.replace("b'", "").strip()
+    cdo_version = cdo_check.split("(")[0].strip().split(" ")[-1]
+
+
     # first run the join case
     if join:
 
@@ -34,17 +44,40 @@ def cell_areas(self, join=True):
 
         for ff in self:
 
-            if "cell_area" in nc_variables(ff):
-                raise ValueError("cell_area is already a variable")
+            if cdo_version in ["1.9.6"]:
 
-            target = temp_file(".nc")
+                if "cell_area" in nc_variables(ff):
+                    raise ValueError("cell_area is already a variable")
 
-            cdo_command = f"cdo -merge {ff} -gridarea {ff} {target}"
-            cdo_command = tidy_command(cdo_command)
-            target = run_cdo(cdo_command, target)
-            new_files.append(target)
+                target1 = temp_file(".nc")
 
-            new_commands.append(cdo_command)
+                cdo_command = f"cdo -gridarea {ff} {target1}"
+                cdo_command = tidy_command(cdo_command)
+                target1 = run_cdo(cdo_command, target1)
+                new_commands.append(cdo_command)
+
+                target = temp_file(".nc")
+
+                cdo_command = f"cdo -merge {ff} {target1} {target}"
+                cdo_command = tidy_command(cdo_command)
+                target = run_cdo(cdo_command, target)
+                new_files.append(target)
+
+                new_commands.append(cdo_command)
+
+            else:
+
+                if "cell_area" in nc_variables(ff):
+                    raise ValueError("cell_area is already a variable")
+
+                target = temp_file(".nc")
+
+                cdo_command = f"cdo -merge {ff} -gridarea {ff} {target}"
+                cdo_command = tidy_command(cdo_command)
+                target = run_cdo(cdo_command, target)
+                new_files.append(target)
+
+                new_commands.append(cdo_command)
 
         for x in new_commands:
             self.history.append(x)
