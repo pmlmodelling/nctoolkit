@@ -67,17 +67,27 @@ class TestAddetc(unittest.TestCase):
 
 
     def test_add2(self):
+        print(nc.session.nc_safe)
         tracker = nc.open_data(ff)
+        print(nc.session.nc_safe)
         tracker.select_years(list(range(1970, 1971)))
+        print(nc.session.nc_safe)
         tracker.select_months([1])
+        print(nc.session.nc_safe)
         tracker.run()
+        print(nc.session.nc_safe)
         new = tracker.copy()
         new.add(tracker)
         new.spatial_mean()
         tracker.spatial_mean()
+        print(nc.session.nc_safe)
 
         x = tracker.to_dataframe().sst.values[0]
+        print(nc.session.nc_safe)
+
         y = new.to_dataframe().sst.values[0]
+        print(nc.session.nc_safe)
+
 
         self.assertEqual(x + x, y)
         n = len(nc.session_files())
@@ -307,33 +317,20 @@ class TestAddetc(unittest.TestCase):
 
 
     def test_divide1(self):
-        print(nc.session_files())
         tracker = nc.open_data(ff)
         tracker.select_years(list(range(1970, 1971)))
-        print(nc.session.nc_safe)
         tracker.select_months([1])
-        print(nc.session.nc_safe)
         tracker.run()
-        print(nc.session.nc_safe)
         new = tracker.copy()
-        print(nc.session.nc_safe)
         new.add(2)
-        print(nc.session.nc_safe)
         new.subtract(tracker)
-        print(nc.session.nc_safe)
         out = tracker.copy()
-        print(nc.session.nc_safe)
         tracker.divide(new)
-        print(nc.session.nc_safe)
         tracker.spatial_mean()
-        print(nc.session.nc_safe)
         out.spatial_mean()
-        print(nc.session.nc_safe)
 
         x = tracker.to_dataframe().sst.values[0]
-        print(nc.session.nc_safe)
         y = out.to_dataframe().sst.values[0]
-        print(nc.session.nc_safe)
 
         self.assertEqual(x, y/2)
         n = len(nc.session_files())
