@@ -307,17 +307,28 @@ class TestAddetc(unittest.TestCase):
 
 
     def test_divide1(self):
+        print(nc.session_files())
         tracker = nc.open_data(ff)
         tracker.select_years(list(range(1970, 1971)))
+        print(nc.session_files())
         tracker.select_months([1])
+        print(nc.session_files())
         tracker.run()
+        print(nc.session_files())
         new = tracker.copy()
+        print(nc.session_files())
         new.add(2)
+        print(nc.session_files())
         new.subtract(tracker)
+        print(nc.session_files())
         out = tracker.copy()
+        print(nc.session_files())
         tracker.divide(new)
+        print(nc.session_files())
         tracker.spatial_mean()
+        print(nc.session_files())
         out.spatial_mean()
+        print(nc.session_files())
 
         x = tracker.to_dataframe().sst.values[0]
         y = out.to_dataframe().sst.values[0]
