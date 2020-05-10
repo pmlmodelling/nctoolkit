@@ -3,7 +3,15 @@ import nchack as nc
 import pandas as pd
 import xarray as xr
 import os
+import subprocess
 nc.options(lazy = True)
+
+def cdo_version():
+    cdo_check = subprocess.run("cdo --version", shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    cdo_check = str(cdo_check.stderr).replace("\\n", "")
+    cdo_check = cdo_check.replace("b'", "").strip()
+    return cdo_check.split("(")[0].strip().split(" ")[-1]
+
 
 
 ff = "data/sst.mon.mean.nc"
@@ -259,9 +267,10 @@ class TestCalls(unittest.TestCase):
         self.assertEqual(data.history[0], 'cdo -delete,name=sst' )
 
 
-        data = nc.open_data(ensemble)
-        data.merge_time()
-        self.assertEqual(data.history[0], 'cdo --sortname -mergetime')
+        if cdo_version() not in ["1.9.3"]:
+            data = nc.open_data(ensemble)
+            data.merge_time()
+            self.assertEqual(data.history[0], 'cdo --sortname -mergetime')
 
 
 
