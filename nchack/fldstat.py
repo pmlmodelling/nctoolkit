@@ -8,7 +8,7 @@ from .cleanup import cleanup
 from .cleanup import disk_clean
 
 
-cdo_version = def():
+def cdo_version():
     cdo_check = subprocess.run("cdo --version", shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     cdo_check = str(cdo_check.stderr).replace("\\n", "")
     cdo_check = cdo_check.replace("b'", "").strip()
