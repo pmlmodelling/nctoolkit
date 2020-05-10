@@ -100,12 +100,17 @@ def spatial_sum(self, by_area=False):
 
             cdo_command = f"cdo -gridarea {ff} {target1}"
             cdo_command = tidy_command(cdo_command)
-            target1 = run_cdo(cdo_command, target=target1)
             new_commands.append(cdo_command)
+            target1 = run_cdo(cdo_command, target=target1)
 
-            target = temp_file("nc")
+            target2 = temp_file("nc")
 
-            cdo_command = f"cdo -fldsum -mul {target1} {target}"
+            cdo_command = f"cdo -mul {ff} {target1} {target2}"
+            cdo_command = tidy_command(cdo_command)
+            new_commands.append(cdo_command)
+            target2 = run_cdo(cdo_command, target=target2)
+
+            cdo_command = f"cdo -fldsum {target2} {target}"
             cdo_command = tidy_command(cdo_command)
             target = run_cdo(cdo_command, target=target)
             new_files.append(target)
