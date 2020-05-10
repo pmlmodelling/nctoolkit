@@ -14,7 +14,6 @@ from .generate_grid import generate_grid
 from .flatten import str_flatten
 from .session import nc_safe
 from .runthis import run_this
-from .runthis import run_cdo
 from .regrid import regrid
 
 
