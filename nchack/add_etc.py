@@ -95,7 +95,7 @@ def operation(self, method="mul", ff=None, var=None):
     # run the command if not lazy
 
 
-    if (session_info["lazy"] == False or cdo_version in ["1.9.3"]:
+    if (session_info["lazy"] == False) or (cdo_version in ["1.9.3"]):
 
         new_files = []
         new_commands = []
