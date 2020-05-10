@@ -294,29 +294,30 @@ class TestCalls(unittest.TestCase):
         data.rolling_sum(10)
         self.assertEqual(data.history[0], 'cdo -runsum,10')
 
-        data = nc.open_data(ff)
-        data.spatial_mean()
-        self.assertEqual(data.history[0], 'cdo -fldmean')
+        if cdo_version() not in ["1.9.3"]:
+            data = nc.open_data(ff)
+            data.spatial_mean()
+            self.assertEqual(data.history[0], 'cdo -fldmean')
 
-        data = nc.open_data(ff)
-        data.spatial_max()
-        self.assertEqual(data.history[0], 'cdo -fldmax')
+            data = nc.open_data(ff)
+            data.spatial_max()
+            self.assertEqual(data.history[0], 'cdo -fldmax')
 
-        data = nc.open_data(ff)
-        data.spatial_min()
-        self.assertEqual(data.history[0], 'cdo -fldmin')
+            data = nc.open_data(ff)
+            data.spatial_min()
+            self.assertEqual(data.history[0], 'cdo -fldmin')
 
-        data = nc.open_data(ff)
-        data.spatial_range()
-        self.assertEqual(data.history[0], 'cdo -fldrange')
+            data = nc.open_data(ff)
+            data.spatial_range()
+            self.assertEqual(data.history[0], 'cdo -fldrange')
 
-        data = nc.open_data(ff)
-        data.spatial_sum()
-        self.assertEqual(data.history[0], 'cdo -fldsum')
+            data = nc.open_data(ff)
+            data.spatial_sum()
+            self.assertEqual(data.history[0], 'cdo -fldsum')
 
-        data = nc.open_data(ff)
-        data.spatial_percentile(1)
-        self.assertEqual(data.history[0], 'cdo -fldpctl,1')
+            data = nc.open_data(ff)
+            data.spatial_percentile(1)
+            self.assertEqual(data.history[0], 'cdo -fldpctl,1')
 
 
         data = nc.open_data(ff)
@@ -368,21 +369,22 @@ class TestCalls(unittest.TestCase):
         data.divide(1)
         self.assertEqual(data.history[0], 'cdo -divc,1')
 
-        data = nc.open_data(ff)
-        data.add(data)
-        self.assertEqual(data.history[0], 'cdo -add  infile09178 data/sst.mon.mean.nc')
+        if cdo_version not in ["1.9.3"]:
+            data = nc.open_data(ff)
+            data.add(data)
+            self.assertEqual(data.history[0], 'cdo -add  infile09178 data/sst.mon.mean.nc')
 
-        data = nc.open_data(ff)
-        data.subtract(data)
-        self.assertEqual(data.history[0], 'cdo -sub  infile09178 data/sst.mon.mean.nc')
+            data = nc.open_data(ff)
+            data.subtract(data)
+            self.assertEqual(data.history[0], 'cdo -sub  infile09178 data/sst.mon.mean.nc')
 
-        data = nc.open_data(ff)
-        data.multiply(data)
-        self.assertEqual(data.history[0], 'cdo -mul  infile09178 data/sst.mon.mean.nc')
+            data = nc.open_data(ff)
+            data.multiply(data)
+            self.assertEqual(data.history[0], 'cdo -mul  infile09178 data/sst.mon.mean.nc')
 
-        data = nc.open_data(ff)
-        data.divide(data)
-        self.assertEqual(data.history[0], 'cdo -div  infile09178 data/sst.mon.mean.nc')
+            data = nc.open_data(ff)
+            data.divide(data)
+            self.assertEqual(data.history[0], 'cdo -div  infile09178 data/sst.mon.mean.nc')
 
         data = nc.open_data(ff)
         data.set_date(year = 1990, month = 10, day = 1)
