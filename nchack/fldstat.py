@@ -7,6 +7,7 @@ from .runthis import tidy_command
 from .cleanup import cleanup
 from .cleanup import disk_clean
 
+import subprocess
 
 def cdo_version():
     cdo_check = subprocess.run("cdo --version", shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
