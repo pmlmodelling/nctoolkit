@@ -120,32 +120,3 @@ def months(self):
     return all_months
 
 
-def attributes(self):
-    if type(self.current) is list:
-        warnings.warn(message="Attributes for the first file shown!")
-        ff = self.current[0]
-    else:
-        ff = self.current
-
-    out = subprocess.run(
-        f"cdo showatts {ff}", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
-    )
-    out = out.stdout.decode("utf-8")
-    return out
-
-
-def global_attributes(self):
-    if type(self.current) is list:
-        warnings.warn(message="Attributes for the first file shown!")
-        ff = self.current[0]
-    else:
-        ff = self.current
-
-    out = subprocess.run(
-        f"cdo showattsglob {ff}",
-        shell=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-    )
-    out = out.stdout.decode("utf-8")
-    return out

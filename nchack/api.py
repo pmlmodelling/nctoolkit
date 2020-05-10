@@ -696,8 +696,6 @@ class DataSet(object):
     from .show import years
     from .show import months
     from .show import levels
-    from .show import attributes
-    from .show import global_attributes
 
     from .fldstat import spatial_mean
     from .fldstat import spatial_min
