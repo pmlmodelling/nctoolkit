@@ -99,7 +99,7 @@ def spatial_sum(self, by_area=False):
                 cdo_command = tidy_command(cdo_command)
                 new_commands.append(cdo_command)
 
-                target = run_cdo(cdo_command, target=target2)
+                target2 = run_cdo(cdo_command, target=target2)
 
                 cdo_command = f"cdo -fldsum {target2} {target}"
                 cdo_command = tidy_command(cdo_command)
@@ -138,7 +138,7 @@ def spatial_sum(self, by_area=False):
             cdo_command = tidy_command(cdo_command)
             new_commands.append(cdo_command)
 
-            target = run_cdo(cdo_command, target=target2)
+            target2 = run_cdo(cdo_command, target=target2)
 
             cdo_command = f"cdo -fldsum {target2} {target}"
             cdo_command = tidy_command(cdo_command)
