@@ -20,11 +20,11 @@ class TestCalls(unittest.TestCase):
         data = nc.open_data(ff)
         data.cell_areas(join = True)
 
-        self.assertEqual(len(data.history), 2)
-        self.assertTrue("cdo -L -merge data/sst.mon.mean.nc -gridarea data/sst.mon.mean.nc" in data.history[0])
-        self.assertTrue('cdo -L -setattribute,cell_area@units="m^2' in data.history[1])
+        self.assertEqual(len(data.history), 3)
+        self.assertTrue("cdo -L -merge data/sst.mon.mean.nc" in data.history[1])
+        self.assertTrue("cdo -L -gridarea data/sst.mon.mean.nc" in data.history[0])
+        self.assertTrue('cdo -L -setattribute,cell_area@units="m^2' in data.history[2])
 
-        self.assertEqual(data.history[0].split(" ")[6], data.history[1].split(" ")[3])
 
 
     def test_clipcall(self):
