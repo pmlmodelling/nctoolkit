@@ -126,7 +126,7 @@ def merge(self, match=["year", "month", "day"]):
     if session_info["lazy"]:
         self._merged = True
 
-    if cdo_version in ["1.9.3"]:
+    if cdo_version() in ["1.9.3"]:
         self.run()
 
 
@@ -149,7 +149,7 @@ def merge_time(self):
     if session_info["lazy"]:
         self._merged = True
 
-    if cdo_version in ["1.9.3"]:
+    if cdo_version() in ["1.9.3"]:
         self.run()
 
 
