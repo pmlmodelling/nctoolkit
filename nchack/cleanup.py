@@ -9,7 +9,7 @@ from .session import session_info
 # keep is a file you do not want to delete
 
 
-def cleanup(keep=None):
+def cleanup():
     """
     Temp file cleaner
 
