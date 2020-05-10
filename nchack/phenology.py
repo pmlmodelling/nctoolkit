@@ -8,6 +8,7 @@ from .setters import set_longnames
 from .cleanup import cleanup
 from .cleanup import disk_clean
 from .runthis import run_cdo
+from .runthis import tidy_command
 from .show import nc_years
 import copy
 
@@ -49,6 +50,7 @@ def phenology(self, var=None, metric=None, p=None):
             target = temp_file(".nc")
             command = f"cdo -timmin -setrtomiss,-10000,0 -expr,'peak=var*ctimestep()' -eq -chname,{var},var -selname,{var} {ff} -timmax -chname,{var},var -selname,{var} {ff} {target}"
 
+            command = tidy_command(command)
             target = run_cdo(command, target=target)
 
             new_files.append(target)
@@ -91,6 +93,7 @@ def phenology(self, var=None, metric=None, p=None):
             target = temp_file(".nc")
             command = f"cdo -timmin -setrtomiss,-10000,0 -expr,'{metric}=var*ctimestep()' -gt -timcumsum -chname,{var},var -selname,{var} {ff} -mulc,{start} -timsum -chname,{var},var -selname,{var} {ff} {target}"
 
+            command = tidy_command(command)
             target = run_cdo(command, target=target)
 
             new_files.append(target)

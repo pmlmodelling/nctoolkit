@@ -3,6 +3,7 @@ import copy
 from .runthis import run_this
 from .temp_file import temp_file
 from .runthis import run_cdo
+from .runthis import tidy_command
 from .cleanup import cleanup
 from .cleanup import disk_clean
 
@@ -81,6 +82,7 @@ def spatial_sum(self, by_area=False):
 
         target = temp_file("nc")
         cdo_command = f"cdo -fldsum -mul {ff} -gridarea {ff} {target}"
+        cdo_command = tidy_command(cdo_command)
         target = run_cdo(cdo_command, target=target)
         new_files.append(target)
         new_commands.append(cdo_command)

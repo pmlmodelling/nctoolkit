@@ -1,5 +1,6 @@
 from .runthis import run_this
 from .runthis import run_cdo
+from .runthis import tidy_command
 from .temp_file import temp_file
 from .session import nc_safe
 from .show import nc_variables
@@ -94,6 +95,7 @@ def operation(self, method="mul", ff=None, var=None):
 
             target = temp_file(".nc")
             the_command = cdo_command.replace("infile09178", ff) + " " + target
+            the_command = tidy_command(the_command)
             target = run_cdo(the_command, target)
             new_files.append(target)
             new_commands.append(the_command)

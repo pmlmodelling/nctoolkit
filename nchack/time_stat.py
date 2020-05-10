@@ -1,5 +1,6 @@
 from .runthis import run_this
 from .runthis import run_cdo
+from .runthis import tidy_command
 from .cleanup import cleanup
 from .session import nc_safe
 from .temp_file import temp_file
@@ -110,6 +111,7 @@ def percentile(self, p=None):
             + target
         )
 
+        cdo_command = tidy_command(cdo_command)
         target = run_cdo(cdo_command, target)
         new_files.append(target)
         new_commands.append(cdo_command)

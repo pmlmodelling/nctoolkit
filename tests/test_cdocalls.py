@@ -250,7 +250,7 @@ class TestCalls(unittest.TestCase):
 
         data = nc.open_data(ff)
         data.percentile(p = 1)
-        self.assertTrue('cdo -timpctl,1 data/sst.mon.mean.nc -timmin data/sst.mon.mean.nc -timmax data/sst.mon.mean.nc' in data.history[0])
+        self.assertTrue('cdo -L -timpctl,1 data/sst.mon.mean.nc -timmin data/sst.mon.mean.nc -timmax data/sst.mon.mean.nc' in data.history[0])
 
 
 
