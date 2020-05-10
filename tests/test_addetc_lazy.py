@@ -332,6 +332,7 @@ class TestAddetc(unittest.TestCase):
 
         x = tracker.to_dataframe().sst.values[0]
         y = out.to_dataframe().sst.values[0]
+        print(nc.session_files())
 
         self.assertEqual(x, y/2)
         n = len(nc.session_files())
