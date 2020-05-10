@@ -49,7 +49,7 @@ class TestLazy(unittest.TestCase):
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         y = len(tracker.history)
         self.assertEqual(x,18.435571670532227)
-        if cdo_version in ["1.9.3"]:
+        if cdo_version() in ["1.9.3"]:
             self.assertEqual(y, 2)
         else:
             self.assertEqual(y, 1)
@@ -96,7 +96,7 @@ class TestLazy(unittest.TestCase):
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         self.assertEqual(x, 18.435571670532227)
         self.assertEqual(n_files, 30)
-        if cdo_version in ["1.9.3"]:
+        if cdo_version() in ["1.9.3"]:
             self.assertEqual(y, 4)
         else:
             self.assertEqual(y, 2)
