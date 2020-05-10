@@ -140,6 +140,8 @@ def spatial_sum(self, by_area=False):
 
             target2 = run_cdo(cdo_command, target=target2)
 
+            target = temp_file("nc")
+
             cdo_command = f"cdo -fldsum {target2} {target}"
             cdo_command = tidy_command(cdo_command)
             target = run_cdo(cdo_command, target=target)
