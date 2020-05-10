@@ -5,6 +5,13 @@ from datetime import datetime
 from .session import session_info
 from .runthis import run_this
 
+def cdo_version():
+    cdo_check = subprocess.run("cdo --version", shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    cdo_check = str(cdo_check.stderr).replace("\\n", "")
+    cdo_check = cdo_check.replace("b'", "").strip()
+    return cdo_check.split("(")[0].strip().split(" ")[-1]
+
+
 
 def merge(self, match=["year", "month", "day"]):
 
@@ -119,6 +126,9 @@ def merge(self, match=["year", "month", "day"]):
     if session_info["lazy"]:
         self._merged = True
 
+    if cdo_version in ["1.9.3"]:
+        self.run()
+
 
 def merge_time(self):
     """
@@ -138,3 +148,9 @@ def merge_time(self):
 
     if session_info["lazy"]:
         self._merged = True
+
+    if cdo_version in ["1.9.3"]:
+        self.run()
+
+
+
