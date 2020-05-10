@@ -75,6 +75,9 @@ def spatial_sum(self, by_area=False):
     if isinstance(by_area, bool) == False:
         raise TypeError("by_area is not boolean")
 
+    if cdo_version() in ["1.9.3"]:
+        self.run()
+
     if (type(self.current)) is str or (by_area == False):
 
         if by_area:
@@ -91,13 +94,34 @@ def spatial_sum(self, by_area=False):
     new_files = []
     new_commands = []
     for ff in self:
+        if cdo_version() in ["1.9.3"]:
 
-        target = temp_file("nc")
-        cdo_command = f"cdo -fldsum -mul {ff} -gridarea {ff} {target}"
-        cdo_command = tidy_command(cdo_command)
-        target = run_cdo(cdo_command, target=target)
-        new_files.append(target)
-        new_commands.append(cdo_command)
+            target1 = temp_file("nc")
+
+            cdo_command = f"cdo -gridarea {ff} {target1}"
+            cdo_command = tidy_command(cdo_command)
+            target1 = run_cdo(cdo_command, target=target1)
+            new_commands.append(cdo_command)
+
+            target = temp_file("nc")
+
+            cdo_command = f"cdo -fldsum -mul {target1} {target}"
+            cdo_command = tidy_command(cdo_command)
+            target = run_cdo(cdo_command, target=target)
+            new_files.append(target)
+            new_commands.append(cdo_command)
+
+
+
+        else:
+
+            target = temp_file("nc")
+
+            cdo_command = f"cdo -fldsum -mul {ff} -gridarea {ff} {target}"
+            cdo_command = tidy_command(cdo_command)
+            target = run_cdo(cdo_command, target=target)
+            new_files.append(target)
+            new_commands.append(cdo_command)
 
     self.history += new_commands
     self._hold_history = copy.deepcopy(self.history)
