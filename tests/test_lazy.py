@@ -4,6 +4,14 @@ nc.options(lazy= True)
 import pandas as pd
 import xarray as xr
 import os
+import subprocess
+
+def cdo_version():
+    cdo_check = subprocess.run("cdo --version", shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    cdo_check = str(cdo_check.stderr).replace("\\n", "")
+    cdo_check = cdo_check.replace("b'", "").strip()
+    return cdo_check.split("(")[0].strip().split(" ")[-1]
+
 
 
 class TestLazy(unittest.TestCase):
@@ -41,7 +49,10 @@ class TestLazy(unittest.TestCase):
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         y = len(tracker.history)
         self.assertEqual(x,18.435571670532227)
-        self.assertEqual(y, 1)
+        if cdo_version in ["1.9.3"]:
+            self.assertEqual(y, 2)
+        else:
+            self.assertEqual(y, 1)
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 
@@ -85,7 +96,10 @@ class TestLazy(unittest.TestCase):
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         self.assertEqual(x, 18.435571670532227)
         self.assertEqual(n_files, 30)
-        self.assertEqual(y, 2)
+        if cdo_version in ["1.9.3"]:
+            self.assertEqual(y, 4)
+        else:
+            self.assertEqual(y, 2)
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 
