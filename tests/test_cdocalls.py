@@ -369,7 +369,7 @@ class TestCalls(unittest.TestCase):
         data.divide(1)
         self.assertEqual(data.history[0], 'cdo -divc,1')
 
-        if cdo_version not in ["1.9.3"]:
+        if cdo_version() not in ["1.9.3"]:
             data = nc.open_data(ff)
             data.add(data)
             self.assertEqual(data.history[0], 'cdo -add  infile09178 data/sst.mon.mean.nc')
