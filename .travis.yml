@@ -1,4 +1,4 @@
-dist: xenial
+dist: bionic
 language: python
 python:
   - "3.6"      # current default Python on Travis CI
@@ -52,9 +52,9 @@ install:
 # command to run tests
 script:
     # - which cdo
-    #- cdo --version 
+    - cdo --version 
     #- ncks --version 
-  - pytest
+    - pytest
 
 after_success:
     - codecov
