@@ -60,6 +60,8 @@ class TestAddetc(unittest.TestCase):
 
         self.assertEqual(x , 0)
 
+        n = len(nc.session_files())
+        self.assertEqual(n, 2)
 
 
 
@@ -511,6 +513,9 @@ class TestAddetc(unittest.TestCase):
         x = new.to_dataframe().sst.values[0]
 
         self.assertEqual(x , 0)
+
+        n = len(nc.session_files())
+        self.assertEqual(n, 2)
 
     def test_empty(self):
         n = len(nc.session_files())
