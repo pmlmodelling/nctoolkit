@@ -8,6 +8,7 @@ from .cleanup import cleanup
 from .cleanup import disk_clean
 from .session import session_info
 import copy
+import subprocess
 import os
 
 
@@ -28,6 +29,12 @@ def operation(self, method="mul", ff=None, var=None):
     Method to add, subtract etc. a netcdf file from another one
     This is used by add etc.
     """
+
+    cdo_check = subprocess.run("cdo --version", shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    cdo_check = str(cdo_check.stderr).replace("\\n", "")
+    cdo_check = cdo_check.replace("b'", "").strip()
+    cdo_version = cdo_check.split("(")[0].strip().split(" ")[-1]
+
 
     # If the dataset has to be merged, then this operation will not work without running it first
     if self._merged:
@@ -86,6 +93,10 @@ def operation(self, method="mul", ff=None, var=None):
             )
 
     # run the command if not lazy
+
+    if cdo_version in ["1.9.3"]:
+        self.run()
+
     if session_info["lazy"] == False:
 
         new_files = []
