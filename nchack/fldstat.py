@@ -110,6 +110,7 @@ def spatial_sum(self, by_area=False):
                 self._hold_history = copy.deepcopy(self.history)
 
                 self.current = target
+                cleanup()
 
                 return None
             else:
