@@ -83,7 +83,36 @@ def spatial_sum(self, by_area=False):
         if by_area:
             self.run()
 
-            cdo_command = f"cdo -fldsum -mul {self.current} -gridarea "
+            if cdo_version() in ["1.9.3"]:
+
+                new_commands = []
+                target1 = temp_file("nc")
+
+                cdo_command = f"cdo -gridarea {self.current} {target1}"
+                cdo_command = tidy_command(cdo_command)
+                new_commands.append(cdo_command)
+                target1 = run_cdo(cdo_command, target=target1)
+
+                target2 = temp_file("nc")
+
+                cdo_command = f"cdo -mul {self.current} {target1} {target2}"
+                cdo_command = tidy_command(cdo_command)
+                new_commands.append(cdo_command)
+
+                target = run_cdo(cdo_command, target=target2)
+
+                cdo_command = f"cdo -fldsum {target2} {target}"
+                cdo_command = tidy_command(cdo_command)
+                target = run_cdo(cdo_command, target=target)
+                new_files.append(target)
+                self.history+=new_commands
+                self._hold_history = copy.deepcopy(self.history)
+
+                self.current = target
+
+                return None
+            else:
+                cdo_command = f"cdo -fldsum -mul {self.current} -gridarea "
         else:
             cdo_command = "cdo -fldsum"
 
@@ -108,7 +137,8 @@ def spatial_sum(self, by_area=False):
             cdo_command = f"cdo -mul {ff} {target1} {target2}"
             cdo_command = tidy_command(cdo_command)
             new_commands.append(cdo_command)
-            target2 = run_cdo(cdo_command, target=target2)
+
+            target = run_cdo(cdo_command, target=target2)
 
             cdo_command = f"cdo -fldsum {target2} {target}"
             cdo_command = tidy_command(cdo_command)
