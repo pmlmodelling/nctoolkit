@@ -117,6 +117,7 @@ def operation(self, method="mul", ff=None, var=None):
         self._hold_history = copy.deepcopy(self.history)
         for rr in self._safe:
             nc_safe.remove(ff)
+        self._safe = []
         cleanup()
 
     # update history if lazy
