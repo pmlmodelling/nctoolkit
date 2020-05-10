@@ -166,12 +166,6 @@ class TestSetters(unittest.TestCase):
             n = len(nc.session_files())
             self.assertEqual(n, 0)
 
-    def test_setattributes_error(self):
-        tracker = nc.open_data(ff)
-        with self.assertRaises(TypeError) as context:
-            tracker.set_attributes("x")
-            n = len(nc.session_files())
-            self.assertEqual(n, 0)
 
     def test_longname_error(self):
         tracker = nc.open_data(ff)
@@ -211,29 +205,6 @@ class TestSetters(unittest.TestCase):
 
 
 
-    def test_setattribute(self):
-        tracker = nc.open_data(ff)
-        tracker.set_attributes({"test123":"test"})
-        x = "test123" in tracker.global_attributes()
-
-
-        self.assertEqual(x, True)
-        n = len(nc.session_files())
-        self.assertEqual(n, 1)
-
-    def test_delete_attribute(self):
-        tracker = nc.open_data(ff)
-        y = tracker.global_attributes()
-        tracker.set_attributes({"test123":"test"})
-        x = "test123" in tracker.global_attributes()
-        self.assertEqual(x, True)
-
-        tracker.delete_attributes(["test123"])
-        x = "test123" in tracker.global_attributes()
-
-        self.assertEqual(x, False)
-        n = len(nc.session_files())
-        self.assertEqual(n, 1)
 
 
 if __name__ == '__main__':

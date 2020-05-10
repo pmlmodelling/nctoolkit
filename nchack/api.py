@@ -669,12 +669,6 @@ class DataSet(object):
     from .setters import set_units
     from .setters import set_longnames
 
-    from .esoteric import set_attributes
-    from .esoteric import delete_attributes
-
-    from .esoteric import assign_coords
-    from .esoteric import set_gridtype
-
     from .time_stat import mean
     from .time_stat import percentile
     from .time_stat import max
