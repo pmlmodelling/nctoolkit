@@ -106,7 +106,6 @@ def spatial_sum(self, by_area=False):
                 cdo_command = f"cdo -fldsum {target2} {target}"
                 cdo_command = tidy_command(cdo_command)
                 target = run_cdo(cdo_command, target=target)
-                new_files.append(target)
                 self.history+=new_commands
                 self._hold_history = copy.deepcopy(self.history)
 
