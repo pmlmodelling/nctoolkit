@@ -752,7 +752,6 @@ class DataSet(object):
     from .add_etc import subtract
     from .add_etc import multiply
     from .add_etc import divide
-    from .cf_checks import cf_checks
 
     from .to_lonlat import to_lonlat
 
