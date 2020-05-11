@@ -6,18 +6,18 @@
 
 
 
-# nchack - easy tools for manipulating netcdf data in Python
+# nctoolkit - easy tools for manipulating netcdf data in Python
 
-The goal of nchack is to provide a comprehensive tool in Python for manipulating individual netcdf files and ensembles of netcdf files. The philosophy is to provide sufficient methods to carry out 80-90% of netcdf manipulations.
+The goal of nctoolkit is to provide a comprehensive tool in Python for manipulating individual netcdf files and ensembles of netcdf files. The philosophy is to provide sufficient methods to carry out 80-90% of netcdf manipulations.
 
 This package will work with Python 3.6 upwards.
 
 ## Installation
 
 
-You can install the development version of nchack using using pip as follows.
+You can install the development version of nctoolkit using using pip as follows.
 ```sh
-pip install git+https://github.com/r4ecology/nchack.git
+pip install git+https://github.com/r4ecology/nctoolkit.git
 ```
 
 This package relies on CDO and NCO under the hood.
