@@ -41,6 +41,6 @@ work on Windows platforms, currently. But (buyer beware) it should work on Macs.
 
 ## Reference and tutorials
 
-A full API reference, in depth tutorials and a how-to guide are available at [readthedocs](https://nchack.readthedocs.io/en/latest/).
+A full API reference, in depth tutorials and a how-to guide are available at [readthedocs](https://nctoolkit.readthedocs.io/en/latest/).
 
 
