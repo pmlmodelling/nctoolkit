@@ -1,4 +1,4 @@
-.. currentmodule:: nchack
+.. currentmodule:: nctoolkit
 
 
 ####################

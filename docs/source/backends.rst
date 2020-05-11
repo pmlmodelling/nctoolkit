@@ -4,6 +4,6 @@
 nckack backends
 ================
 
-.. currentmodule:: nchack
+.. currentmodule:: nctoolkit
 
-nchack relies on two netcdf processing tools as back ends: CDO and NCO, with the the vast majority of operations calling CDO.
+nctoolkit relies on two netcdf processing tools as back ends: CDO and NCO, with the the vast majority of operations calling CDO.

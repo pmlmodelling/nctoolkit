@@ -25,12 +25,12 @@ There are two main system dependencies: `Climate Data Operators <https://code.mp
 
 
 
-How to install nchack
+How to install nctoolkit
 ---------------------
 
-To install the development version of nchack::
+To install the development version of nctoolkit::
 
-   $ pip install git+https://github.com/r4ecology/nchack.git
+   $ pip install git+https://github.com/r4ecology/nctoolkit.git
 
 
 
