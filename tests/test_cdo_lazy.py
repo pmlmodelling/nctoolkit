@@ -67,7 +67,7 @@ class TestCdo(unittest.TestCase):
         self.assertEqual(n, 1)
 
     def test_cdo5(self):
-        if cdo_version() in ["1.9.3"]:
+        if cdo_version() in ["1.9.2", "1.9.3"]:
             return None
         tracker = nc.open_data(ff)
         tracker.mean()

@@ -28,7 +28,7 @@ class TestCalls(unittest.TestCase):
         data = nc.open_data(ff)
         data.cell_areas(join = True)
 
-        if cdo_version() in ["1.9.3", "1.9.4", "1.9.5"]:
+        if cdo_version() in ["1.9.2", "1.9.3", "1.9.4", "1.9.5"]:
             self.assertEqual(len(data.history), 3)
             self.assertTrue("cdo -L -merge data/sst.mon.mean.nc" in data.history[1])
             self.assertTrue("cdo -L -gridarea data/sst.mon.mean.nc" in data.history[0])
@@ -273,7 +273,7 @@ class TestCalls(unittest.TestCase):
         self.assertEqual(data.history[0], 'cdo -delete,name=sst' )
 
 
-        if cdo_version() not in ["1.9.3"]:
+        if cdo_version() not in ["1.9.2", "1.9.3"]:
             data = nc.open_data(ensemble)
             data.merge_time()
             self.assertEqual(data.history[0], 'cdo --sortname -mergetime')
@@ -300,7 +300,7 @@ class TestCalls(unittest.TestCase):
         data.rolling_sum(10)
         self.assertEqual(data.history[0], 'cdo -runsum,10')
 
-        if cdo_version() not in ["1.9.3"]:
+        if cdo_version() not in ["1.9.2", "1.9.3"]:
             data = nc.open_data(ff)
             data.spatial_mean()
             self.assertEqual(data.history[0], 'cdo -fldmean')
@@ -375,7 +375,7 @@ class TestCalls(unittest.TestCase):
         data.divide(1)
         self.assertEqual(data.history[0], 'cdo -divc,1')
 
-        if cdo_version() not in ["1.9.3"]:
+        if cdo_version() not in ["1.9.2", "1.9.3"]:
             data = nc.open_data(ff)
             data.add(data)
             self.assertEqual(data.history[0], 'cdo -add  infile09178 data/sst.mon.mean.nc')
