@@ -8,9 +8,9 @@
 
 
 
-# nctoolkit - easy tools for manipulating netcdf data in Python
+# nctoolkit - easy tools for manipulating NetCDF data in Python
 
-The goal of nctoolkit is to provide a comprehensive tool in Python for manipulating individual netcdf files and ensembles of netcdf files. The philosophy is to provide sufficient methods to carry out 80-90% of netcdf manipulations.
+The goal of nctoolkit is to provide a comprehensive tool in Python for manipulating individual NetCDF files and ensembles of NetCDF files. The philosophy is to provide sufficient methods to carry out 80-90% of NetCDF manipulations.
 
 This package will work with Python 3.6 upwards.
 
