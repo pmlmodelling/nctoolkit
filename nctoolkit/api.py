@@ -22,7 +22,7 @@ def custom_formatwarning(msg, *args, **kwargs):
 
 warnings.formatwarning = custom_formatwarning
 
-# import functions from nchack
+# import functions from nctoolkit
 from .cleanup import cleanup
 from .cleanup import clean_all
 from .cleanup import deep_clean
@@ -41,7 +41,7 @@ from .temp_file import temp_file
 # set up the session info
 letters = string.ascii_lowercase
 session_info["stamp"] = (
-    "nchack" + "".join(random.choice(letters) for i in range(8)) + "nchack"
+    "nctoolkit" + "".join(random.choice(letters) for i in range(8)) + "nctoolkit"
 )
 session_info["temp_dir"] = "/tmp/"
 session_info["thread_safe"] = False
@@ -366,7 +366,7 @@ class DataSet(object):
             current = self.current
 
         return (
-            "<nchack.DataSet>:\nstart: "
+            "<nctoolkit.DataSet>:\nstart: "
             + start
             + "\ncurrent: "
             + current

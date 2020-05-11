@@ -16,8 +16,8 @@ def nc_remove(ff, deep=False):
     ) == False:
         raise ValueError(f"The file {ff} is not in a tmp folder")
 
-    if "nchack" not in ff:
-        raise ValueError(f"The file {ff}  was not created by nchack")
+    if "nctoolkit" not in ff:
+        raise ValueError(f"The file {ff}  was not created by nctoolkit")
 
     if (ff in nc_safe) and (deep == False):
         raise ValueError(f"The file {ff} is in the safe list, so cannot be removed")

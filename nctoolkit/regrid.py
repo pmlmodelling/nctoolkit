@@ -24,7 +24,7 @@ def regrid(self, grid=None, method="bil"):
 
     Parameters
     -------------
-    grid : nchack.DataSet, xarray object, pandas data frame or netcdf file
+    grid : nctoolkit.DataSet, xarray object, pandas data frame or netcdf file
         grid to remap to
     method : str
         remapping method. Defaults to "bil". Bilinear: "bil"; Nearest neighbour: "nn",....
