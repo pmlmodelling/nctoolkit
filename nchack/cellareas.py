@@ -44,7 +44,7 @@ def cell_areas(self, join=True):
 
         for ff in self:
 
-            if cdo_version in ["1.9.3", "1.9.4", "1.9.5", "1.9.6"]:
+            if cdo_version in ["1.9.3", "1.9.4"]:
 
                 if "cell_area" in nc_variables(ff):
                     raise ValueError("cell_area is already a variable")
