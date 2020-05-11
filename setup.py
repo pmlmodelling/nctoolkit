@@ -17,14 +17,14 @@ cdo_version = cdo_check.split("(")[0].strip().split(" ")[-1]
 #if cdo_version not in ["1.9.8"]:
 #    raise ValueError("Please install cdo version 1.9.8 or above")
 
-setup(name='nchack',
+setup(name='nctoolkit',
       version='0.1',
       description='A general purpose python tool for manipulating, analyzing and plotting data from netcdf files',
       url='https://readthedocs.org/projects/nchack/',
       author='Robert Wilson',
       author_email='rwi@pml.ac.uk',
       license='MIT',
-      packages=['nchack'],
+      packages=['nctoolkit'],
       install_requires=['xarray','netcdf4', "dask[complete]", "hvplot"],
       zip_safe=False)
 
