@@ -2,15 +2,15 @@
 #
 import os
 import sys
-import nchack
+import nctoolkit
 sys.path.insert(0, os.path.abspath('../..'))
 # sys.path.insert(0, os.path.abspath('.'))
 
 
 # -- Project information -----------------------------------------------------
 
-project = 'nchack'
-copyright = '2019, Robert Wilson'
+project = 'nctoolkit'
+copyright = '2020, Robert Wilson'
 author = 'Robert Wilson'
 
 # The short X.Y version
