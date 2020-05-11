@@ -1,5 +1,5 @@
 import unittest
-import nchack as nc
+import nctoolkit as nc
 nc.options(lazy= True)
 import pandas as pd
 import xarray as xr
@@ -186,7 +186,7 @@ class TestApi(unittest.TestCase):
     def test_opendatamissing(self):
 
         with self.assertRaises(ValueError) as context:
-            data = nc.open_data(["nchack/clip.py", "nchack/regrid.py"], checks = True)
+            data = nc.open_data(["nctoolkit/clip.py", "nctoolkit/regrid.py"], checks = True)
 
 
 

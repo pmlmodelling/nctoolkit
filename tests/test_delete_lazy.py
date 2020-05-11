@@ -1,5 +1,5 @@
 import unittest
-import nchack as nc
+import nctoolkit as nc
 nc.options(lazy= True)
 import pandas as pd
 import xarray as xr

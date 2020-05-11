@@ -1,5 +1,5 @@
 import unittest
-import nchack as nc
+import nctoolkit as nc
 import pandas as pd
 import xarray as xr
 import os
@@ -14,7 +14,7 @@ class TestRemove(unittest.TestCase):
             nc.remove.nc_remove("/tmp/test.nc")
 
         with self.assertRaises(ValueError) as context:
-            nc.remove.nc_remove("/tmp/nchacktest.nc")
+            nc.remove.nc_remove("/tmp/nctoolkittest.nc")
 
         with self.assertRaises(ValueError) as context:
             nc.remove.nc_remove("/tmp/stamptest.nc")
