@@ -6,6 +6,13 @@ import xarray as xr
 import os
 
 
+import subprocess
+def cdo_version():
+    cdo_check = subprocess.run("cdo --version", shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    cdo_check = str(cdo_check.stderr).replace("\\n", "")
+    cdo_check = cdo_check.replace("b'", "").strip()
+    return cdo_check.split("(")[0].strip().split(" ")[-1]
+
 ff = "data/sst.mon.mean.nc"
 
 class TestSplit(unittest.TestCase):
@@ -55,8 +62,10 @@ class TestSplit(unittest.TestCase):
         out = nc.temp_file.temp_file() + ".nc"
         Path(out).touch()
 
-        with self.assertRaises(ValueError) as context:
-            tracker = nc.open_data(out, checks = True)
+        # do not run the check below for cdo 1.9.5 as the behaviour is not the same there
+        if cdo_version() not in ["1.9.5"]:
+            with self.assertRaises(ValueError) as context:
+                tracker = nc.open_data(out, checks = True)
 
         tracker = nc.open_data(out)
         with self.assertRaises(ValueError) as context:

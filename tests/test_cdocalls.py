@@ -28,7 +28,7 @@ class TestCalls(unittest.TestCase):
         data = nc.open_data(ff)
         data.cell_areas(join = True)
 
-        if cdo_version() in ["1.9.3", "1.9.4"]:
+        if cdo_version() in ["1.9.3", "1.9.4", "1.9.5"]:
             self.assertEqual(len(data.history), 3)
             self.assertTrue("cdo -L -merge data/sst.mon.mean.nc" in data.history[1])
             self.assertTrue("cdo -L -gridarea data/sst.mon.mean.nc" in data.history[0])
