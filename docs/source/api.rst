@@ -54,7 +54,7 @@ Variable modification
    DataSet.transmute
    DataSet.set_missing
 
-Netcdf file attribute modification 
+NetCDF file attribute modification 
 ---------------------
 
 .. autosummary::
