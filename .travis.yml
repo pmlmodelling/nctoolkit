@@ -1,37 +1,9 @@
-os:
-  - linux 
-  - osx
-
 dist: bionic
 language: python
-#python:
-#  - "3.6"      # current default Python on Travis CI
-#  - "3.7"      # current default Python on Travis CI
-#  - "3.8"      # current default Python on Travis CI
+python:
+  - "3.6"      # current default Python on Travis CI
 # command to install dependencies
 #
-jobs:
-  include:
-    - os: linux
-      python: 3.6
-      env: TOXENV=py36
-    - os: linux
-      python: 3.7
-      env: TOXENV=py37
-    - os: linux
-      python: 3.7
-      env: TOXENV=py37
-
-    - os: osx
-      language: generic
-      env: TOXENV=py36
-    - os: osx
-      language: generic
-      env: TOXENV=py37
-    - os: osx
-      language: generic
-      env: TOXENV=py38
-
 before_install:
     - pip install -U pip
     - pip install -U pytest
@@ -48,7 +20,6 @@ before_install:
 #    apt: true
 #
 install:
-    - ./.travis/install.sh
 
     #  - wget ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4/hdf5-1.8.13.tar.gz
     #  - tar -xvf hdf5-1.8.13.tar.gz> /dev/null 2>&1
