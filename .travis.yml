@@ -1,6 +1,6 @@
 os:
   - linux 
-  -osx linux 
+  - osx
 
 dist: bionic
 language: python
