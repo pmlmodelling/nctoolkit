@@ -1,5 +1,7 @@
 os:
   - linux 
+  -osx linux 
+
 dist: bionic
 language: python
 #python:
