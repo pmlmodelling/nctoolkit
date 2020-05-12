@@ -2,7 +2,7 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/esta/issues) ![code coverage](coverage.svg)
-[codecov](https://codecov.io/gh/r4ecology/nctoolkit/branch/master/graph/badge.svg)](https://codecov.io/gh/r4ecology/nctoolkit)
+[![codecov](https://codecov.io/gh/r4ecology/nctoolkit/branch/master/graph/badge.svg)](https://codecov.io/gh/r4ecology/nctoolkit)
 [![Build Status](https://travis-ci.org/r4ecology/nctoolkit.png?branch=master)](https://travis-ci.org/r4ecology/nctoolkit)
 [![Documentation Status](https://readthedocs.org/projects/nctoolkit/badge/?version=latest)](https://nctoolkit.readthedocs.io/en/latest/?badge=latest)
 
