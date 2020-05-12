@@ -2,6 +2,8 @@ dist: bionic
 language: python
 python:
   - "3.6"      # current default Python on Travis CI
+  - "3.7"      # current default Python on Travis CI
+  - "3.8"      # current default Python on Travis CI
 # command to install dependencies
 #
 before_install:
