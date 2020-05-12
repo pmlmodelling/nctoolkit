@@ -1,6 +1,9 @@
-import xarray as xr
+
 from datetime import datetime
-from .cleanup import cleanup
+
+import xarray as xr
+
+from nctoolkit.cleanup import cleanup
 
 
 def to_xarray(self, decode_times=True):

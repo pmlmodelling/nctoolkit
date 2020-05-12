@@ -1,6 +1,8 @@
+
 import numpy as np
-from .temp_file import temp_file
-from .flatten import str_flatten
+
+from nctoolkit.flatten import str_flatten
+from nctoolkit.temp_file import temp_file
 
 
 def generate_grid(coords):

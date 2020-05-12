@@ -1,9 +1,11 @@
-import warnings
+
 import subprocess
-from .flatten import str_flatten
-from .session import nc_safe
-from .runthis import run_this
-from .cleanup import cleanup
+import warnings
+
+from nctoolkit.cleanup import cleanup
+from nctoolkit.flatten import str_flatten
+from nctoolkit.runthis import run_this
+from nctoolkit.session import nc_safe
 
 
 def select_season(self, season=None):

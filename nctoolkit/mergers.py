@@ -1,16 +1,20 @@
-import warnings
+
 import pandas as pd
 import subprocess
+import warnings
+
 from datetime import datetime
-from .session import session_info
-from .runthis import run_this
+
+from nctoolkit.runthis import run_this
+from nctoolkit.session import session_info
+
 
 def cdo_version():
+    """Function to find cdo version"""
     cdo_check = subprocess.run("cdo --version", shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     cdo_check = str(cdo_check.stderr).replace("\\n", "")
     cdo_check = cdo_check.replace("b'", "").strip()
     return cdo_check.split("(")[0].strip().split(" ")[-1]
-
 
 
 def merge(self, match=["year", "month", "day"]):

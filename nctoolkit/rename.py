@@ -1,4 +1,5 @@
-from .runthis import run_this
+
+from nctoolkit.runthis import run_this
 
 
 def rename(self, newnames):

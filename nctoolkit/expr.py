@@ -1,6 +1,8 @@
-from .runthis import run_this
-import inspect
+
 import copy
+import inspect
+
+from nctoolkit.runthis import run_this
 
 
 # todo

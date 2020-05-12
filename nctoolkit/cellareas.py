@@ -1,13 +1,12 @@
+
 import copy
 import subprocess
-from .runthis import run_this
-from .runthis import tidy_command
-from .runthis import run_cdo
-from .temp_file import temp_file
-from .cleanup import cleanup
-from .cleanup import disk_clean
-from .session import nc_safe
-from .show import nc_variables
+
+from nctoolkit.cleanup import cleanup, disk_clean
+from nctoolkit.runthis import run_this, tidy_command, run_cdo
+from nctoolkit.session import nc_safe
+from nctoolkit.show import nc_variables
+from nctoolkit.temp_file import temp_file
 
 
 def cell_areas(self, join=True):

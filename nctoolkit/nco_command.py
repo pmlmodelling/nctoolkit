@@ -1,11 +1,12 @@
-import subprocess
+
 import copy
-from .temp_file import temp_file
-from .runthis import run_nco
-from .cleanup import cleanup
-from .cleanup import disk_clean
-from .session import nc_safe
-from .flatten import str_flatten
+import subprocess
+
+from nctoolkit.cleanup import cleanup, disk_clean
+from nctoolkit.flatten import str_flatten
+from nctoolkit.runthis import run_nco
+from nctoolkit.session import nc_safe
+from nctoolkit.temp_file import temp_file
 
 
 def nco_command(self, command=None, ensemble=False):

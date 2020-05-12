@@ -1,5 +1,6 @@
-from .runthis import run_this
-from .flatten import str_flatten
+
+from nctoolkit.flatten import str_flatten
+from nctoolkit.runthis import run_this
 
 
 def mask_box(self, lon=[-180, 180], lat=[-90, 90]):

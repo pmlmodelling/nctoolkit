@@ -1,11 +1,10 @@
-import os
-import copy
 
-from .cleanup import cleanup
-from .runthis import run_this
-from .runthis import run_cdo
-from .session import nc_safe
-from .session import session_info
+import copy
+import os
+
+from nctoolkit.cleanup import cleanup
+from nctoolkit.runthis import run_this, run_cdo
+from nctoolkit.session import nc_safe, session_info
 
 
 def write_nc(self, out, zip=True, overwrite=False):

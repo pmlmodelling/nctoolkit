@@ -1,7 +1,8 @@
-import tempfile
-import os
 
-from .session import session_info
+import os
+import tempfile
+
+from nctoolkit.session import session_info
 
 
 def temp_file(ext=""):

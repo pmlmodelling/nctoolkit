@@ -1,16 +1,14 @@
+
 import copy
 
-from .temp_file import temp_file
-from .session import nc_safe
-from .flatten import str_flatten
-from .select import select_variables
-from .setters import set_longnames
-from .cleanup import cleanup
-from .cleanup import disk_clean
-from .runthis import run_cdo
-from .runthis import tidy_command
-from .show import nc_years
-import copy
+from nctoolkit.cleanup import cleanup, disk_clean
+from nctoolkit.flatten import str_flatten
+from nctoolkit.runthis import run_cdo, tidy_command
+from nctoolkit.select import select_variables
+from nctoolkit.session import nc_safe
+from nctoolkit.setters import set_longnames
+from nctoolkit.show import nc_years
+from nctoolkit.temp_file import temp_file
 
 
 def phenology(self, var=None, metric=None, p=None):

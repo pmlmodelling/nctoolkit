@@ -1,42 +1,35 @@
-# import packages
-import os
-import re
-from netCDF4 import Dataset
+
+import atexit
 import copy
+import multiprocessing as mp
+import os
+import pandas as pd
 import random
+import re
 import string
 import xarray as xr
-import pandas as pd
 import subprocess
 import sys
 import warnings
-import atexit
-import multiprocessing as mp
 
+from netCDF4 import Dataset
+
+from nctoolkit.cleanup import cleanup, clean_all,deep_clean, temp_check
+from nctoolkit.create_ensemble import create_ensemble
+from nctoolkit.flatten import str_flatten
+from nctoolkit.generate_grid import generate_grid
+from nctoolkit.runthis import run_cdo
+from nctoolkit.session import nc_safe, nc_protected, session_info
+from nctoolkit.show import nc_variables, nc_years
+from nctoolkit.temp_file import temp_file
 
 # A custom format for warnings.
 def custom_formatwarning(msg, *args, **kwargs):
     # ignore everything except the message
     return str(msg) + "\n"
 
-
 warnings.formatwarning = custom_formatwarning
 
-# import functions from nctoolkit
-from .cleanup import cleanup
-from .cleanup import clean_all
-from .cleanup import deep_clean
-from .cleanup import temp_check
-from .create_ensemble import create_ensemble
-from .flatten import str_flatten
-from .generate_grid import generate_grid
-from .runthis import run_cdo
-from .session import nc_safe
-from .session import nc_protected
-from .session import session_info
-from .show import nc_variables
-from .show import nc_years
-from .temp_file import temp_file
 
 # set up the session info
 letters = string.ascii_lowercase
@@ -603,150 +596,150 @@ class DataSet(object):
     def start(self):
         raise AttributeError("You cannot delete the start point")
 
-    from .toxarray import to_xarray
-    from .toxarray import to_dataframe
+    from nctoolkit.toxarray import to_xarray
+    from nctoolkit.toxarray import to_dataframe
 
-    from .cellareas import cell_areas
-    from .regrid import regrid
+    from nctoolkit.cellareas import cell_areas
+    from nctoolkit.regrid import regrid
 
-    from .ensembles import ensemble_mean
-    from .ensembles import ensemble_max
-    from .ensembles import ensemble_min
-    from .ensembles import ensemble_range
-    from .ensembles import ensemble_percentile
+    from nctoolkit.ensembles import ensemble_mean
+    from nctoolkit.ensembles import ensemble_max
+    from nctoolkit.ensembles import ensemble_min
+    from nctoolkit.ensembles import ensemble_range
+    from nctoolkit.ensembles import ensemble_percentile
 
-    from .clip import clip
-    from .select import select_variables
-    from .select import select_timestep
+    from nctoolkit.clip import clip
+    from nctoolkit.select import select_variables
+    from nctoolkit.select import select_timestep
 
-    from .cdo_command import cdo_command
-    from .nco_command import nco_command
+    from nctoolkit.cdo_command import cdo_command
+    from nctoolkit.nco_command import nco_command
 
-    from .expr import mutate
-    from .expr import transmute
-    from .expr import sum_all
+    from nctoolkit.expr import mutate
+    from nctoolkit.expr import transmute
+    from nctoolkit.expr import sum_all
 
-    from .select import select_season
-    from .select import select_months
-    from .select import select_years
+    from nctoolkit.select import select_season
+    from nctoolkit.select import select_months
+    from nctoolkit.select import select_years
 
-    from .seasstat import seasonal_mean
-    from .seasstat import seasonal_min
-    from .seasstat import seasonal_max
-    from .seasstat import seasonal_range
+    from nctoolkit.seasstat import seasonal_mean
+    from nctoolkit.seasstat import seasonal_min
+    from nctoolkit.seasstat import seasonal_max
+    from nctoolkit.seasstat import seasonal_range
 
-    from .seasclim import seasonal_mean_climatology
-    from .seasclim import seasonal_min_climatology
-    from .seasclim import seasonal_max_climatology
-    from .seasclim import seasonal_range_climatology
+    from nctoolkit.seasclim import seasonal_mean_climatology
+    from nctoolkit.seasclim import seasonal_min_climatology
+    from nctoolkit.seasclim import seasonal_max_climatology
+    from nctoolkit.seasclim import seasonal_range_climatology
 
-    from .yearlystat import annual_mean
-    from .yearlystat import annual_min
-    from .yearlystat import annual_max
-    from .yearlystat import annual_range
+    from nctoolkit.yearlystat import annual_mean
+    from nctoolkit.yearlystat import annual_min
+    from nctoolkit.yearlystat import annual_max
+    from nctoolkit.yearlystat import annual_range
 
-    from .monstat import monthly_mean
-    from .monstat import monthly_min
-    from .monstat import monthly_max
-    from .monstat import monthly_range
+    from nctoolkit.monstat import monthly_mean
+    from nctoolkit.monstat import monthly_min
+    from nctoolkit.monstat import monthly_max
+    from nctoolkit.monstat import monthly_range
 
-    from .monthlyclim import monthly_mean_climatology
-    from .monthlyclim import monthly_min_climatology
-    from .monthlyclim import monthly_max_climatology
-    from .monthlyclim import monthly_range_climatology
+    from nctoolkit.monthlyclim import monthly_mean_climatology
+    from nctoolkit.monthlyclim import monthly_min_climatology
+    from nctoolkit.monthlyclim import monthly_max_climatology
+    from nctoolkit.monthlyclim import monthly_range_climatology
 
-    from .dailyclim import daily_mean_climatology
-    from .dailyclim import daily_min_climatology
-    from .dailyclim import daily_max_climatology
-    from .dailyclim import daily_range_climatology
+    from nctoolkit.dailyclim import daily_mean_climatology
+    from nctoolkit.dailyclim import daily_min_climatology
+    from nctoolkit.dailyclim import daily_max_climatology
+    from nctoolkit.dailyclim import daily_range_climatology
 
-    from .to_nc import write_nc
+    from nctoolkit.to_nc import write_nc
 
-    from .rename import rename
+    from nctoolkit.rename import rename
 
-    from .setters import set_date
-    from .setters import set_missing
-    from .setters import set_units
-    from .setters import set_longnames
+    from nctoolkit.setters import set_date
+    from nctoolkit.setters import set_missing
+    from nctoolkit.setters import set_units
+    from nctoolkit.setters import set_longnames
 
-    from .time_stat import mean
-    from .time_stat import percentile
-    from .time_stat import max
-    from .time_stat import min
-    from .time_stat import range
-    from .time_stat import var
-    from .time_stat import sum
-    from .time_stat import cum_sum
+    from nctoolkit.time_stat import mean
+    from nctoolkit.time_stat import percentile
+    from nctoolkit.time_stat import max
+    from nctoolkit.time_stat import min
+    from nctoolkit.time_stat import range
+    from nctoolkit.time_stat import var
+    from nctoolkit.time_stat import sum
+    from nctoolkit.time_stat import cum_sum
 
-    from .release import release
-    from .release import run
+    from nctoolkit.release import release
+    from nctoolkit.release import run
 
-    from .delete import remove_variables
+    from nctoolkit.delete import remove_variables
 
-    from .mergers import merge_time
-    from .mergers import merge
+    from nctoolkit.mergers import merge_time
+    from nctoolkit.mergers import merge
 
-    from .rollstat import rolling_mean
-    from .rollstat import rolling_min
-    from .rollstat import rolling_max
-    from .rollstat import rolling_range
-    from .rollstat import rolling_sum
+    from nctoolkit.rollstat import rolling_mean
+    from nctoolkit.rollstat import rolling_min
+    from nctoolkit.rollstat import rolling_max
+    from nctoolkit.rollstat import rolling_range
+    from nctoolkit.rollstat import rolling_sum
 
-    from .show import times
-    from .show import years
-    from .show import months
-    from .show import levels
+    from nctoolkit.show import times
+    from nctoolkit.show import years
+    from nctoolkit.show import months
+    from nctoolkit.show import levels
 
-    from .fldstat import spatial_mean
-    from .fldstat import spatial_min
-    from .fldstat import spatial_max
-    from .fldstat import spatial_range
-    from .fldstat import spatial_sum
-    from .fldstat import spatial_percentile
+    from nctoolkit.fldstat import spatial_mean
+    from nctoolkit.fldstat import spatial_min
+    from nctoolkit.fldstat import spatial_max
+    from nctoolkit.fldstat import spatial_range
+    from nctoolkit.fldstat import spatial_sum
+    from nctoolkit.fldstat import spatial_percentile
 
-    from .verticals import vertical_mean
-    from .verticals import vertical_min
-    from .verticals import vertical_max
-    from .verticals import vertical_range
-    from .verticals import vertical_sum
-    from .verticals import vertical_cum
-    from .verticals import surface
-    from .verticals import vertical_interp
-    from .verticals import bottom
-    from .verticals import bottom_mask
-    from .verticals import invert_levels
+    from nctoolkit.verticals import vertical_mean
+    from nctoolkit.verticals import vertical_min
+    from nctoolkit.verticals import vertical_max
+    from nctoolkit.verticals import vertical_range
+    from nctoolkit.verticals import vertical_sum
+    from nctoolkit.verticals import vertical_cum
+    from nctoolkit.verticals import surface
+    from nctoolkit.verticals import vertical_interp
+    from nctoolkit.verticals import bottom
+    from nctoolkit.verticals import bottom_mask
+    from nctoolkit.verticals import invert_levels
 
-    from .view import view
+    from nctoolkit.view import view
 
-    from .zip import zip
+    from nctoolkit.zip import zip
 
-    from .corr import cor_space
-    from .corr import cor_time
+    from nctoolkit.corr import cor_space
+    from nctoolkit.corr import cor_time
 
-    from .phenology import phenology
+    from nctoolkit.phenology import phenology
 
-    from .split import split
+    from nctoolkit.split import split
 
-    from .anomaly import annual_anomaly
-    from .anomaly import monthly_anomaly
+    from nctoolkit.anomaly import annual_anomaly
+    from nctoolkit.anomaly import monthly_anomaly
 
-    from .masking import mask_box
+    from nctoolkit.masking import mask_box
 
-    from .inttime import time_interp
+    from nctoolkit.inttime import time_interp
 
-    from .cleanup import disk_clean
+    from nctoolkit.cleanup import disk_clean
 
-    from .plot import plot
+    from nctoolkit.plot import plot
 
-    from .compare import compare_all
+    from nctoolkit.compare import compare_all
 
-    from .add_etc import add
-    from .add_etc import subtract
-    from .add_etc import multiply
-    from .add_etc import divide
+    from nctoolkit.add_etc import add
+    from nctoolkit.add_etc import subtract
+    from nctoolkit.add_etc import multiply
+    from nctoolkit.add_etc import divide
 
-    from .to_lonlat import to_lonlat
+    from nctoolkit.to_lonlat import to_lonlat
 
-    from .reduce import reduce_dims
+    from nctoolkit.reduce import reduce_dims
 
-    from .reduce_grid import reduce_grid
+    from nctoolkit.reduce_grid import reduce_grid

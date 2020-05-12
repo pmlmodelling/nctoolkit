@@ -1,7 +1,7 @@
-from .runthis import run_this
-from .session import session_info
-from .session import nc_safe
-from .cleanup import cleanup
+
+from nctoolkit.cleanup import cleanup
+from nctoolkit.runthis import run_this
+from nctoolkit.session import session_info, nc_safe
 
 
 def run(self):

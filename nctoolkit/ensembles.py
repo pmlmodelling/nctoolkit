@@ -1,12 +1,12 @@
+
 import copy
-from .temp_file import temp_file
-from .runthis import run_this
-from .runthis import run_nco
-from .flatten import str_flatten
-from .session import nc_safe
-from .cleanup import cleanup
-from .cleanup import disk_clean
 import warnings
+
+from nctoolkit.cleanup import cleanup, disk_clean
+from nctoolkit.flatten import str_flatten
+from nctoolkit.runthis import run_this, run_nco
+from nctoolkit.session import nc_safe
+from nctoolkit.temp_file import temp_file
 
 
 def ensemble_percentile(self, p=None):

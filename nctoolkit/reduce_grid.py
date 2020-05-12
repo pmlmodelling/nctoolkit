@@ -1,7 +1,9 @@
+
 import os
-from .cleanup import cleanup
-from .runthis import run_this
-from .api import open_data
+
+from nctoolkit.api import open_data
+from nctoolkit.cleanup import cleanup
+from nctoolkit.runthis import run_this
 
 
 def reduce_grid(self, mask):

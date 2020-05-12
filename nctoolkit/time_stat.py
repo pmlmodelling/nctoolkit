@@ -1,10 +1,10 @@
-from .runthis import run_this
-from .runthis import run_cdo
-from .runthis import tidy_command
-from .cleanup import cleanup
-from .session import nc_safe
-from .temp_file import temp_file
+
 import copy
+
+from nctoolkit.cleanup import cleanup
+from nctoolkit.runthis import run_this, run_cdo, tidy_command
+from nctoolkit.session import nc_safe
+from nctoolkit.temp_file import temp_file
 
 
 def time_stat(self, stat="mean"):

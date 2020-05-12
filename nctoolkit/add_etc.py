@@ -1,15 +1,13 @@
-from .runthis import run_this
-from .runthis import run_cdo
-from .runthis import tidy_command
-from .temp_file import temp_file
-from .session import nc_safe
-from .show import nc_variables
-from .cleanup import cleanup
-from .cleanup import disk_clean
-from .session import session_info
+
 import copy
-import subprocess
 import os
+import subprocess
+
+from nctoolkit.cleanup import cleanup, disk_clean
+from nctoolkit.runthis import run_this, run_cdo, tidy_command
+from nctoolkit.session import nc_safe, session_info
+from nctoolkit.show import nc_variables
+from nctoolkit.temp_file import temp_file
 
 
 def arithall(self, stat="divc", x=None):

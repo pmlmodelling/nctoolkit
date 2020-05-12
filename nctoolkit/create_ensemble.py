@@ -1,6 +1,7 @@
+
+import copy
 import glob
 import os
-import copy
 import pandas as pd
 
 # function to find files in directory with a specified variable

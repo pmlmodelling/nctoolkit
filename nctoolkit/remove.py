@@ -1,6 +1,7 @@
+
 import os
-from .session import session_info
-from .session import nc_safe
+
+from nctoolkit.session import session_info, nc_safe
 
 
 def nc_remove(ff, deep=False):

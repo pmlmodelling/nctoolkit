@@ -1,20 +1,18 @@
+
+import copy
+import os
+import pandas as pd
 import subprocess
 import warnings
-import copy
 import xarray as xr
-import pandas as pd
-import os
 
-from .temp_file import temp_file
-from .cleanup import cleanup
-from .cleanup import disk_clean
-from .api import open_data
-
-from .generate_grid import generate_grid
-from .flatten import str_flatten
-from .session import nc_safe
-from .runthis import run_this
-from .runthis import run_cdo
+from nctoolkit.api import open_data
+from nctoolkit.cleanup import cleanup, disk_clean
+from nctoolkit.flatten import str_flatten
+from nctoolkit.generate_grid import generate_grid
+from nctoolkit.runthis import run_this, run_cdo
+from nctoolkit.session import nc_safe
+from nctoolkit.temp_file import temp_file
 
 
 def regrid(self, grid=None, method="bil"):

@@ -1,13 +1,12 @@
-from .session import nc_safe
-import copy
-from .runthis import run_this
-from .temp_file import temp_file
-from .runthis import run_cdo
-from .runthis import tidy_command
-from .cleanup import cleanup
-from .cleanup import disk_clean
 
+import copy
 import subprocess
+
+from nctoolkit.cleanup import cleanup, disk_clean
+from nctoolkit.runthis import run_this, run_cdo, tidy_command
+from nctoolkit.session import nc_safe
+from nctoolkit.temp_file import temp_file
+
 
 def cdo_version():
     cdo_check = subprocess.run("cdo --version", shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)

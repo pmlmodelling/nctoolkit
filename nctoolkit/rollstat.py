@@ -1,4 +1,5 @@
-from .runthis import run_this
+
+from nctoolkit.runthis import run_this
 
 
 def rollstat(self, window=None, stat="mean"):

@@ -1,12 +1,11 @@
+
 import copy
 
-from .temp_file import temp_file
-from .session import nc_safe
-from .runthis import run_cdo
-from .runthis import tidy_command
-from .cleanup import cleanup
-from .cleanup import disk_clean
-from .show import nc_variables
+from nctoolkit.cleanup import cleanup, disk_clean
+from nctoolkit.runthis import run_cdo, tidy_command
+from nctoolkit.session import nc_safe
+from nctoolkit.show import nc_variables
+from nctoolkit.temp_file import temp_file
 
 
 def cor(self, var1=None, var2=None, method="fld"):

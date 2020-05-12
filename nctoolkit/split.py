@@ -1,15 +1,13 @@
-import os
+
 import glob
 import copy
 import multiprocessing
+import os
 
-from .temp_file import temp_file
-from .cleanup import cleanup
-from .cleanup import disk_clean
-from .session import nc_safe
-from .session import session_info
+from nctoolkit.cleanup import cleanup, disk_clean
+from nctoolkit.temp_file import temp_file
+from nctoolkit.session import nc_safe, session_info
 
-import copy
 
 
 def split_cdo(self, method="year"):

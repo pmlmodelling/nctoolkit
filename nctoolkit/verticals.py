@@ -1,12 +1,13 @@
-import subprocess
+
 import copy
+import subprocess
 import warnings
 
-from .runthis import run_this
-from .flatten import str_flatten
-from .session import nc_safe
-from .api import open_data
-from .cleanup import cleanup
+from nctoolkit.api import open_data
+from nctoolkit.cleanup import cleanup
+from nctoolkit.flatten import str_flatten
+from nctoolkit.runthis import run_this
+from nctoolkit.session import nc_safe
 
 
 def bottom(self):

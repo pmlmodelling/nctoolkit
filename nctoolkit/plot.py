@@ -1,8 +1,8 @@
-from .runthis import run_this
 
 import pandas as pd, numpy as np
 import subprocess
 
+from nctoolkit.runthis import run_this
 
 def plot(self, log=False, vars=None, panel=False):
     import hvplot.pandas

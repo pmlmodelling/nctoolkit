@@ -1,10 +1,10 @@
-import os
+
 import glob
+import os
 import shutil
 
-from .session import nc_safe
-from .remove import nc_remove
-from .session import session_info
+from nctoolkit.remove import nc_remove
+from nctoolkit.session import session_info, nc_safe
 
 # keep is a file you do not want to delete
 

@@ -1,12 +1,10 @@
 
 import copy
 
-from .temp_file import temp_file
-from .session import nc_safe
-from .cleanup import cleanup
-from .cleanup import disk_clean
-from .runthis import run_this
-from .runthis import run_nco
+from nctoolkit.cleanup import cleanup, disk_clean
+from nctoolkit.runthis import run_this, run_nco
+from nctoolkit.session import nc_safe
+from nctoolkit.temp_file import temp_file
 
 
 def set_date(self, year=None, month=None, day=None, base_year=1900):

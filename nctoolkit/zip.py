@@ -1,5 +1,6 @@
-from .cleanup import cleanup
-from .runthis import run_this
+
+from nctoolkit.cleanup import cleanup
+from nctoolkit.runthis import run_this
 
 
 def zip(self):

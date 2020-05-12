@@ -1,11 +1,9 @@
-# The warnings in this method could be improved slightly. Possibly case of using mutate/transmute that will make warnings less tiday
-# Though CDO should always pick issues up
 
-
-from .flatten import str_flatten
-from .runthis import run_this
-from .show import nc_variables
 import warnings
+
+from nctoolkit.flatten import str_flatten
+from nctoolkit.runthis import run_this
+from nctoolkit.show import nc_variables
 
 
 def remove_variables(self, vars=None):

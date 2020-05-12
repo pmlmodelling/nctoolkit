@@ -1,13 +1,12 @@
-from .runthis import run_this
-from .runthis import run_nco
-from .runthis import tidy_command
-from .temp_file import temp_file
-from .flatten import str_flatten
-from .session import nc_safe
-from .cleanup import cleanup
-from .cleanup import disk_clean
-import subprocess
+
 import copy
+import subprocess
+
+from nctoolkit.cleanup import cleanup, disk_clean
+from nctoolkit.flatten import str_flatten
+from nctoolkit.runthis import run_this, run_nco, tidy_command
+from nctoolkit.session import nc_safe
+from nctoolkit.temp_file import temp_file
 
 
 def clip(self, lon=[-180, 180], lat=[-90, 90], cdo=True):
