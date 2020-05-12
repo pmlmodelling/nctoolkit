@@ -17,6 +17,7 @@ This package will work with Python 3.6 upwards.
 ## Installation
 
 
+
 You can install the development version of nctoolkit using using pip as follows.
 ```sh
 pip install git+https://github.com/r4ecology/nctoolkit.git
@@ -25,7 +26,9 @@ pip install git+https://github.com/r4ecology/nctoolkit.git
 This package relies on CDO and NCO under the hood.
 Visit <https://code.mpimet.mpg.de/projects/cdo/files> for CDO download and
 installation instructions. Note that the development version is
-currently tested using CDO Version 1.9.7. Vist http://nco.sourceforge.net/ to download and install NCO.
+compatible with CDO versions 1.9.3 and above. 
+
+Vist http://nco.sourceforge.net/ to download and install NCO.
 
 If you use Anaconda, you can install these packages as follows:
 
@@ -37,10 +40,13 @@ conda install -c conda-forge nco
 ```
  
 Currently, the package has been tested for Linux computers. It will not
-work on Windows platforms, currently. But (buyer beware) it should work on Macs.
+work on Windows platforms, currently. It is untested on Mac operating systems, so should be used cautiously on them.  
+
 
 ## Reference and tutorials
 
 A full API reference, in depth tutorials and a how-to guide are available at [readthedocs](https://nctoolkit.readthedocs.io/en/latest/).
+
+
 
 
