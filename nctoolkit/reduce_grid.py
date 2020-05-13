@@ -26,7 +26,6 @@ def reduce_grid(self, mask):
 
     if "api.DataSet" in str(type(mask)):
         target = mask.current
-        self._safe.append(mask)
 
     if target is None:
         raise ValueError("No mask supplied")
@@ -38,3 +37,4 @@ def reduce_grid(self, mask):
     cdo_command = f"cdo -reducegrid,{targeted_mask.current}"
 
     run_this(cdo_command, self, output="ensemble")
+    self.release()
