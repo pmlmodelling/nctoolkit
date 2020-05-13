@@ -116,7 +116,7 @@ class TestMask(unittest.TestCase):
 
     def test_clip14(self):
         tracker = nc.open_data(ff)
-        tracker.clip(lat = [0, 90], cdo = True)
+        tracker.clip(lat = [0, 90], nco = False)
         tracker.select_timestep(0)
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0].astype("float")

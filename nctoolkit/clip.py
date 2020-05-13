@@ -9,7 +9,7 @@ from nctoolkit.session import nc_safe
 from nctoolkit.temp_file import temp_file
 
 
-def clip(self, lon=[-180, 180], lat=[-90, 90], cdo=True):
+def clip(self, lon=[-180, 180], lat=[-90, 90], nco=False):
     """
     Clip to a rectangular longitude and latitude box
 
@@ -19,8 +19,8 @@ def clip(self, lon=[-180, 180], lat=[-90, 90], cdo=True):
         The longitude range to select. This must be two variables, between -180 and 180 when cdo = True.
     lat: list
         The latitude range to select. This must be two variables, between -90 and 90 when cdo = True.
-    cdo: boolean
-        Do you want this to use CDO or NCO for clipping? Defaults to True. Set to False if you want to call NCO. NCO is better at handling very large horizontal grids.
+    nco: boolean
+        Do you want this to use NCO for clipping? Defaults to False, and uses CDO. Set to True if you want to call NCO. NCO is typically better at handling very large horizontal grids.
     """
 
     if (type(lon) is not list) or (type(lat) is not list):
@@ -47,7 +47,7 @@ def clip(self, lon=[-180, 180], lat=[-90, 90], cdo=True):
     if lon[1] < lon[0]:
         raise ValueError("Check lon order")
 
-    if cdo:
+    if nco == False:
         if (lon[0] >= -180) and (lon[1] <= 180) and (lat[0] >= -90) and (lat[1] <= 90):
             lat_box = str_flatten(lon + lat)
             cdo_command = "cdo -sellonlatbox," + lat_box
