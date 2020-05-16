@@ -14,6 +14,7 @@ def cleanup():
     Temp file cleaner
 
     Remove all files created during the session that are now out of use
+
     """
 
     # Step 1 is to find the files we potentially need to delete

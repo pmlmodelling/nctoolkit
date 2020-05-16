@@ -5,6 +5,9 @@ import warnings
 
 
 def times(self):
+    """
+    Show the times available in a netcdf file
+    """
 
     all_times = []
     for ff in self:
@@ -40,7 +43,7 @@ def nc_times(ff):
 
 def levels(self):
     """
-    Method to get the depths available in a netcdf file
+    Show the vertical levels available in a netcdf file
     """
     if type(self.current) is list:
         warnings.warn(message="Levels available in first file shown!")
@@ -115,6 +118,9 @@ def nc_variables(ff):
 
 
 def years(self):
+    """
+    Show the years available in a netcdf file
+    """
 
     all_years = []
     for ff in self:
@@ -136,6 +142,9 @@ def years(self):
 
 
 def months(self):
+    """
+    Show the months available in a netcdf file
+    """
 
     all_months = []
     for ff in self:

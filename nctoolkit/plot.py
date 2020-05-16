@@ -9,7 +9,8 @@ def plot(self, log=False, vars=None, panel=False):
     import hvplot.xarray
 
     """
-    Autoplotting method
+    Autoplotting method.
+    Automatically plot a dataset.
 
     Parameters
     -------------

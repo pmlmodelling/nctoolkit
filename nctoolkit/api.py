@@ -213,6 +213,16 @@ def open_data(x=None, suppress_messages=False, checks=False):
 
 
 def merge(*datasets, match=["day", "year", "month"]):
+    """
+    Merge datasets
+
+    Parameters
+    -------------
+    datasets: kwargs
+        Datasets to merge.
+    match: list
+        Temporal matching criteria. This is a list which must be made up of a subset of day, year, month. This checks that the datasets have compatible times. For example, if you want to ensure the datasets have the same years, then use match = ["year"].
+    """
     all_files = []
     for dataset in datasets:
         if ("DataSet" in str(type(dataset))) == False:
@@ -229,6 +239,17 @@ def merge(*datasets, match=["day", "year", "month"]):
 
 
 def cor_time(x=None, y=None):
+    """
+    Calculate the temporal correlation coefficient between two datasets
+    This will calculate the temporal correlation coefficient, in each grid cell, between two datasets
+
+    Parameters
+    -------------
+    x: dataset
+        First dataset to use
+    y: dataset
+        Second dataset to use
+    """
 
     if ("DataSet" in str(type(x))) == False:
         raise TypeError("Please check x is a dataset")
@@ -255,8 +276,6 @@ def cor_time(x=None, y=None):
         print("Only using a subset of variables from y")
         b.run()
 
-    # if type(x.current) is not str or type(y.current) is not str:
-    # raise TypeError("This method can only work for single variable data sets")
 
     target = temp_file("nc")
     command = "cdo timcor " + a.current + " " + b.current + " " + target
@@ -268,6 +287,17 @@ def cor_time(x=None, y=None):
 
 
 def cor_space(x=None, y=None):
+    """
+    Calculate the spatial correlation coefficient between two datasets
+    This will calculate the spatial correlation coefficient, for each time step, between two datasets
+
+    Parameters
+    -------------
+    x: dataset
+        First dataset to use
+    y: dataset
+        Second dataset to use
+    """
 
     if ("DataSet" in str(type(x))) == False:
         raise TypeError("Please check x is a dataset")
