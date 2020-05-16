@@ -42,10 +42,11 @@ Accessing attributes
 .. autosummary::
    :toctree: generated/
 
+   DataSet.variables
    DataSet.size
-   DataSet.start
    DataSet.current
    DataSet.history
+   DataSet.start
 
 Plotting
 ------------------
@@ -62,11 +63,11 @@ Variable modification
 .. autosummary::
    :toctree: generated/
 
-   DataSet.rename
    DataSet.mutate
    DataSet.transmute
-   DataSet.sum_all
+   DataSet.rename
    DataSet.set_missing
+   DataSet.sum_all
 
 NetCDF file attribute modification 
 ---------------------
@@ -83,8 +84,8 @@ Vertical/level methods
 .. autosummary::
    :toctree: generated/
 
-   DataSet.bottom
    DataSet.surface
+   DataSet.bottom
    DataSet.vertical_interp
    DataSet.vertical_mean
    DataSet.vertical_min
@@ -175,11 +176,11 @@ Subsetting operations
 
    DataSet.clip
    DataSet.select_variables
+   DataSet.remove_variables
    DataSet.select_years
    DataSet.select_months
    DataSet.select_season
    DataSet.select_timestep
-   DataSet.remove_variables
 
 Time-based methods
 ---------------------
@@ -231,21 +232,22 @@ Statistical methods
 
    DataSet.mean
    DataSet.min
-   DataSet.max
-   DataSet.range
-   DataSet.sum
-   DataSet.var
    DataSet.percentile
+   DataSet.max
+   DataSet.sum
+   DataSet.range
+   DataSet.var
    DataSet.cum_sum
 
    DataSet.cor_space
    DataSet.cor_time
+
    DataSet.spatial_mean
    DataSet.spatial_min
    DataSet.spatial_max
+   DataSet.spatial_percentile
    DataSet.spatial_range
    DataSet.spatial_sum
-   DataSet.spatial_percentile
 
    DataSet.monthly_mean
    DataSet.monthly_min
@@ -309,7 +311,6 @@ Merging methods
 
    DataSet.merge
    DataSet.merge_time
-   merge
 
 Climatology methods
 ---------------------
