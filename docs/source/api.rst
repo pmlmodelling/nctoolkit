@@ -75,9 +75,7 @@ NetCDF file attribute modification
    :toctree: generated/
 
    DataSet.set_longnames
-   DataSet.set_attributes
    DataSet.set_units
-   DataSet.set_gridtype
 
 Vertical/level methods
 ---------------------
@@ -150,7 +148,6 @@ Arithemetic methods
 
    DataSet.mutate
    DataSet.transmute
-
    DataSet.add
    DataSet.subtract
    DataSet.multiply
