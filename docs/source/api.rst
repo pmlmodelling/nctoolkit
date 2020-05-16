@@ -346,8 +346,6 @@ Display methods
 
    DataSet.view
    DataSet.times
-   DataSet.depths
-   DataSet.numbers
    DataSet.years
    DataSet.months
    DataSet.levels
