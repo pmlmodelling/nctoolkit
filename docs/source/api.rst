@@ -23,6 +23,19 @@ Reading/copying data
    open_data
    DataSet.copy
 
+Merging or analyzing multiple datasets
+------------------
+
+.. autosummary::
+   :toctree: generated/
+
+    merge
+    cor_time
+    cor_space
+    
+
+
+
 Accessing attributes
 ------------------
 
@@ -52,6 +65,7 @@ Variable modification
    DataSet.rename
    DataSet.mutate
    DataSet.transmute
+   DataSet.sum_all
    DataSet.set_missing
 
 NetCDF file attribute modification 
@@ -78,6 +92,10 @@ Vertical/level methods
    DataSet.vertical_min
    DataSet.vertical_max
    DataSet.vertical_range
+   DataSet.vertical_sum
+   DataSet.vertical_cum
+   DataSet.invert_levels
+   DataSet.bottom_mask
 
 
 
@@ -101,7 +119,7 @@ Evaluation setting
 .. autosummary::
    :toctree: generated/
 
-   DataSet.release
+   DataSet.run
 
 
 Cleaning functions
@@ -145,10 +163,10 @@ Ensemble statistics
 .. autosummary::
    :toctree: generated/
 
-   DataSet.ensemble_percentile
    DataSet.ensemble_mean
    DataSet.ensemble_min
    DataSet.ensemble_max
+   DataSet.ensemble_percentile
    DataSet.ensemble_range
 
 
@@ -159,12 +177,12 @@ Subsetting operations
    :toctree: generated/
 
    DataSet.clip
+   DataSet.select_variables
+   DataSet.select_years
    DataSet.select_months
    DataSet.select_season
-   DataSet.select_years
-   DataSet.select_variables
+   DataSet.select_timestep
    DataSet.remove_variables
-
 
 Time-based methods
 ---------------------
@@ -184,6 +202,7 @@ Interpolation methods
    :toctree: generated/
 
    DataSet.regrid
+   DataSet.to_lonlat
    DataSet.time_interp
 
 
@@ -204,6 +223,7 @@ Summary methods
    :toctree: generated/
 
    DataSet.annual_anomaly
+   DataSet.monthly_anomaly
    DataSet.phenology
 
 Statistical methods
@@ -212,11 +232,14 @@ Statistical methods
 .. autosummary::
    :toctree: generated/
 
-   DataSet.sum
    DataSet.mean
    DataSet.min
-   DataSet.cum_sum
+   DataSet.max
+   DataSet.range
+   DataSet.sum
+   DataSet.var
    DataSet.percentile
+   DataSet.cum_sum
 
    DataSet.cor_space
    DataSet.cor_time
@@ -224,6 +247,8 @@ Statistical methods
    DataSet.spatial_min
    DataSet.spatial_max
    DataSet.spatial_range
+   DataSet.spatial_sum
+   DataSet.spatial_percentile
 
    DataSet.monthly_mean
    DataSet.monthly_min
@@ -312,10 +337,7 @@ Splitting methods
 .. autosummary::
    :toctree: generated/
 
-   DataSet.split_year
-   DataSet.split_year_month
-   DataSet.split_day
-   DataSet.split_season
+   DataSet.split
 
 
 Display methods
@@ -351,6 +373,10 @@ Miscellaneous methods
 
    DataSet.cell_areas
    DataSet.cdo_command
+   DataSet.nco_command
+   DataSet.compare_all
+   DataSet.reduce_dims
+   DataSet.reduce_grid
 
 
 
