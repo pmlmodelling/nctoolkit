@@ -121,6 +121,7 @@ def plot(self, log=False, vars=None, panel=False):
 
 
         webbrowser.open(html_plot)
+        print("Press enter")
 
         return None
 
@@ -154,6 +155,7 @@ def plot(self, log=False, vars=None, panel=False):
             html_plot = temp_file(".html")
             bokeh_server = pn.panel(intplot, sizing_mode='stretch_both').save(html_plot)
             webbrowser.open(html_plot)
+            print("Press enter")
             return None
 
         else:
@@ -172,6 +174,7 @@ def plot(self, log=False, vars=None, panel=False):
             html_plot = temp_file(".html")
             bokeh_server = pn.panel(intplot, sizing_mode='stretch_both').save(html_plot)
             webbrowser.open(html_plot)
+            print("Press enter")
             return None
 
     if (n_points > 1) and (type(vars) is str):
@@ -193,13 +196,15 @@ def plot(self, log=False, vars=None, panel=False):
         v_max = max(self_max.values, -self_min.values)
         if (self_max.values > 0) and (self_min.values < 0):
             intplot =  self.to_xarray().hvplot.image(
-                    lon_name, lat_name, vars, dynamic=True, logz=log, cmap="seismic", responsive = (in_notebook() == False)).redim.range(**{vars: (-v_max, v_max)})
+                    #lon_name, lat_name, vars, dynamic=True, logz=log, cmap="seismic", responsive = (in_notebook() == False)).redim.range(**{vars: (-v_max, v_max)})
+                    lon_name, lat_name, vars, dynamic=True, logz=log,  responsive = (in_notebook() == False)).redim.range(**{vars: (-v_max, v_max)})
             if in_notebook():
                 return intplot
 
             html_plot = temp_file(".html")
             bokeh_server = pn.panel(intplot, sizing_mode='stretch_both').save(html_plot)
             webbrowser.open(html_plot)
+            print("Press enter")
             return None
         else:
             intplot (
@@ -238,6 +243,7 @@ def plot(self, log=False, vars=None, panel=False):
         html_plot = temp_file(".html")
         bokeh_server = pn.panel(intplot, sizing_mode='stretch_both').save(html_plot)
         webbrowser.open(html_plot)
+        print("Press enter")
         return None
 
         return bokeh_server
