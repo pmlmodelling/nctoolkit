@@ -3,10 +3,33 @@ import pandas as pd, numpy as np
 import subprocess
 
 from nctoolkit.runthis import run_this
+from nctoolkit.temp_file import temp_file
+import holoviews as hv
+import panel as pn
+import webbrowser
+
+
+hv.extension('bokeh')
+hv.Store.renderers
+
+
+# going to use show() to open plot in browser
+import hvplot.pandas
+import hvplot.xarray
+from bokeh.plotting import show
+
+import sys
+
+def in_notebook():
+    """
+    Returns ``True`` if the module is running in IPython kernel,
+    ``False`` if in IPython shell or other Python shell.
+    """
+    return 'ipykernel' in sys.modules
+
+
 
 def plot(self, log=False, vars=None, panel=False):
-    import hvplot.pandas
-    import hvplot.xarray
 
     """
     Autoplotting method.
@@ -88,7 +111,18 @@ def plot(self, log=False, vars=None, panel=False):
         data = self.to_xarray()
         data = data.squeeze([lon_name, lat_name])
         data = data.rename({vars: "x"})
-        return data.x.hvplot()
+
+        intplot =  data.x.hvplot(responsive = (in_notebook() == False))
+        if in_notebook() == True:
+            return intplot
+
+        html_plot = temp_file(".html")
+        bokeh_server = pn.panel(intplot, sizing_mode='stretch_both').save(html_plot)
+
+
+        webbrowser.open(html_plot)
+
+        return None
 
     if (n_times > 1) and (n_points < 2) and (n_levels <= 1) and (type(vars) is list):
 
@@ -105,25 +139,40 @@ def plot(self, log=False, vars=None, panel=False):
         df = df.drop(columns=to_go)
 
         if panel:
-            return (
+            intplot =  (
                 df.reset_index()
                 .set_index("time")
                 .loc[:, vars]
                 .reset_index()
                 .melt("time")
                 .set_index("time")
-                .hvplot(by="variable", logy=log, subplots=True, shared_axes=False)
+                .hvplot(by="variable", logy=log, subplots=True, shared_axes=False, responsive = (in_notebook() == False))
             )
+            if in_notebook():
+                return intplot
+
+            html_plot = temp_file(".html")
+            bokeh_server = pn.panel(intplot, sizing_mode='stretch_both').save(html_plot)
+            webbrowser.open(html_plot)
+            return None
+
         else:
-            return (
+            intplot =  (
                 df.reset_index()
                 .set_index("time")
                 .loc[:, vars]
                 .reset_index()
                 .melt("time")
                 .set_index("time")
-                .hvplot(groupby="variable", logy=log, dynamic=True)
+                .hvplot(groupby="variable", logy=log, dynamic=True, responsive = (in_notebook() == False))
             )
+            if in_notebook():
+                return intplot
+
+            html_plot = temp_file(".html")
+            bokeh_server = pn.panel(intplot, sizing_mode='stretch_both').save(html_plot)
+            webbrowser.open(html_plot)
+            return None
 
     if (n_points > 1) and (type(vars) is str):
         out = subprocess.run(
@@ -143,22 +192,29 @@ def plot(self, log=False, vars=None, panel=False):
         self_min = self.to_xarray().rename({vars: "x"}).x.min()
         v_max = max(self_max.values, -self_min.values)
         if (self_max.values > 0) and (self_min.values < 0):
-            return (
-                self.to_xarray()
-                .hvplot.image(
-                    lon_name, lat_name, vars, dynamic=True, logz=log, cmap="seismic"
-                )
-                .redim.range(**{vars: (-v_max, v_max)})
-            )
+            intplot =  self.to_xarray().hvplot.image(
+                    lon_name, lat_name, vars, dynamic=True, logz=log, cmap="seismic", responsive = (in_notebook() == False)).redim.range(**{vars: (-v_max, v_max)})
+            if in_notebook():
+                return intplot
+
+            html_plot = temp_file(".html")
+            bokeh_server = pn.panel(intplot, sizing_mode='stretch_both').save(html_plot)
+            webbrowser.open(html_plot)
+            return None
         else:
-            return (
+            intplot (
                 self.to_xarray()
                 .hvplot.image(
-                    lon_name, lat_name, vars, dynamic=True, logz=log, cmap="viridis"
+                    lon_name, lat_name, vars, dynamic=True, logz=log, cmap="viridis", responsive = (in_notebook() == False)
                 )
                 .redim.range(**{vars: (-self_min.values, v_max)})
             )
 
+            if in_notebook():
+                return intplot
+
+            bokeh_server = pn.panel(intplot, sizing_mode='stretch_both').show()
+            return bokeh_server
     if (n_points > 1) and (n_levels <= 1) and (type(vars) is list):
         out = subprocess.run(
             "cdo griddes " + self.current,
@@ -173,9 +229,18 @@ def plot(self, log=False, vars=None, panel=False):
             x for x in str(out.stdout).replace("b'", "").split("\\n") if "yname" in x
         ][-1].split(" ")[-1]
 
-        return self.to_xarray().hvplot.image(
-            lon_name, lat_name, vars, dynamic=True, cmap="viridis", logz=log
-        )
+        intplot = ( self.to_xarray().hvplot.image(
+            lon_name, lat_name, vars, dynamic=True, cmap="viridis", logz=log, responsive = in_notebook() == False
+        ))
+        if in_notebook():
+            return intplot
+
+        html_plot = temp_file(".html")
+        bokeh_server = pn.panel(intplot, sizing_mode='stretch_both').save(html_plot)
+        webbrowser.open(html_plot)
+        return None
+
+        return bokeh_server
 
     # Throw an error if case has not plotting method available yet
 
