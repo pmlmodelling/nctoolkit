@@ -79,6 +79,10 @@ def clean_all():
     mylist = [f for f in glob.glob("/tmp/" + "*.nc*")]
     mylist = mylist + [f for f in glob.glob("/var/tmp/" + "*.nc*")]
     mylist = mylist + [f for f in glob.glob("/usr/tmp/" + "*.nc*")]
+
+    mylist = mylist + [f for f in glob.glob("/tmp/" + "*.html*")]
+    mylist = mylist + [f for f in glob.glob("/var/tmp/" + "*.html*")]
+    mylist = mylist + [f for f in glob.glob("/usr/tmp/" + "*.html*")]
     candidates = []
     for ff in mylist:
         for cc in candidates:
