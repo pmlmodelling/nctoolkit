@@ -25,7 +25,7 @@ setup(name='nctoolkit',
       author_email='rwi@pml.ac.uk',
       license='MIT',
       packages=['nctoolkit'],
-      install_requires=['xarray','netcdf4', "dask[complete]", "hvplot"],
+      install_requires=['xarray','netcdf4', "dask[complete]", "hvplot", "panel", "bokeh"],
       zip_safe=False)
 
 
