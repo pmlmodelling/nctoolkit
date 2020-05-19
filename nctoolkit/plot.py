@@ -219,7 +219,6 @@ def plot(self, log=False, vars=None, panel=False):
         v_max = max(self_max.values, -self_min.values)
         if (self_max.values > 0) and (self_min.values < 0):
             intplot =  self.to_xarray().hvplot.image(
-                    #lon_name, lat_name, vars, dynamic=True, logz=log, cmap="seismic", responsive = (in_notebook() == False)).redim.range(**{vars: (-v_max, v_max)})
                     lon_name, lat_name, vars, dynamic=True, logz=log,  responsive = (in_notebook() == False)).redim.range(**{vars: (-v_max, v_max)})
             if in_notebook():
                 return intplot
@@ -229,19 +228,22 @@ def plot(self, log=False, vars=None, panel=False):
             open_url(html_plot)
             return None
         else:
-            intplot (
+            intplot =  (
                 self.to_xarray()
                 .hvplot.image(
                     lon_name, lat_name, vars, dynamic=True, logz=log, cmap="viridis", responsive = (in_notebook() == False)
                 )
-                .redim.range(**{vars: (-self_min.values, v_max)})
+                .redim.range(**{vars: (self_min.values, v_max)})
             )
 
             if in_notebook():
                 return intplot
 
-            bokeh_server = pn.panel(intplot, sizing_mode='stretch_both').show()
-            return bokeh_server
+            html_plot = temp_file(".html")
+            bokeh_server = pn.panel(intplot, sizing_mode='stretch_both').save(html_plot)
+            open_url(html_plot)
+            return None
+
     if (n_points > 1) and (n_levels <= 1) and (type(vars) is list):
         out = subprocess.run(
             "cdo griddes " + self.current,
