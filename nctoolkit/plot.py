@@ -2,6 +2,10 @@
 import pandas as pd, numpy as np
 import subprocess
 
+from threading import Thread
+import time
+
+
 from nctoolkit.runthis import run_this
 from nctoolkit.temp_file import temp_file
 from nctoolkit.session import html_files
@@ -14,6 +18,9 @@ import webbrowser
 hv.extension('bokeh')
 hv.Store.renderers
 
+def ctrc():
+    time.sleep(1)
+    print("Press Ctrl+C to stop plotting server")
 
 # going to use show() to open plot in browser
 import hvplot.pandas
@@ -21,29 +28,6 @@ import hvplot.xarray
 from bokeh.plotting import show
 
 import sys
-
-def open_url(url):
-    html_files.append(url)
-
-    try:
-        cmd = "xdg-settings get default-web-browser".split()
-        raw_result = subprocess.check_output(cmd, stderr=subprocess.DEVNULL)
-        result = raw_result.decode().strip().replace(".desktop", "")
-        if result in ["firefox", "google-chrome"]:
-            result = result
-        else:
-            result = None
-    except:
-        result = None
-
-
-    if result is None:
-        webbrowser.open(url)
-
-    else:
-        webbrowser.get(result).open(url)
-
-
 
 
 def in_notebook():
@@ -142,11 +126,10 @@ def plot(self, log=False, vars=None, panel=False):
         if in_notebook() == True:
             return intplot
 
-        html_plot = temp_file(".html")
-        bokeh_server = pn.panel(intplot, sizing_mode='stretch_both').save(html_plot)
+        t = Thread(target = ctrc)
+        t.start()
 
-
-        open_url(html_plot)
+        bokeh_server = pn.panel(intplot, sizing_mode='stretch_both').show(threaded = False)
 
         return None
 
@@ -177,9 +160,10 @@ def plot(self, log=False, vars=None, panel=False):
             if in_notebook():
                 return intplot
 
-            html_plot = temp_file(".html")
-            bokeh_server = pn.panel(intplot, sizing_mode='stretch_both').save(html_plot)
-            open_url(html_plot)
+            t = Thread(target = ctrc)
+            t.start()
+
+            bokeh_server = pn.panel(intplot, sizing_mode='stretch_both').show(threaded = False)
             return None
 
         else:
@@ -195,9 +179,10 @@ def plot(self, log=False, vars=None, panel=False):
             if in_notebook():
                 return intplot
 
-            html_plot = temp_file(".html")
-            bokeh_server = pn.panel(intplot, sizing_mode='stretch_both').save(html_plot)
-            open_url(html_plot)
+            t = Thread(target = ctrc)
+            t.start()
+
+            bokeh_server = pn.panel(intplot, sizing_mode='stretch_both').show(threaded = False)
             return None
 
     if (n_points > 1) and (type(vars) is str):
@@ -223,10 +208,11 @@ def plot(self, log=False, vars=None, panel=False):
             if in_notebook():
                 return intplot
 
-            html_plot = temp_file(".html")
-            bokeh_server = pn.panel(intplot, sizing_mode='stretch_both').save(html_plot)
-            open_url(html_plot)
+            t = Thread(target = ctrc)
+            t.start()
+            bokeh_server = pn.panel(intplot, sizing_mode='stretch_both').show(threaded = False)
             return None
+
         else:
             intplot =  (
                 self.to_xarray()
@@ -239,9 +225,11 @@ def plot(self, log=False, vars=None, panel=False):
             if in_notebook():
                 return intplot
 
-            html_plot = temp_file(".html")
-            bokeh_server = pn.panel(intplot, sizing_mode='stretch_both').save(html_plot)
-            open_url(html_plot)
+            t = Thread(target = ctrc)
+            t.start()
+            bokeh_server = pn.panel(intplot, sizing_mode='stretch_both').show(threaded = False)
+
+
             return None
 
     if (n_points > 1) and (n_levels <= 1) and (type(vars) is list):
@@ -264,12 +252,11 @@ def plot(self, log=False, vars=None, panel=False):
         if in_notebook():
             return intplot
 
-        html_plot = temp_file(".html")
-        bokeh_server = pn.panel(intplot, sizing_mode='stretch_both').save(html_plot)
-        open_url(html_plot)
+        t = Thread(target = ctrc)
+        t.start()
+        bokeh_server = pn.panel(intplot, sizing_mode='stretch_both').show(threaded = False)
         return None
 
-        return bokeh_server
 
     # Throw an error if case has not plotting method available yet
 
