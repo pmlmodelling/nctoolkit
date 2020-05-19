@@ -41,7 +41,7 @@ conda install -c conda-forge cdo
 conda install -c conda-forge nco 
 ```
 
-Bash scripts to install cdo 1.9.2 and above, with NetCDF and hdf5 support, for linux from source are available [here](https://github.com/r4ecology/nctoolkit/tree/master/cdo_installers).
+Bash scripts to install cdo 1.9.3 and above, with NetCDF and hdf5 support, for linux from source are available [here](https://github.com/r4ecology/nctoolkit/tree/master/cdo_installers).
  
 Currently, the package has been tested for Linux computers. It will not
 work on Windows platforms, currently. It is untested on Mac operating systems, so should be used cautiously on them.  
@@ -49,9 +49,11 @@ work on Windows platforms, currently. It is untested on Mac operating systems, s
 
 
 
+
 ## Reference and tutorials
 
 A full API reference, in depth tutorials and a how-to guide are available at [readthedocs](https://nctoolkit.readthedocs.io/en/latest/).
+
 
 
 
