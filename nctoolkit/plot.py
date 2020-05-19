@@ -4,6 +4,8 @@ import subprocess
 
 from nctoolkit.runthis import run_this
 from nctoolkit.temp_file import temp_file
+from nctoolkit.session import html_files
+
 import holoviews as hv
 import panel as pn
 import webbrowser
@@ -19,6 +21,30 @@ import hvplot.xarray
 from bokeh.plotting import show
 
 import sys
+
+def open_url(url):
+    html_files.append(url)
+
+    try:
+        cmd = "xdg-settings get default-web-browser".split()
+        raw_result = subprocess.check_output(cmd, stderr=subprocess.DEVNULL)
+        result = raw_result.decode().strip().replace(".desktop", "")
+        if result in ["firefox", "google-chrome"]:
+            result = result
+        else:
+            result = None
+    except:
+        result = None
+
+
+    if result is None:
+        webbrowser.open(url)
+
+    else:
+        webbrowser.get(result).open(url)
+
+
+
 
 def in_notebook():
     """
@@ -120,8 +146,7 @@ def plot(self, log=False, vars=None, panel=False):
         bokeh_server = pn.panel(intplot, sizing_mode='stretch_both').save(html_plot)
 
 
-        webbrowser.open(html_plot)
-        print("Press enter")
+        open_url(html_plot)
 
         return None
 
@@ -154,8 +179,7 @@ def plot(self, log=False, vars=None, panel=False):
 
             html_plot = temp_file(".html")
             bokeh_server = pn.panel(intplot, sizing_mode='stretch_both').save(html_plot)
-            webbrowser.open(html_plot)
-            print("Press enter")
+            open_url(html_plot)
             return None
 
         else:
@@ -173,8 +197,7 @@ def plot(self, log=False, vars=None, panel=False):
 
             html_plot = temp_file(".html")
             bokeh_server = pn.panel(intplot, sizing_mode='stretch_both').save(html_plot)
-            webbrowser.open(html_plot)
-            print("Press enter")
+            open_url(html_plot)
             return None
 
     if (n_points > 1) and (type(vars) is str):
@@ -203,8 +226,7 @@ def plot(self, log=False, vars=None, panel=False):
 
             html_plot = temp_file(".html")
             bokeh_server = pn.panel(intplot, sizing_mode='stretch_both').save(html_plot)
-            webbrowser.open(html_plot)
-            print("Press enter")
+            open_url(html_plot)
             return None
         else:
             intplot (
@@ -242,8 +264,7 @@ def plot(self, log=False, vars=None, panel=False):
 
         html_plot = temp_file(".html")
         bokeh_server = pn.panel(intplot, sizing_mode='stretch_both').save(html_plot)
-        webbrowser.open(html_plot)
-        print("Press enter")
+        open_url(html_plot)
         return None
 
         return bokeh_server
