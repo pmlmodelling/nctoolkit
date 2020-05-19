@@ -16,7 +16,11 @@ before_install:
 #
 #
 addons:
-  chrome: stable
+    chrome: stable
+    apt:
+        packages:
+            - chromium-chromedriver
+
 #addons:
 #    apt:
 #        update: true
@@ -54,6 +58,9 @@ install:
 
     - python setup.py install > /dev/null 2>&1
 # command to run tests
+#
+before_script:
+  - ln -s /usr/lib/chromium-browser/chromedriver ~/bin/chromedriver
 script:
     # - which cdo
     #- cdo --version 
