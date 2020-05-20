@@ -27,7 +27,7 @@ class TestTimeint(unittest.TestCase):
             tracker.time_interp(start = "1990/01/01", end = "1990/31/01", resolution = "daily")
             tracker.run()
 
-            x = len(tracker.times())
+            x = len(tracker.times)
 
             self.assertEqual(x, 365)
             n = len(nc.session_files())
@@ -39,7 +39,7 @@ class TestTimeint(unittest.TestCase):
             tracker.time_interp(start = "1991/01/01", end = "1991/31/01", resolution = "weekly")
             tracker.run()
 
-            x = len(tracker.times())
+            x = len(tracker.times)
 
             self.assertEqual(x, 53)
             n = len(nc.session_files())
@@ -51,7 +51,7 @@ class TestTimeint(unittest.TestCase):
             tracker.time_interp(start = "1990/01/01", end = "1990/31/01", resolution = "monthly")
             tracker.run()
 
-            x = len(tracker.times())
+            x = len(tracker.times)
 
             self.assertEqual(x, 12)
             n = len(nc.session_files())
@@ -65,7 +65,7 @@ class TestTimeint(unittest.TestCase):
             print(tracker.history)
             tracker.run()
 
-            x = len(tracker.times())
+            x = len(tracker.times)
 
             self.assertEqual(x, 4)
             n = len(nc.session_files())
@@ -76,7 +76,7 @@ class TestTimeint(unittest.TestCase):
         tracker.time_interp(start = "1990/01/01",  resolution = "yearly")
         tracker.run()
 
-        x = len(tracker.times())
+        x = len(tracker.times)
 
         self.assertEqual(x, 10)
         n = len(nc.session_files())

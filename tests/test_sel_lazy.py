@@ -26,7 +26,7 @@ class TestSelect(unittest.TestCase):
         tracker = nc.open_data(ff)
         tracker.select_season("DJF")
         tracker.run()
-        x = tracker.months()
+        x = tracker.months
         self.assertEqual(x, [1,2,12])
         n = len(nc.session_files())
         self.assertEqual(n, 1)
@@ -35,7 +35,7 @@ class TestSelect(unittest.TestCase):
         tracker = nc.open_data(ff)
         tracker.select_months(1)
         tracker.run()
-        x = tracker.months()
+        x = tracker.months
         self.assertEqual(x, [1])
         n = len(nc.session_files())
         self.assertEqual(n, 1)
@@ -45,7 +45,7 @@ class TestSelect(unittest.TestCase):
         tracker = nc.open_data(ff)
         tracker.select_months(range(1,3))
         tracker.run()
-        x = tracker.months()
+        x = tracker.months
         self.assertEqual(x, [1,2])
         n = len(nc.session_files())
         self.assertEqual(n, 1)

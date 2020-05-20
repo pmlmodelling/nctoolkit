@@ -31,7 +31,7 @@ class TestSplit(unittest.TestCase):
 
     def test_yearmon(self):
         tracker = nc.open_data(ff)
-        x = len(tracker.times())
+        x = len(tracker.times)
         tracker.split("yearmonth")
         y = len(tracker.current)
         self.assertEqual(x, y)
@@ -90,7 +90,7 @@ class TestSplit(unittest.TestCase):
 
     def test_list(self):
         tracker = nc.open_data(ff)
-        x = len(tracker.times())
+        x = len(tracker.times)
         tracker.split("year")
         tracker.split("yearmonth")
         y = len(tracker.current)

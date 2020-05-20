@@ -19,7 +19,7 @@ class TestReduce(unittest.TestCase):
         tracker = nc.open_data(ff)
         tracker.mean()
         tracker.reduce_dims()
-        n = len(tracker.times())
+        n = len(tracker.times)
         print(tracker.history)
         self.assertEqual(n, 0)
         nc.options(lazy = True)
@@ -32,7 +32,7 @@ class TestReduce(unittest.TestCase):
         tracker.reduce_dims()
         tracker.run()
         print(tracker.history)
-        n = len(tracker.times())
+        n = len(tracker.times)
         self.assertEqual(n, 0)
         nc.options(lazy = True)
 

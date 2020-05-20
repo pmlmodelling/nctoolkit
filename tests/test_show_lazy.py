@@ -17,15 +17,15 @@ class TestShow(unittest.TestCase):
         tracker = nc.open_data(ff)
         tracker.select_timestep(range(0,12))
         tracker.run()
-        x = len(tracker.times())
+        x = len(tracker.times)
 
         self.assertEqual(x, 12)
 
     def test_times2(self):
         tracker = nc.open_data(ff)
-        x = tracker.times()
+        x = tracker.times
         tracker.split("year")
-        y = tracker.times()
+        y = tracker.times
         self.assertEqual(x,y)
 
 
@@ -33,7 +33,7 @@ class TestShow(unittest.TestCase):
         tracker = nc.open_data(ff)
         tracker.select_months([1,2])
         tracker.run()
-        x = tracker.months()
+        x = tracker.months
 
         self.assertEqual(x, [1,2])
 
@@ -43,7 +43,7 @@ class TestShow(unittest.TestCase):
         tracker.select_months([1,2])
         tracker.split("year")
         tracker.run()
-        x = tracker.months()
+        x = tracker.months
 
         self.assertEqual(x, [1,2])
 
@@ -76,12 +76,12 @@ class TestShow(unittest.TestCase):
 
     def test_levels(self):
         tracker = nc.open_data("data/woa18_decav_t01_01.nc")
-        x = tracker.levels()
+        x = tracker.levels
         self.assertEqual([x[0], x[4]], [0.0,20.0])
 
     def test_levels2(self):
         tracker = nc.open_data(["data/woa18_decav_t01_01.nc","data/woa18_decav_t02_01.nc"])
-        x = tracker.levels()
+        x = tracker.levels
         self.assertEqual([x[0], x[4]], [0.0,20.0])
 
 

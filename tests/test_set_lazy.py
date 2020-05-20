@@ -33,7 +33,7 @@ class TestSetters(unittest.TestCase):
 
             self.assertEqual(x, 1990)
 
-            y = tracker.months()[0]
+            y = tracker.months[0]
 
             self.assertEqual(y, 1)
             n = len(nc.session_files())
@@ -50,7 +50,7 @@ class TestSetters(unittest.TestCase):
 
             self.assertEqual(x, 1990)
 
-            y = tracker.months()[0]
+            y = tracker.months[0]
 
             self.assertEqual(y, 1)
             n = len(nc.session_files())
@@ -67,7 +67,7 @@ class TestSetters(unittest.TestCase):
 
             self.assertEqual(x, 1990)
 
-            y = tracker.months()[0]
+            y = tracker.months[0]
 
             self.assertEqual(y, 3)
             n = len(nc.session_files())
