@@ -22,7 +22,7 @@ class TestSplit(unittest.TestCase):
 
     def test_year(self):
         tracker = nc.open_data(ff)
-        x = len(tracker.years())
+        x = len(tracker.years)
         tracker.split("year")
         y = len(tracker.current)
         self.assertEqual(x, y)

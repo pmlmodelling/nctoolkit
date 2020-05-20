@@ -29,7 +29,7 @@ class TestSetters(unittest.TestCase):
             tracker.select_months([1])
             tracker.set_date(year = 1990, month = 1, day = 1)
             tracker.run()
-            x = tracker.years()[0]
+            x = tracker.years[0]
 
             self.assertEqual(x, 1990)
 
@@ -46,7 +46,7 @@ class TestSetters(unittest.TestCase):
             tracker.select_months([1])
             tracker.set_date(year = 1990, month = 1, day = 1)
             tracker.run()
-            x = tracker.years()[0]
+            x = tracker.years[0]
 
             self.assertEqual(x, 1990)
 
@@ -63,7 +63,7 @@ class TestSetters(unittest.TestCase):
             tracker.select_months([1])
             tracker.set_date(year = 1990, month = 3, day = 1)
             tracker.run()
-            x = tracker.years()[0]
+            x = tracker.years[0]
 
             self.assertEqual(x, 1990)
 

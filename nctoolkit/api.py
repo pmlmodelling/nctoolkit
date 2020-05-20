@@ -473,6 +473,26 @@ class DataSet(object):
         return cdo_result
 
     @property
+    def years(self):
+        """
+        Variables contained in an object's netcdf file.
+        This will check the netcfile's contents, if it is a single file DataSet object.
+        """
+
+        all_years = []
+        for ff in self:
+            all_years+= nc_years(ff)
+
+        all_years = list(set(all_years))
+
+        all_years.sort()
+
+        return all_years
+
+
+
+
+    @property
     def variables_detailed(self):
         """
         Variables contained in an object's netcdf file.
@@ -716,7 +736,7 @@ class DataSet(object):
     from nctoolkit.rollstat import rolling_sum
 
     from nctoolkit.show import times
-    from nctoolkit.show import years
+    #from nctoolkit.show import years
     from nctoolkit.show import months
     from nctoolkit.show import levels
 

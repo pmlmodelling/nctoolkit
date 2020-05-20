@@ -117,28 +117,28 @@ def nc_variables(ff):
     return cdo_result
 
 
-def years(self):
-    """
-    Show the years available in a netcdf file
-    """
-
-    all_years = []
-    for ff in self:
-        cdo_result = subprocess.run(
-            f"cdo showyear {ff}",
-            shell=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        cdo_result = str(cdo_result.stdout).replace("\\n", "")
-        cdo_result = cdo_result.replace("b'", "").strip()
-        cdo_result = cdo_result.replace("'", "").strip()
-        cdo_result = cdo_result.split()
-        all_years += cdo_result
-    all_years = list(set(all_years))
-    all_years = [int(v) for v in all_years]
-    all_years.sort()
-    return all_years
+#def years(self):
+#    """
+#    Show the years available in a netcdf file
+#    """
+#
+#    all_years = []
+#    for ff in self:
+#        cdo_result = subprocess.run(
+#            f"cdo showyear {ff}",
+#            shell=True,
+#            stdout=subprocess.PIPE,
+#            stderr=subprocess.PIPE,
+#        )
+#        cdo_result = str(cdo_result.stdout).replace("\\n", "")
+#        cdo_result = cdo_result.replace("b'", "").strip()
+#        cdo_result = cdo_result.replace("'", "").strip()
+#        cdo_result = cdo_result.split()
+#        all_years += cdo_result
+#    all_years = list(set(all_years))
+#    all_years = [int(v) for v in all_years]
+#    all_years.sort()
+#    return all_years
 
 
 def months(self):

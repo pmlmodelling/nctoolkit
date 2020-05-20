@@ -52,7 +52,7 @@ class TestShow(unittest.TestCase):
         tracker = nc.open_data(ff)
         tracker.select_years([1990,1999])
         tracker.run()
-        x = tracker.years()
+        x = tracker.years
 
         self.assertEqual(x, [1990,1999])
 
@@ -60,7 +60,7 @@ class TestShow(unittest.TestCase):
         tracker = nc.open_data(ff)
         tracker.select_years([1990,1999])
         tracker.split("year")
-        x = tracker.years()
+        x = tracker.years
 
         self.assertEqual(x, [1990,1999])
 

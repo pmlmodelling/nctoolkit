@@ -54,7 +54,7 @@ class TestSelect(unittest.TestCase):
         tracker = nc.open_data(ff)
         tracker.select_years(1990)
         tracker.run()
-        x = tracker.years()
+        x = tracker.years
         self.assertEqual(x, [1990])
 
         n = len(nc.session_files())
@@ -64,7 +64,7 @@ class TestSelect(unittest.TestCase):
         tracker.split("year")
         tracker.select_years(1990)
         tracker.run()
-        x = tracker.years()
+        x = tracker.years
         self.assertEqual(x, [1990])
         n = len(nc.session_files())
         self.assertEqual(n, 1)
@@ -73,7 +73,7 @@ class TestSelect(unittest.TestCase):
         tracker = nc.open_data(ff)
         tracker.select_years([1949, 1970])
         tracker.run()
-        x = tracker.years()
+        x = tracker.years
         self.assertEqual(x, [1970])
         n = len(nc.session_files())
         self.assertEqual(n, 1)
@@ -82,7 +82,7 @@ class TestSelect(unittest.TestCase):
         tracker = nc.open_data(ff)
         tracker.select_years(range(1990,1993))
         tracker.run()
-        x = tracker.years()
+        x = tracker.years
         self.assertEqual(x, [1990,1991, 1992])
         n = len(nc.session_files())
         self.assertEqual(n, 1)
@@ -93,7 +93,7 @@ class TestSelect(unittest.TestCase):
         tracker.split("year")
         tracker.select_years([1970])
         tracker.run()
-        x = tracker.years()
+        x = tracker.years
         self.assertEqual(x, [1970])
         n = len(nc.session_files())
         self.assertEqual(n, 1)
@@ -102,7 +102,7 @@ class TestSelect(unittest.TestCase):
         tracker = nc.open_data(ff)
         tracker.select_timestep(0)
         tracker.run()
-        x = tracker.years()
+        x = tracker.years
         self.assertEqual(x, [1970])
         n = len(nc.session_files())
         self.assertEqual(n, 1)
@@ -111,7 +111,7 @@ class TestSelect(unittest.TestCase):
         tracker = nc.open_data(ff)
         tracker.select_timestep(range(0, 13))
         tracker.run()
-        x = tracker.years()
+        x = tracker.years
         self.assertEqual(x, [1970, 1971])
         n = len(nc.session_files())
         self.assertEqual(n, 1)
@@ -197,7 +197,7 @@ class TestSelect(unittest.TestCase):
         tracker.merge_time()
         tracker.select_years(1990)
         tracker.run()
-        x = tracker.years()
+        x = tracker.years
         print(x)
 
         self.assertEqual(x, [1990])

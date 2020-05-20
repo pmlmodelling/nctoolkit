@@ -54,7 +54,7 @@ class TestCor(unittest.TestCase):
         tracker.cor_time(var1 = "tos", var2 = "sst")
         self.assertEqual(10, len(tracker.current))
         tracker.merge_time()
-        self.assertEqual(10, len(tracker.years()))
+        self.assertEqual(10, len(tracker.years))
         tracker.mean()
         tracker.spatial_mean()
         x = tracker.to_dataframe().cor.values[0]
