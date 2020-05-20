@@ -43,6 +43,10 @@ Accessing attributes
    :toctree: generated/
 
    DataSet.variables
+   DataSet.years
+   DataSet.months
+   DataSet.times
+   DataSet.levels
    DataSet.size
    DataSet.current
    DataSet.history
@@ -55,6 +59,7 @@ Plotting
    :toctree: generated/
 
    DataSet.plot
+   DataSet.view
 
 
 Variable modification 
@@ -337,18 +342,6 @@ Splitting methods
 
    DataSet.split
 
-
-Display methods
----------------------
-
-.. autosummary::
-   :toctree: generated/
-
-   DataSet.view
-   DataSet.times
-   DataSet.years
-   DataSet.months
-   DataSet.levels
 
 Output methods
 ---------------------
