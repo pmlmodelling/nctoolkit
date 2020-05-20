@@ -446,37 +446,26 @@ class DataSet(object):
     @property
     def variables(self):
         """
-        Variables contained in an object's netcdf file.
-        This will check the netcfile's contents, if it is a single file DataSet object.
+        List variables contained in a dataset
         """
 
-        if type(self.current) is list:
-            raise TypeError(
-                "This DataSet object is a list. Please inspect individual files using nc_variables"
-            )
+        all_variables = []
+        for ff in self:
+            all_variables+= nc_variables(ff)
 
-        cdo_result = subprocess.run(
-            "cdo showname " + self.current,
-            shell=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        cdo_result = (
-            str(cdo_result.stdout)
-            .replace("b'", "")
-            .replace("\\n", "")
-            .replace("'", "")
-            .strip()
-        )
-        cdo_result = cdo_result.split()
+        all_variables= list(set(all_variables))
 
-        return cdo_result
+        all_variables.sort()
+
+        return all_variables
+
+
+
 
     @property
     def years(self):
         """
-        Variables contained in an object's netcdf file.
-        This will check the netcfile's contents, if it is a single file DataSet object.
+        List years contained in a dataset
         """
 
         all_years = []
@@ -495,8 +484,8 @@ class DataSet(object):
     @property
     def variables_detailed(self):
         """
-        Variables contained in an object's netcdf file.
-        This will check the netcfile's contents, if it is a single file DataSet object.
+        Detailed list of variables contained in a dataset.
+        This will only display the variables in the first file of an ensemble.
         """
 
         if type(self.current) is list:

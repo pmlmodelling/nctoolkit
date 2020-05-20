@@ -24,7 +24,7 @@ class TestCell(unittest.TestCase):
         x = tracker.variables
 
 
-        self.assertEqual(x, ["sst", "cell_area"])
+        self.assertEqual(x, ["cell_area", "sst"])
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 

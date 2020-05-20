@@ -87,7 +87,7 @@ class TestCalls(unittest.TestCase):
         data.mutate({"k":"sst+273.15"})
         data.sum_all()
 
-        self.assertEqual(data.history[1], 'cdo -expr,"total=sst+k"')
+        self.assertEqual(data.history[1], 'cdo -expr,"total=k+sst"')
 
     def test_selectseasoncall(self):
         data = nc.open_data(ff)
