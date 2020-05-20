@@ -20,7 +20,7 @@ from nctoolkit.flatten import str_flatten
 from nctoolkit.generate_grid import generate_grid
 from nctoolkit.runthis import run_cdo
 from nctoolkit.session import nc_safe, nc_protected, session_info
-from nctoolkit.show import nc_variables, nc_years
+from nctoolkit.show import nc_variables, nc_years, nc_months, nc_levels, nc_times
 from nctoolkit.temp_file import temp_file
 
 # A custom format for warnings.
@@ -460,7 +460,54 @@ class DataSet(object):
         return all_variables
 
 
+    @property
+    def months(self):
+        """
+        List months contained in a dataset
+        """
 
+        all_months = []
+        for ff in self:
+            all_months+= nc_months(ff)
+
+        all_months = list(set(all_months))
+
+        all_months.sort()
+
+        return all_months
+
+    @property
+    def levels(self):
+        """
+        List levels contained in a dataset
+        """
+
+        all_levels = []
+        for ff in self:
+            all_levels+= nc_levels(ff)
+
+        all_levels = list(set(all_levels))
+
+        all_levels.sort()
+
+        return all_levels
+
+
+    @property
+    def times(self):
+        """
+        List times contained in a dataset
+        """
+
+        all_times = []
+        for ff in self:
+            all_times+= nc_times(ff)
+
+        all_times = list(set(all_times))
+
+        all_times.sort()
+
+        return all_times
 
     @property
     def years(self):
@@ -724,10 +771,10 @@ class DataSet(object):
     from nctoolkit.rollstat import rolling_range
     from nctoolkit.rollstat import rolling_sum
 
-    from nctoolkit.show import times
+    #from nctoolkit.show import times
     #from nctoolkit.show import years
-    from nctoolkit.show import months
-    from nctoolkit.show import levels
+    #from nctoolkit.show import months
+    #from nctoolkit.show import levels
 
     from nctoolkit.fldstat import spatial_mean
     from nctoolkit.fldstat import spatial_min

@@ -49,7 +49,7 @@ def to_xarray(self, decode_times=True):
 
         times = [
             datetime.strptime(ss.replace("T", " "), "%Y-%m-%d %H:%M:%S")
-            for ss in self.times()
+            for ss in self.times
         ]
 
         data = xr.open_dataset(self.current, decode_times=False)
