@@ -1,14 +1,11 @@
 
 import glob
 import copy
-import multiprocessing
 import os
 
 from nctoolkit.cleanup import cleanup, disk_clean
 from nctoolkit.temp_file import temp_file
 from nctoolkit.session import nc_safe, session_info
-
-
 
 def split_cdo(self, method="year"):
     """
@@ -71,13 +68,13 @@ def split_cdo(self, method="year"):
 
 def split(self, by=None):
     """
-    Split the ensemble
+    Split the dataset
     Each file in the ensemble will be separated into new files based on the splitting argument.
 
     Parameters
     --------------------
-    by : int
-        Available by arguments are 'year', 'month', 'yearmonth', 'season', 'day'
+    by : str
+        Available by arguments are 'year', 'month', 'yearmonth', 'season', 'day'. year will split files by year, month will split files by month, yearmonth will split files by year and month; season will split files by year, day will split files by day.
     """
 
     if by is None:
@@ -86,6 +83,9 @@ def split(self, by=None):
     method = None
     if by == "year":
         method = "year"
+
+    if by == "month":
+        method = "mon"
 
     if by == "yearmonth":
         method = "yearmon"
@@ -97,3 +97,6 @@ def split(self, by=None):
         method = "day"
 
     split_cdo(self, method=method)
+
+
+
