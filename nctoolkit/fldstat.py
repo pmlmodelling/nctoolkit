@@ -15,10 +15,9 @@ def cdo_version():
     return cdo_check.split("(")[0].strip().split(" ")[-1]
 
 
-def fldstat(
-    self, stat="mean",
-):
-    """Method to calculate the spatial stat from a netcdf"""
+def fldstat(self, stat="mean"):
+    """Method to calculate the spatial stat from a dataset"""
+    # This cannot be chained in cdo version 1.9.3
     if cdo_version() in ["1.9.3"]:
         self.run()
 
@@ -31,39 +30,40 @@ def fldstat(
 
 def spatial_mean(self):
     """
-    Calculate an area weighted spatial mean of variables. This is performed for each time step.
+    Calculate the area weighted spatial mean for all variables
+    This is performed for each time step.
     """
-
     return fldstat(self, stat="mean")
 
 
 def spatial_min(self):
     """
-    Calculate a spatial minimum of variables. This is performed for each time step.
-
+    Calculate the spatial minimum for all variables
+    This is performed for each time step.
     """
     return fldstat(self, stat="min")
 
 
 def spatial_max(self):
     """
-    Calculate a spatial maximum of variables. This is performed for each time step.
+    Calculate the spatial maximum for all variables
+    This is performed for each time step.
     """
-
     return fldstat(self, stat="max")
 
 
 def spatial_range(self):
     """
-    Calculate a spatial range of variables. This is performed for each time step.
+    Calculate the spatial range for all variables
+    This is performed for each time step.
     """
-
     return fldstat(self, stat="range")
 
 
 def spatial_sum(self, by_area=False):
     """
-    Calculate the spatial sum of variables. This is performed for each time step.
+    Calculate the spatial sum for all variables
+    This is performed for each time step.
 
     Parameters
     --------------
@@ -74,6 +74,7 @@ def spatial_sum(self, by_area=False):
     if isinstance(by_area, bool) == False:
         raise TypeError("by_area is not boolean")
 
+    # fldstats cannot be chained in cdo version 1.9.3, so run everything
     if cdo_version() in ["1.9.3"]:
         self.run()
 
@@ -149,8 +150,6 @@ def spatial_sum(self, by_area=False):
             new_files.append(target)
             new_commands.append(cdo_command)
 
-
-
         else:
 
             target = temp_file("nc")
@@ -172,7 +171,8 @@ def spatial_sum(self, by_area=False):
 
 def spatial_percentile(self, p=None):
     """
-    Calculate the spatial sum of variables. This is performed for each time step.
+    Calculate the spatial sum for all variables
+    This is performed for each time step.
     Parameters
     -------------
     p: int or float

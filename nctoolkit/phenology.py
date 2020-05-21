@@ -13,17 +13,17 @@ from nctoolkit.temp_file import temp_file
 
 def phenology(self, var=None, metric=None, p=None):
     """
-    Calculate phenologies from a dataset. Each file in an ensemble must only cover a single year, and ideally have all days.
-    This method currently only calculcates the day of year of the annual maximum.
+    Calculate phenologies from a dataset
+    Each file in an ensemble must only cover a single year, and ideally have all days. The method assumes datasets have daily resolution.
 
     Parameters
     -------------
     var : str
         Variable to analyze.
     metric : str
-        Must be peak, middle, start or end
+        Must be peak, middle, start or end. Peak is defined as the day of the maximum value. Middle is the day when the cumulative total of the variable first exceeds the cumulative total for the entire year. Start or end is defined as the first day when the cumulative total exceeds a percentile p of the maximum cumulative total.
     p : str
-        Percentile to use for start or end
+        Percentile to use for start or end.
     """
 
     if metric is None:

@@ -4,12 +4,12 @@ from nctoolkit.runthis import run_this
 
 def rename(self, newnames):
     """
-    Rename variables
+    Rename variables in a dataset
 
     Parameters
     -------------
     newnames : dict
-        Dictionary with keys being old variable names and values being new variable names
+        Dictionary with key-value pairs being original and new variable names
     """
 
     # check a dict was supplied

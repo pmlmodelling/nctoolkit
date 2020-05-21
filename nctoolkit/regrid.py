@@ -1,5 +1,5 @@
 
-import copy
+mport copy
 import os
 import pandas as pd
 import subprocess
@@ -16,16 +16,16 @@ from nctoolkit.temp_file import temp_file
 
 
 def regrid(self, grid=None, method="bil"):
-
     """
-    Regrid a dataset for a target grid and remapping method
+    Regrid a dataset to a target grid
 
     Parameters
     -------------
     grid : nctoolkit.DataSet, xarray object, pandas data frame or netcdf file
-        grid to remap to
+        The grid to remap to
+
     method : str
-        remapping method. Defaults to "bil". Bilinear: "bil"; Nearest neighbour: "nn",....
+        Remapping method. Defaults to "bil". Methods available are: bilinear - "bil"; nearest neighbour - "nn" - "nearest neighbour"; "bic" - "bicubic interpolation";
     """
 
     del_grid = None
@@ -65,7 +65,7 @@ def regrid(self, grid=None, method="bil"):
         raise ValueError("grid supplied is not valid")
 
     # check that the remapping method is valid
-    if (method in {"bil", "dis", "nn"}) == False:
+    if (method in {"bil", "bic", "nn"}) == False:
         raise ValueError("remapping method is invalid. Please check")
 
     # check the number of grids in the dataset

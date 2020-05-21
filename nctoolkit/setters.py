@@ -8,7 +8,6 @@ from nctoolkit.temp_file import temp_file
 
 
 def set_date(self, year=None, month=None, day=None, base_year=1900):
-
     """
     Set the date in a dataset
     You should only do this if you have to fix/change a dataset with a single, not multiple dates.
@@ -23,7 +22,6 @@ def set_date(self, year=None, month=None, day=None, base_year=1900):
         The day
     base_year : int
         The base year for time creation in the netcdf. Defaults to 1900.
-
     """
 
     if year is None:
@@ -41,7 +39,6 @@ def set_date(self, year=None, month=None, day=None, base_year=1900):
         raise TypeError(f"year supplied is not an int")
     if type(month) is not int:
         raise TypeError(f"month supplied is not an int")
-
     if type(day) is not int:
         raise TypeError(f"day supplied is not an int")
 
@@ -57,8 +54,7 @@ def set_missing(self, value=None):
     Parameters
     -------------
     value : 2 variable list or int/float
-        If int/float provided the missing value will be set to that. if a list provided, values between the two values (inclusive) of the list are set to missing.
-
+        If int/float is provided, the missing value will be set to that. If a list is provided, values between the two values (inclusive) of the list are set to missing.
     """
 
     if value is None:
@@ -70,61 +66,61 @@ def set_missing(self, value=None):
     if type(value) is not list:
         raise TypeError("Please supply a list, int or float!")
 
-    if type(value) is list:
-        cdo_command = f"cdo -setrtomiss,{str(value[0])},{str(value[1])}"
 
     for vv in value:
         if (type(vv) is not float) and (type(vv) is not int):
             raise TypeError(f"{vv} is not an int or float")
 
+    if type(value) is list:
+        cdo_command = f"cdo -setrtomiss,{str(value[0])},{str(value[1])}"
+
     run_this(cdo_command, self, output="ensemble")
 
 
-def set_units(self, var_dict=None):
+def set_units(self, unit_dict=None):
     """
     Set the units for variables
 
     Parameters
     -------------
-    var_dict : dict
-        A dictionary where the key, value pair are the variables and new units respectively.
-
+    unit_dict : dict
+        A dictionary where the key-value pairs are the variables and new units respectively.
     """
 
-    if var_dict is None:
-        raise ValueError("Please supply var_dict")
+    if unit_dict is None:
+        raise ValueError("Please supply unit_dict")
 
     # Check that a dictionary has been supplied
-    if type(var_dict) is not dict:
+    if type(unit_dict) is not dict:
         TypeError("A dictionary has not been supplied!")
 
     # change the units in turn. This doesn't seem to be something you can chain?
-    for i in var_dict:
+    for i in unit_dict:
         if type(i) is not str:
-            raise TypeError("key,values in var_dict are not strings")
-        if type(var_dict[i]) is not str:
-            raise TypeError("key,values in var_dict are not strings")
+            raise TypeError("key,values in unit_dict are not strings")
+        if type(unit_dict[i]) is not str:
+            raise TypeError("key,values in unit_dict are not strings")
 
-        cdo_command = f'cdo -setattribute,{i}@units="{var_dict[i]}"'
+        cdo_command = f'cdo -setattribute,{i}@units="{unit_dict[i]}"'
         run_this(cdo_command, self, output="ensemble")
 
 
-def set_longnames(self, var_dict=None):
+def set_longnames(self, name_dict=None):
     """
-    Set long name
+    Set the long names of variables
 
     Parameters
     -------------
-    var_dict : dict
+    name_dict : dict
         Dictionary with key, value pairs representing the variable names and their long names
 
     """
-    if var_dict is None:
-        raise ValueError("Please supply var_dict")
+    if name_dict is None:
+        raise ValueError("Please supply name_dict")
 
     self.run()
 
-    if type(var_dict) is not dict:
+    if type(name_dict) is not dict:
         TypeError("A dictionary has not been supplied!")
 
     # change the units in turn. This doesn't seem to be something you can chain?
@@ -134,12 +130,12 @@ def set_longnames(self, var_dict=None):
 
     for ff in self:
         nco_command = "ncatted "
-        for i in var_dict:
+        for i in name_dict:
             if type(i) is not str:
-                raise TypeError("key,values in var_dict are not strings")
-            if type(var_dict[i]) is not str:
-                raise TypeError("key,values in var_dict are not strings")
-            i_dict = var_dict[i]
+                raise TypeError("key,values in name_dict are not strings")
+            if type(name_dict[i]) is not str:
+                raise TypeError("key,values in name_dict are not strings")
+            i_dict = name_dict[i]
             i_dict = i_dict.replace('"', "'")
             nco_command += "-a long_name," + i + ',o,c,"' + i_dict + '" '
 

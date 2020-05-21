@@ -18,17 +18,17 @@ def cdo_version():
 
 
 def merge(self, match=["year", "month", "day"]):
-
     """
-    Merge a multi-file ensemble into a single file. Merging will occur based on the time steps in the first file. This will only be effective if either you want to merge files with the same times or multi-time files with single time files.
+    Merge a multi-file ensemble into a single file
+    Merging will occur based on the time steps in the first file. This will only be effective if you want to merge files with the same times, but with different variables.
 
     Parameters
     -------------
     match: list, str
     a list or str stating what must match in the netcdf files. Defaults to year/month/day. This list must be some combination of year/month/day. An error will be thrown if the elements of time in match do not match across all netcdf files. The only exception is if there is a single date file in the ensemble.
-
     """
 
+    # basic checks on match criteria
     if type(match) is str:
         match = [match]
 
@@ -48,6 +48,7 @@ def merge(self, match=["year", "month", "day"]):
     # Force a release if needed
     self.run()
 
+    # If there is only a single file in the dataset, then nothing needs to be done
     if type(self.current) is not list:
         warnings.warn(
             message="There is only one file in the dataset. No need to merge!"
@@ -72,6 +73,7 @@ def merge(self, match=["year", "month", "day"]):
             message="The files to merge do not have the same number of time steps!"
         )
 
+    # we need to check the grids are the same
     all_grids = []
     for ff in self:
         cdo_result = subprocess.run(
@@ -87,6 +89,7 @@ def merge(self, match=["year", "month", "day"]):
             "The files in the dataset to do not have the same grid. Consider using regrid!"
         )
 
+    # check the files have the same number of time steps, or that one of them has a single time
     all_times = []
     for ff in self:
         cdo_result = subprocess.run(

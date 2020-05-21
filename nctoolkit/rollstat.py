@@ -7,7 +7,7 @@ def rollstat(self, window=None, stat="mean"):
     # check window supplied is valid
 
     if window is None:
-        raise ValueError("No windows was supplied")
+        raise ValueError("No window was supplied")
 
     if type(window) is not int:
         raise TypeError("The window supplied is not numeric!")
@@ -21,63 +21,56 @@ def rollstat(self, window=None, stat="mean"):
 
 
 def rolling_mean(self, window=None):
-
     """
-    Calculate a rolling mean based on a window.
+    Calculate a rolling mean based on a window
 
     Parameters
     -------------
     window = int
         The size of the window for the calculation of the rolling mean
-
     """
-
     return rollstat(self, window=window, stat="mean")
 
 
 def rolling_min(self, window=None):
     """
-    Calculate a rolling minimum based on a window.
+    Calculate a rolling minimum based on a window
 
     Parameters
     -------------
     window = int
         The size of the window for the calculation of the rolling minimum
-
     """
-
     return rollstat(self, window=window, stat="min")
 
 
 def rolling_max(self, window=None):
     """
-    Calculate a rolling maximum based on a window.
+    Calculate a rolling maximum based on a window
 
     Parameters
     -------------
     window = int
         The size of the window for the calculation of the rolling maximum
-
     """
     return rollstat(self, window=window, stat="max")
 
 
 def rolling_range(self, window=None):
     """
-    Calculate a rolling range based on a window.
+    Calculate a rolling range based on a window
 
     Parameters
     -------------
     window = int
         The size of the window for the calculation of the rolling range
-
     """
     return rollstat(self, window=window, stat="range")
 
 
 def rolling_sum(self, window=None):
     """
-    Calculate a rolling sum based on a window.
+    Calculate a rolling sum based on a window
 
     Parameters
     -------------

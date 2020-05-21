@@ -1,7 +1,6 @@
 
 import os
 
-
 def view(self):
     """
     Open the current dataset's file in ncview

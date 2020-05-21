@@ -1,6 +1,5 @@
 
 import copy
-import subprocess
 
 from nctoolkit.cleanup import cleanup, disk_clean
 from nctoolkit.flatten import str_flatten
@@ -11,14 +10,14 @@ from nctoolkit.temp_file import temp_file
 
 def nco_command(self, command=None, ensemble=False):
     """
-    Apply a cdo command
+    Apply an nco command
 
     Parameters
     -------------
     command : string
-        cdo command to call. This must be of the form cdo command infile outfile, where cdo, infile and outfile are attached later.
+        nco command to call. This must be of a form such that "nco {command} infile outfile" will run.
     ensemble : boolean
-        Set to True if you want the command to take all of the files as input
+        Set to True if you want the command to take all of the files as input. This is useful for ensemble methods.
     """
 
     # First, check that the command is valid

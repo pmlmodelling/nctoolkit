@@ -1,10 +1,5 @@
 
-import copy
 import os
-import pandas as pd
-import subprocess
-import warnings
-import xarray as xr
 
 from nctoolkit.api import open_data
 from nctoolkit.cleanup import cleanup, disk_clean
@@ -16,19 +11,18 @@ from nctoolkit.session import nc_safe
 from nctoolkit.temp_file import temp_file
 
 
-def to_lonlat(self, lon=None, lat=None, res=None, method="bil"):
-
+def to_latlon(self, lon=None, lat=None, res=None, method="bil"):
     """
-    Regrid a dataset to a regular lonlat grid
+    Regrid a dataset to a regular latlon grid
 
     Parameters
     -------------
     lon : list
-        2 element list giving minimum and maximum longitude
+        2 element list giving minimum and maximum longitude of target grid
     lat : list
-        2 element list giving minimum and maximum latitude
+        2 element list giving minimum and maximum latitude of target grid
     res : float, int or list
-        If float or int given, this will be the horizontal and vertical resolution.
+        If float or int given, this will be the horizontal and vertical resolution of the target grid.
         If 2 element list is given, the first element is the longitudinal resolution and the second is the latitudinal resolution.
     method : str
         remapping method. Defaults to "bil". Bilinear: "bil"; Nearest neighbour: "nn",....

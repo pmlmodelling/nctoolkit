@@ -10,11 +10,11 @@ def time_interp(self, start=None, end=None, resolution="monthly"):
     Parameters
     -------------
     start : str
-        Start date for interpolation. Needs to be of the form YYYY/MM/DD or YYYY-MM-DD
+        Start date for interpolation. Needs to be of the form YYYY/MM/DD or YYYY-MM-DD.
     end : str
-        End date for interpolation. Needs to be of the form YYYY/MM/DD or YYYY-MM-DD. If end is not given interpolation will be to the final available time in the dataset
+        End date for interpolation. Needs to be of the form YYYY/MM/DD or YYYY-MM-DD. If end is not given interpolation will be to the final available time in the dataset.
     resolution : str
-        Time steps used for intpoleration. Needs to be "daily", "weekly", "monthly" or "yearly"
+        Time steps used for interpolation. Needs to be "daily", "weekly", "monthly" or "yearly". Defaults to monthly.
     """
 
     if resolution not in ["daily", "weekly", "monthly", "yearly"]:

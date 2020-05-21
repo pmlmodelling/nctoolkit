@@ -6,6 +6,7 @@ from nctoolkit.cleanup import cleanup
 from nctoolkit.flatten import str_flatten
 from nctoolkit.runthis import run_this
 from nctoolkit.session import nc_safe
+from nctoolkit.show import nc_years
 
 
 def select_season(self, season=None):
@@ -15,16 +16,14 @@ def select_season(self, season=None):
     Parameters
     -------------
     season : str
-        Season to select. One of "DJF", "MAM", "JJA", "SON"
-        #change this to the below?
-        #Season to select. One of "winter", "spring", "summer", "autumn"
+        Season to select. One of "DJF", "MAM", "JJA", "SON".
     """
 
     if season is None:
         raise ValueError("No season supplied")
 
     if type(season) is not str:
-        raise TypeError("No season supplied")
+        raise TypeError("Invalid season supplied")
 
     if season not in ["DJF", "MAM", "JJA", "SON"]:
         raise ValueError("Invalid season supplied")
@@ -36,7 +35,7 @@ def select_season(self, season=None):
 def select_months(self, months=None):
     """
     Select months from a dataset
-    This method will subset the data to only contains months within the list given. A warning message will be provided when there are missing months.
+    This method will subset the dataset to only contain months within the list given. A warning message will be provided when there are missing months.
 
     Parameters
     -------------
@@ -70,7 +69,7 @@ def select_months(self, months=None):
 def select_years(self, years=None):
     """
     Select years from a dataset
-    This method will subset the data to only contains years within the list given. A warning message will be provided when there are missing years.
+    This method will subset the dataset to only contain years within the list given. A warning message will be provided when there are missing years.
     Parameters
     -------------
     years : list,range or int
@@ -98,23 +97,13 @@ def select_years(self, years=None):
         missing_files = 0
 
         n_removed = 0
+
+        # loop through all of the files and remove any that do not have valid years
         new_current = []
 
         for ff in self:
 
-            cdo_result = subprocess.run(
-                f"cdo showyear {ff}",
-                shell=True,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-            )
-
-            all_years = []
-            cdo_result = str(cdo_result.stdout).replace("\\n", "")
-            cdo_result = cdo_result.replace("b'", "").strip()
-            cdo_result = cdo_result.replace("'", "").strip()
-            cdo_result = cdo_result.split()
-            all_years += cdo_result
+            all_years = nc_years(ff)
             all_years = list(set(all_years))
             all_years = [int(v) for v in all_years]
             inter = [element for element in all_years if element in years]
@@ -167,7 +156,6 @@ def select_variables(self, vars=None):
     -------------
     vars : list or str
         Variable(s) to select.
-
     """
 
     if vars is None:
@@ -196,7 +184,7 @@ def select_timestep(self, times=None):
     Parameters
     -------------
     times : list or int
-        time step(s) to select. For example, if you wanted the first time step set times = 0.
+        time step(s) to select. For example, if you wanted the first time step set times=0.
     """
 
     if times is None:

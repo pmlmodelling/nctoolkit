@@ -10,17 +10,16 @@ from nctoolkit.session import nc_safe, session_info
 def write_nc(self, out, zip=True, overwrite=False):
     """
     Save a dataset to a named file
+    This will only work with single file datasets.
 
     Parameters
     -------------
     out : str
-        output file name
+        Output file name.
     zip : boolean
-        True/False depending on whether you want to zip the file. Defaults to True.
+        True/False depending on whether you want to zip the file. Default is True.
     overwrite : boolean
-        If out file exists, do you want to overwrite it?
-
-
+        If out file exists, do you want to overwrite it? Default is False.
     """
 
     # If the output file exists, cdo cannot simultaneously have it opened and written to
@@ -32,6 +31,7 @@ def write_nc(self, out, zip=True, overwrite=False):
     else:
         ff = [copy.deepcopy(self.current)]
 
+    # Figure out if it is possible to write the file, i.e. if a dataset is still an ensemble, you cannot write.
     write = False
 
     if type(self.current) is str:

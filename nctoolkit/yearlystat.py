@@ -12,32 +12,27 @@ def yearlystat(self, stat="mean"):
 
 def annual_mean(self):
     """
-    Calculate the yearly mean
-
-
+    Calculate the annual mean for each variable
     """
     return yearlystat(self, stat="mean")
 
 
 def annual_min(self):
     """
-    Calculate the yearly minimum
-
+    Calculate the annual minimum for each variable
     """
     return yearlystat(self, stat="min")
 
 
 def annual_max(self):
     """
-    Calculate the yearly maximum
-
+    Calculate the annual maximum for each variable
     """
     return yearlystat(self, stat="max")
 
 
 def annual_range(self):
     """
-    Calculate the yearly range
-
+    Calculate the annual range for each variable
     """
     return yearlystat(self, stat="range")

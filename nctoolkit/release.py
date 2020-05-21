@@ -7,7 +7,6 @@ from nctoolkit.session import session_info, nc_safe
 def run(self):
     """
     Run all stored commands in a dataset
-
     """
 
     # the first step is to set the run status to true
@@ -42,12 +41,6 @@ def run(self):
 def release(self):
     """
     Run all stored commands in a dataset
-
-    Parameters
-    -------------
-    run_merge: boolean
-        Ignore this for now. This needs to be replaced by the keywords arg method
-
     """
 
     # the first step is to set the run status to true

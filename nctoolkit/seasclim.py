@@ -11,9 +11,8 @@ def seasstat(self, stat="mean"):
 
 
 def seasonal_mean_climatology(self):
-
     """
-    Calculate a seasonal mean climatology
+    Calculate a climatological seasonal mean
 
     Parameters
     -------------
@@ -26,7 +25,8 @@ def seasonal_mean_climatology(self):
 
 def seasonal_min_climatology(self):
     """
-    Calculate a seasonal minimum climatology
+    Calculate a climatological seasonal min
+    This is defined as the minimum value in each season across all years.
 
     Parameters
     -------------
@@ -39,7 +39,8 @@ def seasonal_min_climatology(self):
 
 def seasonal_max_climatology(self):
     """
-    Calculate a seasonal maximum climatology
+    Calculate a climatological seasonal max
+    This is defined as the maximum value in each season across all years.
 
     Parameters
     -------------
@@ -52,7 +53,8 @@ def seasonal_max_climatology(self):
 
 def seasonal_range_climatology(self):
     """
-    Calculate a seasonal range climatology
+    Calculate a climatological seasonal range
+    This is defined as the range of values in each season across all years.
 
     Parameters
     -------------

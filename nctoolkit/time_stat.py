@@ -17,57 +17,50 @@ def time_stat(self, stat="mean"):
 
 def sum(self):
     """
-    Calculate the sum of all values.
+    Calculate the temporal sum of all variables
     """
-
     return time_stat(self, stat="sum")
 
 
 def mean(self):
     """
-    Calculate the mean of all values.
+    Calculate the temporal mean of all variables
     """
-
     return time_stat(self, stat="mean")
 
 
 def min(self):
     """
-    Calculate the minimums of all values.
+    Calculate the temporal minimum of all variables
     """
-
     return time_stat(self, stat="min")
 
 
 def max(self):
     """
-    Calculate the maximums of all values.
+    Calculate the temporal maximum of all variables
     """
-
     return time_stat(self, stat="max")
 
 
 def range(self):
     """
-    Calculate the ranges of all values.
+    Calculate the temporal range of all variables
     """
-
     return time_stat(self, stat="range")
 
 
 def var(self):
     """
-    Calculate the variances of all values.
+    Calculate the temporal variance of all variables
     """
-
     return time_stat(self, stat="var")
 
 
 def cum_sum(self):
     """
-    Calculate the cumulative sums of all values.
+    Calculate the temporal cumulative sum of all variables
     """
-
     # create cdo command and runit
     cdo_command = "cdo -timcumsum"
     run_this(cdo_command, self, output="ensemble")
@@ -75,7 +68,7 @@ def cum_sum(self):
 
 def percentile(self, p=None):
     """
-    Calculate the percentile of all values
+    Calculate the temporal percentile of all variables
 
     Parameters
     -------------
