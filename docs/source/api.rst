@@ -205,7 +205,7 @@ Interpolation methods
    :toctree: generated/
 
    DataSet.regrid
-   DataSet.to_lonlat
+   DataSet.to_latlon
    DataSet.time_interp
 
 
