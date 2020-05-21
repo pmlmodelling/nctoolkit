@@ -824,7 +824,7 @@ class DataSet(object):
     from nctoolkit.add_etc import multiply
     from nctoolkit.add_etc import divide
 
-    from nctoolkit.to_lonlat import to_lonlat
+    from nctoolkit.to_lonlat import to_latlon
 
     from nctoolkit.reduce import reduce_dims
 
