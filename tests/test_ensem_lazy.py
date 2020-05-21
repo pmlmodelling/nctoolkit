@@ -25,7 +25,7 @@ class TestEnsemble(unittest.TestCase):
 
     def test_max(self):
         data = nc.open_data(nc.create_ensemble("data/ensemble"))
-        data.ensemble_max()
+        data.ensemble_max(nco = True)
         data.spatial_mean()
         x = data.to_dataframe().sst.values[0].astype("float")
 

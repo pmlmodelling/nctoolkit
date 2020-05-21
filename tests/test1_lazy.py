@@ -13,7 +13,7 @@ class TestOne(unittest.TestCase):
     def test_clim1(self):
         tracker = nc.open_data(ff)
         tracker.split("year")
-        tracker.ensemble_mean()
+        tracker.ensemble_mean(nco = True)
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         tracker = nc.open_data(ff)
         tracker.monthly_mean_climatology()
@@ -29,7 +29,7 @@ class TestOne(unittest.TestCase):
         tracker = nc.open_data(ff)
         tracker.split("year")
         tracker.clip(lon = [50, 60])
-        tracker.ensemble_mean()
+        tracker.ensemble_mean(nco = True)
         tracker.spatial_mean()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         tracker = nc.open_data(ff)
