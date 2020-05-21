@@ -51,7 +51,6 @@ def ensemble_nco(self, method, vars=None, ignore_time=False):
     """
     NCO Method to calculate an ensemble stat from a list of files
     """
-
     # Throw an error if there is only a single file in the tracker
 
     if vars is not None:
@@ -102,68 +101,108 @@ def ensemble_nco(self, method, vars=None, ignore_time=False):
     self.disk_clean()
 
 
-def ensemble_min(self, vars=None, ignore_time=False):
-    """
-    Calculate an ensemble minimum
-
-    Parameters
-    -------------
-    vars : str or list
-        variables to analyse. If this is not supplied all variables will be analysed.
-    ignore_time : boolean
-        If True time is ignored when the statistic is ignored. If False, the statistic is calculated for each time step; for example, if each file in the ensemble has 12 months of data the statistic will be calculated for each month.
-
-    """
-
-    return ensemble_nco(self, "min", ignore_time=ignore_time, vars=vars)
-
-
-def ensemble_max(self, vars=None, ignore_time=False):
+def ensemble_max(self, nco = False, ignore_time=False):
     """
     Calculate an ensemble maximum
 
     Parameters
     -------------
-    vars : str or list
-        variables to analyse. If this is not supplied all variables will be analysed.
+    nco : boolean
+        Do you want to use NCO for the calculation? Default is False, i.e. CDO is used. Modify default if run time is an issue.
     ignore_time : boolean
-        If True time is ignored when the statistic is ignored. If False, the statistic is calculated for each time step; for example, if each file in the ensemble has 12 months of data the statistic will be calculated for each month.
-
+        If True the max is calculated over all time steps. If False, the ensemble max is calculated for each time steps; for example, if the ensemble is made up of monthly files the max for each month will be calculated.
     """
 
-    return ensemble_nco(self, "max", ignore_time=ignore_time, vars=vars)
+    if nco is False:
+        self.run()
+
+        if type(self.current) is not list:
+            warnings.warn(message="There is only one file in the dataset")
 
 
-def ensemble_mean(self, vars=None, ignore_time=False):
+        if ignore_time is False:
+            cdo_command = "cdo --sortname -ensmax"
+        else:
+            cdo_command = "cdo -timmax --sortname -ensmax"
+
+        run_this(cdo_command, self)
+
+        self._merged = True
+        return None
+
+    return ensemble_nco(self, "max", ignore_time=ignore_time)
+
+
+
+
+def ensemble_min(self, nco = False, ignore_time=False):
+    """
+    Calculate an ensemble min
+
+    Parameters
+    -------------
+    nco : boolean
+        Do you want to use NCO for the calculation? Default is False, i.e. CDO is used. Modify default if run time is an issue.
+    ignore_time : boolean
+        If True the min is calculated over all time steps. If False, the ensemble min is calculated for each time steps; for example, if the ensemble is made up of monthly files the min for each month will be calculated.
+    """
+
+    if nco is False:
+        self.run()
+
+        if type(self.current) is not list:
+            warnings.warn(message="There is only one file in the dataset")
+
+
+        if ignore_time is False:
+            cdo_command = "cdo --sortname -ensmin"
+        else:
+            cdo_command = "cdo -timmin --sortname -ensmin"
+
+        run_this(cdo_command, self)
+
+        self._merged = True
+        return None
+
+    return ensemble_nco(self, "min", ignore_time=ignore_time)
+
+
+def ensemble_mean(self, nco = False, ignore_time=False):
     """
     Calculate an ensemble mean
 
     Parameters
     -------------
-    vars : str or list
-        variables to analyse. If this is not supplied all variables will be analysed.
+    nco : boolean
+        Do you want to use NCO for the calculation? Default is False, i.e. CDO is used. Modify default if run time is an issue.
     ignore_time : boolean
-        If True time is ignored when the statistic is ignored. If False, the statistic is calculated for each time step; for example, if each file in the ensemble has 12 months of data the statistic will be calculated for each month.
-
+        If True the mean is calculated over all time steps. If False, the ensemble mean is calculated for each time steps; for example, if the ensemble is made up of monthly files the mean for each month will be calculated.
     """
 
-    return ensemble_nco(self, "mean", ignore_time=ignore_time, vars=vars)
+    if nco is False:
+        self.run()
+
+        if type(self.current) is not list:
+            warnings.warn(message="There is only one file in the dataset")
+
+        if ignore_time is False:
+            cdo_command = "cdo --sortname -ensmean"
+        else:
+            cdo_command = "cdo -timmean --sortname -ensmean"
+
+        run_this(cdo_command, self)
+
+        self._merged = True
+        return None
+
+    return ensemble_nco(self, "mean", ignore_time=ignore_time)
 
 
 def ensemble_range(self):
     """
     Calculate an ensemble range
-
-    Parameters
-    -------------
-    vars : str or list
-        variables to analyse. If this is not supplied all variables will be analysed.
-    ignore_time : boolean
-        If True time is ignored when the statistic is ignored. If False, the statistic is calculated for each time step; for example, if each file in the ensemble has 12 months of data the statistic will be calculated for each month.
-
+    The range is calculated for each time step; for example, if each file in the ensemble has 12 months of data the statistic will be calculated for each month.
     """
-
-
     self.run()
 
     if type(self.current) is not list:
