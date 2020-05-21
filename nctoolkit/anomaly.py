@@ -10,13 +10,13 @@ from nctoolkit.temp_file import temp_file
 
 def annual_anomaly(self, baseline=None, metric="absolute", window=1):
     """
-    Calculate annual anomalies based on a baseline period
+    Calculate annual anomalies for each variable based on a baseline period
     The anomaly is derived by first calculating the climatological annual mean for the given baseline period. Annual means are then calculated for each year and the anomaly is calculated compared with the baseline mean. This will be calculated on a per-file basis in a multi-file dataset.
 
     Parameters
     -------------
     baseline: list
-        Baseline years. This needs to be the first and last year of the climatological period. Example: a baseline of [1980,1999] will result in anomolies against the 20 year climatology from 1980 to 1999.
+        Baseline years. This needs to be the first and last year of the climatological period. Example: a baseline of [1980,1999] will result in anomalies against the 20 year climatology from 1980 to 1999.
     metric: str
         Set to "absolute" or "relative", depending on whether you want the absolute or relative anomaly to be calculated.
     window: int

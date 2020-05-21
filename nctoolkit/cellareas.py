@@ -4,19 +4,19 @@ import subprocess
 
 from nctoolkit.cleanup import cleanup, disk_clean
 from nctoolkit.runthis import run_this, tidy_command, run_cdo
-from nctoolkit.session import nc_safe
 from nctoolkit.show import nc_variables
 from nctoolkit.temp_file import temp_file
 
 
 def cell_areas(self, join=True):
     """
-    Calculate the cell areas in square meters
+    Calculate the area of grid cells.
+    Area of grid cells is given in square meters.
 
     Parameters
     -------------
     join: boolean
-        Set to False if you only want the cell areas to be in the output. join=True adds the areas as a variable to the dataset.
+        Set to False if you only want the cell areas to be in the output. join=True adds the areas as a variable to the dataset. Defaults to True.
     """
 
     if isinstance(join, bool) == False:
@@ -26,14 +26,12 @@ def cell_areas(self, join=True):
     if join:
         self.run()
 
-
     #get the cdo version
 
     cdo_check = subprocess.run("cdo --version", shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     cdo_check = str(cdo_check.stderr).replace("\\n", "")
     cdo_check = cdo_check.replace("b'", "").strip()
     cdo_version = cdo_check.split("(")[0].strip().split(" ")[-1]
-
 
     # first run the join case
     if join:
@@ -44,6 +42,8 @@ def cell_areas(self, join=True):
         for ff in self:
 
             if cdo_version in ["1.9.3", "1.9.4", "1.9.5"]:
+
+                # things need to be done a bit differently in cdo < 1.9.6 because chaining doesn't work with merge
 
                 if "cell_area" in nc_variables(ff):
                     raise ValueError("cell_area is already a variable")
