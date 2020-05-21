@@ -1,8 +1,5 @@
 
-import pandas as pd
 import subprocess
-import warnings
-
 
 def nc_times(ff):
 

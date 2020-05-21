@@ -1,19 +1,16 @@
 
-import pandas as pd, numpy as np
-import subprocess
 
 from threading import Thread
-import time
 
 
 from nctoolkit.runthis import run_this
 from nctoolkit.temp_file import temp_file
 from nctoolkit.session import html_files
 
+import time
+import subprocess
 import holoviews as hv
 import panel as pn
-import webbrowser
-
 
 hv.extension('bokeh')
 hv.Store.renderers

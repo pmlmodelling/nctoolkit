@@ -14,25 +14,25 @@ def annual_mean(self):
     """
     Calculate the annual mean for each variable
     """
-    return yearlystat(self, stat="mean")
+    yearlystat(self, stat="mean")
 
 
 def annual_min(self):
     """
     Calculate the annual minimum for each variable
     """
-    return yearlystat(self, stat="min")
+    yearlystat(self, stat="min")
 
 
 def annual_max(self):
     """
     Calculate the annual maximum for each variable
     """
-    return yearlystat(self, stat="max")
+    yearlystat(self, stat="max")
 
 
 def annual_range(self):
     """
     Calculate the annual range for each variable
     """
-    return yearlystat(self, stat="range")
+    yearlystat(self, stat="range")

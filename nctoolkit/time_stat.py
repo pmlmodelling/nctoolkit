@@ -19,42 +19,42 @@ def sum(self):
     """
     Calculate the temporal sum of all variables
     """
-    return time_stat(self, stat="sum")
+    time_stat(self, stat="sum")
 
 
 def mean(self):
     """
     Calculate the temporal mean of all variables
     """
-    return time_stat(self, stat="mean")
+    time_stat(self, stat="mean")
 
 
 def min(self):
     """
     Calculate the temporal minimum of all variables
     """
-    return time_stat(self, stat="min")
+    time_stat(self, stat="min")
 
 
 def max(self):
     """
     Calculate the temporal maximum of all variables
     """
-    return time_stat(self, stat="max")
+    time_stat(self, stat="max")
 
 
 def range(self):
     """
     Calculate the temporal range of all variables
     """
-    return time_stat(self, stat="range")
+    time_stat(self, stat="range")
 
 
 def var(self):
     """
     Calculate the temporal variance of all variables
     """
-    return time_stat(self, stat="var")
+    time_stat(self, stat="var")
 
 
 def cum_sum(self):

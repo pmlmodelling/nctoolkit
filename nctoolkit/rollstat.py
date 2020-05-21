@@ -29,7 +29,7 @@ def rolling_mean(self, window=None):
     window = int
         The size of the window for the calculation of the rolling mean
     """
-    return rollstat(self, window=window, stat="mean")
+    rollstat(self, window=window, stat="mean")
 
 
 def rolling_min(self, window=None):
@@ -41,7 +41,7 @@ def rolling_min(self, window=None):
     window = int
         The size of the window for the calculation of the rolling minimum
     """
-    return rollstat(self, window=window, stat="min")
+    rollstat(self, window=window, stat="min")
 
 
 def rolling_max(self, window=None):
@@ -53,7 +53,7 @@ def rolling_max(self, window=None):
     window = int
         The size of the window for the calculation of the rolling maximum
     """
-    return rollstat(self, window=window, stat="max")
+    rollstat(self, window=window, stat="max")
 
 
 def rolling_range(self, window=None):
@@ -65,7 +65,7 @@ def rolling_range(self, window=None):
     window = int
         The size of the window for the calculation of the rolling range
     """
-    return rollstat(self, window=window, stat="range")
+    rollstat(self, window=window, stat="range")
 
 
 def rolling_sum(self, window=None):
@@ -77,4 +77,4 @@ def rolling_sum(self, window=None):
     window = int
         The size of the window for the calculation of the rolling sum
     """
-    return rollstat(self, window=window, stat="sum")
+    rollstat(self, window=window, stat="sum")

@@ -140,7 +140,8 @@ def multiply(self, x=None, var=None):
 
     # 1: int, float multiplication
     if isinstance(x, (int, float)):
-        return arithall(self, stat="mulc", x=x)
+        arithall(self, stat="mulc", x=x)
+        return None
 
     # 2: dataset or netcdf file multiplication
     # get the netcdf file(s)
@@ -170,7 +171,8 @@ def subtract(self, x=None, var=None):
 
     # 1: int, float subtraction
     if isinstance(x, (int, float)):
-        return arithall(self, stat="subc", x=x)
+        arithall(self, stat="subc", x=x)
+        return None
 
     # 2: dataset or netcdf file subtraction
     # get the netcdf file(s)
@@ -200,7 +202,8 @@ def add(self, x=None, var=None):
 
     # 1: int, float addition
     if isinstance(x, (int, float)):
-        return arithall(self, stat="addc", x=x)
+        arithall(self, stat="addc", x=x)
+        return None
 
     # 2: dataset or netcdf file addition
     # get the netcdf file(s)
@@ -230,7 +233,8 @@ def divide(self, x=None, var=None):
 
     # 1: int, float division
     if isinstance(x, (int, float)):
-        return arithall(self, stat="divc", x=x)
+        arithall(self, stat="divc", x=x)
+        return None
 
     # 2: dataset or netcdf file division
     # get the netcdf file(s)

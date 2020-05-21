@@ -1,12 +1,11 @@
 
 import copy
-import math
-import multiprocessing
 import os
 import re
 import subprocess
 import sys
 import warnings
+import multiprocessing
 
 from nctoolkit.cleanup import cleanup
 from nctoolkit.flatten import str_flatten

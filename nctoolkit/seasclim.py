@@ -20,7 +20,7 @@ def seasonal_mean_climatology(self):
         The size of the window for the calculation of the rolling sum
     """
 
-    return seasstat(self, stat="mean")
+    seasstat(self, stat="mean")
 
 
 def seasonal_min_climatology(self):
@@ -34,7 +34,7 @@ def seasonal_min_climatology(self):
         The size of the window for the calculation of the rolling sum
 
     """
-    return seasstat(self, stat="min")
+    seasstat(self, stat="min")
 
 
 def seasonal_max_climatology(self):
@@ -48,7 +48,7 @@ def seasonal_max_climatology(self):
         The size of the window for the calculation of the rolling sum
 
     """
-    return seasstat(self, stat="max")
+    seasstat(self, stat="max")
 
 
 def seasonal_range_climatology(self):
@@ -62,4 +62,4 @@ def seasonal_range_climatology(self):
         The size of the window for the calculation of the rolling sum
 
     """
-    return seasstat(self, stat="range")
+    seasstat(self, stat="range")

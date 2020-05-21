@@ -33,7 +33,7 @@ def spatial_mean(self):
     Calculate the area weighted spatial mean for all variables
     This is performed for each time step.
     """
-    return fldstat(self, stat="mean")
+    fldstat(self, stat="mean")
 
 
 def spatial_min(self):
@@ -41,7 +41,7 @@ def spatial_min(self):
     Calculate the spatial minimum for all variables
     This is performed for each time step.
     """
-    return fldstat(self, stat="min")
+    fldstat(self, stat="min")
 
 
 def spatial_max(self):
@@ -49,7 +49,7 @@ def spatial_max(self):
     Calculate the spatial maximum for all variables
     This is performed for each time step.
     """
-    return fldstat(self, stat="max")
+    fldstat(self, stat="max")
 
 
 def spatial_range(self):
@@ -57,7 +57,7 @@ def spatial_range(self):
     Calculate the spatial range for all variables
     This is performed for each time step.
     """
-    return fldstat(self, stat="range")
+    fldstat(self, stat="range")
 
 
 def spatial_sum(self, by_area=False):

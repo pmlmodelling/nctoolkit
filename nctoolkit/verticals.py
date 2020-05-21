@@ -92,7 +92,7 @@ def vertical_mean(self):
     Calculate the depth-averaged mean for each variable
     This is calculated for each time step and grid cell
     """
-    return vertstat(self, stat="mean")
+    vertstat(self, stat="mean")
 
 
 def vertical_min(self):
@@ -100,7 +100,7 @@ def vertical_min(self):
     Calculate the vertical minimum of variable values
     This is calculated for each time step and grid cell
     """
-    return vertstat(self, stat="min")
+    vertstat(self, stat="min")
 
 
 def vertical_max(self):
@@ -108,7 +108,7 @@ def vertical_max(self):
     Calculate the vertical maximum of variable values
     This is calculated for each time step and grid cell
     """
-    return vertstat(self, stat="max")
+    vertstat(self, stat="max")
 
 
 def vertical_range(self):
@@ -116,7 +116,7 @@ def vertical_range(self):
     Calculate the vertical range of variable values
     This is calculated for each time step and grid cell
     """
-    return vertstat(self, stat="range")
+    vertstat(self, stat="range")
 
 
 def vertical_sum(self):
@@ -124,7 +124,7 @@ def vertical_sum(self):
     Calculate the vertical sum of variable values
     This is calculated for each time step and grid cell
     """
-    return vertstat(self, stat="sum")
+    vertstat(self, stat="sum")
 
 
 def vertical_cum_sum(self):
@@ -132,7 +132,7 @@ def vertical_cum_sum(self):
     Calculate the vertical sum of variable values
     This is calculated for each time step and grid cell
     """
-    return vertstat(self, stat="cum")
+    vertstat(self, stat="cum")
 
 
 def invert_levels(self):

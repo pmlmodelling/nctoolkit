@@ -7,9 +7,7 @@ import pandas as pd
 import random
 import re
 import string
-import xarray as xr
 import subprocess
-import sys
 import warnings
 
 from netCDF4 import Dataset

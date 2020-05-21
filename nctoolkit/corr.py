@@ -79,7 +79,7 @@ def cor_space(self, var1=None, var2=None):
         The second variable
     """
 
-    return cor(self, var1=var1, var2=var2, method="fld")
+    cor(self, var1=var1, var2=var2, method="fld")
 
 
 def cor_time(self, var1=None, var2=None):
@@ -94,4 +94,4 @@ def cor_time(self, var1=None, var2=None):
     var2: str
         The second variable
     """
-    return cor(self, var1=var1, var2=var2, method="tim")
+    cor(self, var1=var1, var2=var2, method="tim")

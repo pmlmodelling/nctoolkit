@@ -1,6 +1,5 @@
 
 import os
-
 from nctoolkit.api import open_data
 from nctoolkit.cleanup import cleanup, disk_clean
 from nctoolkit.flatten import str_flatten

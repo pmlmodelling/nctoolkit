@@ -149,7 +149,7 @@ def ensemble_max(self, nco = False, ignore_time=False):
 
         return None
 
-    return ensemble_nco(self, "max", ignore_time=ignore_time)
+    ensemble_nco(self, "max", ignore_time=ignore_time)
 
 
 
@@ -190,7 +190,7 @@ def ensemble_min(self, nco = False, ignore_time=False):
 
         return None
 
-    return ensemble_nco(self, "min", ignore_time=ignore_time)
+    ensemble_nco(self, "min", ignore_time=ignore_time)
 
 
 def ensemble_mean(self, nco = False, ignore_time=False):
@@ -228,7 +228,7 @@ def ensemble_mean(self, nco = False, ignore_time=False):
 
         return None
 
-    return ensemble_nco(self, "mean", ignore_time=ignore_time)
+    ensemble_nco(self, "mean", ignore_time=ignore_time)
 
 
 def ensemble_range(self):

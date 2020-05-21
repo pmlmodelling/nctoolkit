@@ -1,5 +1,4 @@
 
-import subprocess
 import warnings
 
 from nctoolkit.cleanup import cleanup
