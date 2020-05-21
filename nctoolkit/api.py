@@ -788,7 +788,7 @@ class DataSet(object):
     from nctoolkit.verticals import vertical_max
     from nctoolkit.verticals import vertical_range
     from nctoolkit.verticals import vertical_sum
-    from nctoolkit.verticals import vertical_cum
+    from nctoolkit.verticals import vertical_cum_sum
     from nctoolkit.verticals import surface
     from nctoolkit.verticals import vertical_interp
     from nctoolkit.verticals import bottom

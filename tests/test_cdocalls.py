@@ -425,7 +425,7 @@ class TestCalls(unittest.TestCase):
         self.assertEqual(data.history[0], 'cdo -vertsum')
 
         data = nc.open_data(ff1)
-        data.vertical_cum()
+        data.vertical_cum_sum()
         self.assertEqual(data.history[0], 'cdo -vertcum')
 
         data = nc.open_data(ff1)
