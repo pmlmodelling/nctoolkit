@@ -99,7 +99,6 @@ class TestApi(unittest.TestCase):
         ff = "data/sst.mon.mean.nc"
         data = nc.open_data(ff)
         x = "File size: 41.073246 MB" in data.size
-        print(data.size)
         self.assertEqual(x, True)
         data.split("year")
         x = "Number of files in ensemble: 30" in data.size
@@ -116,7 +115,6 @@ class TestApi(unittest.TestCase):
 
         data = nc.open_data(nc.create_ensemble("data/ensemble"))
         x = "start: 60 member ensemble" in str(data)
-        print(str(data))
         self.assertEqual(x, True)
 
     def test_variables_detailed(self):

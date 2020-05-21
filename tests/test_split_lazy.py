@@ -77,7 +77,6 @@ class TestSplit(unittest.TestCase):
         self.assertEqual(n, 0)
 
     def test_error2(self):
-        print(nc.session_files())
         tracker = nc.open_data(ff)
         with self.assertRaises(ValueError) as context:
             tracker.split("")

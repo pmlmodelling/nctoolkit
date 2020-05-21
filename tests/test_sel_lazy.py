@@ -198,7 +198,6 @@ class TestSelect(unittest.TestCase):
         tracker.select_years(1990)
         tracker.run()
         x = tracker.years
-        print(x)
 
         self.assertEqual(x, [1990])
 

@@ -20,7 +20,6 @@ class TestReduce(unittest.TestCase):
         tracker.mean()
         tracker.reduce_dims()
         n = len(tracker.times)
-        print(tracker.history)
         self.assertEqual(n, 0)
         nc.options(lazy = True)
 
@@ -31,7 +30,6 @@ class TestReduce(unittest.TestCase):
         tracker.mean()
         tracker.reduce_dims()
         tracker.run()
-        print(tracker.history)
         n = len(tracker.times)
         self.assertEqual(n, 0)
         nc.options(lazy = True)

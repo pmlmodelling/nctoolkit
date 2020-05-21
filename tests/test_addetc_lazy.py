@@ -67,26 +67,18 @@ class TestAddetc(unittest.TestCase):
 
 
     def test_add2(self):
-        print(nc.session.nc_safe)
         tracker = nc.open_data(ff)
-        print(nc.session.nc_safe)
         tracker.select_years(list(range(1970, 1971)))
-        print(nc.session.nc_safe)
         tracker.select_months([1])
-        print(nc.session.nc_safe)
         tracker.run()
-        print(nc.session.nc_safe)
         new = tracker.copy()
         new.add(tracker)
         new.spatial_mean()
         tracker.spatial_mean()
-        print(nc.session.nc_safe)
 
         x = tracker.to_dataframe().sst.values[0]
-        print(nc.session.nc_safe)
 
         y = new.to_dataframe().sst.values[0]
-        print(nc.session.nc_safe)
 
 
         self.assertEqual(x + x, y)

@@ -11,7 +11,6 @@ class TestClean(unittest.TestCase):
 
     def test_cleanall(self):
         safe = nc.session.nc_safe
-        print(safe)
         tracker = nc.open_data(ff)
         tracker.select_timestep(0)
         tracker.run()

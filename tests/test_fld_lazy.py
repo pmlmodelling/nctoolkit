@@ -123,7 +123,6 @@ class TestFldsta(unittest.TestCase):
         data.merge_time()
         data.mean()
         data.run()
-        print(data.current)
         x = data.to_dataframe().sst.values[0]
 
         data = nc.open_data(ff)
@@ -131,7 +130,6 @@ class TestFldsta(unittest.TestCase):
         data.spatial_sum(by_area = True)
         data.mean()
         data.run()
-        print(data.current)
         y = data.to_dataframe().sst.values[0]
 
 
