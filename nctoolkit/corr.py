@@ -10,6 +10,7 @@ from nctoolkit.temp_file import temp_file
 
 def cor(self, var1=None, var2=None, method="fld"):
 
+    # Make sure variables are given
     if (var1 is None) or (var2 is None):
         raise ValueError("Both variables are not given")
 
@@ -22,8 +23,7 @@ def cor(self, var1=None, var2=None, method="fld"):
     # this cannot be chained. So release
     self.run()
 
-    new_files = []
-    new_commands = []
+    # Check variables are in the dataset
 
     for ff in self:
         if var1 not in nc_variables(ff):
@@ -31,6 +31,10 @@ def cor(self, var1=None, var2=None, method="fld"):
 
         if var2 not in nc_variables(ff):
             raise ValueError(f"{var2} is not in the dataset")
+
+    # Calculate the correlations in each file
+    new_files = []
+    new_commands = []
 
     for ff in self:
 
@@ -64,7 +68,8 @@ def cor(self, var1=None, var2=None, method="fld"):
 
 def cor_space(self, var1=None, var2=None):
     """
-    Calculate the correlation correct between two variables in space, and for each time step. The correlation coefficient coefficient is calculated using values in all grid cells.
+    Calculate the correlation correct between two variables in space
+    This is calculated for each time step. The correlation coefficient coefficient is calculated using values in all grid cells, ignoring missing values.
 
     Parameters
     -------------
@@ -79,7 +84,8 @@ def cor_space(self, var1=None, var2=None):
 
 def cor_time(self, var1=None, var2=None):
     """
-    Calculate the correlation correct in time between two variables. The correlation is calculated for each grid cell
+    Calculate the correlation correct in time between two variables
+    The correlation is calculated for each grid cell, ignoring missing values.
 
     Parameters
     -------------
