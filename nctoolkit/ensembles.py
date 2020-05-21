@@ -163,13 +163,18 @@ def ensemble_range(self):
 
     """
 
-    if type(self.current) is not list:
-        warnings.warn(message="There is only one file in the dataset")
 
     self.run()
+
+    if type(self.current) is not list:
+        warnings.warn(message="There is only one file in the dataset")
 
     cdo_command = "cdo --sortname -ensrange"
 
     run_this(cdo_command, self)
 
     self._merged = True
+
+
+
+
