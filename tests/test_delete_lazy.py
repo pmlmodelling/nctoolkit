@@ -30,28 +30,7 @@ class TestDelete(unittest.TestCase):
 
         self.assertEqual(x, ["tos"])
 
-    def test_remove_variables1(self):
-        tracker = nc.open_data(ff)
-        tracker.select_timestep(0)
-        tracker.run()
-        with self.assertWarns(Warning):
-            tracker.remove_variables("tos")
 
-    def test_remove_variables2(self):
-        tracker = nc.open_data(ff)
-        tracker.select_timestep(0)
-        tracker.mutate({"tos":"sst+1"})
-        tracker.run()
-        with self.assertWarns(Warning):
-            tracker.remove_variables(["tos", "test"])
-
-    def test_remove_variables3(self):
-        tracker = nc.open_data(ff)
-        tracker.select_timestep(0)
-        tracker.mutate({"tos":"sst+1"})
-        tracker.run()
-        with self.assertWarns(Warning):
-            tracker.remove_variables(["tos", "test", "test2"])
 
 
 
