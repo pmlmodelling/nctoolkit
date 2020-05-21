@@ -460,16 +460,16 @@ class TestCalls(unittest.TestCase):
         self.assertEqual(data.history[0], 'cdo --reduce_dim -sellevidx,1')
 
         data = nc.open_data(ensemble)
-        data.ensemble_mean("sst")
-        self.assertTrue("ncea -y mean -v sst" in data.history[0])
+        data.ensemble_mean(nco = True)
+        self.assertTrue("ncea -y mean" in data.history[0])
 
         data = nc.open_data(ensemble)
-        data.ensemble_max("sst")
-        self.assertTrue("ncea -y max -v sst" in data.history[0])
+        data.ensemble_max(nco = True)
+        self.assertTrue("ncea -y max" in data.history[0])
 
         data = nc.open_data(ensemble)
-        data.ensemble_min("sst")
-        self.assertTrue("ncea -y min -v sst" in data.history[0])
+        data.ensemble_min(nco = True)
+        self.assertTrue("ncea -y min" in data.history[0])
 
 
 

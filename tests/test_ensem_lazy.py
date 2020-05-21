@@ -11,9 +11,10 @@ class TestEnsemble(unittest.TestCase):
     def test_empty(self):
         n = len(nc.session_files())
         self.assertEqual(n, 0)
+
     def test_mean(self):
         data = nc.open_data(nc.create_ensemble("data/ensemble"))
-        data.ensemble_mean(vars = "sst")
+        data.ensemble_mean(nco = True)
         data.spatial_mean()
         x = data.to_dataframe().sst.values[0].astype("float")
 
@@ -60,7 +61,7 @@ class TestEnsemble(unittest.TestCase):
 
     def test_ignore_time_2(self):
         data = nc.open_data(nc.create_ensemble("data/ensemble"))
-        data.ensemble_mean(vars = "sst", ignore_time = True)
+        data.ensemble_mean( ignore_time = True)
         data.spatial_mean()
         x = data.to_dataframe().sst.values[0].astype("float")
 
@@ -110,13 +111,6 @@ class TestEnsemble(unittest.TestCase):
         n = len(nc.session_files())
         self.assertEqual(n, 0)
 
-    def test_mean_error(self):
-        data = nc.open_data(nc.create_ensemble("data/ensemble"))
-        with self.assertRaises(TypeError) as context:
-            data.ensemble_mean(vars = 1)
-        n = len(nc.session_files())
-        self.assertEqual(n, 0)
-
 
     def test_warn(self):
         data = nc.open_data(nc.create_ensemble("data/ensemble")[0])
@@ -129,6 +123,7 @@ class TestEnsemble(unittest.TestCase):
         data = nc.open_data(nc.create_ensemble("data/ensemble")[0])
         with self.assertWarns(Warning):
             data.ensemble_mean()
+        data.release()
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 
