@@ -1,12 +1,23 @@
 
 import copy
 import warnings
+import subprocess
 
 from nctoolkit.cleanup import cleanup, disk_clean
 from nctoolkit.flatten import str_flatten
 from nctoolkit.runthis import run_this, run_nco
 from nctoolkit.session import nc_safe
 from nctoolkit.temp_file import temp_file
+
+
+def cdo_version():
+    """Function to find cdo version"""
+    cdo_check = subprocess.run("cdo --version", shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    cdo_check = str(cdo_check.stderr).replace("\\n", "")
+    cdo_check = cdo_check.replace("b'", "").strip()
+    return cdo_check.split("(")[0].strip().split(" ")[-1]
+
+
 
 
 def ensemble_percentile(self, p=None):
@@ -123,11 +134,19 @@ def ensemble_max(self, nco = False, ignore_time=False):
         if ignore_time is False:
             cdo_command = "cdo --sortname -ensmax"
         else:
-            cdo_command = "cdo -timmax --sortname -ensmax"
+            if cdo_version() is not "1.9.3":
+                cdo_command = "cdo -timmax --sortname -ensmax"
+            else:
+                cdo_command = "cdo --sortname -ensmax"
 
         run_this(cdo_command, self)
 
         self._merged = True
+
+        if cdo_version() == "1.9.3":
+            self.run()
+            self.max()
+
         return None
 
     return ensemble_nco(self, "max", ignore_time=ignore_time)
@@ -157,11 +176,18 @@ def ensemble_min(self, nco = False, ignore_time=False):
         if ignore_time is False:
             cdo_command = "cdo --sortname -ensmin"
         else:
-            cdo_command = "cdo -timmin --sortname -ensmin"
+            if cdo_version() is not "1.9.3":
+                cdo_command = "cdo -timmin --sortname -ensmin"
+            else:
+                cdo_command = "cdo --sortname -ensmin"
 
         run_this(cdo_command, self)
 
         self._merged = True
+        if cdo_version() is "1.9.3":
+            self.run()
+            self.min()
+
         return None
 
     return ensemble_nco(self, "min", ignore_time=ignore_time)
@@ -188,11 +214,18 @@ def ensemble_mean(self, nco = False, ignore_time=False):
         if ignore_time is False:
             cdo_command = "cdo --sortname -ensmean"
         else:
-            cdo_command = "cdo -timmean --sortname -ensmean"
+            if cdo_version() != "1.9.3":
+                cdo_command = "cdo -timmean --sortname -ensmean"
+            else:
+                cdo_command = "cdo --sortname -ensmean"
 
         run_this(cdo_command, self)
 
         self._merged = True
+        if cdo_version() == "1.9.3":
+            self.run()
+            self.mean()
+
         return None
 
     return ensemble_nco(self, "mean", ignore_time=ignore_time)
