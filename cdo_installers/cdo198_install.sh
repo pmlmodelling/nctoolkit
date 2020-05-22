@@ -22,5 +22,5 @@ tar -xvzf cdo-1.9.8.tar.gz
 cd cdo-1.9.8
 ./configure -with-netcdf=/opt/cdo-install -with-hdf5=/opt/cdo-install
 make
-make
+make install
 cd ..
