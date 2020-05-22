@@ -17,9 +17,16 @@ cdo_version = cdo_check.split("(")[0].strip().split(" ")[-1]
 #if cdo_version not in ["1.9.8"]:
 #    raise ValueError("Please install cdo version 1.9.8 or above")
 
+with open("readme.md", "r") as fh:
+	long_description = fh.read()
+
 setup(name='nctoolkit',
+      python_requires='>=3.6.0',
       version='0.1',
       description='A general purpose python tool for manipulating, analyzing and plotting data from netcdf files',
+      long_description = long_description,
+      long_description_content_type="text/markdown",
+
       url='https://readthedocs.org/projects/nchack/',
       author='Robert Wilson',
       author_email='rwi@pml.ac.uk',
