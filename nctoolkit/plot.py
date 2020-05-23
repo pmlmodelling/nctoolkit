@@ -1,5 +1,7 @@
 
 
+from netCDF4 import Dataset
+
 from threading import Thread
 
 
@@ -11,9 +13,58 @@ import time
 import subprocess
 import holoviews as hv
 import panel as pn
+import pandas as pd
 
 hv.extension('bokeh')
 hv.Store.renderers
+def variable_dims(ff):
+    """
+    Levels and points for variables in a dataset
+    """
+
+    cdo_result = subprocess.run(
+        "cdo showname " + ff,
+        shell=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    cdo_result = (
+        str(cdo_result.stdout)
+        .replace("b'", "")
+        .replace("\\n", "")
+        .replace("'", "")
+        .strip()
+    )
+    cdo_result = cdo_result.split()
+    dataset = Dataset(ff)
+
+    out = subprocess.run(
+        "cdo sinfon " + ff,
+        shell=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    out = out.stdout.decode("utf-8")
+    out = out.split("\n")
+    out_inc = ["Grid coordinates :" in ff for ff in out]
+    var_det = []
+    i = 1
+    while True:
+        if out_inc[i]:
+            break
+        i += 1
+        var_det.append(out[i - 1])
+
+    var_det = [ff.replace(":", "") for ff in var_det]
+    var_det = [" ".join(ff.split()) for ff in var_det]
+    var_det = [
+        ff.replace("Parameter name", "variable").split(" ") for ff in var_det
+    ]
+    sales = var_det[1:]
+    labels = var_det[0]
+    df = pd.DataFrame.from_records(sales, columns=labels)
+    df = df.assign(Points = lambda x: x.Points.astype("int"))
+    return df
 
 def ctrc():
     time.sleep(1)
@@ -25,6 +76,18 @@ import hvplot.xarray
 from bokeh.plotting import show
 
 import sys
+
+def is_curvilinear(ff):
+    """Function to work out if a file contains a curvilinear grid"""
+    cdo_result = subprocess.run(
+    f"cdo sinfo {ff}",
+    shell=True,
+    stdout=subprocess.PIPE,
+    stderr=subprocess.PIPE)
+
+    return len([x for x in cdo_result.stdout.decode("utf-8").split("\n") if "curvilinear" in x]) > 0
+
+
 
 
 def in_notebook():
@@ -63,10 +126,6 @@ def plot(self, log=False, vars=None, panel=False):
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
     )
-    n_grids = int(str(cdo_result.stdout).replace("b'", "").split("\\n")[0])
-
-    if n_grids > 1:
-        raise ValueError("Autoplot cannot work with multiple grids")
 
     cdo_result = subprocess.run(
         "cdo nlevel " + self.current,
@@ -74,7 +133,7 @@ def plot(self, log=False, vars=None, panel=False):
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
     )
-    n_levels = int(str(cdo_result.stdout).replace("b'", "").split("\\n")[0])
+    n_levels = variable_dims(self.current).Levels.astype("int").max()
 
     cdo_result = subprocess.run(
         "cdo ntime " + self.current,
@@ -90,14 +149,19 @@ def plot(self, log=False, vars=None, panel=False):
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
     )
-    n_points = int(str(cdo_result.stdout).replace("b'", "").split("\\n")[0])
+    n_points = variable_dims(self.current).Points.astype("int").max()
 
-    if vars is None:
+    if vars is None and n_points > 1:
+        vars = list(variable_dims(self.current).query("Points>1").variable)
+
+    if vars is None and n_points == 1:
         vars = self.variables
+
 
     if type(vars) is list:
         if len(vars) == 1:
             vars = vars[0]
+
 
     # Case when all you can plot is a time series, but more than one variable
 
@@ -200,8 +264,12 @@ def plot(self, log=False, vars=None, panel=False):
         self_min = self.to_xarray().rename({vars: "x"}).x.min()
         v_max = max(self_max.values, -self_min.values)
         if (self_max.values > 0) and (self_min.values < 0):
-            intplot =  self.to_xarray().hvplot.image(
-                    lon_name, lat_name, vars, dynamic=True, logz=log,  responsive = (in_notebook() == False)).redim.range(**{vars: (-v_max, v_max)})
+            if is_curvilinear(self.current):
+                intplot =  self.to_xarray().hvplot.quadmesh(
+                        lon_name, lat_name, vars, dynamic=True, logz=log,  responsive = (in_notebook() == False)).redim.range(**{vars: (-v_max, v_max)})
+            else:
+                intplot =  self.to_xarray().hvplot.image(
+                        lon_name, lat_name, vars, dynamic=True, logz=log,  responsive = (in_notebook() == False)).redim.range(**{vars: (-v_max, v_max)})
             if in_notebook():
                 return intplot
 
@@ -211,13 +279,22 @@ def plot(self, log=False, vars=None, panel=False):
             return None
 
         else:
-            intplot =  (
-                self.to_xarray()
-                .hvplot.image(
-                    lon_name, lat_name, vars, dynamic=True, logz=log, cmap="viridis", responsive = (in_notebook() == False)
+            if is_curvilinear(self.current):
+                intplot =  (
+                    self.to_xarray()
+                    .hvplot.quadmesh(
+                        lon_name, lat_name, vars, dynamic=True, logz=log, cmap="viridis", responsive = (in_notebook() == False)
+                    )
+                    .redim.range(**{vars: (self_min.values, v_max)})
                 )
-                .redim.range(**{vars: (self_min.values, v_max)})
-            )
+            else:
+                intplot =  (
+                    self.to_xarray()
+                    .hvplot.image(
+                        lon_name, lat_name, vars, dynamic=True, logz=log, cmap="viridis", responsive = (in_notebook() == False)
+                    )
+                    .redim.range(**{vars: (self_min.values, v_max)})
+                )
 
             if in_notebook():
                 return intplot
@@ -243,9 +320,15 @@ def plot(self, log=False, vars=None, panel=False):
             x for x in str(out.stdout).replace("b'", "").split("\\n") if "yname" in x
         ][-1].split(" ")[-1]
 
-        intplot = ( self.to_xarray().hvplot.image(
-            lon_name, lat_name, vars, dynamic=True, cmap="viridis", logz=log, responsive = in_notebook() == False
-        ))
+        if is_curvilinear(self.current):
+            intplot = ( self.to_xarray().hvplot.quadmesh(
+                lon_name, lat_name, vars, dynamic=True, cmap="viridis", logz=log, responsive = in_notebook() == False
+            ))
+        else:
+            intplot = ( self.to_xarray().hvplot.image(
+                lon_name, lat_name, vars, dynamic=True, cmap="viridis", logz=log, responsive = in_notebook() == False
+            ))
+
         if in_notebook():
             return intplot
 
@@ -257,4 +340,4 @@ def plot(self, log=False, vars=None, panel=False):
 
     # Throw an error if case has not plotting method available yet
 
-    raise ValueError("Autoplot method for this type of data is not yet available!")
+    raise ValueError("Autoplotting method for this type of data is not yet available!")
