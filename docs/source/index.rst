@@ -30,6 +30,7 @@ Documentation
 
 **Help & reference**
 
+* :doc:`atoz`
 * :doc:`api`
 * :doc:`howto`
 
