@@ -30,7 +30,7 @@ Documentation
 
 **Help & reference**
 
-* :doc:`atoz`
+* :doc:`atoz.rst`
 * :doc:`api`
 * :doc:`howto`
 
@@ -39,7 +39,7 @@ Documentation
    :hidden:
    :caption: Help & reference
 
-   atoz
+   atoz.rst
    howto
    api
    
