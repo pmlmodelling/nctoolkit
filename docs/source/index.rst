@@ -38,6 +38,7 @@ Documentation
    :hidden:
    :caption: Help & reference
 
+   atoz
    howto
    api
    

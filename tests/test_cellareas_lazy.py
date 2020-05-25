@@ -30,6 +30,12 @@ class TestCell(unittest.TestCase):
 
     def test_cell_areas2(self):
         tracker = nc.open_data(ff)
+        tracker.cell_areas(join = False)
+        tracker.spatial_mean()
+        x = tr
+
+    def test_cell_areas2(self):
+        tracker = nc.open_data(ff)
         tracker.select_years(list(range(1970, 1971)))
         tracker.select_months([1])
         tracker.cell_areas(join = False)
