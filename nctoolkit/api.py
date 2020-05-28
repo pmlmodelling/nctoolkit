@@ -526,6 +526,7 @@ class DataSet(object):
 
 
 
+
     @property
     def variables_detailed(self):
         """
@@ -768,11 +769,6 @@ class DataSet(object):
     from nctoolkit.rollstat import rolling_max
     from nctoolkit.rollstat import rolling_range
     from nctoolkit.rollstat import rolling_sum
-
-    #from nctoolkit.show import times
-    #from nctoolkit.show import years
-    #from nctoolkit.show import months
-    #from nctoolkit.show import levels
 
     from nctoolkit.fldstat import spatial_mean
     from nctoolkit.fldstat import spatial_min
