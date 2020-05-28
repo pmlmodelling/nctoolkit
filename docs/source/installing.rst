@@ -27,7 +27,7 @@ There are two main system dependencies: `Climate Data Operators <https://code.mp
 
 While CDO is necessary for the package to work, NCO is an optional dependency.
 
-If you want to install CDO from source with NetCDF and HDF5 support, you can use one of the bash scripts available `here <https://github.com/r4ecology/nctoolkit/tree/master/cdo_installers>`__
+If you want to install CDO from source with NetCDF and HDF5 support, you can use one of the bash scripts available `here. <https://github.com/r4ecology/nctoolkit/tree/master/cdo_installers>`__
 
 
 

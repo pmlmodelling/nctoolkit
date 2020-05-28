@@ -110,4 +110,5 @@ def to_latlon(self, lon=None, lat=None, res=None, method="bil"):
 
     nc_safe.remove(grid_file)
 
-    os.remove(grid_file)
+    #os.remove(grid_file)
+    cleanup()
