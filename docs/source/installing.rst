@@ -12,7 +12,7 @@ Python dependencies
 - `xarray <http://xarray.pydata.org/en/stable/>`__ (0.14 or later)
 - `hvplot <https://hvplot.holoviz.org/>`__ (0.5 or later)
 - `NetCDF4 <https://unidata.github.io/NetCDF4-python/NetCDF4/index.html>`__ (1.53 or later)
-- `panel <>https://panel.holoviz.org/`__ (0.9.1 or later)
+- `panel <https://panel.holoviz.org/>`__ (0.9.1 or later)
 
 
 
@@ -27,14 +27,14 @@ There are two main system dependencies: `Climate Data Operators <https://code.mp
 
 While CDO is necessary for the package to work, NCO is an optional dependency.
 
-If you want to install CDO from source with NetCDF and HDF5 support, you can use one of the bash scripts available `here https://github.com/r4ecology/nctoolkit/tree/master/cdo_installers>`__
+If you want to install CDO from source with NetCDF and HDF5 support, you can use one of the bash scripts available `here <https://github.com/r4ecology/nctoolkit/tree/master/cdo_installers>`__
 
 
 
 How to install nctoolkit
 ---------------------
 
-To install nctoolkit using pip:  
+To install nctoolkit using pip::
 
    $ pip install nctoolkit 
 
