@@ -1,6 +1,6 @@
 from setuptools import setup
 
-DESCRIPTION = "Quick and efficient tools for analyzing NetCDF data"
+DSCRIPTION = "Quick and efficient tools for analyzing NetCDF data"
 LONG_DESCRIPTION = """
 **nctoolkit** is a Python package providing easy tools for manipulating NetCDF data.
 
@@ -30,7 +30,7 @@ setup(name='nctoolkit',
       python_requires='>=3.6.1',
       classifiers=[
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
-        "Operating System :: Linux",
+        "Operating System :: POSIX :: Linux",
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
