@@ -1,0 +1,6 @@
+xarray >= 0.2.1
+netCDF4
+dask[complete]
+#hvplot
+panel
+
