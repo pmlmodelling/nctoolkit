@@ -10,6 +10,8 @@ Under the hood nctoolkit relies on the command line packages Climate Data Operat
 
 The package is design with two uses in mind: computationally intensive data post-processing and interactive Jupyter notebook type analysis. An auto plotting feature is provided to aid rapid data analysis.
 
+In addition to the guidance given here, tutorials for how to use nctoolkit are available at nctoolkit's `GitHub page. <https://github.com/r4ecology/nctoolkit/tree/master/tutorials>`__
+
 
 Documentation
 -------------
