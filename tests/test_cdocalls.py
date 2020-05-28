@@ -347,7 +347,7 @@ class TestCalls(unittest.TestCase):
 
         data = nc.open_data(ff)
         data.annual_anomaly(baseline = [1970, 1979], window = 10)
-        self.assertTrue('cdo -L sub -runmean,10 -yearmean data/sst.mon.mean.nc -timmean -selyear,1970/1979 data/sst.mon.mean.nc' in data.history[0])
+        self.assertTrue('cdo -L -sub -runmean,10 -yearmean data/sst.mon.mean.nc -timmean -selyear,1970/1979 data/sst.mon.mean.nc' in data.history[0])
 
 
         data = nc.open_data(ff)

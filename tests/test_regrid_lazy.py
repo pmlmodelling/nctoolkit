@@ -95,33 +95,6 @@ class TestRegrid(unittest.TestCase):
         self.assertEqual(n, 0)
 
 
-    def test_xr(self):
-        tracker = nc.open_data(ff)
-        tracker.select_years(1990)
-        tracker.select_months(1)
-        tracker.clip(lon = [0,90])
-        tracker.clip(lat = [0,90])
-        new = tracker.copy()
-        tracker.spatial_mean()
-        x = tracker.to_dataframe().sst.values[0].astype("float")
-
-        tracker = nc.open_data(ff)
-        tracker.select_years(1990)
-        tracker.select_months(1)
-        xr_grid = new.to_xarray()
-        tracker.regrid(xr_grid, method = "nn")
-        tracker.spatial_mean()
-
-        y = tracker.to_dataframe().sst.values[0].astype("float")
-
-        self.assertEqual(x, y)
-        n = len(nc.session_files())
-        self.assertEqual(n, 2)
-
-
-
-
-
 
     def test_montherror(self):
         tracker = nc.open_data(ff)
