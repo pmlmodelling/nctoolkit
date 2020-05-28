@@ -56,7 +56,8 @@ install:
     #  - sudo make install 
     #  - cd ..
 
-    - pip install pandas 
+    #- pip install pandas 
+    - pip install -r requirements.txt
     - python setup.py install > /dev/null 2>&1
 # command to run tests
 #
