@@ -15,11 +15,11 @@ before_install:
     - sudo apt-get -y install cdo
 #
 #
-addons:
-    chrome: stable
-    apt:
-        packages:
-            - chromium-chromedriver
+#addons:
+#    chrome: stable
+#    apt:
+#        packages:
+#            - chromium-chromedriver
 
 #addons:
 #    apt:
