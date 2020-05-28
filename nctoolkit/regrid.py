@@ -21,7 +21,7 @@ def regrid(self, grid=None, method="bil"):
 
     Parameters
     -------------
-    grid : nctoolkit.DataSet, xarray object, pandas data frame or netcdf file
+    grid : nctoolkit.DataSet, pandas data frame or netcdf file
         The grid to remap to
 
     method : str
@@ -37,15 +37,6 @@ def regrid(self, grid=None, method="bil"):
     # find the grid type
     if isinstance(grid, pd.DataFrame):
         grid_type = "df"
-
-    # If the grid is an xarray object, we need to convert it to .nc
-    if isinstance(grid, xr.Dataset):
-        grid_type = "xr"
-        temp_nc = temp_file("nc")
-        grid.to_netcdf(temp_nc)
-        grid = temp_nc
-        del_grid = copy.deepcopy(grid)
-        nc_safe.append(del_grid)
 
     if type(grid) is str:
         if os.path.exists(grid) == False:
