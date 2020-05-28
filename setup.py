@@ -1,38 +1,47 @@
 from setuptools import setup
-import subprocess
 
-# check version of cdo installed
+DESCRIPTION = "Quick and efficient tools for analyzing NetCDF data"
+LONG_DESCRIPTION = """
+**nctoolkit** is a Python package providing easy tools for manipulating NetCDF data.
 
+The goal of nctoolkit is to provide a comprehensive tool in Python for manipulating individual NetCDF files and ensembles of NetCDF files. The philosophy is to provide sufficient methods to carry out 80-90% of what you want to do with NetCDF files.
 
-cdo_check = subprocess.run("which cdo", shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-cdo_check = str(cdo_check.stdout).replace("\\n", "")
-cdo_check = cdo_check.replace("b'", "").strip()
-if len(cdo_check) < 2:
-    print("Please install cdo")
+Under the hood, nctoolkit relies on the command line packages Climate Data Operates (CDO) and the NCO toolkit, but primarily on CDO. No prior knowledge of CDO or NCO are required to use nctoolkit. Behind the scenes, nctoolkit will generate system calls to either CDO or NCO, which are traced and can be viewed by the user. However, in almost all cases these can be ignored by most users.
 
-cdo_check = subprocess.run("cdo --version", shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-cdo_check = str(cdo_check.stderr).replace("\\n", "")
-cdo_check = cdo_check.replace("b'", "").strip()
-cdo_version = cdo_check.split("(")[0].strip().split(" ")[-1]
-#if cdo_version not in ["1.9.8"]:
-#    raise ValueError("Please install cdo version 1.9.8 or above")
+The package is designed for both intensive bulk processing of NetCDF files and interactive Jupyter notebook analysis. It features an interactive plotting feature which allows users to view the contents of NetCDF files either within Jupyter notebooks or a web browser.
 
-with open("readme.md", "r") as fh:
-	long_description = fh.read()
+Documentation and a user guide are available `here <>https://readthedocs.org/projects/nctoolkit/`__.
+
+"""
+
+PROJECT_URLS = {
+    "Bug Tracker": "https://github.com/r4ecology/nctoolkit/issues",
+    "Documentation": "https://nctoolkit.readthedocs.io/en/latest",
+    "Source Code": "https://github.com/r4ecology/nctoolkit",
+}
+
+REQUIREMENTS = [i.strip() for i in open("requirements.txt").readlines()]
+
 
 setup(name='nctoolkit',
-      python_requires='>=3.6.0',
       version='0.1',
-      description='A general purpose python tool for manipulating, analyzing and plotting data from netcdf files',
-      long_description = long_description,
-      long_description_content_type="text/markdown",
+      description=DESCRIPTION,
+      long_description=LONG_DESCRIPTION,
+      python_requires='>=3.6.1',
+      classifiers=[
+        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+        "Operating System :: Linux",
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+    ],
 
-      url='https://readthedocs.org/projects/nchack/',
+      project_urls=PROJECT_URLS,
       author='Robert Wilson',
+      maintainer='Robert Wilson',
       author_email='rwi@pml.ac.uk',
-      license='MIT',
       packages=['nctoolkit'],
-      install_requires=['xarray','netcdf4', "dask[complete]", "hvplot", "panel", "bokeh"],
+      install_requires = REQUIREMENTS,
       zip_safe=False)
 
 
