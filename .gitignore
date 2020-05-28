@@ -1,8 +1,9 @@
 build/
 dist/
 *egg*
-*.ipynb
+#*.ipynb
 *.nc
+*.swp
 nchack/*.pyc
 nchack/__pycache__/
 docs/source/*ipynb_checkpoints/
