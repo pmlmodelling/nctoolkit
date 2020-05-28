@@ -1,0 +1,23 @@
+include MANIFEST.in
+include LICENSE
+include README.md
+include setup.py
+#
+#
+#graft nctoolkit
+#
+#
+global-exclude *.bz2
+recursive-exclude docs *
+recursive-exclude tests *
+recursive-exclude tutorials *
+recursive-exclude nctoolkit.egg-info *
+recursive-exclude .github *
+global-exclude docs/*
+global-exclude *.nc
+global-exclude *.sh
+global-exclude *.rst
+global-exclude *.yml
+global-exclude *.txt
+global-exclude .coveragerc
+global-exclude .gitignore
