@@ -18,7 +18,7 @@ This package will work with Python 3.6 upwards.
 
 ## Installation
 
-This version is available through [PyPI](https://pypi.org/project/nctoolkit/) and be can installed using pip:
+This package is available through [PyPI](https://pypi.org/project/nctoolkit/) and be can installed using pip:
 ```sh
 pip install nctoolkit 
 ```
@@ -56,9 +56,11 @@ work on Windows platforms, currently. It is untested on Mac operating systems, s
 
 
 
+
 ## Reference and tutorials
 
 A full API reference, in depth tutorials and a how-to guide are available at [readthedocs](https://nctoolkit.readthedocs.io/en/latest/).
+
 
 
 
