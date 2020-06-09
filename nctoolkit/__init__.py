@@ -15,6 +15,9 @@ def valid(string):
         wanted = ""
         n = 3
         where = [m.start() for m in re.finditer(sub, string)][n - 1]
+
+        string = re.sub("[A-Za-z]", "", string)
+
         before = string[:where]
         after = string[where:]
         after = after.replace(sub, wanted)
