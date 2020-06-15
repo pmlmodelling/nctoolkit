@@ -1,0 +1,4 @@
+
+# New methods
+
+The following zonal statistics methods have been added: zonal_mean, zonal_min, zonal_max, zonal_range
