@@ -113,6 +113,25 @@ class TestCalls(unittest.TestCase):
 
     def test_callchecks(self):
 
+        #zonal statistics
+
+        data = nc.open_data(ff)
+        data.zonal_mean()
+        self.assertEqual(data.history[0], 'cdo -zonmean' )
+
+
+        data = nc.open_data(ff)
+        data.zonal_min()
+        self.assertEqual(data.history[0], 'cdo -zonmin' )
+
+        data = nc.open_data(ff)
+        data.zonal_max()
+        self.assertEqual(data.history[0], 'cdo -zonmax' )
+
+        data = nc.open_data(ff)
+        data.zonal_range()
+        self.assertEqual(data.history[0], 'cdo -zonrange' )
+
         #seasonal mean
 
         data = nc.open_data(ff)
@@ -482,6 +501,9 @@ class TestCalls(unittest.TestCase):
         data = nc.open_data(ensemble)
         data.ensemble_percentile(10)
         self.assertEqual(data.history[0], 'cdo --sortname -enspctl,10')
+
+
+
 
 
 
