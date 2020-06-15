@@ -285,6 +285,10 @@ Statistical methods
    DataSet.seasonal_max_climatology
    DataSet.seasonal_range_climatology
 
+   DataSet.zonal_mean
+   DataSet.zonal_min
+   DataSet.zonal_max
+   DataSet.zonal_range
 
 
 Seasonal methods
