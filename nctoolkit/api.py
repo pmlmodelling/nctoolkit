@@ -823,3 +823,8 @@ class DataSet(object):
     from nctoolkit.reduce import reduce_dims
 
     from nctoolkit.reduce_grid import reduce_grid
+
+    from nctoolkit.zonals import zonal_mean
+    from nctoolkit.zonals import zonal_min
+    from nctoolkit.zonals import zonal_max
+    from nctoolkit.zonals import zonal_range
