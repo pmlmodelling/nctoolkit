@@ -34,11 +34,11 @@ If you want to install CDO from source with NetCDF and HDF5 support, you can use
 How to install nctoolkit
 ---------------------
 
-To install nctoolkit using pip::
+nctoolkit is available from the `Python Packaging Index. <https://pypi.org/project/nctoolkit/>`__   To install nctoolkit using pip::
 
    $ pip install nctoolkit 
 
-To install the development version of nctoolkit::
+To install the development version from GitHub::
 
    $ pip install git+https://github.com/r4ecology/nctoolkit.git
 
