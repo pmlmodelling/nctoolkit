@@ -10,9 +10,9 @@
 
 
 
-# nctoolkit - easy tools for manipulating NetCDF data in Python
+# nctoolkit - easy tools for manipulating netCDF data in Python
 
-The goal of nctoolkit is to provide a comprehensive tool in Python for manipulating individual NetCDF files and ensembles of NetCDF files. The philosophy is to provide sufficient methods to carry out 80-90% of NetCDF manipulations.
+The goal of nctoolkit is to provide a comprehensive tool in Python for manipulating individual netCDF files and ensembles of netCDF files. The philosophy is to provide sufficient methods to carry out 80-90% of netCDF manipulations.
 
 This package will work with Python 3.6 upwards.
 
@@ -45,7 +45,7 @@ conda install -c conda-forge cdo
 conda install -c conda-forge nco 
 ```
 
-Bash scripts to install cdo 1.9.3 and above, with NetCDF and hdf5 support, for linux from source are available [here](https://github.com/r4ecology/nctoolkit/tree/master/cdo_installers).
+Bash scripts to install cdo 1.9.3 and above, with netCDF and hdf5 support, for linux from source are available [here](https://github.com/r4ecology/nctoolkit/tree/master/cdo_installers).
  
 Currently, the package has been tested for Linux computers. It will not
 work on Windows platforms, currently. It is untested on Mac operating systems, so should be used cautiously on them.  
