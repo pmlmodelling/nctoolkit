@@ -9,6 +9,7 @@ import re
 import string
 import subprocess
 import warnings
+import urllib.request
 
 from netCDF4 import Dataset
 
@@ -48,6 +49,19 @@ atexit.register(clean_all)
 
 # run temp_check to see if any files are held over from previous sessions
 temp_check()
+
+def is_url(x):
+    regex = re.compile(
+            r'^(?:http|ftp)s?://' # http:// or https://
+            r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|' #domain...
+            r'localhost|' #localhost...
+            r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})' # ...or ip
+            r'(?::\d+)?' # optional port
+            r'(?:/?|[/?]\S+)$', re.IGNORECASE)
+
+    return re.match(regex,x) is not None
+
+
 
 
 def options(**kwargs):
@@ -119,7 +133,7 @@ def open_data(x=None, suppress_messages=False, checks=False):
     Parameters
     ---------------
     x : str or list
-        A string or list of netcdf files. The function will check the files exist. If x is not a list, but an iterable it will be converted to a list
+        A string or list of netcdf files or a single url. The function will check the files exist. If x is not a list, but an iterable it will be converted to a list. If a url is given the file will be downloaded before processing.
     checks: boolean
         Do you want basic checks to ensure cdo can read files?
     """
@@ -138,7 +152,14 @@ def open_data(x=None, suppress_messages=False, checks=False):
     # check the files provided exist
     if type(x) is str:
         if os.path.exists(x) == False:
-            raise ValueError("Data set " + x + " does not exist!")
+
+            if is_url(x):
+                new_x = temp_file(".nc")
+                print(f"Downloading {x}")
+                urllib.request.urlretrieve(x, new_x)
+                x = new_x
+            else:
+                raise ValueError("Data set " + x + " does not exist!")
 
         if checks:
             out = subprocess.run(
