@@ -1,0 +1,41 @@
+
+package:
+  name: nctoolkit
+  version: 0.1.3 
+
+source:
+  path: ..
+
+
+requirements:
+  host:
+    - python
+    - pip
+    - xarray
+    - panel
+    - netCDF4
+    - hvplot
+    - cdo
+    - nco
+
+
+  run:
+    - python
+    - pip
+    - xarray
+    - panel
+    - netCDF4
+    - hvplot
+    - cdo
+    - nco
+
+
+
+about:
+  home: https://github.com/r4ecology/nctoolkit 
+  summary: "Powerful Python tools for processing, analysing and visualizing NetCDF data" 
+  license: GPL-3
+
+
+
+

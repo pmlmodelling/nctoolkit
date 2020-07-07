@@ -1,0 +1,40 @@
+# from https://medium.com/@giswqs/building-a-conda-package-and-uploading-it-to-anaconda-cloud-6a3abd1c5c52
+#!/bin/bash
+
+# change the package name to the existing PyPi package you would like to build and adjust the Python versions
+pkg='nctoolkit'
+array=( 3.6 3.7 3.8 )
+
+echo "Building conda package ..."
+
+# building conda packages
+for i in "${array[@]}"
+do
+	conda-build --python $i conda.recipe
+done
+
+# convert package to other platforms
+cd ~
+platforms=(linux-32 linux-64)
+find $HOME/anaconda3/conda-bld/linux-64/ -name *.tar.bz2 | while read file
+do
+    echo $file
+    #conda convert --platform all $file  -o $HOME/conda-bld/
+    for platform in "${platforms[@]}"
+    do
+       conda convert --platform $platform $file  -o $HOME/anaconda3/conda-bld/
+    done
+    
+done
+
+## upload packages to conda
+find $HOME/anaconda3/conda-bld/ -name *.tar.bz2 | while read file
+do
+    echo $file
+    anaconda upload $file
+done
+
+echo "Building conda package done!"
+
+
+conda build purge
