@@ -1,6 +1,6 @@
-pandas
-xarray >= 0.2.1
+xarray
 netCDF4
 hvplot
 panel
+pandas
 
