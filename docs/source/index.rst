@@ -2,13 +2,11 @@
 nctoolkit: tools to manipulate and analyze NetCDF data in Python
 =======================================================
 
-The goal of nctoolkit is to provide a comprehensive tool in Python for manipulating NetCDF data. The philosophy is to provide sufficient methods to carry out 80-90% of what you want to do with NetCDF files.
+nctoolkit is a Python package that provides a comprehensive suite of tools for manipulating, analyzing and visualizing NetCDF data. 
 
-nctoolkit is designed with both individual files and ensembles in mind. 
+The package is designed with two uses in mind: computationally intensive data post-processing and interactive Jupyter notebook type analysis. An auto plotting feature is provided to aid rapid data analysis.
 
-Under the hood nctoolkit relies on the command line packages Climate Data Operates (CDO), with NCO as an optional dependency. No prior knowledge of CDO is required to use nctoolkit. 
-
-The package is design with two uses in mind: computationally intensive data post-processing and interactive Jupyter notebook type analysis. An auto plotting feature is provided to aid rapid data analysis.
+Under the hood nctoolkit relies on Climate Data Operates (CDO). nctoolkit is designed as a standalone package with no required understanding of CDO, but it provides expert users of CDO the ability to process data in Python with ease, and with method chaining handled automatically.
 
 In addition to the guidance given here, tutorials for how to use nctoolkit are available at nctoolkit's `GitHub page. <https://github.com/r4ecology/nctoolkit/tree/master/tutorials>`__
 
