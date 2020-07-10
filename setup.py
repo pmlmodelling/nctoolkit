@@ -3,9 +3,8 @@ from setuptools import Command, find_packages, setup
 
 DESCRIPTION = "Efficient and intuitive tools for analyzing NetCDF data"
 LONG_DESCRIPTION = """
-**nctoolkit** is a Python package providing easy tools for manipulating NetCDF data.
 
-nctoolkit is a comprehensive Python (3.6 and above) package for analyzing netCDF data.
+**nctoolkit** is a comprehensive Python (3.6 and above) package for analyzing netCDF data.
 
 Core abilities of nctoolkit include:
   - Clipping to spatial regions
