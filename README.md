@@ -33,7 +33,7 @@ Core abilities include:
 
 ## Installation
 
-The easiest way to install the package is using conda. This will install both the Python package and all system dependencies.
+The easiest way to install the package is using conda. This will install nctoolkit and all system dependencies.
 ```sh
 conda install -c rwi nctoolkit
 ```
@@ -68,9 +68,11 @@ The package has been tested thoroughly for Linux Operating Systems, with continu
 
 
 
+
 ## Reference and tutorials
 
 A full API reference, in depth tutorials and a how-to guide are available at [readthedocs](https://nctoolkit.readthedocs.io/en/latest/).
+
 
 
 
