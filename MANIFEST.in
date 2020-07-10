@@ -19,6 +19,7 @@ global-exclude *.nc
 global-exclude *.sh
 global-exclude *.rst
 global-exclude *.yml
+global-exclude *.yaml
 global-exclude *.txt
 global-exclude .coveragerc
 global-exclude .gitignore
