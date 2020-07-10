@@ -10,7 +10,7 @@
 
 
 
-# nctoolkit - easy tools for manipulating netCDF data in Python
+# nctoolkit - Efficient and intuitive tools for manipulating netCDF data in Python
 
 
 nctoolkit is a comprehensive Python package for manipulating individual netCDF data.
