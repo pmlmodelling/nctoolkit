@@ -33,6 +33,11 @@ Core abilities include:
 
 ## Installation
 
+The easiest way to install the package is using conda. This will install both the Python package and all system dependencies.
+```sh
+conda install -c rwi nctoolkit
+```
+
 Install through [PyPI](https://pypi.org/project/nctoolkit/) using pip:
 ```sh
 pip install nctoolkit 
@@ -61,9 +66,13 @@ If you want to install CDO from source bash scripts are available [here](https:/
  
 The package has been tested thoroughly for Linux Operating Systems, with continuous integration using Travis. It will not work on Windows platforms, but might in future version. It is untested on Mac operating systems, so should be used cautiously on them.
 
+
+
 ## Reference and tutorials
 
 A full API reference, in depth tutorials and a how-to guide are available at [readthedocs](https://nctoolkit.readthedocs.io/en/latest/).
+
+
 
 
 
