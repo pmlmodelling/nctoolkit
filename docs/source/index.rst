@@ -1,10 +1,24 @@
 
-nctoolkit: tools to manipulate and analyze NetCDF data in Python
+nctoolkit: Efficient and intuitive tools for analyzing netCDF data in Python 
 =======================================================
 
-nctoolkit is a Python package that provides a comprehensive suite of tools for manipulating, analyzing and visualizing NetCDF data. 
+nctoolkit is a comprehensive Python (3.6 and above) package for analyzing netCDF data.
 
-The package is designed with two uses in mind: computationally intensive data post-processing and interactive Jupyter notebook type analysis. An auto plotting feature is provided to aid rapid data analysis.
+Core abilities include:
+   - Clipping to spatial regions
+   - Calculating climatologies
+   - Subsetting to specific time periods
+   - Calculating spatial statistics
+   - Creating new variables using arithmetic operations
+   - Calculating anomalies
+   - Calculating rolling and cumulative statistics
+   - Horizontally and vertically remapping data
+   - Calculating time averages
+   - Interactive plotting of data
+   - Calculating the correlations between variables
+   - Calculating vertical statistics for the likes of oceanic data
+   - Calculating ensemble statistics
+   - Calculating phenological metrics
 
 Under the hood nctoolkit relies on Climate Data Operates (CDO). nctoolkit is designed as a standalone package with no required understanding of CDO, but it provides expert users of CDO the ability to process data in Python with ease, and with method chaining handled automatically.
 
