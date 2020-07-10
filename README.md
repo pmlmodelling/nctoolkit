@@ -12,11 +12,9 @@
 
 # nctoolkit - Efficient and intuitive tools for analyzing netCDF data in Python
 
-
-
 nctoolkit is a comprehensive Python package for analyzing individual netCDF data.
 
-Core abilities of nctoolkit include:
+Core abilities include:
    - Clipping to spatial regions
    - Calculating climatologies
    - Subsetting to specific time periods
@@ -32,53 +30,44 @@ Core abilities of nctoolkit include:
    - Calculating ensemble statistics
    - Calculating phenological metrics
 
-
-This package will work with Python 3.6 upwards.
+It will work with Python 3.6 upwards.
 
 ## Installation
 
-This package is available through [PyPI](https://pypi.org/project/nctoolkit/) and be can installed using pip:
+Install through [PyPI](https://pypi.org/project/nctoolkit/) using pip:
 ```sh
 pip install nctoolkit 
 ```
 
-
-You can install the development version of nctoolkit using using pip as follows.
+Install the development version using using pip:
 ```sh
 pip install git+https://github.com/r4ecology/nctoolkit.git
 ```
 
-This package relies on CDO and NCO under the hood.
-Visit <https://code.mpimet.mpg.de/projects/cdo/files> for CDO download and
-installation instructions. Note that the development version is
-compatible with CDO versions 1.9.3 and above. 
+This package requires the installation of [Climate Data Operators](https://code.mpimet.mpg.de/projects/cdo/wiki). 
 
-Vist http://nco.sourceforge.net/ to download and install NCO.
-
-If you use Anaconda, you can install these packages as follows:
+The easiest way to install Climate Data Operators is using conda:
 
 ```sh
 conda install -c conda-forge cdo 
 ```
+
+A couple of methods give users the option of using [NetCDF Operators](http://nco.sourceforge.net/) instead of CDO as the computational backend. 
+
 ```sh
 conda install -c conda-forge nco 
 ```
 
-Bash scripts to install cdo 1.9.3 and above, with netCDF and hdf5 support, for linux from source are available [here](https://github.com/r4ecology/nctoolkit/tree/master/cdo_installers).
+If you want to install CDO from source bash scripts are available [here](https://github.com/r4ecology/nctoolkit/tree/master/cdo_installers).
  
-Currently, the package has been tested for Linux computers. It will not
-work on Windows platforms, currently. It is untested on Mac operating systems, so should be used cautiously on them.  
-
-
-
-
-
-
-
+The package has been tested thoroughly for Linux Operating Systems, with continuous integration using Travis. It will not work on Windows platforms, but might in future version. It is untested on Mac operating systems, so should be used cautiously on them.
 
 ## Reference and tutorials
 
 A full API reference, in depth tutorials and a how-to guide are available at [readthedocs](https://nctoolkit.readthedocs.io/en/latest/).
+
+
+
 
 
 
