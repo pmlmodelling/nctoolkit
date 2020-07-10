@@ -10,10 +10,11 @@
 
 
 
-# nctoolkit - Efficient and intuitive tools for manipulating netCDF data in Python
+# nctoolkit - Efficient and intuitive tools for analyzing netCDF data in Python
 
 
-nctoolkit is a comprehensive Python package for manipulating individual netCDF data.
+
+nctoolkit is a comprehensive Python package for analyzing individual netCDF data.
 
 Core abilities of nctoolkit include:
    - Clipping to spatial regions
