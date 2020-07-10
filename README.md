@@ -48,21 +48,22 @@ Install the development version using using pip:
 pip install git+https://github.com/r4ecology/nctoolkit.git
 ```
 
-This package requires the installation of [Climate Data Operators](https://code.mpimet.mpg.de/projects/cdo/wiki). The conda installation will handle this for you. Otherwise, you will to install it.  The easiest way is using conda:
+This package requires the installation of [Climate Data Operators](https://code.mpimet.mpg.de/projects/cdo/wiki). The conda installation will handle this for you. Otherwise, you will have to install it.  The easiest way is using conda:
 
 ```sh
 conda install -c conda-forge cdo 
 ```
 
-A couple of methods give users the option of using [NetCDF Operators](http://nco.sourceforge.net/) instead of CDO as the computational backend. 
+A couple of methods give users the option of using [NetCDF Operators](http://nco.sourceforge.net/) instead of CDO as the computational backend. Again, the easiest way to install is using conda:
 
 ```sh
 conda install -c conda-forge nco 
 ```
 
-If you want to install CDO from source bash scripts are available [here](https://github.com/r4ecology/nctoolkit/tree/master/cdo_installers).
+If you want to install CDO from source, bash scripts are available [here](https://github.com/r4ecology/nctoolkit/tree/master/cdo_installers).
  
-The package has been tested thoroughly for Linux Operating Systems, with continuous integration using Travis. It will not work on Windows platforms, but might in future version. It is untested on Mac operating systems, so should be used cautiously on them.
+The package has been tested thoroughly for Linux, with continuous integration using Travis. It will not work on Windows platforms, but might in future version. It is untested on Mac operating systems, so should be used cautiously on them.
+
 
 
 
@@ -71,6 +72,7 @@ The package has been tested thoroughly for Linux Operating Systems, with continu
 ## Reference and tutorials
 
 A full API reference, in depth tutorials and a how-to guide are available at [readthedocs](https://nctoolkit.readthedocs.io/en/latest/).
+
 
 
 
