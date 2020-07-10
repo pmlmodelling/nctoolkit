@@ -48,9 +48,7 @@ Install the development version using using pip:
 pip install git+https://github.com/r4ecology/nctoolkit.git
 ```
 
-This package requires the installation of [Climate Data Operators](https://code.mpimet.mpg.de/projects/cdo/wiki). 
-
-The easiest way to install Climate Data Operators is using conda:
+This package requires the installation of [Climate Data Operators](https://code.mpimet.mpg.de/projects/cdo/wiki). The conda installation will handle this for you. Otherwise, you will to install it.  The easiest way is using conda:
 
 ```sh
 conda install -c conda-forge cdo 
@@ -69,9 +67,11 @@ The package has been tested thoroughly for Linux Operating Systems, with continu
 
 
 
+
 ## Reference and tutorials
 
 A full API reference, in depth tutorials and a how-to guide are available at [readthedocs](https://nctoolkit.readthedocs.io/en/latest/).
+
 
 
 
