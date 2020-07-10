@@ -12,7 +12,8 @@
 
 # nctoolkit - Efficient and intuitive tools for analyzing netCDF data in Python
 
-nctoolkit is a comprehensive Python package for analyzing individual netCDF data.
+
+nctoolkit is a comprehensive Python (3.6 and above) package for analyzing netCDF data.
 
 Core abilities include:
    - Clipping to spatial regions
@@ -29,8 +30,6 @@ Core abilities include:
    - Calculating vertical statistics for the likes of oceanic data
    - Calculating ensemble statistics
    - Calculating phenological metrics
-
-It will work with Python 3.6 upwards.
 
 ## Installation
 
@@ -65,6 +64,7 @@ The package has been tested thoroughly for Linux Operating Systems, with continu
 ## Reference and tutorials
 
 A full API reference, in depth tutorials and a how-to guide are available at [readthedocs](https://nctoolkit.readthedocs.io/en/latest/).
+
 
 
 
