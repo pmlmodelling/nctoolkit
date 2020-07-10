@@ -62,6 +62,7 @@ class TestTimeint(unittest.TestCase):
         if cdo_version() not in ["1.9.4"]:
             tracker = nc.open_data(ff)
             tracker.time_interp(start = "1990/01/01", end = "1993/01/01", resolution = "yearly")
+            print(tracker.history)
             tracker.run()
 
             x = len(tracker.times)
