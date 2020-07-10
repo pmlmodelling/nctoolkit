@@ -12,7 +12,25 @@
 
 # nctoolkit - easy tools for manipulating netCDF data in Python
 
-The goal of nctoolkit is to provide a comprehensive tool in Python for manipulating individual netCDF files and ensembles of netCDF files. The philosophy is to provide sufficient methods to carry out 80-90% of netCDF manipulations.
+
+nctoolkit is a comprehensive Python package for manipulating individual netCDF data.
+
+Core abilities of nctoolkit include:
+   - Clipping to spatial regions
+   - Calculating climatologies
+   - Subsetting to specific time periods
+   - Calculating spatial statistics
+   - Creating new variables using arithmetic operations
+   - Calculating anomalies
+   - Calculating rolling and cumulative statistics
+   - Horizontally and vertically remapping data
+   - Calculating time averages
+   - Interactive plotting of data
+   - Calculating the correlations between variables
+   - Calculating vertical statistics for the likes of oceanic data
+   - Calculating ensemble statistics
+   - Calculating phenological metrics
+
 
 This package will work with Python 3.6 upwards.
 
