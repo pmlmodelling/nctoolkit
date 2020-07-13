@@ -1,6 +1,7 @@
 
 import copy
 import os
+import subprocess
 
 from nctoolkit.cleanup import cleanup
 from nctoolkit.runthis import run_this, run_cdo
@@ -51,14 +52,15 @@ def write_nc(self, out, zip=True, overwrite=False):
     if len(self.history) == len(self._hold_history):
         if zip:
             cdo_command = f"cdo -z zip_9 copy {ff[0]} {out}"
-            os.system(cdo_command)
+            run_cdo(cdo_command, target = out, overwrite = overwrite)
+
             self.history.append(cdo_command)
             self._hold_history = copy.deepcopy(self.history)
             self.current = out
 
         else:
             cdo_command = f"cdo copy {ff[0]} {out}"
-            os.system(cdo_command)
+            run_cdo(cdo_command, target = out, overwrite = overwrite)
             self.history.append(cdo_command)
             self._hold_history = copy.deepcopy(self.history)
 
