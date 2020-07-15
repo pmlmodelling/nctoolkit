@@ -6,6 +6,7 @@
 3. Add separate testing file for the .py
 4. Addd to A-Z
 5. Add to API reference
+6. Update release_notes file
 
 
 
