@@ -503,7 +503,13 @@ class TestCalls(unittest.TestCase):
         self.assertEqual(data.history[0], 'cdo --sortname -enspctl,10')
 
 
+        data = nc.open_data(ff)
+        data.shift_hours(-1)
+        self.assertEqual(data.history[0], 'cdo -shifttime,-1hour' )
 
+        data = nc.open_data(ff)
+        data.shift_days(-1)
+        self.assertEqual(data.history[0], 'cdo -shifttime,-1days' )
 
 
 
