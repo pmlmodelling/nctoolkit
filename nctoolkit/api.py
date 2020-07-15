@@ -849,3 +849,8 @@ class DataSet(object):
     from nctoolkit.zonals import zonal_min
     from nctoolkit.zonals import zonal_max
     from nctoolkit.zonals import zonal_range
+
+    from nctoolkit.shift import shift_hours
+    from nctoolkit.shift import shift_days
+
+

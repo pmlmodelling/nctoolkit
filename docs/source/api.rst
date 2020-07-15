@@ -197,6 +197,8 @@ Time-based methods
    DataSet.select_months
    DataSet.select_season
    DataSet.select_years
+   DataSet.shift_hours
+   DataSet.shift_days
 
 Interpolation methods
 ---------------------

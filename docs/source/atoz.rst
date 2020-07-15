@@ -939,6 +939,27 @@ and 10 to be set to missing, you would do the following:
     data = nc.open_data(infile)
     data.set_missing([0, 10])
 
+
+shift_days
+-----------
+
+This method allows you to move the times in a dataset forwards or backwards by a number of days. It takes one argument: the number of days to shift by. For example, if you wanted to shift time back 2 days, you would do the following:
+
+.. code:: ipython3
+
+    data.shift_days(-2)
+
+shift_hours
+-----------
+
+This method allows you to move the times in a dataset forwards or backwards by a number of hours. It takes one argument: the number of hours to shift by. For example, if you wanted to shift time back 6 hours, you would do the following:
+
+.. code:: ipython3
+
+    data.shift_hours(-6)
+
+
+
 spatial_max
 -----------
 
