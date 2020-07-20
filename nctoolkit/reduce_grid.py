@@ -36,4 +36,4 @@ def reduce_grid(self, mask):
     cdo_command = f"cdo -reducegrid,{targeted_mask.current}"
 
     run_this(cdo_command, self, output="ensemble")
-    self.release()
+    self.run()
