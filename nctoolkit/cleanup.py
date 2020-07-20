@@ -24,8 +24,8 @@ def cleanup():
 
     candidates = []
 
-    mylist = [f for f in glob.glob("/tmp/*.*")]
-    mylist = mylist + [f for f in glob.glob("/var/tmp/*.*")]
+    mylist = [f for f in glob.glob("/tmp/*")]
+    mylist = mylist + [f for f in glob.glob("/var/tmp/*")]
     mylist = [f for f in mylist if session_info["stamp"] in f]
     for ff in mylist:
         candidates.append(ff)
@@ -122,8 +122,8 @@ def deep_clean():
     Deep temp file cleaner
     Remove all temporary files ever created by nctoolkit across all previous and current sesions
     """
-    mylist = [f for f in glob.glob("/tmp/" + "*.nc*")]
-    mylist = mylist + [f for f in glob.glob("/var/tmp/" + "*.nc*")]
+    mylist = [f for f in glob.glob("/tmp/*")]
+    mylist = mylist + [f for f in glob.glob("/var/tmp/*")]
     mylist = [f for f in mylist if "nctoolkit" in f]
     for ff in mylist:
         nc_remove(ff, deep=True)
@@ -131,11 +131,11 @@ def deep_clean():
 
 def temp_check():
     """
-    Function to do a deep clean of all temporary files ever created by nctoolkit
+    Function to check temp files
     """
-    mylist = [f for f in glob.glob("/tmp/" + "*.nc*")]
-    mylist = mylist + [f for f in glob.glob("/var/tmp/" + "*.nc*")]
-    mylist = mylist + [f for f in glob.glob("/usr/tmp/" + "*.nc*")]
+    mylist = [f for f in glob.glob("/tmp/*")]
+    mylist = mylist + [f for f in glob.glob("/var/tmp/*")]
+    mylist = mylist + [f for f in glob.glob("/usr/tmp/*")]
     mylist = [f for f in mylist if "nctoolkit" in f]
 
     if len(mylist) > 0:
