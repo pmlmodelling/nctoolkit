@@ -134,7 +134,7 @@ def ensemble_max(self, nco = False, ignore_time=False):
         if ignore_time is False:
             cdo_command = "cdo --sortname -ensmax"
         else:
-            if cdo_version() is not "1.9.3":
+            if cdo_version() != "1.9.3":
                 cdo_command = "cdo -timmax --sortname -ensmax"
             else:
                 cdo_command = "cdo --sortname -ensmax"
@@ -176,7 +176,7 @@ def ensemble_min(self, nco = False, ignore_time=False):
         if ignore_time is False:
             cdo_command = "cdo --sortname -ensmin"
         else:
-            if cdo_version() is not "1.9.3":
+            if cdo_version() != "1.9.3":
                 cdo_command = "cdo -timmin --sortname -ensmin"
             else:
                 cdo_command = "cdo --sortname -ensmin"
@@ -184,7 +184,7 @@ def ensemble_min(self, nco = False, ignore_time=False):
         run_this(cdo_command, self)
 
         self._merged = True
-        if cdo_version() is "1.9.3":
+        if cdo_version() != "1.9.3":
             self.run()
             self.min()
 
