@@ -2,3 +2,14 @@
 # New methods
 
 You can now shift time forwards or backwards using the shift_hours and shift_days methods.
+
+You can now add new files to datasets using the append method.
+
+
+
+# Bug fixes
+
+cleanup code fixed to ensure temporary grid files are removed
+
+
+

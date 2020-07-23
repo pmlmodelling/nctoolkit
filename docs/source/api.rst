@@ -34,7 +34,13 @@ Merging or analyzing multiple datasets
     cor_space
     
 
+Adding file(s) to a dataset
+------------------
 
+.. autosummary::
+   :toctree: generated/
+
+    append
 
 Accessing attributes
 ------------------

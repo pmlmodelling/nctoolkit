@@ -112,6 +112,16 @@ and for each grid cell of dataset.
     data = nc.open_data(infile)
     data.annual_range()
 
+append
+------------
+
+This method will let you append individual or multiple files to your dataset. Usage is straightforward. Note that this will not perform any merging on the dataset.
+
+::
+
+    data.append(newfile)
+
+
 bottom
 ------
 

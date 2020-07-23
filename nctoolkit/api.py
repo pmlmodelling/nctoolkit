@@ -29,7 +29,6 @@ def custom_formatwarning(msg, *args, **kwargs):
 
 warnings.formatwarning = custom_formatwarning
 
-
 # set up the session info
 letters = string.ascii_lowercase
 session_info["stamp"] = (
@@ -852,5 +851,7 @@ class DataSet(object):
 
     from nctoolkit.shift import shift_hours
     from nctoolkit.shift import shift_days
+
+    from nctoolkit.append import append
 
 
