@@ -184,9 +184,10 @@ def ensemble_min(self, nco = False, ignore_time=False):
         run_this(cdo_command, self)
 
         self._merged = True
-        if cdo_version() != "1.9.3":
+        if cdo_version() == "1.9.3":
             self.run()
-            self.min()
+            if ignore_time:
+                self.min()
 
         return None
 
