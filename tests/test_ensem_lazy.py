@@ -59,6 +59,22 @@ class TestEnsemble(unittest.TestCase):
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 
+
+        data = nc.open_data("data/sst.mon.mean.nc")
+        data.min()
+        data.spatial_mean()
+        x = data.to_dataframe().sst.values[0].astype("float")
+
+        data = nc.open_data("data/sst.mon.mean.nc")
+        data.split("year")
+        data.ensemble_min(ignore_time = True)
+        data.spatial_mean()
+        y = data.to_dataframe().sst.values[0].astype("float")
+
+        assert x == y
+
+
+
     def test_ignore_time_2(self):
         data = nc.open_data(nc.create_ensemble("data/ensemble"))
         data.ensemble_mean( ignore_time = True)
