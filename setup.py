@@ -7,6 +7,7 @@ LONG_DESCRIPTION = """
 **nctoolkit** is a comprehensive Python (3.6 and above) package for analyzing netCDF data.
 
 Core abilities of nctoolkit include:
+
   - Clipping to spatial regions
   - Calculating climatologies
   - Subsetting to specific time periods
@@ -40,7 +41,7 @@ REQUIREMENTS = [i.strip() for i in open("requirements.txt").readlines()]
 
 
 setup(name='nctoolkit',
-      version='0.1.3',
+      version='0.1.4',
       description=DESCRIPTION,
       long_description=LONG_DESCRIPTION,
       python_requires='>=3.6.1',
