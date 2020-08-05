@@ -5,6 +5,7 @@ nctoolkit: Efficient and intuitive tools for analyzing netCDF data in Python
 nctoolkit is a comprehensive Python (3.6 and above) package for analyzing netCDF data.
 
 Core abilities include:
+
    - Clipping to spatial regions
    - Calculating climatologies
    - Subsetting to specific time periods
@@ -20,7 +21,7 @@ Core abilities include:
    - Calculating ensemble statistics
    - Calculating phenological metrics
 
-Under the hood nctoolkit relies on Climate Data Operates (CDO). nctoolkit is designed as a standalone package with no required understanding of CDO, but it provides expert users of CDO the ability to process data in Python with ease, and with method chaining handled automatically.
+Under the hood nctoolkit relies on Climate Data Operators (CDO). nctoolkit is designed as a standalone package with no required understanding of CDO, but it provides expert users of CDO the ability to process data in Python with ease, and with method chaining handled automatically.
 
 In addition to the guidance given here, tutorials for how to use nctoolkit are available at nctoolkit's `GitHub page. <https://github.com/r4ecology/nctoolkit/tree/master/tutorials>`__
 
