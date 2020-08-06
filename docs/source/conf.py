@@ -17,6 +17,14 @@ author = 'Robert Wilson'
 # The full version, including alpha/beta/rc tags
 version = '0.1.2'
 
+def setup(app):
+    """Insert Google Analytics tracker
+    Based on this Stackoverflow suggestion: https://stackoverflow.com/a/41885884
+    """
+    app.add_javascript("https://www.googletagmanager.com/gtag/js?id=UA-46143561-3")
+    app.add_javascript("google_analytics_tracker.js")
+
+
 
 # -- General configuration ---------------------------------------------------
 
