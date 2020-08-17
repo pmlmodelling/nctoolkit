@@ -11,8 +11,8 @@ before_install:
     - pip install -U pytest
     - pip install coverage
     - sudo apt-get -y update
-    - sudo apt-get -y install nco
-    - sudo apt-get -y install cdo
+      #    - sudo apt-get -y install nco
+      #- sudo apt-get -y install cdo
 #
 #
 #addons:
@@ -57,6 +57,31 @@ install:
     #  - cd ..
 
     #- pip install pandas 
+    #
+    #
+    #
+  # We do this conditionally because it saves us some downloading if the
+  # version is the same.
+  - if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
+      wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -O miniconda.sh;
+    else
+      wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+    fi
+  - bash miniconda.sh -b -p $HOME/miniconda
+  - source "$HOME/miniconda/etc/profile.d/conda.sh"
+  - hash -r
+  - conda config --set always_yes yes --set changeps1 no
+  - conda update -q conda
+  # Useful for debugging any issues with conda
+  - conda info -a
+
+  # Replace dep1 dep2 ... with your dependencies
+  - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION dep1 dep2 ...
+  - conda activate test-environment
+  - conda install -c conda-forge cdo
+  - conda install -c conda-forge nco
+ 
+  - python setup.py install
     - pip install -r requirements.txt
     - python setup.py install > /dev/null 2>&1
 # command to run tests
