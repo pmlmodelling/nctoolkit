@@ -80,6 +80,8 @@ install:
   - conda activate test-environment
   - conda install -c conda-forge cdo
   - conda install -c conda-forge nco
+  - conda install -c anaconda coverage
+
  
   - pip install -r requirements.txt
   - pip install pandas 
