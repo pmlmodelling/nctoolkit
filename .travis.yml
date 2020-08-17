@@ -82,6 +82,7 @@ install:
   - conda install -c conda-forge nco
  
   - pip install -r requirements.txt
+  - pip install pandas 
   - python setup.py install
     # - python setup.py install > /dev/null 2>&1
 # command to run tests
