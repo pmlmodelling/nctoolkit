@@ -81,9 +81,9 @@ install:
   - conda install -c conda-forge cdo
   - conda install -c conda-forge nco
  
+  - pip install -r requirements.txt
   - python setup.py install
-    - pip install -r requirements.txt
-    - python setup.py install > /dev/null 2>&1
+    # - python setup.py install > /dev/null 2>&1
 # command to run tests
 #
 before_script:
