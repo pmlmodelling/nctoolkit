@@ -141,6 +141,7 @@ def open_data(x=None, suppress_messages=False, checks=False):
     if x is None:
         raise ValueError("No data was supplied!")
 
+    #print(is_url(x))
     # coerce an iterable to a list
     if type(x) is not str:
         x = [y for y in x]
@@ -149,6 +150,8 @@ def open_data(x=None, suppress_messages=False, checks=False):
                 raise TypeError("You have not supplied an iterable made of file paths!")
 
     # check the files provided exist
+
+
     if type(x) is str:
         if os.path.exists(x) == False:
 
@@ -259,7 +262,7 @@ def merge(*datasets, match=["day", "year", "month"]):
 def cor_time(x=None, y=None):
     """
     Calculate the temporal correlation coefficient between two datasets
-    This will calculate the temporal correlation coefficient, in each grid cell, between two datasets
+    This will calculate the temporal correlation coefficient, for each time step, between two datasets. The datasets must either have the same variables or only have one variable.
 
     Parameters
     -------------
@@ -276,27 +279,23 @@ def cor_time(x=None, y=None):
         raise TypeError("Please check y is a dataset")
         # make sure everything has been evaluated
 
+    x.run()
+    y.run()
+
     a = x.copy()
     b = y.copy()
 
-    a.run()
-    b.run()
-
-    ab_vars = [value for value in a.variables if value in b.variables]
-
-    if len(ab_vars) < len(a.variables):
-        a.select_variables(ab_vars)
-        print("Only using a subset of variables from x")
-        a.run()
-
-    if len(ab_vars) < len(b.variables):
-        b.select_variables(ab_vars)
-        print("Only using a subset of variables from y")
-        b.run()
-
+    if x.variables != y.variables:
+        if len(x.variables) > 1 or len(y.variables) > 1:
+            raise ValueError("This method currently only works with single variable datasets or datasets with identical variables!")
 
     target = temp_file("nc")
-    command = "cdo timcor " + a.current + " " + b.current + " " + target
+
+    if len(x.variables) == 1:
+        command = "cdo -setname,cor -timcor " + a.current + " " + b.current + " " + target
+    else:
+        command = "cdo -timcor " + a.current + " " + b.current + " " + target
+
     target = run_cdo(command, target=target)
 
     data = open_data(target)
@@ -304,10 +303,11 @@ def cor_time(x=None, y=None):
     return data
 
 
+
 def cor_space(x=None, y=None):
     """
     Calculate the spatial correlation coefficient between two datasets
-    This will calculate the spatial correlation coefficient, for each time step, between two datasets
+    This will calculate the spatial correlation coefficient, for each time step, between two datasets. The datasets must either have the same variables or only have one variable.
 
     Parameters
     -------------
@@ -324,26 +324,23 @@ def cor_space(x=None, y=None):
         raise TypeError("Please check y is a dataset")
         # make sure everything has been evaluated
 
+    x.run()
+    y.run()
+
     a = x.copy()
     b = y.copy()
 
-    a.run()
-    b.run()
-
-    ab_vars = [value for value in a.variables if value in b.variables]
-
-    if len(ab_vars) < len(a.variables):
-        a.select_variables(ab_vars)
-        print("Only using a subset of variables from x")
-        a.run()
-
-    if len(ab_vars) < len(b.variables):
-        b.select_variables(ab_vars)
-        print("Only using a subset of variables from y")
-        b.run()
+    if x.variables != y.variables:
+        if len(x.variables) > 1 or len(y.variables) > 1:
+            raise ValueError("This method currently only works with single variable datasets or datasets with identical variables!")
 
     target = temp_file("nc")
-    command = "cdo fldcor " + a.current + " " + b.current + " " + target
+
+    if len(x.variables) == 1:
+        command = "cdo -setname,cor -fldcor " + a.current + " " + b.current + " " + target
+    else:
+        command = "cdo -fldcor " + a.current + " " + b.current + " " + target
+
     target = run_cdo(command, target=target)
 
     data = open_data(target)
