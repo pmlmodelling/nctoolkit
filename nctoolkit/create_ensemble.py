@@ -35,9 +35,9 @@ def create_ensemble(path="", var=None, recursive=True):
             path = path + "/"
 
     if recursive:
-        files = [f for f in glob.glob(path + "/**/*.nc", recursive=True)]
+        files = [f for f in glob.glob(path + "/**/*.nc*", recursive=True)]
     else:
-        files = [f for f in glob.glob(path + "*.nc")]
+        files = [f for f in glob.glob(path + "*.nc*")]
 
     if len(files) == 0:
         raise ValueError("There is no data in the target directory")
