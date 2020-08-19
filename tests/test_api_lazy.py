@@ -11,18 +11,18 @@ ff = "data/sst.mon.ltm.1981-2010.nc"
 
 class TestApi2(unittest.TestCase):
 
-    def test_url(self):
-        tracker = nc.open_data(ff)
-        tracker.spatial_mean()
-        x = tracker.to_dataframe().sst.values[0].astype("float")
+  #  def test_url(self):
+  #      tracker = nc.open_data(ff)
+  #      tracker.spatial_mean()
+  #      x = tracker.to_dataframe().sst.values[0].astype("float")
 
-        tracker = nc.open_data("ftp://ftp.cdc.noaa.gov/Datasets/COBE/sst.mon.ltm.1981-2010.nc")
-        tracker.spatial_mean()
-        y = tracker.to_dataframe().sst.values[0].astype("float")
+  #      tracker = nc.open_data("ftp://ftp.cdc.noaa.gov/Datasets/COBE/sst.mon.ltm.1981-2010.nc")
+  #      tracker.spatial_mean()
+  #      y = tracker.to_dataframe().sst.values[0].astype("float")
 
-        print(x)
-        print(y)
-        assert x == y
+  #      print(x)
+  #      print(y)
+  #      assert x == y
 
 
     def test_corspace(self):
