@@ -58,26 +58,13 @@ def ensemble_percentile(self, p=None):
     self._merged = True
 
 
-def ensemble_nco(self, method, vars=None, ignore_time=False):
+def ensemble_nco(self, method, ignore_time=False):
     """
     NCO Method to calculate an ensemble stat from a list of files
     """
-    # Throw an error if there is only a single file in the tracker
-
-    if vars is not None:
-        if type(vars) == str:
-            vars = [vars]
-
-        if type(vars) is not list:
-            raise TypeError("vars supplied is not a list or str!")
-    # This method cannot possibly be chained. Release it
-
     self.run()
 
     ff_ensemble = copy.deepcopy(self.current)
-
-    if type(ff_ensemble) is not list:
-        warnings.warn(message="There is only one file in the dataset")
 
     if type(self.current) is str:
         ff_ensemble = [copy.deepcopy(self.current)]
@@ -87,15 +74,9 @@ def ensemble_nco(self, method, vars=None, ignore_time=False):
 
     # generate the nco call
     if ignore_time == False:
-        if vars is None:
-            nco_command = f'ncea -y {method} {str_flatten(ff_ensemble, " ")} {target}'
-        else:
-            nco_command = f'ncea -y {method} -v {str_flatten(vars, ",")} {str_flatten(ff_ensemble, " ")} {target}'
+        nco_command = f'ncea -y {method} {str_flatten(ff_ensemble, " ")} {target}'
     else:
-        if vars is None:
-            nco_command = f'ncra -y {method} {str_flatten(ff_ensemble, " ")} {target}'
-        else:
-            nco_command = f'ncra -y {method} -v {str_flatten(vars, ",")} {str_flatten(ff_ensemble, " ")} {target}'
+        nco_command = f'ncra -y {method} {str_flatten(ff_ensemble, " ")} {target}'
 
     # run the call
     target = run_nco(nco_command, target)
@@ -165,13 +146,11 @@ def ensemble_min(self, nco = False, ignore_time=False):
     ignore_time : boolean
         If True the min is calculated over all time steps. If False, the ensemble min is calculated for each time steps; for example, if the ensemble is made up of monthly files the min for each month will be calculated.
     """
+    if type(self.current) is not list:
+        warnings.warn(message="There is only one file in the dataset")
 
     if nco is False:
         self.run()
-
-        if type(self.current) is not list:
-            warnings.warn(message="There is only one file in the dataset")
-
 
         if ignore_time is False:
             cdo_command = "cdo --sortname -ensmin"
