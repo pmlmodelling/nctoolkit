@@ -1,5 +1,6 @@
 [run]
 omit = 
     *tests*
+    nctoolkit/view.py 
 [report]
 show_missing = True
