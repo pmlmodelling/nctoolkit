@@ -8,6 +8,8 @@ import os
 
 
 ff = "data/sst.mon.mean.nc"
+ff1 = "data/2003.nc"
+ff2 = "data/2004.nc"
 
 class TestAppend(unittest.TestCase):
 
@@ -36,6 +38,19 @@ class TestAppend(unittest.TestCase):
         n = len(nc.session_files())
         self.assertEqual(n, 0)
 
+        new = nc.open_data(ff)
+        with self.assertWarns(Warning):
+            new.append([ff1, ff1])
+
+        new = nc.open_data([ff1, ff2])
+
+        with self.assertRaises(ValueError) as context:
+            new.append(ff1)
+
+
+        new.append(ff)
+
+        assert new.current == [ff1, ff2, ff]
 
 
 

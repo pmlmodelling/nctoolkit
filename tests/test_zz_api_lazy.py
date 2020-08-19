@@ -129,7 +129,7 @@ class TestApi(unittest.TestCase):
         data = nc.open_data(ff)
         test = nc.cor_time(data, data)
         test.spatial_mean()
-        x = test.to_dataframe().sst.values[0].astype("float")
+        x = test.to_dataframe().cor.values[0].astype("float")
         self.assertEqual(x, 1)
         data = nc.open_data(ff)
         with self.assertRaises(TypeError) as context:

@@ -44,21 +44,36 @@ class TestRegrid(unittest.TestCase):
         tracker.clip(lat = [0,90])
         new = tracker.copy()
         tracker.select_months(1)
+        tracker.regrid(new)
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0].astype("float")
 
         tracker = nc.open_data(ff)
+        tracker.clip(lon = [0,90])
+        tracker.clip(lat = [0,90])
         tracker.select_years(1990)
+        tracker.split("yearmonth")
+        tracker.regrid(new)
+        tracker.merge_time()
         tracker.select_months(1)
-        new.split("yearmonth")
-        tracker.regrid(new, method = "nn")
         tracker.spatial_mean()
 
         y = tracker.to_dataframe().sst.values[0].astype("float")
 
+        assert x == y
+
         self.assertEqual(x, y)
         n = len(nc.session_files())
-        self.assertEqual(n, 1 + 12)
+        self.assertEqual(n, 2)
+
+        tracker = nc.open_data(ff)
+        tracker.split("year")
+        new = nc.open_data(ff)
+        with self.assertWarns(Warning):
+            new.regrid(tracker)
+
+
+
 
     def test_invalid_method(self):
         tracker = nc.open_data(ff)

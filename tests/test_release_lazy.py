@@ -32,6 +32,15 @@ class Testrun(unittest.TestCase):
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 
+        tracker = nc.open_data(ff)
+        tracker.mean()
+        tracker._safe.append("asdfkjasdkfj.nc")
+        nc.session.nc_safe.append("asdfkjasdkfj.nc")
+        tracker.run()
+        del tracker
+        assert len(nc.session.nc_safe) == 0
+
+
 
 if __name__ == '__main__':
     unittest.main()

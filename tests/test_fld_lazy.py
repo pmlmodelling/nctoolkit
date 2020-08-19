@@ -13,6 +13,12 @@ class TestFldsta(unittest.TestCase):
     def test_empty(self):
         n = len(nc.session_files())
         self.assertEqual(n, 0)
+
+        data = nc.open_data(ff)
+        with self.assertRaises(ValueError) as context:
+            data.spatial_percentile()
+
+
     def test_mean(self):
         ff = "data/sst.mon.mean.nc"
         data = nc.open_data(ff)

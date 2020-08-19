@@ -16,6 +16,11 @@ class TestCreate(unittest.TestCase):
         ensemble = nc.create_ensemble("data/ensemble")
         assert len(ensemble) == 60
 
+        with self.assertRaises(ValueError) as context:
+            ensemble = nc.create_ensemble("akdi2nkciihj2jkjjj")
+
+        with self.assertRaises(ValueError) as context:
+            ensemble = nc.create_ensemble(".", recursive = False)
 
 if __name__ == '__main__':
     unittest.main()

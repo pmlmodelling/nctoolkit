@@ -6,13 +6,14 @@ import xarray as xr
 import os
 
 
+
 class TestEnsemble(unittest.TestCase):
 
     def test_empty(self):
         n = len(nc.session_files())
         self.assertEqual(n, 0)
 
-    def test_mean(self):
+    def test_ens_mean(self):
         data = nc.open_data(nc.create_ensemble("data/ensemble"))
         data.ensemble_mean(nco = True)
         data.spatial_mean()
@@ -23,7 +24,7 @@ class TestEnsemble(unittest.TestCase):
         self.assertEqual(n, 1)
 
 
-    def test_max(self):
+    def test_ens_max(self):
         data = nc.open_data(nc.create_ensemble("data/ensemble"))
         data.ensemble_max(nco = True)
         data.spatial_mean()
@@ -33,7 +34,45 @@ class TestEnsemble(unittest.TestCase):
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 
-    def test_min(self):
+        data = nc.open_data(nc.create_ensemble("data/ensemble"))
+        data.ensemble_max(nco = True, ignore_time = True)
+        data.spatial_mean()
+        x = data.to_dataframe().sst.values[0].astype("float")
+
+        data = nc.open_data(nc.create_ensemble("data/ensemble"))
+        data.merge_time()
+        data.max()
+        data.spatial_mean()
+        y = data.to_dataframe().sst.values[0].astype("float")
+
+        assert x == y
+
+        data = nc.open_data(nc.create_ensemble("data/ensemble"))
+        data.ensemble_max(nco = False, ignore_time = True)
+        data.spatial_mean()
+        x = data.to_dataframe().sst.values[0].astype("float")
+
+        assert x == y
+
+
+        data = nc.open_data(nc.create_ensemble("data/ensemble"))
+        data.ensemble_max(nco = True)
+        data.spatial_mean()
+        x = data.to_dataframe().sst.values[0].astype("float")
+
+        self.assertEqual(x, 19.205900192260742)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
+
+        data = nc.open_data(nc.create_ensemble("data/ensemble"))
+        data.ensemble_max(nco = False)
+        data.spatial_mean()
+        x = data.to_dataframe().sst.values[0].astype("float")
+
+        self.assertEqual(x, 19.205900192260742)
+
+
+    def test_ens_min(self):
         data = nc.open_data(nc.create_ensemble("data/ensemble"))
         data.ensemble_min()
         data.spatial_mean()
@@ -42,6 +81,17 @@ class TestEnsemble(unittest.TestCase):
         self.assertEqual(x, 16.958738327026367)
         n = len(nc.session_files())
         self.assertEqual(n, 1)
+
+
+        data = nc.open_data(nc.create_ensemble("data/ensemble"))
+        data.ensemble_min(nco = True)
+        data.spatial_mean()
+        y = data.to_dataframe().sst.values[0].astype("float")
+
+        assert x == y
+
+
+
 
     def test_ignore_time(self):
         data = nc.open_data(nc.create_ensemble("data/ensemble"))
@@ -90,9 +140,34 @@ class TestEnsemble(unittest.TestCase):
         self.assertEqual(x, y)
 
         n = len(nc.session_files())
+
+        data = nc.open_data("data/sst.mon.mean.nc")
+        data.ensemble_mean(ignore_time = True)
+        data.spatial_mean()
+        x = data.to_dataframe().sst.values[0].astype("float")
+        data = nc.open_data("data/sst.mon.mean.nc")
+        data.mean()
+        data.spatial_mean()
+        y = data.to_dataframe().sst.values[0].astype("float")
+
+        assert x == y
+
+
+        data = nc.open_data("data/sst.mon.mean.nc")
+        data.ensemble_mean(ignore_time = True, nco = True)
+        data.spatial_mean()
+        x = data.to_dataframe().sst.values[0].astype("float")
+        data = nc.open_data("data/sst.mon.mean.nc")
+        data.mean()
+        data.spatial_mean()
+        y = data.to_dataframe().sst.values[0].astype("float")
+
+        assert x == y
+
+
         self.assertEqual(n, 1)
 
-    def test_range(self):
+    def test_ens_range(self):
         data = nc.open_data(nc.create_ensemble("data/ensemble"))
         data.ensemble_range()
         data.spatial_mean()
@@ -103,7 +178,7 @@ class TestEnsemble(unittest.TestCase):
         self.assertEqual(n, 1)
 
 
-    def test_percent(self):
+    def test_ens_percent(self):
         data = nc.open_data(nc.create_ensemble("data/ensemble"))
         data.ensemble_percentile(40)
         data.spatial_mean()
@@ -113,14 +188,14 @@ class TestEnsemble(unittest.TestCase):
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 
-    def test_percent_error(self):
+    def test_ens_percent_error(self):
         data = nc.open_data(nc.create_ensemble("data/ensemble"))
         with self.assertRaises(TypeError) as context:
             data.ensemble_percentile("a")
         n = len(nc.session_files())
         self.assertEqual(n, 0)
 
-    def test_percent_error1(self):
+    def test_ens_percent_error1(self):
         data = nc.open_data(nc.create_ensemble("data/ensemble"))
         with self.assertRaises(ValueError) as context:
             data.ensemble_percentile(129)
@@ -128,14 +203,22 @@ class TestEnsemble(unittest.TestCase):
         self.assertEqual(n, 0)
 
 
-    def test_warn(self):
+    def test_ens_warn(self):
         data = nc.open_data(nc.create_ensemble("data/ensemble")[0])
         with self.assertWarns(Warning):
             data.ensemble_percentile(40)
+
+        data = nc.open_data(nc.create_ensemble("data/ensemble")[0])
+        with self.assertWarns(Warning):
+            data.ensemble_max()
+
+        data = nc.open_data(nc.create_ensemble("data/ensemble")[0])
+        with self.assertWarns(Warning):
+            data.ensemble_min()
+
         n = len(nc.session_files())
         self.assertEqual(n, 0)
 
-    def test_warn1(self):
         data = nc.open_data(nc.create_ensemble("data/ensemble")[0])
         with self.assertWarns(Warning):
             data.ensemble_mean()
@@ -143,7 +226,6 @@ class TestEnsemble(unittest.TestCase):
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 
-    def test_warn2(self):
         data = nc.open_data(nc.create_ensemble("data/ensemble")[0])
         with self.assertWarns(Warning):
             data.ensemble_range()
@@ -151,7 +233,6 @@ class TestEnsemble(unittest.TestCase):
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 
-    def test_warn3(self):
         data = nc.open_data(nc.create_ensemble("data/ensemble")[0])
         with self.assertWarns(Warning):
             data.ensemble_range()
@@ -159,7 +240,7 @@ class TestEnsemble(unittest.TestCase):
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 
-    def test_pnone(self):
+    def test_ens_pnone(self):
         data = nc.open_data(nc.create_ensemble("data/ensemble"))
         with self.assertRaises(ValueError) as context:
             data.ensemble_percentile()

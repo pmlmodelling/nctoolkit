@@ -96,8 +96,15 @@ class TestMerge(unittest.TestCase):
         data = nc.open_data([new.current, tracker.current])
         with self.assertRaises(ValueError) as context:
             data.merge()
+
+
+
         n = len(nc.session_files())
         self.assertEqual(n, 2)
+
+        data = nc.open_data([new.current, tracker.current])
+        with self.assertRaises(TypeError) as context:
+            data.merge(match = 1)
 
     def test_merge_error1(self):
         tracker = nc.open_data(ff)

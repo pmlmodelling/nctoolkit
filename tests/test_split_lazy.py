@@ -38,6 +38,16 @@ class TestSplit(unittest.TestCase):
         n = len(nc.session_files())
         self.assertEqual(n, y)
 
+    def test_yearmon(self):
+        tracker = nc.open_data(ff)
+        tracker.select_years(1990)
+        x = len(tracker.times)
+        tracker.split("month")
+        n = len(nc.session_files())
+        self.assertEqual(n, 12)
+
+
+
     def test_season(self):
         tracker = nc.open_data(ff)
         tracker.split("season")

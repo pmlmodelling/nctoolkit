@@ -23,9 +23,17 @@ class TestShifters(unittest.TestCase):
         data.run()
         assert data.times[0] == '1969-12-31T23:00:00'
 
-        n = len(nc.session_files())
-        self.assertEqual(n, 1)
+        data = nc.open_data(ff)
+        data.shift_hours(-1.0)
+        data.run()
+        assert data.times[0] == '1969-12-31T23:00:00'
 
+        data = nc.open_data(ff)
+        with self.assertRaises(TypeError) as context:
+            data.shift_hours()
+
+        n = len(nc.session_files())
+        self.assertEqual(n, 0)
 
     def test_days(self):
         data = nc.open_data(ff)
@@ -33,8 +41,16 @@ class TestShifters(unittest.TestCase):
         data.run()
         assert data.times[0] == '1970-01-02T00:00:00'
 
+        data = nc.open_data(ff)
+        data.shift_days(1.0)
+        data.run()
+        assert data.times[0] == '1970-01-02T00:00:00'
+        data = nc.open_data(ff)
+        with self.assertRaises(TypeError) as context:
+            data.shift_days()
+
         n = len(nc.session_files())
-        self.assertEqual(n, 1)
+        self.assertEqual(n, 0)
 
 
 
