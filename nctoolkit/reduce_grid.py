@@ -5,7 +5,7 @@ from nctoolkit.api import open_data
 from nctoolkit.runthis import run_this
 
 
-def reduce_grid(self, mask):
+def reduce_grid(self, mask = None):
     """
     Reduce the dataset to non-zero locations in a mask
     Parameters
