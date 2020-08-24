@@ -25,3 +25,4 @@ global-exclude *.yaml
 global-exclude *.txt
 global-exclude .coveragerc
 global-exclude .gitignore
+include requirements.txt 
