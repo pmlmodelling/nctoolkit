@@ -15,7 +15,7 @@ author = 'Robert Wilson'
 
 # The short X.Y version
 # The full version, including alpha/beta/rc tags
-version = '0.1.4'
+version = '0.1.5'
 
 #def setup(app):
 #    """Insert Google Analytics tracker
