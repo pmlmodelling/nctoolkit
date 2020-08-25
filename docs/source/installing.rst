@@ -19,7 +19,7 @@ How to install nctoolkit
 
 The easiest way to install the package is using conda, which will install nctoolkit and all system dependencies::
 
-   $ conda install -c rwi nctoolkit
+   $ conda install -c conda-forge nctoolkit
 
 nctoolkit is available from the `Python Packaging Index. <https://pypi.org/project/nctoolkit/>`__   To install nctoolkit using pip::
 

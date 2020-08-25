@@ -13,6 +13,7 @@
 # nctoolkit - Efficient and intuitive tools for analyzing netCDF data in Python
 
 
+
 nctoolkit is a comprehensive Python (3.6 and above) package for analyzing netCDF data.
 
 Core abilities include:
@@ -35,7 +36,7 @@ Core abilities include:
 
 The easiest way to install the package is using conda. This will install nctoolkit and all system dependencies.
 ```sh
-conda install -c rwi nctoolkit
+conda install -c conda-forge nctoolkit
 ```
 
 Install through [PyPI](https://pypi.org/project/nctoolkit/) using pip:
@@ -63,6 +64,7 @@ conda install -c conda-forge nco
 If you want to install CDO from source, bash scripts are available [here](https://github.com/r4ecology/nctoolkit/tree/master/cdo_installers).
  
 The package has been tested thoroughly for Linux, with continuous integration using Travis. It will not work on Windows platforms, but might in future version. It is untested on Mac operating systems, so should be used cautiously on them.
+
 
 
 
