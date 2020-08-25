@@ -7,84 +7,25 @@
 os: osx
 osx_image: xcode8.3
 
+matrix:
+  include:
+    - os: osx
+      python: "2.7"
+    - os: osx
+      python: "3.6"
+    - os: osx
+      python: "nightly"
 
 
-language: python
-python:
-    - "3.6"      # current default Python on Travis CI
-    - "3.7"      # current default Python on Travis CI
-    - "3.8"      # current default Python on Travis CI
+      #language: python
+      #python:
+      #    - "3.6"      # current default Python on Travis CI
+      #    - "3.7"      # current default Python on Travis CI
+      #    - "3.8"      # current default Python on Travis CI
 
 
-      #jobs:
-      #  include:
-      #    - os: linux
-      #      python: 3.6
-      #      env: TOXENV=py36
-      #    - os: linux
-      #      python: 3.3
-      #      env: TOXENV=py33
-
-
-# command to install dependencies
-#
-#before_install:
-    #- pip install -U pip
-    #- pip install -U pytest
-    #- pip install coverage
-      #- sudo apt-get -y update
-      #    - sudo apt-get -y install nco
-      #- sudo apt-get -y install cdo
-#
-#
-#addons:
-#    chrome: stable
-#    apt:
-#        packages:
-#            - chromium-chromedriver
-
-#addons:
-#    apt:
-#        update: true
-#cach:
-#    apt: true
-#
 install:
 
-    #  - wget ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4/hdf5-1.8.13.tar.gz
-    #  - tar -xvf hdf5-1.8.13.tar.gz> /dev/null 2>&1
-    #  - cd hdf5-1.8.13/> /dev/null 2>&1
-    #  - ./configure -with-zlib=/opt/cdo-install -prefix=/opt/cdo-install CFLAGS=-fPIC > /dev/null 2>&1
-
-    #  - sudo make > /dev/null 2>&1
-    #  - sudo make install> /dev/null 2>&1
-    #  - cd ..
-
-    #  - wget ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4.4.0.tar.gz
-    #  - tar -xvf netcdf-4.4.0.tar.gz  > /dev/null 2>&1
-    #  - cd netcdf-4.4.0/ 
-    #  - CPPFLAGS=-I/opt/cdo-install/include LDFLAGS=-L/opt/cdo-install/lib ./configure -prefix=/opt/cdo-install CFLAGS=-fPIC  > /dev/null 2>&1
-    #  - sudo make  > /dev/null 2>&1
-    #  - sudo make install > /dev/null 2>&1
-
-    #  - cd ..
-
-
-    #  - wget https://code.mpimet.mpg.de/attachments/download/20826/cdo-1.9.8.tar.gz 
-    #  - tar -xvzf cdo-1.9.8.tar.gz > /dev/null 2>&1
-    #  - cd cdo-1.9.8
-    #  - ./configure -with-netcdf=/opt/cdo-install -with-hdf5=/opt/cdo-install  > /dev/null 2>&1
-    #  - sudo make  > /dev/null 2>&1
-    #  - sudo make install 
-    #  - cd ..
-
-    #- pip install pandas 
-    #
-    #
-    #
-  # We do this conditionally because it saves us some downloading if the
-  # version is the same.
-  #  - ./.travis/install.sh
 
   - if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
       wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -O miniconda.sh;
