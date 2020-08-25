@@ -1,27 +1,13 @@
 
-#os:
-#- linux
-#
-#
-#
-os: osx
-osx_image: xcode8.3
-
-matrix:
-  include:
-    - os: osx
-      python: "2.7"
-    - os: osx
-      python: "3.6"
-    - os: osx
-      python: "nightly"
+os:
+  - linux
 
 
-      #language: python
-      #python:
-      #    - "3.6"      # current default Python on Travis CI
-      #    - "3.7"      # current default Python on Travis CI
-      #    - "3.8"      # current default Python on Travis CI
+language: python
+python:
+    - "3.6"      # current default Python on Travis CI
+    - "3.7"      # current default Python on Travis CI
+    - "3.8"      # current default Python on Travis CI
 
 
 install:
@@ -37,10 +23,8 @@ install:
   - hash -r
   - conda config --set always_yes yes --set changeps1 no
   - conda update -q conda
-  # Useful for debugging any issues with conda
-  - conda info -a
+    #- conda info -a
 
-  # Replace dep1 dep2 ... with your dependencies
   - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION 
   - conda activate test-environment
   - conda install -c conda-forge cdo
@@ -51,21 +35,13 @@ install:
   - pip install -r requirements.txt
   - pip install pandas 
   - python setup.py install
-    # - python setup.py install > /dev/null 2>&1
-# command to run tests
 #
 before_script:
   - ln -s /usr/lib/chromium-browser/chromedriver ~/bin/chromedriver
 script:
-    # - which cdo
-    #- cdo --version 
-    #- ncks --version 
-    #- pytest
-    #- coverage run -m unittest discover
     - coverage run -m pytest tests/test*.py
 
 
 after_success:
-    #- codecov
     - bash <(curl -s https://codecov.io/bash)
 
