@@ -81,8 +81,8 @@ or
 
 ```sh
 pip install pandas==1.0.5
-conda install -c conda-forge nco 
 ```
+
 
 
 
@@ -99,6 +99,7 @@ conda install -c conda-forge nco
 ## Reference and tutorials
 
 A full API reference, in depth tutorials and a how-to guide are available at [readthedocs](https://nctoolkit.readthedocs.io/en/latest/).
+
 
 
 
