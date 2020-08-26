@@ -874,3 +874,9 @@ class DataSet(object):
     from nctoolkit.shift import shift_days
 
     from nctoolkit.append import append
+
+    from nctoolkit.meridonials import meridonial_mean
+    from nctoolkit.meridonials import meridonial_min
+    from nctoolkit.meridonials import meridonial_max
+    from nctoolkit.meridonials import meridonial_range
+
