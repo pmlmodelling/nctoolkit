@@ -470,6 +470,20 @@ temperature in the SST dataset we would do the following:
     data = nc.open_data(infile)
     data.mean()
 
+meridonial statistics
+------------
+
+Calculate the following meridonial statistics: mean, min, max and range:
+
+::
+
+    data.meridonial_mean()
+    data.meridonial_min()
+    data.meridonial_max()
+    data.meridonial_range()
+
+
+
 monthly_anomaly
 ---------------
 
@@ -1235,3 +1249,18 @@ file is generated, a zipped “outfile”.
     data.select_years(1990)
     data.zip()
     data.write_nc(outfile)
+
+zonal statistics
+------------
+
+Calculate the following zonal statistics: mean, min, max and range:
+
+::
+
+    data.zonal_mean()
+    data.zonal_min()
+    data.zonal_max()
+    data.zonal_range()
+
+
+
