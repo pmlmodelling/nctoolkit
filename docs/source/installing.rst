@@ -25,6 +25,8 @@ nctoolkit is available from the `Python Packaging Index. <https://pypi.org/proje
 
    $ pip install nctoolkit 
 
+If you install nctoolkit from pypi, you will need to install the system dependencies listed below.
+
 To install the development version from GitHub::
 
    $ pip install git+https://github.com/r4ecology/nctoolkit.git
@@ -32,14 +34,14 @@ To install the development version from GitHub::
 
 System dependencies
 ---------------------
-If you install using conda, system dependencies will be handled for you. Otherwise you must install them. There are two main system dependencies: `Climate Data Operators <https://code.mpimet.mpg.de/projects/cdo/wiki>`__, and `NCO <http://nco.sourceforge.net/>`__. The easiest way to install them is using conda::
+There are two main system dependencies: `Climate Data Operators <https://code.mpimet.mpg.de/projects/cdo/wiki>`__, and `NCO <http://nco.sourceforge.net/>`__. The easiest way to install them is using conda::
 
     $ conda install -c conda-forge cdo
 
     $ conda install -c conda-forge nco
 
 
-While CDO is necessary for the package to work, NCO is an optional dependency and does not have to be installed.
+CDO is necessary for the package to work. NCO is an optional dependency and does not have to be installed.
 
 If you want to install CDO from source, you can use one of the bash scripts available `here. <https://github.com/r4ecology/nctoolkit/tree/master/cdo_installers>`__
 
