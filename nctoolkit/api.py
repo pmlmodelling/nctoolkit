@@ -391,26 +391,50 @@ class DataSet(object):
                 yield ff
             return
 
-    def __repr__(self):
-        # tidy up the output first
-        if isinstance(self.start, list):
-            start = str(len(self.start)) + " member ensemble"
-        if type(self.start) == str:
-            start = self.start
+    #def __repr__(self):
+    #    # tidy up the output first
+    #    if isinstance(self.start, list):
+    #        start = str(len(self.start)) + " member ensemble"
+    #    if type(self.start) == str:
+    #        start = self.start
 
+    #    if isinstance(self.current, list):
+    #        current = str(len(self.current)) + " member ensemble"
+    #    if type(self.current) == str:
+    #        current = self.current
+
+    #    return (
+    #        "<nctoolkit.DataSet>:\nstart: "
+    #        + start
+    #        + "\ncurrent: "
+    #        + current
+    #        + "\noperations: "
+    #        + str(len(self.history))
+    #    )
+
+
+    def __repr__(self):
         if isinstance(self.current, list):
             current = str(len(self.current)) + " member ensemble"
         if type(self.current) == str:
             current = self.current
 
+
+        variables = []
+        for ff in self:
+            for vv in nc_variables(ff):
+                if vv not in variables:
+                    variables.append(vv)
+
         return (
-            "<nctoolkit.DataSet>:\nstart: "
-            + start
-            + "\ncurrent: "
-            + current
-            + "\noperations: "
-            + str(len(self.history))
+            "<nctoolkit.DataSet>:\nFiles: "
+            + current +
+            "\n" +
+            "Variables: " +
+            str_flatten(variables)
         )
+
+
 
     @property
     def size(self):
@@ -850,5 +874,3 @@ class DataSet(object):
     from nctoolkit.shift import shift_days
 
     from nctoolkit.append import append
-
-
