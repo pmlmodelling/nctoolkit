@@ -14,6 +14,8 @@
 
 
 
+
+
 nctoolkit is a comprehensive Python (3.6 and above) package for analyzing netCDF data.
 
 Core abilities include:
@@ -63,7 +65,30 @@ conda install -c conda-forge nco
 
 If you want to install CDO from source, bash scripts are available [here](https://github.com/r4ecology/nctoolkit/tree/master/cdo_installers).
  
-The package has been tested thoroughly for Linux, with continuous integration using Travis. It will not work on Windows platforms, but might in future version. It is untested on Mac operating systems, so should be used cautiously on them.
+At present nctoolkit is a Linux package. It has been tested thoroughly for Linux, with continuous integration using Travis. It will not work on Windows platforms today or in future, because of system dependency limitations. But a future release will work on OSx once it has been fully tested for that OS.
+
+
+## Fixing plotting problem due to xarray bug
+
+There is currently a bug in xarray caused by the update of pandas to version 1.1. As a result some plots will fail in nctoolkit. To fix this ensure pandas version 1.0.5 is installed. Do this after installing nctoolkit. This can be done as follows:
+
+
+```sh
+conda install -c conda-forge pandas=1.0.5 
+```
+
+or
+
+```sh
+pip install pandas==1.0.5
+conda install -c conda-forge nco 
+```
+
+
+
+
+
+
 
 
 
