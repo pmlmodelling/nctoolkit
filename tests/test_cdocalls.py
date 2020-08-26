@@ -132,6 +132,28 @@ class TestCalls(unittest.TestCase):
         data.zonal_range()
         self.assertEqual(data.history[0], 'cdo -zonrange' )
 
+
+
+
+        #meridonial statistics
+
+        data = nc.open_data(ff)
+        data.meridonial_mean()
+        self.assertEqual(data.history[0], 'cdo -mermean' )
+
+
+        data = nc.open_data(ff)
+        data.meridonial_min()
+        self.assertEqual(data.history[0], 'cdo -mermin' )
+
+        data = nc.open_data(ff)
+        data.meridonial_max()
+        self.assertEqual(data.history[0], 'cdo -mermax' )
+
+        data = nc.open_data(ff)
+        data.meridonial_range()
+        self.assertEqual(data.history[0], 'cdo -merrange' )
+
         #seasonal mean
 
         data = nc.open_data(ff)
