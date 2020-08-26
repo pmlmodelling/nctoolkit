@@ -1,2 +1,12 @@
 
 
+Improvements:
+
+Better repr representation of datasets.
+
+
+
+
+New methods:
+
+1. meridonial statistics
