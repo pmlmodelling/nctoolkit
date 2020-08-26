@@ -298,6 +298,10 @@ Statistical methods
    DataSet.zonal_max
    DataSet.zonal_range
 
+   DataSet.meridonial_mean
+   DataSet.meridonial_min
+   DataSet.meridonial_max
+   DataSet.meridonial_range
 
 Seasonal methods
 ---------------------
