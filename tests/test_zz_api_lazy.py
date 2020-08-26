@@ -105,16 +105,9 @@ class TestApi(unittest.TestCase):
         self.assertEqual(x, True)
 
     def test_repr(self):
-        ff = "data/sst.mon.mean.nc"
-        data = nc.open_data(ff)
-        x = "operations: 0" in str(data)
-        self.assertEqual(x, True)
-        data.spatial_mean()
-        x = "operations: 1" in str(data)
-        self.assertEqual(x, True)
 
         data = nc.open_data(nc.create_ensemble("data/ensemble"))
-        x = "start: 60 member ensemble" in str(data)
+        x = "Files: 60 member ensemble" in str(data)
         self.assertEqual(x, True)
 
     def test_variables_detailed(self):
