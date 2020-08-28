@@ -4,6 +4,6 @@ dist/
 #*.ipynb
 *.nc
 *.swp
-nchack/*.pyc
-nchack/__pycache__/
+nctoolkit/*.pyc
+nctoolkit/__pycache__/
 docs/source/*ipynb_checkpoints/
