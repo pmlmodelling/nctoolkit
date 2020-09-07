@@ -25,6 +25,6 @@ jobs:
           name: run tests
           command: |
             source activate myenv
-            pytest -v --cov
+            pytest tests/test*.py 
 
 
