@@ -20,6 +20,7 @@ ensemble = nc.create_ensemble("data/ensemble")
 class TestCalls(unittest.TestCase):
 
     def test_cellcall(self):
+        nc.options(lazy = True)
         data = nc.open_data(ff)
         data.cell_areas(join = False)
 
@@ -42,12 +43,14 @@ class TestCalls(unittest.TestCase):
 
 
     def test_clipcall(self):
+        nc.options(lazy = True)
         data = nc.open_data(ff)
         data.clip(lon = [0, 90], lat = [0,90])
 
         self.assertEqual(data.history[0], 'cdo -L -sellonlatbox,0,90,0,90')
 
     def test_selectvariablescall(self):
+        nc.options(lazy = True)
         data = nc.open_data(ff)
         data.select_variables("sst")
 
@@ -57,6 +60,7 @@ class TestCalls(unittest.TestCase):
         self.assertEqual(data.history[0], 'cdo -selname,sst,tos')
 
     def test_selecttimestepcall(self):
+        nc.options(lazy = True)
         data = nc.open_data(ff)
         data.select_timestep(0)
 
@@ -65,6 +69,7 @@ class TestCalls(unittest.TestCase):
 
 
     def test_mutatecall(self):
+        nc.options(lazy = True)
         data = nc.open_data(ff)
         data.mutate({"k":"sst+273.15"})
 
@@ -77,12 +82,14 @@ class TestCalls(unittest.TestCase):
 
 
     def test_mutatecall(self):
+        nc.options(lazy = True)
         data = nc.open_data(ff)
         data.transmute({"k":"sst+273.15"})
 
         self.assertEqual(data.history[0], 'cdo -expr,"k=sst+273.15"')
 
     def test_sumallcall(self):
+        nc.options(lazy = True)
         data = nc.open_data(ff)
         data.mutate({"k":"sst+273.15"})
         data.sum_all()
@@ -90,6 +97,7 @@ class TestCalls(unittest.TestCase):
         self.assertEqual(data.history[1], 'cdo -expr,"total=k+sst"')
 
     def test_selectseasoncall(self):
+        nc.options(lazy = True)
         data = nc.open_data(ff)
         data.select_season("DJF")
 
@@ -97,6 +105,7 @@ class TestCalls(unittest.TestCase):
         self.assertEqual(data.history[0], 'cdo -select,season=DJF')
 
     def test_selectmonthcall(self):
+        nc.options(lazy = True)
         data = nc.open_data(ff)
         data.select_months(range(1,3))
 
@@ -105,6 +114,7 @@ class TestCalls(unittest.TestCase):
 
 
     def test_selectyearscall(self):
+        nc.options(lazy = True)
         data = nc.open_data(ff)
         data.select_years(range(1970,1973))
 
@@ -112,6 +122,7 @@ class TestCalls(unittest.TestCase):
         self.assertEqual(data.history[0], 'cdo -selyear,1970,1971,1972' )
 
     def test_callchecks(self):
+        nc.options(lazy = True)
 
         #zonal statistics
 
