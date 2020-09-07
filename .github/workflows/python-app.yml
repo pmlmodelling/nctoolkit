@@ -32,9 +32,9 @@ jobs:
        #  with:
        #    python-version: 3.8
      - name: Install dependencies
-       with:
-           activate-conda: true
        run: |
+        with:
+           activate-conda: true
          python -m pip install --upgrade pip
          conda install cdo
          conda install nco
@@ -48,9 +48,9 @@ jobs:
          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
      - name: Test with pytest
-       with:
-           activate-conda: true
        run: |
+         with:
+           activate-conda: true
          pytest
 
 
