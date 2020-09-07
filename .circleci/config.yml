@@ -19,6 +19,9 @@ jobs:
             conda install -c conda-forge -y pytest
             conda install -c conda-forge -y nco
             conda install -c conda-forge -y xarray
+            conda install -c conda-forge -y pip
+            pip install git+https://github.com/r4ecology/nctoolkit.git
+
 
       # Step 3: run linter and tests
       - run:
