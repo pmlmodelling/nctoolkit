@@ -28,11 +28,6 @@ class TestCell(unittest.TestCase):
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 
-    def test_cell_areas2(self):
-        tracker = nc.open_data(ff)
-        tracker.cell_areas(join = False)
-        tracker.spatial_mean()
-        x = tr
 
     def test_cell_areas2(self):
         tracker = nc.open_data(ff)
