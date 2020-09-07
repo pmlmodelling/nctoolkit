@@ -14,6 +14,10 @@ jobs:
           name: install dependencies
           command: |
             conda create -n myenv python=3.6
+            conda activate myenv
+            conda install cdo
+            conda install pytest
+            conda install nco
 
       # Step 3: run linter and tests
       - run:
