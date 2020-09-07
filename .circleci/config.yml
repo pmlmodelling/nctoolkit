@@ -1,21 +1,28 @@
-version: 2.1
 
-orbs:
-  python: circleci/python@0.2.1
-
+# Python CircleCI 2.0 configuration file
+version: 2
 jobs:
-  build-and-test:
-    executor: python/default
-    steps:
-      - checkout
-      - python/load-cache
-      - python/install-deps
-      - python/save-cache
-      - run:
-          command: ./manage.py test
-          name: Test
+  build:
+    docker:
+      - image: continuumio/miniconda3
 
-workflows:
-  main:
-    jobs:
-      - build-and-test
+    steps:
+      # Step 1: obtain repo from GitHub
+      - checkout
+      # Step 2: create virtual env and install dependencies
+      - run:
+          name: install dependencies
+          command: |
+            conda create -n myenv python=3.6
+
+      # Step 3: run linter and tests
+      - run:
+          name: run tests
+          command: |
+            conda init bash
+            source ~/.bashrc
+            conda activate myenv
+            flake8 --statistics
+            pytest -v --cov
+
+
