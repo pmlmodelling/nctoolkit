@@ -3,6 +3,8 @@
 version: 2
 jobs:
   build:
+    macos:  # indicate that we are using the macOS executor
+      xcode: 11.3.0 # indicate our selected version of Xcode
     docker:
       - image: continuumio/miniconda3
 
