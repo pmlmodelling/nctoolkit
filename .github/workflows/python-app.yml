@@ -25,21 +25,22 @@ jobs:
          channel-priority: flexible
          show-channel-urls: true
          use-only-tar-bz2: true
-         activate-conda: false
+         activate-conda: true
 
      - uses: actions/checkout@v2
        with:
-         activate-conda: false
+         activate-conda: true
        #- name: Set up Python 3.8
        #  uses: actions/setup-python@v2
        #  with:
        #    python-version: 3.8
      - name: Install dependencies
        run: |
-         python -m pip install --upgrade pip
          conda install cdo
+         conda install pip
          conda install nco
-         pip install flake8 pytest
+         conda install pytest
+         conda install flake8
          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
          pip install .
      - name: Lint with flake8
