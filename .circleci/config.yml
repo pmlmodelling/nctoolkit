@@ -15,10 +15,10 @@ jobs:
           command: |
             conda create -n myenv python=3.6
             source activate myenv
-            conda install conda-forge cdo
-            conda install conda-forge pytest
-            conda install conda-forge nco
-            conda install conda-forge xarray
+            conda install -c conda-forge cdo
+            conda install -c conda-forge pytest
+            conda install -c conda-forge nco
+            conda install -c conda-forge xarray
 
       # Step 3: run linter and tests
       - run:
