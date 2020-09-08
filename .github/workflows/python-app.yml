@@ -57,7 +57,7 @@ jobs:
        run: |
          conda activate foo
          #         pytest
-         pytest test_fld_lazy.py
+         pytest -s test_fld_lazy.py
 
 
 
