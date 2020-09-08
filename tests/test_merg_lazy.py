@@ -130,9 +130,6 @@ class TestMerge(unittest.TestCase):
         with self.assertRaises(ValueError) as context:
             data.merge()
 
-        with self.assertRaises(TypeError) as context:
-            data = nc.open_data([tracker.current, new.current], match = 1)
-
         n = len(nc.session_files())
 
         tracker = nc.open_data(ff)

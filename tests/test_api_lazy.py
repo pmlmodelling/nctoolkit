@@ -11,19 +11,6 @@ ff = "data/sst.mon.ltm.1981-2010.nc"
 
 class TestApi2(unittest.TestCase):
 
-  #  def test_url(self):
-  #      tracker = nc.open_data(ff)
-  #      tracker.spatial_mean()
-  #      x = tracker.to_dataframe().sst.values[0].astype("float")
-
-  #      tracker = nc.open_data("ftp://ftp.cdc.noaa.gov/Datasets/COBE/sst.mon.ltm.1981-2010.nc")
-  #      tracker.spatial_mean()
-  #      y = tracker.to_dataframe().sst.values[0].astype("float")
-
-  #      print(x)
-  #      print(y)
-  #      assert x == y
-
 
     def test_corspace(self):
         tracker = nc.open_data(ff)
@@ -38,13 +25,9 @@ class TestApi2(unittest.TestCase):
         tracker2.transmute({"tos":"sqrt(sst)"})
         tracker2.run()
 
-        print("working")
         tracker3 = nc.cor_space(tracker1, tracker2)
-        print("working1")
 
         y = tracker3.to_dataframe().cor.values[0].astype("float")
-        print(x)
-        print(y)
         assert x == y
 
 
