@@ -56,8 +56,7 @@ jobs:
        shell: bash -l {0}
        run: |
          conda activate foo
-         #         pytest
-         pytest -s test_fld_lazy.py
+         pytest
 
 
 
