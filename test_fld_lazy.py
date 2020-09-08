@@ -18,6 +18,7 @@ class TestFldsta(unittest.TestCase):
         data.select_timestep(0)
         data.spatial_mean()
         x = data.to_dataframe().sst.values[0].astype("float")
+        print(nc.session.temp_dirs)
 
         self.assertEqual(x,  18.02419662475586)
         #n = len(nc.session_files())
