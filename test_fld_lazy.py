@@ -21,6 +21,8 @@ class TestFldsta(unittest.TestCase):
         print(nc.session.temp_dirs)
 
         self.assertEqual(x,  18.02419662475586)
+        print(nc.session_files())
+        print(nc.session.nc_safe)
         #n = len(nc.session_files())
         #self.assertEqual(n, 1)
 
