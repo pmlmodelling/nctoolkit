@@ -70,3 +70,7 @@ def release(self):
         self._safe = []
 
         cleanup()
+
+        self._thredds = False
+
+
