@@ -1,7 +1,7 @@
 
 import os
 
-from nctoolkit.session import session_info, nc_safe
+from nctoolkit.session import session_info, nc_safe, temp_dirs
 
 
 def nc_remove(ff, deep=False):
@@ -10,11 +10,13 @@ def nc_remove(ff, deep=False):
     This is ultra-safe and makes sure the file is in the tmp directory before deleting
     """
 
-    if (
-        ff.startswith("/tmp")
-        or ff.startswith("/var/tmp/")
-        or ff.startswith("/usr/tmp/")
-    ) == False:
+    unsafe = True
+
+    for directory in temp_dirs:
+        if ff.startswith(directory):
+            unsafe = False
+
+    if unsafe:
         raise ValueError(f"The file {ff} is not in a tmp folder")
 
     if "nctoolkit" not in ff:

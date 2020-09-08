@@ -10,6 +10,7 @@ import string
 import subprocess
 import warnings
 import urllib.request
+import platform
 
 from netCDF4 import Dataset
 
@@ -38,8 +39,14 @@ session_info["temp_dir"] = "/tmp/"
 session_info["thread_safe"] = False
 session_info["lazy"] = False
 session_info["precision"] = None
-result = os.statvfs("/tmp/")
-session_info["size"] = result.f_frsize * result.f_bavail
+
+if platform.system() == "Linux":
+    result = os.statvfs("/tmp/")
+    session_info["size"] = result.f_frsize * result.f_bavail
+else:
+    session_info["size"] = 0
+
+
 session_info["latest_size"] = 0
 session_info["cores"] = 1
 
@@ -125,7 +132,8 @@ def file_size(file_path):
         return file_info.st_size
 
 
-def open_data(x=None, suppress_messages=False, checks=False):
+
+def open_data(x=None, suppress_messages=False, checks=False, **kwargs):
     """
     Read netcdf data as a DataSet object
 
@@ -133,21 +141,33 @@ def open_data(x=None, suppress_messages=False, checks=False):
     ---------------
     x : str or list
         A string or list of netcdf files or a single url. The function will check the files exist. If x is not a list, but an iterable it will be converted to a list. If a url is given the file will be downloaded before processing.
+    thredds : boolean
+        Are you accessing a thredds server? Must end with .nc.
     checks: boolean
         Do you want basic checks to ensure cdo can read files?
     """
+
+    thredds = False
+
+    for key in kwargs:
+        if key == "thredds":
+            thredds = kwargs[key]
+
 
     # make sure data has been supplied
     if x is None:
         raise ValueError("No data was supplied!")
 
-    #print(is_url(x))
     # coerce an iterable to a list
     if type(x) is not str:
         x = [y for y in x]
         for ff in x:
             if type(ff) is not str:
                 raise TypeError("You have not supplied an iterable made of file paths!")
+
+    if type(x) is list:
+        if len(x) == 1:
+            x = x[0]
 
     # check the files provided exist
 
@@ -156,10 +176,22 @@ def open_data(x=None, suppress_messages=False, checks=False):
         if os.path.exists(x) == False:
 
             if is_url(x):
-                new_x = temp_file(".nc")
-                print(f"Downloading {x}")
-                urllib.request.urlretrieve(x, new_x)
-                x = new_x
+
+                if thredds == False:
+                    new_x = temp_file(".nc")
+                    print(f"Downloading {x}")
+                    urllib.request.urlretrieve(x, new_x)
+                    x = new_x
+                else:
+                    out = subprocess.run(
+                     "cdo sinfo " + x,
+                         shell=True,
+                       stdout=subprocess.PIPE,
+                       stderr=subprocess.PIPE,
+                        )
+                    if "Open failed" in str(out.stderr):
+                        raise ValueError(f"{x} is not compatible with CDO!")
+
             else:
                 raise ValueError("Data set " + x + " does not exist!")
 
@@ -194,43 +226,60 @@ def open_data(x=None, suppress_messages=False, checks=False):
         if len(x) < orig_size:
             warnings.warn(message="Duplicates in data set have been removed!")
 
+    #if type(x) is list:
+    #    if len(x) == 1:
+    #        x = x[0]
+
     if type(x) is list:
-        if checks:
-            if suppress_messages == False:
-                warnings.warn("Performing basic checks on ensemble files")
-        if len(x) == 0:
-            raise ValueError("You have not provided any files!")
-
-        for ff in x:
-
-            if os.path.exists(ff) == False:
-                raise ValueError("Data set " + ff + " does not exist!")
-            else:
+        if thredds is False:
                 if checks:
-                    out = subprocess.run(
-                        "cdo sinfo " + ff,
-                        shell=True,
-                        stdout=subprocess.PIPE,
-                        stderr=subprocess.PIPE,
-                    )
-                    if "Open failed" in out.stderr.decode("utf-8"):
-                        mes = (
-                            out.stderr.decode("utf-8")
-                            .replace("cdo    sinfo: ", "")
-                            .replace("<\n", "")
-                            .replace("\n", "")
-                        )
-                        mes = re.sub(" +", " ", mes)
-                        raise ValueError(mes)
-                nc_safe.append(ff)
-                nc_protected.append(x)
+                    if suppress_messages == False:
+                        warnings.warn("Performing basic checks on ensemble files")
+                if len(x) == 0:
+                    raise ValueError("You have not provided any files!")
+
+                for ff in x:
+
+                    if os.path.exists(ff) == False:
+                        raise ValueError("Data set " + ff + " does not exist!")
+                    else:
+                        if checks:
+                            out = subprocess.run(
+                                "cdo sinfo " + ff,
+                                shell=True,
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE,
+                            )
+                            if "Open failed" in out.stderr.decode("utf-8"):
+                                mes = (
+                                    out.stderr.decode("utf-8")
+                                    .replace("cdo    sinfo: ", "")
+                                    .replace("<\n", "")
+                                    .replace("\n", "")
+                                )
+                                mes = re.sub(" +", " ", mes)
+                                raise ValueError(mes)
+                        nc_safe.append(ff)
+                        nc_protected.append(x)
+        else:
+           out = subprocess.run(
+            "cdo sinfo " + x[0],
+                shell=True,
+              stdout=subprocess.PIPE,
+              stderr=subprocess.PIPE,
+               )
+           if "Open failed" in str(out.stderr):
+               raise ValueError(f"First file in the ensemble is not compatible with CDO!")
+
 
     # if there is only one file in the list, change it to a single file
     if type(x) is list:
         if len(x) == 1:
             x = x[0]
 
-    return DataSet(x)
+    d = DataSet(x)
+    d._thredds = thredds
+    return d
 
 
 def merge(*datasets, match=["day", "year", "month"]):
@@ -369,6 +418,7 @@ class DataSet(object):
         self._merged = False
         self._safe = []
         self._zip = False
+        self._thredds = False
 
     def __getitem__(self, index):
         if type(self.current) is str:

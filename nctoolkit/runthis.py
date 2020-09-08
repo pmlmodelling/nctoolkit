@@ -4,6 +4,7 @@ import os
 import re
 import subprocess
 import sys
+import platform
 import warnings
 import multiprocessing
 
@@ -64,16 +65,17 @@ def run_nco(command, target, out_file=None, overwrite=False):
             if overwrite == False:
                 raise ValueError("Attempting to overwrite an opened file")
 
-    if session_info["temp_dir"] == "/tmp/":
-        result = os.statvfs("/tmp/")
-        result = result.f_frsize * result.f_bavail
+    if platform.system() == "Linux":
+        if session_info["temp_dir"] == "/tmp/":
+            result = os.statvfs("/tmp/")
+            result = result.f_frsize * result.f_bavail
 
-        if result < 1 * 1e9:
-            session_info["temp_dir"] == "/var/tmp/"
-            if target.startswith("/tmp"):
-                new_target = target.replace("/tmp/", "/var/tmp/")
-                command = command.replace(target, new_target)
-                target = target.replace("/tmp/", "/var/tmp/")
+            if result < 1 * 1e9:
+                session_info["temp_dir"] == "/var/tmp/"
+                if target.startswith("/tmp"):
+                    new_target = target.replace("/tmp/", "/var/tmp/")
+                    command = command.replace(target, new_target)
+                    target = target.replace("/tmp/", "/var/tmp/")
 
     out = subprocess.Popen(
         command,
@@ -138,16 +140,17 @@ def run_cdo(command, target, out_file=None, overwrite=False):
             if overwrite == False:
                 raise ValueError("Attempting to overwrite file")
 
-    if session_info["temp_dir"] == "/tmp/":
-        result = os.statvfs("/tmp/")
-        result = result.f_frsize * result.f_bavail
+    if platform.system() == "Linux":
+        if session_info["temp_dir"] == "/tmp/":
+            result = os.statvfs("/tmp/")
+            result = result.f_frsize * result.f_bavail
 
-        if result < 1 * 1e9:
-            session_info["temp_dir"] == "/var/tmp/"
-            if target.startswith("/tmp"):
-                new_target = target.replace("/tmp/", "/var/tmp/")
-                command = command.replace(target, new_target)
-                target = target.replace("/tmp/", "/var/tmp/")
+            if result < 1 * 1e9:
+                session_info["temp_dir"] == "/var/tmp/"
+                if target.startswith("/tmp"):
+                    new_target = target.replace("/tmp/", "/var/tmp/")
+                    command = command.replace(target, new_target)
+                    target = target.replace("/tmp/", "/var/tmp/")
 
     if command.startswith("cdo ") == False:
         raise ValueError("The command does not start with cdo!")
@@ -422,16 +425,17 @@ def run_this(os_command, self, output="one", out_file=None):
                 os_command = os_command.replace("  ", " ")
 
             # ensure there is sufficient space in /tmp if it is to be used
-            all_sizes = 0
+            if platform.system() == "Linux":
+                all_sizes = 0
 
-            for ff in self:
-                all_sizes += file_size(ff)
+                for ff in self:
+                    all_sizes += file_size(ff)
 
-            result = os.statvfs("/tmp/")
-            result = result.f_frsize * result.f_bavail
+                result = os.statvfs("/tmp/")
+                result = result.f_frsize * result.f_bavail
 
-            if result < (2 * all_sizes):
-                session_info["temp_dir"] == "/var/tmp/"
+                if result < (2 * all_sizes):
+                    session_info["temp_dir"] == "/var/tmp/"
 
             target = temp_file("nc")
 

@@ -2,10 +2,11 @@
 import glob
 import copy
 import os
+import platform
 
 from nctoolkit.cleanup import cleanup, disk_clean
 from nctoolkit.temp_file import temp_file
-from nctoolkit.session import nc_safe, session_info
+from nctoolkit.session import nc_safe, session_info, temp_dirs
 
 def split_cdo(self, method="year"):
     """
@@ -25,13 +26,14 @@ def split_cdo(self, method="year"):
         # But, first we need to check whether there is sufficient space in the output folder
         # If there isn't, we need to switch to the /var/tmp
 
-        if session_info["temp_dir"] == "/tmp/":
-            result = os.statvfs("/tmp/")
-            result = result.f_frsize * result.f_bavail
-            session_info["size"] = result
+        if platform.system() == "Linux":
+            if session_info["temp_dir"] == "/tmp/":
+                result = os.statvfs("/tmp/")
+                result = result.f_frsize * result.f_bavail
+                session_info["size"] = result
 
-            if os.path.getsize(ff) * 2 > session_info["size"]:
-                session_info["temp_dir"] = "/var/tmp/"
+                if os.path.getsize(ff) * 2 > session_info["size"]:
+                    session_info["temp_dir"] = "/var/tmp/"
 
         split_base = temp_file()
 
@@ -43,15 +45,14 @@ def split_cdo(self, method="year"):
 
         # now, pull out the files generated
 
-        mylist = [f for f in glob.glob("/tmp/" + "*.nc*")]
-        mylist = mylist + [f for f in glob.glob("/var/tmp/" + "*.nc*")]
-        mylist = mylist + [f for f in glob.glob("/usr/tmp/" + "*.nc*")]
-
         counter = 0
-        for x in mylist:
-            if split_base in x:
-                new_files.append(x)
-                counter += 1
+        for directory in temp_dirs:
+            mylist = [f for f in glob.glob(f"{directory}/*.nc*")]
+            mylist = [f for f in mylist if session_info["stamp"] in f]
+            for ff in mylist:
+                if split_base in ff:
+                    new_files.append(ff)
+                    counter += 1
 
         if counter == 0:
             raise ValueError("Splitting the file did not work!")
