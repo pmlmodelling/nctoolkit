@@ -6,7 +6,7 @@ import subprocess
 import warnings
 import xarray as xr
 
-from nctoolkit.api import open_data
+from nctoolkit.api import open_data, is_url
 from nctoolkit.cleanup import cleanup, disk_clean
 from nctoolkit.flatten import str_flatten
 from nctoolkit.generate_grid import generate_grid
@@ -98,7 +98,7 @@ def regrid(self, grid=None, method="bil"):
     for key in grid_split:
         # first we need to generate the weights for remapping
         # and add this to the files created list and self.weights
-        tracker = open_data(grid_split[key], suppress_messages=True)
+        tracker = open_data(grid_split[key],  suppress_messages=True, thredds = self._thredds)
 
         weights_nc = temp_file("nc")
 
@@ -145,5 +145,7 @@ def regrid(self, grid=None, method="bil"):
 
     self.current = new_files
 
+
+    self._thredds = False
     cleanup()
     self.disk_clean()
