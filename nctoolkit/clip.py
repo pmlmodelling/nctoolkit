@@ -1,4 +1,3 @@
-
 import copy
 import subprocess
 
@@ -47,7 +46,7 @@ def clip(self, lon=[-180, 180], lat=[-90, 90], nco=False):
     if lon[1] < lon[0]:
         raise ValueError("Check lon order")
 
-    if nco == False:
+    if nco is False:
         if (lon[0] >= -180) and (lon[1] <= 180) and (lat[0] >= -90) and (lat[1] <= 90):
             lat_box = str_flatten(lon + lat)
             cdo_command = "cdo -sellonlatbox," + lat_box

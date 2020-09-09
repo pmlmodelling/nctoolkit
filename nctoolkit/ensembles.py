@@ -1,4 +1,3 @@
-
 import copy
 import warnings
 import subprocess
@@ -11,12 +10,12 @@ from nctoolkit.temp_file import temp_file
 
 def cdo_version():
     """Function to find cdo version"""
-    cdo_check = subprocess.run("cdo --version", shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    cdo_check = subprocess.run(
+        "cdo --version", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+    )
     cdo_check = str(cdo_check.stderr).replace("\\n", "")
     cdo_check = cdo_check.replace("b'", "").strip()
     return cdo_check.split("(")[0].strip().split(" ")[-1]
-
-
 
 
 def ensemble_percentile(self, p=None):
@@ -72,7 +71,7 @@ def ensemble_nco(self, method, ignore_time=False):
     target = temp_file("nc")
 
     # generate the nco call
-    if ignore_time == False:
+    if ignore_time is False:
         nco_command = f'ncea -y {method} {str_flatten(ff_ensemble, " ")} {target}'
     else:
         nco_command = f'ncra -y {method} {str_flatten(ff_ensemble, " ")} {target}'
@@ -92,7 +91,7 @@ def ensemble_nco(self, method, ignore_time=False):
     self.disk_clean()
 
 
-def ensemble_max(self, nco = False, ignore_time=False):
+def ensemble_max(self, nco=False, ignore_time=False):
     """
     Calculate an ensemble maximum
 
@@ -109,7 +108,6 @@ def ensemble_max(self, nco = False, ignore_time=False):
 
         if type(self.current) is not list:
             warnings.warn(message="There is only one file in the dataset")
-
 
         if ignore_time is False:
             cdo_command = "cdo --sortname -ensmax"
@@ -132,9 +130,7 @@ def ensemble_max(self, nco = False, ignore_time=False):
     ensemble_nco(self, "max", ignore_time=ignore_time)
 
 
-
-
-def ensemble_min(self, nco = False, ignore_time=False):
+def ensemble_min(self, nco=False, ignore_time=False):
     """
     Calculate an ensemble min
 
@@ -172,7 +168,7 @@ def ensemble_min(self, nco = False, ignore_time=False):
     ensemble_nco(self, "min", ignore_time=ignore_time)
 
 
-def ensemble_mean(self, nco = False, ignore_time=False):
+def ensemble_mean(self, nco=False, ignore_time=False):
     """
     Calculate an ensemble mean
 
@@ -225,7 +221,3 @@ def ensemble_range(self):
     run_this(cdo_command, self)
 
     self._merged = True
-
-
-
-

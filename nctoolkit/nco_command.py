@@ -1,4 +1,3 @@
-
 import copy
 
 from nctoolkit.flatten import str_flatten
@@ -28,7 +27,7 @@ def nco_command(self, command=None, ensemble=False):
     new_files = []
     new_commands = []
 
-    if (ensemble == False) or (len(self) == 1):
+    if (ensemble is False) or (len(self) == 1):
         for ff in self:
 
             target = temp_file(".nc")

@@ -1,4 +1,3 @@
-
 import copy
 import subprocess
 
@@ -19,16 +18,17 @@ def cell_areas(self, join=True):
         Set to False if you only want the cell areas to be in the output. join=True adds the areas as a variable to the dataset. Defaults to True.
     """
 
-    if isinstance(join, bool) == False:
+    if isinstance(join, bool) is False:
         raise TypeError("join is not boolean")
 
     # release if you need to join the cell areas to the original file
     if join:
         self.run()
 
-    #get the cdo version
-
-    cdo_check = subprocess.run("cdo --version", shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    # get the cdo version
+    cdo_check = subprocess.run(
+        "cdo --version", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+    )
     cdo_check = str(cdo_check.stderr).replace("\\n", "")
     cdo_check = cdo_check.replace("b'", "").strip()
     cdo_version = cdo_check.split("(")[0].strip().split(" ")[-1]

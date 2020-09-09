@@ -1,4 +1,3 @@
-
 import copy
 import subprocess
 import warnings
@@ -83,7 +82,6 @@ def vertstat(self, stat="mean"):
     """Method to calculate the vertical mean from a function"""
     cdo_command = f"cdo -vert{stat}"
     run_this(cdo_command, self, output="ensemble")
-
 
 
 def vertical_mean(self):

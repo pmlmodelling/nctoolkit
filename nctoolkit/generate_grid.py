@@ -1,4 +1,3 @@
-
 import numpy as np
 
 from nctoolkit.flatten import str_flatten
@@ -38,8 +37,8 @@ def generate_grid(coords):
 
         if (
             np.array_equal(x, lon_unique)
-            == False | np.array_equal(y, lat_unique)
-            == False
+            is False | np.array_equal(y, lat_unique)
+            is False
         ):
             grid_type = "unstructured"
 

@@ -1,4 +1,3 @@
-
 import os
 import copy
 
@@ -22,7 +21,7 @@ def write_nc(self, out, zip=True, overwrite=False):
     """
 
     # If the output file exists, cdo cannot simultaneously have it opened and written to
-    if (os.path.exists(out)) and (overwrite == True):
+    if (os.path.exists(out)) and (overwrite is True):
         self.run()
 
     if type(self.current) is list:
@@ -39,18 +38,18 @@ def write_nc(self, out, zip=True, overwrite=False):
     if self._merged:
         write = True
 
-    if write == False:
+    if write is False:
         raise ValueError("You cannot save multiple files!")
 
     # Check if outfile exists and overwrite is set to False
     # This should maybe be a warning, not an error
-    if (os.path.exists(out)) and (overwrite == False):
+    if (os.path.exists(out)) and (overwrite is False):
         raise ValueError("The out file exists and overwrite is set to false")
 
     if len(self.history) == len(self._hold_history):
         if zip:
             cdo_command = f"cdo -z zip_9 copy {ff[0]} {out}"
-            run_cdo(cdo_command, target = out, overwrite = overwrite)
+            run_cdo(cdo_command, target=out, overwrite=overwrite)
 
             self.history.append(cdo_command)
             self._hold_history = copy.deepcopy(self.history)
@@ -58,7 +57,7 @@ def write_nc(self, out, zip=True, overwrite=False):
 
         else:
             cdo_command = f"cdo copy {ff[0]} {out}"
-            run_cdo(cdo_command, target = out, overwrite = overwrite)
+            run_cdo(cdo_command, target=out, overwrite=overwrite)
             self.history.append(cdo_command)
             self._hold_history = copy.deepcopy(self.history)
 
@@ -75,7 +74,7 @@ def write_nc(self, out, zip=True, overwrite=False):
         run_this(cdo_command, self, out_file=out)
         self._execute = False
 
-    if os.path.exists(out) == False:
+    if os.path.exists(out) is False:
         raise ValueError("File zipping was not successful")
 
     self.current = out

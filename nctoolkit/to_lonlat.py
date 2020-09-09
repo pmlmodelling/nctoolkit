@@ -1,4 +1,3 @@
-
 from nctoolkit.cleanup import cleanup
 from nctoolkit.session import nc_safe
 from nctoolkit.temp_file import temp_file
@@ -104,5 +103,4 @@ def to_latlon(self, lon=None, lat=None, res=None, method="bil"):
 
     nc_safe.remove(grid_file)
 
-    #os.remove(grid_file)
     cleanup()

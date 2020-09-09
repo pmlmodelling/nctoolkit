@@ -1,4 +1,3 @@
-
 import copy
 
 from nctoolkit.cleanup import cleanup
@@ -35,11 +34,11 @@ def set_date(self, year=None, month=None, day=None, base_year=1900):
     # check that the values supplied are valid
     # This will convert things to ints, and if it can't be done, throw an error
     if type(year) is not int:
-        raise TypeError(f"year supplied is not an int")
+        raise TypeError("year supplied is not an int")
     if type(month) is not int:
-        raise TypeError(f"month supplied is not an int")
+        raise TypeError("month supplied is not an int")
     if type(day) is not int:
-        raise TypeError(f"day supplied is not an int")
+        raise TypeError("day supplied is not an int")
 
     cdo_command = f"cdo -setreftime,{str(base_year)}-01-01 -setdate,{str(year)}-{str(month)}-{str(day)}"
 
@@ -64,7 +63,6 @@ def set_missing(self, value=None):
 
     if type(value) is not list:
         raise TypeError("Please supply a list, int or float!")
-
 
     for vv in value:
         if (type(vv) is not float) and (type(vv) is not int):

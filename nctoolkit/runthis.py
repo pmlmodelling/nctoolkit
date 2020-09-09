@@ -1,4 +1,3 @@
-
 import copy
 import os
 import re
@@ -41,7 +40,7 @@ def tidy_command(command):
 
     command = command.strip()
 
-    if session_info["thread_safe"] == False:
+    if session_info["thread_safe"] is False:
         command = command.replace("-L ", " ").replace("cdo ", "cdo -L ")
     else:
         command = command.replace("-L ", " ")
@@ -55,13 +54,13 @@ def run_nco(command, target, out_file=None, overwrite=False):
         command.startswith("ncea ")
         or command.startswith("ncra ")
         or command.startswith("ncatted")
-    ) == False:
+    ) is False:
         raise ValueError("This is not a valid NCO command")
 
     # Make sure it is not attempting to overwrite a protected file
     if out_file is None:
         if command.split()[-1] in nc_protected:
-            if overwrite == False:
+            if overwrite is False:
                 raise ValueError("Attempting to overwrite an opened file")
 
     if platform.system() == "Linux":
@@ -115,11 +114,11 @@ def run_nco(command, target, out_file=None, overwrite=False):
             warnings.warn(message=f"NCO warning: {str(result)}")
 
     if target != "":
-        if os.path.exists(target) == False:
+        if os.path.exists(target) is False:
             raise ValueError(f"{command} was not successful. Check output")
     else:
         actual_target = command.split(" ")[-1].strip()
-        if os.path.exists(actual_target) == False:
+        if os.path.exists(actual_target) is False:
             raise ValueError(f"{command} was not successful. Check output")
 
     if target != "":
@@ -136,7 +135,7 @@ def run_cdo(command, target, out_file=None, overwrite=False):
 
     if out_file is None:
         if os.path.exists(command.split()[-1]):
-            if overwrite == False:
+            if overwrite is False:
                 raise ValueError("Attempting to overwrite file")
 
     if platform.system() == "Linux":
@@ -151,7 +150,7 @@ def run_cdo(command, target, out_file=None, overwrite=False):
                     command = command.replace(target, new_target)
                     target = target.replace("/tmp/", "/var/tmp/")
 
-    if command.startswith("cdo ") == False:
+    if command.startswith("cdo ") is False:
         raise ValueError("The command does not start with cdo!")
 
     out = subprocess.Popen(
@@ -316,7 +315,7 @@ def run_cdo(command, target, out_file=None, overwrite=False):
                 category=Warning,
             )
 
-    if os.path.exists(target) == False:
+    if os.path.exists(target) is False:
         raise ValueError(f"{command} was not successful. Check output")
 
     session_info["latest_size"] = os.path.getsize(target)
@@ -331,7 +330,7 @@ def run_this(os_command, self, output="one", out_file=None):
     if type(self.current) is str:
         output = "ensemble"
 
-    if self._execute == False:
+    if self._execute is False:
         if len(self._hold_history) == len(self.history):
             self.history.append(os_command)
         else:
@@ -396,7 +395,6 @@ def run_this(os_command, self, output="one", out_file=None):
 
             pool.close()
             pool.join()
-            new_current = []
             for k, v in results.items():
                 target_list.append(v.get())
 

@@ -1,4 +1,3 @@
-
 import os
 
 from nctoolkit.session import session_info, nc_safe, temp_dirs
@@ -22,10 +21,10 @@ def nc_remove(ff, deep=False):
     if "nctoolkit" not in ff:
         raise ValueError(f"The file {ff}  was not created by nctoolkit")
 
-    if (ff in nc_safe) and (deep == False):
+    if (ff in nc_safe) and (deep is False):
         raise ValueError(f"The file {ff} is in the safe list, so cannot be removed")
 
-    if deep == False:
+    if deep is False:
         if session_info["stamp"] not in ff:
             raise ValueError(f"The file {ff}  was not created during this session")
 

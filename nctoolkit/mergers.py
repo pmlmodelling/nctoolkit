@@ -1,4 +1,3 @@
-
 import pandas as pd
 import subprocess
 import warnings
@@ -11,7 +10,9 @@ from nctoolkit.session import session_info
 
 def cdo_version():
     """Function to find cdo version"""
-    cdo_check = subprocess.run("cdo --version", shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    cdo_check = subprocess.run(
+        "cdo --version", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+    )
     cdo_check = str(cdo_check.stderr).replace("\\n", "")
     cdo_check = cdo_check.replace("b'", "").strip()
     return cdo_check.split("(")[0].strip().split(" ")[-1]
@@ -123,7 +124,7 @@ def merge(self, match=["year", "month", "day"]):
             all_df.append(i_data)
 
     for i in range(1, len(all_df)):
-        if all_df[0].equals(all_df[i]) == False:
+        if all_df[0].equals(all_df[i]) is False:
             raise ValueError("Dates of data sets do not satisfy matching criteria!")
 
     cdo_command = "cdo -merge"
@@ -158,6 +159,3 @@ def merge_time(self):
 
     if cdo_version() in ["1.9.3"]:
         self.run()
-
-
-

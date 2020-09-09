@@ -1,4 +1,3 @@
-
 import inspect
 
 from nctoolkit.runthis import run_this
@@ -48,7 +47,7 @@ def fix_expression(operations=None, i_frame=None):
                         str(x.replace("@", "")) + " is not a local variable"
                     )
 
-                if isinstance(new_x, (int, float)) == False:
+                if isinstance(new_x, (int, float)) is False:
                     raise TypeError(x + " is not numeric!")
                 new_expr += str(new_x)
             else:
@@ -121,10 +120,10 @@ def sum_all(self, drop=True):
 
     self.run()
 
-    if (type(self.current) is list) and (self._merged == False):
+    if (type(self.current) is list) and (self._merged is False):
         raise TypeError("This only works for single files presently")
 
-    if drop == True:
+    if drop is True:
         self.transmute({"total": "+".join(self.variables)})
 
     else:

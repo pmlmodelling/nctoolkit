@@ -1,11 +1,10 @@
-
 import os
 
 from nctoolkit.api import open_data
 from nctoolkit.runthis import run_this
 
 
-def reduce_grid(self, mask = None):
+def reduce_grid(self, mask=None):
     """
     Reduce the dataset to non-zero locations in a mask
     Parameters
@@ -18,7 +17,7 @@ def reduce_grid(self, mask = None):
 
     # pull out the mask file
     if type(mask) is str:
-        if os.path.exists(mask) == False:
+        if os.path.exists(mask) is False:
             raise ValueError(f"{mask} does not exist")
         target = mask
 

@@ -1,4 +1,3 @@
-
 import subprocess
 
 from nctoolkit.runthis import run_this
@@ -30,8 +29,6 @@ def cdo_command(self, command=None):
     cdo_methods = [x.split(" ")[0].replace("b'", "") for x in str(read).split("\\n")]
 
     cdo_methods = [mm for mm in cdo_methods if len(mm) > 0]
-
-    n_methods = 0
 
     for x in command.split(" "):
         y = x.split(",")[0].replace("-", "")

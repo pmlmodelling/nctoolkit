@@ -1,4 +1,3 @@
-
 from nctoolkit.runthis import run_this
 
 
@@ -35,6 +34,3 @@ def zonal_range(self):
     Calculate the zonal range for each year/month combination in files. This applies to each file in an ensemble.
     """
     zonstat(self, stat="range")
-
-
-

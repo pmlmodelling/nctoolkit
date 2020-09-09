@@ -1,4 +1,3 @@
-
 import copy
 
 from nctoolkit.cleanup import cleanup

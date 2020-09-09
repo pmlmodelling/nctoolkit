@@ -1,4 +1,3 @@
-
 from nctoolkit.flatten import str_flatten
 from nctoolkit.runthis import run_this
 
@@ -24,16 +23,16 @@ def mask_box(self, lon=[-180, 180], lat=[-90, 90]):
     if len(lat) != 2:
         raise ValueError("lat is a list of more than 2 variables")
 
-    if ((type(lon[0]) is float) or (type(lon[0]) is int)) == False:
+    if ((type(lon[0]) is float) or (type(lon[0]) is int)) is False:
         raise TypeError("Check lon")
 
-    if ((type(lon[1]) is float) or (type(lon[1]) is int)) == False:
+    if ((type(lon[1]) is float) or (type(lon[1]) is int)) is False:
         raise TypeError("Check lon")
 
-    if ((type(lat[0]) is float) or (type(lat[0]) is int)) == False:
+    if ((type(lat[0]) is float) or (type(lat[0]) is int)) is False:
         raise TypeError("Check lat")
 
-    if ((type(lat[1]) is float) or (type(lat[1]) is int)) == False:
+    if ((type(lat[1]) is float) or (type(lat[1]) is int)) is False:
         raise TypeError("Check lat")
 
     # now, clip to the lonlat box we need

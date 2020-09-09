@@ -1,4 +1,3 @@
-
 from nctoolkit.cleanup import cleanup
 from nctoolkit.runthis import run_this
 from nctoolkit.session import nc_safe
@@ -11,7 +10,7 @@ def run(self):
 
     # the first step is to set the run status to true
 
-    if (self._execute == False) and (len(self.history) > len(self._hold_history)):
+    if (self._execute is False) and (len(self.history) > len(self._hold_history)):
         self._execute = True
 
         cdo_command = "cdo "
@@ -45,7 +44,7 @@ def release(self):
 
     # the first step is to set the run status to true
 
-    if (self._execute == False) and (len(self.history) > len(self._hold_history)):
+    if (self._execute is False) and (len(self.history) > len(self._hold_history)):
         self._execute = True
 
         cdo_command = "cdo "
@@ -72,5 +71,3 @@ def release(self):
         cleanup()
 
         self._thredds = False
-
-

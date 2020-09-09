@@ -1,4 +1,3 @@
-
 import warnings
 
 from nctoolkit.cleanup import cleanup
@@ -90,8 +89,7 @@ def select_years(self, years=None):
         if type(yy) is not int:
             raise TypeError(f"{yy} is not an int")
 
-    if self._merged == False:
-        select_years = False
+    if self._merged is False:
 
         missing_files = 0
 

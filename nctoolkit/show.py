@@ -1,5 +1,5 @@
-
 import subprocess
+
 
 def nc_times(ff):
 
@@ -82,5 +82,3 @@ def nc_months(ff):
     all_months = [int(v) for v in all_months]
     all_months.sort()
     return all_months
-
-

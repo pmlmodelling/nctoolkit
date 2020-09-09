@@ -1,4 +1,3 @@
-
 import copy
 import subprocess
 
@@ -8,7 +7,9 @@ from nctoolkit.temp_file import temp_file
 
 
 def cdo_version():
-    cdo_check = subprocess.run("cdo --version", shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    cdo_check = subprocess.run(
+        "cdo --version", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+    )
     cdo_check = str(cdo_check.stderr).replace("\\n", "")
     cdo_check = cdo_check.replace("b'", "").strip()
     return cdo_check.split("(")[0].strip().split(" ")[-1]
@@ -70,14 +71,14 @@ def spatial_sum(self, by_area=False):
         Set to True if you want to multiply the values by the grid cell area before summing over space. Default is False.
     """
 
-    if isinstance(by_area, bool) == False:
+    if isinstance(by_area, bool) is False:
         raise TypeError("by_area is not boolean")
 
     # fldstats cannot be chained in cdo version 1.9.3, so run everything
     if cdo_version() in ["1.9.3"]:
         self.run()
 
-    if (type(self.current)) is str or (by_area == False):
+    if (type(self.current)) is str or (by_area is False):
 
         if by_area:
             self.run()
@@ -105,7 +106,7 @@ def spatial_sum(self, by_area=False):
                 cdo_command = f"cdo -fldsum {target2} {target}"
                 cdo_command = tidy_command(cdo_command)
                 target = run_cdo(cdo_command, target=target)
-                self.history+=new_commands
+                self.history += new_commands
                 self._hold_history = copy.deepcopy(self.history)
 
                 self.current = target

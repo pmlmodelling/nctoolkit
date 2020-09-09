@@ -1,8 +1,7 @@
-
 from nctoolkit.runthis import run_this
 
 
-def shift_hours(self, shift = None):
+def shift_hours(self, shift=None):
     """
     Shift times in dataset by a number of hours
 
@@ -25,7 +24,8 @@ def shift_hours(self, shift = None):
 
     run_this(cdo_command, self, output="ensemble")
 
-def shift_days(self, shift = None):
+
+def shift_days(self, shift=None):
     """
     Shift times in dataset by a number of days
 
@@ -47,4 +47,3 @@ def shift_days(self, shift = None):
     cdo_command = f"cdo -shifttime,{shift}days"
 
     run_this(cdo_command, self, output="ensemble")
-

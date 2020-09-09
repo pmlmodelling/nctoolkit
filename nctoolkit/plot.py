@@ -1,5 +1,3 @@
-
-
 import sys
 
 from netCDF4 import Dataset
@@ -14,8 +12,10 @@ import hvplot.pandas
 import hvplot.xarray
 from bokeh.plotting import show
 
-hv.extension('bokeh')
+hv.extension("bokeh")
 hv.Store.renderers
+
+
 def variable_dims(ff):
     """
     Levels and points for variables in a dataset
@@ -35,7 +35,6 @@ def variable_dims(ff):
         .strip()
     )
     cdo_result = cdo_result.split()
-    dataset = Dataset(ff)
 
     out = subprocess.run(
         "cdo sinfon " + ff,
@@ -56,14 +55,13 @@ def variable_dims(ff):
 
     var_det = [ff.replace(":", "") for ff in var_det]
     var_det = [" ".join(ff.split()) for ff in var_det]
-    var_det = [
-        ff.replace("Parameter name", "variable").split(" ") for ff in var_det
-    ]
+    var_det = [ff.replace("Parameter name", "variable").split(" ") for ff in var_det]
     sales = var_det[1:]
     labels = var_det[0]
     df = pd.DataFrame.from_records(sales, columns=labels)
-    df = df.assign(Points = lambda x: x.Points.astype("int"))
+    df = df.assign(Points=lambda x: x.Points.astype("int"))
     return df
+
 
 def ctrc():
     time.sleep(1)
@@ -73,14 +71,19 @@ def ctrc():
 def is_curvilinear(ff):
     """Function to work out if a file contains a curvilinear grid"""
     cdo_result = subprocess.run(
-    f"cdo sinfo {ff}",
-    shell=True,
-    stdout=subprocess.PIPE,
-    stderr=subprocess.PIPE)
+        f"cdo sinfo {ff}", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+    )
 
-    return len([x for x in cdo_result.stdout.decode("utf-8").split("\n") if "curvilinear" in x]) > 0
-
-
+    return (
+        len(
+            [
+                x
+                for x in cdo_result.stdout.decode("utf-8").split("\n")
+                if "curvilinear" in x
+            ]
+        )
+        > 0
+    )
 
 
 def in_notebook():
@@ -88,8 +91,7 @@ def in_notebook():
     Returns ``True`` if the module is running in IPython kernel,
     ``False`` if in IPython shell or other Python shell.
     """
-    return 'ipykernel' in sys.modules
-
+    return "ipykernel" in sys.modules
 
 
 def plot(self, log=False, vars=None, panel=False):
@@ -150,11 +152,9 @@ def plot(self, log=False, vars=None, panel=False):
     if vars is None and n_points == 1:
         vars = self.variables
 
-
     if type(vars) is list:
         if len(vars) == 1:
             vars = vars[0]
-
 
     # Case when all you can plot is a time series, but more than one variable
 
@@ -176,14 +176,16 @@ def plot(self, log=False, vars=None, panel=False):
         data = data.squeeze([lon_name, lat_name])
         data = data.rename({vars: "x"})
 
-        intplot =  data.x.hvplot(responsive = (in_notebook() == False))
-        if in_notebook() == True:
+        intplot = data.x.hvplot(responsive=(in_notebook() is False))
+        if in_notebook() is True:
             return intplot
 
-        t = Thread(target = ctrc)
+        t = Thread(target=ctrc)
         t.start()
 
-        bokeh_server = pn.panel(intplot, sizing_mode='stretch_both').show(threaded = False)
+        bokeh_server = pn.panel(intplot, sizing_mode="stretch_both").show(
+            threaded=False
+        )
 
         return None
 
@@ -202,41 +204,56 @@ def plot(self, log=False, vars=None, panel=False):
         df = df.drop(columns=to_go)
 
         if panel:
-            intplot =  (
+            intplot = (
                 df.reset_index()
                 .set_index("time")
                 .loc[:, vars]
                 .reset_index()
                 .melt("time")
                 .set_index("time")
-                .hvplot(by="variable", logy=log, subplots=True, shared_axes=False, responsive = (in_notebook() == False))
+                .hvplot(
+                    by="variable",
+                    logy=log,
+                    subplots=True,
+                    shared_axes=False,
+                    responsive=(in_notebook() is False),
+                )
             )
             if in_notebook():
                 return intplot
 
-            t = Thread(target = ctrc)
+            t = Thread(target=ctrc)
             t.start()
 
-            bokeh_server = pn.panel(intplot, sizing_mode='stretch_both').show(threaded = False)
+            bokeh_server = pn.panel(intplot, sizing_mode="stretch_both").show(
+                threaded=False
+            )
             return None
 
         else:
-            intplot =  (
+            intplot = (
                 df.reset_index()
                 .set_index("time")
                 .loc[:, vars]
                 .reset_index()
                 .melt("time")
                 .set_index("time")
-                .hvplot(groupby="variable", logy=log, dynamic=True, responsive = (in_notebook() == False))
+                .hvplot(
+                    groupby="variable",
+                    logy=log,
+                    dynamic=True,
+                    responsive=(in_notebook() is False),
+                )
             )
             if in_notebook():
                 return intplot
 
-            t = Thread(target = ctrc)
+            t = Thread(target=ctrc)
             t.start()
 
-            bokeh_server = pn.panel(intplot, sizing_mode='stretch_both').show(threaded = False)
+            bokeh_server = pn.panel(intplot, sizing_mode="stretch_both").show(
+                threaded=False
+            )
             return None
 
     if (n_points > 1) and (type(vars) is str):
@@ -258,33 +275,67 @@ def plot(self, log=False, vars=None, panel=False):
         v_max = max(self_max.values, -self_min.values)
         if (self_max.values > 0) and (self_min.values < 0):
             if is_curvilinear(self.current):
-                intplot =  self.to_xarray().hvplot.quadmesh(
-                        lon_name, lat_name, vars, dynamic=True, logz=log,  responsive = (in_notebook() == False)).redim.range(**{vars: (-v_max, v_max)})
+                intplot = (
+                    self.to_xarray()
+                    .hvplot.quadmesh(
+                        lon_name,
+                        lat_name,
+                        vars,
+                        dynamic=True,
+                        logz=log,
+                        responsive=(in_notebook() is False),
+                    )
+                    .redim.range(**{vars: (-v_max, v_max)})
+                )
             else:
-                intplot =  self.to_xarray().hvplot.image(
-                        lon_name, lat_name, vars, dynamic=True, logz=log,  responsive = (in_notebook() == False)).redim.range(**{vars: (-v_max, v_max)})
+                intplot = (
+                    self.to_xarray()
+                    .hvplot.image(
+                        lon_name,
+                        lat_name,
+                        vars,
+                        dynamic=True,
+                        logz=log,
+                        responsive=(in_notebook() is False),
+                    )
+                    .redim.range(**{vars: (-v_max, v_max)})
+                )
             if in_notebook():
                 return intplot
 
-            t = Thread(target = ctrc)
+            t = Thread(target=ctrc)
             t.start()
-            bokeh_server = pn.panel(intplot, sizing_mode='stretch_both').show(threaded = False)
+            bokeh_server = pn.panel(intplot, sizing_mode="stretch_both").show(
+                threaded=False
+            )
             return None
 
         else:
             if is_curvilinear(self.current):
-                intplot =  (
+                intplot = (
                     self.to_xarray()
                     .hvplot.quadmesh(
-                        lon_name, lat_name, vars, dynamic=True, logz=log, cmap="viridis", responsive = (in_notebook() == False)
+                        lon_name,
+                        lat_name,
+                        vars,
+                        dynamic=True,
+                        logz=log,
+                        cmap="viridis",
+                        responsive=(in_notebook() is False),
                     )
                     .redim.range(**{vars: (self_min.values, v_max)})
                 )
             else:
-                intplot =  (
+                intplot = (
                     self.to_xarray()
                     .hvplot.image(
-                        lon_name, lat_name, vars, dynamic=True, logz=log, cmap="viridis", responsive = (in_notebook() == False)
+                        lon_name,
+                        lat_name,
+                        vars,
+                        dynamic=True,
+                        logz=log,
+                        cmap="viridis",
+                        responsive=(in_notebook() is False),
                     )
                     .redim.range(**{vars: (self_min.values, v_max)})
                 )
@@ -292,10 +343,11 @@ def plot(self, log=False, vars=None, panel=False):
             if in_notebook():
                 return intplot
 
-            t = Thread(target = ctrc)
+            t = Thread(target=ctrc)
             t.start()
-            bokeh_server = pn.panel(intplot, sizing_mode='stretch_both').show(threaded = False)
-
+            bokeh_server = pn.panel(intplot, sizing_mode="stretch_both").show(
+                threaded=False
+            )
 
             return None
 
@@ -314,22 +366,35 @@ def plot(self, log=False, vars=None, panel=False):
         ][-1].split(" ")[-1]
 
         if is_curvilinear(self.current):
-            intplot = ( self.to_xarray().hvplot.quadmesh(
-                lon_name, lat_name, vars, dynamic=True, cmap="viridis", logz=log, responsive = in_notebook() == False
-            ))
+            intplot = self.to_xarray().hvplot.quadmesh(
+                lon_name,
+                lat_name,
+                vars,
+                dynamic=True,
+                cmap="viridis",
+                logz=log,
+                responsive=in_notebook() is False,
+            )
         else:
-            intplot = ( self.to_xarray().hvplot.image(
-                lon_name, lat_name, vars, dynamic=True, cmap="viridis", logz=log, responsive = in_notebook() == False
-            ))
+            intplot = self.to_xarray().hvplot.image(
+                lon_name,
+                lat_name,
+                vars,
+                dynamic=True,
+                cmap="viridis",
+                logz=log,
+                responsive=in_notebook() is False,
+            )
 
         if in_notebook():
             return intplot
 
-        t = Thread(target = ctrc)
+        t = Thread(target=ctrc)
         t.start()
-        bokeh_server = pn.panel(intplot, sizing_mode='stretch_both').show(threaded = False)
+        bokeh_server = pn.panel(intplot, sizing_mode="stretch_both").show(
+            threaded=False
+        )
         return None
-
 
     # Throw an error if case has not plotting method available yet
 

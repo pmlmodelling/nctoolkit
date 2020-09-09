@@ -1,4 +1,3 @@
-
 import atexit
 import copy
 import multiprocessing as mp
@@ -17,14 +16,16 @@ from netCDF4 import Dataset
 from nctoolkit.cleanup import cleanup, clean_all, temp_check
 from nctoolkit.flatten import str_flatten
 from nctoolkit.runthis import run_cdo
-from nctoolkit.session import  nc_protected, session_info, nc_safe
+from nctoolkit.session import nc_protected, session_info, nc_safe
 from nctoolkit.show import nc_variables, nc_years, nc_months, nc_levels, nc_times
 from nctoolkit.temp_file import temp_file
+
 
 # A custom format for warnings.
 def custom_formatwarning(msg, *args, **kwargs):
     # ignore everything except the message
     return str(msg) + "\n"
+
 
 warnings.formatwarning = custom_formatwarning
 
@@ -54,18 +55,19 @@ atexit.register(clean_all)
 # run temp_check to see if any files are held over from previous sessions
 temp_check()
 
+
 def is_url(x):
     regex = re.compile(
-            r'^(?:http|ftp)s?://' # http:// or https://
-            r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|' #domain...
-            r'localhost|' #localhost...
-            r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})' # ...or ip
-            r'(?::\d+)?' # optional port
-            r'(?:/?|[/?]\S+)$', re.IGNORECASE)
+        r"^(?:http|ftp)s?://"  # http:// or https://
+        r"(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|"  # domain...
+        r"localhost|"  # localhost...
+        r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})"  # ...or ip
+        r"(?::\d+)?"  # optional port
+        r"(?:/?|[/?]\S+)$",
+        re.IGNORECASE,
+    )
 
-    return re.match(regex,x) is not None
-
-
+    return re.match(regex, x) is not None
 
 
 def options(**kwargs):
@@ -113,7 +115,7 @@ def options(**kwargs):
 
 def convert_bytes(num):
     """
-     A function to make file size human readable
+    A function to make file size human readable
     """
     for x in ["bytes", "KB", "MB", "GB", "TB"]:
         if num < 1000.0:
@@ -128,7 +130,6 @@ def file_size(file_path):
     if os.path.isfile(file_path):
         file_info = os.stat(file_path)
         return file_info.st_size
-
 
 
 def open_data(x=None, suppress_messages=False, checks=False, **kwargs):
@@ -151,7 +152,6 @@ def open_data(x=None, suppress_messages=False, checks=False, **kwargs):
         if key == "thredds":
             thredds = kwargs[key]
 
-
     # make sure data has been supplied
     if x is None:
         raise ValueError("No data was supplied!")
@@ -169,24 +169,23 @@ def open_data(x=None, suppress_messages=False, checks=False, **kwargs):
 
     # check the files provided exist
 
-
     if type(x) is str:
-        if os.path.exists(x) == False:
+        if os.path.exists(x) is False:
 
             if is_url(x):
 
-                if thredds == False:
+                if thredds is False:
                     new_x = temp_file(".nc")
                     print(f"Downloading {x}")
                     urllib.request.urlretrieve(x, new_x)
                     x = new_x
                 else:
                     out = subprocess.run(
-                     "cdo sinfo " + x,
-                         shell=True,
-                       stdout=subprocess.PIPE,
-                       stderr=subprocess.PIPE,
-                        )
+                        "cdo sinfo " + x,
+                        shell=True,
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.PIPE,
+                    )
                     if "Open failed" in str(out.stderr):
                         raise ValueError(f"{x} is not compatible with CDO!")
 
@@ -224,51 +223,52 @@ def open_data(x=None, suppress_messages=False, checks=False, **kwargs):
         if len(x) < orig_size:
             warnings.warn(message="Duplicates in data set have been removed!")
 
-    #if type(x) is list:
+    # if type(x) is list:
     #    if len(x) == 1:
     #        x = x[0]
 
     if type(x) is list:
         if thredds is False:
-                if checks:
-                    if suppress_messages == False:
-                        warnings.warn("Performing basic checks on ensemble files")
-                if len(x) == 0:
-                    raise ValueError("You have not provided any files!")
+            if checks:
+                if suppress_messages is False:
+                    warnings.warn("Performing basic checks on ensemble files")
+            if len(x) == 0:
+                raise ValueError("You have not provided any files!")
 
-                for ff in x:
+            for ff in x:
 
-                    if os.path.exists(ff) == False:
-                        raise ValueError("Data set " + ff + " does not exist!")
-                    else:
-                        if checks:
-                            out = subprocess.run(
-                                "cdo sinfo " + ff,
-                                shell=True,
-                                stdout=subprocess.PIPE,
-                                stderr=subprocess.PIPE,
+                if os.path.exists(ff) is False:
+                    raise ValueError("Data set " + ff + " does not exist!")
+                else:
+                    if checks:
+                        out = subprocess.run(
+                            "cdo sinfo " + ff,
+                            shell=True,
+                            stdout=subprocess.PIPE,
+                            stderr=subprocess.PIPE,
+                        )
+                        if "Open failed" in out.stderr.decode("utf-8"):
+                            mes = (
+                                out.stderr.decode("utf-8")
+                                .replace("cdo    sinfo: ", "")
+                                .replace("<\n", "")
+                                .replace("\n", "")
                             )
-                            if "Open failed" in out.stderr.decode("utf-8"):
-                                mes = (
-                                    out.stderr.decode("utf-8")
-                                    .replace("cdo    sinfo: ", "")
-                                    .replace("<\n", "")
-                                    .replace("\n", "")
-                                )
-                                mes = re.sub(" +", " ", mes)
-                                raise ValueError(mes)
-                        nc_safe.append(ff)
-                        nc_protected.append(x)
+                            mes = re.sub(" +", " ", mes)
+                            raise ValueError(mes)
+                    nc_safe.append(ff)
+                    nc_protected.append(x)
         else:
-           out = subprocess.run(
-            "cdo sinfo " + x[0],
+            out = subprocess.run(
+                "cdo sinfo " + x[0],
                 shell=True,
-              stdout=subprocess.PIPE,
-              stderr=subprocess.PIPE,
-               )
-           if "Open failed" in str(out.stderr):
-               raise ValueError(f"First file in the ensemble is not compatible with CDO!")
-
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+            )
+            if "Open failed" in str(out.stderr):
+                raise ValueError(
+                    "First file in the ensemble is not compatible with CDO!"
+                )
 
     # if there is only one file in the list, change it to a single file
     if type(x) is list:
@@ -293,7 +293,7 @@ def merge(*datasets, match=["day", "year", "month"]):
     """
     all_files = []
     for dataset in datasets:
-        if ("DataSet" in str(type(dataset))) == False:
+        if ("DataSet" in str(type(dataset))) is False:
             raise TypeError("Please check everything is a DataSet object!")
         # make sure everything has been evaluated
         dataset.run()
@@ -319,10 +319,10 @@ def cor_time(x=None, y=None):
         Second dataset to use
     """
 
-    if ("DataSet" in str(type(x))) == False:
+    if ("DataSet" in str(type(x))) is False:
         raise TypeError("Please check x is a dataset")
 
-    if ("DataSet" in str(type(y))) == False:
+    if ("DataSet" in str(type(y))) is False:
         raise TypeError("Please check y is a dataset")
         # make sure everything has been evaluated
 
@@ -334,12 +334,16 @@ def cor_time(x=None, y=None):
 
     if x.variables != y.variables:
         if len(x.variables) > 1 or len(y.variables) > 1:
-            raise ValueError("This method currently only works with single variable datasets or datasets with identical variables!")
+            raise ValueError(
+                "This method currently only works with single variable datasets or datasets with identical variables!"
+            )
 
     target = temp_file("nc")
 
     if len(x.variables) == 1:
-        command = "cdo -setname,cor -timcor " + a.current + " " + b.current + " " + target
+        command = (
+            "cdo -setname,cor -timcor " + a.current + " " + b.current + " " + target
+        )
     else:
         command = "cdo -timcor " + a.current + " " + b.current + " " + target
 
@@ -348,7 +352,6 @@ def cor_time(x=None, y=None):
     data = open_data(target)
 
     return data
-
 
 
 def cor_space(x=None, y=None):
@@ -364,10 +367,10 @@ def cor_space(x=None, y=None):
         Second dataset to use
     """
 
-    if ("DataSet" in str(type(x))) == False:
+    if ("DataSet" in str(type(x))) is False:
         raise TypeError("Please check x is a dataset")
 
-    if ("DataSet" in str(type(y))) == False:
+    if ("DataSet" in str(type(y))) is False:
         raise TypeError("Please check y is a dataset")
         # make sure everything has been evaluated
 
@@ -379,12 +382,16 @@ def cor_space(x=None, y=None):
 
     if x.variables != y.variables:
         if len(x.variables) > 1 or len(y.variables) > 1:
-            raise ValueError("This method currently only works with single variable datasets or datasets with identical variables!")
+            raise ValueError(
+                "This method currently only works with single variable datasets or datasets with identical variables!"
+            )
 
     target = temp_file("nc")
 
     if len(x.variables) == 1:
-        command = "cdo -setname,cor -fldcor " + a.current + " " + b.current + " " + target
+        command = (
+            "cdo -setname,cor -fldcor " + a.current + " " + b.current + " " + target
+        )
     else:
         command = "cdo -fldcor " + a.current + " " + b.current + " " + target
 
@@ -439,7 +446,7 @@ class DataSet(object):
                 yield ff
             return
 
-    #def __repr__(self):
+    # def __repr__(self):
     #    # tidy up the output first
     #    if isinstance(self.start, list):
     #        start = str(len(self.start)) + " member ensemble"
@@ -460,13 +467,11 @@ class DataSet(object):
     #        + str(len(self.history))
     #    )
 
-
     def __repr__(self):
         if isinstance(self.current, list):
             current = str(len(self.current)) + " member ensemble"
         if type(self.current) == str:
             current = self.current
-
 
         variables = []
         for ff in self:
@@ -476,13 +481,11 @@ class DataSet(object):
 
         return (
             "<nctoolkit.DataSet>:\nFiles: "
-            + current +
-            "\n" +
-            "Variables: " +
-            str_flatten(variables)
+            + current
+            + "\n"
+            + "Variables: "
+            + str_flatten(variables)
         )
-
-
 
     @property
     def size(self):
@@ -538,14 +541,13 @@ class DataSet(object):
 
         all_variables = []
         for ff in self:
-            all_variables+= nc_variables(ff)
+            all_variables += nc_variables(ff)
 
-        all_variables= list(set(all_variables))
+        all_variables = list(set(all_variables))
 
         all_variables.sort()
 
         return all_variables
-
 
     @property
     def months(self):
@@ -555,7 +557,7 @@ class DataSet(object):
 
         all_months = []
         for ff in self:
-            all_months+= nc_months(ff)
+            all_months += nc_months(ff)
 
         all_months = list(set(all_months))
 
@@ -571,14 +573,13 @@ class DataSet(object):
 
         all_levels = []
         for ff in self:
-            all_levels+= nc_levels(ff)
+            all_levels += nc_levels(ff)
 
         all_levels = list(set(all_levels))
 
         all_levels.sort()
 
         return all_levels
-
 
     @property
     def times(self):
@@ -588,7 +589,7 @@ class DataSet(object):
 
         all_times = []
         for ff in self:
-            all_times+= nc_times(ff)
+            all_times += nc_times(ff)
 
         all_times = list(set(all_times))
 
@@ -604,17 +605,13 @@ class DataSet(object):
 
         all_years = []
         for ff in self:
-            all_years+= nc_years(ff)
+            all_years += nc_years(ff)
 
         all_years = list(set(all_years))
 
         all_years.sort()
 
         return all_years
-
-
-
-
 
     @property
     def variables_detailed(self):
@@ -927,4 +924,3 @@ class DataSet(object):
     from nctoolkit.meridonials import meridonial_min
     from nctoolkit.meridonials import meridonial_max
     from nctoolkit.meridonials import meridonial_range
-

@@ -1,4 +1,3 @@
-
 import glob
 import copy
 import os
@@ -7,6 +6,7 @@ import platform
 from nctoolkit.cleanup import cleanup
 from nctoolkit.temp_file import temp_file
 from nctoolkit.session import session_info, temp_dirs
+
 
 def split_cdo(self, method="year"):
     """
@@ -101,6 +101,3 @@ def split(self, by=None):
         raise ValueError("No valid split method supplied")
 
     split_cdo(self, method=method)
-
-
-

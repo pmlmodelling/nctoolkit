@@ -1,4 +1,3 @@
-
 import glob
 import os
 
@@ -24,12 +23,12 @@ def create_ensemble(path="", var=None, recursive=True):
 
     # make sure the path exists
 
-    if os.path.exists(path) == False:
+    if os.path.exists(path) is False:
         raise ValueError("The path provided does not exist!")
 
     # make sure the path ends with "/" if it is not empty
     if path != "":
-        if path.endswith("/") == False:
+        if path.endswith("/") is False:
             path = path + "/"
 
     if recursive:
@@ -41,4 +40,3 @@ def create_ensemble(path="", var=None, recursive=True):
         raise ValueError("There is no data in the target directory")
 
     return files
-

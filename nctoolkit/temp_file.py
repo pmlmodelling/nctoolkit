@@ -1,4 +1,3 @@
-
 import os
 import tempfile
 
@@ -42,8 +41,6 @@ def temp_file(ext=""):
     # osx approach
     else:
 
-
-
         target = tempfile.NamedTemporaryFile().name
 
         if type(ext) is not str:
@@ -55,11 +52,9 @@ def temp_file(ext=""):
 
         temp_dirs.add(os.path.dirname(target))
 
-        target = target.replace(os.path.dirname(target) + "/", os.path.dirname(target) + "/" + session_info["stamp"])
+        target = target.replace(
+            os.path.dirname(target) + "/",
+            os.path.dirname(target) + "/" + session_info["stamp"],
+        )
 
         return target
-
-
-
-
-

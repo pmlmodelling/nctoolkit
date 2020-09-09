@@ -1,4 +1,3 @@
-
 import copy
 import os
 import subprocess
@@ -29,7 +28,9 @@ def operation(self, method="mul", ff=None, var=None):
     """
 
     # get the cdo version
-    cdo_check = subprocess.run("cdo --version", shell = True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    cdo_check = subprocess.run(
+        "cdo --version", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+    )
     cdo_check = str(cdo_check.stderr).replace("\\n", "")
     cdo_check = cdo_check.replace("b'", "").strip()
     cdo_version = cdo_check.split("(")[0].strip().split(" ")[-1]
@@ -40,7 +41,7 @@ def operation(self, method="mul", ff=None, var=None):
 
     # throw error if the file to operate with does not exist
     if ff is not None:
-        if os.path.exists(ff) == False:
+        if os.path.exists(ff) is False:
             raise ValueError(f"{ff} does not exist!")
 
     # throw error if there is a problem with var
@@ -92,7 +93,7 @@ def operation(self, method="mul", ff=None, var=None):
 
     # run the command if not lazy
 
-    if (session_info["lazy"] == False) or (cdo_version in ["1.9.3"]):
+    if (session_info["lazy"] is False) or (cdo_version in ["1.9.3"]):
 
         new_files = []
         new_commands = []

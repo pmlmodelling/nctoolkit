@@ -1,7 +1,5 @@
-
 import os
 import warnings
-
 
 
 def append(self, x=None):
@@ -38,10 +36,12 @@ def append(self, x=None):
 
     for ff in x:
         if ff in check_list:
-            raise ValueError("You are trying to add a file that is already in the dataset")
+            raise ValueError(
+                "You are trying to add a file that is already in the dataset"
+            )
 
     for ff in x:
-        if os.path.exists(ff) == False:
+        if os.path.exists(ff) is False:
             raise ValueError(f"{ff} does not exist!")
 
     for ff in x:
@@ -49,11 +49,3 @@ def append(self, x=None):
             self.current = [self.current, ff]
         else:
             self.current.append(ff)
-
-
-
-
-
-
-
-

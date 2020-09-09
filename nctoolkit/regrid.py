@@ -1,4 +1,3 @@
-
 import copy
 import os
 import pandas as pd
@@ -37,7 +36,7 @@ def regrid(self, grid=None, method="bil"):
         grid_type = "df"
 
     if type(grid) is str:
-        if os.path.exists(grid) == False:
+        if os.path.exists(grid) is False:
             raise ValueError("grid file supplied does not exist")
         grid_type = "nc"
 
@@ -54,7 +53,7 @@ def regrid(self, grid=None, method="bil"):
         raise ValueError("grid supplied is not valid")
 
     # check that the remapping method is valid
-    if (method in {"bil", "bic", "nn"}) == False:
+    if (method in {"bil", "bic", "nn"}) is False:
         raise ValueError("remapping method is invalid. Please check")
 
     # check the number of grids in the dataset
@@ -64,11 +63,6 @@ def regrid(self, grid=None, method="bil"):
     grid_split = dict()
 
     self.run()
-
-    if type(self.current) is list:
-        orig_files = copy.deepcopy(self.current)
-    else:
-        orig_files = [copy.deepcopy(self.current)]
 
     for ff in self:
         cdo_result = subprocess.run(
@@ -96,7 +90,9 @@ def regrid(self, grid=None, method="bil"):
     for key in grid_split:
         # first we need to generate the weights for remapping
         # and add this to the files created list and self.weights
-        tracker = open_data(grid_split[key],  suppress_messages=True, thredds = self._thredds)
+        tracker = open_data(
+            grid_split[key], suppress_messages=True, thredds=self._thredds
+        )
 
         weights_nc = temp_file("nc")
 
@@ -142,7 +138,6 @@ def regrid(self, grid=None, method="bil"):
             nc_safe.remove(ff)
 
     self.current = new_files
-
 
     self._thredds = False
     cleanup()

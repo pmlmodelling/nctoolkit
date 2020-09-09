@@ -1,4 +1,3 @@
-
 import glob
 import os
 import shutil
@@ -147,6 +146,7 @@ def temp_check():
                     f"{len(mylist)} files were created by nctoolkit in prior or current sessions. Consider running deep_clean!"
                 )
 
+
 def disk_clean(self):
     """
     Method to make sure /tmp is not clogged up after running an operation
@@ -190,7 +190,9 @@ def disk_clean(self):
                     nc_safe.append(new_ff)
                     nc_safe.remove(ff)
                     shutil.copyfile(ff, new_ff)
-                    self.current = [new_ff if file == ff else file for file in self.current]
+                    self.current = [
+                        new_ff if file == ff else file for file in self.current
+                    ]
 
         if type(self.current) is list:
             self.current = self.current
