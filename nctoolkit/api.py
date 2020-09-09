@@ -280,6 +280,32 @@ def open_data(x=None, suppress_messages=False, checks=False, **kwargs):
     return d
 
 
+def open_thredds(x=None):
+    """
+    Read thredds data as a DataSet object
+
+    Parameters
+    ---------------
+    x : str or list
+        A string or list of thredds urls, which must end with .nc.
+
+    """
+    return open_data(x = x, thredds = True)
+
+
+def open_url(x=None):
+    """
+    Read netcdf data from a url as a DataSet object
+
+    Parameters
+    ---------------
+    x : str
+        A string with a url. Prior to processing data will be downloaded to a temp folder.
+
+    """
+    return open_data(x = x)
+
+
 def merge(*datasets, match=["day", "year", "month"]):
     """
     Merge datasets
