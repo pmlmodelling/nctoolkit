@@ -65,7 +65,8 @@ conda install -c conda-forge nco
 
 If you want to install CDO from source, bash scripts are available [here](https://github.com/r4ecology/nctoolkit/tree/master/cdo_installers).
  
-At present nctoolkit is a Linux package. It has been tested thoroughly for Linux, with continuous integration using Travis. It will not work on Windows platforms today or in future, because of system dependency limitations. But a future release will work on OSx once it has been fully tested for that OS.
+nctoolkit works for both Linux and Mac OS. It has been tested with continuous integration using Travis (for Linux) and GitHub actions (for Mac OS). It will not work on Windows platforms today or in future, because of system dependency limitations. 
+
 
 
 ## Fixing plotting problem due to xarray bug
@@ -99,6 +100,7 @@ pip install pandas==1.0.5
 ## Reference and tutorials
 
 A full API reference, in depth tutorials and a how-to guide are available at [readthedocs](https://nctoolkit.readthedocs.io/en/latest/).
+
 
 
 
