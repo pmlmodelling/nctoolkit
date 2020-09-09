@@ -41,7 +41,7 @@ REQUIREMENTS = [i.strip() for i in open("requirements.txt").readlines()]
 
 
 setup(name='nctoolkit',
-      version='0.1.6',
+      version='0.2.0',
       description=DESCRIPTION,
       long_description=LONG_DESCRIPTION,
       python_requires='>=3.6.1',
