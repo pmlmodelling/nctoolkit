@@ -3,7 +3,10 @@ dist/
 *egg*
 #*.ipynb
 *.nc
+*.gz
 *.swp
 nctoolkit/*.pyc
 nctoolkit/__pycache__/
+nctoolkit/dump
+nctoolkit/.ipynb_checkpoints/
 docs/source/*ipynb_checkpoints/
