@@ -4,7 +4,7 @@ from setuptools import Command, find_packages, setup
 DESCRIPTION = "Efficient and intuitive tools for analyzing NetCDF data"
 LONG_DESCRIPTION = """
 
-**nctoolkit** is a comprehensive Python (3.6 and above) package for analyzing netCDF data.
+**nctoolkit** is a comprehensive Python (3.6 and above) package for analyzing netCDF data on Linux and macOS.
 
 Core abilities of nctoolkit include:
 
@@ -41,13 +41,14 @@ REQUIREMENTS = [i.strip() for i in open("requirements.txt").readlines()]
 
 
 setup(name='nctoolkit',
-      version='0.1.5',
+      version='0.1.6',
       description=DESCRIPTION,
       long_description=LONG_DESCRIPTION,
       python_requires='>=3.6.1',
       classifiers=[
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Operating System :: POSIX :: Linux",
+        "Operating System :: POSIX :: macOS",
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',

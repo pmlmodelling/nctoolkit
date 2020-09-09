@@ -4,8 +4,6 @@ import os
 import sys
 import nctoolkit
 sys.path.insert(0, os.path.abspath('../..'))
-# sys.path.insert(0, os.path.abspath('.'))
-
 
 # -- Project information -----------------------------------------------------
 
@@ -15,16 +13,7 @@ author = 'Robert Wilson'
 
 # The short X.Y version
 # The full version, including alpha/beta/rc tags
-version = '0.1.5'
-
-#def setup(app):
-#    """Insert Google Analytics tracker
-#    Based on this Stackoverflow suggestion: https://stackoverflow.com/a/41885884
-#    """
-#    app.add_javascript("https://www.googletagmanager.com/gtag/js?id=UA-46143561-3")
-#    app.add_javascript("google_analytics_tracker.js")
-
-
+version = '0.1.6'
 
 # -- General configuration ---------------------------------------------------
 
