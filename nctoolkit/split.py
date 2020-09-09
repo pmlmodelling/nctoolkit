@@ -4,9 +4,9 @@ import copy
 import os
 import platform
 
-from nctoolkit.cleanup import cleanup, disk_clean
+from nctoolkit.cleanup import cleanup
 from nctoolkit.temp_file import temp_file
-from nctoolkit.session import nc_safe, session_info, temp_dirs
+from nctoolkit.session import session_info, temp_dirs
 
 def split_cdo(self, method="year"):
     """

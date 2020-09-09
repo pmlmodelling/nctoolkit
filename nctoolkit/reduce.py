@@ -1,5 +1,4 @@
 
-from nctoolkit.cleanup import cleanup
 from nctoolkit.runthis import run_this
 
 

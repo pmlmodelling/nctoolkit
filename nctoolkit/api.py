@@ -14,12 +14,10 @@ import platform
 
 from netCDF4 import Dataset
 
-from nctoolkit.cleanup import cleanup, clean_all,deep_clean, temp_check
-from nctoolkit.create_ensemble import create_ensemble
+from nctoolkit.cleanup import cleanup, clean_all, temp_check
 from nctoolkit.flatten import str_flatten
-from nctoolkit.generate_grid import generate_grid
 from nctoolkit.runthis import run_cdo
-from nctoolkit.session import nc_safe, nc_protected, session_info
+from nctoolkit.session import  nc_protected, session_info, nc_safe
 from nctoolkit.show import nc_variables, nc_years, nc_months, nc_levels, nc_times
 from nctoolkit.temp_file import temp_file
 

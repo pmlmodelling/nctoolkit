@@ -3,14 +3,13 @@ import copy
 import os
 import re
 import subprocess
-import sys
 import platform
 import warnings
 import multiprocessing
 
 from nctoolkit.cleanup import cleanup
 from nctoolkit.flatten import str_flatten
-from nctoolkit.session import nc_safe, nc_protected, session_info
+from nctoolkit.session import nc_protected, session_info
 from nctoolkit.temp_file import temp_file
 
 

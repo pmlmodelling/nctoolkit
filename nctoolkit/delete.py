@@ -1,7 +1,6 @@
 
 from nctoolkit.flatten import str_flatten
 from nctoolkit.runthis import run_this
-from nctoolkit.show import nc_variables
 
 
 def remove_variables(self, vars=None):

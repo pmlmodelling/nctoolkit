@@ -7,7 +7,6 @@ from nctoolkit.api import open_data
 from nctoolkit.cleanup import cleanup
 from nctoolkit.flatten import str_flatten
 from nctoolkit.runthis import run_this
-from nctoolkit.session import nc_safe
 
 
 def bottom(self):

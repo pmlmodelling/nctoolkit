@@ -1,11 +1,5 @@
 
-import os
-from nctoolkit.api import open_data
-from nctoolkit.cleanup import cleanup, disk_clean
-from nctoolkit.flatten import str_flatten
-from nctoolkit.generate_grid import generate_grid
-from nctoolkit.runthis import run_this
-from nctoolkit.regrid import regrid
+from nctoolkit.cleanup import cleanup
 from nctoolkit.session import nc_safe
 from nctoolkit.temp_file import temp_file
 

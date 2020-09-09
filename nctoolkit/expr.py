@@ -1,5 +1,4 @@
 
-import copy
 import inspect
 
 from nctoolkit.runthis import run_this

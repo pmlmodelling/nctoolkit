@@ -1,14 +1,7 @@
 
-import copy
 import os
-import subprocess
 import warnings
 
-from nctoolkit.cleanup import cleanup, disk_clean
-from nctoolkit.runthis import run_this, tidy_command, run_cdo
-from nctoolkit.show import nc_variables
-from nctoolkit.temp_file import temp_file
-from nctoolkit.session import nc_safe
 
 
 def append(self, x=None):

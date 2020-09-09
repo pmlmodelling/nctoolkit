@@ -4,11 +4,9 @@ import os
 import pandas as pd
 import subprocess
 import warnings
-import xarray as xr
 
-from nctoolkit.api import open_data, is_url
-from nctoolkit.cleanup import cleanup, disk_clean
-from nctoolkit.flatten import str_flatten
+from nctoolkit.api import open_data
+from nctoolkit.cleanup import cleanup
 from nctoolkit.generate_grid import generate_grid
 from nctoolkit.runthis import run_this, run_cdo
 from nctoolkit.session import nc_safe

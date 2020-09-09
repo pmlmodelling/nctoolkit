@@ -1,11 +1,9 @@
 
-import copy
 import os
-import subprocess
+import copy
 
 from nctoolkit.cleanup import cleanup
 from nctoolkit.runthis import run_this, run_cdo
-from nctoolkit.session import nc_safe, session_info
 
 
 def write_nc(self, out, zip=True, overwrite=False):

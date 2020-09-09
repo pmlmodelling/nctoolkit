@@ -2,9 +2,8 @@
 import copy
 import subprocess
 
-from nctoolkit.cleanup import cleanup, disk_clean
+from nctoolkit.cleanup import cleanup
 from nctoolkit.runthis import run_this, run_cdo, tidy_command
-from nctoolkit.session import nc_safe
 from nctoolkit.temp_file import temp_file
 
 

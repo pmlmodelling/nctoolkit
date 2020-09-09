@@ -1,19 +1,18 @@
 
 
+import sys
+
 from netCDF4 import Dataset
-
 from threading import Thread
-
-
-from nctoolkit.runthis import run_this
-from nctoolkit.temp_file import temp_file
-from nctoolkit.session import html_files
 
 import time
 import subprocess
 import holoviews as hv
 import panel as pn
 import pandas as pd
+import hvplot.pandas
+import hvplot.xarray
+from bokeh.plotting import show
 
 hv.extension('bokeh')
 hv.Store.renderers
@@ -70,12 +69,6 @@ def ctrc():
     time.sleep(1)
     print("Press Ctrl+C to stop plotting server")
 
-# going to use show() to open plot in browser
-import hvplot.pandas
-import hvplot.xarray
-from bokeh.plotting import show
-
-import sys
 
 def is_curvilinear(ff):
     """Function to work out if a file contains a curvilinear grid"""

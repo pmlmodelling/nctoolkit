@@ -1,9 +1,8 @@
 
 import copy
 
-from nctoolkit.cleanup import cleanup, disk_clean
+from nctoolkit.cleanup import cleanup
 from nctoolkit.runthis import run_cdo, tidy_command
-from nctoolkit.session import nc_safe
 from nctoolkit.show import nc_variables
 from nctoolkit.temp_file import temp_file
 
