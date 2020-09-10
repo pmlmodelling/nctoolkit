@@ -1,0 +1,4 @@
+
+
+1. run all tests locally
+2. run black on file
