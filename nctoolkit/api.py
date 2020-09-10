@@ -836,6 +836,14 @@ class DataSet(object):
     from nctoolkit.yearlystat import annual_range
     from nctoolkit.yearlystat import annual_sum
 
+    from nctoolkit.dailystat import daily_mean
+    from nctoolkit.dailystat import daily_min
+    from nctoolkit.dailystat import daily_max
+    from nctoolkit.dailystat import daily_range
+    from nctoolkit.dailystat import daily_sum
+
+
+
     from nctoolkit.monstat import monthly_mean
     from nctoolkit.monstat import monthly_min
     from nctoolkit.monstat import monthly_max

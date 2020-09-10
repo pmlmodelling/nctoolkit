@@ -203,6 +203,7 @@ class TestCalls(unittest.TestCase):
         data.seasonal_range_climatology()
         self.assertEqual(data.history[0], 'cdo -yseasrange' )
 
+
         data = nc.open_data(ff)
         data.annual_mean()
         self.assertEqual(data.history[0], 'cdo -yearmean' )
@@ -222,6 +223,31 @@ class TestCalls(unittest.TestCase):
         data = nc.open_data(ff)
         data.annual_sum()
         self.assertEqual(data.history[0], 'cdo -yearsum' )
+
+        # daily stats
+
+        data = nc.open_data(ff)
+        data.daily_mean()
+        self.assertEqual(data.history[0], 'cdo -daymean' )
+
+        data = nc.open_data(ff)
+        data.daily_min()
+        self.assertEqual(data.history[0], 'cdo -daymin' )
+
+        data = nc.open_data(ff)
+        data.daily_max()
+        self.assertEqual(data.history[0], 'cdo -daymax' )
+
+        data = nc.open_data(ff)
+        data.daily_range()
+        self.assertEqual(data.history[0], 'cdo -dayrange' )
+
+        data = nc.open_data(ff)
+        data.daily_sum()
+        self.assertEqual(data.history[0], 'cdo -daysum' )
+
+
+
 
         data = nc.open_data(ff)
         data.monthly_mean()
