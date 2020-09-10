@@ -219,6 +219,9 @@ class TestCalls(unittest.TestCase):
         data.annual_range()
         self.assertEqual(data.history[0], 'cdo -yearrange' )
 
+        data = nc.open_data(ff)
+        data.annual_sum()
+        self.assertEqual(data.history[0], 'cdo -yearsum' )
 
         data = nc.open_data(ff)
         data.monthly_mean()

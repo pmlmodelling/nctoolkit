@@ -65,6 +65,28 @@ class TestYearlyst(unittest.TestCase):
         n = len(nc.session_files())
         self.assertEqual(n, 1)
 
+
+
+    def test_annualsum(self):
+        tracker = nc.open_data(ff)
+        tracker.select_years(1990)
+        tracker.sum()
+        tracker.spatial_mean()
+        x = tracker.to_dataframe().sst.values[0]
+
+        tracker = nc.open_data(ff)
+        tracker.select_years(1990)
+        tracker.annual_sum()
+        tracker.spatial_mean()
+        y = tracker.to_dataframe().sst.values[0]
+
+        self.assertEqual(x,y)
+        n = len(nc.session_files())
+        self.assertEqual(n, 1)
+
+
+
+
     def test_range(self):
         tracker = nc.open_data(ff)
         tracker.select_years(1990)
