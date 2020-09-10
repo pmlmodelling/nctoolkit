@@ -834,6 +834,7 @@ class DataSet(object):
     from nctoolkit.yearlystat import annual_min
     from nctoolkit.yearlystat import annual_max
     from nctoolkit.yearlystat import annual_range
+    from nctoolkit.yearlystat import annual_sum
 
     from nctoolkit.monstat import monthly_mean
     from nctoolkit.monstat import monthly_min
