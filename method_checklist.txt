@@ -1,9 +1,15 @@
 
 # Do the following for any new variable:
 
+# to be added in new release:
+# annual_sum
+
 1. Add to api
 2. Add test to test_cdo_commands
 3. Add separate testing file for the .py
+
+# do the following when new release is created:
+
 4. Addd to A-Z
 5. Add to API reference
 6. Update release_notes file
