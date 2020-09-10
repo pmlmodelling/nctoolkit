@@ -89,12 +89,25 @@ class TestTimeint(unittest.TestCase):
 
         n = len(nc.session_files())
         self.assertEqual(n, 0)
+
     def test_error2(self):
         tracker = nc.open_data(ff)
         with self.assertRaises(ValueError) as context:
             tracker.time_interp(end = "1993/01/01", resolution = "daily")
         n = len(nc.session_files())
         self.assertEqual(n, 0)
+
+    def test_timeintstep(self):
+        tracker = nc.open_data("data/2003.nc")
+        x = len(tracker.times)
+
+        tracker.timestep_interp(2)
+        tracker.run()
+
+        y = len(tracker.times)
+
+        assert (x * 2 -1) ==  y
+
 
 
 if __name__ == '__main__':

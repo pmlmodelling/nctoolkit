@@ -927,6 +927,7 @@ class DataSet(object):
     from nctoolkit.masking import mask_box
 
     from nctoolkit.inttime import time_interp
+    from nctoolkit.inttime import timestep_interp
 
     from nctoolkit.cleanup import disk_clean
 

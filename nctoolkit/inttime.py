@@ -46,3 +46,24 @@ def time_interp(self, start=None, end=None, resolution="monthly"):
         cdo_command = f"cdo -seldate,{start},{end} {cdo_command}"
 
     run_this(cdo_command, self, output="ensemble")
+
+
+def timestep_interp(self, steps=None):
+    """
+    Temporally interpolate a dataset to given number of time steps between existing time steps
+
+    Parameters
+    -------------
+    steps : int
+        Number of time steps to interpolate between existing time steps. For example, if you wanted to go from daily to hourly data you would set steps=24.
+    """
+
+    if type(steps) is not int:
+        raise TypeError(f"{steps} is not an int!")
+
+    if steps < 2:
+        raise ValueError(f"{steps} is not greater than 1")
+
+    cdo_command = f"cdo -intntime,{steps}"
+
+    run_this(cdo_command, self, output="ensemble")

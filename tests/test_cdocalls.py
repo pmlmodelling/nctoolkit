@@ -247,6 +247,9 @@ class TestCalls(unittest.TestCase):
         self.assertEqual(data.history[0], 'cdo -daysum' )
 
 
+        data = nc.open_data(ff)
+        data.timestep_interp(2)
+        self.assertEqual(data.history[0], 'cdo -intntime,2' )
 
 
         data = nc.open_data(ff)
