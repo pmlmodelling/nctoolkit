@@ -2,3 +2,5 @@
 
 
 update versions in: docs/source/conf.py
+
+Ensure jupyter notebooks run
