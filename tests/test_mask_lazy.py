@@ -1,136 +1,129 @@
-import unittest
 import nctoolkit as nc
 import pandas as pd
 import xarray as xr
-import os
-nc.options(lazy = True)
+import os, pytest
+
+nc.options(lazy=True)
 
 
 ff = "data/sst.mon.mean.nc"
 
-class TestMask(unittest.TestCase):
 
+class TestMask:
     def test_empty(self):
         n = len(nc.session_files())
-        self.assertEqual(n, 0)
-    def test_clip(self):
+        assert n == 0
+
+    def test_mask(self):
         tracker = nc.open_data(ff)
-        with self.assertRaises(ValueError) as context:
-            tracker.mask_box(lon = [-390, 100])
+        with pytest.raises(ValueError):
+            tracker.mask_box(lon=[-390, 100])
         n = len(nc.session_files())
-        self.assertEqual(n, 0)
+        assert n == 0
 
-
-    def test_clip1(self):
+    def test_mask1(self):
         tracker = nc.open_data(ff)
-        with self.assertRaises(ValueError) as context:
-            tracker.mask_box(lat = [-390, 100])
+        with pytest.raises(ValueError):
+            tracker.mask_box(lat=[-390, 100])
         n = len(nc.session_files())
-        self.assertEqual(n, 0)
+        assert n == 0
 
-    def test_clip2(self):
+    def test_mask2(self):
         tracker = nc.open_data(ff)
-        with self.assertRaises(ValueError) as context:
-            tracker.mask_box(lat = [-390, 100, 1])
+        with pytest.raises(ValueError):
+            tracker.mask_box(lat=[-390, 100, 1])
         n = len(nc.session_files())
-        self.assertEqual(n, 0)
+        assert n == 0
 
-    def test_clip3(self):
+    def test_mask3(self):
         tracker = nc.open_data(ff)
-        with self.assertRaises(ValueError) as context:
-            tracker.mask_box(lat = [0, -10])
+        with pytest.raises(ValueError):
+            tracker.mask_box(lat=[0, -10])
         n = len(nc.session_files())
-        self.assertEqual(n, 0)
+        assert n == 0
 
-    def test_clip4(self):
+    def test_mask4(self):
         tracker = nc.open_data(ff)
-        with self.assertRaises(ValueError) as context:
-            tracker.mask_box(lon = [0, -10])
+        with pytest.raises(ValueError):
+            tracker.mask_box(lon=[0, -10])
         n = len(nc.session_files())
-        self.assertEqual(n, 0)
+        assert n == 0
 
-    def test_clip5(self):
+    def test_mask5(self):
         tracker = nc.open_data(ff)
-        with self.assertRaises(ValueError) as context:
-            tracker.mask_box(lon = [-390, 100, 1])
+        with pytest.raises(ValueError):
+            tracker.mask_box(lon=[-390, 100, 1])
         n = len(nc.session_files())
-        self.assertEqual(n, 0)
+        assert n == 0
 
-    def test_clip6(self):
+    def test_mask6(self):
         tracker = nc.open_data(ff)
-        with self.assertRaises(TypeError) as context:
-            tracker.mask_box(lon = 1)
+        with pytest.raises(TypeError):
+            tracker.mask_box(lon=1)
         n = len(nc.session_files())
-        self.assertEqual(n, 0)
+        assert n == 0
 
-    def test_clip7(self):
+    def test_mask7(self):
         tracker = nc.open_data(ff)
-        with self.assertRaises(TypeError) as context:
-            tracker.mask_box(lat = 1)
+        with pytest.raises(TypeError):
+            tracker.mask_box(lat=1)
         n = len(nc.session_files())
-        self.assertEqual(n, 0)
+        assert n == 0
 
-    def test_clip8(self):
+    def test_mask8(self):
         tracker = nc.open_data(ff)
-        with self.assertRaises(TypeError) as context:
-            tracker.mask_box(lat = "1")
+        with pytest.raises(TypeError):
+            tracker.mask_box(lat="1")
         n = len(nc.session_files())
-        self.assertEqual(n, 0)
+        assert n == 0
 
-    def test_clip9(self):
+    def test_mask9(self):
         tracker = nc.open_data(ff)
-        with self.assertRaises(TypeError) as context:
-            tracker.mask_box(lat = "2")
+        with pytest.raises(TypeError):
+            tracker.mask_box(lat="2")
         n = len(nc.session_files())
-        self.assertEqual(n, 0)
+        assert n == 0
 
-    def test_clip10(self):
+    def test_mask10(self):
         tracker = nc.open_data(ff)
-        with self.assertRaises(TypeError) as context:
-            tracker.mask_box(lat = ["a",1 ])
+        with pytest.raises(TypeError):
+            tracker.mask_box(lat=["a", 1])
         n = len(nc.session_files())
-        self.assertEqual(n, 0)
+        assert n == 0
 
-    def test_clip11(self):
+    def test_mask11(self):
         tracker = nc.open_data(ff)
-        with self.assertRaises(TypeError) as context:
-            tracker.mask_box(lat = [2, "b" ])
+        with pytest.raises(TypeError):
+            tracker.mask_box(lat=[2, "b"])
         n = len(nc.session_files())
-        self.assertEqual(n, 0)
+        assert n == 0
 
-    def test_clip12(self):
+    def test_mask12(self):
         tracker = nc.open_data(ff)
-        with self.assertRaises(TypeError) as context:
-            tracker.mask_box(lon = ["a",1 ])
+        with pytest.raises(TypeError):
+            tracker.mask_box(lon=["a", 1])
         n = len(nc.session_files())
-        self.assertEqual(n, 0)
+        assert n == 0
 
-    def test_clip13(self):
+    def test_mask13(self):
         tracker = nc.open_data(ff)
-        with self.assertRaises(TypeError) as context:
-            tracker.mask_box(lon = [2, "b" ])
+        with pytest.raises(TypeError):
+            tracker.mask_box(lon=[2, "b"])
         n = len(nc.session_files())
-        self.assertEqual(n, 0)
+        assert n == 0
 
-
-
-    def test_clip14(self):
+    def test_mask14(self):
         tracker = nc.open_data(ff)
-        tracker.clip(lat = [0, 90], nco = False)
+        tracker.clip(lat=[0, 90], nco=False)
         tracker.select_timestep(0)
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0].astype("float")
         tracker = nc.open_data(ff)
-        tracker.mask_box(lat = [0, 90])
+        tracker.mask_box(lat=[0, 90])
         tracker.select_timestep(0)
         tracker.spatial_mean()
         y = tracker.to_dataframe().sst.values[0].astype("float")
 
-        self.assertEqual(x,y)
+        assert x == y
         n = len(nc.session_files())
-        self.assertEqual(n, 1)
-
-
-if __name__ == '__main__':
-    unittest.main()
-
+        assert n == 1

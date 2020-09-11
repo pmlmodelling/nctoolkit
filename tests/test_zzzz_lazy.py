@@ -1,14 +1,13 @@
-import unittest
 import nctoolkit as nc
 import pandas as pd
 import xarray as xr
-import os
+import os, pytest
 
 
 ff = "data/sst.mon.mean.nc"
 
-class TestFinal(unittest.TestCase):
 
+class TestFinal:
     def test_cleanall(self):
         safe = nc.session.nc_safe
         tracker = nc.open_data(ff)
@@ -18,10 +17,4 @@ class TestFinal(unittest.TestCase):
         nc.clean_all()
         x = len([ff for ff in safe if os.path.exists(ff)])
 
-        self.assertEqual(x, 0)
-
-
-
-if __name__ == '__main__':
-    unittest.main()
-
+        assert x == 0

@@ -1,17 +1,17 @@
-import unittest
 import nctoolkit as nc
 import pandas as pd
 import xarray as xr
-import os
+import os, pytest
 
-nc.options(lazy = True)
+nc.options(lazy=True)
 
 ff = "data/sst.mon.mean.nc"
 
-class Testrun(unittest.TestCase):
+
+class Testrun:
     def test_empty(self):
         n = len(nc.session_files())
-        self.assertEqual(n, 0)
+        assert n == 0
 
     def test_run(self):
         tracker = nc.open_data(ff)
@@ -27,10 +27,10 @@ class Testrun(unittest.TestCase):
         tracker.run()
         y = tracker.to_dataframe().sst.values[0]
 
-        self.assertEqual(x,y)
+        assert x == y
 
         n = len(nc.session_files())
-        self.assertEqual(n, 1)
+        assert n == 1
 
         tracker = nc.open_data(ff)
         tracker.mean()
@@ -39,9 +39,3 @@ class Testrun(unittest.TestCase):
         tracker.run()
         del tracker
         assert len(nc.session.nc_safe) == 0
-
-
-
-if __name__ == '__main__':
-    unittest.main()
-

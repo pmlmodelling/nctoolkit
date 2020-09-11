@@ -1,17 +1,18 @@
-import unittest
 import nctoolkit as nc
 import pandas as pd
 import xarray as xr
-import os
-nc.options(lazy = True)
+import os, pytest
+
+nc.options(lazy=True)
 
 
 ff = "data/sst.mon.mean.nc"
 
-class TestMonthlycli(unittest.TestCase):
-    def test_empty(self):
+
+class TestMonthlycli:
+    def test_monthlyclim(self):
         n = len(nc.session_files())
-        self.assertEqual(n, 0)
+        assert n == 0
 
     def test_mean(self):
         tracker = nc.open_data(ff)
@@ -26,10 +27,9 @@ class TestMonthlycli(unittest.TestCase):
         tracker.select_months(1)
         y = tracker.to_dataframe().sst.values[0].astype("float")
 
-        self.assertEqual(x,  y)
+        assert x == y
         n = len(nc.session_files())
-        self.assertEqual(n, 1)
-
+        assert n == 1
 
     def test_min(self):
         tracker = nc.open_data(ff)
@@ -44,10 +44,9 @@ class TestMonthlycli(unittest.TestCase):
         tracker.select_months(1)
         y = tracker.to_dataframe().sst.values[0].astype("float")
 
-        self.assertEqual(x,  y)
+        assert x == y
         n = len(nc.session_files())
-        self.assertEqual(n, 1)
-
+        assert n == 1
 
     def test_max(self):
         tracker = nc.open_data(ff)
@@ -62,9 +61,9 @@ class TestMonthlycli(unittest.TestCase):
         tracker.select_months(1)
         y = tracker.to_dataframe().sst.values[0].astype("float")
 
-        self.assertEqual(x,  y)
+        assert x == y
         n = len(nc.session_files())
-        self.assertEqual(n, 1)
+        assert n == 1
 
     def test_range(self):
         tracker = nc.open_data(ff)
@@ -79,10 +78,6 @@ class TestMonthlycli(unittest.TestCase):
         tracker.select_months(1)
         y = tracker.to_dataframe().sst.values[0].astype("float")
 
-        self.assertEqual(x,  y)
+        assert x == y
         n = len(nc.session_files())
-        self.assertEqual(n, 1)
-
-if __name__ == '__main__':
-    unittest.main()
-
+        assert n == 1

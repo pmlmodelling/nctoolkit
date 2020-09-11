@@ -1,59 +1,50 @@
-import unittest
 import nctoolkit as nc
-nc.options(lazy= True)
+
+nc.options(lazy=True)
 import pandas as pd
 import xarray as xr
 import numpy as np
-import os
+import os, pytest
 
 
 ff = "data/sst.mon.mean.nc"
 ff1 = "data/2003.nc"
 ff2 = "data/2004.nc"
 
-class TestAppend(unittest.TestCase):
 
-
+class TestAppend:
     def test_append(self):
         new = nc.open_data(ff)
-        new.mutate({"tos":"sst+273.15"})
+        new.mutate({"tos": "sst+273.15"})
         new.append(ff)
 
         assert len(new.current) == 2
 
         new = nc.open_data(ff)
 
-        with self.assertRaises(ValueError) as context:
+        with pytest.raises(ValueError):
             new.append(ff)
 
-        with self.assertRaises(ValueError) as context:
+        with pytest.raises(ValueError):
             new.append("xyz")
 
         new = nc.open_data(ff)
-        with self.assertRaises(TypeError) as context:
+        with pytest.raises(TypeError):
             new.append()
-
 
         del new
         n = len(nc.session_files())
-        self.assertEqual(n, 0)
+        assert n == 0
 
         new = nc.open_data(ff)
-        with self.assertWarns(Warning):
+        with pytest.warns(UserWarning):
             new.append([ff1, ff1])
 
         new = nc.open_data([ff1, ff2])
 
-        with self.assertRaises(ValueError) as context:
+        with pytest.raises(ValueError):
             new.append(ff1)
-
 
         new.append(ff)
 
         assert new.current == [ff1, ff2, ff]
-
-
-
-if __name__ == '__main__':
-    unittest.main()
-

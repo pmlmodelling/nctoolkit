@@ -1,16 +1,16 @@
-import unittest
 import nctoolkit as nc
-nc.options(lazy= True)
+
+nc.options(lazy=True)
 import pandas as pd
 import xarray as xr
-import os
+import os, pytest
 import numpy as np
 
 
-class TestZip(unittest.TestCase):
+class TestZip:
     def test_empty(self):
         n = len(nc.session_files())
-        self.assertEqual(n, 0)
+        assert n == 0
 
     def test_zip1(self):
         ff = "data/sst.mon.mean.nc"
@@ -22,18 +22,14 @@ class TestZip(unittest.TestCase):
         tracker.zip()
         tracker.run()
         y = os.path.getsize(tracker.current)
-        z =  0.8 * x > y
-
-        self.assertEqual(z, True)
+        assert 0.8 * x > y
 
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0]
 
         new.spatial_mean()
         y = tracker.to_dataframe().sst.values[0]
-
-        self.assertEqual(x, y)
-
+        assert x == y
 
     def test_zip2(self):
         ff = "data/sst.mon.mean.nc"
@@ -46,19 +42,13 @@ class TestZip(unittest.TestCase):
         tracker.zip()
         tracker.run()
         y = os.path.getsize(tracker.current)
-        z =  np.round(x/  y, 1).astype("float")
+        z = np.round(x / y, 1).astype("float")
+        assert z == 1
 
-        self.assertEqual(z, 1)
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0]
 
         new.spatial_mean()
         y = tracker.to_dataframe().sst.values[0]
 
-        self.assertEqual(x, y)
-
-
-
-if __name__ == '__main__':
-    unittest.main()
-
+        assert x == y

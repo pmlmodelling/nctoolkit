@@ -1,29 +1,29 @@
-import unittest
 import nctoolkit as nc
 import pandas as pd
 import xarray as xr
-import os
-nc.options(lazy = True)
+import os, pytest
+
+nc.options(lazy=True)
 
 
 ff = "data/sst.mon.mean.nc"
 
-class TestTimestat(unittest.TestCase):
+
+class TestTimestat:
     def test_empty(self):
         n = len(nc.session_files())
-        self.assertEqual(n, 0)
+        assert n == 0
 
     def test_error(self):
         tracker = nc.open_data(ff)
-        with self.assertRaises(TypeError) as context:
-            tracker.percentile(p = "x")
+        with pytest.raises(TypeError):
+            tracker.percentile(p="x")
 
-        with self.assertRaises(ValueError) as context:
+        with pytest.raises(ValueError):
             tracker.percentile()
 
-        with self.assertRaises(ValueError) as context:
-            tracker.percentile(p = 120)
-
+        with pytest.raises(ValueError):
+            tracker.percentile(p=120)
 
     def test_percentile(self):
         tracker = nc.open_data(ff)
@@ -40,10 +40,7 @@ class TestTimestat(unittest.TestCase):
         tracker.spatial_mean()
         y = tracker.to_dataframe().sst.values[0]
 
-        self.assertEqual(x,y)
-
-
-
+        assert x == y
 
     def test_sum(self):
         tracker = nc.open_data(ff)
@@ -53,7 +50,7 @@ class TestTimestat(unittest.TestCase):
         tracker1.select_timestep(1)
 
         tracker2 = nc.open_data(ff)
-        tracker2.select_timestep([0,1])
+        tracker2.select_timestep([0, 1])
         tracker2.sum()
         tracker2.spatial_sum()
         x = tracker2.to_dataframe().sst.values[0]
@@ -61,31 +58,24 @@ class TestTimestat(unittest.TestCase):
         tracker1.spatial_sum()
         y = tracker1.to_dataframe().sst.values[0]
 
-        self.assertEqual(x,y)
-
+        assert x == y
 
     def test_var(self):
         tracker = nc.open_data(ff)
-        tracker.select_timestep(range(0,12))
+        tracker.select_timestep(range(0, 12))
 
         tracker.var()
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0].astype("float")
 
-        self.assertEqual(x,  3.3688883781433105)
+        assert x == 3.3688883781433105
 
     def test_cum_sum(self):
         tracker = nc.open_data(ff)
-        tracker.select_timestep(range(0,12))
+        tracker.select_timestep(range(0, 12))
 
         tracker.cum_sum()
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0].astype("float")
 
-        self.assertEqual(x,  12.964875221252441)
-
-
-
-if __name__ == '__main__':
-    unittest.main()
-
+        assert x == 12.964875221252441

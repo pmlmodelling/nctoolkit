@@ -1,47 +1,37 @@
-import unittest
 import nctoolkit as nc
-nc.options(lazy= True)
+
+nc.options(lazy=True)
 import pandas as pd
 import xarray as xr
-import os
+import os, pytest
 
 
 ff = "data/sst.mon.mean.nc"
 
-class TestRename(unittest.TestCase):
+
+class TestRename:
     def test_empty(self):
         n = len(nc.session_files())
-        self.assertEqual(n, 0)
+        assert n == 0
 
     def test_rename(self):
         tracker = nc.open_data(ff)
-        tracker.rename({"sst":"tos"})
+        tracker.rename({"sst": "tos"})
         tracker.run()
         x = tracker.variables
-        self.assertEqual(x, ["tos"])
+        assert x == ["tos"]
         n = len(nc.session_files())
-        self.assertEqual(n, 1)
+        assert n == 1
 
     def test_rename_error(self):
         tracker = nc.open_data(ff)
         tracker.run()
-        with self.assertRaises(TypeError) as context:
+        with pytest.raises(TypeError):
             tracker.rename("sst")
-        with self.assertRaises(TypeError) as context:
-            tracker.rename({"sst":1})
-        with self.assertRaises(TypeError) as context:
-            tracker.rename({1:1})
-
-
+        with pytest.raises(TypeError):
+            tracker.rename({"sst": 1})
+        with pytest.raises(TypeError):
+            tracker.rename({1: 1})
 
         n = len(nc.session_files())
-        self.assertEqual(n, 0)
-
-
-
-
-
-
-if __name__ == '__main__':
-    unittest.main()
-
+        assert n == 0

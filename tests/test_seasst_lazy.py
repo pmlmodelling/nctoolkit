@@ -1,15 +1,15 @@
-import unittest
 import nctoolkit as nc
-nc.options(lazy= True)
+
+nc.options(lazy=True)
 import pandas as pd
 import xarray as xr
-import os
+import os, pytest
 
 
-class TestSeasst(unittest.TestCase):
+class TestSeasst:
     def test_empty(self):
         n = len(nc.session_files())
-        self.assertEqual(n, 0)
+        assert n == 0
 
     def test_mean(self):
         ff = "data/sst.mon.mean.nc"
@@ -17,9 +17,9 @@ class TestSeasst(unittest.TestCase):
         tracker.select_years(1980)
         tracker.seasonal_mean()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
-        self.assertEqual(x, -1.6950000524520874)
+        assert x == -1.6950000524520874
         n = len(nc.session_files())
-        self.assertEqual(n, 1)
+        assert n == 1
 
     def test_min(self):
         ff = "data/sst.mon.mean.nc"
@@ -27,9 +27,9 @@ class TestSeasst(unittest.TestCase):
         tracker.select_years(1980)
         tracker.seasonal_min()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
-        self.assertEqual(x, -1.7020000219345093)
+        assert x == -1.7020000219345093
         n = len(nc.session_files())
-        self.assertEqual(n, 1)
+        assert n == 1
 
     def test_max(self):
         ff = "data/sst.mon.mean.nc"
@@ -37,9 +37,9 @@ class TestSeasst(unittest.TestCase):
         tracker.select_years(1980)
         tracker.seasonal_max()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
-        self.assertEqual(x,  -1.6880000829696655)
+        assert x == -1.6880000829696655
         n = len(nc.session_files())
-        self.assertEqual(n, 1)
+        assert n == 1
 
     def test_range(self):
         ff = "data/sst.mon.mean.nc"
@@ -47,10 +47,6 @@ class TestSeasst(unittest.TestCase):
         tracker.select_years(1980)
         tracker.seasonal_range()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
-        self.assertEqual(x, 0.01399993896484375 )
+        assert x == 0.01399993896484375
         n = len(nc.session_files())
-        self.assertEqual(n, 1)
-
-if __name__ == '__main__':
-    unittest.main()
-
+        assert n == 1

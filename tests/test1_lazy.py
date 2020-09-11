@@ -1,47 +1,46 @@
-import unittest
 import nctoolkit as nc
 import pandas as pd
 import xarray as xr
-import os
-nc.options(lazy = True)
+import os, pytest
+
+nc.options(lazy=True)
 
 
 ff = "data/sst.mon.mean.nc"
 
-class TestOne(unittest.TestCase):
 
+class TestOne:
     def test_clim1(self):
         tracker = nc.open_data(ff)
         tracker.split("year")
-        tracker.ensemble_mean(nco = True)
+        tracker.ensemble_mean(nco=True)
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         tracker = nc.open_data(ff)
         tracker.monthly_mean_climatology()
         y = tracker.to_xarray().sst.values[0][0][0].astype("float")
-        self.assertEqual(x, -1.7026667594909668)
-        self.assertEqual(x, y)
+        assert x == -1.7026667594909668
+        assert x == y
 
         n = len(nc.session_files())
-        self.assertEqual(n, 1)
-
+        assert n == 1
 
     def test_clim2(self):
         tracker = nc.open_data(ff)
         tracker.split("year")
-        tracker.clip(lon = [50, 60])
-        tracker.ensemble_mean(nco = True)
+        tracker.clip(lon=[50, 60])
+        tracker.ensemble_mean(nco=True)
         tracker.spatial_mean()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         tracker = nc.open_data(ff)
         tracker.monthly_mean_climatology()
-        tracker.clip(lon = [50, 60])
+        tracker.clip(lon=[50, 60])
         tracker.spatial_mean()
         y = tracker.to_xarray().sst.values[0][0][0].astype("float")
-        self.assertEqual(x, 20.050094604492188 )
-        self.assertEqual(x, y)
+        assert x == 20.050094604492188
+        assert x == y
 
         n = len(nc.session_files())
-        self.assertEqual(n, 1)
+        assert n == 1
 
     def test_cdocommand(self):
         tracker = nc.open_data(ff)
@@ -54,26 +53,21 @@ class TestOne(unittest.TestCase):
         y = tracker.to_xarray().sst.values[0][0][0].astype("float")
 
         n = len(nc.session_files())
-        self.assertEqual(n, 1)
+        assert n == 1
 
-        self.assertEqual(x, y)
+        assert x == y
 
     def test_percentile(self):
         tracker = nc.open_data(ff)
-        tracker.clip(lon = [50, 60])
+        tracker.clip(lon=[50, 60])
         tracker.percentile(50)
         tracker.spatial_mean()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
-        self.assertEqual(x, 19.71255874633789)
+        assert x == 19.71255874633789
 
         n = len(nc.session_files())
-        self.assertEqual(n, 1)
+        assert n == 1
 
     def test_empty(self):
         n = len(nc.session_files())
-        self.assertEqual(n, 0)
-
-
-if __name__ == '__main__':
-    unittest.main()
-
+        assert n == 0
