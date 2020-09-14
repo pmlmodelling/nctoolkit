@@ -9,7 +9,7 @@ ipywidgets
 xarray
 hvplot
 netCDF4
-numpy == 1.15
+numpy == 1.19
 
 
 
