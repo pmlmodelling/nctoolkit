@@ -47,3 +47,29 @@ def shift_days(self, shift=None):
     cdo_command = f"cdo -shifttime,{shift}days"
 
     run_this(cdo_command, self, output="ensemble")
+
+
+def shift(self, **kwargs):
+    """
+    Shift method. A wrapper for shift_days, shift_hours
+    Operations are applied in the order supplied.
+
+    Parameters
+    -------------
+    *kwargs
+        hours maps to shift_hours
+        days maps to shift_days
+
+    """
+
+    valid_keys = ["days", "hours"]
+
+    for key in kwargs:
+        if key not in valid_keys:
+            raise AttributeError(f"{key} is not a valid shifting method")
+
+        if key == "days":
+            self.shift_days(kwargs[key])
+
+        if key == "hours":
+            self.shift_hours(kwargs[key])

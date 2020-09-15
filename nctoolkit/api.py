@@ -793,11 +793,42 @@ class DataSet(object):
     def start(self):
         raise AttributeError("You cannot delete the start point")
 
-    from nctoolkit.toxarray import to_xarray
-    from nctoolkit.toxarray import to_dataframe
+    from nctoolkit.add_etc import add
+    from nctoolkit.add_etc import subtract
+    from nctoolkit.add_etc import multiply
+    from nctoolkit.add_etc import divide
 
+    from nctoolkit.anomaly import annual_anomaly
+    from nctoolkit.anomaly import monthly_anomaly
+
+    from nctoolkit.append import append
+
+    from nctoolkit.cdo_command import cdo_command
     from nctoolkit.cellareas import cell_areas
-    from nctoolkit.regrid import regrid
+
+    from nctoolkit.cleanup import disk_clean
+
+    from nctoolkit.clip import clip
+
+    from nctoolkit.compare import compare_all
+
+    from nctoolkit.corr import cor_space
+    from nctoolkit.corr import cor_time
+
+    from nctoolkit.crop import crop
+
+    from nctoolkit.dailyclim import daily_mean_climatology
+    from nctoolkit.dailyclim import daily_min_climatology
+    from nctoolkit.dailyclim import daily_max_climatology
+    from nctoolkit.dailyclim import daily_range_climatology
+
+    from nctoolkit.dailystat import daily_mean
+    from nctoolkit.dailystat import daily_min
+    from nctoolkit.dailystat import daily_max
+    from nctoolkit.dailystat import daily_range
+    from nctoolkit.dailystat import daily_sum
+
+    from nctoolkit.delete import remove_variables
 
     from nctoolkit.ensembles import ensemble_mean
     from nctoolkit.ensembles import ensemble_max
@@ -805,47 +836,29 @@ class DataSet(object):
     from nctoolkit.ensembles import ensemble_range
     from nctoolkit.ensembles import ensemble_percentile
 
-    from nctoolkit.clip import clip
-    from nctoolkit.crop import crop
-
-    from nctoolkit.cdo_command import cdo_command
-    from nctoolkit.nco_command import nco_command
-
     from nctoolkit.expr import mutate
     from nctoolkit.expr import transmute
     from nctoolkit.expr import sum_all
 
+    from nctoolkit.fldstat import spatial_mean
+    from nctoolkit.fldstat import spatial_min
+    from nctoolkit.fldstat import spatial_max
+    from nctoolkit.fldstat import spatial_range
+    from nctoolkit.fldstat import spatial_sum
+    from nctoolkit.fldstat import spatial_percentile
 
-    from nctoolkit.select import select_variables
-    from nctoolkit.select import select_timestep
-    from nctoolkit.select import select_timesteps
-    from nctoolkit.select import select_seasons
-    from nctoolkit.select import select_season
-    from nctoolkit.select import select_months
-    from nctoolkit.select import select_years
-    from nctoolkit.select import select
+    from nctoolkit.inttime import time_interp
+    from nctoolkit.inttime import timestep_interp
 
-    from nctoolkit.seasstat import seasonal_mean
-    from nctoolkit.seasstat import seasonal_min
-    from nctoolkit.seasstat import seasonal_max
-    from nctoolkit.seasstat import seasonal_range
+    from nctoolkit.masking import mask_box
 
-    from nctoolkit.seasclim import seasonal_mean_climatology
-    from nctoolkit.seasclim import seasonal_min_climatology
-    from nctoolkit.seasclim import seasonal_max_climatology
-    from nctoolkit.seasclim import seasonal_range_climatology
+    from nctoolkit.mergers import merge_time
+    from nctoolkit.mergers import merge
 
-    from nctoolkit.yearlystat import annual_mean
-    from nctoolkit.yearlystat import annual_min
-    from nctoolkit.yearlystat import annual_max
-    from nctoolkit.yearlystat import annual_range
-    from nctoolkit.yearlystat import annual_sum
-
-    from nctoolkit.dailystat import daily_mean
-    from nctoolkit.dailystat import daily_min
-    from nctoolkit.dailystat import daily_max
-    from nctoolkit.dailystat import daily_range
-    from nctoolkit.dailystat import daily_sum
+    from nctoolkit.meridonials import meridonial_mean
+    from nctoolkit.meridonials import meridonial_min
+    from nctoolkit.meridonials import meridonial_max
+    from nctoolkit.meridonials import meridonial_range
 
     from nctoolkit.monstat import monthly_mean
     from nctoolkit.monstat import monthly_min
@@ -857,19 +870,58 @@ class DataSet(object):
     from nctoolkit.monthlyclim import monthly_max_climatology
     from nctoolkit.monthlyclim import monthly_range_climatology
 
-    from nctoolkit.dailyclim import daily_mean_climatology
-    from nctoolkit.dailyclim import daily_min_climatology
-    from nctoolkit.dailyclim import daily_max_climatology
-    from nctoolkit.dailyclim import daily_range_climatology
+    from nctoolkit.nco_command import nco_command
 
-    from nctoolkit.to_nc import write_nc
+    from nctoolkit.phenology import phenology
+
+    from nctoolkit.plot import plot
+
+    from nctoolkit.reduce import reduce_dims
+
+    from nctoolkit.reduce_grid import reduce_grid
+
+    from nctoolkit.regrid import regrid
+
+    from nctoolkit.release import release
+    from nctoolkit.release import run
 
     from nctoolkit.rename import rename
+
+    from nctoolkit.rollstat import rolling_mean
+    from nctoolkit.rollstat import rolling_min
+    from nctoolkit.rollstat import rolling_max
+    from nctoolkit.rollstat import rolling_range
+    from nctoolkit.rollstat import rolling_sum
+
+    from nctoolkit.seasclim import seasonal_mean_climatology
+    from nctoolkit.seasclim import seasonal_min_climatology
+    from nctoolkit.seasclim import seasonal_max_climatology
+    from nctoolkit.seasclim import seasonal_range_climatology
+
+    from nctoolkit.seasstat import seasonal_mean
+    from nctoolkit.seasstat import seasonal_min
+    from nctoolkit.seasstat import seasonal_max
+    from nctoolkit.seasstat import seasonal_range
+
+    from nctoolkit.select import select_variables
+    from nctoolkit.select import select_timestep
+    from nctoolkit.select import select_timesteps
+    from nctoolkit.select import select_seasons
+    from nctoolkit.select import select_season
+    from nctoolkit.select import select_months
+    from nctoolkit.select import select_years
+    from nctoolkit.select import select
 
     from nctoolkit.setters import set_date
     from nctoolkit.setters import set_missing
     from nctoolkit.setters import set_units
     from nctoolkit.setters import set_longnames
+
+    from nctoolkit.shift import shift_hours
+    from nctoolkit.shift import shift_days
+    from nctoolkit.shift import shift
+
+    from nctoolkit.split import split
 
     from nctoolkit.time_stat import mean
     from nctoolkit.time_stat import percentile
@@ -880,26 +932,12 @@ class DataSet(object):
     from nctoolkit.time_stat import sum
     from nctoolkit.time_stat import cum_sum
 
-    from nctoolkit.release import release
-    from nctoolkit.release import run
+    from nctoolkit.to_lonlat import to_latlon
 
-    from nctoolkit.delete import remove_variables
+    from nctoolkit.to_nc import write_nc
 
-    from nctoolkit.mergers import merge_time
-    from nctoolkit.mergers import merge
-
-    from nctoolkit.rollstat import rolling_mean
-    from nctoolkit.rollstat import rolling_min
-    from nctoolkit.rollstat import rolling_max
-    from nctoolkit.rollstat import rolling_range
-    from nctoolkit.rollstat import rolling_sum
-
-    from nctoolkit.fldstat import spatial_mean
-    from nctoolkit.fldstat import spatial_min
-    from nctoolkit.fldstat import spatial_max
-    from nctoolkit.fldstat import spatial_range
-    from nctoolkit.fldstat import spatial_sum
-    from nctoolkit.fldstat import spatial_percentile
+    from nctoolkit.toxarray import to_xarray
+    from nctoolkit.toxarray import to_dataframe
 
     from nctoolkit.verticals import vertical_mean
     from nctoolkit.verticals import vertical_min
@@ -915,51 +953,26 @@ class DataSet(object):
 
     from nctoolkit.view import view
 
+    from nctoolkit.yearlystat import annual_mean
+    from nctoolkit.yearlystat import annual_min
+    from nctoolkit.yearlystat import annual_max
+    from nctoolkit.yearlystat import annual_range
+    from nctoolkit.yearlystat import annual_sum
+
     from nctoolkit.zip import zip
-
-    from nctoolkit.corr import cor_space
-    from nctoolkit.corr import cor_time
-
-    from nctoolkit.phenology import phenology
-
-    from nctoolkit.split import split
-
-    from nctoolkit.anomaly import annual_anomaly
-    from nctoolkit.anomaly import monthly_anomaly
-
-    from nctoolkit.masking import mask_box
-
-    from nctoolkit.inttime import time_interp
-    from nctoolkit.inttime import timestep_interp
-
-    from nctoolkit.cleanup import disk_clean
-
-    from nctoolkit.plot import plot
-
-    from nctoolkit.compare import compare_all
-
-    from nctoolkit.add_etc import add
-    from nctoolkit.add_etc import subtract
-    from nctoolkit.add_etc import multiply
-    from nctoolkit.add_etc import divide
-
-    from nctoolkit.to_lonlat import to_latlon
-
-    from nctoolkit.reduce import reduce_dims
-
-    from nctoolkit.reduce_grid import reduce_grid
 
     from nctoolkit.zonals import zonal_mean
     from nctoolkit.zonals import zonal_min
     from nctoolkit.zonals import zonal_max
     from nctoolkit.zonals import zonal_range
 
-    from nctoolkit.shift import shift_hours
-    from nctoolkit.shift import shift_days
 
-    from nctoolkit.append import append
 
-    from nctoolkit.meridonials import meridonial_mean
-    from nctoolkit.meridonials import meridonial_min
-    from nctoolkit.meridonials import meridonial_max
-    from nctoolkit.meridonials import meridonial_range
+
+
+
+
+
+
+
+
