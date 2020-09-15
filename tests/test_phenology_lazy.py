@@ -67,11 +67,6 @@ class TestPhenol:
         with pytest.raises(ValueError):
             data.phenology("sst", metric="this")
 
-        with pytest.raises(ValueError):
-            data.phenology("sst", metric="peak")
-        with pytest.raises(ValueError):
-            data.phenology("sst", metric="middle")
-
         n = len(nc.session_files())
         assert n == 0
 
@@ -141,3 +136,37 @@ class TestPhenol:
         y = data.to_dataframe().start.values[0].astype("float")
 
         assert x == y
+
+
+    def test_splits(self):
+        data = nc.open_data(["data/2003.nc", "data/2004.nc"])
+        data.phenology("analysed_sst", metric="peak")
+        data.spatial_mean()
+        data.run()
+        print(data.years)
+        data1 = data.copy()
+        data1.select(years = 2004)
+        x = data1.to_dataframe().peak.values[0].astype("float")
+
+        data2 = data.copy()
+        print(data.years)
+        data2.select(years = 2003)
+        z = data2.to_dataframe().peak.values[0].astype("float")
+
+        data = nc.open_data("data/2004.nc")
+        data.phenology("analysed_sst", metric="peak")
+        data.spatial_mean()
+        y = data.to_dataframe().peak.values[0].astype("float")
+
+        assert x == y
+
+
+        data = nc.open_data("data/2003.nc")
+        data.phenology("analysed_sst", metric="peak")
+        data.spatial_mean()
+        y = data.to_dataframe().peak.values[0].astype("float")
+
+        assert z == y
+
+
+
