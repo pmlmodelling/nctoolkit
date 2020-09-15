@@ -806,8 +806,6 @@ class DataSet(object):
     from nctoolkit.ensembles import ensemble_percentile
 
     from nctoolkit.clip import clip
-    from nctoolkit.select import select_variables
-    from nctoolkit.select import select_timestep
 
     from nctoolkit.cdo_command import cdo_command
     from nctoolkit.nco_command import nco_command
@@ -816,6 +814,11 @@ class DataSet(object):
     from nctoolkit.expr import transmute
     from nctoolkit.expr import sum_all
 
+
+    from nctoolkit.select import select_variables
+    from nctoolkit.select import select_timestep
+    from nctoolkit.select import select_timesteps
+    from nctoolkit.select import select_seasons
     from nctoolkit.select import select_season
     from nctoolkit.select import select_months
     from nctoolkit.select import select_years
@@ -841,8 +844,6 @@ class DataSet(object):
     from nctoolkit.dailystat import daily_max
     from nctoolkit.dailystat import daily_range
     from nctoolkit.dailystat import daily_sum
-
-
 
     from nctoolkit.monstat import monthly_mean
     from nctoolkit.monstat import monthly_min

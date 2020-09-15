@@ -17,6 +17,8 @@ def select_season(self, season=None):
         Season to select. One of "DJF", "MAM", "JJA", "SON".
     """
 
+    warnings.warn(message = "select_season is deprecated. Use select_seasons")
+
     if season is None:
         raise ValueError("No season supplied")
 
@@ -29,6 +31,27 @@ def select_season(self, season=None):
     cdo_command = f"cdo -select,season={season}"
     run_this(cdo_command, self, output="ensemble")
 
+def select_seasons(self, season=None):
+    """
+    Select season from a dataset
+
+    Parameters
+    -------------
+    season : str
+        Season to select. One of "DJF", "MAM", "JJA", "SON".
+    """
+
+    if season is None:
+        raise ValueError("No season supplied")
+
+    if type(season) is not str:
+        raise TypeError("Invalid season supplied")
+
+    if season not in ["DJF", "MAM", "JJA", "SON"]:
+        raise ValueError("Invalid season supplied")
+
+    cdo_command = f"cdo -select,season={season}"
+    run_this(cdo_command, self, output="ensemble")
 
 def select_months(self, months=None):
     """
@@ -173,7 +196,6 @@ def select_variables(self, vars=None):
 
     run_this(cdo_command, self, output="ensemble")
 
-
 def select_timestep(self, times=None):
     """
     Select timesteps from a dataset
@@ -183,6 +205,43 @@ def select_timestep(self, times=None):
     times : list or int
         time step(s) to select. For example, if you wanted the first time step set times=0.
     """
+
+    if times is None:
+        raise ValueError("Please supply times")
+
+    if type(times) is range:
+        times = list(times)
+
+    if type(times) is not list:
+        times = [times]
+
+    for tt in times:
+        if type(tt) is not int:
+            raise TypeError(f"{tt} is not an int")
+        if tt < 0:
+            raise ValueError(f"{tt} is not a valid timestep")
+
+    # all of the variables in months need to be converted to ints, just in case floats have been provided
+
+    times = [int(x) + 1 for x in times]
+    times = [str(x) for x in times]
+    times = str_flatten(times)
+
+    cdo_command = f"cdo -seltimestep,{times}"
+
+    run_this(cdo_command, self, output="ensemble")
+
+def select_timesteps(self, times=None):
+    """
+    Select timesteps from a dataset
+
+    Parameters
+    -------------
+    times : list or int
+        time step(s) to select. For example, if you wanted the first time step set times=0.
+    """
+
+    warnings.warn(message = "select_timestep is deprecated. Use select_seasons")
 
     if times is None:
         raise ValueError("Please supply times")
