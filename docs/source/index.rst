@@ -58,6 +58,15 @@ Documentation
 
 **User Guide**
 
+* :doc:`datasets`
+
+.. toctree::
+   :maxdepth: 1
+   :hidden:
+   :caption: User Guide 
+
+   datasets
+
 
 **Help & reference**
 
