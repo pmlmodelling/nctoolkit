@@ -132,8 +132,6 @@ def select_years(self, years=None):
                 new_current.append(ff)
             if len(inter) == 0:
                 n_removed += 1
-                if ff in nc_safe:
-                    nc_safe.remove(ff)
 
             # figure out if any of the files actually have years outide the period required
             if len(inter) > 0:
@@ -271,7 +269,7 @@ def select_timesteps(self, times=None):
 
 def select(self, **kwargs):
     """
-    Select method. A wrappter for select_months, select_years, select_timesteps and select_seasons
+    Select method. A wrapper for select_months, select_years, select_timesteps and select_seasons
     Operations are applied in the order supplied.
 
     Parameters
