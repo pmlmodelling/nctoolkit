@@ -5,6 +5,7 @@ from nctoolkit.cleanup import cleanup
 from nctoolkit.flatten import str_flatten
 from nctoolkit.runthis import run_this, run_nco, tidy_command
 from nctoolkit.temp_file import temp_file
+import warnings
 
 
 def clip(self, lon=[-180, 180], lat=[-90, 90], nco=False):
@@ -20,6 +21,8 @@ def clip(self, lon=[-180, 180], lat=[-90, 90], nco=False):
     nco: boolean
         Do you want this to use NCO for clipping? Defaults to False, and uses CDO. Set to True if you want to call NCO. NCO is typically better at handling very large horizontal grids.
     """
+
+    warnings.warn(message = "Warning: clip is deprecated. Please use crop")
 
     # check validity of lon/lat supplied
     if (type(lon) is not list) or (type(lat) is not list):
@@ -139,3 +142,8 @@ def clip(self, lon=[-180, 180], lat=[-90, 90], nco=False):
 
     cleanup()
     self.disk_clean()
+
+
+
+
+
