@@ -267,3 +267,47 @@ def select_timesteps(self, times=None):
     cdo_command = f"cdo -seltimestep,{times}"
 
     run_this(cdo_command, self, output="ensemble")
+
+
+
+def select(self, **kwargs):
+    """
+    Select method. A wrappter for select_months, select_years, select_timesteps and select_seasons
+    Operations are applied in the order supplied.
+
+    Parameters
+    -------------
+    *kwargs
+        variables maps to select_variables
+        years maps to select_years
+        months maps to select_months
+        seasons maps to select_seasons
+        timesteps maps to select_timesteps
+
+    """
+
+    valid_keys = ["variables", "timesteps", "seasons", "months", "years"]
+
+    for key in kwargs:
+        if key not in valid_keys:
+            raise AttributeError(f"{key} is not a valid select method")
+
+        if key is "variables":
+            self.select_variables(kwargs[key])
+
+        if key is "months":
+            self.select_months(kwargs[key])
+
+        if key is "years":
+            self.select_years(kwargs[key])
+
+        if key is "seasons":
+            self.select_seasons(kwargs[key])
+
+        if key is "timesteps":
+            self.select_timesteps(kwargs[key])
+
+
+
+
+
