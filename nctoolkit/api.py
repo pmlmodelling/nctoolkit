@@ -806,6 +806,7 @@ class DataSet(object):
     from nctoolkit.ensembles import ensemble_percentile
 
     from nctoolkit.clip import clip
+    from nctoolkit.crop import crop
 
     from nctoolkit.cdo_command import cdo_command
     from nctoolkit.nco_command import nco_command
@@ -822,6 +823,7 @@ class DataSet(object):
     from nctoolkit.select import select_season
     from nctoolkit.select import select_months
     from nctoolkit.select import select_years
+    from nctoolkit.select import select
 
     from nctoolkit.seasstat import seasonal_mean
     from nctoolkit.seasstat import seasonal_min
