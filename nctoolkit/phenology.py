@@ -24,6 +24,10 @@ def phenology(self, var=None, metric=None, p=None):
     if metric is None:
         raise ValueError("No metric was supplied!")
 
+    if metric not in ["peak", "middle", "start", "end"]:
+        raise ValueError(f"{metric} is not a valid metric")
+
+
     if var is None:
         raise ValueError("No var was supplied")
     if type(var) is not str:
@@ -31,14 +35,21 @@ def phenology(self, var=None, metric=None, p=None):
 
     self.run()
 
+    # split data into separate years if needed
+    split_files = False
+    for ff in self:
+        if len(nc_years(ff)) > 1:
+            split_files = True
+
+    if split_files:
+        self.split("year")
+
     if metric == "peak":
 
         new_files = []
         new_commands = []
 
         for ff in self:
-            if len(nc_years(ff)) > 1:
-                raise ValueError("This can only work with single year data currently")
 
             target = temp_file(".nc")
             command = f"cdo -timmin -setrtomiss,-10000,0 -expr,'peak=var*ctimestep()' -eq -chname,{var},var -selname,{var} {ff} -timmax -chname,{var},var -selname,{var} {ff} {target}"
