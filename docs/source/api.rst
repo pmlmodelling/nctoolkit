@@ -21,6 +21,8 @@ Reading/copying data
    :toctree: generated/
 
    open_data
+   open_url
+   open_thredds
    DataSet.copy
 
 Merging or analyzing multiple datasets
