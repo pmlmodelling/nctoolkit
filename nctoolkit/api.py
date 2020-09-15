@@ -919,6 +919,8 @@ class DataSet(object):
 
     from nctoolkit.shift import shift_hours
     from nctoolkit.shift import shift_days
+    from nctoolkit.shift import shift_months
+    from nctoolkit.shift import shift_years
     from nctoolkit.shift import shift
 
     from nctoolkit.split import split

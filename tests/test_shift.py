@@ -29,6 +29,11 @@ class TestShifters:
         assert data.times[0] == "1969-12-31T23:00:00"
 
         data = nc.open_data(ff)
+        data.shift(hours = -1)
+        data.run()
+        assert data.times[0] == "1969-12-31T23:00:00"
+
+        data = nc.open_data(ff)
         data.shift_hours(-1.0)
         data.run()
         assert data.times[0] == "1969-12-31T23:00:00"
@@ -47,6 +52,11 @@ class TestShifters:
         assert data.times[0] == "1970-01-02T00:00:00"
 
         data = nc.open_data(ff)
+        data.shift(days = 1)
+        data.run()
+        assert data.times[0] == "1970-01-02T00:00:00"
+
+        data = nc.open_data(ff)
         data.shift_days(1.0)
         data.run()
         assert data.times[0] == "1970-01-02T00:00:00"
@@ -56,3 +66,29 @@ class TestShifters:
 
         n = len(nc.session_files())
         assert n == 0
+
+    def test_months(self):
+        data = nc.open_data(ff)
+        data.shift_months(1)
+        data.run()
+        assert data.times[0] == "1970-02-01T00:00:00"
+
+        data = nc.open_data(ff)
+        data.shift(months = 1)
+        data.run()
+        assert data.times[0] == "1970-02-01T00:00:00"
+
+
+    def test_years(self):
+        data = nc.open_data(ff)
+        data.shift_years(1)
+        data.run()
+        assert data.times[0] == "1971-01-01T00:00:00"
+
+        data = nc.open_data(ff)
+        data.shift(years = 1)
+        data.run()
+        assert data.times[0] == "1971-01-01T00:00:00"
+
+
+
