@@ -269,7 +269,6 @@ def select_timesteps(self, times=None):
     run_this(cdo_command, self, output="ensemble")
 
 
-
 def select(self, **kwargs):
     """
     Select method. A wrappter for select_months, select_years, select_timesteps and select_seasons
@@ -292,22 +291,17 @@ def select(self, **kwargs):
         if key not in valid_keys:
             raise AttributeError(f"{key} is not a valid select method")
 
-        if key is "variables":
+        if key == "variables":
             self.select_variables(kwargs[key])
 
-        if key is "months":
+        if key == "months":
             self.select_months(kwargs[key])
 
-        if key is "years":
+        if key == "years":
             self.select_years(kwargs[key])
 
-        if key is "seasons":
+        if key == "seasons":
             self.select_seasons(kwargs[key])
 
-        if key is "timesteps":
+        if key == "timesteps":
             self.select_timesteps(kwargs[key])
-
-
-
-
-
