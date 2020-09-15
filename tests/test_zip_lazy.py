@@ -15,7 +15,7 @@ class TestZip:
     def test_zip1(self):
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
-        tracker.select_timestep(0)
+        tracker.select_timesteps(0)
         tracker.run()
         new = tracker.copy()
         x = os.path.getsize(tracker.current)
@@ -34,7 +34,7 @@ class TestZip:
     def test_zip2(self):
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
-        tracker.select_timestep(0)
+        tracker.select_timesteps(0)
         tracker.zip()
         tracker.run()
         new = tracker.copy()

@@ -24,7 +24,7 @@ class TestSelect:
 
     def test_season(self):
         tracker = nc.open_data(ff)
-        tracker.select_season("DJF")
+        tracker.select_seasons("DJF")
         tracker.run()
         x = tracker.months
         assert x == [1, 2, 12]
@@ -101,7 +101,7 @@ class TestSelect:
 
     def test_timestep(self):
         tracker = nc.open_data(ff)
-        tracker.select_timestep(0)
+        tracker.select_timesteps(0)
         tracker.run()
         x = tracker.years
         assert x == [1970]
@@ -110,7 +110,7 @@ class TestSelect:
 
     def test_timestep2(self):
         tracker = nc.open_data(ff)
-        tracker.select_timestep(range(0, 13))
+        tracker.select_timesteps(range(0, 13))
         tracker.run()
         x = tracker.years
         assert x == [1970, 1971]
@@ -123,7 +123,7 @@ class TestSelect:
             tracker.select_months(0)
 
         with pytest.raises(TypeError):
-            tracker.select_season(0)
+            tracker.select_seasons(0)
 
         with pytest.raises(ValueError):
             tracker.select_months()
@@ -153,19 +153,19 @@ class TestSelect:
             tracker.select_variables()
 
         with pytest.raises(ValueError):
-            tracker.select_timestep()
+            tracker.select_timesteps()
 
         with pytest.raises(TypeError):
-            tracker.select_timestep(0.1)
+            tracker.select_timesteps(0.1)
 
         with pytest.raises(ValueError):
-            tracker.select_timestep(-1)
+            tracker.select_timesteps(-1)
 
         with pytest.raises(ValueError):
-            tracker.select_season()
+            tracker.select_seasons()
 
         with pytest.raises(ValueError):
-            tracker.select_season("x")
+            tracker.select_seasons("x")
 
         n = len(nc.session_files())
         assert n == 0

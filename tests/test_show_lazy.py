@@ -16,7 +16,7 @@ class TestShow:
 
     def test_times(self):
         tracker = nc.open_data(ff)
-        tracker.select_timestep(range(0, 12))
+        tracker.select_timesteps(range(0, 12))
         tracker.run()
         x = len(tracker.times)
         assert x == 12

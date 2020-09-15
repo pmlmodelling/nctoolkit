@@ -193,13 +193,13 @@ class TestAddetc:
     def test_op_list(self):
         ff = "data/sst.mon.mean.nc"
         data = nc.open_data(ff)
-        data.select_timestep(0)
+        data.select_timesteps(0)
         new = nc.open_data(ff)
-        new.select_timestep([0, 1])
+        new.select_timesteps([0, 1])
         new.split("yearmonth")
         new.subtract(data)
         new.merge_time()
-        new.select_timestep(0)
+        new.select_timesteps(0)
         new.spatial_sum()
         x = new.to_dataframe().sst.values[0].astype("float")
 

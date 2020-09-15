@@ -17,12 +17,12 @@ class Testrun:
         tracker = nc.open_data(ff)
         tracker.split(("year"))
         tracker.merge_time()
-        tracker.select_timestep(0)
+        tracker.select_timesteps(0)
         tracker.spatial_mean()
         tracker.run()
         x = tracker.to_dataframe().sst.values[0]
         tracker = nc.open_data(ff)
-        tracker.select_timestep(0)
+        tracker.select_timesteps(0)
         tracker.spatial_mean()
         tracker.run()
         y = tracker.to_dataframe().sst.values[0]

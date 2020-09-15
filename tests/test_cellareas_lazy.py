@@ -44,7 +44,7 @@ class TestCell:
 
     def test_cell_list(self):
         tracker = nc.open_data(ff)
-        tracker.select_timestep([0, 1])
+        tracker.select_timesteps([0, 1])
         tracker.split("yearmonth")
         tracker.cell_areas(join=True)
         tracker.merge_time()

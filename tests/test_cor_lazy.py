@@ -16,7 +16,7 @@ class TestCor:
 
     def test_cor(self):
         tracker = nc.open_data(ff)
-        tracker.select_timestep(1)
+        tracker.select_timesteps(1)
         tracker.mutate({"tos": "sst+273.15"})
         tracker.cor_space(var1="tos", var2="sst")
         x = tracker.to_dataframe().cor.values[0]
@@ -27,7 +27,7 @@ class TestCor:
 
     def test_cor_list(self):
         tracker = nc.open_data(ff)
-        tracker.select_timestep(1)
+        tracker.select_timesteps(1)
         tracker.mutate({"tos": "sst+273.15"})
         tracker.cor_space(var1="tos", var2="sst")
         x = tracker.to_dataframe().cor.values[0]
@@ -72,7 +72,7 @@ class TestCor:
         assert n == 0
 
         tracker = nc.open_data(ff)
-        tracker.select_timestep(1)
+        tracker.select_timesteps(1)
         tracker.mutate({"tos": "sst+273.15"})
         with pytest.raises(ValueError):
             tracker.cor_space(var1="x", var2="y")
@@ -80,7 +80,7 @@ class TestCor:
         assert n == 1
 
         tracker = nc.open_data(ff)
-        tracker.select_timestep(1)
+        tracker.select_timesteps(1)
         tracker.mutate({"tos": "sst+273.15"})
         with pytest.raises(ValueError):
             tracker.cor_space(var1="tos", var2="y")

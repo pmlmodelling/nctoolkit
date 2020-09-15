@@ -44,13 +44,13 @@ class TestTimestat:
 
     def test_sum(self):
         tracker = nc.open_data(ff)
-        tracker.select_timestep(0)
+        tracker.select_timesteps(0)
 
         tracker1 = nc.open_data(ff)
-        tracker1.select_timestep(1)
+        tracker1.select_timesteps(1)
 
         tracker2 = nc.open_data(ff)
-        tracker2.select_timestep([0, 1])
+        tracker2.select_timesteps([0, 1])
         tracker2.sum()
         tracker2.spatial_sum()
         x = tracker2.to_dataframe().sst.values[0]
@@ -62,7 +62,7 @@ class TestTimestat:
 
     def test_var(self):
         tracker = nc.open_data(ff)
-        tracker.select_timestep(range(0, 12))
+        tracker.select_timesteps(range(0, 12))
 
         tracker.var()
         tracker.spatial_mean()
@@ -72,7 +72,7 @@ class TestTimestat:
 
     def test_cum_sum(self):
         tracker = nc.open_data(ff)
-        tracker.select_timestep(range(0, 12))
+        tracker.select_timesteps(range(0, 12))
 
         tracker.cum_sum()
         tracker.spatial_mean()

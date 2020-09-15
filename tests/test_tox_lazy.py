@@ -18,14 +18,14 @@ class TestToxar:
 
     def test_xarray3(self):
         tracker = nc.open_data(ff)
-        tracker.select_timestep([0])
+        tracker.select_timesteps([0])
         x = tracker.to_xarray(decode_times=True).time.dt.year.values[0]
 
         assert x == 1970
 
     def test_df(self):
         tracker = nc.open_data(ff)
-        tracker.select_timestep([0])
+        tracker.select_timesteps([0])
         x = tracker.to_xarray(decode_times=True).time.dt.year.values[0]
         y = tracker.to_dataframe(decode_times=True).reset_index().time.dt.year.values[0]
         assert x == y

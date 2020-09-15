@@ -18,7 +18,7 @@ class TestMonst:
         tracker = nc.open_data(ff)
         tracker.select_months(1)
         tracker.monthly_mean()
-        tracker.select_timestep(0)
+        tracker.select_timesteps(0)
         tracker.spatial_mean()
         x = tracker.to_dataframe().analysed_sst.values[0].astype("float")
 
@@ -30,7 +30,7 @@ class TestMonst:
         tracker = nc.open_data(ff)
         tracker.select_months(1)
         tracker.monthly_min()
-        tracker.select_timestep(0)
+        tracker.select_timesteps(0)
         tracker.spatial_mean()
         x = tracker.to_dataframe().analysed_sst.values[0].astype("float")
 
@@ -42,7 +42,7 @@ class TestMonst:
         tracker = nc.open_data(ff)
         tracker.select_months(1)
         tracker.monthly_max()
-        tracker.select_timestep(0)
+        tracker.select_timesteps(0)
         tracker.spatial_mean()
         x = tracker.to_dataframe().analysed_sst.values[0].astype("float")
 
@@ -54,7 +54,7 @@ class TestMonst:
         tracker = nc.open_data(ff)
         tracker.select_months(1)
         tracker.monthly_range()
-        tracker.select_timestep(0)
+        tracker.select_timesteps(0)
         tracker.spatial_mean()
         x = tracker.to_dataframe().analysed_sst.values[0].astype("float")
 

@@ -62,7 +62,7 @@ class TestCalls:
     def test_selecttimestepcall(self):
         nc.options(lazy=True)
         data = nc.open_data(ff)
-        data.select_timestep(0)
+        data.select_timesteps(0)
 
         assert data.history[0] == "cdo -seltimestep,1"
 
@@ -95,7 +95,7 @@ class TestCalls:
     def test_selectseasoncall(self):
         nc.options(lazy=True)
         data = nc.open_data(ff)
-        data.select_season("DJF")
+        data.select_seasons("DJF")
 
         assert data.history[0] == "cdo -select,season=DJF"
 
