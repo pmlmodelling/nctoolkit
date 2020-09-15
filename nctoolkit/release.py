@@ -1,6 +1,7 @@
 from nctoolkit.cleanup import cleanup
 from nctoolkit.runthis import run_this
 from nctoolkit.session import nc_safe
+import warnings
 
 
 def run(self):
@@ -41,6 +42,7 @@ def release(self):
     """
     Run all stored commands in a dataset
     """
+    warnings.warn(message = "Warning: release is deprecated. Use run!")
 
     # the first step is to set the run status to true
 
