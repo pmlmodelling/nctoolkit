@@ -2,7 +2,7 @@ from datetime import datetime
 import xarray as xr
 
 
-def to_xarray(self, decode_times=True):
+def to_xarray(self, decode_times=True, cdo_times = False):
     """
     Open a dataset as an xarray object
 
@@ -10,6 +10,8 @@ def to_xarray(self, decode_times=True):
     -------------
     decode_times: boolean
         Set to False if you do not want xarray to decode the times. Default is True. If xarray cannot decode times, CDO will be used.
+    cdo_times: boolean
+        Set to True if you do not want CDO to decode the times
 
     """
     # 3 possibilities:
@@ -30,15 +32,15 @@ def to_xarray(self, decode_times=True):
 
     # decoding times is trickier, because xarray may fail to do this
     # start by asssuming we don't need to use cdo to work out the times, and figure out if that works
-    cdo_times = False
 
-    try:
-        if type(self.current) is str:
-            test = xr.open_dataset(self.current, decode_times=decode_times)
-        else:
-            test = xr.open_mfdataset(self.current, decode_times=decode_times)
-    except:
-        cdo_times = True
+    if cdo_times is False:
+        try:
+            if type(self.current) is str:
+                test = xr.open_dataset(self.current, decode_times=decode_times)
+            else:
+                test = xr.open_mfdataset(self.current, decode_times=decode_times)
+        except:
+            cdo_times = True
 
     # if it does, then just open the data in xarray
 
@@ -67,7 +69,7 @@ def to_xarray(self, decode_times=True):
         return data
 
 
-def to_dataframe(self, decode_times=True):
+def to_dataframe(self, decode_times=True, cdo_times = False):
     """
     Open a dataset as a pandas data frame
 
@@ -75,8 +77,10 @@ def to_dataframe(self, decode_times=True):
     -------------
     decode_times: boolean
         Set to False if you do not want xarray to decode the times prior to conversion to data frame. Default is True.
+    cdo_times: boolean
+        Set to True if you do not want CDO to decode the times
 
     """
     # everything must be run first
     self.run()
-    return self.to_xarray(decode_times=decode_times).to_dataframe()
+    return self.to_xarray(decode_times=decode_times, cdo_times = cdo_times).to_dataframe()
