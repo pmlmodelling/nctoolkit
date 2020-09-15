@@ -152,44 +152,18 @@ def plot(self, log=False, vars=None, panel=False):
     if vars is None and n_points == 1:
         vars = self.variables
 
+
+
     if type(vars) is list:
         if len(vars) == 1:
             vars = vars[0]
 
-    # Case when all you can plot is a time series, but more than one variable
+    # Case when all you can plot is a time series
 
-    if (n_times > 1) and (n_points < 2) and (n_levels <= 1) and (type(vars) is str):
+    if (n_times > 1) and (n_points < 2) and (n_levels <= 1):
 
-        out = subprocess.run(
-            "cdo griddes " + self.current,
-            shell=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        lon_name = [
-            x for x in str(out.stdout).replace("b'", "").split("\\n") if "xname" in x
-        ][0].split(" ")[-1]
-        lat_name = [
-            x for x in str(out.stdout).replace("b'", "").split("\\n") if "yname" in x
-        ][0].split(" ")[-1]
-        data = self.to_xarray()
-        data = data.squeeze([lon_name, lat_name])
-        data = data.rename({vars: "x"})
-
-        intplot = data.x.hvplot(responsive=(in_notebook() is False))
-        if in_notebook() is True:
-            return intplot
-
-        t = Thread(target=ctrc)
-        t.start()
-
-        bokeh_server = pn.panel(intplot, sizing_mode="stretch_both").show(
-            threaded=False
-        )
-
-        return None
-
-    if (n_times > 1) and (n_points < 2) and (n_levels <= 1) and (type(vars) is list):
+        if type(vars) is str:
+            vars = [vars]
 
         df = self.to_xarray()
 
@@ -201,11 +175,16 @@ def plot(self, log=False, vars=None, panel=False):
                 to_go.append(kk)
 
         df = df.to_dataframe()
-        df = df.drop(columns=to_go)
+        keep = self.variables
+        df = df.reset_index()
+
+        to_go = [x for x in df.columns if (x not in ["time"] and x not in keep)]
+
+        df = df.drop(columns=to_go).drop_duplicates()
 
         if panel:
             intplot = (
-                df.reset_index()
+                df
                 .set_index("time")
                 .loc[:, vars]
                 .reset_index()
