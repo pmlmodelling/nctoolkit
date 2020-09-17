@@ -1,7 +1,7 @@
 from setuptools import Command, find_packages, setup
 
 
-DESCRIPTION = "Efficient and intuitive tools for analyzing NetCDF data"
+DESCRIPTION = "Fast and easy analysis of netCDF data in Python"
 LONG_DESCRIPTION = """
 
 **nctoolkit** is a comprehensive Python (3.6 and above) package for analyzing netCDF data on Linux and macOS.
@@ -27,13 +27,13 @@ Operation of the package requires the installation of Climate Data Operators (CD
 
 The package is designed for both intensive bulk processing of NetCDF files and interactive Jupyter notebook analysis. It features an interactive plotting feature which allows users to view the contents of NetCDF files either within Jupyter notebooks or a web browser.
 
-Documentation and a user guide are available `here <https://readthedocs.org/projects/nctoolkit/>`__.
+Documentation and a user guide are available `here <https://nctoolkit.readthedocs.io/en/stable>`__.
 
 """
 
 PROJECT_URLS = {
     "Bug Tracker": "https://github.com/r4ecology/nctoolkit/issues",
-    "Documentation": "https://nctoolkit.readthedocs.io/en/latest",
+    "Documentation": "https://nctoolkit.readthedocs.io/en/stable",
     "Source Code": "https://github.com/r4ecology/nctoolkit",
 }
 
@@ -41,7 +41,7 @@ REQUIREMENTS = [i.strip() for i in open("requirements.txt").readlines()]
 
 
 setup(name='nctoolkit',
-      version='0.2.0',
+      version='0.2.1',
       description=DESCRIPTION,
       long_description=LONG_DESCRIPTION,
       python_requires='>=3.6.1',
