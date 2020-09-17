@@ -16,7 +16,6 @@ Celsius, we could convert it to Kelvin by adding 273.15.
 
 ::
 
-    data = nc.open_data(infile)
     data.add(273.15)
 
 If we have two sets, we add one to the other as follows:
@@ -47,7 +46,6 @@ compared with a baseline period of 1900-1919 we would do the following:
 
 ::
 
-    data = nc.open_data(infile)
     data.annual_anomaly(baseline=[1900, 1919])
 
 We may be more interested in the rolling anomaly, in particular when
@@ -56,7 +54,6 @@ there is a lot of annual variation. In the above case, if you wanted a
 
 ::
 
-    data = nc.open_data(infile)
     data.annual_anomaly(baseline=[1900, 1919], window=20)
 
 By default this method works out the absolute anomaly. However, in some
@@ -65,7 +62,6 @@ the metric argument to “relative”:
 
 ::
 
-    data = nc.open_data(infile)
     data.annual_anomaly(baseline=[1900, 1919], metric = "relative")
 
 annual_max
@@ -76,7 +72,6 @@ for each grid cell of dataset.
 
 ::
 
-    data = nc.open_data(infile)
     data.annual_max()
 
 annual_mean
@@ -87,7 +82,6 @@ for each grid cell of dataset.
 
 ::
 
-    data = nc.open_data(infile)
     data.annual_mean()
 
 annual_min
@@ -111,6 +105,21 @@ and for each grid cell of dataset.
 
     data = nc.open_data(infile)
     data.annual_range()
+
+
+annual_sum
+------------
+
+This method will calculate the sum of values in each available year
+and for each grid cell of dataset.
+
+::
+
+    data = nc.open_data(infile)
+    data.annual_sum()
+
+
+
 
 append
 ------------
@@ -251,7 +260,63 @@ variables. Usage is simple:
 ::
 
     data = nc.open_data(infile)
-    data.cum_sum()
+
+daily_max
+----------
+
+This method will calculate the maximum value in each available day and
+for each grid cell of dataset.
+
+::
+
+    data.daily_max()
+
+daily_mean
+-----------
+
+This method will calculate the maximum value in each available day and
+for each grid cell of dataset.
+
+::
+
+    data.daily_mean()
+
+daily_min
+----------
+
+This method will calculate the minimum value in each available day and
+for each grid cell of dataset.
+
+::
+
+    data = nc.open_data(infile)
+    data.daily_min()
+
+daily_range
+------------
+
+This method will calculate the range of values in each available day
+and for each grid cell of dataset.
+
+::
+
+    data = nc.open_data(infile)
+    data.daily_range()
+
+
+daily_sum
+------------
+
+This method will calculate the sum of values in each available day
+and for each grid cell of dataset.
+
+::
+
+    data = nc.open_data(infile)
+    data.daily_sum()
+
+
+   data.cum_sum()
 
 daily_max_climatology
 ---------------------
@@ -914,6 +979,15 @@ all years. Usage is simple:
     data = nc.open_data(infile)
     data.seasonal_range_climatology()
 
+select
+-------------
+
+A method to subset a dataset based on multiple criteria. This acts as a wrapper for `select_variables`, `select_months`, `select_years`, `select_seasons`, and `select_timesteps`, with the args used being `variables`, `months`, `years`, `seasons`, and `timesteps`. Subsetting will occur in the order given. For example, if you want to select the years 1990 and 1991 and months June and July, you would do the following:
+
+::
+
+    data.select(years = [1990, 1991], months = [6, 7])
+
 select_months
 -------------
 
@@ -962,6 +1036,60 @@ and 10 to be set to missing, you would do the following:
 
     data = nc.open_data(infile)
     data.set_missing([0, 10])
+
+shift_days
+-----------
+
+This method allows you to shift time by a set number of hours, days, months or years. This acts as a wrapper for `shift_hours`, `shift_days`, `shift_months` and `shift_years`. Use the args `hours`, `days`, `months`, or `years`. This takes any number of arguments. So, if you wanted to shift time forward by 1 year, 1 month and 1 days you would do the following:
+
+::
+
+    data = nc.open_data(infile)
+    data.shift(years = 1, months = 1, days = 1)
+
+
+
+
+shift_days
+-----------
+
+This method allows you to shift time by a set number of days. For example, if you want time moved forward by 2 hours you would do the following:
+
+::
+
+    data = nc.open_data(infile)
+    data.shift_days(2)
+
+shift_hours
+-----------
+
+This method allows you to shift time by a set number of hours. For example, if you want time moved back by 1 hour you would do the following:
+
+::
+
+    data = nc.open_data(infile)
+    data.shift_hours(-1)
+
+shift_months
+-----------
+
+This method allows you to shift time by a set number of months. For example, if you want time moved back by 2 months you would do the following:
+
+::
+
+    data = nc.open_data(infile)
+    data.shift_months(2)
+
+shift_years
+-----------
+
+This method allows you to shift time by a set number of years. For example, if you want time moved back by 10 years you would do the following:
+
+::
+
+    data = nc.open_data(infile)
+    data.shift_years(10)
+
 
 spatial_max
 -----------

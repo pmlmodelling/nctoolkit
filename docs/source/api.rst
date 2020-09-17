@@ -192,8 +192,8 @@ Subsetting operations
    DataSet.remove_variables
    DataSet.select_years
    DataSet.select_months
-   DataSet.select_season
-   DataSet.select_timestep
+   DataSet.select_seasons
+   DataSet.select_timesteps
 
 Time-based methods
 ---------------------
@@ -202,11 +202,11 @@ Time-based methods
    :toctree: generated/
 
    DataSet.set_date
-   DataSet.select_months
-   DataSet.select_season
-   DataSet.select_years
    DataSet.shift_hours
    DataSet.shift_days
+   DataSet.shift_months
+   DataSet.shift_years
+   DataSet.shift
 
 Interpolation methods
 ---------------------
@@ -269,6 +269,12 @@ Statistical methods
    DataSet.monthly_max
    DataSet.monthly_range
 
+   DataSet.daily_mean
+   DataSet.daily_min
+   DataSet.daily_max
+   DataSet.daily_mean
+   DataSet.daily_range
+
    DataSet.daily_mean_climatology
    DataSet.daily_min_climatology
    DataSet.daily_max_climatology
@@ -283,6 +289,7 @@ Statistical methods
    DataSet.annual_mean
    DataSet.annual_min
    DataSet.annual_max
+   DataSet.annual_sum
    DataSet.annual_range
 
    DataSet.seasonal_mean
@@ -322,7 +329,7 @@ Seasonal methods
    DataSet.seasonal_min_climatology
    DataSet.seasonal_max_climatology
    DataSet.seasonal_range_climatology
-   DataSet.select_season
+   DataSet.select_seasons
 
 
 
