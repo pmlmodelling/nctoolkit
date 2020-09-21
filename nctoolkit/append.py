@@ -12,7 +12,7 @@ def append(self, x=None):
      File path(s) to add to the dataset
     """
 
-    # run any commands, as it makes no sense to add files while commands are waiting to run
+    # run, as it makes no sense to add files while commands are waiting to run
     self.run()
 
     if x is None:

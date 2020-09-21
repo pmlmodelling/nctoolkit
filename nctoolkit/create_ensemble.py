@@ -13,7 +13,8 @@ def create_ensemble(path="", var=None, recursive=True):
     path: str
         The system to search for netcdf files
     recursive : boolean
-        True/False depending on whether you want to search the path recursively. Defaults to True.
+        True/False depending on whether you want to search the path recursively.
+        Defaults to True.
 
     Returns
     -------------

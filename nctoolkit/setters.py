@@ -8,7 +8,8 @@ from nctoolkit.temp_file import temp_file
 def set_date(self, year=None, month=None, day=None, base_year=1900):
     """
     Set the date in a dataset
-    You should only do this if you have to fix/change a dataset with a single, not multiple dates.
+    You should only do this if you have to fix/change a dataset with a single,
+    not multiple dates.
 
     Parameters
     -------------
@@ -40,7 +41,8 @@ def set_date(self, year=None, month=None, day=None, base_year=1900):
     if type(day) is not int:
         raise TypeError("day supplied is not an int")
 
-    cdo_command = f"cdo -setreftime,{str(base_year)}-01-01 -setdate,{str(year)}-{str(month)}-{str(day)}"
+    cdo_command = f"cdo -setreftime,{str(base_year)}-01-01 "\
+                  f"-setdate,{str(year)}-{str(month)}-{str(day)}"
 
     run_this(cdo_command, self, output="ensemble")
 
@@ -52,7 +54,9 @@ def set_missing(self, value=None):
     Parameters
     -------------
     value : 2 variable list or int/float
-        If int/float is provided, the missing value will be set to that. If a list is provided, values between the two values (inclusive) of the list are set to missing.
+        If int/float is provided, the missing value will be set to that.
+        If a list is provided, values between the two values (inclusive)
+        of the list are set to missing.
     """
 
     if value is None:
@@ -81,7 +85,8 @@ def set_units(self, unit_dict=None):
     Parameters
     -------------
     unit_dict : dict
-        A dictionary where the key-value pairs are the variables and new units respectively.
+        A dictionary where the key-value pairs are the variables and
+        new units respectively.
     """
 
     if unit_dict is None:
@@ -109,7 +114,8 @@ def set_longnames(self, name_dict=None):
     Parameters
     -------------
     name_dict : dict
-        Dictionary with key, value pairs representing the variable names and their long names
+        Dictionary with key, value pairs representing the variable names and
+        their long names
 
     """
     if name_dict is None:

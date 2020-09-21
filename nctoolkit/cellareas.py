@@ -15,7 +15,8 @@ def cell_areas(self, join=True):
     Parameters
     -------------
     join: boolean
-        Set to False if you only want the cell areas to be in the output. join=True adds the areas as a variable to the dataset. Defaults to True.
+        Set to False if you only want the cell areas to be in the output.
+        join=True adds the areas as a variable to the dataset. Defaults to True.
     """
 
     if isinstance(join, bool) is False:
@@ -43,7 +44,7 @@ def cell_areas(self, join=True):
 
             if cdo_version in ["1.9.3", "1.9.4", "1.9.5", "1.9.6"]:
 
-                # things need to be done a bit differently in cdo < 1.9.6 because chaining doesn't work with merge
+                # in cdo < 1.9.6 chaining doesn't work with merge
 
                 if "cell_area" in nc_variables(ff):
                     raise ValueError("cell_area is already a variable")

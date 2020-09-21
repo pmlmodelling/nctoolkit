@@ -9,14 +9,19 @@ from nctoolkit.temp_file import temp_file
 def phenology(self, var=None, metric=None, p=None):
     """
     Calculate phenologies from a dataset
-    Each file in an ensemble must only cover a single year, and ideally have all days. The method assumes datasets have daily resolution.
+    Each file in an ensemble must only cover a single year, and ideally have all days.
+    The method assumes datasets have daily resolution.
 
     Parameters
     -------------
     var : str
         Variable to analyze.
     metric : str
-        Must be peak, middle, start or end. Peak is defined as the day of the maximum value. Middle is the day when the cumulative total of the variable first exceeds the cumulative total for the entire year. Start or end is defined as the first day when the cumulative total exceeds a percentile p of the maximum cumulative total.
+        Must be peak, middle, start or end. Peak is defined as the day of the maximum
+        value.  Middle is the day when the cumulative total of the variable first
+        exceeds the cumulative total for the entire year. Start or end is defined as
+        the first day when the cumulative total exceeds a percentile p of the maximum
+        cumulative total.
     p : str
         Percentile to use for start or end.
     """
@@ -26,7 +31,6 @@ def phenology(self, var=None, metric=None, p=None):
 
     if metric not in ["peak", "middle", "start", "end"]:
         raise ValueError(f"{metric} is not a valid metric")
-
 
     if var is None:
         raise ValueError("No var was supplied")
@@ -52,7 +56,9 @@ def phenology(self, var=None, metric=None, p=None):
         for ff in self:
 
             target = temp_file(".nc")
-            command = f"cdo -timmin -setrtomiss,-10000,0 -expr,'peak=var*ctimestep()' -eq -chname,{var},var -selname,{var} {ff} -timmax -chname,{var},var -selname,{var} {ff} {target}"
+            command = f"cdo -timmin -setrtomiss,-10000,0 -expr,'peak=var*ctimestep()' "\
+                f"-eq -chname,{var},var -selname,{var} {ff} -timmax -chname,{var},var "\
+                f"-selname,{var} {ff} {target}"
 
             command = tidy_command(command)
             target = run_cdo(command, target=target)
@@ -95,7 +101,10 @@ def phenology(self, var=None, metric=None, p=None):
                 raise ValueError("This can only work with single year data currently")
 
             target = temp_file(".nc")
-            command = f"cdo -timmin -setrtomiss,-10000,0 -expr,'{metric}=var*ctimestep()' -gt -timcumsum -chname,{var},var -selname,{var} {ff} -mulc,{start} -timsum -chname,{var},var -selname,{var} {ff} {target}"
+            command = f"cdo -timmin -setrtomiss,-10000,0 -expr,"\
+                      f"'{metric}=var*ctimestep()' -gt -timcumsum -chname,{var},var "\
+                      f"-selname,{var} {ff} -mulc,{start} -timsum -chname,{var},var "\
+                      f"-selname,{var} {ff} {target}"
 
             command = tidy_command(command)
             target = run_cdo(command, target=target)

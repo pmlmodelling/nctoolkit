@@ -22,8 +22,7 @@ def split_cdo(self, method="year"):
     for ff in self:
 
         # We need to split the file by name
-
-        # But, first we need to check whether there is sufficient space in the output folder
+        # But, first we need to check if there is space in the output folder
         # If there isn't, we need to switch to the /var/tmp
 
         if platform.system() == "Linux":
@@ -70,12 +69,16 @@ def split_cdo(self, method="year"):
 def split(self, by=None):
     """
     Split the dataset
-    Each file in the ensemble will be separated into new files based on the splitting argument.
+    Each file in the ensemble will be separated into new files based on the
+    splitting argument.
 
     Parameters
     --------------------
     by : str
-        Available by arguments are 'year', 'month', 'yearmonth', 'season', 'day'. year will split files by year, month will split files by month, yearmonth will split files by year and month; season will split files by year, day will split files by day.
+        Available by arguments are 'year', 'month', 'yearmonth', 'season', 'day'.
+        year will split files by year, month will split files by month, yearmonth
+        will split files by year and month; season will split files by year, day
+        will split files by day.
     """
 
     if by is None:

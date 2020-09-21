@@ -152,8 +152,6 @@ def plot(self, log=False, vars=None, panel=False):
     if vars is None and n_points == 1:
         vars = self.variables
 
-
-
     if type(vars) is list:
         if len(vars) == 1:
             vars = vars[0]
@@ -184,8 +182,7 @@ def plot(self, log=False, vars=None, panel=False):
 
         if panel:
             intplot = (
-                df
-                .set_index("time")
+                df.set_index("time")
                 .loc[:, vars]
                 .reset_index()
                 .melt("time")

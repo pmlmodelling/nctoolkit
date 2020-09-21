@@ -37,7 +37,6 @@ def daily_range(self):
     dailystat(self, stat="range")
 
 
-
 def daily_sum(self):
     """
     Calculate the daily sum for each variable

@@ -21,12 +21,18 @@ def cdo_version():
 def merge(self, match=["year", "month", "day"]):
     """
     Merge a multi-file ensemble into a single file
-    Merging will occur based on the time steps in the first file. This will only be effective if you want to merge files with the same times, but with different variables.
+    Merging will occur based on the time steps in the first file.
+    This will only be effective if you want to merge files with the same times,
+    but with different variables.
 
     Parameters
     -------------
     match: list, str
-    a list or str stating what must match in the netcdf files. Defaults to year/month/day. This list must be some combination of year/month/day. An error will be thrown if the elements of time in match do not match across all netcdf files. The only exception is if there is a single date file in the ensemble.
+        a list or str stating what must match in the netcdf files.
+        Defaults to year/month/day. This list must be some combination of
+        year/month/day. An error will be thrown if the elements of time in match
+        do not match across all netcdf files. The only exception is if there is a
+        single date file in the ensemble.
     """
 
     # basic checks on match criteria
@@ -87,10 +93,11 @@ def merge(self, match=["year", "month", "day"]):
 
     if len(set(all_grids)) > 1:
         raise ValueError(
-            "The files in the dataset to do not have the same grid. Consider using regrid!"
+                "The files in the dataset to do not have the same grid. "
+                "Consider using regrid!"
         )
 
-    # check the files have the same number of time steps, or that one of them has a single time
+    # check the file times are compatible
     all_times = []
     for ff in self:
         cdo_result = subprocess.run(
@@ -107,7 +114,8 @@ def merge(self, match=["year", "month", "day"]):
     for i in range(1, len(all_times)):
         if (len(all_times[i]) != len(all_times[0])) and (len(all_times[i]) > 1):
             raise ValueError(
-                "You are trying to merge data sets with an incompatible number of time steps"
+                    "You are trying to merge data sets with an incompatible number "
+                    "of time steps"
             )
 
     # remove files with more than one time step in it
@@ -141,7 +149,8 @@ def merge(self, match=["year", "month", "day"]):
 def merge_time(self):
     """
     Time-based merging of a multi-file ensemble into a single file
-    This method is ideal if you have the same data split over multiple files covering different data sets.
+    This method is ideal if you have the same data split over multiple
+    files covering different data sets.
     """
 
     self.run()

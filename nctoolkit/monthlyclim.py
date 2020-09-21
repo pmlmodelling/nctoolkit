@@ -12,7 +12,8 @@ def ymonstat(self, stat="mean"):
 def monthly_mean_climatology(self):
     """
     Calculate the monthly mean climatologies
-    Defined as the minimum value in each month across all years. This applies to each file in an ensemble.
+    Defined as the minimum value in each month across all years.
+    This applies to each file in an ensemble.
     """
     ymonstat(self, stat="mean")
 
@@ -20,7 +21,8 @@ def monthly_mean_climatology(self):
 def monthly_min_climatology(self):
     """
     Calculate the monthly minimum climatologies
-    Defined as the minimum value in each month across all years. This applies to each file in an ensemble.
+    Defined as the minimum value in each month across all years.
+    This applies to each file in an ensemble.
     """
     ymonstat(self, stat="min")
 
@@ -28,7 +30,8 @@ def monthly_min_climatology(self):
 def monthly_max_climatology(self):
     """
     Calculate the monthly maximum climatologies
-    Defined as the maximum value in each month across all years. This applies to each file in an ensemble.
+    Defined as the maximum value in each month across all years.
+    This applies to each file in an ensemble.
     """
     ymonstat(self, stat="max")
 
@@ -36,6 +39,7 @@ def monthly_max_climatology(self):
 def monthly_range_climatology(self):
     """
     Calculate the monthly range climatologies
-    Defined as the range of value in each month across all years. This applies to each file in an ensemble.
+    Defined as the range of value in each month across all years.
+    This applies to each file in an ensemble.
     """
     ymonstat(self, stat="range")

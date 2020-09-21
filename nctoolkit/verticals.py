@@ -11,8 +11,10 @@ from nctoolkit.runthis import run_this
 def bottom(self):
     """
     Extract the bottom level from a dataset
-    This extracts the bottom level from each NetCDF file. Please note that for ensembles, it uses the first file to derive the index of the bottom level.
-    Use bottom_mask for files when the bottom cell in NetCDF files do not represent the actual bottom.
+    This extracts the bottom level from each NetCDF file. Please note that for
+    ensembles, it uses the first file to derive the index of the bottom level.
+    Use bottom_mask for files when the bottom cell in NetCDF files do not represent
+    the actual bottom.
     """
 
     # extract the number of the bottom level
@@ -21,7 +23,8 @@ def bottom(self):
     if type(self.current) is list:
         ff = self.current[0]
         warnings.warn(
-            message="The first file in ensemble used to determine number of vertical levels"
+                message="The first file in ensemble used to determine number of "
+                "vertical levels"
         )
     else:
         ff = self.current
@@ -56,7 +59,8 @@ def vertical_interp(self, levels=None):
     Parameters
     -------------
     levels : list, int or str
-        list of vertical levels, for example depths for an ocean model, to vertically interpolate to. These must be floats or ints.
+        list of vertical levels, for example depths for an ocean model, to vertically
+        interpolate to. These must be floats or ints.
 
     """
 
@@ -145,9 +149,10 @@ def invert_levels(self):
 def bottom_mask(self):
     """
     Create a mask identifying the deepest cell without missing values.
-    This converts a dataset to a mask identifying which cell represents the bottom, for example the seabed.
-    1 identifies the deepest cell with non-missing values. Everything else is 0, or missing.
-    At present this method only uses the first available variable from netcdf files, so it may not be suitable for all data
+    This converts a dataset to a mask identifying which cell represents the bottom,
+    for example the seabed. 1 identifies the deepest cell with non-missing values.
+    Everything else is 0, or missing. At present this method only uses the first
+    available variable from netcdf files, so it may not be suitable for all data
     """
     self.run()
 

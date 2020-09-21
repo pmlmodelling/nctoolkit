@@ -69,7 +69,8 @@ def mutate(self, operations=None):
     Parameters
     -------------
     operations : dict
-        operations to apply. The keys are the new variables to generate. The values are the mathematical operations to carry out. Both must be strings.
+        operations to apply. The keys are the new variables to generate.
+        The values are the mathematical operations to carry out. Both must be strings.
     """
 
     if type(operations) is not dict:
@@ -93,7 +94,8 @@ def transmute(self, operations=None):
     Parameters
     -------------
     operations : dict
-        operations to apply. The keys are the new variables to generate. The values are the mathematical operations to carry out. Both must be strings.
+        operations to apply. The keys are the new variables to generate.
+        The values are the mathematical operations to carry out. Both must be strings.
     """
     # create the cdo call and run it
 

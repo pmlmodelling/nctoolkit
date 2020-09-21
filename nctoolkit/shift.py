@@ -97,7 +97,6 @@ def shift_years(self, shift=None):
     run_this(cdo_command, self, output="ensemble")
 
 
-
 def shift(self, **kwargs):
     """
     Shift method. A wrapper for shift_days, shift_hours

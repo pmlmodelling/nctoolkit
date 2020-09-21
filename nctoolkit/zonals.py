@@ -10,27 +10,31 @@ def zonstat(self, stat="mean"):
 
 def zonal_mean(self):
     """
-    Calculate the zonal mean for each year/month combination in files. This applies to each file in an ensemble.
+    Calculate the zonal mean for each year/month combination in files.
+    This applies to each file in an ensemble.
     """
     zonstat(self, stat="mean")
 
 
 def zonal_min(self):
     """
-    Calculate the zonal minimum for each year/month combination in files. This applies to each file in an ensemble.
+    Calculate the zonal minimum for each year/month combination in files.
+    This applies to each file in an ensemble.
     """
     zonstat(self, stat="min")
 
 
 def zonal_max(self):
     """
-    Calculate the zonal maximum for each year/month combination in files. This applies to each file in an ensemble.
+    Calculate the zonal maximum for each year/month combination in files.
+    This applies to each file in an ensemble.
     """
     zonstat(self, stat="max")
 
 
 def zonal_range(self):
     """
-    Calculate the zonal range for each year/month combination in files. This applies to each file in an ensemble.
+    Calculate the zonal range for each year/month combination in files.
+    This applies to each file in an ensemble.
     """
     zonstat(self, stat="range")

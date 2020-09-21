@@ -12,9 +12,11 @@ def nco_command(self, command=None, ensemble=False):
     Parameters
     -------------
     command : string
-        nco command to call. This must be of a form such that "nco {command} infile outfile" will run.
+        nco command to call. This must be of a form such that
+        "nco {command} infile outfile" will run.
     ensemble : boolean
-        Set to True if you want the command to take all of the files as input. This is useful for ensemble methods.
+        Set to True if you want the command to take all of the files as input.
+        This is useful for ensemble methods.
     """
 
     # First, check that the command is valid

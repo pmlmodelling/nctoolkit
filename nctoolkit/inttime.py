@@ -12,9 +12,12 @@ def time_interp(self, start=None, end=None, resolution="monthly"):
     start : str
         Start date for interpolation. Needs to be of the form YYYY/MM/DD or YYYY-MM-DD.
     end : str
-        End date for interpolation. Needs to be of the form YYYY/MM/DD or YYYY-MM-DD. If end is not given interpolation will be to the final available time in the dataset.
+        End date for interpolation. Needs to be of the form YYYY/MM/DD or YYYY-MM-DD.
+        If end is not given interpolation will be to the final available time in the
+        dataset.
     resolution : str
-        Time steps used for interpolation. Needs to be "daily", "weekly", "monthly" or "yearly". Defaults to monthly.
+        Time steps used for interpolation. Needs to be "daily", "weekly", "monthly"
+        or "yearly". Defaults to monthly.
     """
 
     if resolution not in ["daily", "weekly", "monthly", "yearly"]:
@@ -50,12 +53,14 @@ def time_interp(self, start=None, end=None, resolution="monthly"):
 
 def timestep_interp(self, steps=None):
     """
-    Temporally interpolate a dataset to given number of time steps between existing time steps
+    Temporally interpolate a dataset to given number of time steps
+    between existing time steps
 
     Parameters
     -------------
     steps : int
-        Number of time steps to interpolate between existing time steps. For example, if you wanted to go from daily to hourly data you would set steps=24.
+        Number of time steps to interpolate between existing time steps. For example,
+        if you wanted to go from daily to hourly data you would set steps=24.
     """
 
     if type(steps) is not int:

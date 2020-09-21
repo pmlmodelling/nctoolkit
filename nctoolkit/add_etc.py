@@ -35,7 +35,8 @@ def operation(self, method="mul", ff=None, var=None):
     cdo_check = cdo_check.replace("b'", "").strip()
     cdo_version = cdo_check.split("(")[0].strip().split(" ")[-1]
 
-    # If the dataset has to be merged, then this operation will not work without running it first
+    # If the dataset has to be merged,
+    # then this operation will not work without running it first
     if self._merged:
         self.run()
 
@@ -51,7 +52,8 @@ def operation(self, method="mul", ff=None, var=None):
         if var not in nc_variables(ff):
             raise ValueError("var supplied is not available in the dataset")
 
-    # make sure the ff file is not removed from safe list in subsequent actions prior to running
+    # make sure the ff file is not removed from safe list in subsequent
+    # actions prior to running
     if (ff is not None) and (session_info["lazy"]):
         nc_safe.append(ff)
         self._safe.append(ff)
@@ -134,7 +136,9 @@ def multiply(self, x=None, var=None):
     Parameters
     ------------
     x: int, float, DataSet or netcdf file
-        An int, float, single file dataset or netcdf file to multiply the dataset by. If multiplying by a dataset or single file there must only be a single variable in it, unless var is supplied. The grids must be the same.
+        An int, float, single file dataset or netcdf file to multiply the dataset by.
+        If multiplying by a dataset or single file there must only be a single variable
+        in it, unless var is supplied. The grids must be the same.
     var: str
         A variable in the x to multiply the dataset by
     """
@@ -165,7 +169,9 @@ def subtract(self, x=None, var=None):
     Parameters
     ------------
     x: int, float, DataSet or netcdf file
-        An int, float, single file dataset or netcdf file to subtract from the dataset. If a dataset or netcdf is supplied this must only have one variable, unless var is provided. The grids must be the same.
+        An int, float, single file dataset or netcdf file to subtract from the dataset.
+        If a dataset or netcdf is supplied this must only have one variable,
+        unless var is provided. The grids must be the same.
     var: str
         A variable in the x to use for the operation
     """
@@ -196,7 +202,9 @@ def add(self, x=None, var=None):
     Parameters
     ------------
     x: int, float, DataSet or netcdf file
-        An int, float, single file dataset or netcdf file to add to the dataset. If a dataset or netcdf file is supplied, this must have only one variable, unless var is provided. The grids must be the same.
+        An int, float, single file dataset or netcdf file to add to the dataset.
+        If a dataset or netcdf file is supplied, this must have only one variable,
+        unless var is provided. The grids must be the same.
     var: str
         A variable in the x to use for the operation
     """
@@ -227,7 +235,9 @@ def divide(self, x=None, var=None):
     Parameters
     ------------
     x: int, float, DataSet or netcdf file
-        An int, float, single file dataset or netcdf file to divide the dataset by. If a dataset or netcdf file is supplied, this must have only one variable, unless var is provided. The grids must be the same.
+        An int, float, single file dataset or netcdf file to divide the dataset by.
+        If a dataset or netcdf file is supplied, this must have only one variable,
+        unless var is provided. The grids must be the same.
     var: str
         A variable in the x to use for the operation
     """

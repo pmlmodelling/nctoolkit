@@ -14,10 +14,11 @@ def to_latlon(self, lon=None, lat=None, res=None, method="bil"):
     lat : list
         2 element list giving minimum and maximum latitude of target grid
     res : float, int or list
-        If float or int given, this will be the horizontal and vertical resolution of the target grid.
-        If 2 element list is given, the first element is the longitudinal resolution and the second is the latitudinal resolution.
+        If float or int given, this will be the horizontal and vertical resolution
+        of the target grid. If 2 element list is given, the first element is the
+        longitudinal resolution and the second is the latitudinal resolution.
     method : str
-        remapping method. Defaults to "bil". Bilinear: "bil"; Nearest neighbour: "nn",....
+        remapping method. Defaults to "bil". Bilinear: "bil"; Nearest neighbour: "nn".
     """
 
     if lon is None:

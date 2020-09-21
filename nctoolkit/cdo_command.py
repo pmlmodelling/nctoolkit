@@ -10,7 +10,8 @@ def cdo_command(self, command=None):
     Parameters
     -------------
     command : string
-        cdo command to call. This command must be such that "cdo {command} infile outfile" will run.
+        cdo command to call. This command must be such that
+        "cdo {command} infile outfile" will run.
     """
 
     # First, check that the command is valid

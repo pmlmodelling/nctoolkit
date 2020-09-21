@@ -15,14 +15,18 @@ def clip(self, lon=[-180, 180], lat=[-90, 90], nco=False):
     Parameters
     -------------
     lon: list
-        The longitude range to select. This must be two variables, between -180 and 180 when nco = False.
+        The longitude range to select. This must be two variables,
+        between -180 and 180 when nco = False.
     lat: list
-        The latitude range to select. This must be two variables, between -90 and 90 when nco = False.
+        The latitude range to select. This must be two variables,
+        between -90 and 90 when nco = False.
     nco: boolean
-        Do you want this to use NCO for clipping? Defaults to False, and uses CDO. Set to True if you want to call NCO. NCO is typically better at handling very large horizontal grids.
+        Do you want this to use NCO for clipping? Defaults to False,
+        and uses CDO. Set to True if you want to call NCO.
+        NCO is typically better at handling very large horizontal grids.
     """
 
-    warnings.warn(message = "Warning: clip is deprecated. Please use crop")
+    warnings.warn(message="Warning: clip is deprecated. Please use crop")
 
     # check validity of lon/lat supplied
     if (type(lon) is not list) or (type(lat) is not list):
@@ -142,8 +146,3 @@ def clip(self, lon=[-180, 180], lat=[-90, 90], nco=False):
 
     cleanup()
     self.disk_clean()
-
-
-
-
-

@@ -22,7 +22,8 @@ def regrid(self, grid=None, method="bil"):
         The grid to remap to
 
     method : str
-        Remapping method. Defaults to "bil". Methods available are: bilinear - "bil"; nearest neighbour - "nn" - "nearest neighbour"; "bic" - "bicubic interpolation";
+        Remapping method. Defaults to "bil". Methods available are: bilinear - "bil";
+        nearest neighbour - "nn" - "nearest neighbour"; "bic" - "bicubic interpolation".
     """
 
     del_grid = None

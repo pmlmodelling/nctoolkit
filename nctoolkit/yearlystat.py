@@ -37,7 +37,6 @@ def annual_range(self):
     yearlystat(self, stat="range")
 
 
-
 def annual_sum(self):
     """
     Calculate the annual sum for each variable

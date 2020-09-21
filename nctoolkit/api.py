@@ -59,7 +59,7 @@ temp_check()
 def is_url(x):
     regex = re.compile(
         r"^(?:http|ftp)s?://"  # http:// or https://
-        r"(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|"  # domain...
+        r"(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|"
         r"localhost|"  # localhost...
         r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})"  # ...or ip
         r"(?::\d+)?"  # optional port
@@ -139,7 +139,9 @@ def open_data(x=None, suppress_messages=False, checks=False, **kwargs):
     Parameters
     ---------------
     x : str or list
-        A string or list of netcdf files or a single url. The function will check the files exist. If x is not a list, but an iterable it will be converted to a list. If a url is given the file will be downloaded before processing.
+        A string or list of netcdf files or a single url. The function will check the
+        files exist. If x is not a list, but an iterable it will be converted to a list.
+        If a url is given the file will be downloaded before processing.
     thredds : boolean
         Are you accessing a thredds server? Must end with .nc.
     checks: boolean
@@ -290,7 +292,7 @@ def open_thredds(x=None):
         A string or list of thredds urls, which must end with .nc.
 
     """
-    return open_data(x = x, thredds = True)
+    return open_data(x=x, thredds=True)
 
 
 def open_url(x=None):
@@ -300,10 +302,11 @@ def open_url(x=None):
     Parameters
     ---------------
     x : str
-        A string with a url. Prior to processing data will be downloaded to a temp folder.
+        A string with a url. Prior to processing data will be downloaded to
+        a temp folder.
 
     """
-    return open_data(x = x)
+    return open_data(x=x)
 
 
 def merge(*datasets, match=["day", "year", "month"]):
@@ -315,7 +318,10 @@ def merge(*datasets, match=["day", "year", "month"]):
     datasets: kwargs
         Datasets to merge.
     match: list
-        Temporal matching criteria. This is a list which must be made up of a subset of day, year, month. This checks that the datasets have compatible times. For example, if you want to ensure the datasets have the same years, then use match = ["year"].
+        Temporal matching criteria. This is a list which must be made up of a subset of
+        day, year, month. This checks that the datasets have compatible times.
+        For example, if you want to ensure the datasets have the same years, then use
+        match = ["year"].
     """
     all_files = []
     for dataset in datasets:
@@ -335,7 +341,9 @@ def merge(*datasets, match=["day", "year", "month"]):
 def cor_time(x=None, y=None):
     """
     Calculate the temporal correlation coefficient between two datasets
-    This will calculate the temporal correlation coefficient, for each time step, between two datasets. The datasets must either have the same variables or only have one variable.
+    This will calculate the temporal correlation coefficient, for each time step,
+    between two datasets. The datasets must either have the same variables or only
+    have one variable.
 
     Parameters
     -------------
@@ -361,7 +369,8 @@ def cor_time(x=None, y=None):
     if x.variables != y.variables:
         if len(x.variables) > 1 or len(y.variables) > 1:
             raise ValueError(
-                "This method currently only works with single variable datasets or datasets with identical variables!"
+                "This method currently only works with single variable datasets or "
+                "datasets with identical variables!"
             )
 
     target = temp_file("nc")
@@ -383,7 +392,9 @@ def cor_time(x=None, y=None):
 def cor_space(x=None, y=None):
     """
     Calculate the spatial correlation coefficient between two datasets
-    This will calculate the spatial correlation coefficient, for each time step, between two datasets. The datasets must either have the same variables or only have one variable.
+    This will calculate the spatial correlation coefficient, for each time step,
+    between two datasets. The datasets must either have the same variables or only
+    have one variable.
 
     Parameters
     -------------
@@ -409,7 +420,8 @@ def cor_space(x=None, y=None):
     if x.variables != y.variables:
         if len(x.variables) > 1 or len(y.variables) > 1:
             raise ValueError(
-                "This method currently only works with single variable datasets or datasets with identical variables!"
+                    "This method currently only works with single variable datasets "
+                    "or datasets with identical variables!"
             )
 
     target = temp_file("nc")
@@ -516,7 +528,8 @@ class DataSet(object):
     @property
     def size(self):
         """The size of an object
-        This will print the number of files, total size, and smallest and largest files in an DataSet object.
+        This will print the number of files, total size, and smallest and largest files
+        in an DataSet object.
         """
         if type(self.current) is str:
             result = "Number of files: 1\n"
@@ -647,7 +660,8 @@ class DataSet(object):
         """
 
         if type(self.current) is list:
-            return "This DataSet object is a list. Please inspect individual files using nc_variables"
+            return "This DataSet object is a list. Please inspect individual"\
+                    "files using nc_variables"
 
         cdo_result = subprocess.run(
             "cdo showname " + self.current,
@@ -967,14 +981,3 @@ class DataSet(object):
     from nctoolkit.zonals import zonal_min
     from nctoolkit.zonals import zonal_max
     from nctoolkit.zonals import zonal_range
-
-
-
-
-
-
-
-
-
-
-

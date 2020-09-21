@@ -10,7 +10,8 @@ def remove_variables(self, vars=None):
     Parameters
     -------------
     vars : str or list
-        Variable or variables to be removed from the dataset. Variables that are listed but not in the dataset will be ignored
+        Variable or variables to be removed from the dataset.
+        Variables that are listed but not in the dataset will be ignored
     """
 
     # Some checks on the validity of variables supplied

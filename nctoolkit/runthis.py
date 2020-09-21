@@ -166,7 +166,9 @@ def run_cdo(command, target, out_file=None, overwrite=False):
     if out_file is not None:
         if "HDF5 library version mismatched error" in str(result):
             raise ValueError(
-                "The HDF5 header files used to compile this application do not matchthe version used by the HDF5 library to which this application is linked. This is likely because of a conda problem."
+                "The HDF5 header files used to compile this application do not match "
+                "the version used by the HDF5 library to which this application is "
+                "linked. This is likely because of a conda problem."
             )
 
         if (
@@ -192,7 +194,9 @@ def run_cdo(command, target, out_file=None, overwrite=False):
 
     if "HDF5 library version mismatched error" in str(result):
         raise ValueError(
-            "The HDF5 header files used to compile this application do not matchthe version used by the HDF5 library to which this application is linked. This is likely because of a conda problem."
+                "The HDF5 header files used to compile this application do not match "
+                "the version used by the HDF5 library to which this application is "
+                "linked. This is likely because of a conda problem."
         )
 
     if (
@@ -221,7 +225,9 @@ def run_cdo(command, target, out_file=None, overwrite=False):
             ):
                 if "Too many open files" in str(result1):
                     raise ValueError(
-                        "There are too many open files in CDO.  Check the files your OS allows to be open simultaneously in the Bourne shell with 'ulimit -n'"
+                            "There are too many open files in CDO. Check the files "
+                            "your OS allows to be open simultaneously in the Bourne "
+                            "shell with 'ulimit -n'"
                     )
                 else:
                     raise ValueError(
@@ -264,12 +270,14 @@ def run_cdo(command, target, out_file=None, overwrite=False):
 
             if len(missing_years) > 0:
                 warnings.warn(
-                    message=f'CDO warning: Years {str_flatten(missing_years, ",")} are missing',
+                    message=f'CDO warning: Years {str_flatten(missing_years, ",")} "\
+                            f"are missing',
                     stacklevel=2,
                 )
             if len(missing_months) > 0:
                 warnings.warn(
-                    message=f'CDO warning: Months {str_flatten(missing_months, ",")} are missing',
+                    message=f'CDO warning: Months {str_flatten(missing_months, ",")} "\
+                            f"are missing',
                     stacklevel=2,
                 )
     else:
@@ -306,12 +314,14 @@ def run_cdo(command, target, out_file=None, overwrite=False):
 
         if len(missing_years) > 0:
             warnings.warn(
-                message=f'CDO warning: Years {str_flatten(missing_years, ",")} are missing!',
+                message=f'CDO warning: Years {str_flatten(missing_years, ",")} "\
+                        f"are missing!',
                 category=Warning,
             )
         if len(missing_months) > 0:
             warnings.warn(
-                message=f'CDO warning: Months {str_flatten(missing_months, ",")} are missing',
+                message=f'CDO warning: Months {str_flatten(missing_months, ",")} "\
+                        f"are missing',
                 category=Warning,
             )
 

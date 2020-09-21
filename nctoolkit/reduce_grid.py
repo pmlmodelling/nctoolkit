@@ -10,7 +10,8 @@ def reduce_grid(self, mask=None):
     Parameters
     -------------
     mask: str or dataset
-        single variable dataset or path to .nc file. The mask must have an identical grid to the dataset.
+        single variable dataset or path to .nc file.
+        The mask must have an identical grid to the dataset.
     """
 
     target = None

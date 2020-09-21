@@ -21,7 +21,9 @@ def cdo_version():
 def ensemble_percentile(self, p=None):
     """
     Calculate an ensemble percentile
-    This will calculate the percentles for each time step in the files. For example, if you had an ensemble of files where each file included 12 months of data, it would calculate the percentile for each month.
+    This will calculate the percentles for each time step in the files.
+    For example, if you had an ensemble of files where each file included
+    12 months of data, it would calculate the percentile for each month.
 
     Parameters
     -------------
@@ -98,9 +100,12 @@ def ensemble_max(self, nco=False, ignore_time=False):
     Parameters
     -------------
     nco : boolean
-        Do you want to use NCO for the calculation? Default is False, i.e. CDO is used. Modify default if run time is an issue.
+        Do you want to use NCO for the calculation? Default is False, i.e. CDO is used.
+        Modify default if run time is an issue.
     ignore_time : boolean
-        If True the max is calculated over all time steps. If False, the ensemble max is calculated for each time steps; for example, if the ensemble is made up of monthly files the max for each month will be calculated.
+        If True the max is calculated over all time steps. If False, the ensemble max
+        is calculated for each time steps; for example, if the ensemble is made up of
+        monthly files the max for each month will be calculated.
     """
 
     if nco is False:
@@ -137,9 +142,12 @@ def ensemble_min(self, nco=False, ignore_time=False):
     Parameters
     -------------
     nco : boolean
-        Do you want to use NCO for the calculation? Default is False, i.e. CDO is used. Modify default if run time is an issue.
+        Do you want to use NCO for the calculation? Default is False, i.e. CDO is used.
+        Modify default if run time is an issue.
     ignore_time : boolean
-        If True the min is calculated over all time steps. If False, the ensemble min is calculated for each time steps; for example, if the ensemble is made up of monthly files the min for each month will be calculated.
+        If True the min is calculated over all time steps. If False, the ensemble min is
+        calculated for each time steps; for example, if the ensemble is made up of
+        monthly files the min for each month will be calculated.
     """
     if type(self.current) is not list:
         warnings.warn(message="There is only one file in the dataset")
@@ -175,9 +183,12 @@ def ensemble_mean(self, nco=False, ignore_time=False):
     Parameters
     -------------
     nco : boolean
-        Do you want to use NCO for the calculation? Default is False, i.e. CDO is used. Modify default if run time is an issue.
+        Do you want to use NCO for the calculation? Default is False, i.e. CDO is used.
+        Modify default if run time is an issue.
     ignore_time : boolean
-        If True the mean is calculated over all time steps. If False, the ensemble mean is calculated for each time steps; for example, if the ensemble is made up of monthly files the mean for each month will be calculated.
+        If True the mean is calculated over all time steps. If False, the ensemble mean
+        is calculated for each time steps; for example, if the ensemble is made up of
+        monthly files the mean for each month will be calculated.
     """
 
     if nco is False:
@@ -209,7 +220,8 @@ def ensemble_mean(self, nco=False, ignore_time=False):
 def ensemble_range(self):
     """
     Calculate an ensemble range
-    The range is calculated for each time step; for example, if each file in the ensemble has 12 months of data the statistic will be calculated for each month.
+    The range is calculated for each time step; for example, if each file in the
+    ensemble has 12 months of data the statistic will be calculated for each month.
     """
     self.run()
 

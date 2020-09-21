@@ -68,7 +68,8 @@ def spatial_sum(self, by_area=False):
     Parameters
     --------------
     by_area : boolean
-        Set to True if you want to multiply the values by the grid cell area before summing over space. Default is False.
+        Set to True if you want to multiply the values by the grid cell area
+        before summing over space. Default is False.
     """
 
     if isinstance(by_area, bool) is False:

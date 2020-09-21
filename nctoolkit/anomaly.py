@@ -9,16 +9,24 @@ from nctoolkit.temp_file import temp_file
 def annual_anomaly(self, baseline=None, metric="absolute", window=1):
     """
     Calculate annual anomalies for each variable based on a baseline period
-    The anomaly is derived by first calculating the climatological annual mean for the given baseline period. Annual means are then calculated for each year and the anomaly is calculated compared with the baseline mean. This will be calculated on a per-file basis in a multi-file dataset.
+    The anomaly is derived by first calculating the climatological annual mean for the
+    given baseline period. Annual means are then calculated for each year and the
+    anomaly is calculated compared with the baseline mean. This will be calculated on a
+    per-file basis in a multi-file dataset.
 
     Parameters
     -------------
     baseline: list
-        Baseline years. This needs to be the first and last year of the climatological period. Example: a baseline of [1980,1999] will result in anomalies against the 20 year climatology from 1980 to 1999.
+        Baseline years. This needs to be the first and last year of the climatological
+        period. Example: a baseline of [1980,1999] will result in anomalies against the
+        20 year climatology from 1980 to 1999.
     metric: str
-        Set to "absolute" or "relative", depending on whether you want the absolute or relative anomaly to be calculated.
+        Set to "absolute" or "relative", depending on whether you want the absolute or
+        relative anomaly to be calculated.
     window: int
-        A window for the anomaly. By default window = 1, i.e. the annual anomaly is calculated. If, for example, window = 20, the 20 year rolling means will be used to calculate the anomalies.
+        A window for the anomaly. By default window = 1, i.e. the annual anomaly is
+        calculated. If, for example, window = 20, the 20 year rolling means will be
+        used to calculate the anomalies.
     """
 
     if type(window) is not int:
@@ -63,9 +71,11 @@ def annual_anomaly(self, baseline=None, metric="absolute", window=1):
             raise ValueError("Check that the years in baseline are in the dataset!")
         # generate the cdo command
         if metric == "absolute":
-            cdo_command = f"cdo -sub -runmean,{window} -yearmean {ff} -timmean -selyear,{baseline[0]}/{baseline[1]} {ff} {target}"
+            cdo_command = f"cdo -sub -runmean,{window} -yearmean {ff} -timmean "\
+                    f"-selyear,{baseline[0]}/{baseline[1]} {ff} {target}"
         else:
-            cdo_command = f"cdo -div -runmean,{window} -yearmean {ff} -timmean -selyear,{baseline[0]}/{baseline[1]} {ff} {target}"
+            cdo_command = f"cdo -div -runmean,{window} -yearmean {ff} -timmean "\
+                    f"-selyear,{baseline[0]}/{baseline[1]} {ff} {target}"
 
         # run the command and save the temp file
 
@@ -90,12 +100,17 @@ def annual_anomaly(self, baseline=None, metric="absolute", window=1):
 def monthly_anomaly(self, baseline=None):
     """
     Calculate monthly anomalies based on a baseline period
-    The anomaly is derived by first calculating the climatological monthly mean for the given baseline period. Monthly means are then calculated for each year and the anomaly is calculated compared with the baseline mean. This is calculated separately for each file in a multi-file dataset.
+    The anomaly is derived by first calculating the climatological monthly mean for the
+    given baseline period. Monthly means are then calculated for each year and the
+    anomaly is calculated compared with the baseline mean. This is calculated separately
+    for each file in a multi-file dataset.
 
     Parameters
     -------------
     baseline: list
-        Baseline years. This needs to be the first and last year of the climatological period. Example: a baseline of [1985,2005] will result in anomolies against 20 year climatology from 1986 to 2005.
+        Baseline years. This needs to be the first and last year of the climatological
+        period. Example: a baseline of [1985,2005] will result in anomolies against 20
+        year climatology from 1986 to 2005.
     """
 
     # check baseline is a list, etc.
@@ -122,7 +137,8 @@ def monthly_anomaly(self, baseline=None):
         # create the target file
         target = temp_file("nc")
         # create system command
-        cdo_command = f"cdo -ymonsub -monmean {ff} -ymonmean -selyear,{baseline[0]}/{baseline[1]} {ff} {target}"
+        cdo_command = f"cdo -ymonsub -monmean {ff} -ymonmean -selyear,"\
+            f"{baseline[0]}/{baseline[1]} {ff} {target}"
 
         cdo_command = tidy_command(cdo_command)
 

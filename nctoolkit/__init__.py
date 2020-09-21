@@ -1,4 +1,13 @@
-from nctoolkit.api import open_data, merge, cor_time, cor_space, options, DataSet, open_thredds, open_url
+from nctoolkit.api import (
+    open_data,
+    merge,
+    cor_time,
+    cor_space,
+    options,
+    DataSet,
+    open_thredds,
+    open_url,
+)
 from nctoolkit.cleanup import cleanup, clean_all, deep_clean, temp_check
 from nctoolkit.create_ensemble import create_ensemble
 from nctoolkit.session import show_session, session_files

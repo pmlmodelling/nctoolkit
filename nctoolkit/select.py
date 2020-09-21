@@ -3,7 +3,6 @@ import warnings
 from nctoolkit.cleanup import cleanup
 from nctoolkit.flatten import str_flatten
 from nctoolkit.runthis import run_this
-from nctoolkit.session import nc_safe
 from nctoolkit.show import nc_years
 
 
@@ -17,7 +16,7 @@ def select_season(self, season=None):
         Season to select. One of "DJF", "MAM", "JJA", "SON".
     """
 
-    warnings.warn(message = "select_season is deprecated. Use select_seasons")
+    warnings.warn(message="select_season is deprecated. Use select_seasons")
 
     if season is None:
         raise ValueError("No season supplied")
@@ -30,6 +29,7 @@ def select_season(self, season=None):
 
     cdo_command = f"cdo -select,season={season}"
     run_this(cdo_command, self, output="ensemble")
+
 
 def select_seasons(self, season=None):
     """
@@ -53,10 +53,12 @@ def select_seasons(self, season=None):
     cdo_command = f"cdo -select,season={season}"
     run_this(cdo_command, self, output="ensemble")
 
+
 def select_months(self, months=None):
     """
     Select months from a dataset
-    This method will subset the dataset to only contain months within the list given. A warning message will be provided when there are missing months.
+    This method will subset the dataset to only contain months within the list given.
+    A warning message will be provided when there are missing months.
 
     Parameters
     -------------
@@ -73,7 +75,8 @@ def select_months(self, months=None):
 
     if type(months) is not list:
         months = [months]
-    # all of the variables in months need to be converted to ints, just in case floats have been provided
+    # all of the variables in months need to be converted to ints,
+    # just in case floats have been provided
 
     for x in months:
         if type(x) is not int:
@@ -90,7 +93,8 @@ def select_months(self, months=None):
 def select_years(self, years=None):
     """
     Select years from a dataset
-    This method will subset the dataset to only contain years within the list given. A warning message will be provided when there are missing years.
+    This method will subset the dataset to only contain years within the list given.
+    A warning message will be provided when there are missing years.
     Parameters
     -------------
     years : list,range or int
@@ -133,7 +137,8 @@ def select_years(self, years=None):
             if len(inter) == 0:
                 n_removed += 1
 
-            # figure out if any of the files actually have years outide the period required
+            # figure out if any of the files actually have years
+            # outide the period required
             if len(inter) > 0:
                 if len([yy for yy in all_years if yy not in years]) > 0:
                     missing_files += 1
@@ -194,6 +199,7 @@ def select_variables(self, vars=None):
 
     run_this(cdo_command, self, output="ensemble")
 
+
 def select_timestep(self, times=None):
     """
     Select timesteps from a dataset
@@ -201,7 +207,8 @@ def select_timestep(self, times=None):
     Parameters
     -------------
     times : list or int
-        time step(s) to select. For example, if you wanted the first time step set times=0.
+        time step(s) to select. For example, if you wanted the first time step
+        set times=0.
     """
 
     if times is None:
@@ -219,7 +226,8 @@ def select_timestep(self, times=None):
         if tt < 0:
             raise ValueError(f"{tt} is not a valid timestep")
 
-    # all of the variables in months need to be converted to ints, just in case floats have been provided
+    # all of the variables in months need to be converted to ints,
+    # just in case floats have been provided
 
     times = [int(x) + 1 for x in times]
     times = [str(x) for x in times]
@@ -229,6 +237,7 @@ def select_timestep(self, times=None):
 
     run_this(cdo_command, self, output="ensemble")
 
+
 def select_timesteps(self, times=None):
     """
     Select timesteps from a dataset
@@ -236,10 +245,11 @@ def select_timesteps(self, times=None):
     Parameters
     -------------
     times : list or int
-        time step(s) to select. For example, if you wanted the first time step set times=0.
+        time step(s) to select. For example, if you wanted the first time step
+        set times=0.
     """
 
-    warnings.warn(message = "select_timestep is deprecated. Use select_seasons")
+    warnings.warn(message="select_timestep is deprecated. Use select_seasons")
 
     if times is None:
         raise ValueError("Please supply times")
@@ -256,7 +266,8 @@ def select_timesteps(self, times=None):
         if tt < 0:
             raise ValueError(f"{tt} is not a valid timestep")
 
-    # all of the variables in months need to be converted to ints, just in case floats have been provided
+    # all of the variables in months need to be converted to ints,
+    # just in case floats have been provided
 
     times = [int(x) + 1 for x in times]
     times = [str(x) for x in times]
@@ -269,7 +280,8 @@ def select_timesteps(self, times=None):
 
 def select(self, **kwargs):
     """
-    Select method. A wrapper for select_months, select_years, select_timesteps and select_seasons
+    Select method. A wrapper for select_months, select_years, select_timesteps
+    and select_seasons
     Operations are applied in the order supplied.
 
     Parameters

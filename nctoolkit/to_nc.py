@@ -29,7 +29,8 @@ def write_nc(self, out, zip=True, overwrite=False):
     else:
         ff = [copy.deepcopy(self.current)]
 
-    # Figure out if it is possible to write the file, i.e. if a dataset is still an ensemble, you cannot write.
+    # Figure out if it is possible to write the file, i.e. if a dataset is still an
+    # ensemble, you cannot write.
     write = False
 
     if type(self.current) is str:
