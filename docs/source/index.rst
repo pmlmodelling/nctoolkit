@@ -66,6 +66,7 @@ Documentation
    datasets
    merging_notebook 
    lazy_methods 
+   exporting 
 
 
 **Help & reference**
