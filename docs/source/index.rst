@@ -53,8 +53,6 @@ Documentation
 
    installing
    basic_usage
-   merging_notebook 
-   lazy_methods 
 
 **User Guide**
 
@@ -66,6 +64,8 @@ Documentation
    :caption: User Guide 
 
    datasets
+   merging_notebook 
+   lazy_methods 
 
 
 **Help & reference**
