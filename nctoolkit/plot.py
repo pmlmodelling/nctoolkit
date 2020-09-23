@@ -6,6 +6,7 @@ from threading import Thread
 import time
 import subprocess
 import holoviews as hv
+import matplotlib
 import panel as pn
 import pandas as pd
 import hvplot.pandas
@@ -157,6 +158,31 @@ def plot(self, log=False, vars=None, panel=False):
             vars = vars[0]
 
     # Case when all you can plot is a time series
+
+    if len(self.variables) == 1 and len(self.times) > 1:
+        out = subprocess.run(
+            "cdo griddes " + self.current,
+            shell=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        lon_name = [
+            x for x in str(out.stdout).replace("b'", "").split("\\n") if "xname" in x
+        ][-1].split(" ")[-1]
+        lat_name = [
+            x for x in str(out.stdout).replace("b'", "").split("\\n") if "yname" in x
+        ][-1].split(" ")[-1]
+        if (len(self.to_xarray()[lon_name]) == 1) or (len(self.to_xarray()[lat_name])==1):
+            if (len(self.to_xarray()[lon_name]) > 1) or (len(self.to_xarray()[lat_name]) > 1):
+
+                if len(self.to_xarray()[lon_name]) == 1:
+                    df =  self.to_dataframe().reset_index().loc[:,["time", self.variables[0], lat_name]]
+                    return df.drop_duplicates().hvplot.heatmap(x=lat_name, y='time', C=self.variables[0], colorbar=True)
+
+                if len(self.to_xarray()[lat_name]) == 1:
+                    df =  self.to_dataframe().reset_index().loc[:,["time", self.variables[0], lon_name]]
+                    return df.drop_duplicates().hvplot.heatmap(x=lon_name, y='time', C=self.variables[0], colorbar=True)
+
 
     if (n_times > 1) and (n_points < 2) and (n_levels <= 1):
 
@@ -373,5 +399,10 @@ def plot(self, log=False, vars=None, panel=False):
         return None
 
     # Throw an error if case has not plotting method available yet
+
+
+
+
+
 
     raise ValueError("Autoplotting method for this type of data is not yet available!")
