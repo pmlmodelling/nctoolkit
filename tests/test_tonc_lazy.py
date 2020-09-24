@@ -16,7 +16,7 @@ class TestTonnc:
         ff1 = nc.temp_file.temp_file(".nc")
         data = nc.open_data(ff)
         data.select_timesteps(0)
-        data.write_nc(ff1)
+        data.to_nc(ff1)
         data1 = nc.open_data(ff1)
 
         data.spatial_mean()
@@ -31,7 +31,7 @@ class TestTonnc:
         data = nc.open_data(ff)
         data.select_timesteps(0)
         data.run()
-        data.write_nc(ff1, zip=False)
+        data.to_nc(ff1, zip=False)
         data1 = nc.open_data(ff1)
 
         data.spatial_mean()
@@ -46,7 +46,7 @@ class TestTonnc:
         data = nc.open_data(ff)
         data.select_timesteps(0)
         data.run()
-        data.write_nc(ff1, zip=False)
+        data.to_nc(ff1, zip=False)
 
         data1 = nc.open_data(ff1)
         data1.spatial_mean()
@@ -58,7 +58,7 @@ class TestTonnc:
         data = nc.open_data(ff)
         data.select_timesteps(0)
         data.run()
-        data.write_nc(ff1, zip=True)
+        data.to_nc(ff1, zip=True)
 
         data1 = nc.open_data(ff1)
         data1.spatial_mean()
@@ -71,7 +71,7 @@ class TestTonnc:
         ff1 = nc.temp_file.temp_file(".nc")
         data = nc.open_data(ff)
         data.select_timesteps(0)
-        data.write_nc(ff1, zip=False)
+        data.to_nc(ff1, zip=False)
 
         data1 = nc.open_data(ff1)
         data1.spatial_mean()
@@ -82,7 +82,7 @@ class TestTonnc:
         ff1 = nc.temp_file.temp_file(".nc")
         data = nc.open_data(ff)
         data.select_timesteps(0)
-        data.write_nc(ff1, zip=True)
+        data.to_nc(ff1, zip=True)
 
         data1 = nc.open_data(ff1)
         data1.spatial_mean()
@@ -97,7 +97,7 @@ class TestTonnc:
         data = nc.open_data(ff)
         data.select_timesteps([0, 1])
         data.mean()
-        data.write_nc(ff1, zip=False)
+        data.to_nc(ff1, zip=False)
 
         data1 = nc.open_data(ff1)
         data1.spatial_mean()
@@ -110,7 +110,7 @@ class TestTonnc:
         data.select_timesteps([0, 1])
         data.split("yearmonth")
         data.ensemble_mean()
-        data.write_nc(ff1, zip=True)
+        data.to_nc(ff1, zip=True)
 
         data1 = nc.open_data(ff1)
         data1.spatial_mean()
@@ -125,10 +125,10 @@ class TestTonnc:
         data.select_timesteps([0, 1, 2])
         data.split("yearmonth")
         with pytest.raises(ValueError):
-            data.write_nc("/tmp/test.nc")
+            data.to_nc("/tmp/test.nc")
 
     def test_overwrite(self):
         ff = "data/sst.mon.mean.nc"
         data = nc.open_data(ff)
         with pytest.raises(ValueError):
-            data.write_nc(ff)
+            data.to_nc(ff)
