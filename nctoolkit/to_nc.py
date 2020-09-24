@@ -3,6 +3,7 @@ import copy
 
 from nctoolkit.cleanup import cleanup
 from nctoolkit.runthis import run_this, run_cdo
+import warnings
 
 
 def to_nc(self, out, zip=True, overwrite=False):
@@ -96,6 +97,8 @@ def write_nc(self, out, zip=True, overwrite=False):
     overwrite : boolean
         If out file exists, do you want to overwrite it? Default is False.
     """
+
+    warnings.warn(message = "write_nc has been deprecated. Please use to_nc")
 
     # If the output file exists, cdo cannot simultaneously have it opened and written to
     if (os.path.exists(out)) and (overwrite is True):
