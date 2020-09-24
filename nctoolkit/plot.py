@@ -6,7 +6,7 @@ from threading import Thread
 import time
 import subprocess
 import holoviews as hv
-import matplotlib
+#import matplotlib
 import panel as pn
 import pandas as pd
 import hvplot.pandas
@@ -159,29 +159,136 @@ def plot(self, log=False, vars=None, panel=False):
 
     # Case when all you can plot is a time series
 
-    if len(self.variables) == 1 and len(self.times) > 1:
-        out = subprocess.run(
-            "cdo griddes " + self.current,
-            shell=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        lon_name = [
-            x for x in str(out.stdout).replace("b'", "").split("\\n") if "xname" in x
-        ][-1].split(" ")[-1]
-        lat_name = [
-            x for x in str(out.stdout).replace("b'", "").split("\\n") if "yname" in x
-        ][-1].split(" ")[-1]
-        if (len(self.to_xarray()[lon_name]) == 1) or (len(self.to_xarray()[lat_name])==1):
-            if (len(self.to_xarray()[lon_name]) > 1) or (len(self.to_xarray()[lat_name]) > 1):
+    out = subprocess.run(
+        "cdo griddes " + self.current,
+        shell=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    lon_name = [
+        x for x in str(out.stdout).replace("b'", "").split("\\n") if "xname" in x
+    ][-1].split(" ")[-1]
+    lat_name = [
+        x for x in str(out.stdout).replace("b'", "").split("\\n") if "yname" in x
+    ][-1].split(" ")[-1]
+    if (len(self.to_xarray()[lon_name]) == 1) or (len(self.to_xarray()[lat_name])==1) and n_levels < 2:
+        if (len(self.to_xarray()[lon_name]) > 1) or (len(self.to_xarray()[lat_name]) > 1):
+            if len(self.variables) == 1 and len(self.times) > 1:
 
                 if len(self.to_xarray()[lon_name]) == 1:
                     df =  self.to_dataframe().reset_index().loc[:,["time", self.variables[0], lat_name]]
-                    return df.drop_duplicates().hvplot.heatmap(x=lat_name, y='time', C=self.variables[0], colorbar=True)
+                    intplot =  df.drop_duplicates().hvplot.heatmap(x=lat_name, y='time', C=self.variables[0], colorbar=True)
 
                 if len(self.to_xarray()[lat_name]) == 1:
                     df =  self.to_dataframe().reset_index().loc[:,["time", self.variables[0], lon_name]]
-                    return df.drop_duplicates().hvplot.heatmap(x=lon_name, y='time', C=self.variables[0], colorbar=True)
+                    intplot =  df.drop_duplicates().hvplot.heatmap(x=lon_name, y='time', C=self.variables[0], colorbar=True)
+
+
+                if in_notebook():
+                    return intplot
+
+                t = Thread(target=ctrc)
+                t.start()
+                bokeh_server = pn.panel(intplot, sizing_mode="stretch_both").show(
+                        threaded=False
+                    )
+                return None
+
+
+
+
+            if len(self.variables) >= 1 and len(self.times) == 1:
+                #if len(self.to_xarray()[lon_name]) == 1:
+                #    df =  self.to_dataframe().reset_index().loc[:,["time", self.variables[0], lat_name]]
+                #    return df.drop_duplicates().hvplot(x=lat_name, y=self.variables[0])
+
+                #if len(self.to_xarray()[lat_name]) == 1:
+                #    df =  self.to_dataframe().reset_index().loc[:,["time", self.variables[0], lon_name]]
+                #    return df.drop_duplicates().hvplot(x=lon_name, y=self.variables[0])
+                vars = self.variables
+                if type(vars) is str:
+                    vars = [vars]
+
+                df = self.to_xarray()
+
+                dim_dict = dict(df.dims)
+                to_go = []
+                for kk in dim_dict.keys():
+                    if dim_dict[kk] == 1:
+                        df = df.squeeze(kk)
+                        to_go.append(kk)
+
+                df = df.to_dataframe()
+                keep = self.variables
+                df = df.reset_index()
+
+                if len(self.to_xarray()[lat_name]) == 1:
+                    to_go = [x for x in df.columns if (x not in [lon_name] and x not in keep)]
+                    x_var = lon_name
+                    df = (
+                            df.drop(columns=to_go)
+                            .drop_duplicates()
+                            .set_index(x_var)
+                            .loc[:, vars]
+                            .reset_index()
+                            .melt(lon_name)
+                            .set_index(x_var)
+                            )
+                else:
+                    to_go = [x for x in df.columns if (x not in [lat_name] and x not in keep)]
+                    x_var = lat_name
+                    df = (
+                            df.drop(columns=to_go)
+                            .drop_duplicates()
+                            .set_index(x_var)
+                            .loc[:, vars]
+                            .reset_index()
+                            .melt(lat_name)
+                            .set_index(x_var)
+                            )
+
+                if panel:
+                    intplot = (
+                        df
+                        .hvplot(
+                            by="variable",
+                            logy=log,
+                            subplots=True,
+                            shared_axes=False,
+                            responsive=(in_notebook() is False),
+                        )
+                    )
+                    if in_notebook():
+                        return intplot
+
+                    t = Thread(target=ctrc)
+                    t.start()
+
+                    bokeh_server = pn.panel(intplot, sizing_mode="stretch_both").show(
+                        threaded=False
+                    )
+                    return None
+                else:
+                    intplot = (
+                        df
+                        .hvplot(
+                            groupby="variable",
+                            logy=log,
+                            dynamic=True,
+                            responsive=(in_notebook() is False),
+                        )
+                    )
+                    if in_notebook():
+                        return intplot
+
+                    t = Thread(target=ctrc)
+                    t.start()
+
+                    bokeh_server = pn.panel(intplot, sizing_mode="stretch_both").show(
+                        threaded=False
+                    )
+                    return None
+
 
 
     if (n_times > 1) and (n_points < 2) and (n_levels <= 1):
