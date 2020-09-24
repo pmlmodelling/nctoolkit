@@ -12,6 +12,9 @@ import pandas as pd
 import hvplot.pandas
 import hvplot.xarray
 from bokeh.plotting import show
+import xarray as xr
+import cftime
+from nctoolkit.api import open_data
 
 hv.extension("bokeh")
 hv.Store.renderers
@@ -157,6 +160,7 @@ def plot(self, log=False, vars=None, panel=False):
         if len(vars) == 1:
             vars = vars[0]
 
+
     # Case when all you can plot is a time series
 
     out = subprocess.run(
@@ -171,7 +175,102 @@ def plot(self, log=False, vars=None, panel=False):
     lat_name = [
         x for x in str(out.stdout).replace("b'", "").split("\\n") if "yname" in x
     ][-1].split(" ")[-1]
-    if (len(self.to_xarray()[lon_name]) == 1) or (len(self.to_xarray()[lat_name])==1) and n_levels < 2:
+
+    # heat map 1
+    data = open_data(self.current)
+    ds = data.to_xarray()
+
+
+    coord_list = list(ds.coords)
+    coord_df = pd.DataFrame({"coord":coord_list, "length":[len(ds.coords[x].values) for x in coord_list]})
+
+
+    # line plot
+    if len([x for x in coord_df.length if x > 1]) == 1:
+
+        df = (
+                ds
+                .to_dataframe()
+                .reset_index()
+                )
+        x_var = coord_df.query("length > 1").reset_index().coord[0]
+
+        selection = [x for x in df.columns if x in self.variables or x == x_var]
+        df = (
+                df
+                .loc[:, selection]
+                .melt(x_var)
+                .drop_duplicates()
+                .set_index(x_var)
+                )
+
+        if panel:
+            intplot = (
+                df
+                .hvplot(
+                    by="variable",
+                    logy=log,
+                    subplots=True,
+                    shared_axes=False,
+                    responsive=(in_notebook() is False),
+                )
+            )
+            if in_notebook():
+                return intplot
+
+            t = Thread(target=ctrc)
+            t.start()
+
+            bokeh_server = pn.panel(intplot, sizing_mode="stretch_both").show(
+                threaded=False
+            )
+            return None
+        else:
+            intplot = (
+                df
+                .hvplot(
+                    groupby="variable",
+                    logy=log,
+                    dynamic=True,
+                    responsive=(in_notebook() is False),
+                )
+            )
+            if in_notebook():
+                return intplot
+
+            t = Thread(target=ctrc)
+            t.start()
+
+            bokeh_server = pn.panel(intplot, sizing_mode="stretch_both").show(
+                threaded=False
+            )
+            return None
+
+
+    if len([x for x in coord_df.length if x > 1]) == 2 and len(self.variables) == 1:
+
+        if (len(ds.coords[lon_name].values) ==1) or (len(ds.coords[lat_name].values) == 1):
+            x_var = coord_df.query("length > 1").reset_index().coord[0]
+            y_var = coord_df.query("length > 1").reset_index().coord[1]
+
+            df =  self.to_dataframe().reset_index().loc[:,[x_var, y_var, self.variables[0]]]
+            intplot = df.drop_duplicates().hvplot.heatmap(x=x_var, y=y_var, C=self.variables[0], colorbar=True)
+            if in_notebook():
+                return intplot
+
+            t = Thread(target=ctrc)
+            t.start()
+            bokeh_server = pn.panel(intplot, sizing_mode="stretch_both").show(
+                    threaded=False
+                )
+            return None
+
+
+
+
+
+
+    if ((len(self.to_xarray()[lon_name]) == 1) or (len(self.to_xarray()[lat_name])==1)) and n_levels < 2:
         if (len(self.to_xarray()[lon_name]) > 1) or (len(self.to_xarray()[lat_name]) > 1):
             if len(self.variables) == 1 and len(self.times) > 1:
 
