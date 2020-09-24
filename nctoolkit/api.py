@@ -951,6 +951,7 @@ class DataSet(object):
     from nctoolkit.to_lonlat import to_latlon
 
     from nctoolkit.to_nc import write_nc
+    from nctoolkit.to_nc import to_nc
 
     from nctoolkit.toxarray import to_xarray
     from nctoolkit.toxarray import to_dataframe
