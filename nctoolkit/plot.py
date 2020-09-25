@@ -195,7 +195,7 @@ def plot(self, log=False, vars=None, panel=False):
                 )
         x_var = coord_df.query("length > 1").reset_index().coord[0]
 
-        selection = [x for x in df.columns if x in self.variables or x == x_var]
+        selection = [x for x in df.columns if x in vars or x == x_var]
         df = (
                 df
                 .loc[:, selection]
@@ -247,14 +247,27 @@ def plot(self, log=False, vars=None, panel=False):
             return None
 
 
-    if len([x for x in coord_df.length if x > 1]) == 2 and len(self.variables) == 1:
+    if len([x for x in coord_df.length if x > 1]) == 2:
 
+        df = (
+                ds
+                .to_dataframe()
+                .reset_index()
+                )
+        x_var = coord_df.query("length > 1").reset_index().coord[0]
+        y_var = coord_df.query("length > 1").reset_index().coord[1]
+
+        selection = [x for x in df.columns if x in vars or x == x_var or x == y_var]
+
+        df = (
+                df
+                .loc[:, selection]
+                .melt([x_var, y_var])
+                .drop_duplicates()
+                )
         if (len(ds.coords[lon_name].values) ==1) or (len(ds.coords[lat_name].values) == 1):
-            x_var = coord_df.query("length > 1").reset_index().coord[0]
-            y_var = coord_df.query("length > 1").reset_index().coord[1]
 
-            df =  self.to_dataframe().reset_index().loc[:,[x_var, y_var, self.variables[0]]]
-            intplot = df.drop_duplicates().hvplot.heatmap(x=x_var, y=y_var, C=self.variables[0], colorbar=True)
+            intplot = df.drop_duplicates().hvplot.heatmap(x=x_var, y=y_var, C= "value", groupby = "variable",  colorbar=True)
             if in_notebook():
                 return intplot
 
