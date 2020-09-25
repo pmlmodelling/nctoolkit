@@ -117,6 +117,9 @@ def plot(self, vars=None, log=False, panel=False):
     if type(log) is not bool:
         raise TypeError("log is not boolean")
 
+    if type(panel) is not bool:
+        raise TypeError("panel is not boolean")
+
     self.run()
 
     if type(self.current) is list:
