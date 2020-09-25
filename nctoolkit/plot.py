@@ -538,9 +538,9 @@ def plot(self, vars=None, log=False, panel=False):
 
     if (n_points > 1):
 
-        warnings.warn(message = "Warning: Only the first variable is mapped")
-
-        vars = vars[0]
+        if type(vars) is list:
+            warnings.warn(message = "Warning: Only the first variable is mapped")
+            vars = vars[0]
 
         out = subprocess.run(
             "cdo griddes " + self.current,
