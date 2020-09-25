@@ -247,6 +247,7 @@ def plot(self, log=False, vars=None, panel=False):
             return None
 
 
+    # heat map where 2 coords have more than 1 value, not a spatial map
     if len([x for x in coord_df.length if x > 1]) == 2:
 
         df = (
@@ -279,6 +280,53 @@ def plot(self, log=False, vars=None, panel=False):
             return None
 
 
+    # heat map where 3 coords have more than 1 value, and one of them is time. Not a spatial map though
+    if len([x for x in coord_df.length if x > 1]) == 3:
+
+        time_in = False
+
+        possible = 0
+        for x in coord_list:
+            if "time" in x:
+                time_in = True
+                possible += 1
+
+        if possible > 1:
+            time_in = False
+
+
+        if "time" in coord_list and time_in:
+
+            if coord_df.query("coord == 'time'").length.values > 1:
+
+                df = (
+                        ds
+                        .to_dataframe()
+                        .reset_index()
+                        )
+                x_var = coord_df.query("length > 1").query("coord != 'time'").reset_index().coord[0]
+                y_var = coord_df.query("length > 1").query("coord != 'time'").reset_index().coord[1]
+
+                selection = [x for x in df.columns if x in vars or x == x_var or x == y_var or x == "time"]
+
+                df = (
+                        df
+                        .loc[:, selection]
+                        .melt([x_var, y_var, "time"])
+                        .drop_duplicates()
+                        )
+                if (len(ds.coords[lon_name].values) ==1) or (len(ds.coords[lat_name].values) == 1):
+
+                    intplot = df.drop_duplicates().hvplot.heatmap(x=x_var, y=y_var, C= "value", groupby = ["variable", "time"],  colorbar=True)
+                    if in_notebook():
+                        return intplot
+
+                    t = Thread(target=ctrc)
+                    t.start()
+                    bokeh_server = pn.panel(intplot, sizing_mode="stretch_both").show(
+                            threaded=False
+                        )
+                    return None
 
 
 
