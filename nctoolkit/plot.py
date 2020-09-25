@@ -15,6 +15,7 @@ from bokeh.plotting import show
 import xarray as xr
 import cftime
 from nctoolkit.api import open_data
+import warnings
 
 hv.extension("bokeh")
 hv.Store.renderers
@@ -534,7 +535,13 @@ def plot(self, vars=None, log=False, panel=False):
             )
             return None
 
-    if (n_points > 1) and (type(vars) is str):
+
+    if (n_points > 1):
+
+        warnings.warn(message = "Warning: Only the first variable is mapped")
+
+        vars = vars[0]
+
         out = subprocess.run(
             "cdo griddes " + self.current,
             shell=True,
@@ -675,10 +682,8 @@ def plot(self, vars=None, log=False, panel=False):
         return None
 
     # Throw an error if case has not plotting method available yet
-
-
-
-
+    # right now this only seems to be when you have lon/lat/time/levels and multiple variables
+    # maybe needs an appropriate
 
 
     raise ValueError("Autoplotting method for this type of data is not yet available!")
