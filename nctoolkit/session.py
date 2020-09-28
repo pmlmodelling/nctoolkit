@@ -11,6 +11,7 @@ nc_safe = []
 
 html_files = []
 temp_dirs = set()
+temp_files = set()
 
 nc_protected = []
 

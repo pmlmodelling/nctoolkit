@@ -5,7 +5,7 @@ import platform
 
 from nctoolkit.cleanup import cleanup
 from nctoolkit.temp_file import temp_file
-from nctoolkit.session import session_info, temp_dirs
+from nctoolkit.session import session_info, temp_dirs, temp_files
 
 
 def split_cdo(self, method="year"):
@@ -51,6 +51,7 @@ def split_cdo(self, method="year"):
             for ff in mylist:
                 if split_base in ff:
                     new_files.append(ff)
+                    temp_files.add(ff)
                     counter += 1
 
         if counter == 0:

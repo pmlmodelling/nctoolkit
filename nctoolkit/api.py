@@ -820,6 +820,8 @@ class DataSet(object):
     from nctoolkit.cdo_command import cdo_command
     from nctoolkit.cellareas import cell_areas
 
+    from nctoolkit.centres import centre
+
     from nctoolkit.cleanup import disk_clean
 
     from nctoolkit.clip import clip
@@ -982,3 +984,4 @@ class DataSet(object):
     from nctoolkit.zonals import zonal_min
     from nctoolkit.zonals import zonal_max
     from nctoolkit.zonals import zonal_range
+

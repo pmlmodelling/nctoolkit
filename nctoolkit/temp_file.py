@@ -3,6 +3,7 @@ import tempfile
 
 from nctoolkit.session import session_info
 from nctoolkit.session import temp_dirs
+from nctoolkit.session import temp_files
 import platform
 
 
@@ -35,6 +36,7 @@ def temp_file(ext=""):
             target = f"{target}.{ext}"
 
         temp_dirs.add(os.path.dirname(target))
+        temp_files.add(target)
 
         return target
 
@@ -56,5 +58,7 @@ def temp_file(ext=""):
             os.path.dirname(target) + "/",
             os.path.dirname(target) + "/" + session_info["stamp"],
         )
+
+        temp_files.add(target)
 
         return target
