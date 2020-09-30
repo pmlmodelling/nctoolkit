@@ -536,6 +536,51 @@ def plot(self, vars=None, log=False, panel=False):
             return None
 
 
+    if (n_points > 1) and (n_levels <= 1) and (type(vars) is list):
+        out = subprocess.run(
+            "cdo griddes " + self.current,
+            shell=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        lon_name = [
+            x for x in str(out.stdout).replace("b'", "").split("\\n") if "xname" in x
+        ][-1].split(" ")[-1]
+        lat_name = [
+            x for x in str(out.stdout).replace("b'", "").split("\\n") if "yname" in x
+        ][-1].split(" ")[-1]
+
+        if is_curvilinear(self.current):
+            intplot = self.to_xarray().hvplot.quadmesh(
+                lon_name,
+                lat_name,
+                vars,
+                dynamic=True,
+                cmap="viridis",
+                logz=log,
+                responsive=in_notebook() is False,
+            )
+        else:
+            intplot = self.to_xarray().hvplot.image(
+                lon_name,
+                lat_name,
+                vars,
+                dynamic=True,
+                cmap="viridis",
+                logz=log,
+                responsive=in_notebook() is False,
+            )
+
+        if in_notebook():
+            return intplot
+
+        t = Thread(target=ctrc)
+        t.start()
+        bokeh_server = pn.panel(intplot, sizing_mode="stretch_both").show(
+            threaded=False
+        )
+        return None
+
     if (n_points > 1):
 
         if type(vars) is list:
@@ -635,51 +680,6 @@ def plot(self, vars=None, log=False, panel=False):
             )
 
             return None
-
-    if (n_points > 1) and (n_levels <= 1) and (type(vars) is list):
-        out = subprocess.run(
-            "cdo griddes " + self.current,
-            shell=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        lon_name = [
-            x for x in str(out.stdout).replace("b'", "").split("\\n") if "xname" in x
-        ][-1].split(" ")[-1]
-        lat_name = [
-            x for x in str(out.stdout).replace("b'", "").split("\\n") if "yname" in x
-        ][-1].split(" ")[-1]
-
-        if is_curvilinear(self.current):
-            intplot = self.to_xarray().hvplot.quadmesh(
-                lon_name,
-                lat_name,
-                vars,
-                dynamic=True,
-                cmap="viridis",
-                logz=log,
-                responsive=in_notebook() is False,
-            )
-        else:
-            intplot = self.to_xarray().hvplot.image(
-                lon_name,
-                lat_name,
-                vars,
-                dynamic=True,
-                cmap="viridis",
-                logz=log,
-                responsive=in_notebook() is False,
-            )
-
-        if in_notebook():
-            return intplot
-
-        t = Thread(target=ctrc)
-        t.start()
-        bokeh_server = pn.panel(intplot, sizing_mode="stretch_both").show(
-            threaded=False
-        )
-        return None
 
     # Throw an error if case has not plotting method available yet
     # right now this only seems to be when you have lon/lat/time/levels and multiple variables
