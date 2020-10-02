@@ -9,7 +9,7 @@ This package was created by Robert Wilson at Plymouth Marine Laboratory.
 Bugs and issues
 ------------------
 
-If you identify bugs or issues with the package please raise an issue at the package's GitHub page `here <https://github.com/r4ecology/nctoolkit/issues>``__ or contact nctoolkit's creator at rwi@pml.ac.uk.
+If you identify bugs or issues with the package please raise an issue at the package's GitHub page `here <https://github.com/r4ecology/nctoolkit/issues>`__ or contact nctoolkit's creator at rwi@pml.ac.uk.
 
 
 Contributions welcome
