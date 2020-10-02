@@ -906,6 +906,8 @@ class DataSet(object):
 
     from nctoolkit.rename import rename
 
+    from nctoolkit.resample import resample_grid
+
     from nctoolkit.rollstat import rolling_mean
     from nctoolkit.rollstat import rolling_min
     from nctoolkit.rollstat import rolling_max
