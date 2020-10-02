@@ -53,6 +53,7 @@ def run_nco(command, target, out_file=None, overwrite=False):
     if (
         command.startswith("ncea ")
         or command.startswith("ncra ")
+        or command.startswith("ncks ")
         or command.startswith("ncatted")
     ) is False:
         raise ValueError("This is not a valid NCO command")
