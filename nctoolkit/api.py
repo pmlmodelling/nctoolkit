@@ -292,6 +292,9 @@ def open_thredds(x=None):
         A string or list of thredds urls, which must end with .nc.
 
     """
+
+    if session_info["cores"] > 1:
+        warnings.warn(message="Using multiple cores on thredds data is volatile. If there is an error set cores=1.")
     return open_data(x=x, thredds=True)
 
 
@@ -940,6 +943,8 @@ class DataSet(object):
     from nctoolkit.shift import shift
 
     from nctoolkit.split import split
+
+    from nctoolkit.strip_vars import strip_variables
 
     from nctoolkit.time_stat import mean
     from nctoolkit.time_stat import percentile
