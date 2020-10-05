@@ -165,7 +165,7 @@ def bottom_mask(self):
 
     var_use = data.variables_detailed.query("levels>1").variable[0]
     data.select_variables(var_use)
-    data.select_timestep(0)
+    data.select_timesteps(0)
     data.set_missing([0, 0])
     data.transmute({"Wet": var_use + " == " + var_use})
     data.invert_levels()
