@@ -827,7 +827,6 @@ class DataSet(object):
 
     from nctoolkit.cleanup import disk_clean
 
-    from nctoolkit.clip import clip
 
     from nctoolkit.compare import compare_all
 
@@ -901,7 +900,6 @@ class DataSet(object):
 
     from nctoolkit.regrid import regrid
 
-    from nctoolkit.release import release
     from nctoolkit.release import run
 
     from nctoolkit.rename import rename
@@ -925,10 +923,8 @@ class DataSet(object):
     from nctoolkit.seasstat import seasonal_range
 
     from nctoolkit.select import select_variables
-    from nctoolkit.select import select_timestep
     from nctoolkit.select import select_timesteps
     from nctoolkit.select import select_seasons
-    from nctoolkit.select import select_season
     from nctoolkit.select import select_months
     from nctoolkit.select import select_years
     from nctoolkit.select import select
@@ -992,3 +988,10 @@ class DataSet(object):
     from nctoolkit.zonals import zonal_max
     from nctoolkit.zonals import zonal_range
 
+# deprecated stuff
+
+    from nctoolkit.deprecated import clip
+
+    from nctoolkit.deprecated import release
+    from nctoolkit.deprecated import select_timestep
+    from nctoolkit.deprecated import select_season
