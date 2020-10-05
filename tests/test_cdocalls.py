@@ -42,10 +42,10 @@ class TestCalls:
             assert "-gridarea data/sst.mon.mean.nc" in data.history[0]
             assert 'cdo -L -setattribute,cell_area@units="m^2' in data.history[1]
 
-    def test_clipcall(self):
+    def test_cropcall(self):
         nc.options(lazy=True)
         data = nc.open_data(ff)
-        data.clip(lon=[0, 90], lat=[0, 90])
+        data.crop(lon=[0, 90], lat=[0, 90])
 
         assert data.history[0] == "cdo -L -sellonlatbox,0,90,0,90"
 

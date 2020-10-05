@@ -108,6 +108,15 @@ class TestSelect:
         n = len(nc.session_files())
         assert n == 1
 
+    def test_timestepx23(self):
+        tracker = nc.open_data(ff)
+        tracker.select_timestep(0)
+        tracker.run()
+        x = tracker.years
+        assert x == [1970]
+        n = len(nc.session_files())
+        assert n == 1
+
     def test_timestep2(self):
         tracker = nc.open_data(ff)
         tracker.select_timesteps(range(0, 13))
@@ -116,6 +125,17 @@ class TestSelect:
         assert x == [1970, 1971]
         n = len(nc.session_files())
         assert n == 1
+
+
+    def test_timestep02(self):
+        tracker = nc.open_data(ff)
+        tracker.select_timestep(range(0, 13))
+        tracker.run()
+        x = tracker.years
+        assert x == [1970, 1971]
+        n = len(nc.session_files())
+        assert n == 1
+
 
     def test_montherror(self):
         tracker = nc.open_data(ff)
