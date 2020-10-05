@@ -1,12 +1,13 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+[![pypi](https://img.shields.io/pypi/v/nctoolkit.svg)](https://pypi.python.org/pypi/nctoolkit/)
+[![Conda Latest Release](https://anaconda.org/conda-forge/nctoolkit/badges/version.svg)](https://anaconda.org/conda-forge/nctoolkit/)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/r4ecology/nctoolkit/issues) 
 [![codecov](https://codecov.io/gh/r4ecology/nctoolkit/branch/master/graph/badge.svg)](https://codecov.io/gh/r4ecology/nctoolkit)
 [![Build Status](https://travis-ci.org/r4ecology/nctoolkit.png?branch=master)](https://travis-ci.org/r4ecology/nctoolkit)
 [![Documentation Status](https://readthedocs.org/projects/nctoolkit/badge/?version=latest)](https://nctoolkit.readthedocs.io/en/latest/?badge=latest)
-[![pypi](https://img.shields.io/pypi/v/nctoolkit.svg)](https://pypi.python.org/pypi/nctoolkit/)
-[![Conda Latest Release](https://anaconda.org/conda-forge/nctoolkit/badges/version.svg)](https://anaconda.org/conda-forge/nctoolkit/)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4034527.svg)](https://doi.org/10.5281/zenodo.4034527)
 
 
 
