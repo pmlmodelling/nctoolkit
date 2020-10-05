@@ -210,6 +210,7 @@ def select_timestep(self, times=None):
         time step(s) to select. For example, if you wanted the first time step
         set times=0.
     """
+    warnings.warn(message="select_timestep is deprecated. Use select_seasons")
 
     if times is None:
         raise ValueError("Please supply times")
@@ -249,7 +250,6 @@ def select_timesteps(self, times=None):
         set times=0.
     """
 
-    warnings.warn(message="select_timestep is deprecated. Use select_seasons")
 
     if times is None:
         raise ValueError("Please supply times")
