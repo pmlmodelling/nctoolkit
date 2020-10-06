@@ -6,6 +6,7 @@ from nctoolkit.cleanup import cleanup
 from nctoolkit.flatten import str_flatten
 from nctoolkit.runthis import run_this, run_nco, tidy_command
 from nctoolkit.temp_file import temp_file
+from nctoolkit.session import nc_safe
 import warnings
 
 
