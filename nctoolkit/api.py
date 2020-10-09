@@ -893,6 +893,7 @@ class DataSet(object):
     from nctoolkit.phenology import phenology
 
     from nctoolkit.plot import plot
+    from nctoolkit.plot2 import plot2
 
     from nctoolkit.reduce import reduce_dims
 
