@@ -4,7 +4,7 @@
 [![pypi](https://img.shields.io/pypi/v/nctoolkit.svg)](https://pypi.python.org/pypi/nctoolkit/)
 [![Conda Latest Release](https://anaconda.org/conda-forge/nctoolkit/badges/version.svg)](https://anaconda.org/conda-forge/nctoolkit/)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/pmlmodelling/nctoolkit/issues) 
-[![codecov](https://codecov.io/gh/r4ecology/nctoolkit/branch/master/graph/badge.svg)](https://codecov.io/gh/r4ecology/nctoolkit)
+[![codecov](https://codecov.io/gh/pmlmodelling/nctoolkit/branch/master/graph/badge.svg)](https://codecov.io/gh/pmlmodelling/nctoolkit)
 [![Build Status](https://travis-ci.org/pmlmodelling/nctoolkit.png?branch=master)](https://travis-ci.org/pmlmodelling/nctoolkit)
 [![Documentation Status](https://readthedocs.org/projects/nctoolkit/badge/?version=latest)](https://nctoolkit.readthedocs.io/en/latest/?badge=latest)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4034527.svg)](https://doi.org/10.5281/zenodo.4034527)
@@ -47,7 +47,7 @@ pip install nctoolkit
 
 Install the development version using using pip:
 ```sh
-pip install git+https://github.com/r4ecology/nctoolkit.git
+pip install git+https://github.com/pmlmodelling/nctoolkit.git
 ```
 
 This package requires the installation of [Climate Data Operators](https://code.mpimet.mpg.de/projects/cdo/wiki). The conda installation will handle this for you. Otherwise, you will have to install it.  The easiest way is using conda:
@@ -62,7 +62,7 @@ A couple of methods give users the option of using [NetCDF Operators](http://nco
 conda install -c conda-forge nco 
 ```
 
-If you want to install CDO from source, bash scripts are available [here](https://github.com/r4ecology/nctoolkit/tree/master/cdo_installers).
+If you want to install CDO from source, bash scripts are available [here](https://github.com/pmlmodelling/nctoolkit/tree/master/cdo_installers).
  
 nctoolkit is tested with continuous integration using Travis (for Linux) and GitHub actions (for Mac OS). It will not work on Windows platforms today or in future, because of system dependency limitations. 
 
