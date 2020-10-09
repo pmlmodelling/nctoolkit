@@ -1,6 +1,5 @@
 from setuptools import Command, find_packages, setup
 
-
 DESCRIPTION = "Fast and easy analysis of netCDF data in Python"
 LONG_DESCRIPTION = """
 
