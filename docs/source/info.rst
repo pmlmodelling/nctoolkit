@@ -3,13 +3,13 @@
 Package info
 ####################
 
-This package was created by Robert Wilson at Plymouth Marine Laboratory.
+This package was created by Robert Wilson at Plymouth Marine Laboratory (PML).
 
 
 Bugs and issues
 ------------------
 
-If you identify bugs or issues with the package please raise an issue at the package's GitHub page `here <https://github.com/r4ecology/nctoolkit/issues>`__ or contact nctoolkit's creator at rwi@pml.ac.uk.
+If you identify bugs or issues with the package please raise an issue at PML's Marine Systems Modelling group's GitHub page `here <https://github.com/pmlmodelling/nctoolkit/issues>`__ or contact nctoolkit's creator at rwi@pml.ac.uk.
 
 
 Contributions welcome

@@ -31,9 +31,9 @@ Documentation and a user guide are available `here <https://nctoolkit.readthedoc
 """
 
 PROJECT_URLS = {
-    "Bug Tracker": "https://github.com/r4ecology/nctoolkit/issues",
+    "Bug Tracker": "https://github.com/pmlmodelling/nctoolkit/issues",
     "Documentation": "https://nctoolkit.readthedocs.io/en/stable",
-    "Source Code": "https://github.com/r4ecology/nctoolkit",
+    "Source Code": "https://github.com/pmlmodelling/nctoolkit",
 }
 
 REQUIREMENTS = [i.strip() for i in open("requirements.txt").readlines()]
@@ -54,7 +54,7 @@ setup(name='nctoolkit',
     ],
 
       project_urls=PROJECT_URLS,
-      url = "https://github.com/r4ecology/nctoolkit",
+      url = "https://github.com/pmlmodelling/nctoolkit",
       author='Robert Wilson',
       maintainer='Robert Wilson',
       author_email='rwi@pml.ac.uk',
