@@ -14,6 +14,6 @@ If you identify bugs or issues with the package please raise an issue at PML's M
 
 Contributions welcome
 ------------------
-The package is new, with new features being added each month. There remain a large number of features that could be added, especially for dealing with atmospheric data. If packages users which to contribute or suggest new features they are welcome to raise and issue at the package's GitHub page or contact me.
+The package is new, with new features being added each month. There remain a large number of features that could be added, especially for dealing with atmospheric data. If packages users are interested in contributing or suggesting new features they are welcome to raise and issue at the package's GitHub page or contact me.
 
 
