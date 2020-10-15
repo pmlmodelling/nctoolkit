@@ -17,7 +17,7 @@ from nctoolkit.cleanup import cleanup, clean_all, temp_check
 from nctoolkit.flatten import str_flatten
 from nctoolkit.runthis import run_cdo
 from nctoolkit.session import nc_protected, session_info, nc_safe
-from nctoolkit.show import nc_variables, nc_years, nc_months, nc_levels, nc_times
+from nctoolkit.show import nc_variables, nc_years, nc_months, nc_levels, nc_times, nc_format
 from nctoolkit.temp_file import temp_file
 
 
@@ -638,6 +638,22 @@ class DataSet(object):
         all_times.sort()
 
         return all_times
+
+    @property
+    def ncformat(self):
+        """
+        List formats of files contained in a dataset
+        """
+
+        all_formats = []
+        for ff in self:
+            all_formats+= nc_format(ff)
+
+        all_formats = list(set(all_formats))
+
+        all_formats.sort()
+
+        return all_formats
 
     @property
     def years(self):
