@@ -31,10 +31,10 @@ def cdo_command(self, command=None):
 
     cdo_methods = [mm for mm in cdo_methods if len(mm) > 0]
 
-    for x in command.split(" "):
+    for x in command.replace("-f ", "").replace("-z ", "").strip().split(" "):
         y = x.split(",")[0].replace("-", "")
-        if y not in cdo_methods:
-            raise ValueError("You have supplied an invalid cdo method:" + y)
+        if y not in cdo_methods and y != "nc4" and y != "zip_9":
+            raise ValueError(f"{y} is not a cdo method!" + y)
 
     # remove cdo from the command
 
