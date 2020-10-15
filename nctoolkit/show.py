@@ -16,6 +16,20 @@ def nc_times(ff):
     return cdo_result
 
 
+def nc_format(ff):
+
+    cdo_result = subprocess.run(
+        f"cdo showformat {ff}",
+        shell=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    cdo_result = str(cdo_result.stdout).replace("\\n", "")
+    cdo_result = cdo_result.replace("b'", "").strip()
+    cdo_result = cdo_result.replace("'", "").strip()
+    cdo_result = cdo_result.split()
+    return cdo_result
+
 def nc_levels(ff):
     """
     Method to get the depths available in a netcdf file
