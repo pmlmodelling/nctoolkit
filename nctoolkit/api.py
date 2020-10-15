@@ -865,6 +865,8 @@ class DataSet(object):
     from nctoolkit.fldstat import spatial_sum
     from nctoolkit.fldstat import spatial_percentile
 
+    from nctoolkit.format import format
+
     from nctoolkit.inttime import time_interp
     from nctoolkit.inttime import timestep_interp
 

@@ -368,7 +368,7 @@ Splitting methods
    DataSet.split
 
 
-Output methods
+Output and formatting methods
 ---------------------
 
 .. autosummary::
@@ -378,6 +378,7 @@ Output methods
    DataSet.to_xarray
    DataSet.to_dataframe
    DataSet.zip
+   DataSet.format
 
 Miscellaneous methods
 ---------------------
