@@ -40,6 +40,12 @@ def max(self):
     """
     time_stat(self, stat="max")
 
+def median(self):
+    """
+    Calculate the temporal median of all variables
+    """
+    self.percentile(p = 50)
+
 
 def range(self):
     """

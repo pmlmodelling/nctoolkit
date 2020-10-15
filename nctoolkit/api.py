@@ -965,6 +965,7 @@ class DataSet(object):
     from nctoolkit.time_stat import mean
     from nctoolkit.time_stat import percentile
     from nctoolkit.time_stat import max
+    from nctoolkit.time_stat import median
     from nctoolkit.time_stat import min
     from nctoolkit.time_stat import range
     from nctoolkit.time_stat import var
