@@ -826,6 +826,8 @@ class DataSet(object):
     def start(self):
         raise AttributeError("You cannot delete the start point")
 
+    # import the methods
+
     from nctoolkit.add_etc import add
     from nctoolkit.add_etc import subtract
     from nctoolkit.add_etc import multiply
