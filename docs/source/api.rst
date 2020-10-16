@@ -187,7 +187,8 @@ Subsetting operations
 .. autosummary::
    :toctree: generated/
 
-   DataSet.clip
+   DataSet.crop
+   DataSet.select
    DataSet.select_variables
    DataSet.remove_variables
    DataSet.select_years
@@ -208,7 +209,7 @@ Time-based methods
    DataSet.shift_years
    DataSet.shift
 
-Interpolation methods
+Interpolation and resampling methods
 ---------------------
 
 .. autosummary::
@@ -216,7 +217,9 @@ Interpolation methods
 
    DataSet.regrid
    DataSet.to_latlon
+   DataSet.resample_grid
    DataSet.time_interp
+   DataSet.timestep_interp
 
 
 Masking methods
@@ -247,6 +250,7 @@ Statistical methods
 
    DataSet.mean
    DataSet.min
+   DataSet.median
    DataSet.percentile
    DataSet.max
    DataSet.sum
@@ -264,6 +268,8 @@ Statistical methods
    DataSet.spatial_range
    DataSet.spatial_sum
 
+   DataSet.centre
+
    DataSet.monthly_mean
    DataSet.monthly_min
    DataSet.monthly_max
@@ -274,6 +280,7 @@ Statistical methods
    DataSet.daily_max
    DataSet.daily_mean
    DataSet.daily_range
+   DataSet.daily_sum
 
    DataSet.daily_mean_climatology
    DataSet.daily_min_climatology
@@ -374,7 +381,7 @@ Output and formatting methods
 .. autosummary::
    :toctree: generated/
 
-   DataSet.write_nc
+   DataSet.to_nc
    DataSet.to_xarray
    DataSet.to_dataframe
    DataSet.zip

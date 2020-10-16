@@ -18,7 +18,7 @@ Celsius, we could convert it to Kelvin by adding 273.15.
 
     data.add(273.15)
 
-If we have two sets, we add one to the other as follows:
+If we have two datasets, we add one to the other as follows:
 
 ::
 
@@ -92,7 +92,6 @@ for each grid cell of dataset.
 
 ::
 
-    data = nc.open_data(infile)
     data.annual_min()
 
 annual_range
@@ -103,7 +102,6 @@ and for each grid cell of dataset.
 
 ::
 
-    data = nc.open_data(infile)
     data.annual_range()
 
 
@@ -115,10 +113,7 @@ and for each grid cell of dataset.
 
 ::
 
-    data = nc.open_data(infile)
     data.annual_sum()
-
-
 
 
 append
@@ -143,7 +138,6 @@ these cases.
 
 ::
 
-    data = nc.open_data(infile)
     data.bottom()
 
 bottom_mask
@@ -154,7 +148,6 @@ non-NA value.
 
 ::
 
-    data = nc.open_data(infile)
     data.bottom_mask()
 
 cdo_command
@@ -173,7 +166,6 @@ we would do the following:
 
 ::
 
-    data = nc.open_data(infile)
     data.cdo_command("-timmean -selmon,4")
 
 cell_areas
@@ -185,7 +177,6 @@ By default it adds the cell areas (in square metres) to the dataset.
 
 ::
 
-    data = nc.open_data(infile)
     data.cell_areas()
 
 If we only want the cell areas we can set join to False:
@@ -194,17 +185,25 @@ If we only want the cell areas we can set join to False:
 
     data.cell_areas(join=False)
 
-clip
+centre
+----------
+
+This method calculates the longitudinal or latitudinal centre of a dataset. There is one argument, which should either be "latitude" or "longitude". If you want to calculate the latitudinal centre:
+
+::
+
+    data.centre("longitude")
+
+crop
 ----
 
-This method will clip a region to a specified longitude and latitude
-box. For example, if we wanted to clip a dataset to the North Atlantic,
+This method will crop a region to a specified longitude and latitude
+box. For example, if we wanted to crop a dataset to the North Atlantic,
 we could do this:
 
 ::
 
-    data = nc.open_data(infile)
-    data.clip(lon = [-80, 20], lat = [40, 70])
+    data.crop(lon = [-80, 20], lat = [40, 70])
 
 compare_all
 -----------
@@ -215,7 +214,6 @@ do the following:
 
 ::
 
-    data = nc.open_data(infile)
     data.compare_all(">20")
 
 Similarly, if we wanted to identify grid cells with negative values we
@@ -223,7 +221,6 @@ would do this:
 
 ::
 
-    data = nc.open_data(infile)
     data.compare_all("<0")
 
 cor_space
@@ -235,7 +232,6 @@ correlation between the variables var1 and var2, we would do this:
 
 ::
 
-    data = nc.open_data(infile)
     data.cor_space("var1", "var2")
 
 cor_time
@@ -248,7 +244,6 @@ following:
 
 ::
 
-    data = nc.open_data(infile)
     data.cor_time("var1", "var2")
 
 cum_sum
@@ -259,7 +254,7 @@ variables. Usage is simple:
 
 ::
 
-    data = nc.open_data(infile)
+    data.cum_sum()
 
 daily_max
 ----------
@@ -289,7 +284,6 @@ for each grid cell of dataset.
 
 ::
 
-    data = nc.open_data(infile)
     data.daily_min()
 
 daily_range
@@ -300,7 +294,6 @@ and for each grid cell of dataset.
 
 ::
 
-    data = nc.open_data(infile)
     data.daily_range()
 
 
@@ -312,11 +305,8 @@ and for each grid cell of dataset.
 
 ::
 
-    data = nc.open_data(infile)
     data.daily_sum()
 
-
-   data.cum_sum()
 
 daily_max_climatology
 ---------------------
@@ -328,7 +318,6 @@ observed on each day.
 
 ::
 
-    data = nc.open_data(infile)
     data.daily_max_climatology()
 
 daily_mean_climatology
@@ -341,7 +330,6 @@ day.
 
 ::
 
-    data = nc.open_data(infile)
     data.daily_mean_climatology()
 
 daily_min_climatology
@@ -354,7 +342,6 @@ observed on each day.
 
 ::
 
-    data = nc.open_data(infile)
     data.daily_min_climatology()
 
 daily_range_climatology
@@ -366,8 +353,6 @@ temperature data, it will calculate the difference between the maximum
 and minimum observed values each day.
 
 ::
-
-    data = nc.open_data(infile)
     data.daily_range_climatology()
 
 divide
@@ -379,7 +364,6 @@ dataset by 2, we would do the following:
 
 ::
 
-    data = nc.open_data(infile)
     data.divide(2)
 
 If we want to divide a dataset by another, we can do this easily. Note
@@ -430,6 +414,15 @@ following:
     data = nc.open_data(file_list)
     data = nc.ensemble_percentile(75)
 
+format
+-------------
+
+This method will change the format of the files within a dataset. For example if you wanted to convert to NetCDF4: 
+
+::
+
+    data.format("nc4")
+
 invert_levels
 -------------
 
@@ -437,7 +430,6 @@ This method will invert the vertical levels of a dataset.
 
 ::
 
-    data = nc.open_data(infile)
     data.invert_levels()
 
 mask_box
@@ -449,7 +441,6 @@ the SST dataset.
 
 ::
 
-    data = nc.open_data(infile)
     data.mask_box(lon = [-80, 20], lat = [40, 70])
 
 max
@@ -461,20 +452,26 @@ surface temperature in the SST dataset we would do the following:
 
 ::
 
-    data = nc.open_data(infile)
     data.max()
 
 mean
 ----
 
-This method will calculate the mean value of all variables in all grid
-cells. If we wanted to calculate the maximum observed monthly sea
-surface temperature in the SST dataset we would do the following:
+This method will calculate the mean value (averaged across all time steps) of all variables in all grid cells. Usage is simple:
 
 ::
 
-    data = nc.open_data(infile)
     data.mean()
+
+median
+----
+
+This method will calculate the median value (averaged across all time steps) of all variables in all grid cells. Usage is simple:
+
+::
+
+    data.median()
+
 
 merge and merge_time
 --------------------
@@ -511,29 +508,6 @@ had the same year, you would do the following:
     data = nc.open_data(file_list)
     data.merge(match = ["year", "month", "day"])
 
-max
----
-
-This method will calculate the maximum value of all variables in all
-grid cells. If we wanted to calculate the maximum observed monthly sea
-surface temperature in the SST dataset we would do the following:
-
-::
-
-    data = nc.open_data(infile)
-    data.max()
-
-mean
-----
-
-This method will calculate the mean value of all variables in all grid
-cells. If we wanted to calculate the mean observed monthly sea surface
-temperature in the SST dataset we would do the following:
-
-::
-
-    data = nc.open_data(infile)
-    data.mean()
 
 meridonial statistics
 ------------
@@ -547,6 +521,14 @@ Calculate the following meridonial statistics: mean, min, max and range:
     data.meridonial_max()
     data.meridonial_range()
 
+min
+----
+
+This method will calculate the minimum value (across all time steps) of all variables in all grid cells. Usage is simple:
+
+::
+
+    data.min()
 
 
 monthly_anomaly
@@ -558,7 +540,6 @@ anomaly compared with the mean for 1990-1999 we would do the below.
 
 ::
 
-    data = nc.open_data(infile)
     data.monthly_anomaly(baseline = [1990, 1999])
 
 monthly_max
@@ -571,19 +552,15 @@ monthly_max_climatology. Usage is simple:
 
 ::
 
-    data = nc.open_data(infile)
     data.monthly_max()
 
 monthly_max_climatology
 -----------------------
 
-::
-
-    This method will calculate, for each month, the maximum value of each variable over all time steps.
+This method will calculate, for each month, the maximum value of each variable over all time steps.
 
 ::
 
-    data = nc.open_data(infile)
     data.monthly_max_climatology()
 
 monthly_mean
@@ -596,7 +573,6 @@ monthly mean.
 
 ::
 
-    data = nc.open_data(infile)
     data.monthly_mean()
 
 monthly_mean_climatology
@@ -607,7 +583,6 @@ variable over all time steps. Usage is simple:
 
 ::
 
-    data = nc.open_data(infile)
     data.monthly_mean_climatology()
 
 monthly_min
@@ -620,7 +595,6 @@ monthly_max_climatology. Usage is simple:
 
 ::
 
-    data = nc.open_data(infile)
     data.monthly_min()
 
 monthly_min_climatology
@@ -631,7 +605,6 @@ variable over all time steps. Usage is simple:
 
 ::
 
-    data = nc.open_data(infile)
     data.monthly_min_climatology()
 
 monthly_range
@@ -644,7 +617,6 @@ monthly_range_climatology. Usage is simple:
 
 ::
 
-    data = nc.open_data(infile)
     data.monthly_range()
 
 monthly_range_climatology
@@ -655,7 +627,6 @@ variable over all time steps. Usage is simple:
 
 ::
 
-    data = nc.open_data(infile)
     data.monthly_range_climatology()
 
 multiply
@@ -669,7 +640,6 @@ If you want to multiply a dataset by 2, you can do the following:
 
 ::
 
-    data = nc.open_data(infile)
     data.multiply(2)
 
 If you wanted to multiply a dataset data1 by another, data2, you can do
@@ -694,7 +664,6 @@ we might want to convert that to Kelvin. We can do this easily:
 
 ::
 
-    data = nc.open_data(infile)
     data.mutate({"temperature_k":"temperature+273.15"})
 
 percentile
@@ -708,7 +677,6 @@ follows:
 
 ::
 
-    data = nc.open_data(infile)
     data.percentile(75)
 
 phenology
@@ -735,7 +703,6 @@ metric to “peak”, and define the variable to be analyzed:
 
 ::
 
-    data = nc.open_data(infile)
     data.phenology(metric = "peak", var = "var_chosen")
 
 plot
@@ -748,7 +715,6 @@ incompatible, but will be added to nctoolkit over time. Usage is simple:
 
 ::
 
-    data = nc.open_data(infile)
     data.plot()
 
 range
@@ -762,7 +728,6 @@ dataset as follows:
 
 ::
 
-    data = nc.open_data(infile)
     data.range()
 
 regrid
@@ -799,7 +764,6 @@ variables to remove:
 
 ::
 
-    data = nc.open_data(infile)
     data.remove_variables(vars)
 
 rename
@@ -812,8 +776,17 @@ would do the following:
 
 ::
 
-    data = nc.open_data(infile)
     data.rename({"old":"new"})
+
+resample_grid
+------
+
+This method let's you resample the horizontal grid. It takes one argument. If you wanted to only take every other grid cell, you would do the following:
+
+::
+
+    data.resample_grid(2)
+
 
 rolling_max
 -----------
@@ -824,7 +797,6 @@ a window of 10, you would do the following:
 
 ::
 
-    data = nc.open_data(infile)
     data.rolling_max(window = 10)
 
 rolling_mean
@@ -836,7 +808,6 @@ of 10, you would do the following:
 
 ::
 
-    data = nc.open_data(infile)
     data.rolling_mean(window = 10)
 
 rolling_min
@@ -848,7 +819,6 @@ a window of 10, you would do the following:
 
 ::
 
-    data = nc.open_data(infile)
     data.rolling_min(window = 10)
 
 rolling_range
@@ -860,7 +830,6 @@ of 10, you would do the following:
 
 ::
 
-    data = nc.open_data(infile)
     data.rolling_range(window = 10)
 
 rolling_sum
@@ -872,20 +841,19 @@ For example, if you needed to calculate the rolling sum with a window of
 
 ::
 
-    data = nc.open_data(infile)
     data.rolling_sum(window = 10)
 
 run
 ---
 
-This method will evaluate all of a dataset’s unevaluated commands. Usage
+This method will evaluate all of a dataset’s unevaluated commands. Evaluation should be set to lazy. Usage
 is simple:
 
 ::
 
     nc.options(lazy = True)
     data = nc.open_data(infile)
-    data.select_years(1990)
+    #.... apply some methods to the dataset
     data.run()
 
 seasonal_max
@@ -907,7 +875,6 @@ all years. Usage is simple:
 
 ::
 
-    data = nc.open_data(infile)
     data.seasonal_max_climatology()
 
 seasonal_mean
@@ -919,7 +886,6 @@ seasonal_mean_climatology for climatological seasonal means.
 
 ::
 
-    data = nc.open_data(infile)
     data.seasonal_mean()
 
 seasonal_mean_climatology
@@ -930,7 +896,6 @@ years. Usage is simple:
 
 ::
 
-    data = nc.open_data(infile)
     data.seasonal_mean_climatology()
 
 seasonal_min
@@ -942,7 +907,6 @@ seasonal_min_climatology for climatological seasonal minimums.
 
 ::
 
-    data = nc.open_data(infile)
     data.seasonal_min()
 
 seasonal_min_climatology
@@ -953,7 +917,6 @@ all years. Usage is simple:
 
 ::
 
-    data = nc.open_data(infile)
     data.seasonal_min_climatology()
 
 seasonal_range
@@ -965,7 +928,6 @@ seasonal_range_climatology for climatological seasonal ranges.
 
 ::
 
-    data = nc.open_data(infile)
     data.seasonal_range()
 
 seasonal_range_climatology
@@ -976,7 +938,6 @@ all years. Usage is simple:
 
 ::
 
-    data = nc.open_data(infile)
     data.seasonal_range_climatology()
 
 select
@@ -997,7 +958,6 @@ we wanted the first half of a year, we would do the following:
 
 ::
 
-    data = nc.open_data(infile)
     data.select_months(range(1, 7))
 
 select_variables
@@ -1009,7 +969,6 @@ you wanted two variables, var1 and var2, you would do the following:
 
 ::
 
-    data = nc.open(infile)
     data.select_variables(["var1", "var2"])
 
 select_years
@@ -1021,7 +980,6 @@ subset a dataset the 1990s, you would do the following:
 
 ::
 
-    data = nc.open_data(infile)
     data.select_years(range(1990, 2000))
 
 set_missing
@@ -1034,7 +992,6 @@ and 10 to be set to missing, you would do the following:
 
 ::
 
-    data = nc.open_data(infile)
     data.set_missing([0, 10])
 
 shift_days
@@ -1044,10 +1001,7 @@ This method allows you to shift time by a set number of hours, days, months or y
 
 ::
 
-    data = nc.open_data(infile)
     data.shift(years = 1, months = 1, days = 1)
-
-
 
 
 shift_days
@@ -1057,7 +1011,6 @@ This method allows you to shift time by a set number of days. For example, if yo
 
 ::
 
-    data = nc.open_data(infile)
     data.shift_days(2)
 
 shift_hours
@@ -1067,7 +1020,6 @@ This method allows you to shift time by a set number of hours. For example, if y
 
 ::
 
-    data = nc.open_data(infile)
     data.shift_hours(-1)
 
 shift_months
@@ -1077,7 +1029,6 @@ This method allows you to shift time by a set number of months. For example, if 
 
 ::
 
-    data = nc.open_data(infile)
     data.shift_months(2)
 
 shift_years
@@ -1087,7 +1038,6 @@ This method allows you to shift time by a set number of years. For example, if y
 
 ::
 
-    data = nc.open_data(infile)
     data.shift_years(10)
 
 
@@ -1099,7 +1049,6 @@ variable and time step. Usage is simple:
 
 ::
 
-    data = nc.open_data(infile)
     data.spatial_max()
 
 spatial_mean
@@ -1111,7 +1060,6 @@ weighted mean. Usage is simple:
 
 ::
 
-    data = nc.open_data(infile)
     data.spatial_mean()
 
 spatial_min
@@ -1122,7 +1070,6 @@ variable and time step. Usage is simple:
 
 ::
 
-    data = nc.open_data(infile)
     data.spatial_min()
 
 spatial_percentile
@@ -1134,7 +1081,6 @@ you would do the following:
 
 ::
 
-    data = nc.open_data(infile)
     data.spatial_percentile(p=75)
 
 spatial_range
@@ -1145,7 +1091,6 @@ variable and time step. Usage is simple:
 
 ::
 
-    data = nc.open_data(infile)
     data.spatial_range()
 
 spatial_sum
@@ -1162,7 +1107,6 @@ Usage is simple:
 
 ::
 
-    data = nc.open_data(infile)
     data.spatial_sum()
 
 split
@@ -1178,7 +1122,6 @@ years, you can do this:
 
 ::
 
-    data = nc.open_data(infile)
     data.split("year")
 
 subtract
@@ -1194,8 +1137,7 @@ Kelvin, we could convert it to Celsiu by subtracting 273.15.
 
 ::
 
-    data = nc.open_data(infile)
-    data.substract(273.15)
+    data.subtract(273.15)
 
 sum
 ---
@@ -1205,8 +1147,16 @@ grid cells. Usage is simple:
 
 ::
 
-    data = nc.open_data(infile)
     data.sum()
+
+sum_all
+---
+
+This method will calculate the sum of all variables separately for each time cell and grid cell. Usage is simple:
+
+::
+
+    data.sum_all()
 
 surface
 -------
@@ -1216,7 +1166,6 @@ Usage is simple:
 
 ::
 
-    data = nc.open_data(infile)
     data.surface()
 
 to_dataframe
@@ -1228,7 +1177,6 @@ the times to be decoded. Defaults to True. Usage is simple:
 
 ::
 
-    data = nc.open_data(infile)
     data.to_dataframe()
 
 to_latlon
@@ -1240,7 +1188,6 @@ horizontal and vertical resolutions.
 
 ::
 
-    data = nc.open_data(infile)
     data.to_latlon(lon = [-80, 20], lat = [30, 80], res = [1,1])
 
 to_xarray
@@ -1252,7 +1199,6 @@ the times to be decoded. Defaults to True. Usage is simple:
 
 ::
 
-    data = nc.open_data(infile)
     data.to_xarray()
 
 transmute
@@ -1269,7 +1215,6 @@ we might want to convert that to Kelvin. We can do this easily:
 
 ::
 
-    data = nc.open_data(infile)
     data.transmute({"temperature_k":"temperature+273.15"})
 
 var
@@ -1280,7 +1225,6 @@ This is calculate across all time steps. Usage is simple:
 
 ::
 
-    data = nc.open_data(infile)
     data.var()
 
 vertical_interp
@@ -1293,7 +1237,6 @@ and 20 metres you would do the following:
 
 ::
 
-    data = nc.open_data(infile)
     data.vertical_interp(levels = [10, 20])
 
 vertical_max
@@ -1304,7 +1247,6 @@ vertical levels. Usage is simple:
 
 ::
 
-    data = nc.open_data(infile)
     data.vertical_max()
 
 vertical_mean
@@ -1315,7 +1257,6 @@ vertical levels. Usage is simple:
 
 ::
 
-    data = nc.open_data(infile)
     data.vertical_mean()
 
 vertical_min
@@ -1326,7 +1267,6 @@ vertical levels. Usage is simple:
 
 ::
 
-    data = nc.open_data(infile)
     data.vertical_min()
 
 vertical_range
@@ -1337,7 +1277,6 @@ vertical levels. Usage is simple:
 
 ::
 
-    data = nc.open_data(infile)
     data.vertical_range()
 
 vertical_sum
@@ -1348,10 +1287,9 @@ Usage is simple:
 
 ::
 
-    data = nc.open_data(infile)
     data.vertical_sum()
 
-write_nc
+to_nc
 --------
 
 This method allows you to write the contents of a dataset to a NetCDF
@@ -1360,7 +1298,7 @@ overwrite to True. Usage is simple:
 
 ::
 
-    data.write_nc(outfile)
+    data.to_nc(outfile)
 
 zip
 ---
