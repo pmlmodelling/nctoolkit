@@ -27,6 +27,7 @@ install:
 
   - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION 
   - conda activate test-environment
+  - conda install -c conda-forge eccodes=2.18.0
   - conda install -c conda-forge cdo
   - conda install -c conda-forge nco
   - conda install -c anaconda coverage
@@ -36,8 +37,6 @@ install:
   - pip install pandas 
   - python setup.py install
 #
-before_script:
-  - ln -s /usr/lib/chromium-browser/chromedriver ~/bin/chromedriver
 script:
     - coverage run -m pytest tests/test*.py
 
