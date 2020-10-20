@@ -21,6 +21,28 @@ from nctoolkit.show import nc_variables, nc_years, nc_months, nc_levels, nc_time
 from nctoolkit.temp_file import temp_file
 
 
+
+# context manager code so that thredds checks will be stopped if slow
+import signal
+import time
+from contextlib import contextmanager
+
+class TimeoutException(Exception): pass
+
+
+@contextmanager
+def time_limit(seconds):
+    def signal_handler(signum, frame):
+        raise TimeoutException("Timed out. Connecting to the thredds server is very slow!")
+    signal.signal(signal.SIGALRM, signal_handler)
+    signal.alarm(seconds)
+    try:
+        yield
+    finally:
+        signal.alarm(0)
+
+
+
 # A custom format for warnings.
 def custom_formatwarning(msg, *args, **kwargs):
     # ignore everything except the message
@@ -182,14 +204,15 @@ def open_data(x=None, suppress_messages=False, checks=False, **kwargs):
                     urllib.request.urlretrieve(x, new_x)
                     x = new_x
                 else:
-                    out = subprocess.run(
-                        "cdo sinfo " + x,
-                        shell=True,
-                        stdout=subprocess.PIPE,
-                        stderr=subprocess.PIPE,
-                    )
-                    if "Open failed" in str(out.stderr):
-                        raise ValueError(f"{x} is not compatible with CDO!")
+                    with time_limit(20):
+                        out = subprocess.run(
+                            "cdo sinfo " + x,
+                            shell=True,
+                            stdout=subprocess.PIPE,
+                            stderr=subprocess.PIPE,
+                        )
+                        if "Open failed" in str(out.stderr):
+                            raise ValueError(f"{x} is not compatible with CDO!")
 
             else:
                 raise ValueError("Data set " + x + " does not exist!")
@@ -976,7 +999,6 @@ class DataSet(object):
 
     from nctoolkit.to_lonlat import to_latlon
 
-    from nctoolkit.to_nc import write_nc
     from nctoolkit.to_nc import to_nc
 
     from nctoolkit.toxarray import to_xarray
@@ -1016,3 +1038,4 @@ class DataSet(object):
     from nctoolkit.deprecated import release
     from nctoolkit.deprecated import select_timestep
     from nctoolkit.deprecated import select_season
+    from nctoolkit.to_nc import write_nc
