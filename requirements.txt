@@ -3,4 +3,5 @@ netCDF4
 hvplot
 panel
 pandas
+ncplot
 
