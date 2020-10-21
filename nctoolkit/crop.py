@@ -7,7 +7,7 @@ from nctoolkit.runthis import run_this, run_nco, tidy_command
 from nctoolkit.temp_file import temp_file
 
 
-def crop(self, lon=[-180, 180], lat=[-90, 90], nco=False):
+def crop(self, lon=[-180, 180], lat=[-90, 90], nco=False, nco_vars = None):
     """
     Crop to a rectangular longitude and latitude box
 
@@ -23,6 +23,8 @@ def crop(self, lon=[-180, 180], lat=[-90, 90], nco=False):
         Do you want this to use NCO for clipping? Defaults to False,
         and uses CDO. Set to True if you want to call NCO.
         NCO is typically better at handling very large horizontal grids.
+    nco_vars: str or list
+        If using NCO, the variables you want to select
     """
 
     # check validity of lon/lat supplied
@@ -70,6 +72,14 @@ def crop(self, lon=[-180, 180], lat=[-90, 90], nco=False):
 
         # find the names of lonlat
 
+        if nco_vars is not None:
+            if type(nco_vars) is str:
+                nco_vars = str_flatten([nco_vars], ",")
+
+            var_str = f" -v {str_flatten(nco_vars)}"
+        else:
+            var_str = " "
+
         out = subprocess.run(
             f"cdo griddes {ff}",
             shell=True,
@@ -85,7 +95,7 @@ def crop(self, lon=[-180, 180], lat=[-90, 90], nco=False):
         target = temp_file("nc")
 
         nco_command = (
-            "ncea -d "
+            f"ncks {var_str} -d "
             + lat_name
             + ","
             + str(float(lat[0]))
@@ -104,7 +114,7 @@ def crop(self, lon=[-180, 180], lat=[-90, 90], nco=False):
         )
         if lon == [-180, 180]:
             nco_command = (
-                "ncea -d "
+                f"ncea {var_str} -d "
                 + lat_name
                 + ","
                 + str(float(lat[0]))
@@ -118,7 +128,7 @@ def crop(self, lon=[-180, 180], lat=[-90, 90], nco=False):
 
         if lat == [-90, 90]:
             nco_command = (
-                "ncea  -d "
+                f"ncea {var_str}  -d "
                 + lon_name
                 + ","
                 + str(float(lon[0]))
