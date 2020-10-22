@@ -14,6 +14,8 @@ def append(self, x=None):
 
     # run, as it makes no sense to add files while commands are waiting to run
     self.run()
+    if "api.DataSet" in str(type(x)):
+        x.run()
 
     if x is None:
         raise TypeError("Please supply files")
