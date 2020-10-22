@@ -106,12 +106,13 @@ def options(**kwargs):
 
     """
 
-    valid_keys = ["thread_safe", "lazy", "cores", "precision"]
+    valid_keys = ["thread_safe", "lazy", "cores", "precision", "user", "password"]
 
     for key in kwargs:
         if key not in valid_keys:
             raise AttributeError(key + " is not a valid option")
         if type(kwargs[key]) is not bool:
+
             if key == "cores":
                 if type(kwargs[key]) is int:
                     if kwargs[key] > mp.cpu_count():
@@ -170,11 +171,17 @@ def open_data(x=None, suppress_messages=False, checks=False, **kwargs):
         Do you want basic checks to ensure cdo can read files?
     """
 
+
+    print(x)
     thredds = False
 
+    ftp_details = None
     for key in kwargs:
         if key == "thredds":
             thredds = kwargs[key]
+        if key == "ftp_details":
+            ftp_details = kwargs[key]
+
 
     # make sure data has been supplied
     if x is None:
@@ -201,6 +208,12 @@ def open_data(x=None, suppress_messages=False, checks=False, **kwargs):
                 if thredds is False:
                     new_x = temp_file(".nc")
                     print(f"Downloading {x}")
+
+                    if ftp_details is not None and x.startswith("ftp"):
+                        user = ftp_details["user"]
+                        password = ftp_details["password"]
+                        x = x.replace("ftp://", f"ftp://{user}:{password}@")
+
                     urllib.request.urlretrieve(x, new_x)
                     x = new_x
                 else:
@@ -321,7 +334,7 @@ def open_thredds(x=None, checks = False):
     return open_data(x=x, thredds=True, checks = checks)
 
 
-def open_url(x=None):
+def open_url(x=None, ftp_details = None):
     """
     Read netcdf data from a url as a DataSet object
 
@@ -330,9 +343,24 @@ def open_url(x=None):
     x : str
         A string with a url. Prior to processing data will be downloaded to
         a temp folder.
+    ftp_details : dict
+        A dictionary giving the user name and password combination for ftp downloads: {"user":user, "password":pass}
 
     """
-    return open_data(x=x)
+
+    if ftp_details is not None:
+        if len(ftp_details) != 2:
+            raise ValueError("ftp_details is not a 2 element dictionary")
+
+        user = ftp_details[list(ftp_details.keys())[0]]
+        password = ftp_details[list(ftp_details.keys())[1]]
+        new_dict = {"user":user, "password":password}
+    else:
+        new_dict = None
+
+
+
+    return open_data(x=x, ftp_details = new_dict)
 
 
 def merge(*datasets, match=["day", "year", "month"]):
