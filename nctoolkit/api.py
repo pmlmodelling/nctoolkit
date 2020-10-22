@@ -305,7 +305,7 @@ def open_data(x=None, suppress_messages=False, checks=False, **kwargs):
     return d
 
 
-def open_thredds(x=None):
+def open_thredds(x=None, checks = False):
     """
     Read thredds data as a DataSet object
 
@@ -318,7 +318,7 @@ def open_thredds(x=None):
 
     if session_info["cores"] > 1:
         warnings.warn(message="Using multiple cores on thredds data is volatile. If there is an error set cores=1.")
-    return open_data(x=x, thredds=True)
+    return open_data(x=x, thredds=True, checks = checks)
 
 
 def open_url(x=None):
