@@ -106,12 +106,18 @@ def options(**kwargs):
 
     """
 
-    valid_keys = ["thread_safe", "lazy", "cores", "precision", "user", "password"]
+    valid_keys = ["thread_safe", "lazy", "cores", "precision", "user", "password", "temp_dir"]
 
     for key in kwargs:
         if key not in valid_keys:
             raise AttributeError(key + " is not a valid option")
         if type(kwargs[key]) is not bool:
+            if key == "temp_dir":
+                if type(kwargs[key]) is str:
+                    if os.path.exists(kwargs[key]) == False:
+                        raise("The temp_dir specified does not exist!")
+                    session_info[key] = os.path.abspath(kwargs[key])
+                return None
 
             if key == "cores":
                 if type(kwargs[key]) is int:
@@ -172,7 +178,6 @@ def open_data(x=None, suppress_messages=False, checks=False, **kwargs):
     """
 
 
-    print(x)
     thredds = False
 
     ftp_details = None

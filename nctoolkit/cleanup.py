@@ -181,6 +181,9 @@ def disk_clean(self):
             if result > 0.5 * 1e9:
                 return None
 
+        if session_info["temp_dir"] not in  ["/tmp/", "/var/tmp", "/usr/tmp"]:
+            return None
+
         # at this point we want to change the temp dir,
         # though it probably has been already
         session_info["temp_dir"] = "/var/tmp/"
