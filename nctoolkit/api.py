@@ -335,7 +335,8 @@ def open_thredds(x=None, checks = False):
     """
 
     if session_info["cores"] > 1:
-        warnings.warn(message="Using multiple cores on thredds data is volatile. If there is an error set cores=1.")
+        warnings.warn(message="Using multiple cores on thredds data is volatile. It has therefore been reset to 1.")
+        session_info["cores"] = 1
     return open_data(x=x, thredds=True, checks = checks)
 
 
@@ -957,6 +958,7 @@ class DataSet(object):
     from nctoolkit.monstat import monthly_mean
     from nctoolkit.monstat import monthly_min
     from nctoolkit.monstat import monthly_max
+    from nctoolkit.monstat import monthly_sum
     from nctoolkit.monstat import monthly_range
 
     from nctoolkit.monthlyclim import monthly_mean_climatology
