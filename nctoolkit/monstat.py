@@ -38,3 +38,12 @@ def monthly_range(self):
     This applies to each file in an ensemble.
     """
     monstat(self, stat="range")
+
+def monthly_sum(self):
+    """
+    Calculate the monthly range for each year/month combination in files.
+    This applies to each file in an ensemble.
+    """
+    monstat(self, stat="sum")
+
+
