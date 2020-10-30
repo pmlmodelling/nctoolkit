@@ -322,6 +322,10 @@ class TestCalls:
         assert data.history[0] == "cdo -timvar"
 
         data = nc.open_data(ff)
+        data.stdev()
+        assert data.history[0] == "cdo -timstd"
+
+        data = nc.open_data(ff)
         data.cum_sum()
         assert data.history[0] == "cdo -timcumsum"
 

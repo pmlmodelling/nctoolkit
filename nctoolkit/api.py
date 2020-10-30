@@ -1031,6 +1031,7 @@ class DataSet(object):
     from nctoolkit.time_stat import range
     from nctoolkit.time_stat import var
     from nctoolkit.time_stat import variance
+    from nctoolkit.time_stat import stdev
     from nctoolkit.time_stat import sum
     from nctoolkit.time_stat import cum_sum
 

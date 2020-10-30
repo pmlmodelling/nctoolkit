@@ -68,6 +68,13 @@ def variance(self):
     """
     time_stat(self, stat="var")
 
+def stdev(self):
+    """
+    Calculate the temporal standard deviation of all variables
+    """
+    time_stat(self, stat="std")
+
+
 def cum_sum(self):
     """
     Calculate the temporal cumulative sum of all variables
