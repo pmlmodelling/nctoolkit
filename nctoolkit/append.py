@@ -1,5 +1,6 @@
 import os
 import warnings
+from nctoolkit.session import nc_safe
 
 
 def append(self, x=None):
@@ -50,4 +51,6 @@ def append(self, x=None):
         if type(self.current) is str:
             self.current = [self.current, ff]
         else:
+            nc_safe.append(ff)
             self.current.append(ff)
+
