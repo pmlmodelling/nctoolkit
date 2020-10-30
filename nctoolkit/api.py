@@ -1,4 +1,5 @@
 import atexit
+import glob
 import copy
 import multiprocessing as mp
 import os
@@ -171,12 +172,17 @@ def open_data(x=None, suppress_messages=False, checks=False, **kwargs):
         A string or list of netcdf files or a single url. The function will check the
         files exist. If x is not a list, but an iterable it will be converted to a list.
         If a url is given the file will be downloaded before processing.
+        If a *.nc style wildcard is supplied, open_data will use all files available.
     thredds : boolean
         Are you accessing a thredds server? Must end with .nc.
     checks: boolean
         Do you want basic checks to ensure cdo can read files?
     """
 
+
+    if type(x) is str:
+        if x.endswith("*.nc"):
+            x = glob.glob(x)
 
     thredds = False
 
