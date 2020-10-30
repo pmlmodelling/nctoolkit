@@ -3,6 +3,7 @@ import copy
 from nctoolkit.cleanup import cleanup
 from nctoolkit.runthis import run_this, run_cdo, tidy_command
 from nctoolkit.temp_file import temp_file
+import warnings
 
 
 def time_stat(self, stat="mean"):
@@ -58,8 +59,14 @@ def var(self):
     """
     Calculate the temporal variance of all variables
     """
+    warnings.warn(message = "var is now deprecated. Please use variance!")
     time_stat(self, stat="var")
 
+def variance(self):
+    """
+    Calculate the temporal variance of all variables
+    """
+    time_stat(self, stat="var")
 
 def cum_sum(self):
     """

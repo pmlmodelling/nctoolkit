@@ -318,7 +318,7 @@ class TestCalls:
         assert data.history[0] == "cdo -timsum"
 
         data = nc.open_data(ff)
-        data.var()
+        data.variance()
         assert data.history[0] == "cdo -timvar"
 
         data = nc.open_data(ff)

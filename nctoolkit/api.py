@@ -969,6 +969,7 @@ class DataSet(object):
     from nctoolkit.nco_command import nco_command
 
     from nctoolkit.phenology import phenology
+    from nctoolkit.phenology import initiation
 
     from nctoolkit.plot import plot
 
@@ -1029,6 +1030,7 @@ class DataSet(object):
     from nctoolkit.time_stat import min
     from nctoolkit.time_stat import range
     from nctoolkit.time_stat import var
+    from nctoolkit.time_stat import variance
     from nctoolkit.time_stat import sum
     from nctoolkit.time_stat import cum_sum
 

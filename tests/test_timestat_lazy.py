@@ -60,11 +60,11 @@ class TestTimestat:
 
         assert x == y
 
-    def test_var(self):
+    def test_variance(self):
         tracker = nc.open_data(ff)
         tracker.select_timesteps(range(0, 12))
 
-        tracker.var()
+        tracker.variance()
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0].astype("float")
 
