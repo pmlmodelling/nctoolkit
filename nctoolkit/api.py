@@ -927,8 +927,9 @@ class DataSet(object):
     from nctoolkit.ensembles import ensemble_max
     from nctoolkit.ensembles import ensemble_min
     from nctoolkit.ensembles import ensemble_range
-    from nctoolkit.ensembles import ensemble_percentile
+    from nctoolkit.ensembles import ensemble_sum
 
+    from nctoolkit.ensembles import ensemble_percentile
     from nctoolkit.expr import mutate
     from nctoolkit.expr import transmute
     from nctoolkit.expr import sum_all

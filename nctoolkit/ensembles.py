@@ -233,3 +233,20 @@ def ensemble_range(self):
     run_this(cdo_command, self)
 
     self._merged = True
+
+def ensemble_sum(self):
+    """
+    Calculate an ensemble sum
+    The sum is calculated for each time step; for example, if each file in the
+    ensemble has 12 months of data the statistic will be calculated for each month.
+    """
+    self.run()
+
+    if type(self.current) is not list:
+        warnings.warn(message="There is only one file in the dataset")
+
+    cdo_command = "cdo --sortname -enssum"
+
+    run_this(cdo_command, self)
+
+    self._merged = True
