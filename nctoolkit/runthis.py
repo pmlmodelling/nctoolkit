@@ -271,14 +271,14 @@ def run_cdo(command, target, out_file=None, overwrite=False):
 
             if len(missing_years) > 0:
                 warnings.warn(
-                    message=f'CDO warning: Years {str_flatten(missing_years, ",")} "\
-                            f"are missing',
+                    message=f'CDO warning: Years {str_flatten(missing_years, ",")} '\
+                            'are missing',
                     stacklevel=2,
                 )
             if len(missing_months) > 0:
                 warnings.warn(
-                    message=f'CDO warning: Months {str_flatten(missing_months, ",")} "\
-                            f"are missing',
+                    message=f'CDO warning: Months {str_flatten(missing_months, ",")} '\
+                            'are missing',
                     stacklevel=2,
                 )
     else:
@@ -315,14 +315,14 @@ def run_cdo(command, target, out_file=None, overwrite=False):
 
         if len(missing_years) > 0:
             warnings.warn(
-                message=f'CDO warning: Years {str_flatten(missing_years, ",")} "\
-                        f"are missing!',
+                message=f'CDO warning: Years {str_flatten(missing_years, ",")} '\
+                        'are missing!',
                 category=Warning,
             )
         if len(missing_months) > 0:
             warnings.warn(
-                message=f'CDO warning: Months {str_flatten(missing_months, ",")} "\
-                        f"are missing',
+                message=f'CDO warning: Months {str_flatten(missing_months, ",")} '\
+                        'are missing',
                 category=Warning,
             )
 
