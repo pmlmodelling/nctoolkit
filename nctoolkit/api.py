@@ -219,6 +219,7 @@ def open_data(x=None, suppress_messages=False, checks=False, **kwargs):
                 if thredds is False:
                     new_x = temp_file(".nc")
                     print(f"Downloading {x}")
+                    print ("\033[A                             \033[A")
 
                     if ftp_details is not None and x.startswith("ftp"):
                         user = ftp_details["user"]
