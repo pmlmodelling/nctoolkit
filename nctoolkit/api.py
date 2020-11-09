@@ -529,6 +529,7 @@ class DataSet(object):
         self._safe = []
         self._zip = False
         self._thredds = False
+        self._format = None
 
     def __getitem__(self, index):
         if type(self.current) is str:

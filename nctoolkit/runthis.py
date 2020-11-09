@@ -164,6 +164,60 @@ def run_cdo(command, target, out_file=None, overwrite=False):
     out.wait()
     result, ignore = out.communicate()
 
+    # this will potentially fail because of floating point precision. A quick fix to see if that is the case....
+
+    if "Use the CDO option -b F32"in  (result.decode("utf-8")):
+        command_chunks = command.split(" ")
+
+        i = 0
+        change = None
+        for cc in command_chunks:
+            i += 1
+            if "-b" == cc.strip():
+                change = i
+        if change is not None:
+            command_chunks[change] = "F32"
+            command = str_flatten(command_chunks, " ")
+        else:
+            command = command.replace("cdo ", "cdo -b F32 ")
+        command
+
+        out = subprocess.Popen(
+            command,
+            shell=True,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+        )
+        out.wait()
+        result, ignore = out.communicate()
+
+    if "Use the CDO option -b F32"in  (result.decode("utf-8")):
+        command_chunks = command.split(" ")
+
+        i = 0
+        change = None
+        for cc in command_chunks:
+            i += 1
+            if "-b" == cc.strip():
+                change = i
+        if change is not None:
+            command_chunks[change] = "F32"
+            command = str_flatten(command_chunks, " ")
+        else:
+            command = command.replace("cdo ", "cdo -b F64 ")
+        command
+
+        out = subprocess.Popen(
+            command,
+            shell=True,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+        )
+        out.wait()
+        result, ignore = out.communicate()
+
     if out_file is not None:
         if "HDF5 library version mismatched error" in str(result):
             raise ValueError(
@@ -397,7 +451,17 @@ def run_this(os_command, self, output="one", out_file=None):
 
                 ff_command = tidy_command(ff_command)
 
-                if self._zip:
+                zip_copy = False
+
+                if len (ff_command.replace(" ", "")) == 0:
+                    zip_copy = True
+
+                if self._format is not None:
+                    ff_command = ff_command.replace("cdo ", f"cdo -f {self._format} ")
+
+                if self._zip and zip_copy:
+                    ff_command = ff_command.replace("cdo ", "cdo -z zip copy ")
+                else:
                     ff_command = ff_command.replace("cdo ", "cdo -z zip ")
 
                 new_history.append(ff_command)
@@ -453,7 +517,16 @@ def run_this(os_command, self, output="one", out_file=None):
             os_command = (
                 os_command + " " + str_flatten(self.current, " ") + " " + target
             )
-            if self._zip:
+
+            if len(os_command.replace(" ", "")) == 0:
+                zip_copy = True
+
+            if self._format != None:
+                os_command = os_command.replace("cdo ", f"cdo -f {self._format} ")
+
+            if self._zip and zip_copy:
+                os_command = os_command.replace("cdo ", "cdo -z zip copy")
+            else:
                 os_command = os_command.replace("cdo ", "cdo -z zip ")
 
             if "infile09178" in os_command:

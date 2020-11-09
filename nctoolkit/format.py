@@ -26,10 +26,5 @@ def format(self, ext = None):
         raise ValueError(f"{ext} is not a valid format!")
 
 
-    if len(self.history) == len(self._hold_history):
-        cdo_command = f"cdo -f {ext} copy"
-        run_this(cdo_command, self, output="ensemble")
-    else:
-        cdo_command = f"cdo -f {ext}"
-        run_this(cdo_command, self, output="ensemble")
+    self._format = ext
 
