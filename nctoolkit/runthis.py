@@ -166,7 +166,7 @@ def run_cdo(command, target, out_file=None, overwrite=False):
 
     # this will potentially fail because of floating point precision. A quick fix to see if that is the case....
 
-    if "Use the CDO option -b F32"in  (result.decode("utf-8")):
+    if "Use the CDO option -b F32" in (result.decode("utf-8")):
         command_chunks = command.split(" ")
 
         i = 0
@@ -192,7 +192,7 @@ def run_cdo(command, target, out_file=None, overwrite=False):
         out.wait()
         result, ignore = out.communicate()
 
-    if "Use the CDO option -b F32"in  (result.decode("utf-8")):
+    if "Use the CDO option -b F32" in (result.decode("utf-8")):
         command_chunks = command.split(" ")
 
         i = 0
@@ -249,9 +249,9 @@ def run_cdo(command, target, out_file=None, overwrite=False):
 
     if "HDF5 library version mismatched error" in str(result):
         raise ValueError(
-                "The HDF5 header files used to compile this application do not match "
-                "the version used by the HDF5 library to which this application is "
-                "linked. This is likely because of a conda problem."
+            "The HDF5 header files used to compile this application do not match "
+            "the version used by the HDF5 library to which this application is "
+            "linked. This is likely because of a conda problem."
         )
 
     if (
@@ -280,9 +280,9 @@ def run_cdo(command, target, out_file=None, overwrite=False):
             ):
                 if "Too many open files" in str(result1):
                     raise ValueError(
-                            "There are too many open files in CDO. Check the files "
-                            "your OS allows to be open simultaneously in the Bourne "
-                            "shell with 'ulimit -n'"
+                        "There are too many open files in CDO. Check the files "
+                        "your OS allows to be open simultaneously in the Bourne "
+                        "shell with 'ulimit -n'"
                     )
                 else:
                     raise ValueError(
@@ -325,14 +325,14 @@ def run_cdo(command, target, out_file=None, overwrite=False):
 
             if len(missing_years) > 0:
                 warnings.warn(
-                    message=f'CDO warning: Years {str_flatten(missing_years, ",")} '\
-                            'are missing',
+                    message=f'CDO warning: Years {str_flatten(missing_years, ",")} '
+                    "are missing",
                     stacklevel=2,
                 )
             if len(missing_months) > 0:
                 warnings.warn(
-                    message=f'CDO warning: Months {str_flatten(missing_months, ",")} '\
-                            'are missing',
+                    message=f'CDO warning: Months {str_flatten(missing_months, ",")} '
+                    "are missing",
                     stacklevel=2,
                 )
     else:
@@ -369,14 +369,14 @@ def run_cdo(command, target, out_file=None, overwrite=False):
 
         if len(missing_years) > 0:
             warnings.warn(
-                message=f'CDO warning: Years {str_flatten(missing_years, ",")} '\
-                        'are missing!',
+                message=f'CDO warning: Years {str_flatten(missing_years, ",")} '
+                "are missing!",
                 category=Warning,
             )
         if len(missing_months) > 0:
             warnings.warn(
-                message=f'CDO warning: Months {str_flatten(missing_months, ",")} '\
-                        'are missing',
+                message=f'CDO warning: Months {str_flatten(missing_months, ",")} '
+                "are missing",
                 category=Warning,
             )
 
@@ -452,8 +452,7 @@ def run_this(os_command, self, output="one", out_file=None):
                 ff_command = tidy_command(ff_command)
 
                 zip_copy = False
-
-                if len (ff_command.replace(" ", "")) == 0:
+                if self._zip and self._ncommands == 0:
                     zip_copy = True
 
                 if self._format is not None:
@@ -462,7 +461,9 @@ def run_this(os_command, self, output="one", out_file=None):
                 if self._zip and zip_copy:
                     ff_command = ff_command.replace("cdo ", "cdo -z zip copy ")
                 else:
-                    ff_command = ff_command.replace("cdo ", "cdo -z zip ")
+                    if self._zip:
+                        ff_command = ff_command.replace("cdo ", "cdo -z zip ")
+                        print("working")
 
                 new_history.append(ff_command)
                 temp = pool.apply_async(run_cdo, [ff_command, target, out_file])
@@ -484,9 +485,13 @@ def run_this(os_command, self, output="one", out_file=None):
             cleanup()
             self._hold_history = copy.deepcopy(self.history)
 
+            self._zip = False
+
+            self._ncommands = 0
+
             return None
 
-        if (output == "one") and (type(self.current) == list):
+        if ((output == "one") and (type(self.current) == list)) or self._zip == False:
 
             new_history = copy.deepcopy(self._hold_history)
 
@@ -518,7 +523,10 @@ def run_this(os_command, self, output="one", out_file=None):
                 os_command + " " + str_flatten(self.current, " ") + " " + target
             )
 
-            if len(os_command.replace(" ", "")) == 0:
+            print(os_command)
+
+            zip_copy = False
+            if self._zip and self._ncommands == 0:
                 zip_copy = True
 
             if self._format != None:
@@ -527,7 +535,9 @@ def run_this(os_command, self, output="one", out_file=None):
             if self._zip and zip_copy:
                 os_command = os_command.replace("cdo ", "cdo -z zip copy")
             else:
-                os_command = os_command.replace("cdo ", "cdo -z zip ")
+                if self._zip:
+                    os_command = os_command.replace("cdo ", "cdo -z zip ")
+                    print("working")
 
             if "infile09178" in os_command:
                 os_command = os_command.replace(ff, "")
@@ -545,3 +555,6 @@ def run_this(os_command, self, output="one", out_file=None):
             cleanup()
 
             self._hold_history = copy.deepcopy(self.history)
+
+            self._zip = False
+            self._n_commands = 0

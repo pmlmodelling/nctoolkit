@@ -18,9 +18,15 @@ from nctoolkit.cleanup import cleanup, clean_all, temp_check
 from nctoolkit.flatten import str_flatten
 from nctoolkit.runthis import run_cdo
 from nctoolkit.session import nc_protected, session_info, nc_safe
-from nctoolkit.show import nc_variables, nc_years, nc_months, nc_levels, nc_times, nc_format
+from nctoolkit.show import (
+    nc_variables,
+    nc_years,
+    nc_months,
+    nc_levels,
+    nc_times,
+    nc_format,
+)
 from nctoolkit.temp_file import temp_file
-
 
 
 # context manager code so that thredds checks will be stopped if slow
@@ -28,20 +34,24 @@ import signal
 import time
 from contextlib import contextmanager
 
-class TimeoutException(Exception): pass
+
+class TimeoutException(Exception):
+    pass
 
 
 @contextmanager
 def time_limit(seconds):
     def signal_handler(signum, frame):
-        raise TimeoutException("Timed out. Connecting to the thredds server is very slow!")
+        raise TimeoutException(
+            "Timed out. Connecting to the thredds server is very slow!"
+        )
+
     signal.signal(signal.SIGALRM, signal_handler)
     signal.alarm(seconds)
     try:
         yield
     finally:
         signal.alarm(0)
-
 
 
 # A custom format for warnings.
@@ -107,7 +117,15 @@ def options(**kwargs):
 
     """
 
-    valid_keys = ["thread_safe", "lazy", "cores", "precision", "user", "password", "temp_dir"]
+    valid_keys = [
+        "thread_safe",
+        "lazy",
+        "cores",
+        "precision",
+        "user",
+        "password",
+        "temp_dir",
+    ]
 
     for key in kwargs:
         if key not in valid_keys:
@@ -116,7 +134,7 @@ def options(**kwargs):
             if key == "temp_dir":
                 if type(kwargs[key]) is str:
                     if os.path.exists(kwargs[key]) == False:
-                        raise("The temp_dir specified does not exist!")
+                        raise ("The temp_dir specified does not exist!")
                     session_info[key] = os.path.abspath(kwargs[key])
                 return None
 
@@ -179,7 +197,6 @@ def open_data(x=None, suppress_messages=False, checks=False, **kwargs):
         Do you want basic checks to ensure cdo can read files?
     """
 
-
     if type(x) is str:
         if x.endswith("*.nc"):
             x = glob.glob(x)
@@ -192,7 +209,6 @@ def open_data(x=None, suppress_messages=False, checks=False, **kwargs):
             thredds = kwargs[key]
         if key == "ftp_details":
             ftp_details = kwargs[key]
-
 
     # make sure data has been supplied
     if x is None:
@@ -219,7 +235,7 @@ def open_data(x=None, suppress_messages=False, checks=False, **kwargs):
                 if thredds is False:
                     new_x = temp_file(".nc")
                     print(f"Downloading {x}")
-                    print ("\033[A                             \033[A")
+                    print("\033[A                             \033[A")
 
                     if ftp_details is not None and x.startswith("ftp"):
                         user = ftp_details["user"]
@@ -330,7 +346,7 @@ def open_data(x=None, suppress_messages=False, checks=False, **kwargs):
     return d
 
 
-def open_thredds(x=None, checks = False):
+def open_thredds(x=None, checks=False):
     """
     Read thredds data as a DataSet object
 
@@ -342,12 +358,14 @@ def open_thredds(x=None, checks = False):
     """
 
     if session_info["cores"] > 1:
-        warnings.warn(message="Using multiple cores on thredds data is volatile. It has therefore been reset to 1.")
+        warnings.warn(
+            message="Using multiple cores on thredds data is volatile. It has therefore been reset to 1."
+        )
         session_info["cores"] = 1
-    return open_data(x=x, thredds=True, checks = checks)
+    return open_data(x=x, thredds=True, checks=checks)
 
 
-def open_url(x=None, ftp_details = None):
+def open_url(x=None, ftp_details=None):
     """
     Read netcdf data from a url as a DataSet object
 
@@ -367,13 +385,11 @@ def open_url(x=None, ftp_details = None):
 
         user = ftp_details[list(ftp_details.keys())[0]]
         password = ftp_details[list(ftp_details.keys())[1]]
-        new_dict = {"user":user, "password":password}
+        new_dict = {"user": user, "password": password}
     else:
         new_dict = None
 
-
-
-    return open_data(x=x, ftp_details = new_dict)
+    return open_data(x=x, ftp_details=new_dict)
 
 
 def merge(*datasets, match=["day", "year", "month"]):
@@ -487,8 +503,8 @@ def cor_space(x=None, y=None):
     if x.variables != y.variables:
         if len(x.variables) > 1 or len(y.variables) > 1:
             raise ValueError(
-                    "This method currently only works with single variable datasets "
-                    "or datasets with identical variables!"
+                "This method currently only works with single variable datasets "
+                "or datasets with identical variables!"
             )
 
     target = temp_file("nc")
@@ -527,9 +543,12 @@ class DataSet(object):
         self._hold_history = []
         self._merged = False
         self._safe = []
-        self._zip = False
+        # some trackers to make end of the chain processing easier
         self._thredds = False
+        self._zip = False
         self._format = None
+        # track number of held over commands
+        self._ncommands = 0
 
     def __getitem__(self, index):
         if type(self.current) is str:
@@ -712,7 +731,7 @@ class DataSet(object):
 
         all_formats = []
         for ff in self:
-            all_formats+= nc_format(ff)
+            all_formats += nc_format(ff)
 
         all_formats = list(set(all_formats))
 
@@ -744,8 +763,10 @@ class DataSet(object):
         """
 
         if type(self.current) is list:
-            return "This DataSet object is a list. Please inspect individual"\
-                    "files using nc_variables"
+            return (
+                "This DataSet object is a list. Please inspect individual"
+                "files using nc_variables"
+            )
 
         cdo_result = subprocess.run(
             "cdo showname " + self.current,
@@ -909,7 +930,6 @@ class DataSet(object):
     from nctoolkit.centres import centre
 
     from nctoolkit.cleanup import disk_clean
-
 
     from nctoolkit.compare import compare_all
 
@@ -1078,7 +1098,7 @@ class DataSet(object):
     from nctoolkit.zonals import zonal_max
     from nctoolkit.zonals import zonal_range
 
-# deprecated stuff
+    # deprecated stuff
 
     from nctoolkit.deprecated import clip
 
