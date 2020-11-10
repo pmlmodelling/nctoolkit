@@ -390,6 +390,8 @@ def run_cdo(command, target, out_file=None, overwrite=False):
 
 def run_this(os_command, self, output="one", out_file=None):
 
+    self._ncommands += 1
+
     cores = session_info["cores"]
 
     if type(self.current) is str:
@@ -452,7 +454,7 @@ def run_this(os_command, self, output="one", out_file=None):
                 ff_command = tidy_command(ff_command)
 
                 zip_copy = False
-                if self._zip and self._ncommands == 0:
+                if self._zip and self._ncommands == 1:
                     zip_copy = True
 
                 if self._format is not None:
@@ -463,7 +465,6 @@ def run_this(os_command, self, output="one", out_file=None):
                 else:
                     if self._zip:
                         ff_command = ff_command.replace("cdo ", "cdo -z zip ")
-                        print("working")
 
                 new_history.append(ff_command)
                 temp = pool.apply_async(run_cdo, [ff_command, target, out_file])
@@ -523,21 +524,19 @@ def run_this(os_command, self, output="one", out_file=None):
                 os_command + " " + str_flatten(self.current, " ") + " " + target
             )
 
-            print(os_command)
 
             zip_copy = False
-            if self._zip and self._ncommands == 0:
+            if self._zip and self._ncommands == 1:
                 zip_copy = True
 
             if self._format != None:
                 os_command = os_command.replace("cdo ", f"cdo -f {self._format} ")
 
             if self._zip and zip_copy:
-                os_command = os_command.replace("cdo ", "cdo -z zip copy")
+                os_command = os_command.replace("cdo ", "cdo -z zip copy ")
             else:
                 if self._zip:
                     os_command = os_command.replace("cdo ", "cdo -z zip ")
-                    print("working")
 
             if "infile09178" in os_command:
                 os_command = os_command.replace(ff, "")
