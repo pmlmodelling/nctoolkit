@@ -33,6 +33,7 @@ install:
   - conda install -c anaconda coverage
   - conda install -c anaconda pytest
  
+  - pip install numpy
   - pip install -r requirements.txt
   - pip install pandas 
   - python setup.py install
