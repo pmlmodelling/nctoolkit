@@ -32,8 +32,9 @@ install:
   - conda install -c conda-forge nco
   - conda install -c anaconda coverage
   - conda install -c anaconda pytest
+  - conda install numpy
+  - conda install -c conda-forge cartopy
  
-  - pip install numpy
   - pip install -r requirements.txt
   - pip install pandas 
   - python setup.py install
