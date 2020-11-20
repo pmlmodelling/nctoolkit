@@ -40,6 +40,7 @@ class TestZip:
         new = tracker.copy()
         x = os.path.getsize(tracker.current)
         tracker.zip()
+        print(tracker._zip)
         tracker.run()
         y = os.path.getsize(tracker.current)
         z = np.round(x / y, 1).astype("float")
