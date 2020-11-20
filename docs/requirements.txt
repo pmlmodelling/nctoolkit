@@ -9,8 +9,8 @@ ipywidgets
 xarray
 hvplot
 netCDF4
-numpy == 1.19
-#ncplot
+numpy
+ncplot
 
 
 
