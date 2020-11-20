@@ -998,7 +998,7 @@ class DataSet(object):
     from nctoolkit.nco_command import nco_command
 
     from nctoolkit.phenology import phenology
-    from nctoolkit.phenology import initiation
+   # from nctoolkit.phenology import initiation
 
     from nctoolkit.plot import plot
 
