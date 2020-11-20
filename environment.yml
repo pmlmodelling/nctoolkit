@@ -1,0 +1,8 @@
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - cdo 
+  - nco 
+  - ncplot 
+  - xarray 
