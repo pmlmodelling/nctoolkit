@@ -17,6 +17,8 @@ jobs:
     steps:
 
      - uses: goanpeca/setup-miniconda@v1
+       env:
+        ACTIONS_ALLOW_UNSECURE_COMMANDS: true
        with:
          activate-environment: foo
          python-version: 3.6
@@ -25,7 +27,6 @@ jobs:
          channel-priority: flexible
          show-channel-urls: true
          use-only-tar-bz2: true
-         ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 
      - uses: actions/checkout@v2
        with:
