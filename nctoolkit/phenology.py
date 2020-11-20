@@ -48,6 +48,10 @@ def phenology(self, var=None, metric=None, p=None):
         if len(nc_years(ff)) > 1:
             split_files = True
 
+    for ff in self:
+        if var not in nc_variables(ff):
+            raise ValueError(f"{var} is not a valid variable!")
+
     if split_files:
         self.split("year")
 
@@ -167,7 +171,6 @@ def initiation(self, var=None, metric="Henson", threshold = 0.05):
             data_max.select_variables(var)
             data_max.max()
             data_max.rename({var:"max"})
-            #data_max.cdo_command(f"duplicate,{n_times}")
             data_max.run()
 
             # calculate the maximum
@@ -176,7 +179,6 @@ def initiation(self, var=None, metric="Henson", threshold = 0.05):
             data_median.select_variables(var)
             data_median.median()
             data_median.rename({var:"median"})
-            #data_median.cdo_command(f"duplicate,{n_times}")
             data_median.run()
 
             # calculate the pre-bloom minimum
@@ -188,7 +190,6 @@ def initiation(self, var=None, metric="Henson", threshold = 0.05):
             data_min.set_missing(0)
             data_min.min()
             data_min.rename({var:"min"})
-            #data_min.cdo_command(f"duplicate,{n_times}")
             data_min.run()
 
             # now calculate whether the variabe exceeds the peak
