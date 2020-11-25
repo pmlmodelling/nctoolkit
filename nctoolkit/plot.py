@@ -1,5 +1,5 @@
 
-from ncplot import ncplot
+from ncplot import view
 
 
 def plot(self, vars=None):
@@ -19,5 +19,5 @@ def plot(self, vars=None):
     if type(self.current) is list:
         raise TypeError("You cannot view multiple files!")
 
-    return ncplot(self.current, vars = vars)
+    return view(self.current, vars = vars)
 
