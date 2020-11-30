@@ -457,10 +457,15 @@ def run_this(os_command, self, output="one", out_file=None):
                 if self._zip and self._ncommands == 1:
                     zip_copy = True
 
+                format_it = False
                 if self._format is not None:
-                    ff_command = ff_command.replace("cdo ", f"cdo -f {self._format} ")
+                    format_it = True
+                    if self._ncommands == 1:
+                        ff_command = ff_command.replace("cdo ", f"cdo -f {self._format} copy ")
+                    else:
+                        ff_command = ff_command.replace("cdo ", f"cdo -f {self._format} ")
 
-                if self._zip and zip_copy:
+                if self._zip and zip_copy and format_it == False:
                     ff_command = ff_command.replace("cdo ", "cdo -z zip copy ")
                 else:
                     if self._zip:
@@ -489,6 +494,8 @@ def run_this(os_command, self, output="one", out_file=None):
             self._zip = False
 
             self._ncommands = 0
+
+            self._format = None
 
             return None
 
@@ -529,10 +536,16 @@ def run_this(os_command, self, output="one", out_file=None):
             if self._zip and self._ncommands == 1:
                 zip_copy = True
 
-            if self._format != None:
-                os_command = os_command.replace("cdo ", f"cdo -f {self._format} ")
+            format_it = False
 
-            if self._zip and zip_copy:
+            if self._format is not None:
+                format_it = True
+                if self._ncommands == 1:
+                    os_command = os_command.replace("cdo ", f"cdo -f {self._format} copy ")
+                else:
+                    os_command = os_command.replace("cdo ", f"cdo -f {self._format} ")
+
+            if self._zip and zip_copy and format_it == False:
                 os_command = os_command.replace("cdo ", "cdo -z zip copy ")
             else:
                 if self._zip:
@@ -557,3 +570,5 @@ def run_this(os_command, self, output="one", out_file=None):
 
             self._zip = False
             self._n_commands = 0
+
+            self._format = None
