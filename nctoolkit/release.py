@@ -14,7 +14,6 @@ def run(self):
     if (self._execute is False) and (
         len(self.history) > len(self._hold_history) or self._zip or self._format is not None
     ):
-        print("running")
         self._execute = True
 
         cdo_command = "cdo "
