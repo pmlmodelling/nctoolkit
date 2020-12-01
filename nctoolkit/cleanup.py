@@ -46,6 +46,9 @@ def cleanup():
 
     delete_these = [x for x in delete_these if os.path.exists(x)]
 
+    if len(delete_these) == 0:
+        return None
+
     for dd in delete_these:
         if os.path.exists(dd):
             nc_remove(dd)
