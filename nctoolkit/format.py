@@ -1,4 +1,5 @@
 from nctoolkit.runthis import run_this
+from nctoolkit.session import session_info
 
 
 def format(self, ext = None):
@@ -27,4 +28,10 @@ def format(self, ext = None):
 
 
     self._format = ext
+
+    if session_info["lazy"] == False:
+        self._execute = False
+        self.run()
+
+
 
