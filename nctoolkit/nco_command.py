@@ -19,6 +19,8 @@ def nco_command(self, command=None, ensemble=False):
         This is useful for ensemble methods.
     """
 
+    self.run()
+
     # First, check that the command is valid
     if command is None:
         raise ValueError("Please supply a command")
