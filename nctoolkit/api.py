@@ -262,7 +262,6 @@ def open_data(x=None, suppress_messages=False, checks=False, **kwargs):
                                     stop_time = min(60 * wait, stop_time)
                                 if file_stop is not None:
                                     stop_time = min(60 * file_stop, stop_time)
-                                print(stop_time)
                                 if stop_time != 10000000000000000000000000000000000:
                                     with time_limit(stop_time):
                                         urllib.request.urlretrieve(x, new_x)
