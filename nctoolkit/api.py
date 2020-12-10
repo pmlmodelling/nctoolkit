@@ -68,6 +68,7 @@ session_info["stamp"] = (
     "nctoolkit" + "".join(random.choice(letters) for i in range(8)) + "nctoolkit"
 )
 session_info["temp_dir"] = "/tmp/"
+session_info["user_dir"] = False
 session_info["thread_safe"] = False
 session_info["lazy"] = False
 session_info["precision"] = None
@@ -136,6 +137,7 @@ def options(**kwargs):
                     if os.path.exists(kwargs[key]) == False:
                         raise ("The temp_dir specified does not exist!")
                     session_info[key] = os.path.abspath(kwargs[key])
+                    session_info["user_dir"] = True
                 return None
 
             if key == "cores":
@@ -196,6 +198,7 @@ def open_data(x=None, suppress_messages=False, checks=False, **kwargs):
     checks: boolean
         Do you want basic checks to ensure cdo can read files?
     """
+    #from nctoolkit.temp_file import temp_file
 
     if type(x) is str:
         if x.endswith("*.nc"):
