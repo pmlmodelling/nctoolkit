@@ -516,7 +516,8 @@ def run_this(os_command, self, output="one", out_file=None):
                 all_sizes = 0
 
                 for ff in self:
-                    all_sizes += file_size(ff)
+                    if file_size(ff) is not None:
+                        all_sizes += file_size(ff)
 
                 result = os.statvfs("/tmp/")
                 result = result.f_frsize * result.f_bavail
