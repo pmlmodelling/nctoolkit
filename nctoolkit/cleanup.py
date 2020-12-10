@@ -54,16 +54,18 @@ def cleanup():
             nc_remove(dd)
 
     # only update the session size on linux
-    if platform.system() == "Linux":
-        result = os.statvfs("/tmp/")
-        result = result.f_frsize * result.f_bavail
-        if result > session_info["size"]:
-            if session_info["temp_dir"] == "/var/tmp/":
-                session_info["temp_dir"] = "/tmp/"
-        session_info["size"] = result
 
-        if session_info["size"] > (1.5 * session_info["latest_size"]):
-            session_info["temp_dir"] = "/tmp/"
+    if session_info["user_dir"] == False:
+        if platform.system() == "Linux":
+            result = os.statvfs("/tmp/")
+            result = result.f_frsize * result.f_bavail
+            if result > session_info["size"]:
+                if session_info["temp_dir"] == "/var/tmp/":
+                    session_info["temp_dir"] = "/tmp/"
+            session_info["size"] = result
+
+            if session_info["size"] > (1.5 * session_info["latest_size"]):
+                session_info["temp_dir"] = "/tmp/"
 
 
 def clean_all():
@@ -163,6 +165,9 @@ def disk_clean(self):
     """
     Method to make sure /tmp is not clogged up after running an operation
     """
+
+    if session_info["user_dir"]:
+        return None
 
     # only use this on linux
     if platform.system() == "Linux":
