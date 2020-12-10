@@ -204,11 +204,17 @@ def open_data(x=None, suppress_messages=False, checks=False, **kwargs):
     thredds = False
 
     ftp_details = None
+    wait = None
+    file_stop = None
     for key in kwargs:
         if key == "thredds":
             thredds = kwargs[key]
         if key == "ftp_details":
             ftp_details = kwargs[key]
+        if key == "wait":
+            wait = kwargs[key]
+        if key == "file_stop":
+            file_stop = kwargs[key]
 
     # make sure data has been supplied
     if x is None:
@@ -242,7 +248,42 @@ def open_data(x=None, suppress_messages=False, checks=False, **kwargs):
                         password = ftp_details["password"]
                         x = x.replace("ftp://", f"ftp://{user}:{password}@")
 
-                    urllib.request.urlretrieve(x, new_x)
+                    start = time.time()
+
+                    i = 0
+
+                    search = True
+                    while search:
+                        if os.path.exists(new_x) == False:
+                            try:
+                                # work out if there is a time limit for individual files
+                                stop_time = 10000000000000000000000000000000000
+                                if wait is not None:
+                                    stop_time = min(60 * wait, stop_time)
+                                if file_stop is not None:
+                                    stop_time = min(60 * file_stop, stop_time)
+                                print(stop_time)
+                                if stop_time != 10000000000000000000000000000000000:
+                                    with time_limit(stop_time):
+                                        urllib.request.urlretrieve(x, new_x)
+                                else:
+                                    urllib.request.urlretrieve(x, new_x)
+                            except:
+                                nothing = "x"
+                        search +=1
+                        if os.path.exists(new_x):
+                            break
+
+                        if wait is None:
+                            if search == 3:
+                                break
+                        else:
+                            end = time.time()
+                            if (end - start)/60 > wait:
+                                break
+                    if os.path.exists(new_x) == False:
+                        raise ValueError(f"Could not download {x}")
+
                     x = new_x
                 else:
                     with time_limit(20):
@@ -365,7 +406,7 @@ def open_thredds(x=None, checks=False):
     return open_data(x=x, thredds=True, checks=checks)
 
 
-def open_url(x=None, ftp_details=None):
+def open_url(x=None, ftp_details=None, wait=None, file_stop = None):
     """
     Read netcdf data from a url as a DataSet object
 
@@ -376,8 +417,27 @@ def open_url(x=None, ftp_details=None):
         a temp folder.
     ftp_details : dict
         A dictionary giving the user name and password combination for ftp downloads: {"user":user, "password":pass}
+    wait : int
+        Time to wait, in minutes, for data to download. A minimum of 3 attempts will be made to download the data.
+    file_stop : int
+        Time limit, in minutes, for individual attempts at downloading data. This is useful to get around download freezes.
 
     """
+
+    if wait is not None:
+        if type(wait) is not int:
+            raise TypeError("Please provide a valid wait!")
+
+        if wait <= 0:
+            raise TypeError("Please provide a valid wait!")
+
+    if file_stop is not None:
+        if type(file_stop) is not int:
+            raise TypeError("Please provide a valid file_stop!")
+
+        if file_stop <= 0:
+            raise TypeError("Please provide a valid file_stop!")
+
 
     if ftp_details is not None:
         if len(ftp_details) != 2:
@@ -389,7 +449,7 @@ def open_url(x=None, ftp_details=None):
     else:
         new_dict = None
 
-    return open_data(x=x, ftp_details=new_dict)
+    return open_data(x=x, ftp_details=new_dict, wait = wait, file_stop = file_stop)
 
 
 def merge(*datasets, match=["day", "year", "month"]):
@@ -998,7 +1058,7 @@ class DataSet(object):
     from nctoolkit.nco_command import nco_command
 
     from nctoolkit.phenology import phenology
-   # from nctoolkit.phenology import initiation
+    #from nctoolkit.phenology import initiation
 
     from nctoolkit.plot import plot
 
