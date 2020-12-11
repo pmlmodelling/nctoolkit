@@ -4,7 +4,7 @@ nc.options(lazy=True)
 import pandas as pd
 import xarray as xr
 import os, pytest
-import session
+import platform
 
 
 ff = "data/sst.mon.mean.nc"
@@ -13,7 +13,7 @@ ff = "data/sst.mon.mean.nc"
 
 class TestSession:
 
-    def test_userdir(self):
+    def test_userdirs(self):
 
         if platform.system() == "Linux":
             nc.options(temp_dir ="/var/tmp")
