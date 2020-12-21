@@ -26,6 +26,8 @@ def crop(self, lon=[-180, 180], lat=[-90, 90], nco=False, nco_vars = None):
     nco_vars: str or list
         If using NCO, the variables you want to select
     """
+    if nco:
+        self.run()
 
     if type(nco_vars) is str:
         nco_vars = [nco_vars]
@@ -68,7 +70,6 @@ def crop(self, lon=[-180, 180], lat=[-90, 90], nco=False, nco_vars = None):
         else:
             raise ValueError("The lonlat box supplied is not valid!")
 
-    self.run()
 
     new_files = []
     new_commands = []
