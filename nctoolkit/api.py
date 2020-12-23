@@ -1197,4 +1197,4 @@ class DataSet(object):
     from nctoolkit.deprecated import release
     from nctoolkit.deprecated import select_timestep
     from nctoolkit.deprecated import select_season
-    from nctoolkit.to_nc import write_nc
+    from nctoolkit.deprecated import write_nc
