@@ -34,25 +34,28 @@ import subprocess
 
 def validate_version():
 
-    version = cdo_version()
-    actual_version = version
-    if version is None:
-        print("Please install CDO version 1.9.3 or above: https://code.mpimet.mpg.de/projects/cdo/ or https://anaconda.org/conda-forge/cdo")
-    sub = "."
-    wanted = ""
-    n = 3
-    where = [m.start() for m in re.finditer(sub, version)][n - 1]
+    try:
+        version = cdo_version()
+        actual_version = version
+        if version is None:
+            print("Please install CDO version 1.9.3 or above: https://code.mpimet.mpg.de/projects/cdo/ or https://anaconda.org/conda-forge/cdo")
+        sub = "."
+        wanted = ""
+        n = 3
+        where = [m.start() for m in re.finditer(sub, version)][n - 1]
 
-    version = re.sub("[A-Za-z]", "", version)
+        version = re.sub("[A-Za-z]", "", version)
 
-    before = version[:where]
-    after = version[where:]
-    after = after.replace(sub, wanted)
-    newString = before + after
-    if float(newString) >= 1.93 == False:
-        print("Please install CDO version 1.9.3 or above: https://code.mpimet.mpg.de/projects/cdo/ or https://anaconda.org/conda-forge/cdo")
-    else:
-        print(f"nctoolkit is using CDO version {actual_version}")
+        before = version[:where]
+        after = version[where:]
+        after = after.replace(sub, wanted)
+        newString = before + after
+        if float(newString) >= 1.93 == False:
+            print("Please install CDO version 1.9.3 or above: https://code.mpimet.mpg.de/projects/cdo/ or https://anaconda.org/conda-forge/cdo")
+        else:
+            print(f"nctoolkit is using CDO version {actual_version}")
+    except:
+            print("Please install CDO version 1.9.3 or above: https://code.mpimet.mpg.de/projects/cdo/ or https://anaconda.org/conda-forge/cdo")
 
 
 
