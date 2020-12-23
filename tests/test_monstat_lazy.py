@@ -26,7 +26,19 @@ class TestMonst:
         n = len(nc.session_files())
         assert n == 1
 
-    def test_min(self):
+        tracker = nc.open_data(ff)
+        tracker.select_months(1)
+        tracker.monthly_sum()
+        tracker.select_timesteps(0)
+        tracker.spatial_mean()
+        x = tracker.to_dataframe().analysed_sst.values[0].astype("float")
+
+        assert x == 8777.9052734375
+        n = len(nc.session_files())
+        assert n == 1
+
+
+
         tracker = nc.open_data(ff)
         tracker.select_months(1)
         tracker.monthly_min()

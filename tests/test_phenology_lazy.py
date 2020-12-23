@@ -67,6 +67,12 @@ class TestPhenol:
         with pytest.raises(ValueError):
             data.phenology("sst", metric="this")
 
+        with pytest.raises(ValueError):
+            data.phenology("x", metric = "peak")
+
+        with pytest.raises(ValueError):
+            data.phenology(var = "x", metric = "peak")
+
         n = len(nc.session_files())
         assert n == 0
 

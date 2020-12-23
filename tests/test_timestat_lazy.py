@@ -42,6 +42,19 @@ class TestTimestat:
 
         assert x == y
 
+
+        tracker = nc.open_data(ff)
+        tracker.percentile(50)
+        x = tracker.to_dataframe().sst.values[0]
+        tracker = nc.open_data(ff)
+        tracker.median()
+        y = tracker.to_dataframe().sst.values[0]
+
+        assert x == y
+
+
+
+
     def test_sum(self):
         tracker = nc.open_data(ff)
         tracker.select_timesteps(0)
