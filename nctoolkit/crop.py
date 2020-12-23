@@ -79,8 +79,6 @@ def crop(self, lon=[-180, 180], lat=[-90, 90], nco=False, nco_vars = None):
         # find the names of lonlat
 
         if nco_vars is not None:
-            if type(nco_vars) is str:
-                nco_vars = str_flatten([nco_vars], ",")
 
             var_str = f" -v {str_flatten(nco_vars)}"
         else:
