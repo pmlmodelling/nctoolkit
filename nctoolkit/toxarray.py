@@ -54,8 +54,6 @@ def to_xarray(self, decode_times=True, cdo_times=False):
     if cdo_times is False:
         if type(self.current) is str:
             data = xr.open_dataset(self.current, decode_times=decode_times)
-        else:
-            data = xr.open_mfdataset(self.current, decode_times=decode_times)
         return data
 
     # If it does not, then we use cdo to pull out the times,
@@ -70,10 +68,6 @@ def to_xarray(self, decode_times=True, cdo_times=False):
 
         data = xr.open_dataset(self.current, decode_times=False)
         data = data.assign_coords(time=times)
-        return data
-
-    else:
-        data = xr.open_mfdataset(self.current, decode_times=decode_times)
         return data
 
 
