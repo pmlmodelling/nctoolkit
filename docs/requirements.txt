@@ -10,7 +10,7 @@ xarray
 hvplot
 netCDF4
 numpy
-ncplot
+#ncplot
 
 
 
