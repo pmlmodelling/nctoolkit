@@ -31,6 +31,17 @@ class TestZip:
         y = tracker.to_dataframe().sst.values[0]
         assert x == y
 
+        nc.options(lazy = False)
+        ff = "data/sst.mon.mean.nc"
+        tracker = nc.open_data(ff)
+        tracker.select_timesteps(0)
+        new = tracker.copy()
+        x = os.path.getsize(tracker.current)
+        tracker.zip()
+        y = os.path.getsize(tracker.current)
+        assert 0.8 * x > y
+        nc.options(lazy = True)
+
     def test_zip2(self):
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)

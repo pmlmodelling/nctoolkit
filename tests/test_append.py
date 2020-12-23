@@ -48,3 +48,14 @@ class TestAppend:
         new.append(ff)
 
         assert new.current == [ff1, ff2, ff]
+
+        new = nc.open_data([ff1, ff2])
+
+        data = nc.open_data(ff)
+        new.append(data)
+
+        assert new.current == [ff1, ff2, ff]
+
+
+
+

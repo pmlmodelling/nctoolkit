@@ -25,6 +25,27 @@ class TestAddetc:
         n = len(nc.session_files())
         assert n == 1
 
+    def test_add_safe(self):
+        nc.options(lazy = False)
+        tracker = nc.open_data(ff)
+        tracker.select_years(list(range(1970, 1971)))
+        tracker.select_months([1])
+        tracker.run()
+        new = tracker.copy()
+        tracker.multiply(2)
+        tracker.spatial_mean()
+        new.add(new)
+        new.spatial_mean()
+
+        x = tracker.to_dataframe().sst.values[0]
+        y = new.to_dataframe().sst.values[0]
+
+        assert x  == y
+
+        n = len(nc.session_files())
+        assert n == 2
+        nc.options(lazy = True)
+
     def test_add(self):
         tracker = nc.open_data(ff)
         tracker.select_years(list(range(1970, 1971)))

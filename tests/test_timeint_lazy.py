@@ -112,7 +112,14 @@ class TestTimeint:
         tracker = nc.open_data("data/2003.nc")
         x = len(tracker.times)
 
+        with pytest.raises(ValueError):
+            tracker.timestep_interp(1)
+
+        with pytest.raises(TypeError):
+            tracker.timestep_interp("x")
+
         tracker.timestep_interp(2)
+
         tracker.run()
 
         y = len(tracker.times)

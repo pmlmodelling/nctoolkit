@@ -32,9 +32,26 @@ class TestSelect:
 
         assert n == 1
 
+        tracker = nc.open_data(ff)
+        tracker.select(season = "DJF")
+        tracker.run()
+        x = tracker.months
+        assert x == [1, 2, 12]
+        n = len(nc.session_files())
+
+        assert n == 1
+
     def test_months(self):
         tracker = nc.open_data(ff)
         tracker.select_months(1)
+        tracker.run()
+        x = tracker.months
+        assert x == [1]
+        n = len(nc.session_files())
+        assert n == 1
+
+        tracker = nc.open_data(ff)
+        tracker.select(month = 1)
         tracker.run()
         x = tracker.months
         assert x == [1]
@@ -69,6 +86,18 @@ class TestSelect:
         assert x == [1990]
         n = len(nc.session_files())
         assert n == 1
+
+        tracker = nc.open_data(ff)
+        tracker.split("year")
+        tracker.select(year = 1990)
+        tracker.run()
+        x = tracker.years
+        assert x == [1990]
+        n = len(nc.session_files())
+        assert n == 1
+
+
+
 
     def test_years1(self):
         tracker = nc.open_data(ff)
@@ -108,6 +137,16 @@ class TestSelect:
         n = len(nc.session_files())
         assert n == 1
 
+        tracker = nc.open_data(ff)
+        tracker.select(time = 0)
+        tracker.run()
+        x = tracker.years
+        assert x == [1970]
+        n = len(nc.session_files())
+        assert n == 1
+
+
+
     def test_timestepx23(self):
         tracker = nc.open_data(ff)
         tracker.select_timestep(0)
@@ -141,6 +180,9 @@ class TestSelect:
         tracker = nc.open_data(ff)
         with pytest.raises(ValueError):
             tracker.select_months(0)
+
+        with pytest.raises(AttributeError):
+            tracker.select(problem = 0)
 
         with pytest.raises(TypeError):
             tracker.select_seasons(0)
@@ -207,6 +249,18 @@ class TestSelect:
         assert x == ["sst", "tos"]
         n = len(nc.session_files())
         assert n == 1
+
+        tracker = nc.open_data(ff)
+        tracker.mutate({"tos": "sst+1"})
+        tracker.mutate({"tos1": "sst+1"})
+        tracker.select(var = ["tos", "sst"])
+        tracker.run()
+        x = tracker.variables
+        assert x == ["sst", "tos"]
+        n = len(nc.session_files())
+        assert n == 1
+
+
 
     def test_ensemble(self):
         tracker = nc.open_data(ff)

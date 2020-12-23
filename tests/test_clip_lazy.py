@@ -7,13 +7,15 @@ nc.options(lazy=True)
 
 
 ff = "data/sst.mon.mean.nc"
+ff1 = "data/woa18_decav_t01_01.nc"
 
 
-class TestClip:
-    def test_clip(self):
+
+class TestCrop:
+    def test_crop(self):
         tracker = nc.open_data(ff)
         with pytest.raises(ValueError):
-            tracker.clip(lon=[-390, 100])
+            tracker.crop(lon=[-390, 100])
         n = len(nc.session_files())
         assert n == 0
 
@@ -21,106 +23,114 @@ class TestClip:
         n = len(nc.session_files())
         assert n == 0
 
-    def test_clip1(self):
+    def test_crop1(self):
         tracker = nc.open_data(ff)
         with pytest.raises(ValueError):
-            tracker.clip(lat=[-390, 100])
+            tracker.crop(lat=[-390, 100])
         n = len(nc.session_files())
         assert n == 0
 
-    def test_clip2(self):
+    def test_crop2(self):
         tracker = nc.open_data(ff)
         with pytest.raises(ValueError):
-            tracker.clip(lat=[-390, 100, 1])
+            tracker.crop(lat=[-390, 100, 1])
         n = len(nc.session_files())
         assert n == 0
 
-    def test_clip3(self):
+    def test_crop3(self):
         tracker = nc.open_data(ff)
 
         with pytest.raises(ValueError):
-            tracker.clip(lat=[0, -10])
+            tracker.crop(lat=[0, -10])
         n = len(nc.session_files())
         assert n == 0
 
-    def test_clip4(self):
+    def test_crop4(self):
         tracker = nc.open_data(ff)
         with pytest.raises(ValueError):
-            tracker.clip(lon=[0, -10])
+            tracker.crop(lon=[0, -10])
         n = len(nc.session_files())
         assert n == 0
 
-    def test_clipr5(self):
+    def test_cropr5(self):
         tracker = nc.open_data(ff)
         with pytest.raises(ValueError):
-            tracker.clip(lon=[-390, 100, 1])
+            tracker.crop(lon=[-390, 100, 1])
         n = len(nc.session_files())
         assert n == 0
 
-    def test_clip6(self):
+    def test_crop6(self):
         tracker = nc.open_data(ff)
         with pytest.raises(TypeError):
-            tracker.clip(lon=1)
+            tracker.crop(lon=1)
         n = len(nc.session_files())
         assert n == 0
 
-    def test_clip7(self):
+    def test_crop7(self):
         tracker = nc.open_data(ff)
         with pytest.raises(TypeError):
-            tracker.clip(lat=1)
+            tracker.crop(lat=1)
         n = len(nc.session_files())
         assert n == 0
 
-    def test_clip8(self):
+    def test_crop8(self):
         tracker = nc.open_data(ff)
         with pytest.raises(TypeError):
-            tracker.clip(lat="1")
+            tracker.crop(lat="1")
         n = len(nc.session_files())
         assert n == 0
 
-    def test_clip9(self):
+    def test_crop9(self):
         tracker = nc.open_data(ff)
         with pytest.raises(TypeError):
-            tracker.clip(lat="2")
+            tracker.crop(lat="2")
         n = len(nc.session_files())
         assert n == 0
 
-    def test_clip10(self):
+    def test_crop10(self):
         tracker = nc.open_data(ff)
         with pytest.raises(TypeError):
-            tracker.clip(lat=["a", 1])
+            tracker.crop(lat=["a", 1])
         n = len(nc.session_files())
         assert n == 0
 
-    def test_clip11(self):
+    def test_crop11(self):
         tracker = nc.open_data(ff)
         with pytest.raises(TypeError):
-            tracker.clip(lat=[2, "b"])
+            tracker.crop(lat=[2, "b"])
         n = len(nc.session_files())
         assert n == 0
 
-    def test_clip12(self):
+    def test_crop12(self):
         tracker = nc.open_data(ff)
         with pytest.raises(TypeError):
-            tracker.clip(lon=["a", 1])
+            tracker.crop(lon=["a", 1])
         n = len(nc.session_files())
         assert n == 0
 
-    def test_clip13(self):
+    def test_crop13(self):
         tracker = nc.open_data(ff)
         with pytest.raises(TypeError):
-            tracker.clip(lon=[2, "b"])
+            tracker.crop(lon=[2, "b"])
         n = len(nc.session_files())
         assert n == 0
+
+    def test_nco_vars(self):
+        tracker = nc.open_data(ff1)
+        tracker.crop(lat=[0, 90], nco=True, nco_vars = "t_an")
+        assert tracker.variables == ["t_an"]
+
+
+
 
     def test_nco(self):
         tracker = nc.open_data(ff)
-        tracker.clip(lat=[0, 90], nco=True)
+        tracker.crop(lat=[0, 90], nco=True)
         tracker.select_timesteps(0)
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0].astype("float")
         tracker = nc.open_data(ff)
-        tracker.clip(lat=[0, 90], nco=False)
+        tracker.crop(lat=[0, 90], nco=False)
         tracker.select_timesteps(0)
         tracker.spatial_mean()
         y = tracker.to_dataframe().sst.values[0].astype("float")
@@ -131,12 +141,12 @@ class TestClip:
 
     def test_nco2(self):
         tracker = nc.open_data(ff)
-        tracker.clip(lon=[0, 90], nco=True)
+        tracker.crop(lon=[0, 90], nco=True)
         tracker.select_timesteps(0)
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0].astype("float")
         tracker = nc.open_data(ff)
-        tracker.clip(lon=[0, 90], nco=False)
+        tracker.crop(lon=[0, 90], nco=False)
         tracker.select_timesteps(0)
         tracker.spatial_mean()
         y = tracker.to_dataframe().sst.values[0].astype("float")
@@ -147,14 +157,14 @@ class TestClip:
 
     def test_nco3(self):
         tracker = nc.open_data(ff)
-        tracker.clip(lon=[0, 90], nco=True)
+        tracker.crop(lon=[0, 90], nco=True)
         tracker.select_timesteps(0)
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0].astype("float")
         tracker = nc.open_data(ff)
         tracker.select_timesteps([0, 1])
         tracker.split("yearmonth")
-        tracker.clip(lon=[0, 90], nco=False)
+        tracker.crop(lon=[0, 90], nco=False)
         tracker.merge_time()
         tracker.select_timesteps(0)
         tracker.spatial_mean()
