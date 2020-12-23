@@ -110,6 +110,8 @@ def shift(self, **kwargs):
         months maps to shift_months
         years maps to shift_years
 
+        Note: this uses partial matches. So hour, day, month, year will also work.
+
     """
 
     valid_keys = ["days", "hours", "months", "years"]
@@ -118,14 +120,14 @@ def shift(self, **kwargs):
         if key not in valid_keys:
             raise AttributeError(f"{key} is not a valid shifting method")
 
-        if key == "days":
+        if "day" in key:
             self.shift_days(kwargs[key])
 
-        if key == "hours":
+        if "hour" in key:
             self.shift_hours(kwargs[key])
 
-        if key == "months":
+        if "mon" in key:
             self.shift_months(kwargs[key])
 
-        if key == "years":
+        if "year" in key:
             self.shift_years(kwargs[key])
