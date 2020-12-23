@@ -104,9 +104,6 @@ def phenology(self, var=None, metric=None, p=None):
 
         for ff in self:
 
-            if len(nc_years(ff)) > 1:
-                raise ValueError("This can only work with single year data currently")
-
             target = temp_file(".nc")
             command = f"cdo -timmin -setrtomiss,-10000,0 -expr,"\
                       f"'{metric}=var*ctimestep()' -gt -timcumsum -chname,{var},var "\
@@ -128,7 +125,6 @@ def phenology(self, var=None, metric=None, p=None):
 
         return None
 
-    raise ValueError("You have not supplied a valid metric")
 
 
 
