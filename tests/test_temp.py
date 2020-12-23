@@ -14,5 +14,5 @@ ff = "data/sst.mon.mean.nc"
 
 class TestTemp:
     def test_temp(self):
-        with pytest.raises(ValueError):
+        with pytest.raises(TypeError):
             nc.temp_file.temp_file(1)
