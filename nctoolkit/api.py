@@ -235,6 +235,11 @@ def open_data(x=None, suppress_messages=False, checks=False, **kwargs):
             x = x[0]
 
     # check the files provided exist
+    stop_time = 10000000000000000000000000000000000
+    if wait is not None:
+        stop_time = min(wait, stop_time)
+    if file_stop is not None:
+        stop_time = min(file_stop, stop_time)
 
     if type(x) is str:
         if os.path.exists(x) is False:
@@ -260,11 +265,6 @@ def open_data(x=None, suppress_messages=False, checks=False, **kwargs):
                         if os.path.exists(new_x) == False:
                             try:
                                 # work out if there is a time limit for individual files
-                                stop_time = 10000000000000000000000000000000000
-                                if wait is not None:
-                                    stop_time = min(60 * wait, stop_time)
-                                if file_stop is not None:
-                                    stop_time = min(60 * file_stop, stop_time)
                                 if stop_time != 10000000000000000000000000000000000:
                                     with time_limit(stop_time):
                                         urllib.request.urlretrieve(x, new_x)
@@ -281,22 +281,37 @@ def open_data(x=None, suppress_messages=False, checks=False, **kwargs):
                                 break
                         else:
                             end = time.time()
-                            if (end - start)/60 > wait:
+                            if (end - start) > wait:
                                 break
                     if os.path.exists(new_x) == False:
                         raise ValueError(f"Could not download {x}")
 
                     x = new_x
                 else:
-                    with time_limit(20):
-                        out = subprocess.run(
-                            "cdo sinfo " + x,
-                            shell=True,
-                            stdout=subprocess.PIPE,
-                            stderr=subprocess.PIPE,
-                        )
-                        if "Open failed" in str(out.stderr):
-                            raise ValueError(f"{x} is not compatible with CDO!")
+
+                    if checks:
+                        if wait is not None:
+                            with time_limit(stop_time):
+                                out = subprocess.run(
+                                    "cdo sinfo " + x,
+                                    shell=True,
+                                    stdout=subprocess.PIPE,
+                                    stderr=subprocess.PIPE,
+                                )
+                                if "Open failed" in str(out.stderr):
+                                    raise ValueError(f"{x} is not compatible with CDO!")
+                        else:
+                            out = subprocess.run(
+                                "cdo sinfo " + x,
+                                shell=True,
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE,
+                            )
+                            if "Open failed" in str(out.stderr):
+                                raise ValueError(f"{x} is not compatible with CDO!")
+
+
+
 
             else:
                 raise ValueError("Data set " + x + " does not exist!")
@@ -389,7 +404,7 @@ def open_data(x=None, suppress_messages=False, checks=False, **kwargs):
     return d
 
 
-def open_thredds(x=None, checks=False):
+def open_thredds(x=None, wait=None, checks = False):
     """
     Read thredds data as a DataSet object
 
@@ -397,15 +412,30 @@ def open_thredds(x=None, checks=False):
     ---------------
     x : str or list
         A string or list of thredds urls, which must end with .nc.
+    checks : boolean
+        Do you want to check if data is available over thredds?
+    wait : int
+        Time to wait for thredds server to be checked. Limitless if not supplied.
 
     """
+
+    if type(checks) is not bool:
+        raise TypeError("Please provide boolean for checks")
+
+    if wait is not None:
+        if type(wait) is not int and float:
+            raise TypeError("Please provide an integer for wait!")
+        if wait <= 0:
+            raise ValueError("Please provide a positive value for wait!")
+
 
     if session_info["cores"] > 1:
         warnings.warn(
             message="Using multiple cores on thredds data is volatile. It has therefore been reset to 1."
         )
         session_info["cores"] = 1
-    return open_data(x=x, thredds=True, checks=checks)
+
+    return open_data(x=x, thredds=True, wait=wait, checks = checks)
 
 
 def open_url(x=None, ftp_details=None, wait=None, file_stop = None):
@@ -420,7 +450,7 @@ def open_url(x=None, ftp_details=None, wait=None, file_stop = None):
     ftp_details : dict
         A dictionary giving the user name and password combination for ftp downloads: {"user":user, "password":pass}
     wait : int
-        Time to wait, in minutes, for data to download. A minimum of 3 attempts will be made to download the data.
+        Time to wait, in seconds, for data to download. A minimum of 3 attempts will be made to download the data.
     file_stop : int
         Time limit, in minutes, for individual attempts at downloading data. This is useful to get around download freezes.
 
