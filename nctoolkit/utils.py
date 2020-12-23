@@ -50,7 +50,7 @@ def validate_version():
     after = after.replace(sub, wanted)
     newString = before + after
     if float(newString) >= 1.93 == False:
-        raise ValueError ("Please install CDO version 1.9.3 or above: https://code.mpimet.mpg.de/projects/cdo/ or https://anaconda.org/conda-forge/cdo")
+        print("Please install CDO version 1.9.3 or above: https://code.mpimet.mpg.de/projects/cdo/ or https://anaconda.org/conda-forge/cdo")
     else:
         print(f"nctoolkit is using CDO version {actual_version}")
 
