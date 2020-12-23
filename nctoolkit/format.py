@@ -21,7 +21,7 @@ def format(self, ext = None):
         raise ValueError("Please supply a format type")
 
     if type(ext) is not str:
-        raise ValueError("Please supply a valid format type")
+        raise TypeError("Please supply a valid format type")
 
     if ext not in ["nc", "nc1", "nc2", "nc4", "nc4c", "nc5"]:
         raise ValueError(f"{ext} is not a valid format!")
