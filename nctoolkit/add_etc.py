@@ -114,9 +114,6 @@ def operation(self, method="mul", ff=None, var=None):
 
         self.current = new_files
         self._hold_history = copy.deepcopy(self.history)
-        for rr in self._safe:
-            nc_safe.remove(ff)
-        self._safe = []
         cleanup()
 
     # update history if lazy
@@ -125,6 +122,8 @@ def operation(self, method="mul", ff=None, var=None):
             self.history[-1] = cdo_command
         else:
             self.history.append(cdo_command)
+
+    # remove anything from self._safe if it was ever set up
 
     cleanup()
 
