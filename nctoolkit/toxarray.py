@@ -48,6 +48,9 @@ def to_xarray(self, decode_times=True, cdo_times=False):
 
     # if it does, then just open the data in xarray
 
+    if cdo_times == True and len(self) > 1:
+        raise ValueError("xarray cannot decode times. Set decode_times to False")
+
     if cdo_times is False:
         if type(self.current) is str:
             data = xr.open_dataset(self.current, decode_times=decode_times)
