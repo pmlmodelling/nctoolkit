@@ -256,3 +256,54 @@ def select_season(self, season=None):
 
     cdo_command = f"cdo -select,season={season}"
     run_this(cdo_command, self, output="ensemble")
+
+def write_nc(self, out, zip=True, overwrite=False):
+    """
+    Save a dataset to a named file
+    This will only work with single file datasets.
+
+    Parameters
+    -------------
+    out : str
+        Output file name.
+    zip : boolean
+        True/False depending on whether you want to zip the file. Default is True.
+    overwrite : boolean
+        If out file exists, do you want to overwrite it? Default is False.
+    """
+
+    warnings.warn(message = "write_nc has been deprecated. Please use to_nc")
+
+    # If the output file exists, cdo cannot simultaneously have it opened and written to
+    if (os.path.exists(out)) and (overwrite is True):
+        self.run()
+
+    if type(self.current) is list:
+        ff = copy.deepcopy(self.current)
+    else:
+        ff = [copy.deepcopy(self.current)]
+
+    # Figure out if it is possible to write the file, i.e. if a dataset is still an
+    # ensemble, you cannot write.
+    write = False
+
+    if type(self.current) is str:
+        write = True
+
+    if self._merged:
+        write = True
+
+    if write is False:
+        raise ValueError("You cannot save multiple files!")
+
+    # Check if outfile exists and overwrite is set to False
+    # This should maybe be a warning, not an error
+    if (os.path.exists(out)) and (overwrite is False):
+        raise ValueError("The out file exists and overwrite is set to false")
+
+    if len(self.history) == len(self._hold_history):
+        if zip:
+            cdo_command = f"cdo -z zip_9 copy {ff[0]} {out}"
+            run_cdo(cdo_command, target=out, overwrite=overwrite)
+
+            self.history.append(cdo_command)
