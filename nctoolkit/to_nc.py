@@ -21,8 +21,8 @@ def to_nc(self, out, zip=True, overwrite=False):
         If out file exists, do you want to overwrite it? Default is False.
     """
 
-    # If the output file exists, cdo cannot simultaneously have it opened and written to
-    if (os.path.exists(out)) and (overwrite is True):
+    # If you are trying to overwrite a file in self.current, cdo cannot simultaneously have it opened and written to
+    if out in self and (overwrite is True):
         self.run()
 
     if type(self.current) is list:
