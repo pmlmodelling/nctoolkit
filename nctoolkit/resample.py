@@ -1,7 +1,7 @@
 from nctoolkit.runthis import run_this
 
 
-def resample_grid(self, factor = 1):
+def resample_grid(self, factor = None):
     """
     Resample the horizontal grid of a dataset
 
@@ -11,9 +11,11 @@ def resample_grid(self, factor = 1):
         The resampling factor. Must be a positive integer. No interpolation occurs.
         Example: factor of 2 will sample every other grid cell
     """
+    if factor is None:
+        raise ValueError("Please provide a resampling factor")
 
     if type(factor) is not int:
-        raise ValueError(f"{factor} is not an integer")
+        raise TypeError(f"{factor} is not an integer")
 
     if factor < 1:
         raise ValueError(f"{factor} is not a postive integer greater than 1")
