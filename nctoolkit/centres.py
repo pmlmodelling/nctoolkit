@@ -5,14 +5,19 @@ import subprocess
 
 def centre(self, by ="latitude", by_area = False):
     """
-    Calculate the zonal mean for each year/month combination in files.
+    Calculate the latitudinal or longitudinal centre for each year/month combination in files.
     This applies to each file in an ensemble.
+    by : str
+        Set to 'latitude' if you want the latitiduinal centre calculated. 'longitude' for longitudinal.
+    by_area : bool
+        If the variable is a value/m2 type variable, set to True, otherwise set to False.
     """
 
     if by not in ["longitude", "latitude"]:
         raise ValueError("by is not valid. Please check!")
+
     if type(by_area) is not bool:
-        raise ValueError("by_area is not boolean. Please check!")
+        raise TypeError("by_area is not boolean. Please check!")
 
     self.run()
 
