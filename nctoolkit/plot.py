@@ -1,8 +1,8 @@
 
-from ncplot import view
 
 
 def plot(self, vars=None):
+    from ncplot import view
 
     """
     Autoplotting method.
