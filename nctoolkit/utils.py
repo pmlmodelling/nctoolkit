@@ -37,7 +37,7 @@ def validate_version():
     version = cdo_version()
     actual_version = version
     if version is None:
-        raise ValueError ("Please install CDO version 1.9.3 or above: https://code.mpimet.mpg.de/projects/cdo/ or https://anaconda.org/conda-forge/cdo")
+        print("Please install CDO version 1.9.3 or above: https://code.mpimet.mpg.de/projects/cdo/ or https://anaconda.org/conda-forge/cdo")
     sub = "."
     wanted = ""
     n = 3
