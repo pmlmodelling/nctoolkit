@@ -1150,7 +1150,6 @@ class DataSet(object):
     from nctoolkit.time_stat import median
     from nctoolkit.time_stat import min
     from nctoolkit.time_stat import range
-    from nctoolkit.time_stat import var
     from nctoolkit.time_stat import variance
     from nctoolkit.time_stat import stdev
     from nctoolkit.time_stat import sum
@@ -1198,3 +1197,4 @@ class DataSet(object):
     from nctoolkit.deprecated import select_timestep
     from nctoolkit.deprecated import select_season
     from nctoolkit.deprecated import write_nc
+    from nctoolkit.deprecated import var

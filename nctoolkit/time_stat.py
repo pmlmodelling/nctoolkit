@@ -55,12 +55,6 @@ def range(self):
     time_stat(self, stat="range")
 
 
-def var(self):
-    """
-    Calculate the temporal variance of all variables
-    """
-    warnings.warn(message = "var is now deprecated. Please use variance!")
-    time_stat(self, stat="var")
 
 def variance(self):
     """

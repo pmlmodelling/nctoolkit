@@ -307,3 +307,10 @@ def write_nc(self, out, zip=True, overwrite=False):
             run_cdo(cdo_command, target=out, overwrite=overwrite)
 
             self.history.append(cdo_command)
+
+def var(self):
+    """
+    Calculate the temporal variance of all variables
+    """
+    warnings.warn(message = "var is now deprecated. Please use variance!")
+    time_stat(self, stat="var")
