@@ -231,25 +231,35 @@ def select(self, **kwargs):
         seasons maps to select_seasons
         timesteps maps to select_timesteps
 
+        Note: this uses partial matches. So year, month, var etc. will also work
+
     """
 
-    valid_keys = ["variables", "timesteps", "seasons", "months", "years"]
+    non_selected = True
 
     for key in kwargs:
-        if key not in valid_keys:
-            raise AttributeError(f"{key} is not a valid select method")
 
-        if key == "variables":
+        if "var" in key:
             self.select_variables(kwargs[key])
+            non_selected = False
 
-        if key == "months":
+        if "mon" in  key:
             self.select_months(kwargs[key])
+            non_selected = False
 
-        if key == "years":
+        if "year" in key:
             self.select_years(kwargs[key])
+            non_selected = False
 
-        if key == "seasons":
+        if "seas" in key:
             self.select_seasons(kwargs[key])
+            non_selected = False
 
-        if key == "timesteps":
+        if "time" in key:
             self.select_timesteps(kwargs[key])
+            non_selected = False
+
+    if non_selected:
+        raise AttributeError(f"{key} is not a valid select method")
+
+
