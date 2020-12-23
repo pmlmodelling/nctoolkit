@@ -135,7 +135,7 @@ def options(**kwargs):
             if key == "temp_dir":
                 if type(kwargs[key]) is str:
                     if os.path.exists(kwargs[key]) == False:
-                        raise ("The temp_dir specified does not exist!")
+                        raise ValueError("The temp_dir specified does not exist!")
                     session_info[key] = os.path.abspath(kwargs[key])
                     session_info["user_dir"] = True
                 return None
