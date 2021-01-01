@@ -20,6 +20,18 @@ class TestTimestat:
             tracker.percentile(p="x")
 
         with pytest.raises(ValueError):
+            tracker.mean("x")
+        with pytest.raises(ValueError):
+            tracker.mean(["month", "season"])
+
+        with pytest.raises(ValueError):
+            tracker.percentile(p = 50, by = ["month", "season"])
+
+        with pytest.raises(ValueError):
+            tracker.percentile(p = 50, by = "x")
+
+
+        with pytest.raises(ValueError):
             tracker.percentile()
 
         with pytest.raises(ValueError):
