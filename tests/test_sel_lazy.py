@@ -149,7 +149,7 @@ class TestSelect:
 
     def test_timestepx23(self):
         tracker = nc.open_data(ff)
-        tracker.select_timestep(0)
+        tracker.select_timesteps(0)
         tracker.run()
         x = tracker.years
         assert x == [1970]
@@ -168,7 +168,7 @@ class TestSelect:
 
     def test_timestep02(self):
         tracker = nc.open_data(ff)
-        tracker.select_timestep(range(0, 13))
+        tracker.select_timesteps(range(0, 13))
         tracker.run()
         x = tracker.years
         assert x == [1970, 1971]
