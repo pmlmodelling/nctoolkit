@@ -219,21 +219,44 @@ def select_timesteps(self, times=None):
 
 def select(self, **kwargs):
     """
-    Select method. A wrapper for select_months, select_years, select_timesteps
-    and select_seasons
+    A method for subsetting datasets to specific variables, years, longitudes etc.
     Operations are applied in the order supplied.
 
     Parameters
     -------------
     *kwargs
-        variables maps to select_variables
-        years maps to select_years
-        months maps to select_months
-        seasons maps to select_seasons
-        timesteps maps to select_timesteps
-        lon,lat maps to crop
+        Possible arguments: variables, years, months, seasons, timesteps, lon, lat
 
         Note: this uses partial matches. So year, month, var etc. will also work
+
+
+    Each kwarg works as follows:
+
+    variables : str or list
+        A variable or list of variables to select
+    seasons : str
+        Seasons to select. One of "DJF", "MAM", "JJA", "SON".
+    months : list, range or int
+        Month(s) to select.
+    years : list,range or int
+        Years(s) to select. These should be integers
+
+    timesteps : list or int
+        time step(s) to select. For example, if you wanted the first time step
+        set times=0.
+
+    lon : list
+        A list [lon_min, lon_max] giving the maximum and minimum latitude required.
+
+    lat : list
+        A list [lat_min, lat_max] giving the maximum and minimum latitude required.
+
+
+    A usage example is the following:
+
+    data.select(variables = "var")
+
+
 
     """
 
