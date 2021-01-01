@@ -1174,7 +1174,6 @@ class DataSet(object):
     from nctoolkit.verticals import bottom_mask
     from nctoolkit.verticals import invert_levels
 
-    from nctoolkit.view import view
 
     from nctoolkit.yearlystat import annual_mean
     from nctoolkit.yearlystat import annual_min
@@ -1200,3 +1199,4 @@ class DataSet(object):
     from nctoolkit.deprecated import var
     from nctoolkit.deprecated import cum_sum
     from nctoolkit.deprecated import vertical_cum_sum
+    from nctoolkit.deprecated import view

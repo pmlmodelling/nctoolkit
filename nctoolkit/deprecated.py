@@ -332,3 +332,15 @@ def vertical_cum_sum(self):
     """
     warnings.warn(message = "vertical_cum_sum is now deprecated. Please use vertical_cumsum!")
     vertstat(self, stat="cum")
+
+def view(self):
+    """
+    Open the current dataset's file in ncview
+    """
+    warnings.warn(message = "view is now deprecated. Use plot instead!")
+    self.run()
+
+    if type(self.current) is str:
+        os.system("ncview " + self.current + "&")
+    else:
+        print("You cannot send multiple files to ncview!")
