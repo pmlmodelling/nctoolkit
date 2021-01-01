@@ -326,7 +326,7 @@ class TestCalls:
         assert data.history[0] == "cdo -timstd"
 
         data = nc.open_data(ff)
-        data.cum_sum()
+        data.cumsum()
         assert data.history[0] == "cdo -timcumsum"
 
         data = nc.open_data(ff)
@@ -505,7 +505,7 @@ class TestCalls:
         assert data.history[0] == "cdo -vertsum"
 
         data = nc.open_data(ff1)
-        data.vertical_cum_sum()
+        data.vertical_cumsum()
         assert data.history[0] == "cdo -vertcum"
 
         data = nc.open_data(ff1)

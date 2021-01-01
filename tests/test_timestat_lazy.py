@@ -83,11 +83,11 @@ class TestTimestat:
 
         assert x == 3.3688883781433105
 
-    def test_cum_sum(self):
+    def test_cumsum(self):
         tracker = nc.open_data(ff)
         tracker.select_timesteps(range(0, 12))
 
-        tracker.cum_sum()
+        tracker.cumsum()
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0].astype("float")
 
