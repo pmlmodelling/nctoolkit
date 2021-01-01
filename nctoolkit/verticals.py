@@ -128,7 +128,7 @@ def vertical_sum(self):
     vertstat(self, stat="sum")
 
 
-def vertical_cum_sum(self):
+def vertical_cumsum(self):
     """
     Calculate the vertical sum of variable values
     This is calculated for each time step and grid cell

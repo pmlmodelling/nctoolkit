@@ -7,6 +7,8 @@ from nctoolkit.flatten import str_flatten
 from nctoolkit.runthis import run_this, run_nco, tidy_command
 from nctoolkit.temp_file import temp_file
 from nctoolkit.session import nc_safe
+from nctoolkit.time_stat import *
+from nctoolkit.verticals import *
 import warnings
 
 
@@ -314,3 +316,19 @@ def var(self):
     """
     warnings.warn(message = "var is now deprecated. Please use variance!")
     time_stat(self, stat="var")
+
+def cum_sum(self):
+    """
+    Calculate the temporal cumulative sum of all variables
+    """
+    # create cdo command and runit
+    warnings.warn(message = "cum_sum is now deprecated. Please use cumsum!")
+    time_stat(self, stat="cumsum")
+
+def vertical_cum_sum(self):
+    """
+    Calculate the vertical sum of variable values
+    This is calculated for each time step and grid cell
+    """
+    warnings.warn(message = "vertical_cum_sum is now deprecated. Please use vertical_cumsum!")
+    vertstat(self, stat="cum")

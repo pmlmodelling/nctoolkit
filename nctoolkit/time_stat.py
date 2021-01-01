@@ -137,7 +137,7 @@ def stdev(self, by = "time"):
     time_stat(self, stat="std", by = by)
 
 
-def cum_sum(self):
+def cumsum(self):
     """
     Calculate the temporal cumulative sum of all variables
     """

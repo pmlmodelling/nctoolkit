@@ -1153,7 +1153,7 @@ class DataSet(object):
     from nctoolkit.time_stat import variance
     from nctoolkit.time_stat import stdev
     from nctoolkit.time_stat import sum
-    from nctoolkit.time_stat import cum_sum
+    from nctoolkit.time_stat import cumsum
 
     from nctoolkit.to_lonlat import to_latlon
 
@@ -1167,7 +1167,7 @@ class DataSet(object):
     from nctoolkit.verticals import vertical_max
     from nctoolkit.verticals import vertical_range
     from nctoolkit.verticals import vertical_sum
-    from nctoolkit.verticals import vertical_cum_sum
+    from nctoolkit.verticals import vertical_cumsum
     from nctoolkit.verticals import surface
     from nctoolkit.verticals import vertical_interp
     from nctoolkit.verticals import bottom
@@ -1198,3 +1198,5 @@ class DataSet(object):
     from nctoolkit.deprecated import select_season
     from nctoolkit.deprecated import write_nc
     from nctoolkit.deprecated import var
+    from nctoolkit.deprecated import cum_sum
+    from nctoolkit.deprecated import vertical_cum_sum
