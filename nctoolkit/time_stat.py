@@ -17,8 +17,6 @@ def time_stat(self, stat="mean", by = "time"):
 
     if stat not in ["mean", "sum", "min", "max", "range", "var", "cumsum", "std"]:
         raise ValueError(f"{stat} is not a valid CDO stat!")
-    if by is None:
-        raise ValueError("Please supply a grouping!")
 
     if type(by) is str:
         by = [by]
@@ -78,7 +76,6 @@ def time_stat(self, stat="mean", by = "time"):
         monstat(self, stat = stat)
         return None
 
-    raise ValueError("No averaging method!")
 
 
 
@@ -166,8 +163,6 @@ def percentile(self, p=None, by = "time"):
     self.run()
 
     # create cdo command and run it
-    if by is None:
-        raise ValueError("Please supply a grouping!")
 
     if type(by) is str:
         by = [by]
