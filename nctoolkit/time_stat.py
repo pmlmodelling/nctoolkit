@@ -221,14 +221,14 @@ def percentile(self, p=None, by = "time"):
     # all three. This is daily mean
 
     if by == ["day", "month", "year"] or by == ["day", "year"]:
-        dailystat(self, stat = stat)
-        return None
+        min_command = " -daymin "
+        max_command = " -daymax "
 
     # monthly mean
 
     if by == ["month", "year"]:
-        monstat(self, stat = stat)
-        return None
+        min_command = " -monmin "
+        max_command = " -monmax "
 
 
     new_files = []
