@@ -4,6 +4,7 @@ from nctoolkit.cleanup import cleanup
 from nctoolkit.flatten import str_flatten
 from nctoolkit.runthis import run_this
 from nctoolkit.show import nc_years
+from nctoolkit.crop import crop
 
 
 
@@ -230,6 +231,7 @@ def select(self, **kwargs):
         months maps to select_months
         seasons maps to select_seasons
         timesteps maps to select_timesteps
+        lon,lat maps to crop
 
         Note: this uses partial matches. So year, month, var etc. will also work
 
@@ -258,6 +260,38 @@ def select(self, **kwargs):
         if "time" in key:
             self.select_timesteps(kwargs[key])
             non_selected = False
+
+    # Now we need to get crop working
+
+
+    crop_it = False
+    lon = None
+    lat = None
+    nco = False
+    nco_vars = None
+    for key in kwargs:
+        if "lon" == key:
+            non_selected = False
+            crop_it = True
+            lon = kwargs[key]
+        if "lat" == key:
+            non_selected = False
+            crop_it = True
+            lat = kwargs[key]
+        if "nco" == key:
+            nco = kwargs[key]
+        if "nco_vars" == key:
+            nco_vars = kwargs[key]
+
+    if crop_it:
+        if lon is not None and lat is not None:
+            self.crop(lon = lon, lat = lat, nco = nco, nco_vars = nco_vars)
+        if lon is not None and lat is None:
+            self.crop(lon = lon,  nco = nco, nco_vars = nco_vars)
+        if lon is None and lat is not None:
+            self.crop(lat = lat,  nco = nco, nco_vars = nco_vars)
+
+
 
     if non_selected:
         raise AttributeError(f"{key} is not a valid select method")
