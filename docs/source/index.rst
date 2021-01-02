@@ -39,7 +39,7 @@ or::
 
 Documentation
 -------------
-**Getting Started**
+**Quick overview**
 
 * :doc:`installing`
 * :doc:`basic_usage`
@@ -70,7 +70,7 @@ Documentation
    lazy_methods 
 
 
-**Help & reference**
+**Reference and help**
 
 * :doc:`a_to_z`
 * :doc:`api`
