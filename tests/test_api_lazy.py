@@ -38,7 +38,7 @@ class TestApi2:
         data2 = nc.open_data(ff2)
         data = nc.cor_space(data1, data2)
 
-        data.mean()
+        data.tmean()
         x = data.to_dataframe().cor.values[0].astype("float")
 
         data1.rename({"analysed_sst":"var1"})

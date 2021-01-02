@@ -27,14 +27,14 @@ class TestClip:
 
         tracker = nc.open_data(ff)
         data = nc.open_data("data/sst.mon.mean.nc")
-        data.mean()
+        data.tmean()
         data.meridonial_mean()
         data.spatial_mean()
         assert data.to_dataframe().sst[0].values[0].astype("float") == 17.67996597290039
 
         tracker = nc.open_data(ff)
         data = nc.open_data("data/sst.mon.mean.nc")
-        data.mean()
+        data.tmean()
         data.meridonial_min()
         data.spatial_mean()
         assert (
@@ -43,14 +43,14 @@ class TestClip:
 
         tracker = nc.open_data(ff)
         data = nc.open_data("data/sst.mon.mean.nc")
-        data.mean()
+        data.tmean()
         data.meridonial_max()
         data.spatial_mean()
         assert data.to_dataframe().sst[0].values[0].astype("float") == 27.99681282043457
 
         tracker = nc.open_data(ff)
         data = nc.open_data("data/sst.mon.mean.nc")
-        data.mean()
+        data.tmean()
         data.meridonial_range()
         data.spatial_mean()
         assert data.to_dataframe().sst[0].values[0].astype("float") == 29.76824188232422

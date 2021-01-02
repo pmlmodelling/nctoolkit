@@ -17,7 +17,7 @@ class TestReduce:
     def test_reduce(self):
         nc.options(lazy=False)
         tracker = nc.open_data(ff)
-        tracker.mean()
+        tracker.tmean()
         tracker.reduce_dims()
         n = len(tracker.times)
         assert n == 0
@@ -26,7 +26,7 @@ class TestReduce:
     def test_reduce2(self):
         nc.options(lazy=True)
         tracker = nc.open_data(ff)
-        tracker.mean()
+        tracker.tmean()
         tracker.reduce_dims()
         tracker.run()
         n = len(tracker.times)

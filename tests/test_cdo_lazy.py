@@ -72,13 +72,13 @@ class TestCdo:
         if cdo_version() in ["1.9.2", "1.9.3"]:
             return None
         tracker = nc.open_data(ff)
-        tracker.mean()
+        tracker.tmean()
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0]
         tracker = nc.open_data(ff)
         tracker.split("year")
         tracker.cdo_command("-mergetime")
-        tracker.mean()
+        tracker.tmean()
         tracker.spatial_mean()
         y = tracker.to_dataframe().sst.values[0]
         n = len(nc.session_files())

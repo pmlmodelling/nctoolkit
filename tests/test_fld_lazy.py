@@ -123,14 +123,14 @@ class TestFldsta:
         data.split("yearmonth")
         data.spatial_sum(by_area=True)
         data.merge_time()
-        data.mean()
+        data.tmean()
         data.run()
         x = data.to_dataframe().sst.values[0]
 
         data = nc.open_data(ff)
         data.select_timesteps(range(0, 6))
         data.spatial_sum(by_area=True)
-        data.mean()
+        data.tmean()
         data.run()
         y = data.to_dataframe().sst.values[0]
 

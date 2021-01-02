@@ -56,7 +56,7 @@ class TestCor:
         assert 10 == len(tracker.current)
         tracker.merge_time()
         assert 10 == len(tracker.years)
-        tracker.mean()
+        tracker.tmean()
         tracker.spatial_mean()
         x = tracker.to_dataframe().cor.values[0]
 

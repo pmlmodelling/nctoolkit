@@ -18,7 +18,7 @@ class TestMonthlycli:
         tracker = nc.open_data(ff)
         tracker.select_years(range(1990, 1999))
         tracker.select_months(1)
-        tracker.mean()
+        tracker.tmean()
         x = tracker.to_dataframe().sst.values[0].astype("float")
 
         tracker = nc.open_data(ff)
@@ -35,7 +35,7 @@ class TestMonthlycli:
         tracker = nc.open_data(ff)
         tracker.select_years(range(1990, 1999))
         tracker.select_months(1)
-        tracker.min()
+        tracker.tmin()
         x = tracker.to_dataframe().sst.values[0].astype("float")
 
         tracker = nc.open_data(ff)
@@ -52,7 +52,7 @@ class TestMonthlycli:
         tracker = nc.open_data(ff)
         tracker.select_years(range(1990, 1999))
         tracker.select_months(1)
-        tracker.max()
+        tracker.tmax()
         x = tracker.to_dataframe().sst.values[0].astype("float")
 
         tracker = nc.open_data(ff)
@@ -69,7 +69,7 @@ class TestMonthlycli:
         tracker = nc.open_data(ff)
         tracker.select_years(range(1990, 1999))
         tracker.select_months(1)
-        tracker.range()
+        tracker.trange()
         x = tracker.to_dataframe().sst.values[0].astype("float")
 
         tracker = nc.open_data(ff)

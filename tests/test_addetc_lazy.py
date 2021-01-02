@@ -17,7 +17,7 @@ class TestAddetc:
         tracker.split("year")
         tracker.merge_time()
         tracker.subtract(new)
-        tracker.mean()
+        tracker.tmean()
         x = tracker.to_dataframe().sst.values[0]
 
         assert x == 0

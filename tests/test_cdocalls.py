@@ -298,39 +298,39 @@ class TestCalls:
         assert data.history[0] == "cdo -setrtomiss,0,0"
 
         data = nc.open_data(ff)
-        data.mean()
+        data.tmean()
         assert data.history[0] == "cdo -timmean"
 
         data = nc.open_data(ff)
-        data.max()
+        data.tmax()
         assert data.history[0] == "cdo -timmax"
 
         data = nc.open_data(ff)
-        data.min()
+        data.tmin()
         assert data.history[0] == "cdo -timmin"
 
         data = nc.open_data(ff)
-        data.range()
+        data.trange()
         assert data.history[0] == "cdo -timrange"
 
         data = nc.open_data(ff)
-        data.sum()
+        data.tsum()
         assert data.history[0] == "cdo -timsum"
 
         data = nc.open_data(ff)
-        data.variance()
+        data.tvariance()
         assert data.history[0] == "cdo -timvar"
 
         data = nc.open_data(ff)
-        data.stdev()
+        data.tstdev()
         assert data.history[0] == "cdo -timstd"
 
         data = nc.open_data(ff)
-        data.cumsum()
+        data.tcumsum()
         assert data.history[0] == "cdo -timcumsum"
 
         data = nc.open_data(ff)
-        data.percentile(p=1)
+        data.tpercentile(p=1)
         assert (
             "cdo -L -timpctl,1 data/sst.mon.mean.nc -timmin data/sst.mon.mean.nc -timmax data/sst.mon.mean.nc"
             in data.history[0]

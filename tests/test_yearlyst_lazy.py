@@ -17,7 +17,7 @@ class TestYearlyst:
     def test_mean(self):
         tracker = nc.open_data(ff)
         tracker.select_years(1990)
-        tracker.mean()
+        tracker.tmean()
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0]
 
@@ -34,7 +34,7 @@ class TestYearlyst:
     def test_min(self):
         tracker = nc.open_data(ff)
         tracker.select_years(1990)
-        tracker.min()
+        tracker.tmin()
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0]
 
@@ -51,7 +51,7 @@ class TestYearlyst:
     def test_max(self):
         tracker = nc.open_data(ff)
         tracker.select_years(1990)
-        tracker.max()
+        tracker.tmax()
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0]
 
@@ -68,7 +68,7 @@ class TestYearlyst:
     def test_annualsum(self):
         tracker = nc.open_data(ff)
         tracker.select_years(1990)
-        tracker.sum()
+        tracker.tsum()
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0]
 
@@ -85,7 +85,7 @@ class TestYearlyst:
     def test_range(self):
         tracker = nc.open_data(ff)
         tracker.select_years(1990)
-        tracker.range()
+        tracker.trange()
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0]
 

@@ -22,7 +22,7 @@ class TestSeasclim:
 
         tracker = nc.open_data(ff)
         tracker.select_seasons("DJF")
-        tracker.mean()
+        tracker.tmean()
         tracker.spatial_mean()
         y = tracker.to_dataframe().sst.values[0]
 
@@ -41,7 +41,7 @@ class TestSeasclim:
 
         tracker = nc.open_data(ff)
         tracker.select_seasons("DJF")
-        tracker.max()
+        tracker.tmax()
         tracker.spatial_mean()
         y = tracker.to_dataframe().sst.values[0]
 
@@ -60,7 +60,7 @@ class TestSeasclim:
 
         tracker = nc.open_data(ff)
         tracker.select_seasons("DJF")
-        tracker.min()
+        tracker.tmin()
         tracker.spatial_mean()
         y = tracker.to_dataframe().sst.values[0]
 
@@ -79,7 +79,7 @@ class TestSeasclim:
 
         tracker = nc.open_data(ff)
         tracker.select_seasons("DJF")
-        tracker.range()
+        tracker.trange()
         tracker.spatial_mean()
         y = tracker.to_dataframe().sst.values[0]
 

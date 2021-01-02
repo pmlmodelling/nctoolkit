@@ -27,16 +27,16 @@ class TestPercentile:
 
             data = nc.open_data(ff)
 
-            data.percentile(p = 50, by = by)
+            data.tpercentile(p = 50, over = by)
             print(data.history)
             commands = data.history[0].split(" ")
 
             data = nc.open_data(ff)
-            data.min(by = by)
+            data.tmin(over = by)
             part1 = data.history[0].split(" ")[-1]
 
             data = nc.open_data(ff)
-            data.max(by = by)
+            data.tmax(over = by)
             part2 = data.history[0].split(" ")[-1]
 
             assert commands[4] == part1

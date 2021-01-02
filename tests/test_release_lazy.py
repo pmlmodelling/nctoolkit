@@ -33,7 +33,7 @@ class Testrun:
         assert n == 1
 
         tracker = nc.open_data(ff)
-        tracker.mean()
+        tracker.tmean()
         tracker._safe.append("asdfkjasdkfj.nc")
         nc.session.nc_safe.append("asdfkjasdkfj.nc")
         tracker.run()

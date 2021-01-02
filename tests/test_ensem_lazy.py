@@ -39,7 +39,7 @@ class TestEnsemble:
 
         data = nc.open_data(nc.create_ensemble("data/ensemble"))
         data.merge_time()
-        data.max()
+        data.tmax()
         data.spatial_mean()
         y = data.to_dataframe().sst.values[0].astype("float")
 
@@ -93,7 +93,7 @@ class TestEnsemble:
 
         data = nc.open_data(nc.create_ensemble("data/ensemble"))
         data.merge_time()
-        data.mean()
+        data.tmean()
         data.spatial_mean()
         y = data.to_dataframe().sst.values[0].astype("float")
 
@@ -102,7 +102,7 @@ class TestEnsemble:
         assert n == 1
 
         data = nc.open_data("data/sst.mon.mean.nc")
-        data.min()
+        data.tmin()
         data.spatial_mean()
         x = data.to_dataframe().sst.values[0].astype("float")
 
@@ -122,7 +122,7 @@ class TestEnsemble:
 
         data = nc.open_data(nc.create_ensemble("data/ensemble"))
         data.merge_time()
-        data.mean()
+        data.tmean()
         data.spatial_mean()
         y = data.to_dataframe().sst.values[0].astype("float")
 
@@ -135,7 +135,7 @@ class TestEnsemble:
         data.spatial_mean()
         x = data.to_dataframe().sst.values[0].astype("float")
         data = nc.open_data("data/sst.mon.mean.nc")
-        data.mean()
+        data.tmean()
         data.spatial_mean()
         y = data.to_dataframe().sst.values[0].astype("float")
 
@@ -146,7 +146,7 @@ class TestEnsemble:
         data.spatial_mean()
         x = data.to_dataframe().sst.values[0].astype("float")
         data = nc.open_data("data/sst.mon.mean.nc")
-        data.mean()
+        data.tmean()
         data.spatial_mean()
         y = data.to_dataframe().sst.values[0].astype("float")
 

@@ -22,7 +22,7 @@ class TestRemove:
             nc.remove.nc_remove("stamptest.nc")
 
         data = nc.open_data(ff)
-        data.mean()
+        data.tmean()
         data.run()
         with pytest.raises(ValueError):
             nc.remove.nc_remove(data.current)

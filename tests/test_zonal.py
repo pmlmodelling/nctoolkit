@@ -27,7 +27,7 @@ class TestClip:
 
         tracker = nc.open_data(ff)
         data = nc.open_data("data/sst.mon.mean.nc")
-        data.mean()
+        data.tmean()
         data.zonal_mean()
         data.spatial_mean()
         if cdo_version() != "1.9.3":
@@ -43,7 +43,7 @@ class TestClip:
 
         tracker = nc.open_data(ff)
         data = nc.open_data("data/sst.mon.mean.nc")
-        data.mean()
+        data.tmean()
         data.zonal_min()
         data.spatial_mean()
         if cdo_version() != "1.9.3":
@@ -59,7 +59,7 @@ class TestClip:
 
         tracker = nc.open_data(ff)
         data = nc.open_data("data/sst.mon.mean.nc")
-        data.mean()
+        data.tmean()
         data.zonal_max()
         data.spatial_mean()
         if cdo_version() != "1.9.3":
@@ -75,7 +75,7 @@ class TestClip:
 
         tracker = nc.open_data(ff)
         data = nc.open_data("data/sst.mon.mean.nc")
-        data.mean()
+        data.tmean()
         data.zonal_range()
         data.spatial_mean()
         if cdo_version() != "1.9.3":

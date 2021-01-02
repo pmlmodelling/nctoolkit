@@ -60,7 +60,7 @@ class TestOne:
     def test_percentile(self):
         tracker = nc.open_data(ff)
         tracker.clip(lon=[50, 60])
-        tracker.percentile(50)
+        tracker.tpercentile(50)
         tracker.spatial_mean()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         assert x == 19.71255874633789

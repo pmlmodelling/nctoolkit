@@ -52,12 +52,12 @@ class TestMerge:
         tracker = nc.open_data(ff)
         tracker.split("year")
         tracker.merge_time()
-        tracker.mean()
+        tracker.tmean()
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0]
 
         tracker = nc.open_data(ff)
-        tracker.mean()
+        tracker.tmean()
         tracker.spatial_mean()
 
         y = tracker.to_dataframe().sst.values[0]

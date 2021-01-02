@@ -18,7 +18,7 @@ class TestTemporals:
         # monthly climatology
 
         tracker = nc.open_data(ff)
-        tracker.mean(["month"])
+        tracker.tmean(["month"])
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0]
 
@@ -34,7 +34,7 @@ class TestTemporals:
         # annual mean
 
         tracker = nc.open_data(ff)
-        tracker.mean(["year"])
+        tracker.tmean(["year"])
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0]
 
@@ -52,7 +52,7 @@ class TestTemporals:
         # daily mean climatology
 
         tracker = nc.open_data(ff)
-        tracker.mean(["day"])
+        tracker.tmean(["day"])
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0]
 
@@ -70,7 +70,7 @@ class TestTemporals:
         # seasonal mean climatology
 
         tracker = nc.open_data(ff)
-        tracker.mean(["season"])
+        tracker.tmean(["season"])
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0]
 
@@ -86,7 +86,7 @@ class TestTemporals:
         # annual seasonal mean
 
         tracker = nc.open_data(ff)
-        tracker.mean(["season", "year"])
+        tracker.tmean(["season", "year"])
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0]
 
@@ -100,7 +100,7 @@ class TestTemporals:
         # daily mean
 
         tracker = nc.open_data(ff)
-        tracker.mean(["day", "month", "year"])
+        tracker.tmean(["day", "month", "year"])
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0]
 
@@ -117,7 +117,7 @@ class TestTemporals:
         # monthly mean
 
         tracker = nc.open_data(ff)
-        tracker.mean(["month", "year"])
+        tracker.tmean(["month", "year"])
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0]
 
@@ -145,7 +145,7 @@ class TestTemporals:
         # monthly climatology
 
         tracker = nc.open_data(ff)
-        tracker.max(["month"])
+        tracker.tmax(["month"])
         tracker.spatial_max()
         x = tracker.to_dataframe().sst.values[0]
 
@@ -161,7 +161,7 @@ class TestTemporals:
         # annual max
 
         tracker = nc.open_data(ff)
-        tracker.max(["year"])
+        tracker.tmax(["year"])
         tracker.spatial_max()
         x = tracker.to_dataframe().sst.values[0]
 
@@ -179,7 +179,7 @@ class TestTemporals:
         # daily max climatology
 
         tracker = nc.open_data(ff)
-        tracker.max(["day"])
+        tracker.tmax(["day"])
         tracker.spatial_max()
         x = tracker.to_dataframe().sst.values[0]
 
@@ -197,7 +197,7 @@ class TestTemporals:
         # seasonal max climatology
 
         tracker = nc.open_data(ff)
-        tracker.max(["season"])
+        tracker.tmax(["season"])
         tracker.spatial_max()
         x = tracker.to_dataframe().sst.values[0]
 
@@ -215,7 +215,7 @@ class TestTemporals:
         # daily max
 
         tracker = nc.open_data(ff)
-        tracker.max(["day", "month", "year"])
+        tracker.tmax(["day", "month", "year"])
         tracker.spatial_max()
         x = tracker.to_dataframe().sst.values[0]
 
@@ -232,7 +232,7 @@ class TestTemporals:
         # monthly max
 
         tracker = nc.open_data(ff)
-        tracker.max(["month", "year"])
+        tracker.tmax(["month", "year"])
         tracker.spatial_max()
         x = tracker.to_dataframe().sst.values[0]
 
@@ -260,7 +260,7 @@ class TestTemporals:
         # monthly climatology
 
         tracker = nc.open_data(ff)
-        tracker.min(["month"])
+        tracker.tmin(["month"])
         tracker.spatial_min()
         x = tracker.to_dataframe().sst.values[0]
 
@@ -276,7 +276,7 @@ class TestTemporals:
         # annual min
 
         tracker = nc.open_data(ff)
-        tracker.min(["year"])
+        tracker.tmin(["year"])
         tracker.spatial_min()
         x = tracker.to_dataframe().sst.values[0]
 
@@ -294,7 +294,7 @@ class TestTemporals:
         # daily min climatology
 
         tracker = nc.open_data(ff)
-        tracker.min(["day"])
+        tracker.tmin(["day"])
         tracker.spatial_min()
         x = tracker.to_dataframe().sst.values[0]
 
@@ -312,7 +312,7 @@ class TestTemporals:
         # seasonal min climatology
 
         tracker = nc.open_data(ff)
-        tracker.min(["season"])
+        tracker.tmin(["season"])
         tracker.spatial_min()
         x = tracker.to_dataframe().sst.values[0]
 
@@ -330,7 +330,7 @@ class TestTemporals:
         # daily min
 
         tracker = nc.open_data(ff)
-        tracker.min(["day", "month", "year"])
+        tracker.tmin(["day", "month", "year"])
         tracker.spatial_min()
         x = tracker.to_dataframe().sst.values[0]
 
@@ -347,7 +347,7 @@ class TestTemporals:
         # monthly min
 
         tracker = nc.open_data(ff)
-        tracker.min(["month", "year"])
+        tracker.tmin(["month", "year"])
         tracker.spatial_min()
         x = tracker.to_dataframe().sst.values[0]
 
@@ -369,7 +369,7 @@ class TestTemporals:
         # monthly climatology
 
         tracker = nc.open_data(ff)
-        tracker.range(["month"])
+        tracker.trange(["month"])
         tracker.spatial_range()
         x = tracker.to_dataframe().sst.values[0]
 
@@ -385,7 +385,7 @@ class TestTemporals:
         # annual range
 
         tracker = nc.open_data(ff)
-        tracker.range(["year"])
+        tracker.trange(["year"])
         tracker.spatial_range()
         x = tracker.to_dataframe().sst.values[0]
 
@@ -403,7 +403,7 @@ class TestTemporals:
         # daily range climatology
 
         tracker = nc.open_data(ff)
-        tracker.range(["day"])
+        tracker.trange(["day"])
         tracker.spatial_range()
         x = tracker.to_dataframe().sst.values[0]
 
@@ -421,7 +421,7 @@ class TestTemporals:
         # seasonal range climatology
 
         tracker = nc.open_data(ff)
-        tracker.range(["season"])
+        tracker.trange(["season"])
         tracker.spatial_range()
         x = tracker.to_dataframe().sst.values[0]
 
@@ -439,7 +439,7 @@ class TestTemporals:
         # daily range
 
         tracker = nc.open_data(ff)
-        tracker.range(["day", "month", "year"])
+        tracker.trange(["day", "month", "year"])
         tracker.spatial_range()
         x = tracker.to_dataframe().sst.values[0]
 
@@ -456,7 +456,7 @@ class TestTemporals:
         # monthly range
 
         tracker = nc.open_data(ff)
-        tracker.range(["month", "year"])
+        tracker.trange(["month", "year"])
         tracker.spatial_range()
         x = tracker.to_dataframe().sst.values[0]
 

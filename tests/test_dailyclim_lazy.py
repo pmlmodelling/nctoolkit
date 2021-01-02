@@ -28,7 +28,7 @@ class TestDailycl:
         tracker.select_timesteps(0)
         tracker.merge_time()
         tracker.select_months(1)
-        tracker.mean()
+        tracker.tmean()
         tracker.spatial_mean()
         y = tracker.to_dataframe().analysed_sst.values[0]
 
@@ -49,7 +49,7 @@ class TestDailycl:
         tracker = nc.open_data(["data/2003.nc", "data/2004.nc"])
         tracker.select_timesteps(0)
         tracker.merge_time()
-        tracker.min()
+        tracker.tmin()
         tracker.spatial_mean()
         y = tracker.to_dataframe().analysed_sst.values[0]
 
@@ -69,7 +69,7 @@ class TestDailycl:
         tracker = nc.open_data(["data/2003.nc", "data/2004.nc"])
         tracker.select_timesteps(0)
         tracker.merge_time()
-        tracker.max()
+        tracker.tmax()
         tracker.spatial_mean()
         y = tracker.to_dataframe().analysed_sst.values[0]
 
@@ -89,7 +89,7 @@ class TestDailycl:
         tracker = nc.open_data(["data/2003.nc", "data/2004.nc"])
         tracker.select_timesteps(0)
         tracker.merge_time()
-        tracker.range()
+        tracker.trange()
         tracker.spatial_mean()
         y = tracker.to_dataframe().analysed_sst.values[0]
 

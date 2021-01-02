@@ -12,7 +12,7 @@ ff = "data/sst.mon.mean.nc"
 class TestClip:
     def test_clip(self):
         tracker = nc.open_data(ff)
-        tracker.mean()
+        tracker.tmean()
         tracker.transmute({"sst": "sst+273.15"})
         tracker.compare_all(">0")
         tracker.spatial_sum()
@@ -21,7 +21,7 @@ class TestClip:
         x = int(tracker.to_dataframe().sst.values[0].astype("float"))
 
         tracker = nc.open_data(ff)
-        tracker.mean()
+        tracker.tmean()
         tracker.run()
         new = tracker.copy()
         new.reduce_grid(tracker)

@@ -96,7 +96,7 @@ class TestTonnc:
         ff1 = nc.temp_file.temp_file(".nc")
         data = nc.open_data(ff)
         data.select_timesteps([0, 1])
-        data.mean()
+        data.tmean()
         data.to_nc(ff1, zip=False)
 
         data1 = nc.open_data(ff1)
