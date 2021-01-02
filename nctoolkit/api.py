@@ -1099,10 +1099,6 @@ class DataSet(object):
     from nctoolkit.seasclim import seasonal_max_climatology
     from nctoolkit.seasclim import seasonal_range_climatology
 
-    from nctoolkit.seasstat import seasonal_mean
-    from nctoolkit.seasstat import seasonal_min
-    from nctoolkit.seasstat import seasonal_max
-    from nctoolkit.seasstat import seasonal_range
 
     from nctoolkit.select import select_variables
     from nctoolkit.select import select_timesteps
@@ -1203,3 +1199,7 @@ class DataSet(object):
     from nctoolkit.deprecated import annual_max
     from nctoolkit.deprecated import annual_range
     from nctoolkit.deprecated import annual_sum
+    from nctoolkit.deprecated import seasonal_mean
+    from nctoolkit.deprecated import seasonal_min
+    from nctoolkit.deprecated import seasonal_max
+    from nctoolkit.deprecated import seasonal_range
