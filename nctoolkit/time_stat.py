@@ -83,6 +83,7 @@ def sum(self):
     """
     Calculate the temporal sum of all variables
     """
+    warnings.warn(message="Warning: sum is deprecated. Use tsum!")
     time_stat(self, stat="sum")
 
 
@@ -90,6 +91,7 @@ def mean(self, by = "time"):
     """
     Calculate the temporal mean of all variables
     """
+    warnings.warn(message="Warning: mean is deprecated. Use tmean!")
     time_stat(self, stat="mean", by = by)
 
 
@@ -97,6 +99,7 @@ def min(self, by = "time"):
     """
     Calculate the temporal minimum of all variables
     """
+    warnings.warn(message="Warning: min is deprecated. Use tmin!")
     time_stat(self, stat="min", by = by)
 
 
@@ -104,12 +107,14 @@ def max(self, by = "time"):
     """
     Calculate the temporal maximum of all variables
     """
+    warnings.warn(message="Warning: max is deprecated. Use tmax!")
     time_stat(self, stat="max", by = by)
 
 def median(self, by = "time"):
     """
     Calculate the temporal median of all variables
     """
+    warnings.warn(message="Warning: percentile is deprecated. Use tpercentile!")
     self.percentile(p = 50, by = by)
 
 
@@ -117,6 +122,7 @@ def range(self, by = "time"):
     """
     Calculate the temporal range of all variables
     """
+    warnings.warn(message="Warning: range is deprecated. Use trange!")
     time_stat(self, stat="range", by = by)
 
 
@@ -125,12 +131,14 @@ def variance(self, by = "time"):
     """
     Calculate the temporal variance of all variables
     """
+    warnings.warn(message="Warning: variance is deprecated. Use tvariance!")
     time_stat(self, stat="var", by = by)
 
 def stdev(self, by = "time"):
     """
     Calculate the temporal standard deviation of all variables
     """
+    warnings.warn(message="Warning: stdev is deprecated. Use tstdev!")
     time_stat(self, stat="std", by = by)
 
 
@@ -138,6 +146,7 @@ def cumsum(self):
     """
     Calculate the temporal cumulative sum of all variables
     """
+    warnings.warn(message="Warning: cumsum is deprecated. Use tcumsum!")
     # create cdo command and runit
     time_stat(self, stat="cumsum")
 
@@ -151,6 +160,7 @@ def percentile(self, p=None, by = "time"):
     p: float or int
         Percentile to calculate
     """
+    warnings.warn(message="Warning: percentile is deprecated. Use tpercentile!")
     if p is None:
         raise ValueError("Please supply p")
 
