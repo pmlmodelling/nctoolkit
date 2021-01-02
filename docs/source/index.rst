@@ -64,9 +64,10 @@ Documentation
    :caption: User Guide 
 
    datasets
+   exporting 
+   temporals 
    merging_notebook 
    lazy_methods 
-   exporting 
 
 
 **Help & reference**
