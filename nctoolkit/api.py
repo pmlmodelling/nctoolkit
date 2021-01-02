@@ -1068,10 +1068,6 @@ class DataSet(object):
     from nctoolkit.meridonials import meridonial_range
 
 
-    from nctoolkit.monthlyclim import monthly_mean_climatology
-    from nctoolkit.monthlyclim import monthly_min_climatology
-    from nctoolkit.monthlyclim import monthly_max_climatology
-    from nctoolkit.monthlyclim import monthly_range_climatology
 
     from nctoolkit.nco_command import nco_command
 
@@ -1203,3 +1199,7 @@ class DataSet(object):
     from nctoolkit.deprecated import monthly_max
     from nctoolkit.deprecated import monthly_sum
     from nctoolkit.deprecated import monthly_range
+    from nctoolkit.deprecated import monthly_mean_climatology
+    from nctoolkit.deprecated import monthly_min_climatology
+    from nctoolkit.deprecated import monthly_max_climatology
+    from nctoolkit.deprecated import monthly_range_climatology
