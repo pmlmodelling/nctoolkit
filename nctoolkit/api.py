@@ -1035,11 +1035,6 @@ class DataSet(object):
     from nctoolkit.dailyclim import daily_max_climatology
     from nctoolkit.dailyclim import daily_range_climatology
 
-    from nctoolkit.dailystat import daily_mean
-    from nctoolkit.dailystat import daily_min
-    from nctoolkit.dailystat import daily_max
-    from nctoolkit.dailystat import daily_range
-    from nctoolkit.dailystat import daily_sum
 
     from nctoolkit.delete import remove_variables
 
@@ -1200,3 +1195,9 @@ class DataSet(object):
     from nctoolkit.deprecated import cum_sum
     from nctoolkit.deprecated import vertical_cum_sum
     from nctoolkit.deprecated import view
+
+    from nctoolkit.deprecated import daily_mean
+    from nctoolkit.deprecated import daily_min
+    from nctoolkit.deprecated import daily_max
+    from nctoolkit.deprecated import daily_range
+    from nctoolkit.deprecated import daily_sum

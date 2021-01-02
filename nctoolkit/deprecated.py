@@ -32,6 +32,7 @@ def clip(self, lon=[-180, 180], lat=[-90, 90], nco=False):
         and uses CDO. Set to True if you want to call NCO.
         NCO is typically better at handling very large horizontal grids.
     """
+    warnings.warn(message="Warning: clip is deprecated. Use crop!")
 
     # check validity of lon/lat supplied
     if (type(lon) is not list) or (type(lat) is not list):
@@ -344,3 +345,53 @@ def view(self):
         os.system("ncview " + self.current + "&")
     else:
         print("You cannot send multiple files to ncview!")
+
+
+
+
+def dailystat(self, stat="mean"):
+    """Function to calculate the daily statistic for a function"""
+
+    cdo_command = f"cdo -day{stat}"
+
+    run_this(cdo_command, self, output="ensemble")
+
+
+def daily_mean(self):
+    """
+    Calculate the daily mean for each variable
+    """
+    warnings.warn(message="Warning: daily_mean is deprecated. Use mean!")
+    dailystat(self, stat="mean")
+
+
+def daily_min(self):
+    """
+    Calculate the daily minimum for each variable
+    """
+    warnings.warn(message="Warning: daily_min is deprecated. Use min!")
+    dailystat(self, stat="min")
+
+
+def daily_max(self):
+    """
+    Calculate the daily maximum for each variable
+    """
+    warnings.warn(message="Warning: daily_max is deprecated. Use max!")
+    dailystat(self, stat="max")
+
+
+def daily_range(self):
+    """
+    Calculate the daily range for each variable
+    """
+    warnings.warn(message="Warning: daily_range is deprecated. Use range!")
+    dailystat(self, stat="range")
+
+
+def daily_sum(self):
+    """
+    Calculate the daily sum for each variable
+    """
+    warnings.warn(message="Warning: daily_sum is deprecated. Use sum!")
+    dailystat(self, stat="sum")
