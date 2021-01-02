@@ -395,3 +395,43 @@ def daily_sum(self):
     """
     warnings.warn(message="Warning: daily_sum is deprecated. Use sum!")
     dailystat(self, stat="sum")
+
+def ydaystat(self, stat="mean"):
+    """
+    Method to calculate daily climatologies
+    """
+    # create the cdo command and run it
+    cdo_command = "cdo -yday" + stat
+    run_this(cdo_command, self, output="ensemble")
+
+
+def daily_mean_climatology(self):
+    """
+    Calculate a daily mean climatology
+    """
+    warnings.warn(message="Warning: daily_mean_climatology is deprecated. Use mean!")
+    ydaystat(self, stat="mean")
+
+
+def daily_min_climatology(self):
+    """
+    Calculate a daily minimum climatology
+    """
+    warnings.warn(message="Warning: daily_min_climatology is deprecated. Use min!")
+    ydaystat(self, stat="min")
+
+
+def daily_max_climatology(self):
+    """
+    Calculate a daily maximum climatology
+    """
+    warnings.warn(message="Warning: daily_max_climatology is deprecated. Use max!")
+    ydaystat(self, stat="max")
+
+
+def daily_range_climatology(self):
+    """
+    Calculate a daily range climatology
+    """
+    warnings.warn(message="Warning: daily_range_climatology is deprecated. Use range!")
+    ydaystat(self, stat="range")
