@@ -315,7 +315,7 @@ def var(self):
     """
     Calculate the temporal variance of all variables
     """
-    warnings.warn(message = "var is now deprecated. Please use variance!")
+    warnings.warn(message = "var is now deprecated. Please use tvariance!")
     time_stat(self, stat="var")
 
 def cum_sum(self):
@@ -323,7 +323,7 @@ def cum_sum(self):
     Calculate the temporal cumulative sum of all variables
     """
     # create cdo command and runit
-    warnings.warn(message = "cum_sum is now deprecated. Please use cumsum!")
+    warnings.warn(message = "cum_sum is now deprecated. Please use tcumsum!")
     time_stat(self, stat="cumsum")
 
 def vertical_cum_sum(self):
@@ -361,7 +361,7 @@ def daily_mean(self):
     """
     Calculate the daily mean for each variable
     """
-    warnings.warn(message="Warning: daily_mean is deprecated. Use mean!")
+    warnings.warn(message="Warning: daily_mean is deprecated. Use tmean!")
     dailystat(self, stat="mean")
 
 
@@ -369,7 +369,7 @@ def daily_min(self):
     """
     Calculate the daily minimum for each variable
     """
-    warnings.warn(message="Warning: daily_min is deprecated. Use min!")
+    warnings.warn(message="Warning: daily_min is deprecated. Use tmin!")
     dailystat(self, stat="min")
 
 
@@ -377,7 +377,7 @@ def daily_max(self):
     """
     Calculate the daily maximum for each variable
     """
-    warnings.warn(message="Warning: daily_max is deprecated. Use max!")
+    warnings.warn(message="Warning: daily_max is deprecated. Use tmax!")
     dailystat(self, stat="max")
 
 
@@ -385,7 +385,7 @@ def daily_range(self):
     """
     Calculate the daily range for each variable
     """
-    warnings.warn(message="Warning: daily_range is deprecated. Use range!")
+    warnings.warn(message="Warning: daily_range is deprecated. Use trange!")
     dailystat(self, stat="range")
 
 
@@ -393,7 +393,7 @@ def daily_sum(self):
     """
     Calculate the daily sum for each variable
     """
-    warnings.warn(message="Warning: daily_sum is deprecated. Use sum!")
+    warnings.warn(message="Warning: daily_sum is deprecated. Use tsum!")
     dailystat(self, stat="sum")
 
 def ydaystat(self, stat="mean"):
@@ -409,7 +409,7 @@ def daily_mean_climatology(self):
     """
     Calculate a daily mean climatology
     """
-    warnings.warn(message="Warning: daily_mean_climatology is deprecated. Use mean!")
+    warnings.warn(message="Warning: daily_mean_climatology is deprecated. Use tmean!")
     ydaystat(self, stat="mean")
 
 
@@ -417,7 +417,7 @@ def daily_min_climatology(self):
     """
     Calculate a daily minimum climatology
     """
-    warnings.warn(message="Warning: daily_min_climatology is deprecated. Use min!")
+    warnings.warn(message="Warning: daily_min_climatology is deprecated. Use tmin!")
     ydaystat(self, stat="min")
 
 
@@ -425,7 +425,7 @@ def daily_max_climatology(self):
     """
     Calculate a daily maximum climatology
     """
-    warnings.warn(message="Warning: daily_max_climatology is deprecated. Use max!")
+    warnings.warn(message="Warning: daily_max_climatology is deprecated. Use tmax!")
     ydaystat(self, stat="max")
 
 
@@ -433,7 +433,7 @@ def daily_range_climatology(self):
     """
     Calculate a daily range climatology
     """
-    warnings.warn(message="Warning: daily_range_climatology is deprecated. Use range!")
+    warnings.warn(message="Warning: daily_range_climatology is deprecated. Use trange!")
     ydaystat(self, stat="range")
 
 
@@ -449,6 +449,7 @@ def monthly_mean(self):
     Calculate the monthly mean for each year/month combination in files.
     This applies to each file in an ensemble.
     """
+    warnings.warn(message="Warning: monthly_mean is deprecated. Use tmean!")
     monstat(self, stat="mean")
 
 
@@ -457,6 +458,7 @@ def monthly_min(self):
     Calculate the monthly minimum for each year/month combination in files.
     This applies to each file in an ensemble.
     """
+    warnings.warn(message="Warning: monthly_min is deprecated. Use tmin!")
     monstat(self, stat="min")
 
 
@@ -465,6 +467,7 @@ def monthly_max(self):
     Calculate the monthly maximum for each year/month combination in files.
     This applies to each file in an ensemble.
     """
+    warnings.warn(message="Warning: monthly_max is deprecated. Use tmax!")
     monstat(self, stat="max")
 
 
@@ -473,6 +476,7 @@ def monthly_range(self):
     Calculate the monthly range for each year/month combination in files.
     This applies to each file in an ensemble.
     """
+    warnings.warn(message="Warning: monthly_range is deprecated. Use trange!")
     monstat(self, stat="range")
 
 def monthly_sum(self):
@@ -480,6 +484,7 @@ def monthly_sum(self):
     Calculate the monthly range for each year/month combination in files.
     This applies to each file in an ensemble.
     """
+    warnings.warn(message="Warning: monthly_sum is deprecated. Use tsum!")
     monstat(self, stat="sum")
 
 
@@ -498,6 +503,7 @@ def monthly_mean_climatology(self):
     Defined as the minimum value in each month across all years.
     This applies to each file in an ensemble.
     """
+    warnings.warn(message="Warning: monthly_mean_climatology is deprecated. Use tmean!")
     ymonstat(self, stat="mean")
 
 
@@ -507,6 +513,7 @@ def monthly_min_climatology(self):
     Defined as the minimum value in each month across all years.
     This applies to each file in an ensemble.
     """
+    warnings.warn(message="Warning: monthly_min_climatology is deprecated. Use tmin!")
     ymonstat(self, stat="min")
 
 
@@ -516,6 +523,7 @@ def monthly_max_climatology(self):
     Defined as the maximum value in each month across all years.
     This applies to each file in an ensemble.
     """
+    warnings.warn(message="Warning: monthly_max_climatology is deprecated. Use tmax!")
     ymonstat(self, stat="max")
 
 
@@ -525,6 +533,7 @@ def monthly_range_climatology(self):
     Defined as the range of value in each month across all years.
     This applies to each file in an ensemble.
     """
+    warnings.warn(message="Warning: monthly_range_climatology is deprecated. Use trange!")
     ymonstat(self, stat="range")
 def yearlystat(self, stat="mean"):
     """Function to calculate the seasonal statistic from a function"""
@@ -538,6 +547,7 @@ def annual_mean(self):
     """
     Calculate the annual mean for each variable
     """
+    warnings.warn(message="Warning: annual_mean is deprecated. Use tmean!")
     yearlystat(self, stat="mean")
 
 
@@ -545,6 +555,7 @@ def annual_min(self):
     """
     Calculate the annual minimum for each variable
     """
+    warnings.warn(message="Warning: annual_min is deprecated. Use tmin!")
     yearlystat(self, stat="min")
 
 
@@ -552,6 +563,7 @@ def annual_max(self):
     """
     Calculate the annual maximum for each variable
     """
+    warnings.warn(message="Warning: annual_max is deprecated. Use tmax!")
     yearlystat(self, stat="max")
 
 
@@ -559,6 +571,7 @@ def annual_range(self):
     """
     Calculate the annual range for each variable
     """
+    warnings.warn(message="Warning: annual_range is deprecated. Use trange!")
     yearlystat(self, stat="range")
 
 
@@ -566,6 +579,7 @@ def annual_sum(self):
     """
     Calculate the annual sum for each variable
     """
+    warnings.warn(message="Warning: annual_sum is deprecated. Use tsum!")
     yearlystat(self, stat="sum")
 
 def seasstat(self, stat="mean"):
@@ -580,6 +594,7 @@ def seasonal_mean(self):
     """
     Calculate the seasonal mean for each year. Applies at the grid cell level.
     """
+    warnings.warn(message="Warning: seasonal_mean is deprecated. Use tmean!")
     seasstat(self, stat="mean")
 
 
@@ -587,6 +602,7 @@ def seasonal_min(self):
     """
     Calculate the seasonal minimum for each year. Applies at the grid cell level.
     """
+    warnings.warn(message="Warning: seasonal_min is deprecated. Use tmin!")
     seasstat(self, stat="min")
 
 
@@ -594,6 +610,7 @@ def seasonal_max(self):
     """
     Calculate the seasonal maximum for each year. Applies at the grid cell level.
     """
+    warnings.warn(message="Warning: seasonal_max is deprecated. Use tmax!")
     seasstat(self, stat="max")
 
 
@@ -601,6 +618,7 @@ def seasonal_range(self):
     """
     Calculate the seasonal range for each year. Applies at the grid cell level.
     """
+    warnings.warn(message="Warning: seasonal_range is deprecated. Use trange!")
     seasstat(self, stat="range")
 
 def seasclim(self, stat="mean"):
@@ -620,6 +638,7 @@ def seasonal_mean_climatology(self):
     window = int
         The size of the window for the calculation of the rolling sum
     """
+    warnings.warn(message="Warning: seasonal_mean_climatology is deprecated. Use tmean!")
 
     seasclim(self, stat="mean")
 
@@ -635,6 +654,7 @@ def seasonal_min_climatology(self):
         The size of the window for the calculation of the rolling sum
 
     """
+    warnings.warn(message="Warning: seasonal_min_climatology is deprecated. Use tmin!")
     seasclim(self, stat="min")
 
 
@@ -649,6 +669,7 @@ def seasonal_max_climatology(self):
         The size of the window for the calculation of the rolling sum
 
     """
+    warnings.warn(message="Warning: seasonal_max_climatology is deprecated. Use tmax!")
     seasclim(self, stat="max")
 
 
@@ -663,4 +684,5 @@ def seasonal_range_climatology(self):
         The size of the window for the calculation of the rolling sum
 
     """
+    warnings.warn(message="Warning: seasonal_range_climatology is deprecated. Use trange!")
     seasclim(self, stat="range")
