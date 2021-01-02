@@ -1157,11 +1157,6 @@ class DataSet(object):
     from nctoolkit.verticals import invert_levels
 
 
-    from nctoolkit.yearlystat import annual_mean
-    from nctoolkit.yearlystat import annual_min
-    from nctoolkit.yearlystat import annual_max
-    from nctoolkit.yearlystat import annual_range
-    from nctoolkit.yearlystat import annual_sum
 
     from nctoolkit.zip import zip
 
@@ -1203,3 +1198,8 @@ class DataSet(object):
     from nctoolkit.deprecated import monthly_min_climatology
     from nctoolkit.deprecated import monthly_max_climatology
     from nctoolkit.deprecated import monthly_range_climatology
+    from nctoolkit.deprecated import annual_mean
+    from nctoolkit.deprecated import annual_min
+    from nctoolkit.deprecated import annual_max
+    from nctoolkit.deprecated import annual_range
+    from nctoolkit.deprecated import annual_sum
