@@ -1129,6 +1129,17 @@ class DataSet(object):
     from nctoolkit.time_stat import sum
     from nctoolkit.time_stat import cumsum
 
+    from nctoolkit.temporal_stat import tmean
+    from nctoolkit.temporal_stat import tpercentile
+    from nctoolkit.temporal_stat import tmax
+    from nctoolkit.temporal_stat import tmedian
+    from nctoolkit.temporal_stat import tmin
+    from nctoolkit.temporal_stat import trange
+    from nctoolkit.temporal_stat import tvariance
+    from nctoolkit.temporal_stat import tstdev
+    from nctoolkit.temporal_stat import tsum
+    from nctoolkit.temporal_stat import tcumsum
+
     from nctoolkit.to_lonlat import to_latlon
 
     from nctoolkit.to_nc import to_nc
