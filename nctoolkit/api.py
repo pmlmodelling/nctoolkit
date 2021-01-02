@@ -1094,10 +1094,6 @@ class DataSet(object):
     from nctoolkit.rollstat import rolling_range
     from nctoolkit.rollstat import rolling_sum
 
-    from nctoolkit.seasclim import seasonal_mean_climatology
-    from nctoolkit.seasclim import seasonal_min_climatology
-    from nctoolkit.seasclim import seasonal_max_climatology
-    from nctoolkit.seasclim import seasonal_range_climatology
 
 
     from nctoolkit.select import select_variables
@@ -1203,3 +1199,8 @@ class DataSet(object):
     from nctoolkit.deprecated import seasonal_min
     from nctoolkit.deprecated import seasonal_max
     from nctoolkit.deprecated import seasonal_range
+
+    from nctoolkit.deprecated import seasonal_mean_climatology
+    from nctoolkit.deprecated import seasonal_min_climatology
+    from nctoolkit.deprecated import seasonal_max_climatology
+    from nctoolkit.deprecated import seasonal_range_climatology
