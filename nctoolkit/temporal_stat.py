@@ -18,8 +18,14 @@ def time_stat(self, stat="mean", over = "time"):
     if stat not in ["mean", "sum", "min", "max", "range", "var", "cumsum", "std"]:
         raise ValueError(f"{stat} is not a valid CDO stat!")
 
+    # some tidying of over
     if type(over) is str:
         over = [over]
+
+    over = [x.lower() for x in over]
+    over = ["month" if "mon" in x else x for x in over]
+    over = ["year" if "yea" in x else x for x in over]
+    over = ["season" if "sea" in x else x for x in over]
 
     for x in over:
         if x not in ["day", "month", "year", "season"]:
