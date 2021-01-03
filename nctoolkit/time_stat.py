@@ -2,156 +2,89 @@ import copy
 
 from nctoolkit.cleanup import cleanup
 from nctoolkit.runthis import run_this, run_cdo, tidy_command
-from nctoolkit.temporals import *
 from nctoolkit.temp_file import temp_file
 import warnings
 
 
-def time_stat(self, stat="mean", by = "time"):
+def time_stat(self, stat="mean"):
     """Method to calculate a stat over all time steps"""
+
     # create cdo command and run it
-    if by == "time":
-        cdo_command = f"cdo -tim{stat}"
-        run_this(cdo_command, self, output="ensemble")
-        return None
-
-    if stat not in ["mean", "sum", "min", "max", "range", "var", "cumsum", "std"]:
-        raise ValueError(f"{stat} is not a valid CDO stat!")
-
-    if type(by) is str:
-        by = [by]
-
-    for x in by:
-        if x not in ["day", "month", "year", "season"]:
-            raise ValueError(f"{x} is not a valid group!")
-
-    #  grouping by season and day and month makes no sense
-
-    if "season" in by and ("month" in by or "day" in by):
-        raise ValueError("You cannot group by season and day or month")
-
-    by = sorted(list(set(by)))
-
-    if by == ["day", "month"]:
-        by = ["day"]
-
-    # sort by alphabetically
-
-    # single variables
-    # daily climatology
-    if by == ["day"]:
-        ydaystat(self, stat = stat)
-        return None
-
-    # monthly climatology
-    if by == ["month"]:
-        ymonstat(self, stat = stat)
-        return None
-
-    # annual mean
-    if by == ["year"]:
-        yearlystat(self, stat = stat)
-        return None
-
-    # seasonal climatology
-    if by == ["season"]:
-        seasclim(self, stat = stat)
-        return None
-
-    # seasonal climatology
-    if by == ["season", "year"]:
-        seasstat(self, stat = stat)
-        return None
-
-
-    # all three. This is daily mean
-
-    if by == ["day", "month", "year"] or by == ["day", "year"]:
-        dailystat(self, stat = stat)
-        return None
-
-    # monthly mean
-
-    if by == ["month", "year"]:
-        monstat(self, stat = stat)
-        return None
-
-
+    cdo_command = f"cdo -tim{stat}"
+    run_this(cdo_command, self, output="ensemble")
 
 
 def sum(self):
     """
     Calculate the temporal sum of all variables
     """
-    warnings.warn(message="Warning: sum is deprecated. Use tsum!")
     time_stat(self, stat="sum")
 
 
-def mean(self, by = "time"):
+def mean(self):
     """
     Calculate the temporal mean of all variables
     """
-    warnings.warn(message="Warning: mean is deprecated. Use tmean!")
-    time_stat(self, stat="mean", by = by)
+    time_stat(self, stat="mean")
 
 
-def min(self, by = "time"):
+def min(self):
     """
     Calculate the temporal minimum of all variables
     """
-    warnings.warn(message="Warning: min is deprecated. Use tmin!")
-    time_stat(self, stat="min", by = by)
+    time_stat(self, stat="min")
 
 
-def max(self, by = "time"):
+def max(self):
     """
     Calculate the temporal maximum of all variables
     """
-    warnings.warn(message="Warning: max is deprecated. Use tmax!")
-    time_stat(self, stat="max", by = by)
+    time_stat(self, stat="max")
 
-def median(self, by = "time"):
+def median(self):
     """
     Calculate the temporal median of all variables
     """
-    warnings.warn(message="Warning: percentile is deprecated. Use tpercentile!")
-    self.percentile(p = 50, by = by)
+    self.percentile(p = 50)
 
 
-def range(self, by = "time"):
+def range(self):
     """
     Calculate the temporal range of all variables
     """
-    warnings.warn(message="Warning: range is deprecated. Use trange!")
-    time_stat(self, stat="range", by = by)
+    time_stat(self, stat="range")
 
 
-
-def variance(self, by = "time"):
+def var(self):
     """
     Calculate the temporal variance of all variables
     """
-    warnings.warn(message="Warning: variance is deprecated. Use tvariance!")
-    time_stat(self, stat="var", by = by)
+    warnings.warn(message = "var is now deprecated. Please use variance!")
+    time_stat(self, stat="var")
 
-def stdev(self, by = "time"):
+def variance(self):
+    """
+    Calculate the temporal variance of all variables
+    """
+    time_stat(self, stat="var")
+
+def stdev(self):
     """
     Calculate the temporal standard deviation of all variables
     """
-    warnings.warn(message="Warning: stdev is deprecated. Use tstdev!")
-    time_stat(self, stat="std", by = by)
+    time_stat(self, stat="std")
 
 
-def cumsum(self):
+def cum_sum(self):
     """
     Calculate the temporal cumulative sum of all variables
     """
-    warnings.warn(message="Warning: cumsum is deprecated. Use tcumsum!")
     # create cdo command and runit
-    time_stat(self, stat="cumsum")
+    cdo_command = "cdo -timcumsum"
+    run_this(cdo_command, self, output="ensemble")
 
 
-def percentile(self, p=None, by = "time"):
+def percentile(self, p=None):
     """
     Calculate the temporal percentile of all variables
 
@@ -160,7 +93,6 @@ def percentile(self, p=None, by = "time"):
     p: float or int
         Percentile to calculate
     """
-    warnings.warn(message="Warning: percentile is deprecated. Use tpercentile!")
     if p is None:
         raise ValueError("Please supply p")
 
@@ -172,70 +104,6 @@ def percentile(self, p=None, by = "time"):
 
     self.run()
 
-    # create cdo command and run it
-
-    if type(by) is str:
-        by = [by]
-
-    for x in by:
-        if x not in ["day", "month", "year", "season", "time"]:
-            raise ValueError(f"{x} is not a valid group!")
-
-    #  grouping by season and day and month makes no sense
-
-    if "season" in by and ("month" in by or "day" in by):
-        raise ValueError("You cannot group by season and day or month")
-
-    by = sorted(list(set(by)))
-
-    if by == ["day", "month"]:
-        by = ["day"]
-
-
-    if by == ["time"]:
-        min_command = " -timmin "
-        max_command = " -timmax "
-
-    # single variables
-    # daily climatology
-    if by == ["day"]:
-        min_command = " -ydaymin "
-        max_command = " -ydaymax "
-
-    # monthly climatology
-    if by == ["month"]:
-        min_command = " -ymonmin "
-        max_command = " -ymonmax "
-
-    # annual mean
-    if by == ["year"]:
-        min_command = " -yearmin "
-        max_command = " -yearmax "
-
-    # seasonal climatology
-    if by == ["season"]:
-        min_command = " -yseasmin "
-        max_command = " -yseasmax "
-
-    # seasonal climatology
-    if by == ["season", "year"]:
-        min_command = " -seasmin "
-        max_command = " -seasmax "
-
-
-    # all three. This is daily mean
-
-    if by == ["day", "month", "year"] or by == ["day", "year"]:
-        min_command = " -daymin "
-        max_command = " -daymax "
-
-    # monthly mean
-
-    if by == ["month", "year"]:
-        min_command = " -monmin "
-        max_command = " -monmax "
-
-
     new_files = []
     new_commands = []
     for ff in self:
@@ -246,9 +114,9 @@ def percentile(self, p=None, by = "time"):
             + str(p)
             + " "
             + ff
-            + min_command
+            + " -timmin "
             + ff
-            + max_command
+            + " -timmax "
             + ff
             + " "
             + target
@@ -265,8 +133,3 @@ def percentile(self, p=None, by = "time"):
     self.current = new_files
 
     cleanup()
-
-
-
-
-

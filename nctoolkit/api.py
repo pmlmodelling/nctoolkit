@@ -1127,7 +1127,7 @@ class DataSet(object):
     from nctoolkit.time_stat import variance
     from nctoolkit.time_stat import stdev
     from nctoolkit.time_stat import sum
-    from nctoolkit.time_stat import cumsum
+    from nctoolkit.time_stat import cum_sum
 
     from nctoolkit.temporal_stat import tmean
     from nctoolkit.temporal_stat import tpercentile
