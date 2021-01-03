@@ -49,7 +49,7 @@ Documentation
 .. toctree::
    :maxdepth: 1
    :hidden:
-   :caption: Getting Started
+   :caption: Quick overview 
 
    installing
    basic_usage
@@ -81,7 +81,7 @@ Documentation
 .. toctree::
    :maxdepth: 1
    :hidden:
-   :caption: Help & reference
+   :caption: Reference & help
 
    a_to_z
    howto
