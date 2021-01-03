@@ -65,6 +65,7 @@ Documentation
 
    datasets
    exporting 
+   subsetting 
    temporals 
    merging_notebook 
    lazy_methods 
