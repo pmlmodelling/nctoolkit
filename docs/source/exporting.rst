@@ -71,7 +71,7 @@ to ``write_nc``. An example of usage is as follows:
 .. code:: ipython3
 
     data = nc.open_data(infile)
-    data.mean()
+    data.tmean()
     data.zip()
     data.write_nc(outfile)
 
@@ -84,7 +84,7 @@ dataset. An example of usage is as follows:
 .. code:: ipython3
 
     data = nc.open_data(infile)
-    data.annual_mean()
+    data.tmean()
     ds = data.to_xarray()
 
 Convert to pandas dataframe
@@ -96,5 +96,5 @@ dataframe.
 .. code:: ipython3
 
     data = nc.open_data(infile)
-    data.annual_mean()
+    data.tmean()
     df = data.to_dataframe()
