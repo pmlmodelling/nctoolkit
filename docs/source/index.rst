@@ -69,6 +69,7 @@ Documentation
    temporals 
    merging_notebook 
    lazy_methods 
+   globals 
 
 
 **Reference and help**
