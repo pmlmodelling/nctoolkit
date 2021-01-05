@@ -46,6 +46,12 @@ translation["year"] = "cyear"
 translation["month"] = "cmonth"
 translation["day"] = "cday"
 
+translation["lon"] = "clon"
+translation["lat"] = "clat"
+
+translation["longitude"] = "clon"
+translation["latitude"] = "clat"
+
 
 # todo
 # ensure methods work with all logical operators.
