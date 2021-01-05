@@ -1016,6 +1016,8 @@ class DataSet(object):
 
     from nctoolkit.append import append
 
+    from nctoolkit.assign import assign
+
     from nctoolkit.cdo_command import cdo_command
     from nctoolkit.cellareas import cell_areas
 
@@ -1215,3 +1217,4 @@ class DataSet(object):
     from nctoolkit.deprecated import seasonal_min_climatology
     from nctoolkit.deprecated import seasonal_max_climatology
     from nctoolkit.deprecated import seasonal_range_climatology
+
