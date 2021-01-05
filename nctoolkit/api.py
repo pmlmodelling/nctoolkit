@@ -1183,6 +1183,8 @@ class DataSet(object):
     from nctoolkit.deprecated import vertical_cum_sum
     from nctoolkit.deprecated import view
 
+    from nctoolkit.deprecated import cell_areas
+
     from nctoolkit.deprecated import daily_mean
     from nctoolkit.deprecated import daily_min
     from nctoolkit.deprecated import daily_max

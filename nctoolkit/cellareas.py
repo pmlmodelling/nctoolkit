@@ -7,7 +7,7 @@ from nctoolkit.show import nc_variables
 from nctoolkit.temp_file import temp_file
 
 
-def cell_areas(self, join=True):
+def cell_area(self, join=True):
     """
     Calculate the area of grid cells.
     Area of grid cells is given in square meters.

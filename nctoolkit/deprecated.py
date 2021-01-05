@@ -686,3 +686,53 @@ def seasonal_range_climatology(self):
     """
     warnings.warn(message="Warning: seasonal_range_climatology is deprecated. Use trange!")
     seasclim(self, stat="range")
+
+def cell_areas(self, join=True):
+    """
+    Calculate the area of grid cells.
+    Area of grid cells is given in square meters.
+
+    Parameters
+    -------------
+    join: boolean
+        Set to False if you only want the cell areas to be in the output.
+        join=True adds the areas as a variable to the dataset. Defaults to True.
+    """
+
+    if isinstance(join, bool) is False:
+        raise TypeError("join is not boolean")
+
+    # release if you need to join the cell areas to the original file
+    if join:
+        self.run()
+
+    # get the cdo version
+    cdo_check = subprocess.run(
+        "cdo --version", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+    )
+    cdo_check = str(cdo_check.stderr).replace("\\n", "")
+    cdo_check = cdo_check.replace("b'", "").strip()
+    cdo_version = cdo_check.split("(")[0].strip().split(" ")[-1]
+
+    # first run the join case
+    if join:
+
+        new_files = []
+        new_commands = []
+
+        for ff in self:
+
+            if cdo_version in ["1.9.3", "1.9.4", "1.9.5", "1.9.6"]:
+
+                # in cdo < 1.9.6 chaining doesn't work with merge
+
+                if "cell_area" in nc_variables(ff):
+                    raise ValueError("cell_area is already a variable")
+
+                target1 = temp_file(".nc")
+
+                cdo_command = f"cdo -gridarea {ff} {target1}"
+                cdo_command = tidy_command(cdo_command)
+                target1 = run_cdo(cdo_command, target1)
+                new_commands.append(cdo_command)
+
