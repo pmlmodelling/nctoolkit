@@ -21,6 +21,24 @@ def find_parens(s):
 
     return toret
 
+def find_parens2(s):
+    toret = {}
+    pstack = []
+
+    for i, c in enumerate(s):
+        if c == '{':
+            pstack.append(i)
+        elif c == '}':
+            if len(pstack) == 0:
+                raise IndexError("No matching closing parens at: " + str(i))
+            toret[pstack.pop()] = i
+
+    if len(pstack) > 0:
+        raise IndexError("No matching opening parens at: " + str(pstack.pop()))
+
+    return toret
+
+
 funs = [
     "abs",
     "floor",
@@ -139,25 +157,25 @@ def assign(self, **kwargs):
     start = inspect.getsourcelines(start)[0][0].replace("\n", "")[:-1]
     start = start[start.find("(") + 1 :]
 
-    pattern1 = re.compile("\w*\[\w*\]")
-    pattern1 = re.compile("\w*\.\w*\[\w*\]")
-    if len(pattern1.findall(start)) > 0:
-        for x in pattern1.findall(start):
-            raise ValueError(f"The following are not available: {x}. Use local variables")
+    #pattern1 = re.compile("\w*\[\w*\]")
+    #pattern1 = re.compile("\w*\.\w*\[\w*\]")
+    #if len(pattern1.findall(start)) > 0:
+    #    for x in pattern1.findall(start):
+    #        raise ValueError(f"The following are not available: {x}. Use local variables")
 
     # extract x[1] etc. terms
-    pattern1 = re.compile("[a-zA-Z]\w*\[([A-Za-z0-9_.]+)\]")
+    #pattern1 = re.compile("[a-zA-Z]\w*\[([A-Za-z0-9_.]+)\]")
 
-    terms = re.finditer(r"[a-zA-Z]\w*\[([A-Za-z0-9_.\+\*\-\/]+)\]", start)
-    terms = [x[0] for x in list(terms)]
+    #terms = re.finditer(r"[a-zA-Z]\w*\[([A-Za-z0-9_.\+\*\-\/]+)\]", start)
+    #terms = [x[0] for x in list(terms)]
 
-    for x in terms:
-        try:
-            new_term = (eval(x, globals(),  frame.f_back.f_locals))
-        except:
-            raise ValueError(f"{x} is not available!")
+    #for x in terms:
+    #    try:
+    #        new_term = (eval(x, globals(),  frame.f_back.f_locals))
+    #    except:
+    #        raise ValueError(f"{x} is not available!")
 
-        start = start.replace(x, str(new_term))
+    #    start = start.replace(x, str(new_term))
 
 
     while True:
@@ -171,8 +189,19 @@ def assign(self, **kwargs):
         if check_start == start:
             break
 
+    while True:
+        check_start = start
+        pars = find_parens2(start)
+        for key in pars:
+            old_start = start
+            start = start[:key] + start[key:(pars[key]+1)].replace(" ", "") + start[pars[key]+1:]
+            if start != old_start:
+                break
+        if check_start == start:
+            break
 
-    terms = start.split(" ")
+
+    terms = start.replace(" . ", ".").replace(") ", ")").replace(") ", ")").replace(",", " , ").replace("  ", " ").split(" ")
 
     for x in terms:
         if "[" in x:
@@ -183,6 +212,17 @@ def assign(self, **kwargs):
 
             start = start.replace(x, str(new_term))
 
+
+    terms = start.split(" ")
+
+    for x in terms:
+        if "{" in x:
+            try:
+                new_term = (eval(x, globals(),  frame.f_back.f_locals))
+            except:
+                raise ValueError(f"{x} is not available!")
+
+            start = start.replace(x, str(new_term))
 
 
     # fix powers
@@ -195,6 +235,7 @@ def assign(self, **kwargs):
 
     if "{" in start or "}" in start:
         raise ValueError("assign cannot accept { or }")
+
 
     pattern1 = re.compile(",\s+\w+ = lambda")
 
@@ -306,7 +347,6 @@ def assign(self, **kwargs):
         if x == "":
             raise ValueError("Please provide arguments to all functions!")
 
-    del frame
 
     pattern = re.compile("\w*\\(")
     for x in pattern.findall(start):
@@ -341,6 +381,16 @@ def assign(self, **kwargs):
         if total == 0:
             raise ValueError("Formula does not use any dataset variables!")
 
+    terms = " ".join(split1(start)).replace(" . ", ".").split(" ")
+
+    for x in terms:
+        if "." in x:
+            try:
+                new_term = eval(x, globals(),  frame.f_back.f_locals)
+            except:
+                raise ValueError(f"{x} is not available!")
+
+            start = start.replace(x, str(new_term))
 
     pattern = re.compile("[a-zA-Z]\w*\.\w*")
 
@@ -348,6 +398,7 @@ def assign(self, **kwargs):
         problems = str_flatten(list(pattern.findall(start)))
         raise ValueError(f"The following are not available: {problems}. Use local variables")
 
+    del frame
 
     # return start
 
