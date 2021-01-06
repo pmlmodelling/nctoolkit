@@ -146,16 +146,25 @@ def assign(self, **kwargs):
                         if i > 1 and x1[i-1] != ".":
                             if x1[i] not in  frame.f_back.f_locals:
                                 raise ValueError(f"{x1[i]} does not exist!")
-                            i_part = str(frame.f_back.f_locals[x1[i]])
+                            i_part = frame.f_back.f_locals[x1[i]]
+                            if type(i_part) not in [float,int]:
+                                raise ValueError(f"{x1[i]} is not numeric!")
+                            i_part = str(i_part)
                         if i == 0:
                             if x1[i] not in  frame.f_back.f_locals:
                                 raise ValueError(f"{x1[i]} does not exist!")
-                            i_part = str(frame.f_back.f_locals[x1[i]])
+                            i_part = frame.f_back.f_locals[x1[i]]
+                            if type(i_part) not in [float,int]:
+                                raise ValueError(f"{x1[i]} is not numeric!")
+                            i_part = str(i_part)
 
                 else:
                     if x1[i].isidentifier() and (x1[i].isnumeric() == False):
                         if x1[i-1] != ".":
-                            i_part = str(frame.f_back.f_locals[x1[i]])
+                            i_part = frame.f_back.f_locals[x1[i]]
+                            if type(i_part) not in [float,int]:
+                                raise ValueError(f"{x1[i]} is not numeric!")
+                            i_part = str(i_part)
 
             ss_sub+=i_part
 
@@ -209,8 +218,6 @@ def assign(self, **kwargs):
         if x_fixed.strip() != "":
             if x_fixed not in translation.keys():
                 raise ValueError(f"{x_fixed} is not a valid function!")
-        # check validity of function
-    #    print(x.replace("(", ""))
 
     # We need to fix pow functions potentially. Though, it might be better to stick with ^
 
@@ -229,11 +236,11 @@ def assign(self, **kwargs):
         y = " ".join(split1(x))
         z = y.split(" = ")[1]
         total = 0
-        for w in split1(z):
+        for w in (z.replace(" (", "(")).split(" "):
             if w.strip().isidentifier():
                 total+=1
         if total  == 0:
-            raise ValueError("Formula does not use and dataset variables!")
+            raise ValueError("Formula does not use any dataset variables!")
 
 
 
