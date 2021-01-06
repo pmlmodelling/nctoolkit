@@ -1019,7 +1019,7 @@ class DataSet(object):
     from nctoolkit.assign import assign
 
     from nctoolkit.cdo_command import cdo_command
-    from nctoolkit.cellareas import cell_areas
+    from nctoolkit.cellareas import cell_area
 
     from nctoolkit.centres import centre
 
