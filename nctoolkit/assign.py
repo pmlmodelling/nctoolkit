@@ -101,6 +101,12 @@ def assign(self, **kwargs):
     start =  inspect.getsourcelines(start)[0][0].replace("\n", "")[:-1]
     start = start[start.find("(")+1:]
 
+    # fix powers
+
+    if "^" in start:
+        raise ValueError("^ is not valid syntax. Please use **")
+    start = start.replace("**", "^")
+
     start = re.sub(" +", " ", " ".join(split1(start)).replace(" . ", "."))
 
     if "[" in start or "]" in start:
@@ -122,13 +128,9 @@ def assign(self, **kwargs):
     if "&&" in start:
         raise ValueError("&& is not valid syntax. Please use &!")
 
-    if "^" in start:
-        raise ValueError("^ is not valid syntax. Please use **")
 
     start = start.replace("|", "||")
     start = start.replace("&", "&&")
-    start = start.replace("**", "^")
-
 
     # we need to be able to identify lambdas and get rid of them
     #start = start.replace("=", "= ")
