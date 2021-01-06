@@ -96,7 +96,7 @@ def assign(self, **kwargs):
 
     start = kwargs[yy]
     start =  inspect.getsourcelines(start)[0][0].replace("\n", "")[:-1]
-    start = start[start.find("(")+1:]
+    start = start[start.find("(")+1:-1]
 
     start = re.sub(" +", " ", " ".join(split1(start)).replace(" . ", "."))
 
@@ -223,6 +223,19 @@ def assign(self, **kwargs):
     for x in pattern.findall(start):
         if (len(re.findall(r"\(([A-Za-z0-9_]+)\)", x))) == 0:
             raise ValueError("Ensure all functions have arguments")
+
+
+    for x in start.split(";"):
+        y = " ".join(split1(x))
+        z = y.split(" = ")[1]
+        total = 0
+        for w in split1(z):
+            if w.strip().isidentifier():
+                total+=1
+        if total  == 0:
+            raise ValueError("Formula does not use and dataset variables!")
+
+
 
 
     #return start
