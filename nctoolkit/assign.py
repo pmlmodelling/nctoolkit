@@ -99,7 +99,7 @@ def assign(self, **kwargs):
 
     start = kwargs[yy]
     start =  inspect.getsourcelines(start)[0][0].replace("\n", "")[:-1]
-    start = start[start.find("(")+1:-1]
+    start = start[start.find("(")+1:]
 
     start = re.sub(" +", " ", " ".join(split1(start)).replace(" . ", "."))
 
@@ -115,6 +115,19 @@ def assign(self, **kwargs):
         index = x.span()[0]
         start = start[:index] + ";" + start[index + 1:]
 
+
+    if "||" in start:
+        raise ValueError("|| is not valid syntax. Please use |!")
+
+    if "&&" in start:
+        raise ValueError("&& is not valid syntax. Please use &!")
+
+    if "^" in start:
+        raise ValueError("^ is not valid syntax. Please use **")
+
+    start = start.replace("|", "||")
+    start = start.replace("&", "&&")
+    start = start.replace("**", "^")
 
 
     # we need to be able to identify lambdas and get rid of them
@@ -234,9 +247,11 @@ def assign(self, **kwargs):
         if (len(re.findall(r"\(([A-Za-z0-9_]+)\)", x))) == 0:
             raise ValueError("Ensure all functions have arguments")
 
+    def new_split(mystr):
+        return re.split("([+-/*()&|<=])", mystr)
 
     for x in start.split(";"):
-        y = " ".join(split1(x))
+        y = " ".join(new_split(x))
         z = y.split(" = ")[1]
         total = 0
         for w in (z.replace(" (", "(")).split(" "):
