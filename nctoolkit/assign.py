@@ -1,14 +1,48 @@
 import inspect
 import numpy as np
+from nctoolkit.flatten import str_flatten
 
 from nctoolkit.runthis import run_this
 
-funs = ["abs", "floor", "ceil", "float", "int", "nint", "sqr",
-"sqrt", "exp", "log10", "sin", "cos", "tan", "asin", "acos", "atan"]
+def find_parens(s):
+    toret = {}
+    pstack = []
+
+    for i, c in enumerate(s):
+        if c == '[':
+            pstack.append(i)
+        elif c == ']':
+            if len(pstack) == 0:
+                raise IndexError("No matching closing parens at: " + str(i))
+            toret[pstack.pop()] = i
+
+    if len(pstack) > 0:
+        raise IndexError("No matching opening parens at: " + str(pstack.pop()))
+
+    return toret
+
+funs = [
+    "abs",
+    "floor",
+    "ceil",
+    "float",
+    "int",
+    "nint",
+    "sqr",
+    "sqrt",
+    "exp",
+    "log10",
+    "sin",
+    "cos",
+    "tan",
+    "asin",
+    "acos",
+    "atan",
+]
 
 translation = dict()
 for ff in funs:
-    if ff  in dir(np):
+    if ff in dir(np):
         translation[ff] = ff
 translation["asin"] = "arcsin"
 translation["acos"] = "arccos"
@@ -67,12 +101,16 @@ import inspect
 def split1(mystr):
     return re.split("([+-/*()<=])", mystr)
 
+
 def split2(mystr):
     return re.split("([+-/*()<=:])", mystr)
 
+
 def is_lambda(v):
-  LAMBDA = lambda:0
-  return isinstance(v, type(LAMBDA)) and v.__name__ == LAMBDA.__name__
+    LAMBDA = lambda: 0
+    return isinstance(v, type(LAMBDA)) and v.__name__ == LAMBDA.__name__
+
+
 import inspect
 
 pattern = re.compile(":\w*")
@@ -98,8 +136,54 @@ def assign(self, **kwargs):
     # now, we need to parse things.
 
     start = kwargs[yy]
-    start =  inspect.getsourcelines(start)[0][0].replace("\n", "")[:-1]
-    start = start[start.find("(")+1:]
+    start = inspect.getsourcelines(start)[0][0].replace("\n", "")[:-1]
+    start = start[start.find("(") + 1 :]
+
+    pattern1 = re.compile("\w*\[\w*\]")
+    pattern1 = re.compile("\w*\.\w*\[\w*\]")
+    if len(pattern1.findall(start)) > 0:
+        for x in pattern1.findall(start):
+            raise ValueError(f"The following are not available: {x}. Use local variables")
+
+    # extract x[1] etc. terms
+    pattern1 = re.compile("[a-zA-Z]\w*\[([A-Za-z0-9_.]+)\]")
+
+    terms = re.finditer(r"[a-zA-Z]\w*\[([A-Za-z0-9_.\+\*\-\/]+)\]", start)
+    terms = [x[0] for x in list(terms)]
+
+    for x in terms:
+        try:
+            new_term = (eval(x, globals(),  frame.f_back.f_locals))
+        except:
+            raise ValueError(f"{x} is not available!")
+
+        start = start.replace(x, str(new_term))
+
+
+    while True:
+        check_start = start
+        pars = find_parens(start)
+        for key in pars:
+            old_start = start
+            start = start[:key] + start[key:(pars[key]+1)].replace(" ", "") + start[pars[key]+1:]
+            if start != old_start:
+                break
+        if check_start == start:
+            break
+
+
+    terms = start.split(" ")
+
+    for x in terms:
+        if "[" in x:
+            try:
+                new_term = (eval(x, globals(),  frame.f_back.f_locals))
+            except:
+                raise ValueError(f"{x} is not available!")
+
+            start = start.replace(x, str(new_term))
+
+
 
     # fix powers
 
@@ -109,9 +193,6 @@ def assign(self, **kwargs):
 
     start = re.sub(" +", " ", " ".join(split1(start)).replace(" . ", "."))
 
-    if "[" in start or "]" in start:
-        raise ValueError("assign cannot accept [ or ]")
-
     if "{" in start or "}" in start:
         raise ValueError("assign cannot accept { or }")
 
@@ -119,8 +200,7 @@ def assign(self, **kwargs):
 
     for x in pattern1.finditer(start):
         index = x.span()[0]
-        start = start[:index] + ";" + start[index + 1:]
-
+        start = start[:index] + ";" + start[index + 1 :]
 
     if "||" in start:
         raise ValueError("|| is not valid syntax. Please use |!")
@@ -128,22 +208,20 @@ def assign(self, **kwargs):
     if "&&" in start:
         raise ValueError("&& is not valid syntax. Please use &!")
 
-
     start = start.replace("|", "||")
     start = start.replace("&", "&&")
 
     # we need to be able to identify lambdas and get rid of them
-    #start = start.replace("=", "= ")
+    # start = start.replace("=", "= ")
     start = re.sub(" +", " ", " ".join(split1(start)).replace(" . ", "."))
 
     # x. terms are from the netcdf file, not locally
-    #a_list = []
-    #for x in start.split(","):
+    # a_list = []
+    # for x in start.split(","):
     #    match1 = list(pattern.findall(x))[0]
     #    match2 = list(pattern.findall(x))[0][1:] + "."
     #    a_list.append(x.replace(match1, "").replace(match2, ""))
-    #start = ",".join(a_list)
-
+    # start = ",".join(a_list)
 
     # We now need to tidy up each element
 
@@ -159,32 +237,37 @@ def assign(self, **kwargs):
         for i in range(0, len(x1)):
             i_part = x1[i]
             if i > 0:
-                if i < (len(x1)-1):
-                    if x1[i+1] != "(" and x1[i].isidentifier() and (x1[i].isnumeric() == False) and x1[i+1] != ".":
-                        if i > 1 and x1[i-1] != ".":
-                            if x1[i] not in  frame.f_back.f_locals:
+                if i < (len(x1) - 1):
+                    if (
+                        x1[i + 1] != "("
+                        and x1[i].isidentifier()
+                        and (x1[i].isnumeric() == False)
+                        and x1[i + 1] != "."
+                    ):
+                        if i > 1 and x1[i - 1] != ".":
+                            if x1[i] not in frame.f_back.f_locals:
                                 raise ValueError(f"{x1[i]} does not exist!")
                             i_part = frame.f_back.f_locals[x1[i]]
-                            if type(i_part) not in [float,int]:
+                            if type(i_part) not in [float, int]:
                                 raise ValueError(f"{x1[i]} is not numeric!")
                             i_part = str(i_part)
                         if i == 0:
-                            if x1[i] not in  frame.f_back.f_locals:
+                            if x1[i] not in frame.f_back.f_locals:
                                 raise ValueError(f"{x1[i]} does not exist!")
                             i_part = frame.f_back.f_locals[x1[i]]
-                            if type(i_part) not in [float,int]:
+                            if type(i_part) not in [float, int]:
                                 raise ValueError(f"{x1[i]} is not numeric!")
                             i_part = str(i_part)
 
                 else:
                     if x1[i].isidentifier() and (x1[i].isnumeric() == False):
-                        if x1[i-1] != ".":
+                        if x1[i - 1] != ".":
                             i_part = frame.f_back.f_locals[x1[i]]
-                            if type(i_part) not in [float,int]:
+                            if type(i_part) not in [float, int]:
                                 raise ValueError(f"{x1[i]} is not numeric!")
                             i_part = str(i_part)
 
-            ss_sub+=i_part
+            ss_sub += i_part
 
         ss_sub = "".join(ss_sub)
 
@@ -201,9 +284,9 @@ def assign(self, **kwargs):
         l_pattern = re.compile("lambda (\w*):")
         l_string = l_pattern.findall(tt)[0]
         tt1 = tt.replace(f"lambda {l_string}:", " ")
-        tt1 = re.sub(" ", "",  tt1)
+        tt1 = re.sub(" ", "", tt1)
         tt1 = " ".join(split1(tt1)).replace(" . ", ".")
-        tt1 = re.sub(" +", " ",  tt1)
+        tt1 = re.sub(" +", " ", tt1)
 
         for ss in tt1.split(" "):
             if ss.startswith(f"{l_string}."):
@@ -219,14 +302,11 @@ def assign(self, **kwargs):
 
     start = start.replace(" lambda ", " ").replace(" ", "")
 
-
-    for x in re.findall(r'\((.*?)\)',start):
+    for x in re.findall(r"\((.*?)\)", start):
         if x == "":
             raise ValueError("Please provide arguments to all functions!")
 
     del frame
-
-
 
     pattern = re.compile("\w*\\(")
     for x in pattern.findall(start):
@@ -243,7 +323,6 @@ def assign(self, **kwargs):
     for key in translation:
         start = start.replace(f"{key}(", f"{translation[key]}(")
 
-
     pattern = re.compile("\w*\\(+\w*\\)")
     for x in pattern.findall(start):
         if (len(re.findall(r"\(([A-Za-z0-9_]+)\)", x))) == 0:
@@ -258,22 +337,24 @@ def assign(self, **kwargs):
         total = 0
         for w in (z.replace(" (", "(")).split(" "):
             if w.strip().isidentifier():
-                total+=1
-        if total  == 0:
+                total += 1
+        if total == 0:
             raise ValueError("Formula does not use any dataset variables!")
 
 
+    pattern = re.compile("[a-zA-Z]\w*\.\w*")
+
+    if len(pattern.findall(start)) > 0:
+        problems = str_flatten(list(pattern.findall(start)))
+        raise ValueError(f"The following are not available: {problems}. Use local variables")
 
 
-    #return start
+    # return start
 
     # not sure what to do, if for example x[1] is an argument. Throw an error!
 
-
     # Finally, check functions are valid
-
 
     # create the cdo call and run it
     cdo_command = f"cdo -aexpr,'{start}'"
     run_this(cdo_command, self, output="ensemble")
-
