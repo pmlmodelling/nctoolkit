@@ -5,6 +5,14 @@ from nctoolkit.flatten import str_flatten
 from nctoolkit.runthis import run_this
 
 
+def is_number(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        return False
+
+
 def between_brackets(s):
     return s[s.find("(") + 1 : s.find(")")]
 
@@ -178,15 +186,14 @@ def assign(self, **kwargs):
     # now, we need to parse things.
 
     start = kwargs[yy]
-    start = inspect.getsourcelines(start)[0][0].replace("\n", "")
-    start = start[start.find("(") + 1 :-1]
+    start = inspect.getsourcelines(start)[0][0].replace("\n", "").strip()
+    start = start[start.find("(") + 1 : -1]
 
     pattern1 = re.compile(",\s+\w+ = lambda")
 
     for x in pattern1.finditer(start):
         index = x.span()[0]
         start = start[:index] + ";" + start[index + 1 :]
-
 
     command = list()
     starts = start
@@ -259,14 +266,76 @@ def assign(self, **kwargs):
 
         # tidy functions
 
+
+        start = start.replace(" [", "[").replace("(", "( ").replace(" . ", ".")
+#        print([x for x in start.replace(" . ", ".").split(" ")])
+
+
+
+        #terms = list(
+        #    set(
+        #        [
+        #            x
+        #            for x in start.replace(" . ", ".").split(" ")
+        #            if x.endswith("(") and len(x) > 1
+        #        ]
+        #    )
+        #)
+
+
+        #for x in terms:
+        #    if ("[" in x and f"{lambda_value}." in x) == False:
+
+        #        for y in re.finditer(x.replace("(", "\\(").replace("[", "\\["), start):
+        #            if len(y.group()) > 0:
+        #                old_start = start
+        #                start_parens = find_parens3(start)
+        #                x_term = x + start[y.span()[1] : start_parens[y.span()[1] - 1] + 1]
+        #                start = start.replace(x_term, x_term.replace(" ", ""))
+
+        ######### Evaluate functions
+
+        # pattern to identify functions
+        fun_pattern = re.compile("[a-zA-Z\_][a-zA-Z\_z.0-9]*\(")
+
+        for x in fun_pattern.findall(start):
+
+            check = True
+            while check:
+                x_terms =re.finditer(x.replace("(", "\\(").replace("[", "\\["), start)
+
+                terminate =  len(re.findall(x.replace("(", "\\(").replace("[", "\\["), start))
+
+                if terminate == 0:
+                    check = False
+
+                tracker = 0
+                for y in x_terms:
+                    if x not in start:
+                        check = False
+                        break
+                    if x in start:
+                       old_start = start
+                       start_parens = find_parens3(start)
+                       x_term = x + start[y.span()[1] : start_parens[y.span()[1] - 1] + 1]
+                       try:
+                           new_x = eval(x_term, globals(), frame.f_back.f_locals)
+                           if type(new_x) is not str:
+                               if is_number(str(new_x)):
+                                   start = start.replace(x_term, str(new_x).replace(" ", ""))
+                           if start != old_start:
+                               break
+                       except:
+                           odllan = "nothing"
+                    tracker +=1
+                    if tracker == terminate:
+                        check = False
+
         terms = list(
             set(
                 [
                     x
-                    for x in " ".join(split1(start))
-                    .replace(" (", "(")
-                    .replace(" . ", ".")
-                    .split(" ")
+                    for x in start.replace(" . ", ".").split(" ")
                     if x.endswith("(") and len(x) > 1
                 ]
             )
@@ -275,13 +344,14 @@ def assign(self, **kwargs):
 
         for x in terms:
             if ("[" in x and f"{lambda_value}." in x) == False:
-                for y in re.finditer(x.replace("(", "\\(").replace("[", "\\["), start):
-                    old_start = start
-                    start_parens = find_parens3(start)
-                    x_term = x + start[y.span()[1] : start_parens[y.span()[1] - 1] + 1]
-                    start = start.replace(x_term, x_term.replace(" ", ""))
 
-        start = start.replace(" [", "[")
+                for y in re.finditer(x.replace("(", "\\(").replace("[", "\\["), start):
+                    if len(y.group()) > 0:
+                        old_start = start
+                        start_parens = find_parens3(start)
+                        x_term = x + start[y.span()[1] : start_parens[y.span()[1] - 1] + 1]
+                        start = start.replace(x_term, x_term.replace(" ", ""))
+
 
         error_message = None
         for x in start.split(" "):
@@ -294,9 +364,9 @@ def assign(self, **kwargs):
                         if eval(f"callable({x_fun})", globals(), frame.f_back.f_locals):
                             error_message = f"{x} does not evaluate to numeric!"
                             new_x = eval(x, globals(), frame.f_back.f_locals)
-                            if "float" not in str(type(new_x)) and "int" not in str(
-                                type(new_x)
-                            ):
+                            if type(new_x) is str:
+                                error_message = f"{x} evaluates to a string!"
+                            if is_number(str(new_x)) == False:
                                 error_message = f"{x} does not evaluate to numeric!"
 
                             new_start = ""
@@ -307,20 +377,26 @@ def assign(self, **kwargs):
                                     new_start += " " + str(new_x)
                             start = new_start
                             error_message = None
+                        else:
+                            raise ValueError("Not callable")
 
                     except:
 
                         x_term = between_brackets(x)
-                        #if x_fun in translation.keys():
+                        # if x_fun in translation.keys():
                         #    error_message = f"{x} cannot be evaluated to numeric!"
                         if x_fun in translation.keys():
-                            if f"{lambda_value}." in x_term == False:
-                                raise ValueError(f"Error for {x}: nctoolkit functions must take dataset variables as args!")
+                            if (f"{lambda_value}." in x_term) == False:
+                            #    error_message = f"Error for {x}: nctoolkit functions must take dataset variables as args!"
+                                raise ValueError(
+                                    f"Error for {x}: nctoolkit functions must take dataset variables as args!"
+                                )
             if error_message is not None:
                 break
 
         if error_message is not None:
             raise ValueError(error_message)
+
 
         start = (
             " ".join(split1(start))
@@ -362,7 +438,9 @@ def assign(self, **kwargs):
             if check_start == start:
                 break
 
-        start = start.replace(";", " ; ").replace("  ", " ")
+        start = start.replace(";", " ; ").replace("  ", " ").replace(") ", ")")
+
+
 
         terms = (
             start.replace(" . ", ".")
@@ -456,19 +534,18 @@ def assign(self, **kwargs):
 
         # We now need to tidy up each element
 
-
         start = " ".join(split1(start))
         start = start.replace("  ", " ")
         start = start.replace(" (", "(").replace(" . ", ".")
         terms = start.split(" ")
 
         error_message = None
+
         for i in range(2, len(terms)):
             if (
                 terms[i].isidentifier()
-                and terms[i - 2] != ";"
                 and terms[i] != "lambda"
-                and terms[i + 1] != lambda_value
+                and terms[min(i + 1, len(terms) - 1)] != lambda_value
             ):
                 term = terms[i]
                 if term in frame.f_back.f_locals:
@@ -490,57 +567,6 @@ def assign(self, **kwargs):
 
         if error_message is not None:
             raise ValueError(error_message)
-
-        if False:
-            start = start.replace("=", " = ")
-            new_start = []
-
-            start = re.sub(" +", " ", " ".join(split1(start)).replace(" . ", "."))
-
-            for ss in start.split(";"):
-                x1 = split2(ss)
-                x1 = [x.strip() for x in x1]
-                ss_sub = ""
-                for i in range(0, len(x1)):
-                    i_part = x1[i]
-                    if i > 0:
-                        if i < (len(x1) - 1):
-                            if (
-                                x1[i + 1] != "("
-                                and x1[i].isidentifier()
-                                and (x1[i].isnumeric() == False)
-                                and x1[i + 1] != "."
-                            ):
-                                if i > 1 and x1[i - 1] != ".":
-                                    if x1[i] not in frame.f_back.f_locals:
-                                        raise ValueError(f"{x1[i]} does not exist!")
-                                    i_part = frame.f_back.f_locals[x1[i]]
-                                    if type(i_part) not in [float, int]:
-                                        raise ValueError(f"{x1[i]} is not numeric!")
-                                    i_part = str(i_part)
-                                if i == 0:
-                                    if x1[i] not in frame.f_back.f_locals:
-                                        raise ValueError(f"{x1[i]} does not exist!")
-                                    i_part = frame.f_back.f_locals[x1[i]]
-                                    if type(i_part) not in [float, int]:
-                                        raise ValueError(f"{x1[i]} is not numeric!")
-                                    i_part = str(i_part)
-
-                        else:
-                            if x1[i].isidentifier() and (x1[i].isnumeric() == False):
-                                if x1[i - 1] != ".":
-                                    i_part = frame.f_back.f_locals[x1[i]]
-                                    if type(i_part) not in [float, int]:
-                                        raise ValueError(f"{x1[i]} is not numeric!")
-                                    i_part = str(i_part)
-
-                    ss_sub += i_part
-
-                ss_sub = "".join(ss_sub)
-
-                new_start.append(ss_sub)
-
-            start = ";".join(new_start)
 
         start = " ".join(split1(start))
 
@@ -593,10 +619,11 @@ def assign(self, **kwargs):
             if (len(re.findall(r"\(([A-Za-z0-9_]+)\)", x))) == 0:
                 raise ValueError("Ensure all functions have arguments")
 
-
         start = " ".join(split1(start))
+
         def new_split(mystr):
-            return re.split("([+-/*()&|<=^])", mystr)
+            return re.split("([+-/*()&|<>=!^])", mystr)
+
 
         for x in start.split(";"):
             y = " ".join(new_split(x))
@@ -612,15 +639,14 @@ def assign(self, **kwargs):
 
         # Now evaluate any
 
-    command = ";".join(command)
+    command = ";".join(command).replace(" ", "")
 
     command = " ".join(split1(command)).replace(" . ", ".").replace(";", " ; ")
-
 
     for term in command.split(" "):
 
         if "." in term:
-            pattern1 = re.compile("[a-zA-Z]")
+            pattern1 = re.compile(r"[a-zA-Z]")
             if len(pattern1.findall(term)) > 0:
                 if term.split(".")[0] in frame.f_back.f_locals:
                     try:
