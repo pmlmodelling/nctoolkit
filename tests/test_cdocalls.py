@@ -90,7 +90,7 @@ class TestCalls:
         data.mutate({"k": "sst+273.15"})
         data.sum_all()
 
-        assert data.history[1] == 'cdo -expr,"total=k+sst"'
+        assert data.history[1] == 'cdo -expr,total=k+sst '
 
     def test_selectseasoncall(self):
         nc.options(lazy=True)
