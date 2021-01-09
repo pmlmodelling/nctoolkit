@@ -125,12 +125,6 @@ translation["lat"] = "clat"
 translation["longitude"] = "clon"
 translation["latitude"] = "clat"
 
-
-# todo
-# ensure methods work with all logical operators.
-# convert code for fixing expression to a function. Invitation to bugs currently
-
-
 # split using all possible mathematical operators
 def split1(mystr):
     return re.split("([+-/*()<=])", mystr)
@@ -146,13 +140,23 @@ pattern = re.compile(":\w*")
 
 def assign(self, drop=False, **kwargs):
     """
-    Create new variables using mathematical expressions, and keep original variables
-
+    Create new variables
+    Existing columns that are re-assigned will be overwritten.
     Parameters
-    -------------
-    operations : dict
-        operations to apply. The keys are the new variables to generate.
-        The values are the mathematical operations to carry out. Both must be strings.
+    ----------
+    drop : bool
+        Set to True if you want existing variables to be removed once the new ones have been created.
+        Defaults to False.
+
+        should evaluate to a numeric. New variables are calculated for each grid cell and time step.
+    **kwargs : dict of {str: callable}
+        New variable names are keywords. All terms in the equation given by the lamda function
+        should evaluate to a numeric. New variables are calculated for each grid cell and time step.
+    Notes
+    -----
+    Operations are carried out in the order give. So if a new variable is created in the first argument,
+    it can then be used in following arguments.
+
     """
     frame = inspect.currentframe()
 
