@@ -179,16 +179,17 @@ def assign(self, **kwargs):
     frame = inspect.currentframe()
 
     # first we need to check if everything is a lambda function
-    for yy in kwargs:
-        if is_lambda(kwargs[yy]) == False:
+    for k, v in kwargs.items():
+        if is_lambda(v) == False:
             raise ValueError("Please check everything is a lambda function!")
 
     # now, we need to parse things.
 
-    start = kwargs[yy]
+    start = v
     start = inspect.getsourcelines(start)[0][0].replace("\n", "").strip()
     start = start[start.find("(") + 1 : -1]
 
+    start = start.replace("  ", " ")
     pattern1 = re.compile(",\s+\w+ = lambda")
 
     for x in pattern1.finditer(start):
@@ -198,26 +199,6 @@ def assign(self, **kwargs):
     command = list()
     starts = start
     for start in starts.split(";"):
-
-        # pattern1 = re.compile("\w*\[\w*\]")
-        # pattern1 = re.compile("\w*\.\w*\[\w*\]")
-        # if len(pattern1.findall(start)) > 0:
-        #    for x in pattern1.findall(start):
-        #        raise ValueError(f"The following are not available: {x}. Use local variables")
-
-        # extract x[1] etc. terms
-        # pattern1 = re.compile("[a-zA-Z]\w*\[([A-Za-z0-9_.]+)\]")
-
-        # terms = re.finditer(r"[a-zA-Z]\w*\[([A-Za-z0-9_.\+\*\-\/]+)\]", start)
-        # terms = [x[0] for x in list(terms)]
-
-        # for x in terms:
-        #    try:
-        #        new_term = (eval(x, globals(),  frame.f_back.f_locals))
-        #    except:
-        #        raise ValueError(f"{x} is not available!")
-
-        #    start = start.replace(x, str(new_term))
 
         patternl = re.compile("lambda \w*:")
         lambda_value = patternl.findall(start)[0][-2]
@@ -232,7 +213,8 @@ def assign(self, **kwargs):
         # run equations first.
         # key here is that equation can only pure pure python or pure cdo
 
-        while True:
+        check_them = True
+        while check_them:
             check_start = start
             pars = find_parens(start)
             for key in pars:
@@ -245,7 +227,7 @@ def assign(self, **kwargs):
                 if start != old_start:
                     break
             if check_start == start:
-                break
+                check_them = False
 
         while True:
             check_start = start
@@ -266,34 +248,7 @@ def assign(self, **kwargs):
 
         # tidy functions
 
-
         start = start.replace(" [", "[").replace("(", "( ").replace(" . ", ".")
-#        print([x for x in start.replace(" . ", ".").split(" ")])
-
-
-
-        #terms = list(
-        #    set(
-        #        [
-        #            x
-        #            for x in start.replace(" . ", ".").split(" ")
-        #            if x.endswith("(") and len(x) > 1
-        #        ]
-        #    )
-        #)
-
-
-        #for x in terms:
-        #    if ("[" in x and f"{lambda_value}." in x) == False:
-
-        #        for y in re.finditer(x.replace("(", "\\(").replace("[", "\\["), start):
-        #            if len(y.group()) > 0:
-        #                old_start = start
-        #                start_parens = find_parens3(start)
-        #                x_term = x + start[y.span()[1] : start_parens[y.span()[1] - 1] + 1]
-        #                start = start.replace(x_term, x_term.replace(" ", ""))
-
-        ######### Evaluate functions
 
         # pattern to identify functions
         fun_pattern = re.compile("[a-zA-Z\_][a-zA-Z\_z.0-9]*\(")
@@ -302,32 +257,35 @@ def assign(self, **kwargs):
 
             check = True
             while check:
-                x_terms =re.finditer(x.replace("(", "\\(").replace("[", "\\["), start)
+                x_terms = re.finditer(x.replace("(", "\\(").replace("[", "\\["), start)
 
-                terminate =  len(re.findall(x.replace("(", "\\(").replace("[", "\\["), start))
+                terminate = len(
+                    re.findall(x.replace("(", "\\(").replace("[", "\\["), start)
+                )
 
                 if terminate == 0:
                     check = False
 
                 tracker = 0
                 for y in x_terms:
-                    if x not in start:
-                        check = False
-                        break
                     if x in start:
-                       old_start = start
-                       start_parens = find_parens3(start)
-                       x_term = x + start[y.span()[1] : start_parens[y.span()[1] - 1] + 1]
-                       try:
-                           new_x = eval(x_term, globals(), frame.f_back.f_locals)
-                           if type(new_x) is not str:
-                               if is_number(str(new_x)):
-                                   start = start.replace(x_term, str(new_x).replace(" ", ""))
-                           if start != old_start:
-                               break
-                       except:
-                           odllan = "nothing"
-                    tracker +=1
+                        old_start = start
+                        start_parens = find_parens3(start)
+                        x_term = (
+                            x + start[y.span()[1] : start_parens[y.span()[1] - 1] + 1]
+                        )
+                        try:
+                            new_x = eval(x_term, globals(), frame.f_back.f_locals)
+                            if type(new_x) is not str:
+                                if is_number(str(new_x)):
+                                    start = start.replace(
+                                        x_term, str(new_x).replace(" ", "")
+                                    )
+                            if start != old_start:
+                                break
+                        except:
+                            odllan = "nothing"
+                    tracker += 1
                     if tracker == terminate:
                         check = False
 
@@ -341,7 +299,6 @@ def assign(self, **kwargs):
             )
         )
 
-
         for x in terms:
             if ("[" in x and f"{lambda_value}." in x) == False:
 
@@ -349,54 +306,46 @@ def assign(self, **kwargs):
                     if len(y.group()) > 0:
                         old_start = start
                         start_parens = find_parens3(start)
-                        x_term = x + start[y.span()[1] : start_parens[y.span()[1] - 1] + 1]
+                        x_term = (
+                            x + start[y.span()[1] : start_parens[y.span()[1] - 1] + 1]
+                        )
                         start = start.replace(x_term, x_term.replace(" ", ""))
-
 
         error_message = None
         for x in start.split(" "):
             if "(" in x:
                 x_fun = x.split("(")[0]
-                pattern1 = re.compile("[A-Za-z\\.\\_]*")
+                pattern1 = re.compile("[A-Za-z0-9\\.\\_]*")
                 if pattern1.findall(x_fun)[0] == x_fun:
                     try:
                         # need to tweak this so that it captures the output and returns an appropriate error
-                        if eval(f"callable({x_fun})", globals(), frame.f_back.f_locals):
+                        new_x = eval(x, globals(), frame.f_back.f_locals)
+                        if type(new_x) is str:
+                            error_message = f"{x} evaluates to a string!"
+                            raise ValueError(f"{x} evaluates to a string")
+                        if is_number(str(new_x)) == False:
                             error_message = f"{x} does not evaluate to numeric!"
-                            new_x = eval(x, globals(), frame.f_back.f_locals)
-                            if type(new_x) is str:
-                                error_message = f"{x} evaluates to a string!"
-                            if is_number(str(new_x)) == False:
-                                error_message = f"{x} does not evaluate to numeric!"
+                            raise ValueError(f"{x} does not evaluate to numeric!")
 
-                            new_start = ""
-                            for y in start.split(" "):
-                                if y != x:
-                                    new_start += " " + y
-                                else:
-                                    new_start += " " + str(new_x)
-                            start = new_start
-                            error_message = None
-                        else:
-                            raise ValueError("Not callable")
+                        new_start = ""
+                        for y in start.split(" "):
+                            if y != x:
+                                new_start += " " + y
+                            else:
+                                new_start += " " + str(new_x)
+                        start = new_start
+                        error_message = None
 
                     except:
 
-                        x_term = between_brackets(x)
-                        # if x_fun in translation.keys():
-                        #    error_message = f"{x} cannot be evaluated to numeric!"
                         if x_fun in translation.keys():
+                            x_term = between_brackets(x)
                             if (f"{lambda_value}." in x_term) == False:
-                            #    error_message = f"Error for {x}: nctoolkit functions must take dataset variables as args!"
                                 raise ValueError(
                                     f"Error for {x}: nctoolkit functions must take dataset variables as args!"
                                 )
-            if error_message is not None:
-                break
-
-        if error_message is not None:
-            raise ValueError(error_message)
-
+                        else:
+                            raise ValueError(f"{x} cannot be evaluated!")
 
         start = (
             " ".join(split1(start))
@@ -405,42 +354,13 @@ def assign(self, **kwargs):
             .replace(" . ", ".")
         )
 
-        # run equations first.
-        # key here is that equation can only pure pure python or pure cdo
-
-        while True:
-            check_start = start
-            pars = find_parens(start)
-            for key in pars:
-                old_start = start
-                start = (
-                    start[:key]
-                    + start[key : (pars[key] + 1)].replace(" ", "")
-                    + start[pars[key] + 1 :]
-                )
-                if start != old_start:
-                    break
-            if check_start == start:
-                break
-
-        while True:
-            check_start = start
-            pars = find_parens2(start)
-            for key in pars:
-                old_start = start
-                start = (
-                    start[:key]
-                    + start[key : (pars[key] + 1)].replace(" ", "")
-                    + start[pars[key] + 1 :]
-                )
-                if start != old_start:
-                    break
-            if check_start == start:
-                break
-
         start = start.replace(";", " ; ").replace("  ", " ").replace(") ", ")")
 
-
+        # put spaces round lambda x: etc.
+        pattern1 = re.compile("lambda [a-zA-Z\_][a-zA-Z\_z0-9]*\:")
+        for x in pattern1.findall(start):
+            start = start.replace(x, x + " ")
+        rtart = start.replace("  ", " ")
 
         terms = (
             start.replace(" . ", ".")
@@ -498,24 +418,10 @@ def assign(self, **kwargs):
 
         if "^" in start:
             raise ValueError("^ is not valid syntax. Please use **")
+
         start = start.replace("* ", "*").replace("**", "^")
 
         start = re.sub(" +", " ", " ".join(split1(start)).replace(" . ", "."))
-
-        # if "{" in start or "}" in start:
-        #    raise ValueError("assign cannot accept { or }")
-
-        pattern1 = re.compile(",\s+\w+ = lambda")
-
-        for x in pattern1.finditer(start):
-            index = x.span()[0]
-            start = start[:index] + ";" + start[index + 1 :]
-
-        if "||" in start:
-            raise ValueError("|| is not valid syntax. Please use |!")
-
-        if "&&" in start:
-            raise ValueError("&& is not valid syntax. Please use &!")
 
         start = start.replace("|", "||")
         start = start.replace("&", "&&")
@@ -523,14 +429,6 @@ def assign(self, **kwargs):
         # we need to be able to identify lambdas and get rid of them
         # start = start.replace("=", "= ")
         start = re.sub(" +", " ", " ".join(split1(start)).replace(" . ", "."))
-
-        # x. terms are from the netcdf file, not locally
-        # a_list = []
-        # for x in start.split(","):
-        #    match1 = list(pattern.findall(x))[0]
-        #    match2 = list(pattern.findall(x))[0][1:] + "."
-        #    a_list.append(x.replace(match1, "").replace(match2, ""))
-        # start = ",".join(a_list)
 
         # We now need to tidy up each element
 
@@ -551,8 +449,14 @@ def assign(self, **kwargs):
                 if term in frame.f_back.f_locals:
                     try:
                         new_term = eval(term, globals(), frame.f_back.f_locals)
-                        if type(new_term) not in [int, float]:
+                        if type(new_term) is str:
                             error_message = f"{term} does not evaluate to a numeric!"
+                            raise ValueError(f"{term} does not evaluate to a numeric!")
+
+                        if is_number(str(new_term)) == False:
+                            error_message = f"{term} does not evaluate to a numeric!"
+                            raise ValueError(f"{term} does not evaluate to a numeric!")
+
                         new_start = ""
                         for y in start.split(" "):
                             if y != term:
@@ -564,9 +468,6 @@ def assign(self, **kwargs):
                         raise ValueError(f"{term} is not available!")
                 else:
                     raise ValueError(f"{term} is not available!")
-
-        if error_message is not None:
-            raise ValueError(error_message)
 
         start = " ".join(split1(start))
 
@@ -595,35 +496,16 @@ def assign(self, **kwargs):
 
         start = start.replace(" lambda ", " ").replace(" ", "")
 
-        for x in re.findall(r"\((.*?)\)", start):
-            if x == "":
-                raise ValueError("Please provide arguments to all functions!")
-
-        pattern = re.compile("\w*\\(")
-        for x in pattern.findall(start):
-            x_fixed = x.replace("(", "")
-            if x_fixed == "pow":
-                raise ValueError("pow is not available. Use ^ instead.")
-            if x_fixed.strip() != "":
-                if x_fixed not in translation.keys():
-                    raise ValueError(f"{x_fixed} is not a valid function!")
-
         # We need to fix pow functions potentially. Though, it might be better to stick with ^
 
         # translate numpy style functions to cdo functions
         for key in translation:
             start = start.replace(f"{key}(", f"{translation[key]}(")
 
-        pattern = re.compile("\w*\\(+\w*\\)")
-        for x in pattern.findall(start):
-            if (len(re.findall(r"\(([A-Za-z0-9_]+)\)", x))) == 0:
-                raise ValueError("Ensure all functions have arguments")
-
         start = " ".join(split1(start))
 
         def new_split(mystr):
             return re.split("([+-/*()&|<>=!^])", mystr)
-
 
         for x in start.split(";"):
             y = " ".join(new_split(x))
@@ -637,8 +519,6 @@ def assign(self, **kwargs):
 
         command.append(start)
 
-        # Now evaluate any
-
     command = ";".join(command).replace(" ", "")
 
     command = " ".join(split1(command)).replace(" . ", ".").replace(";", " ; ")
@@ -651,6 +531,10 @@ def assign(self, **kwargs):
                 if term.split(".")[0] in frame.f_back.f_locals:
                     try:
                         new_term = eval(term, globals(), frame.f_back.f_locals)
+                        if type(new_term) is str:
+                            raise ValueError(f"{new_term} is not numeric!")
+                        if is_number(str(new_term)) == False:
+                            raise ValueError(f"{new_term} is not numeric!")
                         new_start = ""
                         for y in command.split(" "):
                             if y != term:
