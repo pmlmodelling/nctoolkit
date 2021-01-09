@@ -1,7 +1,8 @@
+import re
 import inspect
 import numpy as np
-from nctoolkit.flatten import str_flatten
 
+from nctoolkit.flatten import str_flatten
 from nctoolkit.runthis import run_this
 
 
@@ -25,12 +26,7 @@ def find_parens(s):
         if c == "[":
             pstack.append(i)
         elif c == "]":
-            if len(pstack) == 0:
-                raise IndexError("No matching closing parens at: " + str(i))
             toret[pstack.pop()] = i
-
-    if len(pstack) > 0:
-        raise IndexError("No matching opening parens at: " + str(pstack.pop()))
 
     return toret
 
@@ -43,12 +39,7 @@ def find_parens2(s):
         if c == "{":
             pstack.append(i)
         elif c == "}":
-            if len(pstack) == 0:
-                raise IndexError("No matching closing parens at: " + str(i))
             toret[pstack.pop()] = i
-
-    if len(pstack) > 0:
-        raise IndexError("No matching opening parens at: " + str(pstack.pop()))
 
     return toret
 
@@ -61,12 +52,7 @@ def find_parens3(s):
         if c == "(":
             pstack.append(i)
         elif c == ")":
-            if len(pstack) == 0:
-                raise IndexError("No matching closing parens at: " + str(i))
             toret[pstack.pop()] = i
-
-    if len(pstack) > 0:
-        raise IndexError("No matching opening parens at: " + str(pstack.pop()))
 
     return toret
 
@@ -144,24 +130,16 @@ translation["latitude"] = "clat"
 # ensure methods work with all logical operators.
 # convert code for fixing expression to a function. Invitation to bugs currently
 
-import re
-import inspect
 
 # split using all possible mathematical operators
 def split1(mystr):
     return re.split("([+-/*()<=])", mystr)
 
 
-def split2(mystr):
-    return re.split("([+-/*()<=:])", mystr)
-
-
 def is_lambda(v):
     LAMBDA = lambda: 0
     return isinstance(v, type(LAMBDA)) and v.__name__ == LAMBDA.__name__
 
-
-import inspect
 
 pattern = re.compile(":\w*")
 
