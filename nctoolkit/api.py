@@ -1034,7 +1034,7 @@ class DataSet(object):
 
 
 
-    from nctoolkit.delete import remove_variables
+    from nctoolkit.drop import drop
 
     from nctoolkit.ensembles import ensemble_mean
     from nctoolkit.ensembles import ensemble_max
@@ -1219,4 +1219,4 @@ class DataSet(object):
     from nctoolkit.deprecated import seasonal_min_climatology
     from nctoolkit.deprecated import seasonal_max_climatology
     from nctoolkit.deprecated import seasonal_range_climatology
-
+    from nctoolkit.deprecated import remove_variables

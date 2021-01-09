@@ -2,7 +2,7 @@ from nctoolkit.flatten import str_flatten
 from nctoolkit.runthis import run_this
 
 
-def remove_variables(self, vars=None):
+def drop(self, vars=None):
     """
     Remove variables
     This will remove stated variables from files in the dataset.
