@@ -144,7 +144,7 @@ def is_lambda(v):
 pattern = re.compile(":\w*")
 
 
-def assign(self, **kwargs):
+def assign(self, drop=False, **kwargs):
     """
     Create new variables using mathematical expressions, and keep original variables
 
@@ -156,16 +156,58 @@ def assign(self, **kwargs):
     """
     frame = inspect.currentframe()
 
+    if type(drop) is not bool:
+        raise ValueError("drop is not boolean!")
+
     # first we need to check if everything is a lambda function
+    # for k, v in kwargs.items():
+    #    if k == "drop":
+    #        if type(v) is not bool:
+    #            raise ValueError("drop must be boolean!")
+    #        drop_vars = v
+    #    else:
+    #        if is_lambda(v) == False:
+    #            raise ValueError("Please check everything is a lambda function!")
+    #        lambdas = v
+
+    if len(kwargs) == 0:
+        raise ValueError("Please provide assignments!")
+
     for k, v in kwargs.items():
+        # if k == "drop":
+        #    if type(v) is not bool:
+        #        raise ValueError("drop must be boolean!")
+        #    drop_vars = v
+        # else:
         if is_lambda(v) == False:
             raise ValueError("Please check everything is a lambda function!")
+        lambdas = v
 
     # now, we need to parse things.
 
-    start = v
+    start = lambdas
     start = inspect.getsourcelines(start)[0][0].replace("\n", "").strip()
     start = start[start.find("(") + 1 : -1]
+    pattern1 = re.compile("drop\s*=\s*(True|False)")
+    y = pattern1.search(start)
+    if y is not None:
+        y = y.group()
+        start = start.replace(y, "").strip()
+
+    start = start.strip()
+
+    if start.endswith(","):
+        start = start[:-1]
+
+    if start.startswith(","):
+        start = start[1:]
+    start = start.strip()
+
+    pattern1 = re.compile(",\s,")
+    y = pattern1.search(start)
+    if y is not None:
+        y = y.group()
+        start = start.replace(y, " , ").strip()
 
     start = start.replace("  ", " ")
     pattern1 = re.compile(",\s+\w+ = lambda")
@@ -532,5 +574,9 @@ def assign(self, **kwargs):
     # return start
 
     # create the cdo call and run it
-    cdo_command = f"cdo -aexpr,'{command}'"
+    if drop == False:
+        cdo_command = f"cdo -aexpr,'{command}'"
+    else:
+        cdo_command = f"cdo -expr,'{command}'"
+
     run_this(cdo_command, self, output="ensemble")
