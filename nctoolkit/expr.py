@@ -1,4 +1,5 @@
 import inspect
+import warnings
 
 from nctoolkit.runthis import run_this
 
@@ -72,6 +73,7 @@ def mutate(self, operations=None):
         operations to apply. The keys are the new variables to generate.
         The values are the mathematical operations to carry out. Both must be strings.
     """
+    warnings.warn(message="Warning: mutate is deprecated. Use assign!")
 
     if type(operations) is not dict:
         raise TypeError("No expression was provided")
@@ -97,6 +99,7 @@ def transmute(self, operations=None):
         operations to apply. The keys are the new variables to generate.
         The values are the mathematical operations to carry out. Both must be strings.
     """
+    warnings.warn(message="Warning: transmute is deprecated. Use assign!")
     # create the cdo call and run it
 
     frame = inspect.currentframe()
@@ -126,15 +129,17 @@ def sum_all(self, drop=True):
         raise TypeError("This only works for single files presently")
 
     if drop is True:
-        self.transmute({"total": "+".join(self.variables)})
+       # self.transmute({"total": "+".join(self.variables)})
+        self.cdo_command("expr,total="+ "+".join(self.variables))
 
     else:
         if "total" not in self.variables:
-            self.mutate({"total": "+".join(self.variables)})
+            self.cdo_command("aexpr,total="+ "+".join(self.variables))
         else:
             i = 0
             while True:
                 if f"total{i}" not in self.variables:
                     break
                 i += 1
-            self.mutate({"total" + str(i): "+".join(self.variables)})
+            self.cdo_command("aexpr,total"+ str(i) + "=" + "+".join(self.variables))
+            #self.mutate({"total" + str(i): "+".join(self.variables)})
