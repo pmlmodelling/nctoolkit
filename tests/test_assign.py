@@ -404,7 +404,6 @@ class TestAssign:
     data.assign(new = lambda x1: np.mean(list({ 2, 1 })) + x1.sst)
     assert data.history[0] == "cdo -aexpr,'new=1.5+sst'"
 
-    del data
     data = nc.open_data(ff)
 
     class MyClass():
@@ -436,3 +435,30 @@ class TestAssign:
     k = MyClass()
     with pytest.raises(ValueError):
         data.assign(new = lambda x:      x.sst     +     k.t  )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    del data

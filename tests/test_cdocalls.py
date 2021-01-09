@@ -337,7 +337,7 @@ class TestCalls:
         )
 
         data = nc.open_data(ff)
-        data.remove_variables("sst")
+        data.drop("sst")
         assert data.history[0] == "cdo -delete,name=sst"
 
         if cdo_version() not in ["1.9.2", "1.9.3"]:
