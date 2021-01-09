@@ -10,11 +10,14 @@ ff = "data/sst.mon.mean.nc"
 class TestClean:
     def test_cleanall(self):
         safe = nc.session.nc_safe
+        print([ff for ff in safe if os.path.exists(ff)])
         tracker = nc.open_data(ff)
         tracker.select_timesteps(0)
         tracker.run()
         safe = nc.session.nc_safe
+        print([ff for ff in safe if os.path.exists(ff)])
         nc.clean_all()
+        print([ff for ff in safe if os.path.exists(ff)])
         x = len([ff for ff in safe if os.path.exists(ff)])
 
         assert x == 0

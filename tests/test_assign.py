@@ -33,6 +33,10 @@ class TestAssign:
     data.assign(new = lambda x: x.sst + 273.15)
     assert data.history[0] == "cdo -aexpr,'new=sst+273.15'"
 
+    data = nc.open_data(ff)
+    data.assign(new = lambda x: x.sst + 273.15, drop = True)
+    assert data.history[0] == "cdo -expr,'new=sst+273.15'"
+
 
     # In[5]:
 
@@ -74,7 +78,7 @@ class TestAssign:
 
     data = nc.open_data(ff)
     k = 273.15
-    data.assign(new = lambda x: x.sst + pd.DataFrame({"x":[273.15]}).x[0])
+    data.assign(new = lambda x: x.sst + pd.DataFrame({"x":[273.15] }).x[0])
     assert data.history[0] == "cdo -aexpr,'new=sst+273.15'"
 
 
@@ -302,7 +306,7 @@ class TestAssign:
 
 
     data = nc.open_data(ff)
-    data.assign(new = lambda x: ((x.sst+ x.sst) + np.mean(2)))
+    data.assign(new = lambda x: ((x.sst+ x.sst) + np.mean(2  )))
     assert data.history[0] == "cdo -aexpr,'new=((sst+sst)+2.0)'"
 
 
@@ -320,6 +324,115 @@ class TestAssign:
     data.assign(new = lambda x:  x.sst + np.mean(np.mean(2)) + np.mean(2) + np.mean(2)-x.sst)
     assert data.history[0] == "cdo -aexpr,'new=sst+2.0+2.0+2.0-sst'"
 
+    data = nc.open_data(ff)
+    data.assign(new = lambda x:  x.sst + 273.15, old =  lambda x: x.sst)
+    data.history[0] == "cdo -aexpr,'new=sst+273.15;old=sst'"
 
 
+    data = nc.open_data(ff)
+    data.assign(new = lambda x:  x.sst + 273.15, old =  lambda x: x.sst, drop = False)
+    data.history[0] == "cdo -aexpr,'new=sst+273.15;old=sst'"
 
+    data = nc.open_data(ff)
+    data.assign( drop = False, new =lambda x:  x.sst + 273.15, old =  lambda x: x.sst)
+    data.history[0] == "cdo -aexpr,'new=sst+273.15;old=sst'"
+
+    data = nc.open_data(ff)
+    data.assign(new = lambda x:  x.sst + 273.15, drop= False,old =  lambda x: x.sst)
+    data.history[0] == "cdo -aexpr,'new=sst+273.15;old=sst'"
+
+
+    data = nc.open_data(ff)
+    with pytest.raises(ValueError):
+        data.assign(x = 1)
+
+    with pytest.raises(ValueError):
+        data.assign(x = 1)
+
+    with pytest.raises(ValueError):
+        data.assign(drop = True)
+
+    with pytest.raises(ValueError):
+        data.assign()
+
+    with pytest.raises(ValueError):
+        data.assign(drop = 1)
+
+    with pytest.raises(ValueError):
+        data.assign(x = 1)
+
+    with pytest.raises(ValueError):
+        data.assign(y = lambda x: x.sst, x = 1)
+        data = nc.open_data(ff)
+
+    data = nc.open_data(ff)
+    data.assign(new = lambda x: np.mean([1][0   ] + 2) + x.sst)
+    assert data.history[0] == "cdo -aexpr,'new=3.0+sst'"
+
+    data = nc.open_data(ff)
+    with pytest.raises(ValueError):
+        data.assign(new = lambda x: pd.DataFrame({"x":[1]}) + x.sst)
+    def fun():
+        return "1"
+    data = nc.open_data(ff)
+    with pytest.raises(ValueError):
+        data.assign(new = lambda x: fun() + x.sst)
+
+    with pytest.raises(ValueError):
+        data.assign(new = lambda x: spatial_mean(1))
+
+    with pytest.raises(ValueError):
+        data.assign(new = lambda x: [x.sst])
+
+    with pytest.raises(ValueError):
+        data.assign(new = lambda x: [sst])
+
+    with pytest.raises(ValueError):
+        data.assign(new = lambda x: ["x"][0])
+
+    with pytest.raises(ValueError):
+        data.assign(new = lambda x: x.sst^2)
+
+    data = nc.open_data(ff)
+    data.assign(new = lambda x1: [1][0] + x1.sst)
+    assert  data.history[0] == "cdo -aexpr,'new=1+sst'"
+    data = nc.open_data(ff)
+    data.assign(new = lambda x1: np.mean(list({2, 1})) + x1.sst)
+    assert data.history[0] == "cdo -aexpr,'new=1.5+sst'"
+
+    data = nc.open_data(ff)
+    data.assign(new = lambda x1: np.mean(list({ 2, 1 })) + x1.sst)
+    assert data.history[0] == "cdo -aexpr,'new=1.5+sst'"
+
+    del data
+    data = nc.open_data(ff)
+
+    class MyClass():
+        t = "1"
+    k = MyClass()
+    with pytest.raises(ValueError):
+        data.assign(new = lambda x:      x.sst     +     k.t  )
+
+    k = "a"
+    with pytest.raises(ValueError):
+        data.assign(new = lambda x:      x.sst     +     k  )
+
+    k = ["a"]
+    with pytest.raises(ValueError):
+        data.assign(new = lambda x:      x.sst     +     k  )
+
+    with pytest.raises(ValueError):
+        data.assign(new = lambda x:      x.sst     +     b  )
+
+    with pytest.raises(ValueError):
+        data.assign(new = lambda x:      1  )
+
+    with pytest.raises(ValueError):
+        data.assign(new = lambda x:      a.s  )
+
+
+    class MyClass():
+        t = [1]
+    k = MyClass()
+    with pytest.raises(ValueError):
+        data.assign(new = lambda x:      x.sst     +     k.t  )

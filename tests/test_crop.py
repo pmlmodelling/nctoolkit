@@ -9,7 +9,7 @@ nc.options(lazy=True)
 ff = "data/sst.mon.mean.nc"
 
 
-class Testcrop:
+class TestCrop:
     def test_crop(self):
         tracker = nc.open_data(ff)
         with pytest.raises(ValueError):
