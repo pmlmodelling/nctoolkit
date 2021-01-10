@@ -5,6 +5,8 @@ import numpy as np
 from nctoolkit.flatten import str_flatten
 from nctoolkit.runthis import run_this
 
+def split_equation(mystr):
+    return re.split("[-+^!=*/(&|)\[\]]", mystr)
 
 def is_number(s):
     try:
@@ -370,6 +372,9 @@ def assign(self, drop=False, **kwargs):
                                 )
                             if x_fun == "timestep":
                                 start = start.replace(x, "(" + x + "-1)")
+                            if x_fun == "cell_area":
+                                if len(split_equation(x_term)) > 1:
+                                    raise ValueError(f"{x_fun} can only take a single dataset variable as an argument!")
 
                         else:
                             raise ValueError(f"{x} cannot be evaluated!")
