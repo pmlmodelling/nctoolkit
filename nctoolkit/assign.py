@@ -368,6 +368,9 @@ def assign(self, drop=False, **kwargs):
                                 raise ValueError(
                                     f"Error for {x}: nctoolkit functions must take dataset variables as args!"
                                 )
+                            if x_fun == "timestep":
+                                start = start.replace(x, "(" + x + "-1)")
+
                         else:
                             raise ValueError(f"{x} cannot be evaluated!")
 
