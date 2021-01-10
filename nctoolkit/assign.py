@@ -1,3 +1,23 @@
+
+# to-do
+# some kind of method to identify similar function names
+
+def find_possible(x):
+    if "vert" in x:
+        for y in ["mean", "max", "min", "sum"]:
+            if y in x:
+                return f"vertical_{y}"
+    if "spa" in x:
+        for y in ["mean", "max", "min", "sum"]:
+            if y in x:
+                return f"spatial_{y}"
+    if "zon" in x:
+        for y in ["mean", "max", "min", "sum"]:
+            if y in x:
+                return f"zonal_{y}"
+    return None
+
+
 import re
 import inspect
 import numpy as np
@@ -80,9 +100,9 @@ translation = dict()
 for ff in funs:
     if ff in dir(np):
         translation[ff] = ff
-translation["asin"] = "arcsin"
-translation["acos"] = "arccos"
-translation["atan"] = "arctan"
+translation["arcsin"] = "asin"
+translation["arccos"] = "acos"
+translation["arctan"] = "atan"
 
 # translate the spatials
 translation["spatial_mean"] = "fldmean"
@@ -127,7 +147,7 @@ translation["latitude"] = "clat"
 
 # split using all possible mathematical operators
 def split1(mystr):
-    return re.split("([+-/*()<=])", mystr)
+    return re.split("([+-/*()<>=])", mystr)
 
 
 def is_lambda(v):
@@ -313,6 +333,7 @@ def assign(self, drop=False, **kwargs):
                     if tracker == terminate:
                         check = False
 
+
         terms = list(
             set(
                 [
@@ -323,24 +344,28 @@ def assign(self, drop=False, **kwargs):
             )
         )
 
+
         for x in terms:
             if ("[" in x and f"{lambda_value}." in x) == False:
+                if fun_pattern.search(x) is not None:
 
-                for y in re.finditer(x.replace("(", "\\(").replace("[", "\\["), start):
-                    if len(y.group()) > 0:
-                        old_start = start
-                        start_parens = find_parens3(start)
-                        x_term = (
-                            x + start[y.span()[1] : start_parens[y.span()[1] - 1] + 1]
-                        )
-                        start = start.replace(x_term, x_term.replace(" ", ""))
+                    for y in re.finditer(x.replace("(", "\\(").replace("[", "\\["), start):
+                        if len(y.group()) > 0:
+                            old_start = start
+                            start_parens = find_parens3(start)
+                            x_term = (
+                                x + start[y.span()[1] : start_parens[y.span()[1] - 1] + 1]
+                            )
+                            start = start.replace(x_term, x_term.replace(" ", ""))
 
         error_message = None
+
         for x in start.split(" "):
             if "(" in x:
                 x_fun = x.split("(")[0]
                 pattern1 = re.compile("[A-Za-z0-9\\.\\_]*")
-                if pattern1.findall(x_fun)[0] == x_fun:
+                if fun_pattern.match(x) is not None:
+                #if pattern1.findall(x_fun)[0] == x_fun:
                     try:
                         # need to tweak this so that it captures the output and returns an appropriate error
                         new_x = eval(x, globals(), frame.f_back.f_locals)
@@ -378,6 +403,13 @@ def assign(self, drop=False, **kwargs):
 
                         else:
                             x_term = between_brackets(x)
+                            if f"{lambda_value}." in x_term:
+                                possible = find_possible(x_fun)
+                                if possible is not None:
+                                    raise ValueError(f"{x_fun} is not an assignment function. Did you mean {possible}?")
+
+
+
                             if f"{lambda_value}." in x_term:
                                 raise ValueError(
                                     f"{x_fun} is not an assignment function"
