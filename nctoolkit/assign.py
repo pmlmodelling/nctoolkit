@@ -5,8 +5,10 @@ import numpy as np
 from nctoolkit.flatten import str_flatten
 from nctoolkit.runthis import run_this
 
+
 def split_equation(mystr):
     return re.split("[-+^!=*/(&|)\[\]]", mystr)
+
 
 def is_number(s):
     try:
@@ -63,10 +65,6 @@ funs = [
     "abs",
     "floor",
     "ceil",
-    "float",
-    "int",
-    "nint",
-    "sqr",
     "sqrt",
     "exp",
     "log10",
@@ -374,12 +372,16 @@ def assign(self, drop=False, **kwargs):
                                 start = start.replace(x, "(" + x + "-1)")
                             if x_fun in ["cell_area", "longitude", "latitude"]:
                                 if len(split_equation(x_term)) > 1:
-                                    raise ValueError(f"{x_fun} can only take a single dataset variable as an argument!")
+                                    raise ValueError(
+                                        f"{x_fun} can only take a single dataset variable as an argument!"
+                                    )
 
                         else:
                             x_term = between_brackets(x)
-                            if (f"{lambda_value}." in x_term):
-                                raise ValueError(f"{x_fun} is not an assignment function")
+                            if f"{lambda_value}." in x_term:
+                                raise ValueError(
+                                    f"{x_fun} is not an assignment function"
+                                )
                             else:
                                 raise ValueError(f"{x} cannot be evaluated!")
 
