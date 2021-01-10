@@ -372,7 +372,7 @@ def assign(self, drop=False, **kwargs):
                                 )
                             if x_fun == "timestep":
                                 start = start.replace(x, "(" + x + "-1)")
-                            if x_fun == "cell_area":
+                            if x_fun in ["cell_area", "longitude", "latitude"]:
                                 if len(split_equation(x_term)) > 1:
                                     raise ValueError(f"{x_fun} can only take a single dataset variable as an argument!")
 
