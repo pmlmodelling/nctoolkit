@@ -110,7 +110,7 @@ translation["level"] = "clev"
 
 translation["log"] = "ln"
 
-translation["time_step"] = "ctimestep"
+translation["timestep"] = "ctimestep"
 
 translation["year"] = "cyear"
 translation["month"] = "cmonth"
