@@ -377,7 +377,11 @@ def assign(self, drop=False, **kwargs):
                                     raise ValueError(f"{x_fun} can only take a single dataset variable as an argument!")
 
                         else:
-                            raise ValueError(f"{x} cannot be evaluated!")
+                            x_term = between_brackets(x)
+                            if (f"{lambda_value}." in x_term):
+                                raise ValueError(f"{x_fun} is not an assignment function")
+                            else:
+                                raise ValueError(f"{x} cannot be evaluated!")
 
         start = (
             " ".join(split1(start))
