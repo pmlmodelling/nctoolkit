@@ -36,6 +36,10 @@ def split_cdo(self, method="year"):
 
         split_base = temp_file()
 
+        # add split base to temp_files in case splitting fails. This means they can be cleared up later
+
+        temp_files.add(split_base)
+
         cdo_command = f"cdo -s -split{method} {ff} {split_base}"
 
         os.system(cdo_command)
