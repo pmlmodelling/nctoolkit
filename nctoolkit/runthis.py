@@ -423,9 +423,13 @@ def run_this(os_command, self, output="one", out_file=None):
                 os_command = f'{os_command} {self.history[-1].replace("cdo ", " ")}'
                 os_command = os_command.replace("  ", " ")
 
-            pool = multiprocessing.Pool(cores)
-            target_list = []
-            results = dict()
+
+            if cores > 1:
+                pool = multiprocessing.Pool(cores)
+                target_list = []
+                results = dict()
+            else:
+                target_list = []
 
             for ff in file_list:
                 ff_command = os_command
@@ -474,16 +478,23 @@ def run_this(os_command, self, output="one", out_file=None):
                         ff_command = ff_command.replace("cdo ", "cdo -z zip ")
 
                 new_history.append(ff_command)
-                temp = pool.apply_async(run_cdo, [ff_command, target, out_file])
-                results[ff] = temp
+                if cores > 1:
+                    temp = pool.apply_async(run_cdo, [ff_command, target, out_file])
+                    results[ff] = temp
+                else:
+                    target = run_cdo(ff_command, target, out_file)
+                    target_list.append(target)
 
-            pool.close()
-            pool.join()
-            for k, v in results.items():
-                target_list.append(v.get())
 
-            if type(self.current) == str:
-                target_list = target_list[0]
+
+            if cores > 1:
+                pool.close()
+                pool.join()
+                for k, v in results.items():
+                    target_list.append(v.get())
+
+                if type(self.current) == str:
+                    target_list = target_list[0]
 
             self.history = copy.deepcopy(new_history)
             self.current = copy.deepcopy(target_list)
