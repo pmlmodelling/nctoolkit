@@ -25,11 +25,6 @@ class TestApi:
         with pytest.raises(ValueError):
             data = nc.open_data("")
 
-    def test_no_data2(self):
-
-        with pytest.raises(ValueError):
-            data = nc.open_data()
-
     def test_no_files1(self):
 
         with pytest.raises(TypeError):
@@ -49,9 +44,6 @@ class TestApi:
         with pytest.raises(ValueError):
             nc.options(precision="I2")
 
-    def test_empty_list(self):
-        with pytest.raises(ValueError):
-            x = nc.open_data([])
 
     def test_missing_file_list(self):
         with pytest.raises(ValueError):

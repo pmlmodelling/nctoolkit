@@ -366,7 +366,7 @@ def file_size(file_path):
         return file_info.st_size
 
 
-def open_data(x=None, suppress_messages=False, checks=False, **kwargs):
+def open_data(x=[], suppress_messages=False, checks=False, **kwargs):
     """
     Read netcdf data as a DataSet object
 
@@ -375,8 +375,9 @@ def open_data(x=None, suppress_messages=False, checks=False, **kwargs):
     x : str or list
         A string or list of netcdf files or a single url. The function will check the
         files exist. If x is not a list, but an iterable it will be converted to a list.
-        If a url is given the file will be downloaded before processing.
         If a *.nc style wildcard is supplied, open_data will use all files available.
+        By default an empty dataset is created, ie. using open_data() will create an empty
+        dataset that can then be expanded using append.
     thredds : boolean
         Are you accessing a thredds server? Must end with .nc.
     checks: boolean
@@ -537,32 +538,33 @@ def open_data(x=None, suppress_messages=False, checks=False, **kwargs):
             if checks:
                 if suppress_messages is False:
                     warnings.warn("Performing basic checks on ensemble files")
-            if len(x) == 0:
-                raise ValueError("You have not provided any files!")
+            #if len(x) == 0:
+            #    raise ValueError("You have not provided any files!")
 
-            for ff in x:
+            if len(x) > 1:
+                for ff in x:
 
-                if os.path.exists(ff) is False:
-                    raise ValueError("Data set " + ff + " does not exist!")
-                else:
-                    if checks:
-                        out = subprocess.run(
-                            "cdo sinfo " + ff,
-                            shell=True,
-                            stdout=subprocess.PIPE,
-                            stderr=subprocess.PIPE,
-                        )
-                        if "Open failed" in out.stderr.decode("utf-8"):
-                            mes = (
-                                out.stderr.decode("utf-8")
-                                .replace("cdo    sinfo: ", "")
-                                .replace("<\n", "")
-                                .replace("\n", "")
+                    if os.path.exists(ff) is False:
+                        raise ValueError("Data set " + ff + " does not exist!")
+                    else:
+                        if checks:
+                            out = subprocess.run(
+                                "cdo sinfo " + ff,
+                                shell=True,
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE,
                             )
-                            mes = re.sub(" +", " ", mes)
-                            raise ValueError(mes)
-                    nc_safe.append(ff)
-                    nc_protected.append(x)
+                            if "Open failed" in out.stderr.decode("utf-8"):
+                                mes = (
+                                    out.stderr.decode("utf-8")
+                                    .replace("cdo    sinfo: ", "")
+                                    .replace("<\n", "")
+                                    .replace("\n", "")
+                                )
+                                mes = re.sub(" +", " ", mes)
+                                raise ValueError(mes)
+                        nc_safe.append(ff)
+                        nc_protected.append(x)
         else:
             out = subprocess.run(
                 "cdo sinfo " + x[0],
