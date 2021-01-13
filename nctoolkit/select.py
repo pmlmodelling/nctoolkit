@@ -143,7 +143,7 @@ def select_years(self, years=None):
 
         cdo_command = f"cdo -selyear,{years}"
 
-        run_this(cdo_command, self, output="ensemble")
+        run_this(cdo_command, self, output="one")
 
     cleanup()
 
