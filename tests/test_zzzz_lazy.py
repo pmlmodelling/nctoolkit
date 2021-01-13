@@ -19,7 +19,7 @@ class TestFinal:
 
 
         assert nc.session.session_info["lazy"] == True
-        assert nc.session.session_info["cores"] == 6
+        assert nc.session.session_info["cores"] == 2
         assert nc.session.session_info["thread_safe"] == True
         assert nc.session.session_info["user"] == "me"
         assert nc.session.session_info["password"] == "pass"
@@ -38,7 +38,7 @@ class TestFinal:
         importlib.reload(nc.api)
 
         assert nc.session.session_info["lazy"] == True
-        assert nc.session.session_info["cores"] == 6
+        assert nc.session.session_info["cores"] == 2
         assert nc.session.session_info["thread_safe"] == True
         assert nc.session.session_info["user"] == "me"
         assert nc.session.session_info["password"] == "pass"

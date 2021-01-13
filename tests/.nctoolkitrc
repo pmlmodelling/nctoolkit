@@ -1,5 +1,5 @@
 lazy : True
-cores : 6
+cores : 2
 thread_safe : True
 user : me
 password : pass
