@@ -83,6 +83,190 @@ else:
 session_info["latest_size"] = 0
 session_info["cores"] = 1
 
+
+def options(**kwargs):
+    """
+    Define session options.
+    Set the options in the session. Available options are thread_safe and lazy.
+    Set thread_safe = True if hdf5 was built to be thread safe.
+    Set lazy = True if you want methods to evaluate lazy by default.
+
+    Parameters
+    ---------------
+    **kwargs
+        Define options using key, value pairs.
+
+    """
+
+    valid_keys = [
+        "thread_safe",
+        "lazy",
+        "cores",
+        "precision",
+        "user",
+        "password",
+        "temp_dir",
+    ]
+
+    for key in kwargs:
+        if key not in valid_keys:
+            raise AttributeError(key + " is not a valid option")
+        if type(kwargs[key]) is not bool:
+            if key == "temp_dir":
+                if type(kwargs[key]) is str:
+                    if os.path.exists(kwargs[key]) == False:
+                        raise ValueError("The temp_dir specified does not exist!")
+                    session_info[key] = os.path.abspath(kwargs[key])
+                    session_info["user_dir"] = True
+                return None
+
+            if key == "cores":
+                if type(kwargs[key]) is int:
+                    if kwargs[key] > mp.cpu_count():
+                        raise ValueError(
+                            str(kwargs[key])
+                            + " is greater than the number of system cores ("
+                            + str(mp.cpu_count())
+                            + ")"
+                        )
+                    session_info[key] = kwargs[key]
+                else:
+                    raise TypeError("cores must be an int")
+            else:
+                if key == "precision":
+                    if kwargs[key] not in ["I8", "I16", "I32", "F32", "F64"]:
+                        raise ValueError("precision supplied is not valid!")
+                    session_info[key] = kwargs[key]
+                else:
+                    raise AttributeError(key + " is not valid session info!")
+        else:
+            session_info[key] = kwargs[key]
+
+
+# if nctoolkitrc exists, we need to read the possible options from there...
+
+
+def find_config():
+    # first look in the working directory
+    for ff in [".nctoolkitrc", "nctoolkitrc"]:
+        if os.path.exists(ff):
+            return ff
+
+    # now look in the home directory....
+    from os.path import expanduser
+    home = expanduser("~")
+    for ff in [".nctoolkitrc", "nctoolkitrc"]:
+        if os.path.exists(home + "/" + ff):
+            return home + "/" + ff
+
+    return None
+
+
+config_file = find_config()
+
+if config_file is not None:
+    valid_keys = [
+        "thread_safe",
+        "lazy",
+        "cores",
+        "precision",
+        "user",
+        "password",
+        "temp_dir",
+    ]
+
+    file1 = open(config_file, "r")
+    Lines = file1.readlines()
+
+    # pattern = re.compile("[a-z]+\:[0-9A-Za-z]+")
+    count = 0
+    # Strips the newline character
+    for line in Lines:
+        text = line.replace(" ", "").strip()
+        if text.count(":") != 1:
+            raise ValueError(f"Line in {config_file} is invalid: {line}")
+
+    for line in Lines:
+        text = line.replace(" ", "").strip()
+
+        terms = text.split(":")
+
+        # three options, all words, boolean or integers
+
+        # set the key
+
+        key = terms[0]
+        value = None
+
+        if key not in valid_keys:
+            raise ValueError(f"{config_file} is trying to set invalid key: {terms[0]}")
+
+        if (terms[1].strip() == "True") and value is None:
+            value = True
+
+        if (terms[1] == "False") and (value is None):
+            value = False
+
+        if (terms[1].isnumeric()) and (value is None):
+            value = int(terms[1])
+
+        if value is None:
+            value = terms[1]
+            value = value.replace("'", "").replace('"', "")
+
+        valid_keys = [
+            "thread_safe",
+            "lazy",
+            "cores",
+            "precision",
+            "user",
+            "password",
+            "temp_dir",
+        ]
+
+        if key not in valid_keys:
+            raise ValueError(f"{config_file} is trying to set invalid key: {terms[0]}")
+
+        if key == "temp_dir":
+            if type(value) is str:
+                if os.path.exists(value) == False:
+                    raise ValueError(
+                        f"The temp_dir specified by {config_file} does not exist: {value}"
+                    )
+                session_info[key] = os.path.abspath(value)
+                session_info["user_dir"] = True
+
+        if key == "cores":
+            if type(value) is int:
+                if value > mp.cpu_count():
+                    raise ValueError(
+                        str(value)
+                        + " is greater than the number of system cores ("
+                        + str(mp.cpu_count())
+                        + ")"
+                    )
+                session_info[key] = value
+            else:
+                raise TypeError("cores must be an int")
+
+        if key == "precision":
+            if value not in ["I8", "I16", "I32", "F32", "F64"]:
+                raise ValueError("precision supplied is not valid!")
+            session_info[key] = value
+
+        if key in ["thread_safe", "lazy"]:
+            if type(value) == bool:
+                session_info[key] = value
+            else:
+                raise ValueError(f"{key} must be boolean!")
+
+        if key in ["user", "password"]:
+            if type(value) is not str:
+                raise ValueError(f"{key} must be str!")
+            else:
+                session_info[key] = value
+
+
 # register clean_all to clean temp files on exit
 atexit.register(clean_all)
 
@@ -198,7 +382,7 @@ def open_data(x=None, suppress_messages=False, checks=False, **kwargs):
     checks: boolean
         Do you want basic checks to ensure cdo can read files?
     """
-    #from nctoolkit.temp_file import temp_file
+    # from nctoolkit.temp_file import temp_file
 
     if type(x) is str:
         if x.endswith("*.nc"):
@@ -272,7 +456,7 @@ def open_data(x=None, suppress_messages=False, checks=False, **kwargs):
                                     urllib.request.urlretrieve(x, new_x)
                             except:
                                 nothing = "x"
-                        search +=1
+                        search += 1
                         if os.path.exists(new_x):
                             break
 
@@ -309,9 +493,6 @@ def open_data(x=None, suppress_messages=False, checks=False, **kwargs):
                             )
                             if "Open failed" in str(out.stderr):
                                 raise ValueError(f"{x} is not compatible with CDO!")
-
-
-
 
             else:
                 raise ValueError("Data set " + x + " does not exist!")
@@ -404,7 +585,7 @@ def open_data(x=None, suppress_messages=False, checks=False, **kwargs):
     return d
 
 
-def open_thredds(x=None, wait=None, checks = False):
+def open_thredds(x=None, wait=None, checks=False):
     """
     Read thredds data as a DataSet object
 
@@ -428,17 +609,16 @@ def open_thredds(x=None, wait=None, checks = False):
         if wait <= 0:
             raise ValueError("Please provide a positive value for wait!")
 
-
     if session_info["cores"] > 1:
         warnings.warn(
             message="Using multiple cores on thredds data is volatile. It has therefore been reset to 1."
         )
         session_info["cores"] = 1
 
-    return open_data(x=x, thredds=True, wait=wait, checks = checks)
+    return open_data(x=x, thredds=True, wait=wait, checks=checks)
 
 
-def open_url(x=None, ftp_details=None, wait=None, file_stop = None):
+def open_url(x=None, ftp_details=None, wait=None, file_stop=None):
     """
     Read netcdf data from a url as a DataSet object
 
@@ -470,7 +650,6 @@ def open_url(x=None, ftp_details=None, wait=None, file_stop = None):
         if file_stop <= 0:
             raise TypeError("Please provide a valid file_stop!")
 
-
     if ftp_details is not None:
         if len(ftp_details) != 2:
             raise ValueError("ftp_details is not a 2 element dictionary")
@@ -481,7 +660,7 @@ def open_url(x=None, ftp_details=None, wait=None, file_stop = None):
     else:
         new_dict = None
 
-    return open_data(x=x, ftp_details=new_dict, wait = wait, file_stop = file_stop)
+    return open_data(x=x, ftp_details=new_dict, wait=wait, file_stop=file_stop)
 
 
 def merge(*datasets, match=["day", "year", "month"]):
@@ -1032,8 +1211,6 @@ class DataSet(object):
 
     from nctoolkit.crop import crop
 
-
-
     from nctoolkit.drop import drop
 
     from nctoolkit.ensembles import ensemble_mean
@@ -1069,12 +1246,11 @@ class DataSet(object):
     from nctoolkit.meridonials import meridonial_max
     from nctoolkit.meridonials import meridonial_range
 
-
-
     from nctoolkit.nco_command import nco_command
 
     from nctoolkit.phenology import phenology
-    #from nctoolkit.phenology import initiation
+
+    # from nctoolkit.phenology import initiation
 
     from nctoolkit.plot import plot
 
@@ -1095,8 +1271,6 @@ class DataSet(object):
     from nctoolkit.rollstat import rolling_max
     from nctoolkit.rollstat import rolling_range
     from nctoolkit.rollstat import rolling_sum
-
-
 
     from nctoolkit.select import select_variables
     from nctoolkit.select import select_timesteps
@@ -1160,8 +1334,6 @@ class DataSet(object):
     from nctoolkit.verticals import bottom
     from nctoolkit.verticals import bottom_mask
     from nctoolkit.verticals import invert_levels
-
-
 
     from nctoolkit.zip import zip
 
