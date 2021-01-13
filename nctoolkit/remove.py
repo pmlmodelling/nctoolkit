@@ -26,8 +26,8 @@ def nc_remove(ff, deep=False):
 
 
     if deep is False:
-        possibles = [os.path.basename(x) for x in temp_files]
-        if (os.path.basename(ff).split(".")[0] + ".nc") not in possibles:
+        possibles = [os.path.basename(x).split(".")[0] for x in temp_files]
+        if (os.path.basename(ff).split(".")[0]) not in possibles:
             raise ValueError(f"{ff} is not a temp file created by nctoolkit during this session")
         if session_info["stamp"] not in ff:
             raise ValueError(f"The file {ff}  was not created during this session")
