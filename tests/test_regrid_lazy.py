@@ -91,6 +91,8 @@ class TestRegrid:
             tracker.regrid("/tmp/stekancihwn.nc")
         n = len(nc.session_files())
         assert n == 0
+    def test_1(self):
+        assert 1 == 1
 
     def test_error2(self):
         tracker = nc.open_data(ff)
@@ -99,6 +101,8 @@ class TestRegrid:
 
         out = nc.temp_file.temp_file()
         Path(out).touch()
+        with pytest.raises(ValueError):
+            tracker.regrid(out)
         with pytest.raises(ValueError):
             tracker.regrid(out)
         n = len(nc.session_files())

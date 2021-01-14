@@ -38,6 +38,7 @@ class TestOne:
         y = tracker.to_xarray().sst.values[0][0][0].astype("float")
         assert x == 20.050094604492188
         assert x == y
+        print(nc.session_files())
 
         n = len(nc.session_files())
         assert n == 1

@@ -14,6 +14,7 @@ class Testrun:
         assert n == 0
 
     def test_run(self):
+        print(nc.session.nc_safe)
         tracker = nc.open_data(ff)
         tracker.split(("year"))
         tracker.merge_time()
@@ -25,11 +26,11 @@ class Testrun:
         tracker.select_timesteps(0)
         tracker.spatial_mean()
         tracker.run()
+        n = len(nc.session_files())
         y = tracker.to_dataframe().sst.values[0]
 
         assert x == y
 
-        n = len(nc.session_files())
         assert n == 1
 
         tracker = nc.open_data(ff)
@@ -37,5 +38,6 @@ class Testrun:
         tracker._safe.append("asdfkjasdkfj.nc")
         nc.session.nc_safe.append("asdfkjasdkfj.nc")
         tracker.run()
+        print(nc.session.nc_safe)
         del tracker
         assert len(nc.session.nc_safe) == 0

@@ -48,7 +48,6 @@ class TestApi2:
         data1.append(data2)
         data1.merge(match = "month")
 
-
         data1.cor_space("var1", "var2")
         y = data.to_dataframe().cor.values[0].astype("float")
 
