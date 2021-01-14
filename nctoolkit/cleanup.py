@@ -6,6 +6,7 @@ import tempfile
 
 from nctoolkit.remove import nc_remove
 from nctoolkit.session import session_info, nc_safe, temp_dirs
+from nctoolkit.session import session_info, nc_safe, temp_dirs
 
 # keep is a file you do not want to delete
 

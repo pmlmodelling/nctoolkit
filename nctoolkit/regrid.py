@@ -26,6 +26,7 @@ def regrid(self, grid=None, method="bil"):
         nearest neighbour - "nn" - "nearest neighbour"; "bic" - "bicubic interpolation".
     """
 
+
     del_grid = None
     if grid is None:
         raise ValueError("No grid was supplied")
@@ -88,6 +89,7 @@ def regrid(self, grid=None, method="bil"):
             target_grid = grid
     new_files = []
 
+
     for key in grid_split:
         # first we need to generate the weights for remapping
         # and add this to the files created list and self.weights
@@ -106,39 +108,44 @@ def regrid(self, grid=None, method="bil"):
                 f"cdo -gen{method},{target_grid} {tracker.current} {weights_nc}"
             )
 
-        weights_nc = run_cdo(cdo_command, target=weights_nc)
+        try:
+            weights_nc = run_cdo(cdo_command, target=weights_nc)
+        except Exception as e:
+            del tracker
+            nc_safe.remove(weights_nc)
+            raise ValueError(e)
 
         cdo_command = f"cdo -remap,{target_grid},{weights_nc}"
 
         tracker._execute = True
 
-        nc_safe.append(weights_nc)
-
         run_this(cdo_command, tracker, output="ensemble")
 
         nc_safe.remove(weights_nc)
+
 
         if type(tracker.current) is str:
             new_files += [tracker.current]
         else:
             new_files += tracker.current
 
-        for ff in new_files:
-            nc_safe.append(ff)
 
         self.history += tracker.history
 
         self._hold_history = copy.deepcopy(self.history)
 
+
+
     if del_grid is not None:
         if del_grid in nc_safe:
             nc_safe.remove(del_grid)
 
-    for ff in new_files:
-        if ff in nc_safe:
-            nc_safe.remove(ff)
 
     self.current = new_files
+
+    #for ff in new_files:
+    #    if ff in nc_safe:
+    #        nc_safe.remove(ff)
 
     self._thredds = False
     cleanup()

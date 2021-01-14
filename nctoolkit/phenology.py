@@ -78,6 +78,9 @@ def phenology(self, var=None, metric=None, p=None):
 
         self.current = new_files
 
+        for ff in new_files:
+            nc_safe.remove(ff)
+
         cleanup()
         return None
 
@@ -120,6 +123,9 @@ def phenology(self, var=None, metric=None, p=None):
         self._hold_history = copy.deepcopy(self.history)
 
         self.current = new_files
+
+        for ff in new_files:
+            nc_safe.remove(ff)
 
         cleanup()
 

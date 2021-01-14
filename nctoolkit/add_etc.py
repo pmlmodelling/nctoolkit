@@ -113,6 +113,9 @@ def operation(self, method="mul", ff=None, var=None):
             self.history.append(cc.replace("  ", " "))
 
         self.current = new_files
+
+        for ff in new_files:
+            nc_safe.remove(ff)
         self._hold_history = copy.deepcopy(self.history)
         cleanup()
 

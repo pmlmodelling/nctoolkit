@@ -54,6 +54,7 @@ def cell_area(self, join=True):
                 cdo_command = f"cdo -gridarea {ff} {target1}"
                 cdo_command = tidy_command(cdo_command)
                 target1 = run_cdo(cdo_command, target1)
+                new_files.append(target1)
                 new_commands.append(cdo_command)
 
                 target = temp_file(".nc")
@@ -83,6 +84,9 @@ def cell_area(self, join=True):
             self.history.append(x)
 
         self.current = new_files
+
+        for ff in new_files:
+            nc_safe.remove(ff)
 
         self._hold_history = copy.deepcopy(self.history)
 

@@ -1,5 +1,7 @@
 import glob
 import os
+from multiprocessing import Manager
+
 
 
 def show_session():
@@ -7,13 +9,15 @@ def show_session():
 
 
 session_info = dict()
-nc_safe = []
+nc_safe = Manager().list()
+#nc_safe = list()
 
 html_files = []
 temp_dirs = set()
 temp_files = set()
 
-nc_protected = []
+#nc_protected = []
+nc_protected = Manager().list()
 
 
 def session_files():

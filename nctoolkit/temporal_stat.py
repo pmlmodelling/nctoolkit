@@ -4,6 +4,7 @@ from nctoolkit.cleanup import cleanup
 from nctoolkit.runthis import run_this, run_cdo, tidy_command
 from nctoolkit.temporals import *
 from nctoolkit.temp_file import temp_file
+from nctoolkit.session import nc_safe
 import warnings
 
 
@@ -260,6 +261,9 @@ def tpercentile(self, p=None, over = "time"):
     self._hold_history = copy.deepcopy(self.history)
 
     self.current = new_files
+
+    for ff in new_files:
+        nc_safe.remove(ff)
 
     cleanup()
 

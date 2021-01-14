@@ -4,6 +4,7 @@ from nctoolkit.cleanup import cleanup
 from nctoolkit.runthis import run_cdo, tidy_command
 from nctoolkit.show import nc_variables
 from nctoolkit.temp_file import temp_file
+from nctoolkit.session import nc_safe
 
 
 def cor(self, var1=None, var2=None, method="fld"):
@@ -54,6 +55,9 @@ def cor(self, var1=None, var2=None, method="fld"):
     self._hold_history = copy.deepcopy(self.history)
 
     self.current = new_files
+
+    for ff in new_files:
+        nc_safe.remove(ff)
 
     # tidy up the attributes of the netcdf file in the dataset
     self.rename({var1: "cor"})

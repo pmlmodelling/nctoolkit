@@ -3,6 +3,7 @@ import copy
 
 from nctoolkit.cleanup import cleanup
 from nctoolkit.runthis import run_this, run_cdo
+from nctoolkit.session import nc_safe
 import warnings
 
 
@@ -56,6 +57,7 @@ def to_nc(self, out, zip=True, overwrite=False):
             self.history.append(cdo_command)
             self._hold_history = copy.deepcopy(self.history)
             self.current = out
+            nc_safe.remove(out)
 
         else:
             cdo_command = f"cdo copy {ff[0]} {out}"
@@ -64,6 +66,7 @@ def to_nc(self, out, zip=True, overwrite=False):
             self._hold_history = copy.deepcopy(self.history)
 
             self.current = out
+            nc_safe.remove(out)
 
     else:
         if zip:

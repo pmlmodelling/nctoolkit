@@ -742,6 +742,8 @@ def cor_time(x=None, y=None):
 
     data = open_data(target)
 
+    nc_safe.remove(target)
+
     return data
 
 
@@ -792,6 +794,8 @@ def cor_space(x=None, y=None):
     target = run_cdo(command, target=target)
 
     data = open_data(target)
+
+    nc_safe.remove(target)
 
     return data
 

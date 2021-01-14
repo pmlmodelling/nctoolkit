@@ -4,6 +4,7 @@ from nctoolkit.cleanup import cleanup
 from nctoolkit.runthis import run_cdo, tidy_command
 from nctoolkit.show import nc_years
 from nctoolkit.temp_file import temp_file
+from nctoolkit.session import nc_safe
 
 
 def annual_anomaly(self, baseline=None, metric="absolute", window=1):
@@ -92,6 +93,9 @@ def annual_anomaly(self, baseline=None, metric="absolute", window=1):
 
     self.current = new_files
 
+    for ff in new_files:
+        nc_safe.remove(ff)
+
     cleanup()
 
     self.disk_clean()
@@ -153,6 +157,9 @@ def monthly_anomaly(self, baseline=None):
     self._hold_history = copy.deepcopy(self.history)
 
     self.current = new_files
+
+    for ff in new_files:
+        nc_safe.remove(ff)
 
     cleanup()
     self.disk_clean()
