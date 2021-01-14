@@ -13,7 +13,7 @@ author = 'Robert Wilson'
 
 # The short X.Y version
 # The full version, including alpha/beta/rc tags
-version = '0.2.2'
+version = '0.2.5'
 
 # -- General configuration ---------------------------------------------------
 
