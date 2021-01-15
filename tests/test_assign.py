@@ -594,6 +594,14 @@ class TestAssign:
     data.assign(new = lambda x: arcsin(x.sst))
     assert data.history[0] ==  "cdo -aexpr,'new=asin(sst)'"
 
+    data = nc.open_data("data/sst.mon.mean.nc")
+    data.assign(new = lambda x: ((x.sst > 1 & x.sst < 10 )))
+    assert data.history[0] ==  "cdo -aexpr,'new=((sst>1&&sst<10))'"
+
+    data = nc.open_data("data/sst.mon.mean.nc")
+    data.assign(new = lambda x: ((x.sst > 1 | x.sst < 10 )))
+    assert data.history[0] ==  "cdo -aexpr,'new=((sst>1||sst<10))'"
+
 
 
 
