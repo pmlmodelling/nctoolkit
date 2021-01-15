@@ -91,9 +91,6 @@ funs = [
     "sin",
     "cos",
     "tan",
-    "asin",
-    "acos",
-    "atan",
 ]
 
 translation = dict()
@@ -242,6 +239,11 @@ def assign(self, drop=False, **kwargs):
 
     command = list()
     starts = start
+
+    pattern_missing = re.compile("lambda\s*:")
+    if pattern_missing.search(start) is not None:
+        raise ValueError("Ensure lambda functions of the form 'lambda x:'")
+
     for start in starts.split(";"):
 
         patternl = re.compile("lambda \w*:")
