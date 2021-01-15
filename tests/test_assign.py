@@ -602,6 +602,13 @@ class TestAssign:
     data.assign(new = lambda x: ((x.sst > 1 | x.sst < 10 )))
     assert data.history[0] ==  "cdo -aexpr,'new=((sst>1||sst<10))'"
 
+    data = nc.open_data("data/sst.mon.mean.nc")
+    data.assign(one2ten = lambda x: x.sst >1 and x.sst < 10)
+    assert data.history[0] == "cdo -aexpr,'one2ten=sst>1&&sst<10'"
+
+    data = nc.open_data("data/sst.mon.mean.nc")
+    data.assign(one2ten = lambda x: x.sst >1 or x.sst < 10)
+    assert data.history[0] == "cdo -aexpr,'one2ten=sst>1||sst<10'"
 
 
 
