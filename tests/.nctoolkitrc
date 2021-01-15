@@ -1,6 +1,4 @@
 lazy : True
 cores : 2
 thread_safe : True
-user : me
-password : pass
 precision : F32

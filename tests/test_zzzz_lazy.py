@@ -21,8 +21,6 @@ class TestFinal:
         assert nc.session.session_info["lazy"] == True
         assert nc.session.session_info["cores"] == 2
         assert nc.session.session_info["thread_safe"] == True
-        assert nc.session.session_info["user"] == "me"
-        assert nc.session.session_info["password"] == "pass"
         assert nc.session.session_info["precision"] == "F32"
 
         from os.path import expanduser
@@ -40,8 +38,6 @@ class TestFinal:
         assert nc.session.session_info["lazy"] == True
         assert nc.session.session_info["cores"] == 2
         assert nc.session.session_info["thread_safe"] == True
-        assert nc.session.session_info["user"] == "me"
-        assert nc.session.session_info["password"] == "pass"
         assert nc.session.session_info["precision"] == "F32"
 
         os.remove( home+"/.nctoolkitrc")
