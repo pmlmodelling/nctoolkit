@@ -220,6 +220,11 @@ def assign(self, drop=False, **kwargs):
     if start.endswith(","):
         start = start[:-1]
 
+    pattern1 = re.compile("\s*:")
+
+    for tt in pattern1.findall(start):
+        start = start.replace(tt, ": ")
+
     if start.startswith(","):
         start = start[1:]
     start = start.strip()
