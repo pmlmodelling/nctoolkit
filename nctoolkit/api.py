@@ -90,6 +90,9 @@ def options(**kwargs):
     Set the options in the session. Available options are thread_safe and lazy.
     Set thread_safe = True if hdf5 was built to be thread safe.
     Set lazy = True if you want methods to evaluate lazy by default.
+    Set cores = n, if you want nctoolkit to process the individual files in multi-file datasets in parallel. Note this
+    only applies to multi-file datasets and will not improve performance with single files.
+    Set temp_dir = "/foo" if you want to change the temporary directory used by nctoolkit to save temporary files.
 
     Parameters
     ---------------
@@ -103,8 +106,6 @@ def options(**kwargs):
         "lazy",
         "cores",
         "precision",
-        "user",
-        "password",
         "temp_dir",
     ]
 
