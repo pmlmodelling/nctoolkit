@@ -1,6 +1,6 @@
-
 # to-do
 # some kind of method to identify similar function names
+
 
 def find_possible(x):
     if "vert" in x:
@@ -335,7 +335,6 @@ def assign(self, drop=False, **kwargs):
                     if tracker == terminate:
                         check = False
 
-
         terms = list(
             set(
                 [
@@ -346,17 +345,19 @@ def assign(self, drop=False, **kwargs):
             )
         )
 
-
         for x in terms:
             if ("[" in x and f"{lambda_value}." in x) == False:
                 if fun_pattern.search(x) is not None:
 
-                    for y in re.finditer(x.replace("(", "\\(").replace("[", "\\["), start):
+                    for y in re.finditer(
+                        x.replace("(", "\\(").replace("[", "\\["), start
+                    ):
                         if len(y.group()) > 0:
                             old_start = start
                             start_parens = find_parens3(start)
                             x_term = (
-                                x + start[y.span()[1] : start_parens[y.span()[1] - 1] + 1]
+                                x
+                                + start[y.span()[1] : start_parens[y.span()[1] - 1] + 1]
                             )
                             start = start.replace(x_term, x_term.replace(" ", ""))
 
@@ -367,7 +368,7 @@ def assign(self, drop=False, **kwargs):
                 x_fun = x.split("(")[0]
                 pattern1 = re.compile("[A-Za-z0-9\\.\\_]*")
                 if fun_pattern.match(x) is not None:
-                #if pattern1.findall(x_fun)[0] == x_fun:
+                    # if pattern1.findall(x_fun)[0] == x_fun:
                     try:
                         # need to tweak this so that it captures the output and returns an appropriate error
                         new_x = eval(x, globals(), frame.f_back.f_locals)
@@ -408,9 +409,9 @@ def assign(self, drop=False, **kwargs):
                             if f"{lambda_value}." in x_term:
                                 possible = find_possible(x_fun)
                                 if possible is not None:
-                                    raise ValueError(f"{x_fun} is not an assignment function. Did you mean {possible}?")
-
-
+                                    raise ValueError(
+                                        f"{x_fun} is not an assignment function. Did you mean {possible}?"
+                                    )
 
                             if f"{lambda_value}." in x_term:
                                 raise ValueError(
@@ -544,6 +545,10 @@ def assign(self, drop=False, **kwargs):
         start = " ".join(split1(start))
 
         new_start = []
+
+        def new_split(mystr):
+            return re.split("([+-/*()&|<>=!^])", mystr)
+
         for tt in start.split(";"):
 
             tt_frag = []
@@ -551,7 +556,7 @@ def assign(self, drop=False, **kwargs):
             l_string = l_pattern.findall(tt)[0]
             tt1 = tt.replace(f"lambda {l_string}:", " ")
             tt1 = re.sub(" ", "", tt1)
-            tt1 = " ".join(split1(tt1)).replace(" . ", ".")
+            tt1 = " ".join(new_split(tt1)).replace(" . ", ".")
             tt1 = re.sub(" +", " ", tt1)
 
             for ss in tt1.split(" "):
@@ -579,21 +584,23 @@ def assign(self, drop=False, **kwargs):
         def new_split(mystr):
             return re.split("([+-/*()&|<>=!^])", mystr)
 
-        for x in start.split(";"):
-            y = " ".join(new_split(x))
-            z = y.split(" = ")[1]
-            total = 0
-            for w in (z.replace(" (", "(")).split(" "):
-                if w.strip().isidentifier():
-                    total += 1
-            if total == 0:
-                raise ValueError("Formula does not use any dataset variables!")
+        y = " ".join(new_split(start))
+        z = y.split(" = ")[1]
+        total = 0
+        for w in (z.replace(" (", "(")).split(" "):
+            if w.strip().isidentifier():
+                total += 1
+        if total == 0:
+            raise ValueError("Formula does not use any dataset variables!")
 
         command.append(start)
 
     command = ";".join(command).replace(" ", "")
 
-    command = " ".join(split1(command)).replace(" . ", ".").replace(";", " ; ")
+    def split_this(mystr):
+        return re.split("([+-/*()<>|&=])", mystr)
+
+    command = " ".join(split_this(command)).replace(" . ", ".").replace(";", " ; ")
 
     for term in command.split(" "):
 
