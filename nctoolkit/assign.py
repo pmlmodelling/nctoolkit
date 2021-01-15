@@ -524,28 +524,53 @@ def assign(self, drop=False, **kwargs):
                 and terms[min(i + 1, len(terms) - 1)] != lambda_value
             ):
                 term = terms[i]
-                if term in frame.f_back.f_locals:
-                    try:
-                        new_term = eval(term, globals(), frame.f_back.f_locals)
-                        if type(new_term) is str:
-                            error_message = f"{term} does not evaluate to a numeric!"
-                            raise ValueError(f"{term} does not evaluate to a numeric!")
 
-                        if is_number(str(new_term)) == False:
-                            error_message = f"{term} does not evaluate to a numeric!"
-                            raise ValueError(f"{term} does not evaluate to a numeric!")
+                fixed = False
 
-                        new_start = ""
-                        for y in start.split(" "):
-                            if y != term:
-                                new_start += " " + y
-                            else:
-                                new_start += " " + str(new_term)
-                        start = new_start
-                    except:
+                if term == "or":
+                    print(term)
+                    new_start = ""
+                    for y in start.split(" "):
+                        if y != term:
+                            new_start += " " + y
+                        else:
+                            new_start += " " + "||"
+                    start = new_start
+                    fixed = True
+                if term == "and":
+                    new_start = ""
+                    for y in start.split(" "):
+                        if y != term:
+                            new_start += " " + y
+                        else:
+                            new_start += " " + "&&"
+                    start = new_start
+                    fixed = True
+
+
+                if fixed == False:
+                    if term in frame.f_back.f_locals:
+                        try:
+                            new_term = eval(term, globals(), frame.f_back.f_locals)
+                            if type(new_term) is str:
+                                error_message = f"{term} does not evaluate to a numeric!"
+                                raise ValueError(f"{term} does not evaluate to a numeric!")
+
+                            if is_number(str(new_term)) == False:
+                                error_message = f"{term} does not evaluate to a numeric!"
+                                raise ValueError(f"{term} does not evaluate to a numeric!")
+
+                            new_start = ""
+                            for y in start.split(" "):
+                                if y != term:
+                                    new_start += " " + y
+                                else:
+                                    new_start += " " + str(new_term)
+                            start = new_start
+                        except:
+                            raise ValueError(f"{term} is not available!")
+                    else:
                         raise ValueError(f"{term} is not available!")
-                else:
-                    raise ValueError(f"{term} is not available!")
 
         start = " ".join(split1(start))
 
