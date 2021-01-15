@@ -8,14 +8,7 @@ that has been thorougly tested, but any feedback on error messages will
 be appreciated.**
 
 Variable creation in nctoolkit can be done using the ``assign`` method,
-which works in a similar way to the method available in Pandas. As with
-other tutorials on this site, we can use a global sea surface
-temperature set available from NOAA which is described
-`here <https://psl.noaa.gov/data/gridded/data.cobe2.html>`__.
-
-.. code:: ipython3
-
-    import nctoolkit as nc
+which works in a similar way to the method available in Pandas. 
 
 
 The ``assign`` method works using lambda functions. Let’s say we have a
@@ -48,7 +41,7 @@ drop can be positioned anywhere. So the following will do the same thing
     data.assign(drop = True, new = lambda x: x.var+ 10)
 
 The `assign` method will evaluate the lambda functions sent to it for 
-each grid cell for each time step. So every part of the lambda function
+each dataset grid cell for each time step. So every part of the lambda function
 must evaluate to a number. So the following will work:
 
 .. code:: ipython3
@@ -100,7 +93,7 @@ names as nctoolkit methods for spatial statistics: ``spatial_mean``,
 
 An example of the usefulness of these functions would be if you were working
 with global temperature data and you wanted to map regions that are warmer than average.
-You could do this be by working out the difference between temperature in one location
+You could do this by working out the difference between temperature in one location
 and the global mean:
 
 .. code:: ipython3
@@ -126,7 +119,7 @@ or like this:
 
     data.assign(temp_comp = lambda x: x.temperature > (spatial_mean(x.temperature)+3), drop = True)
 
-Logical operators work in the standard python way. So if we had a dataset with a variable called 'var'
+Logical operators work in the standard Python way. So if we had a dataset with a variable called 'var'
 and we wanted to find cells with values between 1 and 10, we could do this:
 
 .. code:: ipython3
@@ -157,8 +150,8 @@ lambda functions.
 +=======================+=======================+=======================+
 | ``abs``               | Absolute value        | ``abs(x.sst)``        |
 +-----------------------+-----------------------+-----------------------+
-| ``floor``             | Floor of variable     | `                     |
-|                       |                       | `floor(x.sst + 8.2)`` |
+| ``floor``             | Floor of variable     |                      |
+|                       |                       | ``floor(x.sst + 8.2)`` |
 +-----------------------+-----------------------+-----------------------+
 | ``ceiling``           | Ceiling of variable   | ``ceiling(x.sst -1)`` |
 +-----------------------+-----------------------+-----------------------+
@@ -183,17 +176,17 @@ lambda functions.
 | ``tan``               | Trigonometric tangent | ``tan(x.var)``        |
 |                       | of variable           |                       |
 +-----------------------+-----------------------+-----------------------+
-| ``spatial_mean``      | Spatial mean of       | ``                    |
-|                       | variable at time-step | spatial_mean(x.var)`` |
+| ``spatial_mean``      | Spatial mean of       |                     |
+|                       | variable at time-step | ``spatial_mean(x.var)`` |
 +-----------------------+-----------------------+-----------------------+
-| ``spatial_max``       | Spatial max of        | `                     |
-|                       | variable at time-step | `spatial_max(x.var)`` |
+| ``spatial_max``       | Spatial max of        |                      |
+|                       | variable at time-step | ``spatial_max(x.var)`` |
 +-----------------------+-----------------------+-----------------------+
-| ``spatial_min``       | Spatial min of        | `                     |
-|                       | variable at time-step | `spatial_min(x.var)`` |
+| ``spatial_min``       | Spatial min of        |                      |
+|                       | variable at time-step | ``spatial_min(x.var)`` |
 +-----------------------+-----------------------+-----------------------+
-| ``spatial_sum``       | Spatial sum of        | `                     |
-|                       | variable at time-step | `spatial_sum(x.var)`` |
+| ``spatial_sum``       | Spatial sum of        |                      |
+|                       | variable at time-step | ``spatial_sum(x.var)`` |
 +-----------------------+-----------------------+-----------------------+
 | ``zonal_mean``        | Zonal mean of         | ``zonal_mean(x.var)`` |
 |                       | variable at time-step |                       |
