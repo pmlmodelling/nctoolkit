@@ -64,6 +64,7 @@ Documentation
    :caption: User Guide 
 
    datasets
+   variables
    exporting 
    subsetting 
    temporals 
