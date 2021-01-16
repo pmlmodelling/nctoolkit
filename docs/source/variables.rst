@@ -150,37 +150,55 @@ lambda functions.
 +=======================+=======================+==========================+
 | ``abs``               | Absolute value        | ``abs(x.sst)``           |
 +-----------------------+-----------------------+--------------------------+
+| ``ceiling``           | Ceiling of variable   | ``ceiling(x.sst -1)``    |
++-----------------------+-----------------------+--------------------------+
+| ``cell_area``         | Area of grid-cell     | ``cell_area(x.var)``     |
+|                       | (m2)                  |                          |
++-----------------------+-----------------------+--------------------------+
+| ``cos``               | Trigonometric cosine  | ``cos(x.var)``           |
+|                       | of variable           |                          |
++-----------------------+-----------------------+--------------------------+
+| ``day``               | Day of the month of   | ``day(x.var)``           |
+|                       | the variable          |                          |
++-----------------------+-----------------------+--------------------------+
+| ``exp``               | Exponential of        | ``exp(x.sst)``           |
+|                       | variable              |                          |
++-----------------------+-----------------------+--------------------------+
 | ``floor``             | Floor of variable     |                          |
 |                       |                       | ``floor(x.sst + 8.2)``   |
 +-----------------------+-----------------------+--------------------------+
-| ``ceiling``           | Ceiling of variable   | ``ceiling(x.sst -1)``    |
+| ``hour``              | Hour of the day of    | ``hour(x.var)``          |
+|                       | the variable          |                          |
 +-----------------------+-----------------------+--------------------------+
-| ``sqrt``              | Square root of        |                          |
-|                       | variable              | ``sqrt(x.sst + 273.15)`` |
+| ``isnan``             | Is variable a missing | ``isnan(x.var)``         |
+|                       | value/NA?             |                          |
 +-----------------------+-----------------------+--------------------------+
-| ``exp``               | Exponential of        | ``exp(x.sst)``           |
+| ``latitude``          | Latitude of the grid  | ``latitude(x.var)``      |
+|                       | cell                  |                          |
++-----------------------+-----------------------+--------------------------+
+| ``level``             | Vertical level of     | ``level(x.var)``         |
+|                       | variable. Example:    |                          |
+|                       | depth in ocean data.  |                          |
++-----------------------+-----------------------+--------------------------+
+| ``log``               | Natural log of        | ``log10(x.sst + 1)``     |
 |                       | variable              |                          |
 +-----------------------+-----------------------+--------------------------+
 | ``log10``             | Base log10 of         | ``log10(x.sst + 1)``     |
 |                       | variable              |                          |
 +-----------------------+-----------------------+--------------------------+
-| ``log``               | Natural log of        | ``log10(x.sst + 1)``     |
-|                       | variable              |                          |
+| ``longitude``         | Longitude of the grid | ``longitude(x.var)``     |
+|                       | cell                  |                          |
++-----------------------+-----------------------+--------------------------+
+| ``month``             | Month of the variable | ``month(x.var)``         |
 +-----------------------+-----------------------+--------------------------+
 | ``sin``               | Trigonometric sine of | ``sin(x.var)``           |
 |                       | variable              |                          |
 +-----------------------+-----------------------+--------------------------+
-| ``cos``               | Trigonometric cosine  | ``cos(x.var)``           |
-|                       | of variable           |                          |
-+-----------------------+-----------------------+--------------------------+
-| ``tan``               | Trigonometric tangent | ``tan(x.var)``           |
-|                       | of variable           |                          |
+| ``spatial_max``       | Spatial max of        |                          |
+|                       | variable at time-step | ``spatial_max(x.var)``   |
 +-----------------------+-----------------------+--------------------------+
 | ``spatial_mean``      | Spatial mean of       |                          |
 |                       | variable at time-step | ``spatial_mean(x.var)``  |
-+-----------------------+-----------------------+--------------------------+
-| ``spatial_max``       | Spatial max of        |                          |
-|                       | variable at time-step | ``spatial_max(x.var)``   |
 +-----------------------+-----------------------+--------------------------+
 | ``spatial_min``       | Spatial min of        |                          |
 |                       | variable at time-step | ``spatial_min(x.var)``   |
@@ -188,49 +206,28 @@ lambda functions.
 | ``spatial_sum``       | Spatial sum of        |                          |
 |                       | variable at time-step | ``spatial_sum(x.var)``   |
 +-----------------------+-----------------------+--------------------------+
-| ``zonal_mean``        | Zonal mean of         | ``zonal_mean(x.var)``    |
-|                       | variable at time-step |                          |
+| ``sqrt``              | Square root of        |                          |
+|                       | variable              | ``sqrt(x.sst + 273.15)`` |
++-----------------------+-----------------------+--------------------------+
+| ``tan``               | Trigonometric tangent | ``tan(x.var)``           |
+|                       | of variable           |                          |
++-----------------------+-----------------------+--------------------------+
+| ``timestep``          | Time step of          | ``timestep(x.var)``      |
+|                       | variable. Using       |                          |
+|                       | Python indexing.      |                          |
++-----------------------+-----------------------+--------------------------+
+| ``year``              | Year of the variable  | ``year(x.var)``          |
 +-----------------------+-----------------------+--------------------------+
 | ``zonal_max``         | Zonal max of variable | ``zonal_max(x.var)``     |
 |                       | at time-step          |                          |
++-----------------------+-----------------------+--------------------------+
+| ``zonal_mean``        | Zonal mean of         | ``zonal_mean(x.var)``    |
+|                       | variable at time-step |                          |
 +-----------------------+-----------------------+--------------------------+
 | ``zonal_min``         | Zonal min of variable | ``zonal_min(x.var)``     |
 |                       | at time-step          |                          |
 +-----------------------+-----------------------+--------------------------+
 | ``zonal_sum``         | Zonal sum of variable | ``zonal_sum(x.var)``     |
 |                       | at time-step          |                          |
-+-----------------------+-----------------------+--------------------------+
-| ``isnan``             | Is variable a missing | ``isnan(x.var)``         |
-|                       | value/NA?             |                          |
-+-----------------------+-----------------------+--------------------------+
-| ``cell_area``         | Area of grid-cell     | ``cell_area(x.var)``     |
-|                       | (m2)                  |                          |
-+-----------------------+-----------------------+--------------------------+
-| ``isnan``             | Is variable a missing | ``isnan(x.var)``         |
-|                       | value/NA?             |                          |
-+-----------------------+-----------------------+--------------------------+
-| ``level``             | Vertical level of     | ``level(x.var)``         |
-|                       | variable. Example:    |                          |
-|                       | depth in ocean data.  |                          |
-+-----------------------+-----------------------+--------------------------+
-| ``timestep``          | Time step of          | ``timestep(x.var)``      |
-|                       | variable. Using       |                          |
-|                       | Python indexing.      |                          |
-+-----------------------+-----------------------+--------------------------+
-| ``longitude``         | Longitude of the grid | ``longitude(x.var)``     |
-|                       | cell                  |                          |
-+-----------------------+-----------------------+--------------------------+
-| ``latitude``          | Latitude of the grid  | ``latitude(x.var)``      |
-|                       | cell                  |                          |
-+-----------------------+-----------------------+--------------------------+
-| ``year``              | Year of the variable  | ``year(x.var)``          |
-+-----------------------+-----------------------+--------------------------+
-| ``month``             | Month of the variable | ``month(x.var)``         |
-+-----------------------+-----------------------+--------------------------+
-| ``day``               | Day of the month of   | ``day(x.var)``           |
-|                       | the variable          |                          |
-+-----------------------+-----------------------+--------------------------+
-| ``hour``              | Hour of the day of    | ``hour(x.var)``          |
-|                       | the variable          |                          |
 +-----------------------+-----------------------+--------------------------+
 
