@@ -155,8 +155,8 @@ lambda functions.
 +-----------------------+-----------------------+-----------------------+
 | ``ceiling``           | Ceiling of variable   | ``ceiling(x.sst -1)`` |
 +-----------------------+-----------------------+-----------------------+
-| ``sqrt``              | Square root of        | ``s                   |
-|                       | variable              | qrt(x.sst + 273.15)`` |
+| ``sqrt``              | Square root of        |                    |
+|                       | variable              | ``sqrt(x.sst + 273.15)`` |
 +-----------------------+-----------------------+-----------------------+
 | ``exp``               | Exponential of        | ``exp(x.sst)``        |
 |                       | variable              |                       |
