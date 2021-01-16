@@ -217,6 +217,9 @@ def assign(self, drop=False, **kwargs):
 
     start = start.strip()
 
+    if "%" in start:
+        raise ValueError("assign does not yet accept %")
+
     if start.endswith(","):
         start = start[:-1]
 

@@ -347,6 +347,9 @@ class TestAssign:
         data.assign(x = 1)
 
     with pytest.raises(ValueError):
+        data.assign(y =  lambda x: x.sst % 1)
+
+    with pytest.raises(ValueError):
         data.assign(x = 1)
 
     with pytest.raises(ValueError):
