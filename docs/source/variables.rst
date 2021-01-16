@@ -150,12 +150,15 @@ lambda functions.
 +=======================+=======================+=======================+
 | ``abs``               | Absolute value        | ``abs(x.sst)``        |
 +-----------------------+-----------------------+-----------------------+
-| ``floor``             | Floor of variable     |                      |
+
+Test 1
++-----------------------+-----------------------+-----------------------+
+| ``floor``             | Floor of variable     |                        |
 |                       |                       | ``floor(x.sst + 8.2)`` |
 +-----------------------+-----------------------+-----------------------+
 | ``ceiling``           | Ceiling of variable   | ``ceiling(x.sst -1)`` |
 +-----------------------+-----------------------+-----------------------+
-| ``sqrt``              | Square root of        |                       |
+| ``sqrt``              | Square root of        |                          |
 |                       | variable              | ``sqrt(x.sst + 273.15)`` |
 +-----------------------+-----------------------+-----------------------+
 | ``exp``               | Exponential of        | ``exp(x.sst)``        |
@@ -183,16 +186,16 @@ Test
 | ``tan``               | Trigonometric tangent | ``tan(x.var)``        |
 |                       | of variable           |                       |
 +-----------------------+-----------------------+-----------------------+
-| ``spatial_mean``      | Spatial mean of       |                     |
+| ``spatial_mean``      | Spatial mean of       |                         |
 |                       | variable at time-step | ``spatial_mean(x.var)`` |
 +-----------------------+-----------------------+-----------------------+
-| ``spatial_max``       | Spatial max of        |                      |
+| ``spatial_max``       | Spatial max of        |                        |
 |                       | variable at time-step | ``spatial_max(x.var)`` |
 +-----------------------+-----------------------+-----------------------+
-| ``spatial_min``       | Spatial min of        |                      |
+| ``spatial_min``       | Spatial min of        |                        |
 |                       | variable at time-step | ``spatial_min(x.var)`` |
 +-----------------------+-----------------------+-----------------------+
-| ``spatial_sum``       | Spatial sum of        |                      |
+| ``spatial_sum``       | Spatial sum of        |                        |
 |                       | variable at time-step | ``spatial_sum(x.var)`` |
 +-----------------------+-----------------------+-----------------------+
 | ``zonal_mean``        | Zonal mean of         | ``zonal_mean(x.var)`` |
