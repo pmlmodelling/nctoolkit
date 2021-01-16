@@ -145,14 +145,10 @@ Functions that work with nctoolkit variables
 The following functions can be used on nctoolkit variables as part of
 lambda functions.
 
-+-----------------------+-----------------------+-----------------------+
-| Function              | Description           | Example               |
-+=======================+=======================+=======================+
-| ``abs``               | Absolute value        | ``abs(x.sst)``        |
-+-----------------------+-----------------------+-----------------------+
-
-Test 1
-
++-----------------------+-----------------------+--------------------------+
+| Function              | Description           | Example                  |
++=======================+=======================+==========================+
+| ``abs``               | Absolute value        | ``abs(x.sst)``           |
 +-----------------------+-----------------------+--------------------------+
 | Function              | Description           | Example                  |
 +-----------------------+-----------------------+--------------------------+
@@ -176,74 +172,69 @@ Test 1
 | ``sin``               | Trigonometric sine of | ``sin(x.var)``           |
 |                       | variable              |                          |
 +-----------------------+-----------------------+--------------------------+
-
-Test
-
-
-+-----------------------+-----------------------+-----------------------+
-| Function              | Description           | Example               |
-+=======================+=======================+=======================+
-| ``cos``               | Trigonometric cosine  | ``cos(x.var)``        |
-|                       | of variable           |                       |
-+-----------------------+-----------------------+-----------------------+
-| ``tan``               | Trigonometric tangent | ``tan(x.var)``        |
-|                       | of variable           |                       |
-+-----------------------+-----------------------+-----------------------+
-| ``spatial_mean``      | Spatial mean of       |                         |
-|                       | variable at time-step | ``spatial_mean(x.var)`` |
-+-----------------------+-----------------------+-----------------------+
-| ``spatial_max``       | Spatial max of        |                        |
-|                       | variable at time-step | ``spatial_max(x.var)`` |
-+-----------------------+-----------------------+-----------------------+
-| ``spatial_min``       | Spatial min of        |                        |
-|                       | variable at time-step | ``spatial_min(x.var)`` |
-+-----------------------+-----------------------+-----------------------+
-| ``spatial_sum``       | Spatial sum of        |                        |
-|                       | variable at time-step | ``spatial_sum(x.var)`` |
-+-----------------------+-----------------------+-----------------------+
-| ``zonal_mean``        | Zonal mean of         | ``zonal_mean(x.var)`` |
-|                       | variable at time-step |                       |
-+-----------------------+-----------------------+-----------------------+
-| ``zonal_max``         | Zonal max of variable | ``zonal_max(x.var)``  |
-|                       | at time-step          |                       |
-+-----------------------+-----------------------+-----------------------+
-| ``zonal_min``         | Zonal min of variable | ``zonal_min(x.var)``  |
-|                       | at time-step          |                       |
-+-----------------------+-----------------------+-----------------------+
-| ``zonal_sum``         | Zonal sum of variable | ``zonal_sum(x.var)``  |
-|                       | at time-step          |                       |
-+-----------------------+-----------------------+-----------------------+
-| ``isnan``             | Is variable a missing | ``isnan(x.var)``      |
-|                       | value/NA?             |                       |
-+-----------------------+-----------------------+-----------------------+
-| ``cell_area``         | Area of grid-cell     | ``cell_area(x.var)``  |
-|                       | (m2)                  |                       |
-+-----------------------+-----------------------+-----------------------+
-| ``isnan``             | Is variable a missing | ``isnan(x.var)``      |
-|                       | value/NA?             |                       |
-+-----------------------+-----------------------+-----------------------+
-| ``level``             | Vertical level of     | ``level(x.var)``      |
-|                       | variable. Example:    |                       |
-|                       | depth in ocean data.  |                       |
-+-----------------------+-----------------------+-----------------------+
-| ``timestep``          | Time step of          | ``timestep(x.var)``   |
-|                       | variable. Using       |                       |
-|                       | Python indexing.      |                       |
-+-----------------------+-----------------------+-----------------------+
-| ``longitude``         | Longitude of the grid | ``longitude(x.var)``  |
-|                       | cell                  |                       |
-+-----------------------+-----------------------+-----------------------+
-| ``latitude``          | Latitude of the grid  | ``latitude(x.var)``   |
-|                       | cell                  |                       |
-+-----------------------+-----------------------+-----------------------+
-| ``year``              | Year of the variable  | ``year(x.var)``       |
-+-----------------------+-----------------------+-----------------------+
-| ``month``             | Month of the variable | ``month(x.var)``      |
-+-----------------------+-----------------------+-----------------------+
-| ``day``               | Day of the month of   | ``day(x.var)``        |
-|                       | the variable          |                       |
-+-----------------------+-----------------------+-----------------------+
-| ``hour``              | Hour of the day of    | ``hour(x.var)``       |
-|                       | the variable          |                       |
-+-----------------------+-----------------------+-----------------------+
+| Function              | Description           | Example                  |
++-----------------------+-----------------------+--------------------------+
+| ``cos``               | Trigonometric cosine  | ``cos(x.var)``           |
+|                       | of variable           |                          |
++-----------------------+-----------------------+--------------------------+
+| ``tan``               | Trigonometric tangent | ``tan(x.var)``           |
+|                       | of variable           |                          |
++-----------------------+-----------------------+--------------------------+
+| ``spatial_mean``      | Spatial mean of       |                          |
+|                       | variable at time-step | ``spatial_mean(x.var)``  |
++-----------------------+-----------------------+--------------------------+
+| ``spatial_max``       | Spatial max of        |                          |
+|                       | variable at time-step | ``spatial_max(x.var)``   |
++-----------------------+-----------------------+--------------------------+
+| ``spatial_min``       | Spatial min of        |                          |
+|                       | variable at time-step | ``spatial_min(x.var)``   |
++-----------------------+-----------------------+--------------------------+
+| ``spatial_sum``       | Spatial sum of        |                          |
+|                       | variable at time-step | ``spatial_sum(x.var)``   |
++-----------------------+-----------------------+--------------------------+
+| ``zonal_mean``        | Zonal mean of         | ``zonal_mean(x.var)``    |
+|                       | variable at time-step |                          |
++-----------------------+-----------------------+--------------------------+
+| ``zonal_max``         | Zonal max of variable | ``zonal_max(x.var)``     |
+|                       | at time-step          |                          |
++-----------------------+-----------------------+--------------------------+
+| ``zonal_min``         | Zonal min of variable | ``zonal_min(x.var)``     |
+|                       | at time-step          |                          |
++-----------------------+-----------------------+--------------------------+
+| ``zonal_sum``         | Zonal sum of variable | ``zonal_sum(x.var)``     |
+|                       | at time-step          |                          |
++-----------------------+-----------------------+--------------------------+
+| ``isnan``             | Is variable a missing | ``isnan(x.var)``         |
+|                       | value/NA?             |                          |
++-----------------------+-----------------------+--------------------------+
+| ``cell_area``         | Area of grid-cell     | ``cell_area(x.var)``     |
+|                       | (m2)                  |                          |
++-----------------------+-----------------------+--------------------------+
+| ``isnan``             | Is variable a missing | ``isnan(x.var)``         |
+|                       | value/NA?             |                          |
++-----------------------+-----------------------+--------------------------+
+| ``level``             | Vertical level of     | ``level(x.var)``         |
+|                       | variable. Example:    |                          |
+|                       | depth in ocean data.  |                          |
++-----------------------+-----------------------+--------------------------+
+| ``timestep``          | Time step of          | ``timestep(x.var)``      |
+|                       | variable. Using       |                          |
+|                       | Python indexing.      |                          |
++-----------------------+-----------------------+--------------------------+
+| ``longitude``         | Longitude of the grid | ``longitude(x.var)``     |
+|                       | cell                  |                          |
++-----------------------+-----------------------+--------------------------+
+| ``latitude``          | Latitude of the grid  | ``latitude(x.var)``      |
+|                       | cell                  |                          |
++-----------------------+-----------------------+--------------------------+
+| ``year``              | Year of the variable  | ``year(x.var)``          |
++-----------------------+-----------------------+--------------------------+
+| ``month``             | Month of the variable | ``month(x.var)``         |
++-----------------------+-----------------------+--------------------------+
+| ``day``               | Day of the month of   | ``day(x.var)``           |
+|                       | the variable          |                          |
++-----------------------+-----------------------+--------------------------+
+| ``hour``              | Hour of the day of    | ``hour(x.var)``          |
+|                       | the variable          |                          |
++-----------------------+-----------------------+--------------------------+
 
