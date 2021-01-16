@@ -216,6 +216,8 @@ def assign(self, drop=False, **kwargs):
         start = start.replace(y, "").strip()
 
     start = start.strip()
+    start = start.replace(" or ", " | ")
+    start = start.replace(" and ", " & ")
 
     if "%" in start:
         raise ValueError("assign does not yet accept %")
@@ -531,52 +533,28 @@ def assign(self, drop=False, **kwargs):
             ):
                 term = terms[i]
 
-                fixed = False
+                if term in frame.f_back.f_locals:
+                    try:
+                        new_term = eval(term, globals(), frame.f_back.f_locals)
+                        if type(new_term) is str:
+                            error_message = f"{term} does not evaluate to a numeric!"
+                            raise ValueError(f"{term} does not evaluate to a numeric!")
 
-                if term == "or":
-                    print(term)
-                    new_start = ""
-                    for y in start.split(" "):
-                        if y != term:
-                            new_start += " " + y
-                        else:
-                            new_start += " " + "||"
-                    start = new_start
-                    fixed = True
-                if term == "and":
-                    new_start = ""
-                    for y in start.split(" "):
-                        if y != term:
-                            new_start += " " + y
-                        else:
-                            new_start += " " + "&&"
-                    start = new_start
-                    fixed = True
+                        if is_number(str(new_term)) == False:
+                            error_message = f"{term} does not evaluate to a numeric!"
+                            raise ValueError(f"{term} does not evaluate to a numeric!")
 
-
-                if fixed == False:
-                    if term in frame.f_back.f_locals:
-                        try:
-                            new_term = eval(term, globals(), frame.f_back.f_locals)
-                            if type(new_term) is str:
-                                error_message = f"{term} does not evaluate to a numeric!"
-                                raise ValueError(f"{term} does not evaluate to a numeric!")
-
-                            if is_number(str(new_term)) == False:
-                                error_message = f"{term} does not evaluate to a numeric!"
-                                raise ValueError(f"{term} does not evaluate to a numeric!")
-
-                            new_start = ""
-                            for y in start.split(" "):
-                                if y != term:
-                                    new_start += " " + y
-                                else:
-                                    new_start += " " + str(new_term)
-                            start = new_start
-                        except:
-                            raise ValueError(f"{term} is not available!")
-                    else:
+                        new_start = ""
+                        for y in start.split(" "):
+                            if y != term:
+                                new_start += " " + y
+                            else:
+                                new_start += " " + str(new_term)
+                        start = new_start
+                    except:
                         raise ValueError(f"{term} is not available!")
+                else:
+                    raise ValueError(f"{term} is not available!")
 
         start = " ".join(split1(start))
 
@@ -665,8 +643,6 @@ def assign(self, drop=False, **kwargs):
     command = command.replace(" ", "")
 
     del frame
-
-    # return start
 
     # create the cdo call and run it
     if drop == False:
