@@ -220,6 +220,9 @@ def assign(self, drop=False, **kwargs):
     if "%" in start:
         raise ValueError("assign does not yet accept %")
 
+    if "//" in start:
+        raise ValueError("assign does not yet accept //")
+
     if start.endswith(","):
         start = start[:-1]
 
