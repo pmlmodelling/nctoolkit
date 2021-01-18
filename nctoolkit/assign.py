@@ -69,18 +69,23 @@ def find_parens2(s):
 
     return toret
 
-
 def find_parens3(s):
     toret = {}
     pstack = []
 
     for i, c in enumerate(s):
-        if c == "(":
+        if c == '(':
             pstack.append(i)
-        elif c == ")":
+        elif c == ')':
+            if len(pstack) == 0:
+                raise IndexError("No matching closing parens at: " + str(i))
             toret[pstack.pop()] = i
 
+    if len(pstack) > 0:
+        raise IndexError("No matching opening parens at: " + str(pstack.pop()))
+
     return toret
+
 
 
 funs = [
@@ -209,7 +214,10 @@ def assign(self, drop=False, **kwargs):
     # now, we need to parse things.
 
     if sys.__stdin__.isatty():
-        raise ValueError("assign does not yet work interactively!")
+
+        import readline; start = ([str(readline.get_history_item(i + 1)) for i in range(readline.get_current_history_length())][-1])
+
+#        raise ValueError("assign does not yet work interactively!")
     else:
         start = lambdas
         try:
@@ -222,10 +230,13 @@ def assign(self, drop=False, **kwargs):
     if ".assign(" not in start:
         raise ValueError("Please write assign methods as single line!")
 
-    if len(find_parens3(start)) == 0:
+    try:
+        find_parens3(start)
+    except:
         raise ValueError("Please write assign methods as single line!")
 
     start = start[start.find("(") + 1 : -1]
+
     pattern1 = re.compile("drop\s*=\s*(True|False)")
     y = pattern1.search(start)
     if y is not None:

@@ -8,7 +8,9 @@ that has been thorougly tested, but any feedback on error messages will
 be appreciated.**
 
 Variable creation in nctoolkit can be done using the ``assign`` method,
-which works in a similar way to the method available in Pandas. 
+which works in a similar way to the method available in Pandas. This is a
+new method. At present it will not work in interactive sessions, but will work
+when running python scripts from the terminal and from Jupyter notebook.
 
 
 The ``assign`` method works using lambda functions. Let’s say we have a
@@ -39,6 +41,15 @@ drop can be positioned anywhere. So the following will do the same thing
 
     data.assign(new = lambda x: x.var+ 10, drop = True)
     data.assign(drop = True, new = lambda x: x.var+ 10)
+
+
+At present, ``assign`` requires that it is written on a single line. So avoid doing something
+like the following:
+
+.. code:: ipython3
+
+    data.assign(new = lambda x: x.var+ 10, 
+    drop = True)
 
 The `assign` method will evaluate the lambda functions sent to it for 
 each dataset grid cell for each time step. So every part of the lambda function
@@ -177,8 +188,7 @@ lambda functions.
 |                       | cell                  |                          |
 +-----------------------+-----------------------+--------------------------+
 | ``level``             | Vertical level of     | ``level(x.var)``         |
-|                       | variable. Example:    |                          |
-|                       | depth in ocean data.  |                          |
+|                       | variable.             |                          |
 +-----------------------+-----------------------+--------------------------+
 | ``log``               | Natural log of        | ``log10(x.sst + 1)``     |
 |                       | variable              |                          |
