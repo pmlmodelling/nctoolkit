@@ -25,6 +25,7 @@ class TestAssign:
 
     data = nc.open_data(ff)
     data.assign(new=lambda x: x.sst + 273.15)
+    print(data.history)
     assert data.history[0] == "cdo -aexpr,'new=sst+273.15'"
 
     data = nc.open_data(ff)
@@ -185,9 +186,7 @@ class TestAssign:
     assert data.history[0] == "cdo -aexpr,'new=sst+2.0+2.0+2.0-sst'"
 
     data = nc.open_data(ff)
-    data.assign(
-        new=lambda x: x.sst + np.mean(np.mean(2)) + np.mean(2) + np.mean(2) - x.sst
-    )
+    data.assign(new=lambda x: x.sst + np.mean(np.mean(2)) + np.mean(2) + np.mean(2) - x.sst)
     assert data.history[0] == "cdo -aexpr,'new=sst+2.0+2.0+2.0-sst'"
 
     data = nc.open_data(ff)
@@ -311,10 +310,8 @@ class TestAssign:
 
     data = nc.open_data("data/sst.mon.mean.nc")
     # data.select(time = 0 )
-    data.assign(
-        new=lambda x: (x.sst == x.sst) * timestep(x.sst + 1),
-        old=lambda x: x.sst + timestep(x.sst),
-    )
+    data.assign(new=lambda x: (x.sst == x.sst) * timestep(x.sst + 1), old=lambda x: x.sst + timestep(x.sst))
+
     assert (
         data.history[0]
         == "cdo -aexpr,'new=(sst==sst)*(ctimestep(sst+1)-1);old=sst+(ctimestep(sst)-1)'"
