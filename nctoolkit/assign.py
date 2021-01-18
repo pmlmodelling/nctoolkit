@@ -21,6 +21,7 @@ def find_possible(x):
 import re
 import inspect
 import numpy as np
+import dill
 
 from nctoolkit.flatten import str_flatten
 from nctoolkit.runthis import run_this
@@ -195,11 +196,6 @@ def assign(self, drop=False, **kwargs):
         raise ValueError("Please provide assignments!")
 
     for k, v in kwargs.items():
-        # if k == "drop":
-        #    if type(v) is not bool:
-        #        raise ValueError("drop must be boolean!")
-        #    drop_vars = v
-        # else:
         if is_lambda(v) == False:
             raise ValueError("Please check everything is a lambda function!")
         lambdas = v
@@ -207,7 +203,11 @@ def assign(self, drop=False, **kwargs):
     # now, we need to parse things.
 
     start = lambdas
-    start = inspect.getsourcelines(start)[0][0].replace("\n", "").strip()
+    try:
+        start = inspect.getsourcelines(start)[0][0].replace("\n", "").strip()
+    except:
+        start = dill.source.getsource(start).replace("\n", "").strip()
+
     start = start[start.find("(") + 1 : -1]
     pattern1 = re.compile("drop\s*=\s*(True|False)")
     y = pattern1.search(start)
