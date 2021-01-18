@@ -19,7 +19,9 @@ def find_possible(x):
 
 
 import re
+import dill
 import inspect
+import sys
 import numpy as np
 
 from nctoolkit.flatten import str_flatten
@@ -199,10 +201,30 @@ def assign(self, drop=False, **kwargs):
             raise ValueError("Please check everything is a lambda function!")
         lambdas = v
 
+    for k, v in kwargs.items():
+        if is_lambda(v) == True:
+            break
+    lambdas = v
+
     # now, we need to parse things.
 
-    start = lambdas
-    start = inspect.getsourcelines(start)[0][0].replace("\n", "").strip()
+    if sys.__stdin__.isatty():
+        raise ValueError("assign does not yet work interactively!")
+    else:
+        start = lambdas
+        try:
+            start = inspect.getsourcelines(start)[0][0].replace("\n", "").strip()
+        except:
+            start = dill.source.getsource(start).replace("\n", "").strip()
+
+    # we now need to figure out if what we have is one line
+
+    if ".assign(" not in start:
+        raise ValueError("Please write assign methods as single line!")
+
+    if len(find_parens3(start)) == 0:
+        raise ValueError("Please write assign methods as single line!")
+
     start = start[start.find("(") + 1 : -1]
     pattern1 = re.compile("drop\s*=\s*(True|False)")
     y = pattern1.search(start)
@@ -244,7 +266,6 @@ def assign(self, drop=False, **kwargs):
     for x in pattern1.finditer(start):
         index = x.span()[0]
         start = start[:index] + ";" + start[index + 1 :]
-    print(start)
 
     command = list()
     starts = start
