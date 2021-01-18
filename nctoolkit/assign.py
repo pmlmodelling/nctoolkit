@@ -21,7 +21,6 @@ def find_possible(x):
 import re
 import inspect
 import numpy as np
-import dill
 
 from nctoolkit.flatten import str_flatten
 from nctoolkit.runthis import run_this
@@ -203,11 +202,7 @@ def assign(self, drop=False, **kwargs):
     # now, we need to parse things.
 
     start = lambdas
-    try:
-        start = inspect.getsourcelines(start)[0][0].replace("\n", "").strip()
-    except:
-        start = dill.source.getsource(start).replace("\n", "").strip()
-
+    start = inspect.getsourcelines(start)[0][0].replace("\n", "").strip()
     start = start[start.find("(") + 1 : -1]
     pattern1 = re.compile("drop\s*=\s*(True|False)")
     y = pattern1.search(start)
@@ -244,11 +239,12 @@ def assign(self, drop=False, **kwargs):
         start = start.replace(y, " , ").strip()
 
     start = start.replace("  ", " ")
-    pattern1 = re.compile(",\s+\w+ = lambda")
+    pattern1 = re.compile(",\s*\w+\s*=\s*lambda")
 
     for x in pattern1.finditer(start):
         index = x.span()[0]
         start = start[:index] + ";" + start[index + 1 :]
+    print(start)
 
     command = list()
     starts = start
