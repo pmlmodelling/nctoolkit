@@ -1,5 +1,5 @@
 Global settings
----------------
+============
 
 nctoolkit let’s you set global settings using options.
 
@@ -51,23 +51,24 @@ Setting global settings using a configuration file
 ---------------
 
 You may want to set some global settings either permanently or on a project level.
-You can do this by setting up a configruation file. This should be called .nctoolkitrc or
+You can do this by setting up a configruation file. This should be a plain text file called .nctoolkitrc or
 nctoolkitrc. It should be placed in one of two locations: your working directory or your 
 home directory. When nctoolkit is imported, it will look first in your working directory and
 then in your home directory for a file called .nctoolkitrc or nctoolkitrc. It will then use
 the first it finds to change the global settings from the defaults.
 
 The structure of this file is straightforward. For example, if you wanted to set evaluation to
-lazy and the number of cores used for processing multi-file datasets, you could do the following:
+lazy and the number of cores used for processing multi-file datasets, you would the following in your configuration file:
 
 
 ::
     lazy : True 
+
     cores : 6 
 
-
-Note that unless the setting is specified in the file, the defaults will be used. If you do not provide
-a configuration file, nctoolkit will use the default settings.
+The files roughly follow Python dictionary syntax, with the setting and value separate by :.  Note that unless the setting 
+is specified in the file, the defaults will be used. If you do not provide a configuration file, nctoolkit will use the 
+default settings.
 
 
 
