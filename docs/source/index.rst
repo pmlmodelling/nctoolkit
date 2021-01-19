@@ -54,6 +54,7 @@ Documentation
 
    installing
    basic_usage
+   news
 
 **User Guide**
 
