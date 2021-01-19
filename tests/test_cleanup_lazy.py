@@ -12,7 +12,7 @@ class TestClean:
         safe = nc.session.nc_safe
         print([ff for ff in safe if os.path.exists(ff)])
         tracker = nc.open_data(ff)
-        tracker.select_timesteps(0)
+        tracker.select(timesteps=0)
         tracker.run()
         safe = nc.session.nc_safe
         print([ff for ff in safe if os.path.exists(ff)])

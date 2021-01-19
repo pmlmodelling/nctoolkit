@@ -245,13 +245,6 @@ def select(self, **kwargs):
         time step(s) to select. For example, if you wanted the first time step
         set times=0.
 
-    lon : list
-        A list [lon_min, lon_max] giving the maximum and minimum latitude required.
-
-    lat : list
-        A list [lat_min, lat_max] giving the maximum and minimum latitude required.
-
-
     A usage example is the following:
 
     data.select(variables = "var")
@@ -265,54 +258,59 @@ def select(self, **kwargs):
     for key in kwargs:
 
         if "var" in key:
-            self.select_variables(kwargs[key])
+            select_variables(self, kwargs[key])
+            #self.select_variables(kwargs[key])
             non_selected = False
 
         if "mon" in  key:
-            self.select_months(kwargs[key])
+            #self.select_months(kwargs[key])
+            select_months(self, kwargs[key])
             non_selected = False
 
         if "year" in key:
-            self.select_years(kwargs[key])
+            select_years(self, kwargs[key])
+            #self.select_years(kwargs[key])
             non_selected = False
 
         if "seas" in key:
-            self.select_seasons(kwargs[key])
+            #self.select_seasons(kwargs[key])
+            select_seasons(self, kwargs[key])
             non_selected = False
 
         if "time" in key:
-            self.select_timesteps(kwargs[key])
+            #self.select_timesteps(kwargs[key])
+            select_timesteps(self, kwargs[key])
             non_selected = False
 
-    # Now we need to get crop working
+    ## Now we need to get crop working
 
 
-    crop_it = False
-    lon = None
-    lat = None
-    nco = False
-    nco_vars = None
-    for key in kwargs:
-        if "lon" == key:
-            non_selected = False
-            crop_it = True
-            lon = kwargs[key]
-        if "lat" == key:
-            non_selected = False
-            crop_it = True
-            lat = kwargs[key]
-        if "nco" == key:
-            nco = kwargs[key]
-        if "nco_vars" == key:
-            nco_vars = kwargs[key]
+    #crop_it = False
+    #lon = None
+    #lat = None
+    #nco = False
+    #nco_vars = None
+    #for key in kwargs:
+    #    if "lon" == key:
+    #        non_selected = False
+    #        crop_it = True
+    #        lon = kwargs[key]
+    #    if "lat" == key:
+    #        non_selected = False
+    #        crop_it = True
+    #        lat = kwargs[key]
+    #    if "nco" == key:
+    #        nco = kwargs[key]
+    #    if "nco_vars" == key:
+    #        nco_vars = kwargs[key]
 
-    if crop_it:
-        if lon is not None and lat is not None:
-            self.crop(lon = lon, lat = lat, nco = nco, nco_vars = nco_vars)
-        if lon is not None and lat is None:
-            self.crop(lon = lon,  nco = nco, nco_vars = nco_vars)
-        if lon is None and lat is not None:
-            self.crop(lat = lat,  nco = nco, nco_vars = nco_vars)
+    #if crop_it:
+    #    if lon is not None and lat is not None:
+    #        self.crop(lon = lon, lat = lat, nco = nco, nco_vars = nco_vars)
+    #    if lon is not None and lat is None:
+    #        self.crop(lon = lon,  nco = nco, nco_vars = nco_vars)
+    #    if lon is None and lat is not None:
+    #        self.crop(lat = lat,  nco = nco, nco_vars = nco_vars)
 
 
 

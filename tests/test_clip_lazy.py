@@ -126,12 +126,12 @@ class TestCrop:
     def test_nco(self):
         tracker = nc.open_data(ff)
         tracker.crop(lat=[0, 90], nco=True)
-        tracker.select_timesteps(0)
+        tracker.select(timesteps=0)
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0].astype("float")
         tracker = nc.open_data(ff)
         tracker.crop(lat=[0, 90], nco=False)
-        tracker.select_timesteps(0)
+        tracker.select(timesteps=0)
         tracker.spatial_mean()
         y = tracker.to_dataframe().sst.values[0].astype("float")
 
@@ -142,12 +142,12 @@ class TestCrop:
     def test_nco2(self):
         tracker = nc.open_data(ff)
         tracker.crop(lon=[0, 90], nco=True)
-        tracker.select_timesteps(0)
+        tracker.select(timesteps=0)
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0].astype("float")
         tracker = nc.open_data(ff)
         tracker.crop(lon=[0, 90], nco=False)
-        tracker.select_timesteps(0)
+        tracker.select(timesteps=0)
         tracker.spatial_mean()
         y = tracker.to_dataframe().sst.values[0].astype("float")
 
@@ -158,15 +158,15 @@ class TestCrop:
     def test_nco3(self):
         tracker = nc.open_data(ff)
         tracker.crop(lon=[0, 90], nco=True)
-        tracker.select_timesteps(0)
+        tracker.select(timesteps=0)
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0].astype("float")
         tracker = nc.open_data(ff)
-        tracker.select_timesteps([0, 1])
+        tracker.select(timesteps=[0, 1])
         tracker.split("yearmonth")
         tracker.crop(lon=[0, 90], nco=False)
         tracker.merge_time()
-        tracker.select_timesteps(0)
+        tracker.select(timesteps=0)
         tracker.spatial_mean()
         y = tracker.to_dataframe().sst.values[0].astype("float")
 

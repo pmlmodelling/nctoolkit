@@ -33,10 +33,10 @@ class TestMerge:
 
     def test_warning2(self):
         tracker = nc.open_data(ff)
-        tracker.select_timesteps([0, 1, 2])
+        tracker.select(timesteps=[0, 1, 2])
         tracker.run()
         new = nc.open_data(ff)
-        new.select_timesteps([0])
+        new.select(timesteps=[0])
         new.rename({"sst": "tos"})
         new.run()
         data = nc.open_data([tracker.current, new.current])
@@ -83,12 +83,12 @@ class TestMerge:
 
     def test_merge_error(self):
         tracker = nc.open_data(ff)
-        tracker.select_timesteps([0, 1, 2])
+        tracker.select(timesteps=[0, 1, 2])
         tracker.run()
         new = tracker.copy()
 
         new = nc.open_data(ff)
-        new.select_timesteps(112)
+        new.select(timesteps=112)
         new.run()
         new.rename({"sst": "tos"})
         new.run()
@@ -105,12 +105,12 @@ class TestMerge:
 
     def test_merge_error1(self):
         tracker = nc.open_data(ff)
-        tracker.select_timesteps([0])
+        tracker.select(timesteps=[0])
         tracker.run()
         new = tracker.copy()
 
         new = nc.open_data(ff)
-        new.select_timesteps([0, 1, 2])
+        new.select(timesteps=[0, 1, 2])
         new.run()
         new.rename({"sst": "tos"})
         new.run()
@@ -133,12 +133,12 @@ class TestMerge:
 
     def test_merge_error2(self):
         tracker = nc.open_data(ff)
-        tracker.select_timesteps([0, 1, 2])
+        tracker.select(timesteps=[0, 1, 2])
         tracker.run()
         new = tracker.copy()
 
         new = nc.open_data(ff)
-        new.select_timesteps(112)
+        new.select(timesteps=112)
         new.run()
         new.rename({"sst": "tos"})
         new.clip(lon=[50, 80])
@@ -151,12 +151,12 @@ class TestMerge:
 
     def test_merge_error3(self):
         tracker = nc.open_data(ff)
-        tracker.select_timesteps([0, 1])
+        tracker.select(timesteps=[0, 1])
         tracker.run()
         new = tracker.copy()
 
         new = nc.open_data(ff)
-        new.select_timesteps([3, 4])
+        new.select(timesteps=[3, 4])
         new.run()
         new.rename({"sst": "tos"})
         new.clip(lon=[50, 80])
@@ -172,8 +172,8 @@ class TestMerge:
         tracker.run()
         new = tracker.copy()
         new.rename({"sst": "tos"})
-        new.select_timesteps([1, 2, 3, 4])
-        tracker.select_timesteps([0, 2, 3, 4])
+        new.select(timesteps=[1, 2, 3, 4])
+        tracker.select(timesteps=[0, 2, 3, 4])
         tracker.run()
         new.run()
 

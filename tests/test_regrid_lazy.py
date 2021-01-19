@@ -16,8 +16,8 @@ class TestRegrid:
 
     def test_regrid(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(1990)
-        tracker.select_months(1)
+        tracker.select(years=1990)
+        tracker.select(months=1)
         tracker.clip(lon=[0, 90])
         tracker.clip(lat=[0, 90])
         new = tracker.copy()
@@ -25,8 +25,8 @@ class TestRegrid:
         x = tracker.to_dataframe().sst.values[0].astype("float")
 
         tracker = nc.open_data(ff)
-        tracker.select_years(1990)
-        tracker.select_months(1)
+        tracker.select(years=1990)
+        tracker.select(months=1)
         tracker.regrid(new, method="nn")
         tracker.spatial_mean()
 
@@ -39,11 +39,11 @@ class TestRegrid:
 
     def test_regrid_list(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(1990)
+        tracker.select(years=1990)
         tracker.clip(lon=[0, 90])
         tracker.clip(lat=[0, 90])
         new = tracker.copy()
-        tracker.select_months(1)
+        tracker.select(months=1)
         tracker.regrid(new)
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0].astype("float")
@@ -51,11 +51,11 @@ class TestRegrid:
         tracker = nc.open_data(ff)
         tracker.clip(lon=[0, 90])
         tracker.clip(lat=[0, 90])
-        tracker.select_years(1990)
+        tracker.select(years=1990)
         tracker.split("yearmonth")
         tracker.regrid(new)
         tracker.merge_time()
-        tracker.select_months(1)
+        tracker.select(months=1)
         tracker.spatial_mean()
 
         y = tracker.to_dataframe().sst.values[0].astype("float")
@@ -119,7 +119,7 @@ class TestRegrid:
 
     def test_regrid1(self):
         tracker = nc.open_data(ff)
-        tracker.select_timesteps(1)
+        tracker.select(timesteps=1)
         tracker.clip(lon=[0, 90])
         tracker.clip(lat=[0, 90])
         new = tracker.copy()
@@ -129,7 +129,7 @@ class TestRegrid:
         grid = new.to_dataframe().reset_index().loc[:, ["lon", "lat"]]
 
         tracker = nc.open_data(ff)
-        tracker.select_timesteps(1)
+        tracker.select(timesteps=1)
         tracker.regrid(grid, method="nn")
         tracker.spatial_mean()
 
@@ -143,14 +143,14 @@ class TestRegrid:
 
         ff = "data/sst.mon.mean.nc"
         data = nc.open_data(ff)
-        data.select_timesteps(0)
+        data.select(timesteps=0)
         grid = pd.DataFrame({"lon": [1.5], "lat": [55.5]})
         data.regrid(grid)
         x = data.to_dataframe().sst.values[0]
 
         ff = "data/sst.mon.mean.nc"
         data = nc.open_data(ff)
-        data.select_timesteps(0)
+        data.select(timesteps=0)
         grid = pd.DataFrame({"lon": [1.5], "lat": [55.5]})
         data.clip(lon=[1.2, 1.7], lat=[55.2, 55.7])
         y = data.to_dataframe().sst.values[0]
@@ -162,7 +162,7 @@ class TestRegrid:
     def test_another_df(self):
         ff = "data/sst.mon.mean.nc"
         data = nc.open_data(ff)
-        data.select_timesteps(0)
+        data.select(timesteps=0)
         grid = pd.DataFrame({"lon": [1.5, 1.5], "lat": [55.5, 56.5]})
         data.regrid(grid)
         data.spatial_mean()
@@ -170,7 +170,7 @@ class TestRegrid:
 
         ff = "data/sst.mon.mean.nc"
         data = nc.open_data(ff)
-        data.select_timesteps(0)
+        data.select(timesteps=0)
         grid = pd.DataFrame({"lon": [1.5], "lat": [55.5]})
         data.clip(lon=[1.2, 1.7], lat=[55.2, 56.7])
         data.spatial_mean()
@@ -182,7 +182,7 @@ class TestRegrid:
     def test_another_df2(self):
         ff = "data/sst.mon.mean.nc"
         data = nc.open_data(ff)
-        data.select_timesteps(0)
+        data.select(timesteps=0)
         grid = pd.DataFrame({"lon": [1.5, 2.5], "lat": [55.5, 55.5]})
         data.regrid(grid)
         data.spatial_mean()
@@ -190,7 +190,7 @@ class TestRegrid:
 
         ff = "data/sst.mon.mean.nc"
         data = nc.open_data(ff)
-        data.select_timesteps(0)
+        data.select(timesteps=0)
         data.clip(lon=[1.2, 2.7], lat=[55.2, 55.7])
         data.spatial_mean()
         y = data.to_dataframe().sst.values[0]
@@ -202,7 +202,7 @@ class TestRegrid:
     def test_another_df3(self):
         ff = "data/sst.mon.mean.nc"
         data = nc.open_data(ff)
-        data.select_timesteps(0)
+        data.select(timesteps=0)
         grid = pd.DataFrame({"lon": [1.5, 1.5, 20], "lat": [55.5, 56.5, 56.5]})
         data.regrid(grid, "nn")
         data.clip(lon=[0, 2])
@@ -210,7 +210,7 @@ class TestRegrid:
 
         ff = "data/sst.mon.mean.nc"
         data = nc.open_data(ff)
-        data.select_timesteps(0)
+        data.select(timesteps=0)
         grid = pd.DataFrame({"lon": [1.5], "lat": [55.5]})
         data.clip(lon=[1.2, 1.7], lat=[55.2, 56.7])
         y = data.to_dataframe().sst.mean()

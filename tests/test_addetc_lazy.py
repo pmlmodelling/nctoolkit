@@ -28,8 +28,8 @@ class TestAddetc:
     def test_add_safe(self):
         nc.options(lazy = False)
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1970, 1971)))
-        tracker.select_months([1])
+        tracker.select(years = list(range(1970, 1971)))
+        tracker.select(months=[1])
         tracker.run()
         new = tracker.copy()
         tracker.multiply(2)
@@ -48,8 +48,8 @@ class TestAddetc:
 
     def test_add(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1970, 1971)))
-        tracker.select_months([1])
+        tracker.select(years=list(range(1970, 1971)))
+        tracker.select(months=[1])
         tracker.run()
         new = tracker.copy()
         tracker.spatial_mean()
@@ -66,8 +66,8 @@ class TestAddetc:
 
     def test_add_multiple(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1970, 1971)))
-        tracker.select_months([1])
+        tracker.select(years=list(range(1970, 1971)))
+        tracker.select(months=[1])
         tracker.run()
         new = tracker.copy()
         new.add(tracker)
@@ -84,8 +84,8 @@ class TestAddetc:
 
     def test_add2(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1970, 1971)))
-        tracker.select_months([1])
+        tracker.select(years=list(range(1970, 1971)))
+        tracker.select(months=[1])
         tracker.run()
         new = tracker.copy()
         new.add(tracker)
@@ -102,8 +102,8 @@ class TestAddetc:
 
     def test_add21(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1970, 1971)))
-        tracker.select_months([1])
+        tracker.select(years=list(range(1970, 1971)))
+        tracker.select(months=[1])
         tracker.run()
         new = tracker.copy()
         new.add(tracker, "sst")
@@ -120,8 +120,8 @@ class TestAddetc:
 
     def test_add_var(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1970, 1971)))
-        tracker.select_months([1])
+        tracker.select(years=list(range(1970, 1971)))
+        tracker.select(months=[1])
         tracker.run()
         new = tracker.copy()
         tracker.mutate({"tos": "sst+1-1"})
@@ -139,8 +139,8 @@ class TestAddetc:
 
     def test_add3(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1970, 1971)))
-        tracker.select_months([1])
+        tracker.select(years=list(range(1970, 1971)))
+        tracker.select(months=[1])
         tracker.run()
         new = tracker.copy()
         new.add(tracker.current)
@@ -158,8 +158,8 @@ class TestAddetc:
     def test_add4(self):
         nc.options(lazy=False)
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1970, 1971)))
-        tracker.select_months([1])
+        tracker.select(years=list(range(1970, 1971)))
+        tracker.select(months=[1])
         tracker.run()
         new = tracker.copy()
         new.add(tracker.current)
@@ -177,8 +177,8 @@ class TestAddetc:
 
     def test_subtract(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1970, 1971)))
-        tracker.select_months([1])
+        tracker.select(years=list(range(1970, 1971)))
+        tracker.select(months=[1])
         tracker.run()
         new = tracker.copy()
         new.add(1)
@@ -195,8 +195,8 @@ class TestAddetc:
 
     def test_subtract1(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1970, 1971)))
-        tracker.select_months([1])
+        tracker.select(years=list(range(1970, 1971)))
+        tracker.select(months=[1])
         tracker.run()
         new = tracker.copy()
         new.add(1)
@@ -214,13 +214,13 @@ class TestAddetc:
     def test_op_list(self):
         ff = "data/sst.mon.mean.nc"
         data = nc.open_data(ff)
-        data.select_timesteps(0)
+        data.select(timesteps=0)
         new = nc.open_data(ff)
-        new.select_timesteps([0, 1])
+        new.select(timesteps=[0, 1])
         new.split("yearmonth")
         new.subtract(data)
         new.merge_time()
-        new.select_timesteps(0)
+        new.select(timesteps=0)
         new.spatial_sum()
         x = new.to_dataframe().sst.values[0].astype("float")
 
@@ -230,8 +230,8 @@ class TestAddetc:
 
     def test_subtract2(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1970, 1971)))
-        tracker.select_months([1])
+        tracker.select(years=list(range(1970, 1971)))
+        tracker.select(months=[1])
         tracker.run()
         new = tracker.copy()
         tracker.spatial_mean()
@@ -247,8 +247,8 @@ class TestAddetc:
 
     def test_multiply(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1970, 1971)))
-        tracker.select_months([1])
+        tracker.select(years=list(range(1970, 1971)))
+        tracker.select(months=[1])
         tracker.run()
         new = tracker.copy()
         tracker.spatial_mean()
@@ -264,8 +264,8 @@ class TestAddetc:
 
     def test_multiply1(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1970, 1971)))
-        tracker.select_months([1])
+        tracker.select(years=list(range(1970, 1971)))
+        tracker.select(months=[1])
         tracker.run()
         new = tracker.copy()
         new.add(2)
@@ -284,8 +284,8 @@ class TestAddetc:
 
     def test_multiply2(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1970, 1971)))
-        tracker.select_months([1])
+        tracker.select(years=list(range(1970, 1971)))
+        tracker.select(months=[1])
         tracker.run()
         new = tracker.copy()
         new.add(2)
@@ -304,8 +304,8 @@ class TestAddetc:
 
     def test_divide(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1970, 1971)))
-        tracker.select_months([1])
+        tracker.select(years=list(range(1970, 1971)))
+        tracker.select(months=[1])
         tracker.run()
         new = tracker.copy()
         tracker.spatial_mean()
@@ -321,8 +321,8 @@ class TestAddetc:
 
     def test_divide1(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1970, 1971)))
-        tracker.select_months([1])
+        tracker.select(years=list(range(1970, 1971)))
+        tracker.select(months=[1])
         tracker.run()
         new = tracker.copy()
         new.add(2)
@@ -341,8 +341,8 @@ class TestAddetc:
 
     def test_divide2(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1970, 1971)))
-        tracker.select_months([1])
+        tracker.select(years=list(range(1970, 1971)))
+        tracker.select(months=[1])
         tracker.run()
         new = tracker.copy()
         new.add(2)
@@ -361,8 +361,8 @@ class TestAddetc:
 
     def test_divide3(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1970, 1971)))
-        tracker.select_months([1])
+        tracker.select(years=list(range(1970, 1971)))
+        tracker.select(months=[1])
         tracker.run()
         new = tracker.copy()
         new.add(2)
@@ -505,8 +505,8 @@ class TestAddetc:
 
     def test_lazy_add(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1970, 1971)))
-        tracker.select_months([1])
+        tracker.select(years=list(range(1970, 1971)))
+        tracker.select(months=[1])
         tracker.run()
         new = tracker.copy()
         new.add(tracker, "sst")

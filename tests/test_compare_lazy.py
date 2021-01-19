@@ -17,8 +17,8 @@ class TestCompare:
 
     def test_compare_all(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1970, 1971)))
-        tracker.select_months([1])
+        tracker.select(years=list(range(1970, 1971)))
+        tracker.select(months=[1])
         tracker.compare_all("<=0")
         tracker.run()
         tracker.spatial_sum()
@@ -57,8 +57,8 @@ class TestCompare:
 
     def test_compare_all1(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1970, 1971)))
-        tracker.select_months([1])
+        tracker.select(years=list(range(1970, 1971)))
+        tracker.select(months=[1])
         tracker.compare_all("<0")
         tracker.run()
         tracker.spatial_sum()
@@ -72,8 +72,8 @@ class TestCompare:
 
     def test_compare_all2(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1970, 1971)))
-        tracker.select_months([1])
+        tracker.select(years=list(range(1970, 1971)))
+        tracker.select(months=[1])
         tracker.compare_all(">0")
         tracker.run()
         tracker.spatial_sum()
@@ -86,8 +86,8 @@ class TestCompare:
 
     def test_compare_all3(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1970, 1971)))
-        tracker.select_months([1])
+        tracker.select(years=list(range(1970, 1971)))
+        tracker.select(months=[1])
         tracker.compare_all("==0")
         tracker.run()
         tracker.spatial_sum()
@@ -100,8 +100,8 @@ class TestCompare:
 
     def test_compare_all4(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1970, 1971)))
-        tracker.select_months([1])
+        tracker.select(years=list(range(1970, 1971)))
+        tracker.select(months=[1])
         tracker.compare_all("!=0")
         tracker.run()
         tracker.spatial_sum()
@@ -114,8 +114,8 @@ class TestCompare:
 
     def test_compare_all5(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1970, 1971)))
-        tracker.select_months([1])
+        tracker.select(years=list(range(1970, 1971)))
+        tracker.select(months=[1])
         tracker.compare_all(">=0")
         tracker.run()
         tracker.spatial_sum()

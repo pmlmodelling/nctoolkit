@@ -52,17 +52,17 @@ class TestCalls:
     def test_selectvariablescall(self):
         nc.options(lazy=True)
         data = nc.open_data(ff)
-        data.select_variables("sst")
+        data.select(variables="sst")
 
         assert data.history[0] == "cdo -selname,sst"
         data = nc.open_data(ff)
-        data.select_variables(["sst", "tos"])
+        data.select(variables=["sst", "tos"])
         assert data.history[0] == "cdo -selname,sst,tos"
 
     def test_selecttimestepcall(self):
         nc.options(lazy=True)
         data = nc.open_data(ff)
-        data.select_timesteps(0)
+        data.select(timesteps=0)
 
         assert data.history[0] == "cdo -seltimestep,1"
 
@@ -95,21 +95,21 @@ class TestCalls:
     def test_selectseasoncall(self):
         nc.options(lazy=True)
         data = nc.open_data(ff)
-        data.select_seasons("DJF")
+        data.select(seasons="DJF")
 
         assert data.history[0] == "cdo -select,season=DJF"
 
     def test_selectmonthcall(self):
         nc.options(lazy=True)
         data = nc.open_data(ff)
-        data.select_months(range(1, 3))
+        data.select(months=range(1, 3))
 
         assert data.history[0] == "cdo -selmonth,1,2"
 
     def test_selectyearscall(self):
         nc.options(lazy=True)
         data = nc.open_data(ff)
-        data.select_years(range(1970, 1973))
+        data.select(years=range(1970, 1973))
 
         assert data.history[0] == "cdo -selyear,1970,1971,1972"
 

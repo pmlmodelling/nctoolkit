@@ -25,8 +25,8 @@ class TestLazy:
     def test_select(self):
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1970, 1979)))
-        tracker.select_months([1, 2, 3, 4, 5])
+        tracker.select(years=list(range(1970, 1979)))
+        tracker.select(months=[1, 2, 3, 4, 5])
         tracker.clip(lon=[0, 90])
         tracker.clip(lat=[0, 90])
         tracker.annual_mean()
@@ -41,8 +41,8 @@ class TestLazy:
     def test_lazy1(self):
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
-        tracker.select_years(list(range(1970, 1979)))
-        tracker.select_months([1, 2, 3, 4, 5])
+        tracker.select(years=list(range(1970, 1979)))
+        tracker.select(months=[1, 2, 3, 4, 5])
         tracker.clip(lon=[0, 90])
         tracker.clip(lat=[0, 90])
         tracker.annual_mean()
@@ -65,8 +65,8 @@ class TestLazy:
         tracker.split(by="year")
         assert len(tracker.current) == 30
         tracker.merge_time()
-        tracker.select_years(list(range(1970, 1979)))
-        tracker.select_months([1, 2, 3, 4, 5])
+        tracker.select(years=list(range(1970, 1979)))
+        tracker.select(months=[1, 2, 3, 4, 5])
         tracker.clip(lon=[0, 90])
         tracker.clip(lat=[0, 90])
         tracker.annual_mean()
@@ -85,8 +85,8 @@ class TestLazy:
         tracker.split(by="year")
         n_files = len(tracker.current)
         tracker.merge_time()
-        tracker.select_years(list(range(1970, 1979)))
-        tracker.select_months([1, 2, 3, 4, 5])
+        tracker.select(years=list(range(1970, 1979)))
+        tracker.select(months=[1, 2, 3, 4, 5])
         tracker.clip(lon=[0, 90])
         tracker.clip(lat=[0, 90])
         tracker.annual_mean()
@@ -120,8 +120,8 @@ class TestLazy:
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
         tracker.transmute({"sst": "sst+273.15"})
-        tracker.select_years(list(range(1970, 1979)))
-        tracker.select_months([1, 2, 3, 4, 5])
+        tracker.select(years=list(range(1970, 1979)))
+        tracker.select(months=[1, 2, 3, 4, 5])
         tracker.clip(lon=[0, 90])
         tracker.clip(lat=[0, 90])
         tracker.annual_mean()
@@ -139,8 +139,8 @@ class TestLazy:
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
         tracker.mutate({"sst1": "sst+273.15"})
-        tracker.select_years(list(range(1970, 1979)))
-        tracker.select_months([1, 2, 3, 4, 5])
+        tracker.select(years=list(range(1970, 1979)))
+        tracker.select(months=[1, 2, 3, 4, 5])
         tracker.clip(lon=[0, 90])
         tracker.clip(lat=[0, 90])
         tracker.annual_mean()
@@ -159,7 +159,7 @@ class TestLazy:
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
         tracker.seasonal_mean_climatology()
-        tracker.select_months(2)
+        tracker.select(months=2)
         tracker.spatial_mean()
         tracker.run()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")

@@ -46,7 +46,7 @@ class TestSplit:
 
     def test_yearmon(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(1990)
+        tracker.select(years=1990)
         x = len(tracker.times)
         tracker.split("month")
         n = len(nc.session_files())

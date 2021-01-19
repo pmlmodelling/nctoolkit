@@ -16,16 +16,16 @@ class TestTolonat:
 
     def test_latlon1(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(1990)
-        tracker.select_months(1)
+        tracker.select(years=1990)
+        tracker.select(months=1)
         tracker.clip(lon=[0, 90])
         tracker.clip(lat=[0, 90])
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0].astype("float")
 
         tracker = nc.open_data(ff)
-        tracker.select_years(1990)
-        tracker.select_months(1)
+        tracker.select(years=1990)
+        tracker.select(months=1)
         tracker.to_latlon(lon=[0.5, 89.5], lat=[0.5, 89.5], res=[1, 1], method="nn")
         tracker.spatial_mean()
         y = tracker.to_dataframe().sst.values[0].astype("float")
@@ -115,16 +115,16 @@ class TestTolonat:
 
     def test_latlon4(self):
         tracker = nc.open_data(ff)
-        tracker.select_years(1990)
-        tracker.select_months(1)
+        tracker.select(years=1990)
+        tracker.select(months=1)
         tracker.clip(lon=[0, 90])
         tracker.clip(lat=[0, 90])
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0].astype("float")
 
         tracker = nc.open_data(ff)
-        tracker.select_years(1990)
-        tracker.select_months(1)
+        tracker.select(years=1990)
+        tracker.select(months=1)
         tracker.to_latlon(lon=[0.5, 89.5], lat=[0.5, 89.5], res=1, method="nn")
         tracker.spatial_mean()
         y = tracker.to_dataframe().sst.values[0].astype("float")

@@ -12,7 +12,7 @@ class TestVerts:
         ff = "data/woa18_decav_t01_01.nc"
 
         tracker = nc.open_data(ff)
-        tracker.select_variables("t_an")
+        tracker.select(variables="t_an")
         tracker.vertical_mean()
         tracker.spatial_mean()
         x = tracker.to_xarray().t_an.values[0][0][0].astype("float")
@@ -24,7 +24,7 @@ class TestVerts:
         ff = "data/woa18_decav_t01_01.nc"
 
         tracker = nc.open_data(ff)
-        tracker.select_variables("t_an")
+        tracker.select(variables="t_an")
         tracker.vertical_max()
         tracker.spatial_mean()
         x = tracker.to_xarray().t_an.values[0][0][0].astype("float")
@@ -36,7 +36,7 @@ class TestVerts:
         ff = "data/woa18_decav_t01_01.nc"
 
         tracker = nc.open_data(ff)
-        tracker.select_variables("t_an")
+        tracker.select(variables="t_an")
         tracker.vertical_min()
         tracker.spatial_mean()
         x = tracker.to_xarray().t_an.values[0][0][0].astype("float")
@@ -48,7 +48,7 @@ class TestVerts:
         ff = "data/woa18_decav_t01_01.nc"
 
         tracker = nc.open_data(ff)
-        tracker.select_variables("t_an")
+        tracker.select(variables="t_an")
         tracker.vertical_sum()
         tracker.spatial_mean()
         x = tracker.to_xarray().t_an.values[0][0][0].astype("float")
@@ -60,7 +60,7 @@ class TestVerts:
         ff = "data/woa18_decav_t01_01.nc"
 
         tracker = nc.open_data(ff)
-        tracker.select_variables("t_an")
+        tracker.select(variables="t_an")
         tracker.vertical_range()
         tracker.spatial_mean()
         x = tracker.to_xarray().t_an.values[0][0][0].astype("float")
@@ -71,7 +71,7 @@ class TestVerts:
     def test_int(self):
         ff = "data/woa18_decav_t01_01.nc"
         tracker = nc.open_data(ff)
-        tracker.select_variables("t_an")
+        tracker.select(variables="t_an")
         tracker.vertical_interp(10)
         x = tracker.to_dataframe().t_an.values[0].astype("float")
         n = len(nc.session_files())
@@ -81,7 +81,7 @@ class TestVerts:
         ff = "data/woa18_decav_t01_01.nc"
         tracker = nc.open_data(ff)
 
-        tracker.select_variables("t_an")
+        tracker.select(variables="t_an")
         tracker.surface()
         tracker.spatial_mean()
         x = tracker.to_dataframe().t_an.values[0].astype("float")
@@ -94,7 +94,7 @@ class TestVerts:
         ff = "data/woa18_decav_t01_01.nc"
         tracker = nc.open_data(ff)
 
-        tracker.select_variables("t_an")
+        tracker.select(variables="t_an")
         tracker.bottom()
         tracker.spatial_mean()
         x = tracker.to_dataframe().t_an.values[0].astype("float")
@@ -108,7 +108,7 @@ class TestVerts:
         ff = "data/woa18_decav_t01_01.nc"
         tracker = nc.open_data(ff)
 
-        tracker.select_variables("t_an")
+        tracker.select(variables="t_an")
         new = tracker.copy()
         new.rename({"t_an": "test"})
         new.run()
@@ -122,11 +122,11 @@ class TestVerts:
 
     def test_bottom_mask(self):
         data = nc.open_data("data/woa18_decav_t01_01.nc")
-        data.select_variables("t_an")
+        data.select(variables="t_an")
         df1 = data.to_dataframe().reset_index()
 
         data = nc.open_data("data/woa18_decav_t01_01.nc")
-        data.select_variables("t_an")
+        data.select(variables="t_an")
         bottom = data.copy()
         bottom.bottom_mask()
         data.multiply(bottom)

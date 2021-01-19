@@ -1284,11 +1284,6 @@ class DataSet(object):
     from nctoolkit.rollstat import rolling_range
     from nctoolkit.rollstat import rolling_sum
 
-    from nctoolkit.select import select_variables
-    from nctoolkit.select import select_timesteps
-    from nctoolkit.select import select_seasons
-    from nctoolkit.select import select_months
-    from nctoolkit.select import select_years
     from nctoolkit.select import select
 
     from nctoolkit.setters import set_date
@@ -1359,8 +1354,6 @@ class DataSet(object):
     from nctoolkit.deprecated import clip
 
     from nctoolkit.deprecated import release
-    from nctoolkit.deprecated import select_timestep
-    from nctoolkit.deprecated import select_season
     from nctoolkit.deprecated import write_nc
     from nctoolkit.deprecated import var
     from nctoolkit.deprecated import cum_sum
@@ -1404,3 +1397,4 @@ class DataSet(object):
     from nctoolkit.deprecated import seasonal_max_climatology
     from nctoolkit.deprecated import seasonal_range_climatology
     from nctoolkit.deprecated import remove_variables
+
