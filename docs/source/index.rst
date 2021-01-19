@@ -45,6 +45,7 @@ Documentation
 * :doc:`basic_usage`
 * :doc:`merging_notebook`
 * :doc:`lazy_methods`
+* :doc:`news`
 
 .. toctree::
    :maxdepth: 1
