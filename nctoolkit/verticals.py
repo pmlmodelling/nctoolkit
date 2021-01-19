@@ -164,8 +164,8 @@ def bottom_mask(self):
         raise ValueError("There is only one vertical level in this file!")
 
     var_use = data.variables_detailed.query("levels>1").variable[0]
-    data.select_variables(var_use)
-    data.select_timesteps(0)
+    data.select(variables=var_use)
+    data.select(timesteps=0)
     data.set_missing([0, 0])
     data.transmute({"Wet": var_use + " == " + var_use})
     data.invert_levels()
