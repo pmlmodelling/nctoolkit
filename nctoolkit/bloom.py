@@ -43,7 +43,7 @@ def initiation(self, var=None, metric="Henson", threshold = 0.05):
             # calculate the maximum
             data_max = open_data(ff)
             n_times = len(data_max.times)
-            data_max.select_variables(var)
+            data_max.select(variables=var)
             data_max.max()
             data_max.rename({var:"max"})
             data_max.run()
@@ -51,7 +51,7 @@ def initiation(self, var=None, metric="Henson", threshold = 0.05):
             # calculate the maximum
             data_median = open_data(ff)
             n_times = len(data_median.times)
-            data_median.select_variables(var)
+            data_median.select(variables=var)
             data_median.median()
             data_median.rename({var:"median"})
             data_median.run()
