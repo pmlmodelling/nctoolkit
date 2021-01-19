@@ -67,7 +67,6 @@ Plotting
    :toctree: generated/
 
    DataSet.plot
-   DataSet.view
 
 
 Variable modification 
@@ -76,8 +75,7 @@ Variable modification
 .. autosummary::
    :toctree: generated/
 
-   DataSet.mutate
-   DataSet.transmute
+   DataSet.assign
    DataSet.rename
    DataSet.set_missing
    DataSet.sum_all
@@ -105,7 +103,7 @@ Vertical/level methods
    DataSet.vertical_max
    DataSet.vertical_range
    DataSet.vertical_sum
-   DataSet.vertical_cum_sum
+   DataSet.vertical_cumsum
    DataSet.invert_levels
    DataSet.bottom_mask
 
@@ -160,8 +158,7 @@ Arithemetic methods
 .. autosummary::
    :toctree: generated/
 
-   DataSet.mutate
-   DataSet.transmute
+   DataSet.assign
    DataSet.add
    DataSet.subtract
    DataSet.multiply
@@ -179,6 +176,7 @@ Ensemble statistics
    DataSet.ensemble_max
    DataSet.ensemble_percentile
    DataSet.ensemble_range
+   DataSet.ensemble_sum
 
 
 Subsetting operations
@@ -189,12 +187,7 @@ Subsetting operations
 
    DataSet.crop
    DataSet.select
-   DataSet.select_variables
-   DataSet.remove_variables
-   DataSet.select_years
-   DataSet.select_months
-   DataSet.select_seasons
-   DataSet.select_timesteps
+   DataSet.drop
 
 Time-based methods
 ---------------------
@@ -203,10 +196,6 @@ Time-based methods
    :toctree: generated/
 
    DataSet.set_date
-   DataSet.shift_hours
-   DataSet.shift_days
-   DataSet.shift_months
-   DataSet.shift_years
    DataSet.shift
 
 Interpolation and resampling methods
@@ -232,15 +221,6 @@ Masking methods
 
 
 
-Summary methods
----------------------
-
-.. autosummary::
-   :toctree: generated/
-
-   DataSet.annual_anomaly
-   DataSet.monthly_anomaly
-   DataSet.phenology
 
 Statistical methods
 ---------------------
@@ -248,15 +228,16 @@ Statistical methods
 .. autosummary::
    :toctree: generated/
 
-   DataSet.mean
-   DataSet.min
-   DataSet.median
-   DataSet.percentile
-   DataSet.max
-   DataSet.sum
-   DataSet.range
-   DataSet.var
-   DataSet.cum_sum
+   DataSet.tmean
+   DataSet.tmin
+   DataSet.tmedian
+   DataSet.tpercentile
+   DataSet.tmax
+   DataSet.tsum
+   DataSet.trange
+   DataSet.tvariance
+   DataSet.tstdev
+   DataSet.tcumsum
 
    DataSet.cor_space
    DataSet.cor_time
@@ -270,45 +251,6 @@ Statistical methods
 
    DataSet.centre
 
-   DataSet.monthly_mean
-   DataSet.monthly_min
-   DataSet.monthly_max
-   DataSet.monthly_range
-
-   DataSet.daily_mean
-   DataSet.daily_min
-   DataSet.daily_max
-   DataSet.daily_mean
-   DataSet.daily_range
-   DataSet.daily_sum
-
-   DataSet.daily_mean_climatology
-   DataSet.daily_min_climatology
-   DataSet.daily_max_climatology
-   DataSet.daily_mean_climatology
-   DataSet.daily_range_climatology
-
-   DataSet.monthly_mean_climatology
-   DataSet.monthly_min_climatology
-   DataSet.monthly_max_climatology
-   DataSet.monthly_range_climatology
-
-   DataSet.annual_mean
-   DataSet.annual_min
-   DataSet.annual_max
-   DataSet.annual_sum
-   DataSet.annual_range
-
-   DataSet.seasonal_mean
-   DataSet.seasonal_min
-   DataSet.seasonal_max
-   DataSet.seasonal_range
-
-   DataSet.seasonal_mean_climatology
-   DataSet.seasonal_min_climatology
-   DataSet.seasonal_max_climatology
-   DataSet.seasonal_range_climatology
-
    DataSet.zonal_mean
    DataSet.zonal_min
    DataSet.zonal_max
@@ -319,24 +261,6 @@ Statistical methods
    DataSet.meridonial_max
    DataSet.meridonial_range
 
-Seasonal methods
----------------------
-
-.. autosummary::
-   :toctree: generated/
-
-
-   DataSet.seasonal_mean
-   DataSet.seasonal_min
-   DataSet.seasonal_max
-   DataSet.seasonal_range
-
-
-   DataSet.seasonal_mean_climatology
-   DataSet.seasonal_min_climatology
-   DataSet.seasonal_max_climatology
-   DataSet.seasonal_range_climatology
-   DataSet.select_seasons
 
 
 
@@ -349,22 +273,6 @@ Merging methods
    DataSet.merge
    DataSet.merge_time
 
-Climatology methods
----------------------
-
-.. autosummary::
-   :toctree: generated/
-
-   DataSet.daily_mean_climatology
-   DataSet.daily_min_climatology
-   DataSet.daily_max_climatology
-   DataSet.daily_mean_climatology
-   DataSet.daily_range_climatology
-
-   DataSet.monthly_mean_climatology
-   DataSet.monthly_min_climatology
-   DataSet.monthly_max_climatology
-   DataSet.monthly_range_climatology
 
 Splitting methods
 ---------------------
@@ -393,7 +301,7 @@ Miscellaneous methods
 .. autosummary::
    :toctree: generated/
 
-   DataSet.cell_areas
+   DataSet.cell_area
    DataSet.cdo_command
    DataSet.nco_command
    DataSet.compare_all
@@ -402,6 +310,13 @@ Miscellaneous methods
 
 
 
+Ecological methods
+---------------------
+
+.. autosummary::
+   :toctree: generated/
+
+   DataSet.phenology
 
 
 
