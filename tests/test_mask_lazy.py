@@ -114,7 +114,7 @@ class TestMask:
 
     def test_mask14(self):
         tracker = nc.open_data(ff)
-        tracker.clip(lat=[0, 90], nco=False)
+        tracker.crop(lat=[0, 90], nco=False)
         tracker.select(timesteps=0)
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0].astype("float")

@@ -141,7 +141,7 @@ class TestMerge:
         new.select(timesteps=112)
         new.run()
         new.rename({"sst": "tos"})
-        new.clip(lon=[50, 80])
+        new.crop(lon=[50, 80])
         new.run()
         data = nc.open_data([new.current, tracker.current])
         with pytest.raises(ValueError):
@@ -159,7 +159,7 @@ class TestMerge:
         new.select(timesteps=[3, 4])
         new.run()
         new.rename({"sst": "tos"})
-        new.clip(lon=[50, 80])
+        new.crop(lon=[50, 80])
         new.run()
         data = nc.open_data([new.current, tracker.current])
         with pytest.raises(ValueError):

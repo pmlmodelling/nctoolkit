@@ -18,8 +18,8 @@ class TestTolonat:
         tracker = nc.open_data(ff)
         tracker.select(years=1990)
         tracker.select(months=1)
-        tracker.clip(lon=[0, 90])
-        tracker.clip(lat=[0, 90])
+        tracker.crop(lon=[0, 90])
+        tracker.crop(lat=[0, 90])
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0].astype("float")
 
@@ -117,8 +117,8 @@ class TestTolonat:
         tracker = nc.open_data(ff)
         tracker.select(years=1990)
         tracker.select(months=1)
-        tracker.clip(lon=[0, 90])
-        tracker.clip(lat=[0, 90])
+        tracker.crop(lon=[0, 90])
+        tracker.crop(lat=[0, 90])
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0].astype("float")
 

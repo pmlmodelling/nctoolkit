@@ -18,8 +18,8 @@ class TestRegrid:
         tracker = nc.open_data(ff)
         tracker.select(years=1990)
         tracker.select(months=1)
-        tracker.clip(lon=[0, 90])
-        tracker.clip(lat=[0, 90])
+        tracker.crop(lon=[0, 90])
+        tracker.crop(lat=[0, 90])
         new = tracker.copy()
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0].astype("float")
@@ -40,8 +40,8 @@ class TestRegrid:
     def test_regrid_list(self):
         tracker = nc.open_data(ff)
         tracker.select(years=1990)
-        tracker.clip(lon=[0, 90])
-        tracker.clip(lat=[0, 90])
+        tracker.crop(lon=[0, 90])
+        tracker.crop(lat=[0, 90])
         new = tracker.copy()
         tracker.select(months=1)
         tracker.regrid(new)
@@ -49,8 +49,8 @@ class TestRegrid:
         x = tracker.to_dataframe().sst.values[0].astype("float")
 
         tracker = nc.open_data(ff)
-        tracker.clip(lon=[0, 90])
-        tracker.clip(lat=[0, 90])
+        tracker.crop(lon=[0, 90])
+        tracker.crop(lat=[0, 90])
         tracker.select(years=1990)
         tracker.split("yearmonth")
         tracker.regrid(new)
@@ -120,8 +120,8 @@ class TestRegrid:
     def test_regrid1(self):
         tracker = nc.open_data(ff)
         tracker.select(timesteps=1)
-        tracker.clip(lon=[0, 90])
-        tracker.clip(lat=[0, 90])
+        tracker.crop(lon=[0, 90])
+        tracker.crop(lat=[0, 90])
         new = tracker.copy()
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0].astype("float")
@@ -152,7 +152,7 @@ class TestRegrid:
         data = nc.open_data(ff)
         data.select(timesteps=0)
         grid = pd.DataFrame({"lon": [1.5], "lat": [55.5]})
-        data.clip(lon=[1.2, 1.7], lat=[55.2, 55.7])
+        data.crop(lon=[1.2, 1.7], lat=[55.2, 55.7])
         y = data.to_dataframe().sst.values[0]
 
         assert x == y
@@ -172,7 +172,7 @@ class TestRegrid:
         data = nc.open_data(ff)
         data.select(timesteps=0)
         grid = pd.DataFrame({"lon": [1.5], "lat": [55.5]})
-        data.clip(lon=[1.2, 1.7], lat=[55.2, 56.7])
+        data.crop(lon=[1.2, 1.7], lat=[55.2, 56.7])
         data.spatial_mean()
         y = data.to_dataframe().sst.values[0]
         assert x == y
@@ -191,7 +191,7 @@ class TestRegrid:
         ff = "data/sst.mon.mean.nc"
         data = nc.open_data(ff)
         data.select(timesteps=0)
-        data.clip(lon=[1.2, 2.7], lat=[55.2, 55.7])
+        data.crop(lon=[1.2, 2.7], lat=[55.2, 55.7])
         data.spatial_mean()
         y = data.to_dataframe().sst.values[0]
         assert x == y
@@ -205,14 +205,14 @@ class TestRegrid:
         data.select(timesteps=0)
         grid = pd.DataFrame({"lon": [1.5, 1.5, 20], "lat": [55.5, 56.5, 56.5]})
         data.regrid(grid, "nn")
-        data.clip(lon=[0, 2])
+        data.crop(lon=[0, 2])
         x = data.to_dataframe().sst.mean()
 
         ff = "data/sst.mon.mean.nc"
         data = nc.open_data(ff)
         data.select(timesteps=0)
         grid = pd.DataFrame({"lon": [1.5], "lat": [55.5]})
-        data.clip(lon=[1.2, 1.7], lat=[55.2, 56.7])
+        data.crop(lon=[1.2, 1.7], lat=[55.2, 56.7])
         y = data.to_dataframe().sst.mean()
 
         assert x == y
