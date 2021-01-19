@@ -1,5 +1,6 @@
 import atexit
 import glob
+import sys
 import copy
 import multiprocessing as mp
 import os
@@ -72,6 +73,10 @@ session_info["user_dir"] = False
 session_info["thread_safe"] = False
 session_info["lazy"] = False
 session_info["precision"] = None
+
+session_info["interactive"] = sys.__stdin__.isatty()
+
+
 
 if platform.system() == "Linux":
     result = os.statvfs("/tmp/")

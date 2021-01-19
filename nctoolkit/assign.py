@@ -26,6 +26,7 @@ import numpy as np
 
 from nctoolkit.flatten import str_flatten
 from nctoolkit.runthis import run_this
+from nctoolkit.session import session_info
 
 
 def split_equation(mystr):
@@ -213,11 +214,10 @@ def assign(self, drop=False, **kwargs):
 
     # now, we need to parse things.
 
-    if sys.__stdin__.isatty():
+    if session_info["interactive"]:
 
         import readline; start = ([str(readline.get_history_item(i + 1)) for i in range(readline.get_current_history_length())][-1])
 
-#        raise ValueError("assign does not yet work interactively!")
     else:
         start = lambdas
         try:
