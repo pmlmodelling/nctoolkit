@@ -61,7 +61,6 @@ The structure of this file is straightforward. For example, if you wanted to set
 lazy and the number of cores used for processing multi-file datasets, you would the following in your configuration file:
 
 
-::
     lazy : True 
 
     cores : 6 
