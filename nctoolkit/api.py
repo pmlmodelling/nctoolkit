@@ -1351,7 +1351,6 @@ class DataSet(object):
 
     # deprecated stuff
 
-    from nctoolkit.deprecated import release
     from nctoolkit.deprecated import var
     from nctoolkit.deprecated import cum_sum
     from nctoolkit.deprecated import vertical_cum_sum

@@ -14,113 +14,10 @@ import warnings
 
 
 
-# deprecate this in December 2020
 
-def release(self):
-    """
-    Run all stored commands in a dataset
-    """
-    warnings.warn(message="Warning: release is deprecated. Use run!")
-
-    # the first step is to set the run status to true
-
-    if (self._execute is False) and (len(self.history) > len(self._hold_history)):
-        self._execute = True
-
-        cdo_command = "cdo "
-
-        output_method = "ensemble"
-
-        if self._merged:
-            output_method = "one"
-
-        run_this(cdo_command, self, output=output_method)
-
-        self._merged = False
-
-        self._execute = False
-        self._zip = False
-
-        if len(self._safe) > 0:
-            for ff in self._safe:
-                if ff in nc_safe:
-                    nc_safe.remove(ff)
-
-        self._safe = []
-
-        cleanup()
-
-        self._thredds = False
-
-
-
-
-# deprecate this in January 2021
-def select_timestep(self, times=None):
-    """
-    Select timesteps from a dataset
-
-    Parameters
-    -------------
-    times : list or int
-        time step(s) to select. For example, if you wanted the first time step
-        set times=0.
-    """
-    warnings.warn(message="select_timestep is deprecated. Use select_seasons")
-
-    if times is None:
-        raise ValueError("Please supply times")
-
-    if type(times) is range:
-        times = list(times)
-
-    if type(times) is not list:
-        times = [times]
-
-    for tt in times:
-        if type(tt) is not int:
-            raise TypeError(f"{tt} is not an int")
-        if tt < 0:
-            raise ValueError(f"{tt} is not a valid timestep")
-
-    # all of the variables in months need to be converted to ints,
-    # just in case floats have been provided
-
-    times = [int(x) + 1 for x in times]
-    times = [str(x) for x in times]
-    times = str_flatten(times)
-
-    cdo_command = f"cdo -seltimestep,{times}"
-
-    run_this(cdo_command, self, output="ensemble")
-
-# deprecate this in January 2021
-
-def select_season(self, season=None):
-    """
-    Select season from a dataset
-
-    Parameters
-    -------------
-    season : str
-        Season to select. One of "DJF", "MAM", "JJA", "SON".
-    """
-
-    warnings.warn(message="select_season is deprecated. Use select_seasons")
-
-    if season is None:
-        raise ValueError("No season supplied")
-
-    if type(season) is not str:
-        raise TypeError("Invalid season supplied")
-
-    if season not in ["DJF", "MAM", "JJA", "SON"]:
-        raise ValueError("Invalid season supplied")
-
-    cdo_command = f"cdo -select,season={season}"
-    run_this(cdo_command, self, output="ensemble")
-
-
+#############################
+# Delete these in March 2021
+###########################
 def var(self):
     """
     Calculate the temporal variance of all variables
@@ -496,6 +393,10 @@ def seasonal_range_climatology(self):
     """
     warnings.warn(message="Warning: seasonal_range_climatology is deprecated. Use trange!")
     seasclim(self, stat="range")
+
+#####################################################
+# Delete these in April 2021
+#####################################################
 
 def cell_areas(self, join=True):
     """
