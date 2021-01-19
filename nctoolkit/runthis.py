@@ -256,7 +256,7 @@ def run_cdo(command, target, out_file=None, overwrite=False):
         if start_target in nc_safe:
             nc_safe.remove(start_target)
         raise ValueError(
-            "Is the horizontal grid very large? Consider setting cdo=False in clip!"
+            "Is the horizontal grid very large? Consider setting cdo=False in crop!"
         )
 
     if "(Abort)" in str(result):

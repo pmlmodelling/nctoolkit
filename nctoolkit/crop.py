@@ -20,7 +20,7 @@ def crop(self, lon=[-180, 180], lat=[-90, 90], nco=False, nco_vars = None):
         The latitude range to select. This must be two variables,
         between -90 and 90 when nco = False.
     nco: boolean
-        Do you want this to use NCO for clipping? Defaults to False,
+        Do you want this to use NCO for cropping? Defaults to False,
         and uses CDO. Set to True if you want to call NCO.
         NCO is typically better at handling very large horizontal grids.
     nco_vars: str or list
