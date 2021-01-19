@@ -1354,7 +1354,6 @@ class DataSet(object):
     from nctoolkit.deprecated import clip
 
     from nctoolkit.deprecated import release
-    from nctoolkit.deprecated import write_nc
     from nctoolkit.deprecated import var
     from nctoolkit.deprecated import cum_sum
     from nctoolkit.deprecated import vertical_cum_sum
@@ -1397,4 +1396,3 @@ class DataSet(object):
     from nctoolkit.deprecated import seasonal_max_climatology
     from nctoolkit.deprecated import seasonal_range_climatology
     from nctoolkit.deprecated import remove_variables
-
