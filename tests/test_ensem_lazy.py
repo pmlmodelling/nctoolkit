@@ -207,7 +207,7 @@ class TestEnsemble:
         data = nc.open_data(nc.create_ensemble("data/ensemble")[0])
         with pytest.warns(UserWarning):
             data.ensemble_mean()
-        data.release()
+        data.run()
         n = len(nc.session_files())
         assert n == 1
 
