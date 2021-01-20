@@ -104,6 +104,22 @@ def options(**kwargs):
     **kwargs
         Define options using key, value pairs.
 
+    Examples
+    ------------
+
+    If you wanted to process the files in multi-file datasets in parallel with 6 cores, do the following:
+
+    >>> import nctoolkit as nc
+    >>> nc.options(cores = 6)
+
+    If you want to set evaluation to always be lazy do the following:
+
+    >>> nc.options(lazy = True)
+
+    If you want nctoolkit to store temporary files in a specific directory, do this:
+
+    >>> nc.options(temp_dir = "/foo")
+
     """
 
     valid_keys = [
@@ -388,6 +404,32 @@ def open_data(x=[], suppress_messages=False, checks=False, **kwargs):
         Are you accessing a thredds server? Must end with .nc.
     checks: boolean
         Do you want basic checks to ensure cdo can read files?
+
+    Examples
+    ------------
+
+    If you want to open a single file as a dataset, do the following:
+
+    >>> import nctoolkit as nc
+    >>> data = nc.open_data("example.nc")
+
+
+    If you want to open a list of files as a multi-file dataset, you would do something like this:
+
+
+    >>> import nctoolkit as nc
+    >>> data = nc.open_data(["file1.nc", "file2.nc", "file3.nc"])
+
+
+    If you wanted to open all files in a directory "data" as a multi-file dataset, you can use a wildcard:
+
+    >>> import nctoolkit as nc
+    >>> data = nc.open_data("data/*.nc")
+
+
+
+
+
     """
     # from nctoolkit.temp_file import temp_file
 
@@ -606,6 +648,15 @@ def open_thredds(x=None, wait=None, checks=False):
     wait : int
         Time to wait for thredds server to be checked. Limitless if not supplied.
 
+    Examples
+    ------------
+
+    If you want to open a file available over thredds or opendap, do the following:
+
+    >>> import nctoolkit as nc
+    >>> data = nc.open_thredds("htttp:://foo.nc")
+
+
     """
 
     if type(checks) is not bool:
@@ -641,6 +692,16 @@ def open_url(x=None, ftp_details=None, wait=None, file_stop=None):
         Time to wait, in seconds, for data to download. A minimum of 3 attempts will be made to download the data.
     file_stop : int
         Time limit, in minutes, for individual attempts at downloading data. This is useful to get around download freezes.
+
+    Examples
+    ------------
+
+    If you want to open a file available over a url do the following:
+
+    >>> import nctoolkit as nc
+    >>> data = nc.open_url("htttp:://foo.nc")
+
+    This will download the file as a temporary folder for use in the dataset.
 
     """
 
@@ -854,26 +915,6 @@ class DataSet(object):
                 yield ff
             return
 
-    # def __repr__(self):
-    #    # tidy up the output first
-    #    if isinstance(self.start, list):
-    #        start = str(len(self.start)) + " member ensemble"
-    #    if type(self.start) == str:
-    #        start = self.start
-
-    #    if isinstance(self.current, list):
-    #        current = str(len(self.current)) + " member ensemble"
-    #    if type(self.current) == str:
-    #        current = self.current
-
-    #    return (
-    #        "<nctoolkit.DataSet>:\nstart: "
-    #        + start
-    #        + "\ncurrent: "
-    #        + current
-    #        + "\noperations: "
-    #        + str(len(self.history))
-    #    )
 
     def __repr__(self):
         if isinstance(self.current, list):
