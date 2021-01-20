@@ -17,6 +17,17 @@ def cell_area(self, join=True):
     join: boolean
         Set to False if you only want the cell areas to be in the output.
         join=True adds the areas as a variable to the dataset. Defaults to True.
+
+    Examples
+    ------------
+    If you wanted to add the cell_areas as a new variable in a dataset, you would do the following:
+
+    >>> data.cell_area()
+
+    If you wanted to replace a dataset with the cell areas of that dataset, you would do the following:
+
+    >>> data.cell_area(join = False)
+
     """
 
     if isinstance(join, bool) is False:
