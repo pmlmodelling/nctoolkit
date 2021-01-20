@@ -80,6 +80,17 @@ def cor_space(self, var1=None, var2=None):
         The first variable
     var2: str
         The second variable
+
+    Examples
+    ------------
+
+    If you wanted to calculate the spatial correlation coefficient between variables x and y in a dataset, you would do this:
+
+    >>> data.cor_space("x", "y")
+
+    The correlation coefficient will be calculated for each time step.
+
+
     """
 
     cor(self, var1=var1, var2=var2, method="fld")
@@ -96,5 +107,15 @@ def cor_time(self, var1=None, var2=None):
         The first variable
     var2: str
         The second variable
+
+    Examples
+    ------------
+
+    If you wanted to calculate the temporal correlation coefficient between variables x and y in a dataset, you would do this:
+
+    >>> data.cor_space("x", "y")
+
+    The correlation coefficient will be calculated for each grid cell.  This method will indicate how temporally correlated variables are
+    in different spatial regions.
     """
     cor(self, var1=var1, var2=var2, method="tim")
