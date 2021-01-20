@@ -10,6 +10,12 @@ def resample_grid(self, factor = None):
     factor : int
         The resampling factor. Must be a positive integer. No interpolation occurs.
         Example: factor of 2 will sample every other grid cell
+
+    Examples
+    ------------
+    If you wanted to select every other grid cell, you could do the following:
+
+        >>> data.resample_grid(2)
     """
     if factor is None:
         raise ValueError("Please provide a resampling factor")
