@@ -12,6 +12,19 @@ def drop(self, vars=None):
     vars : str or list
         Variable or variables to be removed from the dataset.
         Variables that are listed but not in the dataset will be ignored
+
+    Examples
+    ------------
+
+    If you wanted to remove a single variable 'var1'  from a dataset data, you would do the following:
+
+    >>> data.drop('var')
+
+    If you wanted to remove a list of variables, you would do the following:
+
+    >>> data.drop(['var1', 'var2', 'var2'])
+
+
     """
 
     # Some checks on the validity of variables supplied
