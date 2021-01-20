@@ -15,6 +15,16 @@ def bottom(self):
     ensembles, it uses the first file to derive the index of the bottom level.
     Use bottom_mask for files when the bottom cell in NetCDF files do not represent
     the actual bottom.
+
+    Examples
+    ------------
+
+    If you wanted to extract the bottom vertical level of a dataset, do the following:
+
+    >>> data.bottom()
+
+    This method is most useful for things like oceanic model data, where the bottom cell corresponds to the bottom of the ocean.
+
     """
 
     # extract the number of the bottom level
@@ -45,6 +55,15 @@ def surface(self):
     """
     Extract the top/surface level from a dataset
     This extracts the first vertical level from each file in a dataset.
+
+    Examples
+    ------------
+
+    If you wanted to extract the top vertical level of a dataset, do the following:
+
+    >>> data.surface()
+
+    This method is most useful for things like oceanic data, where this method will extract the sea surface.
     """
 
     cdo_command = "cdo -sellevidx,1"
@@ -61,6 +80,16 @@ def vertical_interp(self, levels=None):
     levels : list, int or str
         list of vertical levels, for example depths for an ocean model, to vertically
         interpolate to. These must be floats or ints.
+
+    Examples
+    ------------
+
+    If you wanted to vertically interpolate a dataset to 5 and 10 metres, you would do the following:
+
+    >>> data.vertical_interp([5,10])
+
+    This method is most useful for things like oceanic data, where you need to interpolate to certain depth levels.
+    It will require that vertical levels are the same in every grid cell.
 
     """
 
@@ -92,6 +121,18 @@ def vertical_mean(self):
     """
     Calculate the depth-averaged mean for each variable
     This is calculated for each time step and grid cell
+
+    Examples
+    ------------
+
+    If you wanted to vertical mean of every variable in a dataset, you would do this:
+
+    >>> data.vertical_mean()
+
+    This method will calculate the vertical mean weighted by the thickness of each cell. Note that
+    if cell thickness cannot be derived it will just average the values in each vertical cell.
+
+
     """
     vertstat(self, stat="mean")
 
@@ -100,6 +141,14 @@ def vertical_min(self):
     """
     Calculate the vertical minimum of variable values
     This is calculated for each time step and grid cell
+
+    Examples
+    ------------
+
+    If you wanted to vertical minimum of every variable in a dataset, you would do this:
+
+    >>> data.vertical_min()
+
     """
     vertstat(self, stat="min")
 
@@ -108,6 +157,14 @@ def vertical_max(self):
     """
     Calculate the vertical maximum of variable values
     This is calculated for each time step and grid cell
+
+    Examples
+    ------------
+
+    If you wanted to vertical maximum of every variable in a dataset, you would do this:
+
+    >>> data.vertical_max()
+
     """
     vertstat(self, stat="max")
 
@@ -116,6 +173,14 @@ def vertical_range(self):
     """
     Calculate the vertical range of variable values
     This is calculated for each time step and grid cell
+
+    Examples
+    ------------
+
+    If you wanted to range of values across all vertical levels of every variable in a dataset, you would do this:
+
+    >>> data.vertical_range()
+
     """
     vertstat(self, stat="range")
 
@@ -124,6 +189,14 @@ def vertical_sum(self):
     """
     Calculate the vertical sum of variable values
     This is calculated for each time step and grid cell
+
+    Examples
+    ------------
+
+    If you wanted to sum of values across all vertical levels of every variable in a dataset, you would do this:
+
+    >>> data.vertical_sum()
+
     """
     vertstat(self, stat="sum")
 
@@ -132,6 +205,15 @@ def vertical_cumsum(self):
     """
     Calculate the vertical sum of variable values
     This is calculated for each time step and grid cell
+
+    Examples
+    ------------
+
+    If you wanted to calculate the cumulative sum of values across all vertical levels of every variable in a dataset, you would do this:
+
+    >>> data.vertical_sum()
+
+    The cumulative sum will be calculated from the first to the last vertical level. For example, in oceanic data it would start at the sea surface.
     """
     vertstat(self, stat="cum")
 
@@ -140,6 +222,14 @@ def invert_levels(self):
     """
     Invert the levels of 3D variables
     This is calculated for each time step and grid cell
+
+    Examples
+    ------------
+
+    If you wanted to invert the vertical levels, you would do this:
+
+    >>> data.invert_levels()
+
     """
     cdo_command = "cdo -invertlev"
 
