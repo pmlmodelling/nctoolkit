@@ -14,6 +14,19 @@ def to_xarray(self, decode_times=True, cdo_times=False):
     cdo_times: boolean
         Set to True if you do not want CDO to decode the times
 
+    Examples
+    ------------
+    If you want to convert a dataset to an xarray dataset, do the following:
+
+    >>> data.to_xarray()
+
+    This will return an xarray dataset.
+
+    If you do not want time to be decoded, do the following:
+
+    >>> data.to_xarray(decode_times = False)
+
+
     """
     # 3 possibilities:
     #   1: decode_times is False - just open in xarray
