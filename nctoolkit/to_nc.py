@@ -20,6 +20,22 @@ def to_nc(self, out, zip=True, overwrite=False):
         True/False depending on whether you want to zip the file. Default is True.
     overwrite : boolean
         If out file exists, do you want to overwrite it? Default is False.
+
+    Examples
+    ------------
+    If you want to export a dataset to a NetCDF file, do the following:
+
+        >>> data.to_nc("out.nc")
+
+    By default this file will be zipped. If you do not want it zipped, do this:
+
+        >>> data.to_nc("out.nc", zip = False)
+
+    By default this cannot overwrite files. If the output file exists, do the following:
+
+        >>> data.to_nc("out.nc", overwrite = True)
+
+
     """
 
     # If you are trying to overwrite a file in self.current, cdo cannot simultaneously have it opened and written to
