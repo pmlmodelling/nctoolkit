@@ -9,6 +9,13 @@ def rename(self, newnames):
     -------------
     newnames : dict
         Dictionary with key-value pairs being original and new variable names
+
+    Examples
+    ------------
+    If you want to rename a variable x to y, do the following:
+
+        >>> data.rename({"x":"y"})
+
     """
 
     # check a dict was supplied
