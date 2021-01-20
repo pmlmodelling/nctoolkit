@@ -20,6 +20,13 @@ def zonal_mean(self):
     """
     Calculate the zonal mean for each year/month combination in files.
     This applies to each file in an ensemble.
+
+    Examples
+    ------------
+    If you want to calculate the zonal mean for a dataset, do the following:
+
+    >>> data.zonal_mean()
+
     """
     zonstat(self, stat="mean")
 
@@ -28,6 +35,12 @@ def zonal_min(self):
     """
     Calculate the zonal minimum for each year/month combination in files.
     This applies to each file in an ensemble.
+
+    Examples
+    ------------
+    If you want to calculate the zonal minimum for a dataset, do the following:
+
+    >>> data.zonal_min()
     """
     zonstat(self, stat="min")
 
@@ -36,6 +49,12 @@ def zonal_max(self):
     """
     Calculate the zonal maximum for each year/month combination in files.
     This applies to each file in an ensemble.
+
+    Examples
+    ------------
+    If you want to calculate the zonal maximum for a dataset, do the following:
+
+    >>> data.zonal_max()
     """
     zonstat(self, stat="max")
 
@@ -44,5 +63,12 @@ def zonal_range(self):
     """
     Calculate the zonal range for each year/month combination in files.
     This applies to each file in an ensemble.
+
+    Examples
+    ------------
+    If you want to calculate the zonal range for a dataset, do the following:
+
+    >>> data.zonal_range()
+
     """
     zonstat(self, stat="range")
