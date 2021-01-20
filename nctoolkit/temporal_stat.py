@@ -96,6 +96,41 @@ def tsum(self, over = "time"):
 def tmean(self, over = "time"):
     """
     Calculate the temporal mean of all variables
+
+    Parameters
+    -------------
+    over: str or list
+        Time periods to average over. Options are 'year', 'month', 'day'.
+
+
+    Examples
+    ------------
+    If you want to calculate mean over all time steps. Do the following:
+
+        >>> data.tmean()
+
+    If you want to calculate the mean for each year in a dataset, do this:
+
+        >>> data.tmean("year")
+
+    If you want to calculate the mean for each month in a dataset, do this:
+
+        >>> data.tmean("month")
+
+    If you want to calculate the mean for each month in each year in a dataset, do this:
+
+        >>> data.tmean(["year", "month"])
+
+    This method will also let you easily calculate climatologies. So, if you wanted to calculate
+    a monthly climatological mean, you would do this:
+
+        >>> data.tmean( "month")
+
+    A daily climatological mean would be the following:
+
+        >>> data.tmean( "day")
+
+
     """
     time_stat(self, stat="mean", over = over)
 
@@ -103,6 +138,40 @@ def tmean(self, over = "time"):
 def tmin(self, over = "time"):
     """
     Calculate the temporal minimum of all variables
+
+    Parameters
+    -------------
+    over: str or list
+        Time periods to average over. Options are 'year', 'month', 'day'.
+
+
+    Examples
+    ------------
+    If you want to calculate minimum over all time steps. Do the following:
+
+        >>> data.tmin()
+
+    If you want to calculate the minimum for each year in a dataset, do this:
+
+        >>> data.tmin("year")
+
+    If you want to calculate the minimum for each month in a dataset, do this:
+
+        >>> data.tmin("month")
+
+    If you want to calculate the minimum for each month in each year in a dataset, do this:
+
+        >>> data.tmin(["year", "month"])
+
+    This method will also let you easily calculate climatologies. So, if you wanted to calculate
+    a monthly climatological min, you would do this:
+
+        >>> data.tmin( "month")
+
+    A daily climatological minimum would be the following:
+
+        >>> data.tmin( "day")
+
     """
     time_stat(self, stat="min", over = over)
 
@@ -110,12 +179,77 @@ def tmin(self, over = "time"):
 def tmax(self, over = "time"):
     """
     Calculate the temporal maximum of all variables
+
+    Parameters
+    -------------
+    over: str or list
+        Time periods to average over. Options are 'year', 'month', 'day'.
+
+
+    Examples
+    ------------
+    If you want to calculate maximum over all time steps. Do the following:
+
+        >>> data.tmax()
+
+    If you want to calculate the maximum for each year in a dataset, do this:
+
+        >>> data.tmax("year")
+
+    If you want to calculate the maximum for each month in a dataset, do this:
+
+        >>> data.tmax("month")
+
+    If you want to calculate the maximum for each month in each year in a dataset, do this:
+
+        >>> data.tmax(["year", "month"])
+
+    This method will also let you easily calculate climatologies. So, if you wanted to calculate
+    a monthly climatological max, you would do this:
+
+        >>> data.tmax( "month")
+
+    A daily climatological maximum would be the following:
+
+        >>> data.tmax( "day")
     """
     time_stat(self, stat="max", over = over)
 
 def tmedian(self, over = "time"):
     """
     Calculate the temporal median of all variables
+    Parameters
+    -------------
+    over: str or list
+        Time periods to average over. Options are 'year', 'month', 'day'.
+
+
+    Examples
+    ------------
+    If you want to calculate median over all time steps. Do the following:
+
+        >>> data.tmedian()
+
+    If you want to calculate the median for each year in a dataset, do this:
+
+        >>> data.tmedian("year")
+
+    If you want to calculate the median for each month in a dataset, do this:
+
+        >>> data.tmedian("month")
+
+    If you want to calculate the median for each month in each year in a dataset, do this:
+
+        >>> data.tmedian(["year", "month"])
+
+    This method will also let you easily calculate climatologies. So, if you wanted to calculate
+    a monthly climatological median, you would do this:
+
+        >>> data.tmedian( "month")
+
+    A daily climatological median would be the following:
+
+        >>> data.tmedian( "day")
     """
     self.tpercentile(p = 50, over = over)
 
@@ -123,6 +257,40 @@ def tmedian(self, over = "time"):
 def trange(self, over = "time"):
     """
     Calculate the temporal range of all variables
+
+    Parameters
+    -------------
+    over: str or list
+        Time periods to average over. Options are 'year', 'month', 'day'.
+
+
+    Examples
+    ------------
+    If you want to calculate range over all time steps. Do the following:
+
+        >>> data.trange()
+
+    If you want to calculate the range for each year in a dataset, do this:
+
+        >>> data.trange("year")
+
+    If you want to calculate the range for each month in a dataset, do this:
+
+        >>> data.trange("month")
+
+    If you want to calculate the range for each month in each year in a dataset, do this:
+
+        >>> data.trange(["year", "month"])
+
+    This method will also let you easily calculate climatologies. So, if you wanted to calculate
+    a monthly climatological range, you would do this:
+
+        >>> data.trange( "month")
+
+    A daily climatological range would be the following:
+
+        >>> data.trange( "day")
+
     """
     time_stat(self, stat="range", over = over)
 
@@ -131,12 +299,78 @@ def trange(self, over = "time"):
 def tvariance(self, over = "time"):
     """
     Calculate the temporal variance of all variables
+
+    Parameters
+    -------------
+    over: str or list
+        Time periods to average over. Options are 'year', 'month', 'day'.
+
+
+    Examples
+    ------------
+    If you want to calculate variance over all time steps. Do the following:
+
+        >>> data.tvar()
+
+    If you want to calculate the variance for each year in a dataset, do this:
+
+        >>> data.tvar("year")
+
+    If you want to calculate the variance for each month in a dataset, do this:
+
+        >>> data.tvar("month")
+
+    If you want to calculate the variance for each month in each year in a dataset, do this:
+
+        >>> data.tvar(["year", "month"])
+
+    This method will also let you easily calculate climatologies. So, if you wanted to calculate
+    a monthly climatological var, you would do this:
+
+        >>> data.tvar( "month")
+
+    A daily climatological variance would be the following:
+
+        >>> data.tvar( "day")
     """
     time_stat(self, stat="var", over = over)
 
 def tstdev(self, over = "time"):
     """
     Calculate the temporal standard deviation of all variables
+
+    Parameters
+    -------------
+    over: str or list
+        Time periods to average over. Options are 'year', 'month', 'day'.
+
+
+    Examples
+    ------------
+    If you want to calculate standard deviation over all time steps. Do the following:
+
+        >>> data.tstdev()
+
+    If you want to calculate the standard deviation for each year in a dataset, do this:
+
+        >>> data.tstdev("year")
+
+    If you want to calculate the standard deviation for each month in a dataset, do this:
+
+        >>> data.tstdev("month")
+
+    If you want to calculate the standard deviation for each month in each year in a dataset, do this:
+
+        >>> data.tstdev(["year", "month"])
+
+    This method will also let you easily calculate climatologies. So, if you wanted to calculate
+    a monthly climatological var, you would do this:
+
+        >>> data.tstdev("month")
+
+    A daily climatological standard deviation would be the following:
+
+        >>> data.tstdev("day")
     """
     time_stat(self, stat="std", over = over)
 
@@ -144,6 +378,13 @@ def tstdev(self, over = "time"):
 def tcumsum(self):
     """
     Calculate the temporal cumulative sum of all variables
+
+    Examples
+    ------------
+    If you want to calculate the cumulative sum for all variables over all timesteps, do this:
+
+        >>> data.tcumsum()
+
     """
     # create cdo command and runit
     time_stat(self, stat="cumsum")
@@ -157,6 +398,17 @@ def tpercentile(self, p=None, over = "time"):
     -------------
     p: float or int
         Percentile to calculate
+
+    Examples
+    ------------
+    If you want to calculate the 20th percentile over all time steps. Do the following:
+
+        >>> data.tpercentile(20)
+
+    If you want to calculate the 20th percentile for each year in a dataset, do this:
+
+        >>> data.tpercentile(20)
+
     """
     over = over
     if p is None:
