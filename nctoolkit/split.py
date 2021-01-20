@@ -84,6 +84,19 @@ def split(self, by=None):
         year will split files by year, month will split files by month, yearmonth
         will split files by year and month; season will split files by year, day
         will split files by day.
+
+    Examples
+    ------------
+    If you want to split each file into a dataset into a separate files for each year, do
+    the following:
+
+        >>> data.split("year")
+
+    If you wanted to split by month, do the following:
+
+        >>> data.split("month")
+
+
     """
 
     if by is None:
