@@ -25,6 +25,20 @@ def crop(self, lon=[-180, 180], lat=[-90, 90], nco=False, nco_vars = None):
         NCO is typically better at handling very large horizontal grids.
     nco_vars: str or list
         If using NCO, the variables you want to select
+
+    Examples
+    ------------
+    If you wanted to crop a dataset to longitudes between -40 and 30 and latitudes between -10 and 40,
+    you would do the following:
+
+    >>> data.crop(lon = [-40, 30], lat = [-10, 40])
+
+
+    If you wanted to select only the northern hemisphere, the following will work:
+
+    >>> data.crop(lat = [0, 90])
+
+
     """
     if nco:
         self.run()
