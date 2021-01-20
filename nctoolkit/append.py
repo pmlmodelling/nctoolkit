@@ -5,12 +5,25 @@ from nctoolkit.session import nc_safe
 
 def append(self, x=None):
     """
-    Add new file(s) to a dataset
+    Add new file(s) to a dataset.
 
     Parameters
     -------------
     x: str or list
      File path(s) to add to the dataset
+
+
+    Examples
+    ------------
+    If you want to add a dataset data2 to another dataset data1, do the following:
+
+    >>> data1.append(data2)
+
+    If you want to add a new file to a dataset, do this:
+
+    >>> data.append("infile.nc")
+
+
     """
 
     # run, as it makes no sense to add files while commands are waiting to run
