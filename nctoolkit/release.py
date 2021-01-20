@@ -7,6 +7,13 @@ import warnings
 def run(self):
     """
     Run all stored commands in a dataset
+
+    Examples
+    ------------
+    If evaluation is lazy and you need to evaluate commands on a dataset, do the following:
+
+    >>> data.run()
+
     """
 
     # the first step is to set the run status to true
