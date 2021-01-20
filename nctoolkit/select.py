@@ -245,10 +245,31 @@ def select(self, **kwargs):
         time step(s) to select. For example, if you wanted the first time step
         set times=0.
 
-    A usage example is the following:
+    Examples
+    ------------
+    If you want to select a single variable do the following:
 
-    data.select(variables = "var")
+        >>> data.select(variable = "var")
 
+    If you want to select a list of variables, do this:
+
+        >>> data.select(variable = ["var1", "var2"])
+
+    If you want to select data for January, do the following:
+
+        >>> data.select(month = 1)
+
+    If you want to select a range of months, do the following:
+
+        >>> data.select(months = range(1, 7))
+
+    If you want to select a range of years, for example the 2010s, do the following:
+
+        >>> data.select(years = range(2010, 2020))
+
+    If you want to select the first two timesteps in a dataset, do the following:
+
+        >>> data.select(timesteps = [0,1])
 
 
     """
