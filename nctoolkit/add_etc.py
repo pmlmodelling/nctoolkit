@@ -143,6 +143,24 @@ def multiply(self, x=None, var=None):
         in it, unless var is supplied. The grids must be the same.
     var: str
         A variable in the x to multiply the dataset by
+
+    Examples
+    ------------
+
+    If you wanted to multiply variables in a dataset by 10, you would do the following:
+
+    >>> data.multiply(10)
+
+    To multiply the values in a dataset by the values of variables in dataset data2, you would do the following:
+
+    >>> data1.multiply(data2)
+
+    Grids in the datasets must match. Multiplication will occur in matching timesteps in data1 and data2. If there is only 1 timestep in data2, then
+    the data from that timestep in data2 will multiply the data in all timesteps in data1.
+
+    Multiplying a dataset by the data from another NetCDF file will work in the same way:
+
+    >>> data1.multiply("example.nc")
     """
 
     # 1: int, float multiplication
@@ -176,6 +194,24 @@ def subtract(self, x=None, var=None):
         unless var is provided. The grids must be the same.
     var: str
         A variable in the x to use for the operation
+
+    Examples
+    ------------
+
+    If you wanted to subtract 10 from all variables in a dataset, you would do the following:
+
+    >>> data.subtract(10)
+
+    To substract the values in a dataset data2 from those in a dataset data1, you would do the following:
+
+    >>> data1.subtract(data2)
+
+    Grids in the datasets must match. Division will occur in matching timesteps in data1 and data2 if there are matching timesteps. If there is only 1 timestep in data2, then
+    the data from that timestep in data2 will be subtracted from the data in all timesteps in data1.
+
+    Subtracting of the data from another NetCDF file will work in the same way:
+
+    >>> data1.subtract("example.nc")
     """
 
     # 1: int, float subtraction
@@ -226,7 +262,7 @@ def add(self, x=None, var=None):
 
     Adding the data from another NetCDF file will work in the same way:
 
-    >>> data1add("example.nc")
+    >>> data1.add("example.nc")
 
 
     """
@@ -263,6 +299,24 @@ def divide(self, x=None, var=None):
         unless var is provided. The grids must be the same.
     var: str
         A variable in the x to use for the operation
+
+    Examples
+    ------------
+
+    If you wanted to dividie all variables in a dataset by 20, you would do the following:
+
+    >>> data.divide(10)
+
+    To divide values in a dataset by those in the dataset data2 from a dataset data1, you would do the following:
+
+    >>> data1.divide(data2)
+
+    Grids in the datasets must match. Division will occur in matching timesteps in data1 and data2. If there is only 1 timestep in data2, then
+    the data from that timeste in data2 will divided the data in all data1 time steps.
+
+    Adding the data from another NetCDF file will work in the same way:
+
+    >>> data1.divide("example.nc")
     """
 
     # 1: int, float division
