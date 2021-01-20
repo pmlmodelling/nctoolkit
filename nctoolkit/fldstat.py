@@ -33,6 +33,18 @@ def spatial_mean(self):
     """
     Calculate the area weighted spatial mean for all variables
     This is performed for each time step.
+
+    Examples
+    ------------
+
+    If you want to calculate the spatial mean for a dataset, just do the following:
+
+    >>> data.spatial_mean()
+
+    Note that this calculation will calculate the average using weights based on each cell's
+    area. If cell areas cannot be calculated, it will take a straight average, and a warning
+    will say this.
+
     """
     fldstat(self, stat="mean")
 
@@ -41,6 +53,14 @@ def spatial_min(self):
     """
     Calculate the spatial minimum for all variables
     This is performed for each time step.
+
+    Examples
+    ------------
+
+    If you want to calculate the spatial minimum for a dataset, just do the following:
+
+    >>> data.spatial_min()
+
     """
     fldstat(self, stat="min")
 
@@ -49,6 +69,13 @@ def spatial_max(self):
     """
     Calculate the spatial maximum for all variables
     This is performed for each time step.
+
+    Examples
+    ------------
+    If you want to calculate the spatial maximum for a dataset, just do the following:
+
+    >>> data.spatial_max()
+
     """
     fldstat(self, stat="max")
 
@@ -57,6 +84,12 @@ def spatial_range(self):
     """
     Calculate the spatial range for all variables
     This is performed for each time step.
+
+    Examples
+    ------------
+    If you want to calculate the range of each variable across space for a dataset, just do the following:
+
+    >>> data.spatial_max()
     """
     fldstat(self, stat="range")
 
@@ -71,6 +104,23 @@ def spatial_sum(self, by_area=False):
     by_area : boolean
         Set to True if you want to multiply the values by the grid cell area
         before summing over space. Default is False.
+
+    Examples
+    ------------
+    If you want to calculate the spatial sum each variable across space for a dataset, just do the following:
+
+    >>> data.spatial_sum()
+
+    By default, this method simply sums up each grid cell value. In some cases this is not suitable. For example,
+    the values in each cell may concentrations or values per square metre etc. In this case multiplying each cell
+    value by the cell area is more suitable. Do the following:
+
+    >>> data.spatial_sum(by_area = True)
+
+    Each cell's value will be multiplied by the area of the cell (in square metres) prior to calculating the
+    spatial sum.
+
+
     """
 
     if isinstance(by_area, bool) is False:
@@ -182,7 +232,13 @@ def spatial_percentile(self, p=None):
     -------------
     p: int or float
         Percentile to calculate. 0<=p<=100.
-    """
+
+    Examples
+    ------------
+    If you want to calculate the median of each variable across space for a dataset, just do the following:
+
+    >>> data.spatial_percentile(50)
+ """
 
     if p is None:
         raise ValueError("Please supply a percentile")
