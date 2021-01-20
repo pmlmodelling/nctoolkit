@@ -12,6 +12,20 @@ def plot(self, vars=None):
     -------------
     vars: str or list
         A string or list of the variables to plot
+
+    Examples
+    ------------
+
+    If you want to plot all data in a dataset, do the following:
+
+    >>> data.plot()
+
+    If you only want to plot a single variable, do the following. Note, this is often faster if you
+    have a large dataset.
+
+    >>> data.plot("var_of_choice")
+
+
     """
 
     self.run()
