@@ -209,7 +209,28 @@ def add(self, x=None, var=None):
         unless var is provided. The grids must be the same.
     var: str
         A variable in the x to use for the operation
+
+    Examples
+    ------------
+
+    If you wanted to add 10 to all variables in a dataset, you would do the following:
+
+    >>> data.add(10)
+
+    To add the values in a dataset data2 from a dataset data1, you would do the following:
+
+    >>> data1.add(data2)
+
+    Grids in the datasets must match. Addition will occur in matching timesteps in data1 and data2. If there is only 1 timestep in data2, then
+    the data from that timestep will be added to the data in all data1 time steps.
+
+    Adding the data from another NetCDF file will work in the same way:
+
+    >>> data1add("example.nc")
+
+
     """
+
 
     # 1: int, float addition
     if isinstance(x, (int, float)):
