@@ -28,6 +28,27 @@ def annual_anomaly(self, baseline=None, metric="absolute", window=1):
         A window for the anomaly. By default window = 1, i.e. the annual anomaly is
         calculated. If, for example, window = 20, the 20 year rolling means will be
         used to calculate the anomalies.
+
+    Examples
+    ------------
+
+    If you wanted to calculate an annual anomaly where values are compared with the mean for the years
+    1950-1969, you would do this:
+
+    >>> data.annual_anomaly(baseline = [1950, 1969])
+
+    By default, this results in the absolute difference to be used. If you wanted the anomaly to be calculated
+    relative to the baseline mean, you would do this:
+
+    >>> data.annual_anomaly(baseline = [1950, 1969], metric = "relative")
+
+    You might want to smooth out the anomalies, so that you are looking at rolling averages. In that case you can
+    supply a windows. So if you wanted to calculate the anomaly using a rolling average with a 10 year window, you
+    would do this:
+
+    >>> data.annual_anomaly(baseline = [1950, 1969], window = 10)
+
+
     """
 
     if type(window) is not int:
@@ -115,6 +136,15 @@ def monthly_anomaly(self, baseline=None):
         Baseline years. This needs to be the first and last year of the climatological
         period. Example: a baseline of [1985,2005] will result in anomolies against 20
         year climatology from 1986 to 2005.
+
+    Examples
+    ------------
+
+    If you wanted to calculate a monthly anomaly where values are compared with the climatological monthly mean
+    for the years 1950-1969, you would do this:
+
+    >>> data.monthly_anomaly(baseline = [1950, 1969])
+
     """
 
     # check baseline is a list, etc.
