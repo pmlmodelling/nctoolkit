@@ -108,7 +108,7 @@ def initiation(self, var=None, metric="Henson", threshold = 0.05):
             data_max5.set_units({"start_henson":"Day of year"})
             data_max5.run()
 
-            new_files.append(data_max5.current)
+            new_files.append(data_max5.current[0])
 
             nc_safe.remove(target)
 

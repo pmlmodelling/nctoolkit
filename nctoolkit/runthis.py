@@ -428,7 +428,7 @@ def run_this(os_command, self, output="one", out_file=None):
 
     cores = session_info["cores"]
 
-    if type(self.current) is str:
+    if len(self.current) == 1:
         output = "ensemble"
 
     if self._execute is False:
@@ -440,16 +440,14 @@ def run_this(os_command, self, output="one", out_file=None):
 
     if self._execute:
 
-        if ((output == "ensemble") and (type(self.current) == list)) or (
-            (output == "ensemble") and (type(self.current) == str)
+        if ((output == "ensemble") and (len(self.current) > 1)) or (
+            (output == "ensemble") and (len(self.current) == 1)
         ):
             new_history = copy.deepcopy(self._hold_history)
 
-            if type(self.current) == str:
-                file_list = [self.current]
+            if len(self.current) == 1:
                 cores = 1
-            else:
-                file_list = self.current
+            file_list = self.current
 
             if len(self.history) > len(self._hold_history):
                 os_command = f'{os_command} {self.history[-1].replace("cdo ", " ")}'
@@ -551,11 +549,11 @@ def run_this(os_command, self, output="one", out_file=None):
 
             return None
 
-        if ((output == "one") and (type(self.current) == list)) or self._zip == False:
+        if ((output == "one") and (len(self.current) > 1)) or self._zip == False:
 
             new_history = copy.deepcopy(self._hold_history)
 
-            file_list = [self.current]
+            file_list = self.current
 
             if len(self.history) > len(self._hold_history):
                 os_command = f'{os_command} {self.history[-1].replace("cdo ", " ")}'

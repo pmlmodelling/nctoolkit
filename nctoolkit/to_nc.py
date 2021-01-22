@@ -42,16 +42,13 @@ def to_nc(self, out, zip=True, overwrite=False):
     if out in self and (overwrite is True):
         self.run()
 
-    if type(self.current) is list:
-        ff = copy.deepcopy(self.current)
-    else:
-        ff = [copy.deepcopy(self.current)]
+    ff = copy.deepcopy(self.current)
 
     # Figure out if it is possible to write the file, i.e. if a dataset is still an
     # ensemble, you cannot write.
     write = False
 
-    if type(self.current) is str:
+    if len(self.current) == 1:
         write = True
 
     if self._merged:

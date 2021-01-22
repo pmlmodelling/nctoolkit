@@ -33,7 +33,7 @@ class TestClip:
         assert x == y
 
         new = tracker.copy()
-        new.reduce_grid(tracker.current)
+        new.reduce_grid(tracker.current[0])
 
         y = len(
             new.to_dataframe().reset_index().loc[:, ["lon", "lat"]].drop_duplicates()

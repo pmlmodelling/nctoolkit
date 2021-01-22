@@ -175,10 +175,7 @@ def disk_clean(self):
 
         # get files as a list
 
-        if type(self.current) is str:
-            ff_list = [self.current]
-        else:
-            ff_list = self.current
+        ff_list = self.current
 
         # First step is to figure out how much space is in /tmp
         # Do nothing if it is less than 0.5 GB
@@ -216,9 +213,5 @@ def disk_clean(self):
                         new_ff if file == ff else file for file in self.current
                     ]
 
-        if type(self.current) is list:
-            self.current = self.current
-        else:
-            self.current = self.current[0]
 
         cleanup()

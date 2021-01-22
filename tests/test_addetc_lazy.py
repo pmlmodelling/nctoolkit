@@ -143,7 +143,7 @@ class TestAddetc:
         tracker.select(months=[1])
         tracker.run()
         new = tracker.copy()
-        new.add(tracker.current)
+        new.add(tracker.current[0])
         new.spatial_mean()
         tracker.spatial_mean()
 
@@ -162,7 +162,7 @@ class TestAddetc:
         tracker.select(months=[1])
         tracker.run()
         new = tracker.copy()
-        new.add(tracker.current)
+        new.add(tracker.current[0])
         new.spatial_mean()
         tracker.spatial_mean()
 
@@ -200,7 +200,7 @@ class TestAddetc:
         tracker.run()
         new = tracker.copy()
         new.add(1)
-        new.subtract(tracker.current)
+        new.subtract(tracker.current[0])
         new.spatial_mean()
         tracker.spatial_mean()
 
@@ -289,7 +289,7 @@ class TestAddetc:
         tracker.run()
         new = tracker.copy()
         new.add(2)
-        new.subtract(tracker.current)
+        new.subtract(tracker.current[0])
         out = tracker.copy()
         tracker.multiply(new)
         tracker.spatial_mean()
@@ -346,7 +346,7 @@ class TestAddetc:
         tracker.run()
         new = tracker.copy()
         new.add(2)
-        new.subtract(tracker.current)
+        new.subtract(tracker.current[0])
         out = tracker.copy()
         tracker.divide(new)
         tracker.spatial_mean()
@@ -366,7 +366,7 @@ class TestAddetc:
         tracker.run()
         new = tracker.copy()
         new.add(2)
-        new.subtract(tracker.current)
+        new.subtract(tracker.current[0])
         out = tracker.copy()
         tracker.divide(new)
         tracker.spatial_mean()
@@ -387,7 +387,7 @@ class TestAddetc:
         data2.run()
         # with pytest.raises(ValueError):
         with pytest.raises(ValueError):
-            tracker.add(data2.current)
+            tracker.add(data2.current[0])
         n = len(nc.session_files())
         assert n == 1
 

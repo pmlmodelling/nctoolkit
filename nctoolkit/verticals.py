@@ -30,14 +30,14 @@ def bottom(self):
     # extract the number of the bottom level
     # Use the first file for an ensemble
     # pull the cdo command together, then run it or store it
-    if type(self.current) is list:
+    if len(self.current) >  1:
         ff = self.current[0]
         warnings.warn(
                 message="The first file in ensemble used to determine number of "
                 "vertical levels"
         )
     else:
-        ff = self.current
+        ff = self.current[0]
 
     cdo_result = subprocess.run(
         "cdo nlevel " + ff, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
@@ -246,7 +246,7 @@ def bottom_mask(self):
     """
     self.run()
 
-    if type(self.current) is list:
+    if len(self.current) > 1:
         raise TypeError("This only works for single file datasets")
     data = open_data(self.current)
 

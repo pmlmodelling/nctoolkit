@@ -112,7 +112,7 @@ class TestVerts:
         new = tracker.copy()
         new.rename({"t_an": "test"})
         new.run()
-        test = nc.open_data([tracker.current, new.current])
+        test = nc.open_data([tracker.current[0], new.current[0]])
         # with pytest.warns(UserWarning):
         with pytest.warns(UserWarning):
             test.bottom()

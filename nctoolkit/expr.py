@@ -125,7 +125,7 @@ def sum_all(self, drop=True):
 
     self.run()
 
-    if (type(self.current) is list) and (self._merged is False):
+    if (len(self.current) > 1) and (self._merged is False):
         raise TypeError("This only works for single files presently")
 
     if drop is True:

@@ -48,8 +48,8 @@ def view(self):
     warnings.warn(message = "view is now deprecated. Use plot instead!")
     self.run()
 
-    if type(self.current) is str:
-        os.system("ncview " + self.current + "&")
+    if len(self.current) == 1:
+        os.system("ncview " + self.current[0] + "&")
     else:
         print("You cannot send multiple files to ncview!")
 

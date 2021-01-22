@@ -27,7 +27,7 @@ class TestSession:
             data.spatial_mean()
             data.tmean()
             data.run()
-            assert data.current.startswith("/var/tmp")
+            assert data.current[0].startswith("/var/tmp")
             nc.options(temp_dir = "/tmp")
             del data
             nc.cleanup()

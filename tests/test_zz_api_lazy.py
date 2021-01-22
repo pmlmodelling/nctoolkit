@@ -70,7 +70,7 @@ class TestApi:
     def test_open_data(self):
         ff = "data/sst.mon.mean.nc"
         x = nc.open_data(ff)
-        assert x.current == "data/sst.mon.mean.nc"
+        assert x.current[0] == "data/sst.mon.mean.nc"
 
     def test_merge(self):
         ff = "data/sst.mon.mean.nc"
@@ -87,7 +87,7 @@ class TestApi:
     def test_size(self):
         ff = "data/sst.mon.mean.nc"
         data = nc.open_data(ff)
-        assert "File size: 41.073246 MB" in data.size
+        assert "Ensemble size: 41.073246 MB" in data.size
         data.split("year")
         assert "Number of files in ensemble: 30" in data.size
 
@@ -152,7 +152,7 @@ class TestApi:
 
         data = nc.open_data(nc.create_ensemble("data/ensemble")[0])
         x = data[0]
-        assert x == data.current
+        assert x == data.current[0]
 
     def test_mergeerror(self):
         data = nc.open_data(nc.create_ensemble("data/ensemble")[0])

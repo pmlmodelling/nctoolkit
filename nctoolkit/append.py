@@ -45,10 +45,7 @@ def append(self, x=None):
 
     # check files are not already in the dataset
 
-    if type(self.current) is list:
-        check_list = self.current
-    else:
-        check_list = [self.current]
+    check_list = self.current
 
     for ff in x:
         if ff in check_list:
@@ -61,9 +58,39 @@ def append(self, x=None):
             raise ValueError(f"{ff} does not exist!")
 
     for ff in x:
-        if type(self.current) is str:
-            self.current = [self.current, ff]
-        else:
-            nc_safe.append(ff)
-            self.current.append(ff)
+        nc_safe.append(ff)
+        self.current.append(ff)
+
+def remove(self, x=None):
+    """
+    Remove file(s) from a dataset
+
+    Parameters
+    -------------
+    x: str or list
+     File path(s) to remove from a dataset
+
+
+    """
+
+    if x is None:
+        raise ValueError("Please provide files to remove!")
+
+
+    if type(x) is str:
+        x = [x]
+
+
+    for ff in x:
+        if ff not in self:
+            raise ValueError(f"{x} is not a member of the dataset!")
+
+
+
+    for ff in x:
+        self.current.remove(ff)
+        nc_safe.remove(ff)
+
+
+
 

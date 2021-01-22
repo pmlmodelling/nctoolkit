@@ -30,7 +30,7 @@ def plot(self, vars=None):
 
     self.run()
 
-    if type(self.current) is list:
+    if len(self.current) > 1:
         raise TypeError("You cannot view multiple files!")
 
     return view(self.current, vars = vars)

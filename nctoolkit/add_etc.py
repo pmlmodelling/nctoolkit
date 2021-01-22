@@ -172,7 +172,10 @@ def multiply(self, x=None, var=None):
     # get the netcdf file(s)
     if "api.DataSet" in str(type(x)):
         x.run()
-        ff = x.current
+        if len(x) == 1:
+            ff = x.current[0]
+        else:
+            raise TypeError("This can only work with single variable datasets")
     else:
         ff = x
 
@@ -223,7 +226,10 @@ def subtract(self, x=None, var=None):
     # get the netcdf file(s)
     if "api.DataSet" in str(type(x)):
         x.run()
-        ff = x.current
+        if len(x) == 1:
+            ff = x.current[0]
+        else:
+            raise TypeError("This can only work with single variable datasets")
     else:
         ff = x
 
@@ -277,7 +283,10 @@ def add(self, x=None, var=None):
     # get the netcdf file(s)
     if "api.DataSet" in str(type(x)):
         x.run()
-        ff = x.current
+        if len(x) == 1:
+            ff = x.current[0]
+        else:
+            raise TypeError("This can only work with single variable datasets")
     else:
         ff = x
 
@@ -328,7 +337,10 @@ def divide(self, x=None, var=None):
     # get the netcdf file(s)
     if "api.DataSet" in str(type(x)):
         x.run()
-        ff = x.current
+        if len(x) == 1:
+            ff = x.current[0]
+        else:
+            raise TypeError("This can only work with single variable datasets")
     else:
         ff = x
 

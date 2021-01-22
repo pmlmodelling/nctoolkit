@@ -39,7 +39,7 @@ class TestMerge:
         new.select(timesteps=[0])
         new.rename({"sst": "tos"})
         new.run()
-        data = nc.open_data([tracker.current, new.current])
+        data = nc.open_data([tracker.current[0], new.current[0]])
         with pytest.warns(UserWarning):
             data.merge(match="year")
 
@@ -72,7 +72,7 @@ class TestMerge:
         new = tracker.copy()
         new.rename({"sst": "tos"})
         new.run()
-        data = nc.open_data([new.current, tracker.current])
+        data = nc.open_data([new.current[0], tracker.current[0]])
         data.merge()
         data.mutate({"test1": "tos-sst"})
         data.spatial_mean()
@@ -92,14 +92,14 @@ class TestMerge:
         new.run()
         new.rename({"sst": "tos"})
         new.run()
-        data = nc.open_data([new.current, tracker.current])
+        data = nc.open_data([new.current[0], tracker.current[0]])
         with pytest.raises(ValueError):
             data.merge()
 
         n = len(nc.session_files())
         assert n == 2
 
-        data = nc.open_data([new.current, tracker.current])
+        data = nc.open_data([new.current[0], tracker.current[0]])
         with pytest.raises(TypeError):
             data.merge(match=1)
 
@@ -114,7 +114,7 @@ class TestMerge:
         new.run()
         new.rename({"sst": "tos"})
         new.run()
-        data = nc.open_data([tracker.current, new.current])
+        data = nc.open_data([tracker.current[0], new.current[0]])
         with pytest.raises(ValueError):
             data.merge(match="month")
 
@@ -143,7 +143,7 @@ class TestMerge:
         new.rename({"sst": "tos"})
         new.crop(lon=[50, 80])
         new.run()
-        data = nc.open_data([new.current, tracker.current])
+        data = nc.open_data([new.current[0], tracker.current[0]])
         with pytest.raises(ValueError):
             data.merge(match="year")
         n = len(nc.session_files())
@@ -161,7 +161,7 @@ class TestMerge:
         new.rename({"sst": "tos"})
         new.crop(lon=[50, 80])
         new.run()
-        data = nc.open_data([new.current, tracker.current])
+        data = nc.open_data([new.current[0], tracker.current[0]])
         with pytest.raises(ValueError):
             data.merge(match=["year", "month"])
         n = len(nc.session_files())
@@ -177,7 +177,7 @@ class TestMerge:
         tracker.run()
         new.run()
 
-        data = nc.open_data([new.current, tracker.current])
+        data = nc.open_data([new.current[0], tracker.current[0]])
 
         with pytest.raises(ValueError):
             data.merge()

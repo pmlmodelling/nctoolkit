@@ -130,7 +130,7 @@ def spatial_sum(self, by_area=False):
     if cdo_version() in ["1.9.3"]:
         self.run()
 
-    if (type(self.current)) is str or (by_area is False):
+    if len(self.current) == 1 or (by_area is False):
 
         if by_area:
             self.run()
@@ -140,14 +140,14 @@ def spatial_sum(self, by_area=False):
                 new_commands = []
                 target1 = temp_file("nc")
 
-                cdo_command = f"cdo -gridarea {self.current} {target1}"
+                cdo_command = f"cdo -gridarea {self.current[0]} {target1}"
                 cdo_command = tidy_command(cdo_command)
                 new_commands.append(cdo_command)
                 target1 = run_cdo(cdo_command, target=target1)
 
                 target2 = temp_file("nc")
 
-                cdo_command = f"cdo -mul {self.current} {target1} {target2}"
+                cdo_command = f"cdo -mul {self.current[0]} {target1} {target2}"
                 cdo_command = tidy_command(cdo_command)
                 new_commands.append(cdo_command)
 
@@ -166,7 +166,7 @@ def spatial_sum(self, by_area=False):
 
                 return None
             else:
-                cdo_command = f"cdo -fldsum -mul {self.current} -gridarea "
+                cdo_command = f"cdo -fldsum -mul {self.current[0]} -gridarea "
         else:
             cdo_command = "cdo -fldsum"
 

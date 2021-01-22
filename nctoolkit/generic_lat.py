@@ -43,11 +43,8 @@ def regrid(self, grid=None, method="bil"):
 
     if "DataSet" in str(type(grid)):
         grid.run()
-        if type(grid.current) is str:
-            grid = grid.current
-        else:
-            grid = grid.current[0]
-            warnings.warn(message="The first file in dataset used for regridding!")
+        grid = grid.current[0]
+        warnings.warn(message="The first file in dataset used for regridding!")
         grid_type = "nc"
 
     if grid_type is None:
@@ -97,14 +94,9 @@ def regrid(self, grid=None, method="bil"):
 
         weights_nc = temp_file("nc")
 
-        if type(tracker.current) is list:
-            cdo_command = (
-                f"cdo -gen{method},{target_grid} {tracker.current[0]} {weights_nc}"
-            )
-        else:
-            cdo_command = (
-                f"cdo -gen{method},{target_grid} {tracker.current} {weights_nc}"
-            )
+        cdo_command = (
+            f"cdo -gen{method},{target_grid} {tracker.current[0]} {weights_nc}"
+        )
 
         weights_nc = run_cdo(cdo_command, target=weights_nc)
 
@@ -118,10 +110,7 @@ def regrid(self, grid=None, method="bil"):
 
         nc_safe.remove(weights_nc)
 
-        if type(tracker.current) is str:
-            new_files += [tracker.current]
-        else:
-            new_files += tracker.current
+        new_files += tracker.current
 
         for ff in new_files:
             nc_safe.append(ff)

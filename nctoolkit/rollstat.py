@@ -84,6 +84,7 @@ def rolling_range(self, window=None):
     -------------
     window = int
         The size of the window for the calculation of the rolling range
+
     Examples
     ------------
 

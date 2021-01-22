@@ -18,10 +18,10 @@ class TestZip:
         tracker.select(timesteps=0)
         tracker.run()
         new = tracker.copy()
-        x = os.path.getsize(tracker.current)
+        x = os.path.getsize(tracker.current[0])
         tracker.zip()
         tracker.run()
-        y = os.path.getsize(tracker.current)
+        y = os.path.getsize(tracker.current[0])
         assert 0.8 * x > y
 
         tracker.spatial_mean()
@@ -36,9 +36,9 @@ class TestZip:
         tracker = nc.open_data(ff)
         tracker.select(timesteps=0)
         new = tracker.copy()
-        x = os.path.getsize(tracker.current)
+        x = os.path.getsize(tracker.current[0])
         tracker.zip()
-        y = os.path.getsize(tracker.current)
+        y = os.path.getsize(tracker.current[0])
         assert 0.8 * x > y
         nc.options(lazy = True)
 
@@ -49,11 +49,11 @@ class TestZip:
         tracker.zip()
         tracker.run()
         new = tracker.copy()
-        x = os.path.getsize(tracker.current)
+        x = os.path.getsize(tracker.current[0])
         tracker.zip()
         print(tracker._zip)
         tracker.run()
-        y = os.path.getsize(tracker.current)
+        y = os.path.getsize(tracker.current[0])
         z = np.round(x / y, 1).astype("float")
         assert z == 1
 

@@ -752,10 +752,7 @@ def merge(*datasets, match=["day", "year", "month"]):
             raise TypeError("Please check everything is a DataSet object!")
         # make sure everything has been evaluated
         dataset.run()
-        if type(dataset.current) is str:
-            all_files += [dataset.current]
-        else:
-            all_files += dataset.current
+        all_files += dataset.current
     result = open_data(all_files)
     result.merge(match=match)
     return result
@@ -786,6 +783,9 @@ def cor_time(x=None, y=None):
     x.run()
     y.run()
 
+    if len(x) > 1 or len(y) > 1:
+        raise TypeError("cor_time only accepts single file datasets!")
+
     a = x.copy()
     b = y.copy()
 
@@ -800,10 +800,10 @@ def cor_time(x=None, y=None):
 
     if len(x.variables) == 1:
         command = (
-            "cdo -setname,cor -timcor " + a.current + " " + b.current + " " + target
+            "cdo -setname,cor -timcor " + a.current[0] + " " + b.current[0] + " " + target
         )
     else:
-        command = "cdo -timcor " + a.current + " " + b.current + " " + target
+        command = "cdo -timcor " + a.current[0] + " " + b.current[0] + " " + target
 
     target = run_cdo(command, target=target)
 
@@ -839,6 +839,9 @@ def cor_space(x=None, y=None):
     x.run()
     y.run()
 
+    if len(x) > 1 or len(y) > 1:
+        raise TypeError("cor_time only accepts single file datasets!")
+
     a = x.copy()
     b = y.copy()
 
@@ -853,10 +856,10 @@ def cor_space(x=None, y=None):
 
     if len(x.variables) == 1:
         command = (
-            "cdo -setname,cor -fldcor " + a.current + " " + b.current + " " + target
+            "cdo -setname,cor -fldcor " + a.current[0] + " " + b.current[0] + " " + target
         )
     else:
-        command = "cdo -fldcor " + a.current + " " + b.current + " " + target
+        command = "cdo -fldcor " + a.current[0] + " " + b.current[0] + " " + target
 
     target = run_cdo(command, target=target)
 
@@ -877,7 +880,10 @@ class DataSet(object):
         # Attribuates of interest to users
         self.history = []
         self.start = start
-        self._current = start
+        if type(start) is str:
+            self._current = [start]
+        else:
+            self._current = start
 
         # attributes to the module, but not users (probably)
         if session_info["lazy"]:
@@ -895,32 +901,20 @@ class DataSet(object):
         self._ncommands = 0
 
     def __getitem__(self, index):
-        if type(self.current) is str:
-            return self.current
 
         return self.current[index]
 
     def __len__(self):
-        if type(self.current) is str:
-            return 1
-
         return len(self.current)
 
     def __iter__(self):
-        if type(self.current) is str:
-            yield self.current
-            return
-        if type(self.current) is list:
-            for ff in self.current:
-                yield ff
-            return
+        for ff in self.current:
+            yield ff
+        return
 
 
     def __repr__(self):
-        if isinstance(self.current, list):
-            current = str(len(self.current)) + " member ensemble"
-        if type(self.current) == str:
-            current = self.current
+        current = str(len(self.current)) + " member ensemble"
 
         variables = []
         for ff in self:
@@ -942,46 +936,41 @@ class DataSet(object):
         This will print the number of files, total size, and smallest and largest files
         in an DataSet object.
         """
-        if type(self.current) is str:
-            result = "Number of files: 1\n"
-            result = result + "File size: " + convert_bytes(file_size(self.current))
-            return result
-        else:
-            all_sizes = []
+        all_sizes = []
 
-            smallest_file = ""
-            largest_file = ""
-            min_size = 1e15
-            max_size = -1
+        smallest_file = ""
+        largest_file = ""
+        min_size = 1e15
+        max_size = -1
 
-            for ff in self:
+        for ff in self:
 
-                all_sizes.append(file_size(ff))
+            all_sizes.append(file_size(ff))
 
-                if file_size(ff) > max_size:
-                    max_size = file_size(ff)
-                    largest_file = ff
+            if file_size(ff) > max_size:
+                max_size = file_size(ff)
+                largest_file = ff
 
-                if file_size(ff) < min_size:
-                    min_size = file_size(ff)
-                    smallest_file = ff
+            if file_size(ff) < min_size:
+                min_size = file_size(ff)
+                smallest_file = ff
 
-            min_size = convert_bytes(min_size)
-            max_size = convert_bytes(max_size)
+        min_size = convert_bytes(min_size)
+        max_size = convert_bytes(max_size)
 
-            sum_size = convert_bytes(sum(all_sizes))
-            result = "Number of files in ensemble: " + str(len(self.current)) + "\n"
-            result = result + "Ensemble size: " + sum_size + "\n"
-            result = (
-                result
-                + "Smallest file: "
-                + smallest_file
-                + " has size "
-                + min_size
-                + "\n"
-            )
-            result = result + "Largest file: " + largest_file + " has size " + max_size
-            return result
+        sum_size = convert_bytes(sum(all_sizes))
+        result = "Number of files in ensemble: " + str(len(self.current)) + "\n"
+        result = result + "Ensemble size: " + sum_size + "\n"
+        result = (
+            result
+            + "Smallest file: "
+            + smallest_file
+            + " has size "
+            + min_size
+            + "\n"
+        )
+        result = result + "Largest file: " + largest_file + " has size " + max_size
+        return result
 
     @property
     def variables(self):
@@ -1086,14 +1075,14 @@ class DataSet(object):
         This will only display the variables in the first file of an ensemble.
         """
 
-        if type(self.current) is list:
+        if len(self.current) >1:
             return (
-                "This DataSet object is a list. Please inspect individual"
+                "This DataSet object is a mult-file dataset. Please inspect individual"
                 "files using nc_variables"
             )
 
         cdo_result = subprocess.run(
-            "cdo showname " + self.current,
+            "cdo showname " + self.current[0],
             shell=True,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -1106,7 +1095,7 @@ class DataSet(object):
             .strip()
         )
         cdo_result = cdo_result.split()
-        dataset = Dataset(self.current)
+        dataset = Dataset(self.current[0])
 
         longs = None
         units = None
@@ -1119,7 +1108,7 @@ class DataSet(object):
             return cdo_result
 
         out = subprocess.run(
-            "cdo sinfon " + self.current,
+            "cdo sinfon " + self.current[0],
             shell=True,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -1169,7 +1158,7 @@ class DataSet(object):
     @start.setter
     def start(self, value):
         if type(value) is str:
-            self._start = value
+            self._start = [value]
         if isinstance(value, list):
             self._start = value
 
@@ -1188,12 +1177,10 @@ class DataSet(object):
 
         if type(value) is str:
             nc_safe.append(value)
-            self._current = value
+            self._current = [value]
         if isinstance(value, list):
-            if len(value) > 1:
-                self._current = value
-            else:
-                self._current = value[0]
+            self._current = value
+
             for ff in value:
                 nc_safe.append(ff)
 
@@ -1215,11 +1202,8 @@ class DataSet(object):
         self.run()
 
         new = copy.deepcopy(self)
-        if type(new.current) is str:
-            nc_safe.append(new.current)
-        else:
-            for ff in new:
-                nc_safe.append(ff)
+        for ff in new:
+            nc_safe.append(ff)
         return new
 
     def __del__(self):
@@ -1247,6 +1231,7 @@ class DataSet(object):
     from nctoolkit.anomaly import monthly_anomaly
 
     from nctoolkit.append import append
+    from nctoolkit.append import remove
 
     from nctoolkit.assign import assign
 
