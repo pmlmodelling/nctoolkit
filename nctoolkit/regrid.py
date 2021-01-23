@@ -8,7 +8,7 @@ from nctoolkit.api import open_data
 from nctoolkit.cleanup import cleanup
 from nctoolkit.generate_grid import generate_grid
 from nctoolkit.runthis import run_this, run_cdo
-from nctoolkit.session import nc_safe
+from nctoolkit.session import nc_safe, append_safe, remove_safe
 from nctoolkit.temp_file import temp_file
 
 
@@ -81,7 +81,7 @@ def regrid(self, grid=None, method="bil"):
         if grid_type == "df":
             target_grid = generate_grid(grid)
             del_grid = copy.deepcopy(target_grid)
-            nc_safe.append(del_grid)
+            append_safe(del_grid)
         else:
             target_grid = grid
     new_files = []
@@ -104,7 +104,7 @@ def regrid(self, grid=None, method="bil"):
             weights_nc = run_cdo(cdo_command, target=weights_nc)
         except Exception as e:
             del tracker
-            nc_safe.remove(weights_nc)
+            remove_safe(weights_nc)
             raise ValueError(e)
 
         cdo_command = f"cdo -remap,{target_grid},{weights_nc}"
@@ -113,7 +113,7 @@ def regrid(self, grid=None, method="bil"):
 
         run_this(cdo_command, tracker, output="ensemble")
 
-        nc_safe.remove(weights_nc)
+        remove_safe(weights_nc)
 
 
         new_files += tracker.current
@@ -126,15 +126,11 @@ def regrid(self, grid=None, method="bil"):
 
 
     if del_grid is not None:
-        if del_grid in nc_safe:
-            nc_safe.remove(del_grid)
+        remove_safe(del_grid)
 
 
     self.current = new_files
 
-    #for ff in new_files:
-    #    if ff in nc_safe:
-    #        nc_safe.remove(ff)
 
     self._thredds = False
     cleanup()

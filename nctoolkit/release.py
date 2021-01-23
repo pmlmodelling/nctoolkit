@@ -1,6 +1,6 @@
 from nctoolkit.cleanup import cleanup
 from nctoolkit.runthis import run_this
-from nctoolkit.session import nc_safe
+from nctoolkit.session import nc_safe, remove_safe
 import warnings
 
 
@@ -39,8 +39,7 @@ def run(self):
 
         if len(self._safe) > 0:
             for ff in self._safe:
-                if ff in nc_safe:
-                    nc_safe.remove(ff)
+                remove_safe(ff)
 
         self._safe = []
 

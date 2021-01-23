@@ -1,5 +1,5 @@
 from nctoolkit.cleanup import cleanup
-from nctoolkit.session import nc_safe, temp_files
+from nctoolkit.session import nc_safe, temp_files, append_safe, remove_safe
 from nctoolkit.temp_file import temp_file
 
 
@@ -97,12 +97,12 @@ def to_latlon(self, lon=None, lat=None, res=None, method="bil"):
     f.write("yinc = " + str(lat_step) + "\n")
     f.close()
 
-    nc_safe.append(grid_file)
+    append_safe(grid_file)
     temp_files.add(grid_file)
 
     # call regrid
     self.regrid(grid=grid_file, method=method)
 
-    nc_safe.remove(grid_file)
+    remove_safe(grid_file)
 
     cleanup()

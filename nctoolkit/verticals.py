@@ -30,7 +30,7 @@ def bottom(self):
     # extract the number of the bottom level
     # Use the first file for an ensemble
     # pull the cdo command together, then run it or store it
-    if len(self.current) >  1:
+    if len(self) >  1:
         ff = self.current[0]
         warnings.warn(
                 message="The first file in ensemble used to determine number of "
@@ -246,7 +246,7 @@ def bottom_mask(self):
     """
     self.run()
 
-    if len(self.current) > 1:
+    if len(self) > 1:
         raise TypeError("This only works for single file datasets")
     data = open_data(self.current)
 

@@ -1,6 +1,6 @@
 import os
 
-from nctoolkit.session import session_info, nc_safe, temp_dirs, temp_files
+from nctoolkit.session import session_info, nc_safe, temp_dirs, temp_files, get_safe
 import warnings
 
 
@@ -24,7 +24,7 @@ def nc_remove(ff, deep=False):
 
     # If things are running in parallel it's possible nc_safe was updated after files to delete
     # were generated....
-    if (ff in nc_safe) and (deep is False):
+    if (ff in get_safe()) and (deep is False):
         return None
 
     if deep is False:

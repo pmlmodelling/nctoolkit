@@ -47,7 +47,7 @@ def ensemble_percentile(self, p=None):
     self.run()
 
     # Throw an error if there is only a single file in the tracker
-    if len(self.current) == 1:
+    if len(self) == 1:
         warnings.warn(message="There is only one file in the dataset")
 
     # create the cdo command and run it
@@ -108,7 +108,7 @@ def ensemble_max(self, nco=False, ignore_time=False):
     if nco is False:
         self.run()
 
-        if len(self.current) == 1:
+        if len(self) == 1:
             warnings.warn(message="There is only one file in the dataset")
 
         if ignore_time is False:
@@ -146,7 +146,7 @@ def ensemble_min(self, nco=False, ignore_time=False):
         calculated for each time steps; for example, if the ensemble is made up of
         monthly files the min for each month will be calculated.
     """
-    if len(self.current) == 1:
+    if len(self) == 1:
         warnings.warn(message="There is only one file in the dataset")
 
     if nco is False:
@@ -191,7 +191,7 @@ def ensemble_mean(self, nco=False, ignore_time=False):
     if nco is False:
         self.run()
 
-        if len(self.current) == 1:
+        if len(self) == 1:
             warnings.warn(message="There is only one file in the dataset")
 
         if ignore_time is False:
@@ -222,7 +222,7 @@ def ensemble_range(self):
     """
     self.run()
 
-    if len(self.current) == 1:
+    if len(self) == 1:
         warnings.warn(message="There is only one file in the dataset")
 
     cdo_command = "cdo --sortname -ensrange"
@@ -239,7 +239,7 @@ def ensemble_sum(self):
     """
     self.run()
 
-    if len(self.current) == 1:
+    if len(self) == 1:
         warnings.warn(message="There is only one file in the dataset")
 
     cdo_command = "cdo --sortname -enssum"

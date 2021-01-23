@@ -2,6 +2,7 @@ import copy
 import subprocess
 
 from nctoolkit.cleanup import cleanup
+from nctoolkit.session import remove_safe
 from nctoolkit.runthis import run_this, tidy_command, run_cdo
 from nctoolkit.show import nc_variables
 from nctoolkit.temp_file import temp_file
@@ -97,7 +98,7 @@ def cell_area(self, join=True):
         self.current = new_files
 
         for ff in new_files:
-            nc_safe.remove(ff)
+            remove_safe(ff)
 
         self._hold_history = copy.deepcopy(self.history)
 

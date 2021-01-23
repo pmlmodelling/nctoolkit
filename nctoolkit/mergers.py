@@ -56,7 +56,7 @@ def merge(self, match=["year", "month", "day"]):
     self.run()
 
     # If there is only a single file in the dataset, then nothing needs to be done
-    if len(self.current) == 1:
+    if len(self) == 1:
         warnings.warn(
             message="There is only one file in the dataset. No need to merge!"
         )
@@ -155,7 +155,7 @@ def merge_time(self):
 
     self.run()
 
-    if len(self.current) == 1:
+    if len(self) == 1:
         warnings.warn(message="There is only file in the dataset. No need to merge!")
         return None
 

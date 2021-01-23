@@ -1,6 +1,6 @@
 import os
 import warnings
-from nctoolkit.session import nc_safe
+from nctoolkit.session import nc_safe, append_safe, remove_safe
 
 
 def append(self, x=None):
@@ -58,7 +58,7 @@ def append(self, x=None):
             raise ValueError(f"{ff} does not exist!")
 
     for ff in x:
-        nc_safe.append(ff)
+        append_safe(ff)
         self.current.append(ff)
 
 def remove(self, x=None):
@@ -89,7 +89,7 @@ def remove(self, x=None):
 
     for ff in x:
         self.current.remove(ff)
-        nc_safe.remove(ff)
+        remove_safe(ff)
 
 
 

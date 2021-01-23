@@ -5,7 +5,7 @@ from nctoolkit.runthis import run_cdo, tidy_command
 from nctoolkit.show import nc_years
 from nctoolkit.temp_file import temp_file
 from nctoolkit.api import open_data
-from nctoolkit.session import nc_safe
+from nctoolkit.session import nc_safe, append_safe, remove_safe
 from nctoolkit.show import nc_variables
 
 
@@ -38,7 +38,7 @@ def initiation(self, var=None, metric="Henson", threshold = 0.05):
 
             command = tidy_command(command)
             target = run_cdo(command, target=target)
-            nc_safe.append(target)
+            append_safe(target)
 
             # calculate the maximum
             data_max = open_data(ff)
@@ -110,7 +110,7 @@ def initiation(self, var=None, metric="Henson", threshold = 0.05):
 
             new_files.append(data_max5.current[0])
 
-            nc_safe.remove(target)
+            remove_safe(target)
 
 
         self.history.append(new_commands)

@@ -6,7 +6,7 @@ from nctoolkit.cleanup import cleanup
 from nctoolkit.flatten import str_flatten
 from nctoolkit.runthis import run_this, run_nco, tidy_command
 from nctoolkit.temp_file import temp_file
-from nctoolkit.session import nc_safe
+from nctoolkit.session import nc_safe, remove_safe
 from nctoolkit.time_stat import *
 from nctoolkit.verticals import *
 from nctoolkit.show import nc_variables
@@ -48,7 +48,7 @@ def view(self):
     warnings.warn(message = "view is now deprecated. Use plot instead!")
     self.run()
 
-    if len(self.current) == 1:
+    if len(self) == 1:
         os.system("ncview " + self.current[0] + "&")
     else:
         print("You cannot send multiple files to ncview!")
@@ -477,7 +477,7 @@ def cell_areas(self, join=True):
         self.current = new_files
 
         for ff in new_files:
-            nc_safe.remove(ff)
+            remove_safe(ff)
 
         self._hold_history = copy.deepcopy(self.history)
 

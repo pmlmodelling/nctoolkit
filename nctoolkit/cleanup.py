@@ -5,8 +5,7 @@ import platform
 import tempfile
 
 from nctoolkit.remove import nc_remove
-from nctoolkit.session import session_info, nc_safe, temp_dirs
-from nctoolkit.session import session_info, nc_safe, temp_dirs
+from nctoolkit.session import session_info, nc_safe, temp_dirs, append_safe, remove_safe, get_safe
 
 # keep is a file you do not want to delete
 
@@ -36,7 +35,7 @@ def cleanup():
     candidates = list(set(candidates))
     candidates = [x for x in candidates if os.path.exists(x)]
 
-    valid_files = nc_safe
+    valid_files = get_safe()
 
     delete_these = [v for v in candidates if v not in valid_files]
 
@@ -206,8 +205,8 @@ def disk_clean(self):
             if result < 0.5 * 1e9:
                 if ff.startswith("/tmp/"):
                     new_ff = ff.replace("/tmp/", "/var/tmp/")
-                    nc_safe.append(new_ff)
-                    nc_safe.remove(ff)
+                    append_safe(new_ff)
+                    remove_safe(ff)
                     shutil.copyfile(ff, new_ff)
                     self.current = [
                         new_ff if file == ff else file for file in self.current

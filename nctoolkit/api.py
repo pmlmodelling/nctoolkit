@@ -18,7 +18,8 @@ from netCDF4 import Dataset
 from nctoolkit.cleanup import cleanup, clean_all, temp_check
 from nctoolkit.flatten import str_flatten
 from nctoolkit.runthis import run_cdo
-from nctoolkit.session import nc_protected, session_info, nc_safe
+from nctoolkit.session import nc_protected, session_info, nc_safe, append_safe, remove_safe, append_protected, remove_protected
+from nctoolkit.session import nc_safe_par
 from nctoolkit.show import (
     nc_variables,
     nc_years,
@@ -73,6 +74,7 @@ session_info["user_dir"] = False
 session_info["thread_safe"] = False
 session_info["lazy"] = False
 session_info["precision"] = None
+session_info["parallel"] = False
 
 session_info["interactive"] = sys.__stdin__.isatty()
 
@@ -128,11 +130,30 @@ def options(**kwargs):
         "cores",
         "precision",
         "temp_dir",
+        "parallel"
     ]
 
     for key in kwargs:
         if key not in valid_keys:
             raise AttributeError(key + " is not a valid option")
+
+        if key == "parallel":
+            if type(kwargs[key]) is not bool:
+                raise TypeError(f"{key} should be boolean")
+
+            if kwargs[key]:
+                if len(nc_safe) > 0:
+                    for ff in nc_safe:
+                        nc_safe_par.append(ff)
+                        nc_safe.remove(ff)
+
+            if kwargs[key] == False:
+                if len(nc_safe_par) > 0:
+                    for ff in nc_safe_par:
+                        nc_safe.append(ff)
+                        nc_safe_par.remove(ff)
+
+
         if type(kwargs[key]) is not bool:
             if key == "temp_dir":
                 if type(kwargs[key]) is str:
@@ -310,64 +331,64 @@ def is_url(x):
     return re.match(regex, x) is not None
 
 
-def options(**kwargs):
-    """
-    Define session options.
-    Set the options in the session. Available options are thread_safe and lazy.
-    Set thread_safe = True if hdf5 was built to be thread safe.
-    Set lazy = True if you want methods to evaluate lazy by default.
-
-    Parameters
-    ---------------
-    **kwargs
-        Define options using key, value pairs.
-
-    """
-
-    valid_keys = [
-        "thread_safe",
-        "lazy",
-        "cores",
-        "precision",
-        "user",
-        "password",
-        "temp_dir",
-    ]
-
-    for key in kwargs:
-        if key not in valid_keys:
-            raise AttributeError(key + " is not a valid option")
-        if type(kwargs[key]) is not bool:
-            if key == "temp_dir":
-                if type(kwargs[key]) is str:
-                    if os.path.exists(kwargs[key]) == False:
-                        raise ValueError("The temp_dir specified does not exist!")
-                    session_info[key] = os.path.abspath(kwargs[key])
-                    session_info["user_dir"] = True
-                return None
-
-            if key == "cores":
-                if type(kwargs[key]) is int:
-                    if kwargs[key] > mp.cpu_count():
-                        raise ValueError(
-                            str(kwargs[key])
-                            + " is greater than the number of system cores ("
-                            + str(mp.cpu_count())
-                            + ")"
-                        )
-                    session_info[key] = kwargs[key]
-                else:
-                    raise TypeError("cores must be an int")
-            else:
-                if key == "precision":
-                    if kwargs[key] not in ["I8", "I16", "I32", "F32", "F64"]:
-                        raise ValueError("precision supplied is not valid!")
-                    session_info[key] = kwargs[key]
-                else:
-                    raise AttributeError(key + " is not valid session info!")
-        else:
-            session_info[key] = kwargs[key]
-
+#def options(**kwargs):
+#    """
+#    Define session options.
+#    Set the options in the session. Available options are thread_safe and lazy.
+#    Set thread_safe = True if hdf5 was built to be thread safe.
+#    Set lazy = True if you want methods to evaluate lazy by default.
+#
+#    Parameters
+#    ---------------
+#    **kwargs
+#        Define options using key, value pairs.
+#
+#    """
+#
+#    valid_keys = [
+#        "thread_safe",
+#        "lazy",
+#        "cores",
+#        "precision",
+#        "user",
+#        "password",
+#        "temp_dir",
+#    ]
+#
+#    for key in kwargs:
+#        if key not in valid_keys:
+#            raise AttributeError(key + " is not a valid option")
+#        if type(kwargs[key]) is not bool:
+#            if key == "temp_dir":
+#                if type(kwargs[key]) is str:
+#                    if os.path.exists(kwargs[key]) == False:
+#                        raise ValueError("The temp_dir specified does not exist!")
+#                    session_info[key] = os.path.abspath(kwargs[key])
+#                    session_info["user_dir"] = True
+#                return None
+#
+#            if key == "cores":
+#                if type(kwargs[key]) is int:
+#                    if kwargs[key] > mp.cpu_count():
+#                        raise ValueError(
+#                            str(kwargs[key])
+#                            + " is greater than the number of system cores ("
+#                            + str(mp.cpu_count())
+#                            + ")"
+#                        )
+#                    session_info[key] = kwargs[key]
+#                else:
+#                    raise TypeError("cores must be an int")
+#            else:
+#                if key == "precision":
+#                    if kwargs[key] not in ["I8", "I16", "I32", "F32", "F64"]:
+#                        raise ValueError("precision supplied is not valid!")
+#                    session_info[key] = kwargs[key]
+#                else:
+#                    raise AttributeError(key + " is not valid session info!")
+#        else:
+#            session_info[key] = kwargs[key]
+#
 
 def convert_bytes(num):
     """
@@ -564,8 +585,8 @@ def open_data(x=[], suppress_messages=False, checks=False, **kwargs):
                 raise ValueError(mes)
 
         else:
-            nc_safe.append(x)
-            nc_protected.append(x)
+            append_safe(x)
+            append_protected(x)
 
     # it's possible there are duplicates in the data
     # Get rid of them..
@@ -611,8 +632,8 @@ def open_data(x=[], suppress_messages=False, checks=False, **kwargs):
                                 )
                                 mes = re.sub(" +", " ", mes)
                                 raise ValueError(mes)
-                        nc_safe.append(ff)
-                        nc_protected.append(x)
+                        append_safe(ff)
+                        append_protected(ff)
         else:
             out = subprocess.run(
                 "cdo sinfo " + x[0],
@@ -809,7 +830,7 @@ def cor_time(x=None, y=None):
 
     data = open_data(target)
 
-    nc_safe.remove(target)
+    remove_safe(target)
 
     return data
 
@@ -865,7 +886,7 @@ def cor_space(x=None, y=None):
 
     data = open_data(target)
 
-    nc_safe.remove(target)
+    remove_safe(target)
 
     return data
 
@@ -914,7 +935,7 @@ class DataSet(object):
 
 
     def __repr__(self):
-        current = str(len(self.current)) + " member ensemble"
+        current = str(len(self)) + " member ensemble"
 
         variables = []
         for ff in self:
@@ -959,7 +980,7 @@ class DataSet(object):
         max_size = convert_bytes(max_size)
 
         sum_size = convert_bytes(sum(all_sizes))
-        result = "Number of files in ensemble: " + str(len(self.current)) + "\n"
+        result = "Number of files in ensemble: " + str(len(self)) + "\n"
         result = result + "Ensemble size: " + sum_size + "\n"
         result = (
             result
@@ -1075,7 +1096,7 @@ class DataSet(object):
         This will only display the variables in the first file of an ensemble.
         """
 
-        if len(self.current) >1:
+        if len(self) >1:
             return (
                 "This DataSet object is a mult-file dataset. Please inspect individual"
                 "files using nc_variables"
@@ -1172,17 +1193,16 @@ class DataSet(object):
     @current.setter
     def current(self, value):
         for ff in self:
-            if ff in nc_safe:
-                nc_safe.remove(ff)
+            remove_safe(ff)
 
         if type(value) is str:
-            nc_safe.append(value)
+            append_safe(value)
             self._current = [value]
         if isinstance(value, list):
             self._current = value
 
             for ff in value:
-                nc_safe.append(ff)
+                append_safe(ff)
 
     @property
     def history(self):
@@ -1203,16 +1223,14 @@ class DataSet(object):
 
         new = copy.deepcopy(self)
         for ff in new:
-            nc_safe.append(ff)
+            append_safe(ff)
         return new
 
     def __del__(self):
         for ff in self:
-            if ff in nc_safe:
-                nc_safe.remove(ff)
+            remove_safe(ff)
         for ff in self._safe:
-            if ff in nc_safe:
-                nc_safe.remove(ff)
+            remove_safe(ff)
 
         cleanup()
 

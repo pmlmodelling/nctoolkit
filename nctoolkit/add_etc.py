@@ -4,7 +4,7 @@ import subprocess
 
 from nctoolkit.cleanup import cleanup
 from nctoolkit.runthis import run_this, run_cdo, tidy_command
-from nctoolkit.session import nc_safe, session_info
+from nctoolkit.session import nc_safe, session_info, append_safe, remove_safe
 from nctoolkit.show import nc_variables
 from nctoolkit.temp_file import temp_file
 
@@ -55,7 +55,7 @@ def operation(self, method="mul", ff=None, var=None):
     # make sure the ff file is not removed from safe list in subsequent
     # actions prior to running
     if (ff is not None) and (session_info["lazy"]):
-        nc_safe.append(ff)
+        append_safe(ff)
         self._safe.append(ff)
 
     if len(self.history) == len(self._hold_history):
@@ -115,7 +115,7 @@ def operation(self, method="mul", ff=None, var=None):
         self.current = new_files
 
         for ff in new_files:
-            nc_safe.remove(ff)
+            remove_safe(ff)
         self._hold_history = copy.deepcopy(self.history)
         cleanup()
 

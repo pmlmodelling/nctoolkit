@@ -8,7 +8,7 @@ import multiprocessing
 
 from nctoolkit.cleanup import cleanup
 from nctoolkit.flatten import str_flatten
-from nctoolkit.session import nc_protected, session_info, nc_safe
+from nctoolkit.session import nc_protected, session_info, nc_safe, append_safe, remove_safe, get_protected
 from nctoolkit.temp_file import temp_file
 
 
@@ -62,7 +62,7 @@ def run_nco(command, target, out_file=None, overwrite=False):
 
     # Make sure it is not attempting to overwrite a protected file
     if out_file is None:
-        if command.split()[-1] in nc_protected:
+        if command.split()[-1] in get_protected():
             if overwrite is False:
                 raise ValueError("Attempting to overwrite an opened file")
 
@@ -154,7 +154,7 @@ def run_cdo(command, target, out_file=None, overwrite=False):
                     new_target = target.replace("/tmp/", "/var/tmp/")
                     command = command.replace(target, new_target)
                     target = target.replace("/tmp/", "/var/tmp/")
-    nc_safe.append(target)
+    append_safe(target)
 
     if command.startswith("cdo ") is False:
         raise ValueError("The command does not start with cdo!")
@@ -225,10 +225,8 @@ def run_cdo(command, target, out_file=None, overwrite=False):
 
     if out_file is not None:
         if "HDF5 library version mismatched error" in str(result):
-            if target in nc_safe:
-                nc_safe.remove(target)
-            if start_target in nc_safe:
-                nc_safe.remove(start_target)
+            remove_safe(target)
+            remove_safe(start_target)
             raise ValueError(
                 "The HDF5 header files used to compile this application do not match "
                 "the version used by the HDF5 library to which this application is "
@@ -240,10 +238,8 @@ def run_cdo(command, target, out_file=None, overwrite=False):
             or ("HDF error" in str(result))
             or (out.returncode != 0)
         ):
-            if target in nc_safe:
-                nc_safe.remove(target)
-            if start_target in nc_safe:
-                nc_safe.remove(target)
+            remove_safe(target)
+            remove_safe(start_target)
             raise ValueError(
                 str(result).replace("b'", "").replace("\\n", "").replace("'", "")
             )
@@ -251,19 +247,15 @@ def run_cdo(command, target, out_file=None, overwrite=False):
             return out_file
 
     if ("sellonlat" in command) and ("std::bad_alloc" in str(result)):
-        if target in nc_safe:
-            nc_safe.remove(target)
-        if start_target in nc_safe:
-            nc_safe.remove(start_target)
+        remove_safe(target)
+        remove_safe(start_target)
         raise ValueError(
             "Is the horizontal grid very large? Consider setting cdo=False in crop!"
         )
 
     if "(Abort)" in str(result):
-        if target in nc_safe:
-            nc_safe.remove(target)
-        if start_target in nc_safe:
-            nc_safe.remove(start_target)
+        remove_safe(target)
+        remove_safe(start_target)
         raise ValueError(
             str(result).replace("b'", "").replace("\\n", "").replace("'", "")
         )
@@ -284,7 +276,7 @@ def run_cdo(command, target, out_file=None, overwrite=False):
             new_target = target.replace("/tmp/", "/var/tmp/")
             command = command.replace(target, new_target)
             target = new_target
-            nc_safe.append(target)
+            append_safe(target)
 
             out = subprocess.Popen(
                 command,
@@ -301,20 +293,16 @@ def run_cdo(command, target, out_file=None, overwrite=False):
                 or (out.returncode != 0)
             ):
                 if "Too many open files" in str(result1):
-                    if target in nc_safe:
-                        nc_safe.remove(target)
-                    if start_target in nc_safe:
-                        nc_safe.remove(target)
+                    remove_safe(target)
+                    remove_safe(start_target)
                     raise ValueError(
                         "There are too many open files in CDO. Check the files "
                         "your OS allows to be open simultaneously in the Bourne "
                         "shell with 'ulimit -n'"
                     )
                 else:
-                    if target in nc_safe:
-                        nc_safe.remove(target)
-                    if start_target in nc_safe:
-                        nc_safe.remove(target)
+                    remove_safe(target)
+                    remove_safe(start_target)
                     raise ValueError(
                         str(result1)
                         .replace("b'", "")
@@ -411,10 +399,8 @@ def run_cdo(command, target, out_file=None, overwrite=False):
             )
 
     if os.path.exists(target) is False:
-        if target in nc_safe:
-            nc_safe.remove(target)
-        if start_target in nc_safe:
-            nc_safe.remove(target)
+        remove_safe(target)
+        remove_safe(target)
         raise ValueError(f"{command} was not successful. Check output")
 
     session_info["latest_size"] = os.path.getsize(target)
@@ -428,7 +414,7 @@ def run_this(os_command, self, output="one", out_file=None):
 
     cores = session_info["cores"]
 
-    if len(self.current) == 1:
+    if len(self) == 1:
         output = "ensemble"
 
     if self._execute is False:
@@ -440,12 +426,12 @@ def run_this(os_command, self, output="one", out_file=None):
 
     if self._execute:
 
-        if ((output == "ensemble") and (len(self.current) > 1)) or (
-            (output == "ensemble") and (len(self.current) == 1)
+        if ((output == "ensemble") and (len(self) > 1)) or (
+            (output == "ensemble") and (len(self) == 1)
         ):
             new_history = copy.deepcopy(self._hold_history)
 
-            if len(self.current) == 1:
+            if len(self) == 1:
                 cores = 1
             file_list = self.current
 
@@ -512,8 +498,6 @@ def run_this(os_command, self, output="one", out_file=None):
 
                 new_history.append(ff_command)
 
-                #nc_safe.append(target)
-
                 if cores > 1:
                     temp = pool.apply_async(run_cdo, [ff_command, target, out_file])
                     results[ff] = temp
@@ -534,7 +518,7 @@ def run_this(os_command, self, output="one", out_file=None):
             self.current = copy.deepcopy(target_list)
 
             for ff in target_list:
-                nc_safe.remove(ff)
+                remove_safe(ff)
 
             self.disk_clean()
 
@@ -549,7 +533,7 @@ def run_this(os_command, self, output="one", out_file=None):
 
             return None
 
-        if ((output == "one") and (len(self.current) > 1)) or self._zip == False:
+        if ((output == "one") and (len(self) > 1)) or self._zip == False:
 
             new_history = copy.deepcopy(self._hold_history)
 
@@ -610,7 +594,7 @@ def run_this(os_command, self, output="one", out_file=None):
 
             target = run_cdo(os_command, target, out_file)
 
-            nc_safe.remove(target)
+            remove_safe(target)
 
             self.current = target
 

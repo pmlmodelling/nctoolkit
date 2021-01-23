@@ -4,7 +4,7 @@ import subprocess
 from nctoolkit.cleanup import cleanup
 from nctoolkit.runthis import run_this, run_cdo, tidy_command
 from nctoolkit.temp_file import temp_file
-from nctoolkit.session import nc_safe
+from nctoolkit.session import nc_safe, remove_safe
 
 
 def cdo_version():
@@ -130,7 +130,7 @@ def spatial_sum(self, by_area=False):
     if cdo_version() in ["1.9.3"]:
         self.run()
 
-    if len(self.current) == 1 or (by_area is False):
+    if len(self) == 1 or (by_area is False):
 
         if by_area:
             self.run()
@@ -218,7 +218,7 @@ def spatial_sum(self, by_area=False):
     self.current = new_files
 
     for ff in new_files:
-        nc_safe.remove(ff)
+        remove_safe(ff)
 
     cleanup()
     self.disk_clean()

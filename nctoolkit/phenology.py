@@ -5,7 +5,7 @@ from nctoolkit.runthis import run_cdo, tidy_command
 from nctoolkit.show import nc_years
 from nctoolkit.temp_file import temp_file
 from nctoolkit.api import open_data
-from nctoolkit.session import nc_safe
+from nctoolkit.session import nc_safe, remove_safe
 from nctoolkit.show import nc_variables
 
 
@@ -79,7 +79,7 @@ def phenology(self, var=None, metric=None, p=None):
         self.current = new_files
 
         for ff in new_files:
-            nc_safe.remove(ff)
+            remove_safe(ff)
 
         cleanup()
         return None
@@ -125,7 +125,7 @@ def phenology(self, var=None, metric=None, p=None):
         self.current = new_files
 
         for ff in new_files:
-            nc_safe.remove(ff)
+            remove_safe(ff)
 
         cleanup()
 

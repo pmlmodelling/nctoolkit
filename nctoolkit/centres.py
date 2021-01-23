@@ -21,7 +21,7 @@ def centre(self, by ="latitude", by_area = False):
 
     self.run()
 
-    if len(self.current) >1:
+    if len(self) >1:
         raise TypeError("This method still does not work with lists! Consider merging.")
 
     data1 = self.copy()
