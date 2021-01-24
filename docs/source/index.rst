@@ -66,10 +66,10 @@ Documentation
    :caption: User Guide 
 
    datasets
+   temporals 
+   subsetting 
    variables
    exporting 
-   subsetting 
-   temporals 
    merging_notebook 
    parallel 
    globals 
