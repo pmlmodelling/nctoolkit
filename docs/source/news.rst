@@ -10,6 +10,10 @@ A new method ``assign``  is now available for generating new variables. This rep
 place-holder functions in the early releases of nctoolkit until a proper method for creating variables was put in place.
 ``assign`` operates in the same way as the ``assign`` method in Pandas. Users can generate new variables using lambda functions.
 
+A major-change in this release is that evaluation is now lazy by default. The previous default of non-lazy evaluation was designed
+to make life slightly easier for new users of the package, but it is probably overly annoying for users to have to set evaluation
+to lazy each time they use the package.
+
 This release features a subtle shift in how datasets work, so that they have consistent list-like properties. Previously, the
 files in a dataset given by the ```current``` attribute could be both a str or a list, depending on whether there was one or
 more files in the dataset. This now always gives a list. As a result datasets in nctoolkit have list-like properties, with ```append``
