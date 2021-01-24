@@ -71,7 +71,7 @@ Documentation
    subsetting 
    temporals 
    merging_notebook 
-   lazy_methods 
+   parallel 
    globals 
 
 
