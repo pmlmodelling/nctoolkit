@@ -28,7 +28,7 @@ class TestFinal:
 
         importlib.reload(nc.api)
 
-        assert nc.session.session_info["lazy"] == False
+        assert nc.session.session_info["lazy"] == True
 
         print(nc.session.session_info)
 
