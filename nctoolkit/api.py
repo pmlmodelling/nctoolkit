@@ -72,7 +72,7 @@ session_info["stamp"] = (
 session_info["temp_dir"] = "/tmp/"
 session_info["user_dir"] = False
 session_info["thread_safe"] = False
-session_info["lazy"] = False
+session_info["lazy"] = True
 session_info["precision"] = None
 session_info["parallel"] = False
 
