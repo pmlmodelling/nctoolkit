@@ -11,10 +11,9 @@ from nctoolkit.flatten import str_flatten
 from nctoolkit.session import (
     nc_protected,
     session_info,
-    nc_safe,
     append_safe,
     remove_safe,
-    get_protected,
+    get_protected
 )
 from nctoolkit.temp_file import temp_file
 
