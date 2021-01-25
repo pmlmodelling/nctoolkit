@@ -67,6 +67,8 @@ def to_xarray(self, decode_times=True, cdo_times=False):
     if cdo_times is False:
         if len(self) == 1:
             data = xr.open_dataset(self.current[0], decode_times=decode_times)
+        else:
+            data = xr.open_mfdataset(self.current[0], decode_times=decode_times)
         return data
 
     # If it does not, then we use cdo to pull out the times,
