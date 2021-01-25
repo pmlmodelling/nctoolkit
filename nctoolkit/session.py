@@ -28,7 +28,10 @@ def remove_safe(ff):
             nc_safe.remove(ff)
 
 def get_safe():
-    return nc_safe
+    if session_info["parallel"]:
+        return nc_safe_par
+    else:
+        return nc_safe
 
 def append_protected(ff):
     if session_info["parallel"]:
