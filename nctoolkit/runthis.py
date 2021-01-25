@@ -8,7 +8,14 @@ import multiprocessing
 
 from nctoolkit.cleanup import cleanup
 from nctoolkit.flatten import str_flatten
-from nctoolkit.session import nc_protected, session_info, nc_safe, append_safe, remove_safe, get_protected
+from nctoolkit.session import (
+    nc_protected,
+    session_info,
+    nc_safe,
+    append_safe,
+    remove_safe,
+    get_protected,
+)
 from nctoolkit.temp_file import temp_file
 
 
@@ -439,7 +446,6 @@ def run_this(os_command, self, output="one", out_file=None):
                 os_command = f'{os_command} {self.history[-1].replace("cdo ", " ")}'
                 os_command = os_command.replace("  ", " ")
 
-
             if cores > 1:
                 pool = multiprocessing.Pool(cores)
                 target_list = []
@@ -456,8 +462,6 @@ def run_this(os_command, self, output="one", out_file=None):
                     ff_command = ff_command.replace("infile09178", ff)
 
                 target = temp_file("nc")
-
-
 
                 if out_file is not None:
                     target = out_file
@@ -486,9 +490,13 @@ def run_this(os_command, self, output="one", out_file=None):
                 if self._format is not None:
                     format_it = True
                     if self._ncommands == 1:
-                        ff_command = ff_command.replace("cdo ", f"cdo -f {self._format} copy ")
+                        ff_command = ff_command.replace(
+                            "cdo ", f"cdo -f {self._format} copy "
+                        )
                     else:
-                        ff_command = ff_command.replace("cdo ", f"cdo -f {self._format} ")
+                        ff_command = ff_command.replace(
+                            "cdo ", f"cdo -f {self._format} "
+                        )
 
                 if self._zip and zip_copy and format_it == False:
                     ff_command = ff_command.replace("cdo ", "cdo -z zip copy ")
@@ -511,18 +519,17 @@ def run_this(os_command, self, output="one", out_file=None):
                 for k, v in results.items():
                     target_list.append(v.get())
 
-                if type(self.current) == str:
-                    target_list = target_list[0]
-
             self.history = copy.deepcopy(new_history)
             self.current = copy.deepcopy(target_list)
 
-            for ff in target_list:
-                remove_safe(ff)
+            if cores == 1:
+                for ff in target_list:
+                    remove_safe(ff)
 
             self.disk_clean()
 
             cleanup()
+
             self._hold_history = copy.deepcopy(self.history)
 
             self._zip = False
@@ -566,7 +573,6 @@ def run_this(os_command, self, output="one", out_file=None):
                 os_command + " " + str_flatten(self.current, " ") + " " + target
             )
 
-
             zip_copy = False
             if self._zip and self._ncommands == 1:
                 zip_copy = True
@@ -576,7 +582,9 @@ def run_this(os_command, self, output="one", out_file=None):
             if self._format is not None:
                 format_it = True
                 if self._ncommands == 1:
-                    os_command = os_command.replace("cdo ", f"cdo -f {self._format} copy ")
+                    os_command = os_command.replace(
+                        "cdo ", f"cdo -f {self._format} copy "
+                    )
                 else:
                     os_command = os_command.replace("cdo ", f"cdo -f {self._format} ")
 
