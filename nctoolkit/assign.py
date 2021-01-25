@@ -214,10 +214,14 @@ def assign(self, drop=False, **kwargs):
 
     # now, we need to parse things.
 
+    interactive = False
     if session_info["interactive"]:
+        import readline
+        if readline.get_current_history_length() > 0:
+            interactive = True
 
+    if interactive:
         import readline; start = ([str(readline.get_history_item(i + 1)) for i in range(readline.get_current_history_length())][-1])
-
     else:
         start = lambdas
         try:
