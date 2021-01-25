@@ -521,7 +521,7 @@ def run_this(os_command, self, output="one", out_file=None):
             self.history = copy.deepcopy(new_history)
             self.current = copy.deepcopy(target_list)
 
-            if cores == 1:
+            if cores == 1 or session_info["parallel"]:
                 for ff in target_list:
                     remove_safe(ff)
 
