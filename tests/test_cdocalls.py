@@ -435,7 +435,7 @@ class TestCalls:
         )
 
         data = nc.open_data(ff)
-        data.compare_all("<0")
+        data.compare("<0")
         assert data.history[0] == "cdo -ltc,0"
 
         data = nc.open_data(ff)

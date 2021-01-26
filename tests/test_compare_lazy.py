@@ -15,11 +15,11 @@ class TestCompare:
         n = len(nc.session_files())
         assert n == 0
 
-    def test_compare_all(self):
+    def test_compare(self):
         tracker = nc.open_data(ff)
         tracker.select(years=list(range(1970, 1971)))
         tracker.select(months=[1])
-        tracker.compare_all("<=0")
+        tracker.compare("<=0")
         tracker.run()
         tracker.spatial_sum()
         n = len(nc.session_files())
@@ -30,36 +30,36 @@ class TestCompare:
     def test_compare_error(self):
         tracker = nc.open_data(ff)
         with pytest.raises(ValueError):
-            tracker.compare_all("==")
+            tracker.compare("==")
         with pytest.raises(ValueError):
-            tracker.compare_all("<=")
+            tracker.compare("<=")
         with pytest.raises(ValueError):
-            tracker.compare_all(">=")
+            tracker.compare(">=")
 
         with pytest.raises(ValueError):
-            tracker.compare_all(">")
+            tracker.compare(">")
         with pytest.raises(ValueError):
-            tracker.compare_all("<")
+            tracker.compare("<")
         with pytest.raises(ValueError):
-            tracker.compare_all("")
+            tracker.compare("")
         with pytest.raises(ValueError):
-            tracker.compare_all("!=")
+            tracker.compare("!=")
 
         with pytest.raises(ValueError):
-            tracker.compare_all()
+            tracker.compare()
 
         with pytest.raises(TypeError):
-            tracker.compare_all(1)
+            tracker.compare(1)
 
         n = len(nc.session_files())
 
         assert n == 0
 
-    def test_compare_all1(self):
+    def test_compare1(self):
         tracker = nc.open_data(ff)
         tracker.select(years=list(range(1970, 1971)))
         tracker.select(months=[1])
-        tracker.compare_all("<0")
+        tracker.compare("<0")
         tracker.run()
         tracker.spatial_sum()
 
@@ -70,11 +70,11 @@ class TestCompare:
         n = len(nc.session_files())
         assert n == 1
 
-    def test_compare_all2(self):
+    def test_compare2(self):
         tracker = nc.open_data(ff)
         tracker.select(years=list(range(1970, 1971)))
         tracker.select(months=[1])
-        tracker.compare_all(">0")
+        tracker.compare(">0")
         tracker.run()
         tracker.spatial_sum()
 
@@ -84,11 +84,11 @@ class TestCompare:
         n = len(nc.session_files())
         assert n == 1
 
-    def test_compare_all3(self):
+    def test_compare3(self):
         tracker = nc.open_data(ff)
         tracker.select(years=list(range(1970, 1971)))
         tracker.select(months=[1])
-        tracker.compare_all("==0")
+        tracker.compare("==0")
         tracker.run()
         tracker.spatial_sum()
 
@@ -98,11 +98,11 @@ class TestCompare:
         n = len(nc.session_files())
         assert n == 1
 
-    def test_compare_all4(self):
+    def test_compare4(self):
         tracker = nc.open_data(ff)
         tracker.select(years=list(range(1970, 1971)))
         tracker.select(months=[1])
-        tracker.compare_all("!=0")
+        tracker.compare("!=0")
         tracker.run()
         tracker.spatial_sum()
 
@@ -112,11 +112,11 @@ class TestCompare:
         n = len(nc.session_files())
         assert n == 1
 
-    def test_compare_all5(self):
+    def test_compare5(self):
         tracker = nc.open_data(ff)
         tracker.select(years=list(range(1970, 1971)))
         tracker.select(months=[1])
-        tracker.compare_all(">=0")
+        tracker.compare(">=0")
         tracker.run()
         tracker.spatial_sum()
 

@@ -14,7 +14,7 @@ class TestClip:
         tracker = nc.open_data(ff)
         tracker.tmean()
         tracker.transmute({"sst": "sst+273.15"})
-        tracker.compare_all(">0")
+        tracker.compare(">0")
         tracker.spatial_sum()
         tracker.run()
 

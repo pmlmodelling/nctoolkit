@@ -1260,7 +1260,7 @@ class DataSet(object):
 
     from nctoolkit.cleanup import disk_clean
 
-    from nctoolkit.compare import compare_all
+    from nctoolkit.compare import compare
 
     from nctoolkit.corr import cor_space
     from nctoolkit.corr import cor_time
@@ -1437,3 +1437,4 @@ class DataSet(object):
     from nctoolkit.deprecated import seasonal_max_climatology
     from nctoolkit.deprecated import seasonal_range_climatology
     from nctoolkit.deprecated import remove_variables
+    from nctoolkit.compare import compare_all

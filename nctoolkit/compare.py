@@ -1,4 +1,5 @@
 from nctoolkit.runthis import run_this
+import warnings
 
 
 def fix_expr(expression):
@@ -101,6 +102,41 @@ def fix_expr(expression):
 
     raise ValueError(expression + " is not valid!")
 
+def compare(self, expression=None):
+    """
+    Compare all variables to a constant
+
+    Parameters
+    -------------
+    expression: str
+        This a regular comparison such as "<0", ">0", "==0"
+
+    Examples
+    ------------
+
+    If you wanted to identify grid cells with positive values you would do the following:
+
+    >>> data.compare(">0")
+
+    This will be calculcated for each time step.
+
+    If you wanted to identify grid cells with negative values, you would do this
+
+    >>> data.compare("<0")
+
+
+    """
+
+    if expression is None:
+        raise ValueError("No expression supplied")
+
+    if type(expression) is not str:
+        raise TypeError("Expression supplied is not str")
+
+    expression = fix_expr(expression)
+    cdo_command = f"cdo -{expression}"
+    run_this(cdo_command, self, output="ensemble")
+
 
 def compare_all(self, expression=None):
     """
@@ -126,6 +162,7 @@ def compare_all(self, expression=None):
 
 
     """
+    warnings.warn("compare_all is deprecated. Please use compare!")
 
     if expression is None:
         raise ValueError("No expression supplied")
