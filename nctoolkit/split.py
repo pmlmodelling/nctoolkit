@@ -5,7 +5,7 @@ import platform
 
 from nctoolkit.cleanup import cleanup
 from nctoolkit.temp_file import temp_file
-from nctoolkit.session import session_info, temp_dirs, temp_files
+from nctoolkit.session import session_info, temp_dirs,  get_safe, append_safe, remove_safe
 
 
 def split_cdo(self, method="year"):
@@ -18,6 +18,8 @@ def split_cdo(self, method="year"):
     new_files = []
 
     commands = []
+
+    bases = []
 
     for ff in self:
 
@@ -35,10 +37,11 @@ def split_cdo(self, method="year"):
                     session_info["temp_dir"] = "/var/tmp/"
 
         split_base = temp_file()
+        bases.append(split_base)
 
-        # add split base to temp_files in case splitting fails. This means they can be cleared up later
+        # add split base to the save list in case splitting fails. This means they can be cleared up later
 
-        temp_files.add(split_base)
+        append_safe(split_base)
 
         cdo_command = f"cdo -s -split{method} {ff} {split_base}"
 
@@ -55,7 +58,6 @@ def split_cdo(self, method="year"):
             for ff in mylist:
                 if split_base in ff:
                     new_files.append(ff)
-                    temp_files.add(ff)
                     counter += 1
 
         if counter == 0:
@@ -66,6 +68,12 @@ def split_cdo(self, method="year"):
 
     self._merged = False
     self.current = new_files
+
+    # remove the bases from the split list. This is for parallel processing
+
+    for ff in bases:
+        remove_safe(ff)
+
 
     cleanup()
     self.disk_clean()

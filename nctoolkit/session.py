@@ -57,7 +57,6 @@ def get_protected():
 
 html_files = []
 temp_dirs = set()
-temp_files = set()
 
 #nc_protected = []
 nc_protected = list()

@@ -1,6 +1,6 @@
 import os
 
-from nctoolkit.session import session_info, nc_safe, temp_dirs, temp_files, get_safe
+from nctoolkit.session import session_info, nc_safe, temp_dirs, get_safe
 import warnings
 
 
@@ -26,6 +26,11 @@ def nc_remove(ff, deep=False):
     # were generated....
     if (ff in get_safe()) and (deep is False):
         return None
+
+    if (deep is False):
+        for ss in get_safe():
+            if ss in ff:
+                return None
 
     if deep is False:
         if session_info["stamp"] not in ff:
