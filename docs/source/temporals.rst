@@ -44,6 +44,66 @@ of each year in the dataset.
 
     data.tmax(["month", "year"])
 
+Calculating rolling averages
+-------------------------
+
+nctoolkit has a range of methods to calcate rolling averages: ``rolling_mean``, ``rolling_min``, ``rolling_max``, ``rolling_range`` and ``rolling_sum``. These
+methods let you calculate rolling statistics over a specified time window. For example, if you had daily data and you wanted to calculate a rolling weekly mean
+value, you could do the following:
+
+
+
+.. code:: ipython3
+
+    data.rolling_mean(7)
+
+
+If you wanted to calculated a rolling weekly sum, this would do:
+
+.. code:: ipython3
+
+    data.rolling_sum(7)
+
+Calculating anomalies 
+-------------------------
+
+nctoolkit has two methods for calculating anomalies: ``annual_anomaly`` and ``monthly_anomaly``. Both methods require you to specify a baseline period
+to calculate the anomaly against. They require that you specify a baseline period showing the minimum and maximum years of the climatological period to
+compare against.
+
+So, if you wanted to calculate the annual anomaly compared with a baseline period of 1950-1969, you would do this:
+
+
+.. code:: ipython3
+
+    data.annual_anomaly(baseline = [1950, 1969])
+
+By default, the annual anomaly is calculated as the absolute difference between the annual mean in a year and the mean across the baseline period. However,
+in some cases this is not suitable. Instead you might want the relative change. In that case, you would do the following:
+
+
+.. code:: ipython3
+
+    data.annual_anomaly(baseline = [1950, 1969], metric = "relative")
+
+
+You can also smooth out the anomalies, so that they are calculated on a rolling basis. The following will calculate the anomaly using a rolling window of 10
+years.
+
+.. code:: ipython3
+
+    data.annual_anomaly(baseline = [1950, 1969], window = 10) 
+
+Monthly anomalies are calculated in the same way:
+
+
+.. code:: ipython3
+
+    data.monthly_anomaly(baseline = [1950, 1969] 
+
+Here the anomaly is the difference between the value in each month compared with the mean in that month during the baseline period.
+
+
 Calculating climatologies
 -------------------------
 
@@ -54,7 +114,7 @@ following will calculate a seasonal climatology:
 
     data.tmean("season")
 
-These methods all partial matches for the arguments, which means you do
+These methods allow partial matches for the arguments, which means you do
 not need to remember the precise argument each time. For example, the
 following will also calculate a seasonal climatology:
 
@@ -73,6 +133,18 @@ and daily would be the following:
 .. code:: ipython3
 
     data.tmean("day")
+
+
+Calculating climatologies
+-------------------------
+
+This means we can easily calculate climatologies. For example the
+following will calculate a seasonal climatology:
+
+.. code:: ipython3
+
+    data.tmean("season")
+
 
 Cumulative sums
 ---------------
