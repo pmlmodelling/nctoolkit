@@ -3,8 +3,10 @@ import subprocess
 import pandas as pd
 import xarray as xr
 import os, pytest
+import multiprocessing
 
 nc.options(lazy=True)
+nc.options(parallel = True)
 
 
 def cdo_version():
@@ -21,6 +23,7 @@ ff = "data/sst.mon.mean.nc"
 
 class TestPar:
     def test_parallel(self):
+        ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
         n = len(nc.session_files())
         assert n == 0
@@ -43,7 +46,15 @@ class TestPar:
 
         assert x == y
 
+        for ff in nc.session.get_safe():
+            nc.session.remove_safe(ff)
+
+
 
         nc.options(cores = 1)
+
+
+
+
 
 

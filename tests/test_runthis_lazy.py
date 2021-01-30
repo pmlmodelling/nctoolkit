@@ -30,7 +30,7 @@ class TestRunthis:
         cdo_command = "cdo selyear,1800,1970 " + ff + " " + out_file
         with pytest.warns(Warning):
             out_file = nc.runthis.run_cdo(cdo_command, target=out_file)
-        nc.session.nc_safe.remove(out_file)
+        nc.session.remove_safe(out_file)
 
         os.remove(out_file)
 
@@ -44,7 +44,7 @@ class TestRunthis:
         cdo_command = "cdo selmon,12,13 " + ff + " " + out_file
         with pytest.warns(Warning):
             out_file = nc.runthis.run_cdo(cdo_command, target=out_file)
-        nc.session.nc_safe.remove(out_file)
+        nc.session.remove_safe(out_file)
 
         os.remove(out_file)
 

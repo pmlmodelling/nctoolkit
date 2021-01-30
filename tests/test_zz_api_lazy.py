@@ -132,7 +132,7 @@ class TestApi:
         test = data.copy()
         del data
 
-        x = len([ff for ff in nc.session.nc_safe if ff not in files])
+        x = len([ff for ff in nc.session.get_safe() if ff not in files])
         assert x == 0
 
     def test_len(self):

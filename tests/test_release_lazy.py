@@ -33,11 +33,12 @@ class Testrun:
 
         assert n == 1
 
-        tracker = nc.open_data(ff)
-        tracker.tmean()
-        tracker._safe.append("asdfkjasdkfj.nc")
-        nc.session.nc_safe.append("asdfkjasdkfj.nc")
-        tracker.run()
-        print(nc.session.nc_safe)
-        del tracker
-        assert len(nc.session.nc_safe) == 0
+        if nc.session.session_info["parallel"] == False:
+            tracker = nc.open_data(ff)
+            tracker.tmean()
+            tracker._safe.append("asdfkjasdkfj.nc")
+            nc.session.nc_safe.append("asdfkjasdkfj.nc")
+            tracker.run()
+            print(nc.session.nc_safe)
+            del tracker
+            assert len(nc.session.nc_safe) == 0
