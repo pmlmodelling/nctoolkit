@@ -2,7 +2,7 @@ import os
 import tempfile
 
 from nctoolkit.session import session_info
-from nctoolkit.session import temp_dirs
+from nctoolkit.session import  get_tempdirs, append_tempdirs
 import platform
 
 
@@ -34,7 +34,7 @@ def temp_file(ext=""):
         else:
             target = f"{target}.{ext}"
 
-        temp_dirs.add(os.path.dirname(target))
+        append_tempdirs(os.path.dirname(target))
 
         return target
 
@@ -50,7 +50,7 @@ def temp_file(ext=""):
         else:
             target = f"{target}.{ext}"
 
-        temp_dirs.add(os.path.dirname(target))
+        append_tempdirs(os.path.dirname(target))
 
         target = target.replace(
             os.path.dirname(target) + "/",

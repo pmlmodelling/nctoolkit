@@ -56,7 +56,23 @@ def get_protected():
 
 
 html_files = []
-temp_dirs = set()
+
+temp_dirs = list()
+temp_dirs_par = Manager().list()
+
+def append_tempdirs(ff):
+    if session_info["parallel"]:
+        if ff not in temp_dirs_par:
+            temp_dirs_par.append(ff)
+    else:
+        if ff not in temp_dirs:
+            temp_dirs.append(ff)
+
+def get_tempdirs():
+    if session_info["parallel"]:
+        return temp_dirs_par
+    else:
+        return temp_dirs
 
 #nc_protected = []
 nc_protected = list()
@@ -67,7 +83,7 @@ def session_files():
 
     candidates = []
 
-    for directory in temp_dirs:
+    for directory in get_tempdirs():
         mylist = [f for f in glob.glob(f"{directory}/*")]
         mylist = [f for f in mylist if session_info["stamp"] in f]
         for ff in mylist:

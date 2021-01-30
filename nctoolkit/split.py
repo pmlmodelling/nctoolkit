@@ -5,7 +5,7 @@ import platform
 
 from nctoolkit.cleanup import cleanup
 from nctoolkit.temp_file import temp_file
-from nctoolkit.session import session_info, temp_dirs,  get_safe, append_safe, remove_safe
+from nctoolkit.session import session_info, get_tempdirs,  get_safe, append_safe, remove_safe
 
 
 def split_cdo(self, method="year"):
@@ -52,7 +52,7 @@ def split_cdo(self, method="year"):
         # now, pull out the files generated
 
         counter = 0
-        for directory in temp_dirs:
+        for directory in get_tempdirs():
             mylist = [f for f in glob.glob(f"{directory}/*.nc*")]
             mylist = [f for f in mylist if session_info["stamp"] in f]
             for ff in mylist:

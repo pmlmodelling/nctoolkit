@@ -1,6 +1,6 @@
 import os
 
-from nctoolkit.session import session_info, nc_safe, temp_dirs, get_safe
+from nctoolkit.session import session_info, nc_safe, get_tempdirs, get_safe
 import warnings
 
 
@@ -12,7 +12,7 @@ def nc_remove(ff, deep=False):
 
     unsafe = True
 
-    for directory in temp_dirs:
+    for directory in get_tempdirs():
         if ff.startswith(directory):
             unsafe = False
 
