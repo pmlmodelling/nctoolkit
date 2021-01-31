@@ -155,10 +155,11 @@ def set_longnames(self, name_dict=None):
     self.history += new_commands
     self._hold_history = copy.deepcopy(self.history)
 
-    for ff in new_files:
-        remove_safe(ff)
 
     self.current = new_files
+
+    for ff in new_files:
+        remove_safe(ff)
 
     # clean up the directory
     cleanup()
