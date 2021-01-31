@@ -3,10 +3,10 @@ Parallel processing
 
 nctoolkit is written to enable rapid processing and analysis of NetCDF
 files, and this includes the ability to process in parallel. Two methods
-of parallel processing are available. First, is the ability to carry out
-operations on multi-file datasets in parallel. Second, is the ability to
+of parallel processing are available. First is the ability to carry out
+operations on multi-file datasets in parallel. Second is the ability to
 define a processing chain in nctoolkit, and then use the multiprocessing
-to process files in parallel using that chain.
+package to process files in parallel using that chain.
 
 Parallel processing of multi-file datasets
 ------------------------------------------
@@ -55,7 +55,7 @@ folder foo, do a bunch of things to them, then save the results in a new
 folder:
 
 We start with a function giving a processing chain. There are obviously
-different ways of doing this, but I like to use a function takes the
+different ways of doing this, but I like to use a function that takes the
 input file and output file:
 
 .. code:: ipython3
@@ -66,8 +66,8 @@ input file and output file:
         data.tmean()
         data.to_nc(outfile)
 
-We now want to loop through all of the files in a folder: and apply the
-function to them and save the results in a new folder called new:
+We now want to loop through all of the files in a folder, apply the
+function to them and then save the results in a new folder called new:
 
 .. code:: ipython3
 
