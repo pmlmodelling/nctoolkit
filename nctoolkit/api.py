@@ -18,7 +18,7 @@ from netCDF4 import Dataset
 from nctoolkit.cleanup import cleanup, clean_all, temp_check
 from nctoolkit.flatten import str_flatten
 from nctoolkit.runthis import run_cdo
-from nctoolkit.session import nc_protected, session_info, nc_safe, append_safe, remove_safe, append_protected, remove_protected
+from nctoolkit.session import nc_protected, session_info, nc_safe, append_safe, remove_safe, append_protected, remove_protected, append_tempdirs
 from nctoolkit.session import nc_safe_par
 from nctoolkit.show import (
     nc_variables,
@@ -89,6 +89,10 @@ else:
 
 session_info["latest_size"] = 0
 session_info["cores"] = 1
+
+if platform.system() == "Linux":
+    append_tempdirs("/tmp")
+    append_tempdirs("/var/tmp")
 
 
 def options(**kwargs):
