@@ -4,8 +4,8 @@ import xarray as xr
 import os, pytest
 
 nc.options(lazy=True)
-nc.options(parallel = True)
-
+if platform.system() == "Linux":
+    nc.options(parallel = True)
 
 ff = "data/sst.mon.mean.nc"
 
