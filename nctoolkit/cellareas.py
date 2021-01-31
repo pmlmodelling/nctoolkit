@@ -2,7 +2,7 @@ import copy
 import subprocess
 
 from nctoolkit.cleanup import cleanup
-from nctoolkit.session import remove_safe
+from nctoolkit.session import remove_safe, append_safe
 from nctoolkit.runthis import run_this, tidy_command, run_cdo
 from nctoolkit.show import nc_variables
 from nctoolkit.temp_file import temp_file
@@ -88,6 +88,7 @@ def cell_area(self, join=True):
                 cdo_command = f"cdo -merge {ff} -gridarea {ff} {target}"
                 cdo_command = tidy_command(cdo_command)
                 target = run_cdo(cdo_command, target)
+
                 new_files.append(target)
 
                 new_commands.append(cdo_command)

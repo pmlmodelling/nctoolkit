@@ -5,6 +5,7 @@ from nctoolkit.cleanup import cleanup
 from nctoolkit.flatten import str_flatten
 from nctoolkit.runthis import run_this, run_nco, tidy_command
 from nctoolkit.temp_file import temp_file
+from nctoolkit.session import remove_safe
 
 
 def crop(self, lon=[-180, 180], lat=[-90, 90], nco=False, nco_vars = None):
@@ -168,6 +169,9 @@ def crop(self, lon=[-180, 180], lat=[-90, 90], nco=False, nco_vars = None):
     self._hold_history = copy.deepcopy(self.history)
 
     self.current = new_files
+
+    for ff in new_files:
+        remove_safe(ff)
 
     cleanup()
     self.disk_clean()

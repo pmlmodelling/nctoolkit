@@ -3,6 +3,7 @@ import copy
 from nctoolkit.flatten import str_flatten
 from nctoolkit.runthis import run_nco
 from nctoolkit.temp_file import temp_file
+from nctoolkit.session import remove_safe
 
 
 def nco_command(self, command=None, ensemble=False):
@@ -57,7 +58,11 @@ def nco_command(self, command=None, ensemble=False):
 
     self.current = new_files
 
+    for ff in new_files:
+        remove_safe(ff)
+
     self.history.append(command)
     self._hold_history = copy.deepcopy(self.history)
 
     self.disk_clean()
+

@@ -6,6 +6,7 @@ from nctoolkit.cleanup import cleanup
 from nctoolkit.flatten import str_flatten
 from nctoolkit.runthis import run_this, run_nco
 from nctoolkit.temp_file import temp_file
+from nctoolkit.session import get_safe, remove_safe
 
 
 def cdo_version():
@@ -78,11 +79,19 @@ def ensemble_nco(self, method, ignore_time=False):
     # run the call
     target = run_nco(nco_command, target)
 
+    if target in get_safe():
+        remove_target = True
+    else:
+        remove_target = False
+
     # add the call to the history and tempfile to nc_safe
     self.history.append(nco_command)
     self._hold_history = copy.deepcopy(self.history)
 
     self.current = target
+
+    if remove_target:
+        remove_safe(target)
 
     self._merged = True
 

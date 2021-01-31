@@ -29,7 +29,7 @@ def remove_safe(ff):
 
 def get_safe():
     if session_info["parallel"]:
-        return nc_safe_par
+        return list(nc_safe_par)
     else:
         return nc_safe
 

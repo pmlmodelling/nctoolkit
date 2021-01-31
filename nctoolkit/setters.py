@@ -3,6 +3,7 @@ import copy
 from nctoolkit.cleanup import cleanup
 from nctoolkit.runthis import run_this, run_nco
 from nctoolkit.temp_file import temp_file
+from nctoolkit.session import append_safe, remove_safe
 
 
 def set_date(self, year=None, month=None, day=None, base_year=1900):
@@ -153,6 +154,9 @@ def set_longnames(self, name_dict=None):
 
     self.history += new_commands
     self._hold_history = copy.deepcopy(self.history)
+
+    for ff in new_files:
+        remove_safe(ff)
 
     self.current = new_files
 

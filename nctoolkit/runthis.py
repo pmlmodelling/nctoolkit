@@ -56,6 +56,8 @@ def tidy_command(command):
 
 def run_nco(command, target, out_file=None, overwrite=False):
     command = command.strip()
+    append_safe(target)
+    original_target = target
     if (
         command.startswith("ncea ")
         or command.startswith("ncra ")
@@ -82,7 +84,9 @@ def run_nco(command, target, out_file=None, overwrite=False):
                 if target.startswith("/tmp"):
                     new_target = target.replace("/tmp/", "/var/tmp/")
                     command = command.replace(target, new_target)
+                    remove_safe(target)
                     target = new_target
+                    append_safe(target)
 
     out = subprocess.Popen(
         command,
@@ -102,6 +106,8 @@ def run_nco(command, target, out_file=None, overwrite=False):
         if target.startswith("/tmp/"):
             new_target = target.replace("/tmp/", "/var/tmp/")
             command = command.replace(target, new_target)
+            append_safe(new_target)
+            remove_safe(target)
             target = new_target
 
             out = subprocess.Popen(
@@ -113,6 +119,7 @@ def run_nco(command, target, out_file=None, overwrite=False):
             )
             result1, ignore = out.communicate()
             if "ERROR" in str(result1):
+                remove_safet(target)
                 raise ValueError(
                     str(result1).replace("b'", "").replace("\\n", "").replace("'", "")
                 )
@@ -125,10 +132,12 @@ def run_nco(command, target, out_file=None, overwrite=False):
 
     if target != "":
         if os.path.exists(target) is False:
+            remove_safe(target)
             raise ValueError(f"{command} was not successful. Check output")
     else:
         actual_target = command.split(" ")[-1].strip()
         if os.path.exists(actual_target) is False:
+            remove_safe(target)
             raise ValueError(f"{command} was not successful. Check output")
 
     if target != "":

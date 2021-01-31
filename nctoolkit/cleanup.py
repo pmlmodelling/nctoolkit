@@ -37,7 +37,7 @@ def cleanup():
 
     valid_files = get_safe()
 
-    delete_these = [v for v in candidates if v not in valid_files]
+    delete_these = [v for v in candidates if v not in list(valid_files)]
 
     delete_these = list(set(delete_these))
 

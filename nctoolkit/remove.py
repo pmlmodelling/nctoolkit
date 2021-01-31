@@ -28,7 +28,7 @@ def nc_remove(ff, deep=False):
         return None
 
     if (deep is False):
-        for ss in get_safe():
+        for ss in list(get_safe()):
             if ss in ff:
                 return None
 

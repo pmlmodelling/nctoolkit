@@ -5,7 +5,7 @@ import platform
 
 from nctoolkit.cleanup import cleanup
 from nctoolkit.temp_file import temp_file
-from nctoolkit.session import session_info, get_tempdirs,  get_safe, append_safe, remove_safe
+from nctoolkit.session import session_info, get_tempdirs,  append_safe, remove_safe
 
 
 def split_cdo(self, method="year"):

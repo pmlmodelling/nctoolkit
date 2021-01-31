@@ -4,7 +4,7 @@ from nctoolkit.cleanup import cleanup
 from nctoolkit.runthis import run_cdo, tidy_command
 from nctoolkit.show import nc_variables
 from nctoolkit.temp_file import temp_file
-from nctoolkit.session import nc_safe, remove_safe
+from nctoolkit.session import nc_safe, remove_safe, get_safe
 
 
 def cor(self, var1=None, var2=None, method="fld"):
@@ -57,7 +57,8 @@ def cor(self, var1=None, var2=None, method="fld"):
     self.current = new_files
 
     for ff in new_files:
-        remove_safe(ff)
+        if len([x for x in get_safe() if x == ff]) > 1:
+            remove_safe(ff)
 
     # tidy up the attributes of the netcdf file in the dataset
     self.rename({var1: "cor"})
