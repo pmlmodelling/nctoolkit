@@ -1,4 +1,5 @@
 import copy
+import xarray as xr
 import subprocess
 
 from nctoolkit.cleanup import cleanup
@@ -112,6 +113,18 @@ def crop(self, lon=[-180, 180], lat=[-90, 90], nco=False, nco_vars = None):
             x for x in str(out.stdout).replace("b'", "").split("\\n") if "yname" in x
         ][0].split(" ")[-1]
         target = temp_file("nc")
+
+        # figure out if the unit is degrees east
+
+        max_lon = xr.open_dataset(ff, decode_times = False)[lon_name].values.max()
+
+        if lon != [-180, 180] and max_lon > 180:
+            if lon[0] < 0:
+                lon[0] = 360 + lon[0]
+
+            if lon[1] < 0:
+                lon[1] = 360 + lon[1]
+
 
         nco_command = (
             f"ncks {var_str} -d "
