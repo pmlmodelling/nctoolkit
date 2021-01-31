@@ -54,3 +54,7 @@ class TestRunthis:
         out_file = nc.temp_file.temp_file(".nc")
         with pytest.raises(ValueError):
             out_file = nc.runthis.run_nco("test", target=out_file)
+
+        nc.session.remove_safe(out_file)
+
+

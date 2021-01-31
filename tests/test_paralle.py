@@ -6,7 +6,6 @@ import os, pytest
 import multiprocessing
 
 nc.options(lazy=True)
-nc.options(parallel = True)
 
 
 def cdo_version():
@@ -48,6 +47,10 @@ class TestPar:
 
         for ff in nc.session.get_safe():
             nc.session.remove_safe(ff)
+
+        data = nc.open_data("data/ensemble/*.nc")
+        data.spatial_sum(by_area = True)
+        data.run()
 
 
 
