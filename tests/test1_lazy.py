@@ -1,5 +1,6 @@
 import nctoolkit as nc
 import pandas as pd
+import platform
 import xarray as xr
 import os, pytest
 
