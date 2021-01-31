@@ -42,6 +42,7 @@ install:
   - python setup.py install
 #
 script:
+  #- python tests/parallel_tesing.py 
     - coverage run -m pytest tests/test*.py
 
 
