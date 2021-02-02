@@ -66,7 +66,6 @@ def cell_area(self, join=True):
                 cdo_command = f"cdo -gridarea {ff} {target1}"
                 cdo_command = tidy_command(cdo_command)
                 target1 = run_cdo(cdo_command, target1)
-                new_files.append(target1)
                 new_commands.append(cdo_command)
 
                 target = temp_file(".nc")
@@ -75,6 +74,7 @@ def cell_area(self, join=True):
                 cdo_command = tidy_command(cdo_command)
                 target = run_cdo(cdo_command, target)
                 new_files.append(target)
+                remove_safe(target1)
 
                 new_commands.append(cdo_command)
 
@@ -112,8 +112,14 @@ def cell_area(self, join=True):
 
     # add units
 
+
     self.set_units({"cell_area": "m^2"})
+
 
     if join:
         self.run()
         self.disk_clean()
+
+
+
+

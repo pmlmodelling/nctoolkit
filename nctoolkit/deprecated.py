@@ -4,10 +4,9 @@ import subprocess
 
 from nctoolkit.cleanup import cleanup
 from nctoolkit.flatten import str_flatten
-from nctoolkit.runthis import run_this, run_nco, tidy_command
+from nctoolkit.runthis import run_this, run_nco, tidy_command, run_cdo
 from nctoolkit.temp_file import temp_file
 from nctoolkit.session import nc_safe, remove_safe
-from nctoolkit.time_stat import *
 from nctoolkit.verticals import *
 from nctoolkit.show import nc_variables
 import warnings

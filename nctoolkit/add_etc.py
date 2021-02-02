@@ -54,7 +54,7 @@ def operation(self, method="mul", ff=None, var=None):
 
     # make sure the ff file is not removed from safe list in subsequent
     # actions prior to running
-    if (ff is not None) and (session_info["lazy"]):
+    if (ff is not None) and (session_info["lazy"]) and (cdo_version != "1.9.3"):
         append_safe(ff)
         self._safe.append(ff)
 
