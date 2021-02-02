@@ -1278,8 +1278,6 @@ class DataSet(object):
     from nctoolkit.ensembles import ensemble_sum
 
     from nctoolkit.ensembles import ensemble_percentile
-    from nctoolkit.expr import mutate
-    from nctoolkit.expr import transmute
     from nctoolkit.expr import sum_all
 
     from nctoolkit.fldstat import spatial_mean
@@ -1337,26 +1335,11 @@ class DataSet(object):
     from nctoolkit.setters import set_units
     from nctoolkit.setters import set_longnames
 
-    from nctoolkit.shift import shift_hours
-    from nctoolkit.shift import shift_days
-    from nctoolkit.shift import shift_months
-    from nctoolkit.shift import shift_years
     from nctoolkit.shift import shift
 
     from nctoolkit.split import split
 
     from nctoolkit.strip_vars import strip_variables
-
-    from nctoolkit.time_stat import mean
-    from nctoolkit.time_stat import percentile
-    from nctoolkit.time_stat import max
-    from nctoolkit.time_stat import median
-    from nctoolkit.time_stat import min
-    from nctoolkit.time_stat import range
-    from nctoolkit.time_stat import variance
-    from nctoolkit.time_stat import stdev
-    from nctoolkit.time_stat import sum
-    from nctoolkit.time_stat import cum_sum
 
     from nctoolkit.temporal_stat import tmean
     from nctoolkit.temporal_stat import tpercentile
@@ -1397,46 +1380,12 @@ class DataSet(object):
 
     # deprecated stuff
 
-    from nctoolkit.deprecated import var
-    from nctoolkit.deprecated import cum_sum
-    from nctoolkit.deprecated import vertical_cum_sum
-    from nctoolkit.deprecated import view
+    #from nctoolkit.expr import mutate
+    #from nctoolkit.expr import transmute
+
 
     from nctoolkit.deprecated import cell_areas
-
-    from nctoolkit.deprecated import daily_mean
-    from nctoolkit.deprecated import daily_min
-    from nctoolkit.deprecated import daily_max
-    from nctoolkit.deprecated import daily_range
-    from nctoolkit.deprecated import daily_sum
-
-    from nctoolkit.deprecated import daily_mean_climatology
-    from nctoolkit.deprecated import daily_min_climatology
-    from nctoolkit.deprecated import daily_max_climatology
-    from nctoolkit.deprecated import daily_range_climatology
-
-    from nctoolkit.deprecated import monthly_mean
-    from nctoolkit.deprecated import monthly_min
-    from nctoolkit.deprecated import monthly_max
-    from nctoolkit.deprecated import monthly_sum
-    from nctoolkit.deprecated import monthly_range
-    from nctoolkit.deprecated import monthly_mean_climatology
-    from nctoolkit.deprecated import monthly_min_climatology
-    from nctoolkit.deprecated import monthly_max_climatology
-    from nctoolkit.deprecated import monthly_range_climatology
-    from nctoolkit.deprecated import annual_mean
-    from nctoolkit.deprecated import annual_min
-    from nctoolkit.deprecated import annual_max
-    from nctoolkit.deprecated import annual_range
-    from nctoolkit.deprecated import annual_sum
-    from nctoolkit.deprecated import seasonal_mean
-    from nctoolkit.deprecated import seasonal_min
-    from nctoolkit.deprecated import seasonal_max
-    from nctoolkit.deprecated import seasonal_range
-
-    from nctoolkit.deprecated import seasonal_mean_climatology
-    from nctoolkit.deprecated import seasonal_min_climatology
-    from nctoolkit.deprecated import seasonal_max_climatology
-    from nctoolkit.deprecated import seasonal_range_climatology
     from nctoolkit.deprecated import remove_variables
     from nctoolkit.compare import compare_all
+
+

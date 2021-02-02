@@ -541,26 +541,17 @@ class TestCalls:
         data.ensemble_percentile(10)
         assert data.history[0] == "cdo --sortname -enspctl,10"
 
-        data = nc.open_data(ff)
-        data.shift_hours(-1)
-        assert data.history[0] == "cdo -shifttime,-1hour"
 
         data = nc.open_data(ff)
         data.shift(hours = -1)
         assert data.history[0] == "cdo -shifttime,-1hour"
 
 
-        data = nc.open_data(ff)
-        data.shift_months(-1)
-        assert data.history[0] == "cdo -shifttime,-1months"
 
         data = nc.open_data(ff)
         data.shift(months = -1)
         assert data.history[0] == "cdo -shifttime,-1months"
 
-        data = nc.open_data(ff)
-        data.shift_years(-1)
-        assert data.history[0] == "cdo -shifttime,-1years"
 
         data = nc.open_data(ff)
         data.shift(years = -1)
@@ -568,6 +559,3 @@ class TestCalls:
 
 
 
-        data = nc.open_data(ff)
-        data.shift_days(-1)
-        assert data.history[0] == "cdo -shifttime,-1days"

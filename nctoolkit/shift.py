@@ -148,13 +148,13 @@ def shift(self, **kwargs):
             raise AttributeError(f"{key} is not a valid shifting method")
 
         if "day" in key:
-            self.shift_days(kwargs[key])
+            shift_days(self, kwargs[key])
 
         if "hour" in key:
-            self.shift_hours(kwargs[key])
+            shift_hours(self, kwargs[key])
 
         if "mon" in key:
-            self.shift_months(kwargs[key])
+            shift_months(self, kwargs[key])
 
         if "year" in key:
-            self.shift_years(kwargs[key])
+            shift_years(self, kwargs[key])
