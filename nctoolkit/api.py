@@ -217,9 +217,7 @@ if config_file is not None:
         "lazy",
         "cores",
         "precision",
-        "user",
-        "password",
-        "temp_dir",
+        "temp_dir"
     ]
 
     file1 = open(config_file, "r")
