@@ -1,14 +1,8 @@
 Creating variables
 ==================
 
-**Please note: this method currently only works for the development
-version of nctoolkit, and the feature will be available in the public
-release on pypi and conda-forge in February 2021. This is a new feature,
-that has been thorougly tested, but any feedback on error messages will
-be appreciated.**
-
 Variable creation in nctoolkit can be done using the ``assign`` method,
-which works in a similar way to the method available in Pandas. 
+which works in a similar way to the method available in pandas. 
 
 The ``assign`` method works using lambda functions. Let’s say we have a
 dataset with a variable 'var' and we simply want to add 10 to it and call
