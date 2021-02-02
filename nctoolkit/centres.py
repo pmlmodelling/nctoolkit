@@ -25,14 +25,16 @@ def centre(self, by ="latitude", by_area = False):
         raise TypeError("This method still does not work with lists! Consider merging.")
 
     data1 = self.copy()
-    ops = dict()
+    ops = []
     for var in self.variables:
         if by == "latitude":
-            ops[var] = (f"{var}*clat({var})")
+            ops.append(f"{var}={var}*clat({var})")
         else:
-            ops[var] = (f"{var}*clon({var})")
+            ops.append(f"{var}={var}*clon({var})")
 
-    self.transmute(ops)
+    ops = ";".join(ops)
+    ops = f"expr,'{ops}'"
+    self.cdo_command(ops)
     data1.spatial_sum(by_area = by_area)
     self.spatial_sum(by_area = by_area)
     self.divide(data1)
