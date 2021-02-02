@@ -132,9 +132,9 @@ def ensemble_max(self, nco=False, ignore_time=False):
 
         self._merged = True
 
-        if cdo_version() == "1.9.3":
+        if cdo_version() == "1.9.3" and ignore_time:
             self.run()
-            self.max()
+            self.tmax()
 
         return None
 
@@ -175,7 +175,7 @@ def ensemble_min(self, nco=False, ignore_time=False):
         if cdo_version() == "1.9.3":
             self.run()
             if ignore_time:
-                self.min()
+                self.tmin()
 
         return None
 
@@ -214,9 +214,9 @@ def ensemble_mean(self, nco=False, ignore_time=False):
         run_this(cdo_command, self)
 
         self._merged = True
-        if cdo_version() == "1.9.3":
+        if cdo_version() == "1.9.3" and ignore_time:
             self.run()
-            self.mean()
+            self.tmean()
 
         return None
 
