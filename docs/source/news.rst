@@ -1,10 +1,16 @@
 News
 ============
 
+Release of v0.3.1 
+---------------
+
+Version 0.3.1 will be released in March 2021. This will be a maintanence release that will largely focused on under-the-hood improvements
+and the removal of deprecated methods.
+
 Release of v0.3.0 
 ---------------
 
-Version 0.3.0 will be released in February 2021. This will be a major release introducing major improvements to the package.
+Version 0.3.0 was released in February 2021. This will be a major release introducing major improvements to the package.
 
 A new method ``assign``  is now available for generating new variables. This replaces the ``mutate`` and ``transmute``, which were 
 place-holder functions in the early releases of nctoolkit until a proper method for creating variables was put in place.
