@@ -30,7 +30,7 @@ class TestClip:
         data.tmean()
         data.meridonial_mean()
         data.spatial_mean()
-        if cdo_version() != "1.9.3":
+        if cdo_version() not in ["1.9.3", "1.9.4"]:
             assert data.to_dataframe().sst[0].values[0].astype("float") == 17.67996597290039
         else:
             assert data.to_dataframe().sst[0].values[0].astype("float") == 17.679880142211914
@@ -40,7 +40,7 @@ class TestClip:
         data.tmean()
         data.meridonial_min()
         data.spatial_mean()
-        if cdo_version() != "1.9.3":
+        if cdo_version() not in ["1.9.3", "1.9.4"]:
             assert (data.to_dataframe().sst[0].values[0].astype("float") == -1.771429419517517)
         else:
             assert (data.to_dataframe().sst[0].values[0].astype("float") == -1.7714282274246216)
@@ -50,7 +50,7 @@ class TestClip:
         data.tmean()
         data.meridonial_max()
         data.spatial_mean()
-        if cdo_version() != "1.9.3":
+        if cdo_version() not in ["1.9.3", "1.9.4"]:
             assert data.to_dataframe().sst[0].values[0].astype("float") == 27.99681282043457
         else:
             assert data.to_dataframe().sst[0].values[0].astype("float") == 27.9967041015625
@@ -60,7 +60,7 @@ class TestClip:
         data.tmean()
         data.meridonial_range()
         data.spatial_mean()
-        if cdo_version() != "1.9.3":
+        if cdo_version() not in ["1.9.3", "1.9.4"]:
             assert data.to_dataframe().sst[0].values[0].astype("float") == 29.76824188232422
         else:
             assert data.to_dataframe().sst[0].values[0].astype("float") == 29.76813316345215
