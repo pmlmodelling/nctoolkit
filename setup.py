@@ -40,7 +40,7 @@ REQUIREMENTS = [i.strip() for i in open("requirements.txt").readlines()]
 
 
 setup(name='nctoolkit',
-      version='0.2.5',
+      version='0.3.0',
       description=DESCRIPTION,
       long_description=LONG_DESCRIPTION,
       python_requires='>=3.6.1',
@@ -51,6 +51,7 @@ setup(name='nctoolkit',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
     ],
 
       project_urls=PROJECT_URLS,
