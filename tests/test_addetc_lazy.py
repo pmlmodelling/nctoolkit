@@ -124,7 +124,7 @@ class TestAddetc:
         tracker.select(months=[1])
         tracker.run()
         new = tracker.copy()
-        tracker.mutate({"tos": "sst+1-1"})
+        tracker.assign(tos = lambda x: x.sst+1-1)
         tracker.run()
         new.add(tracker, var="tos")
         new.spatial_mean()
@@ -383,7 +383,7 @@ class TestAddetc:
         tracker = nc.open_data(ff)
         ff2 = "data/2003.nc"
         data2 = nc.open_data(ff2)
-        data2.mutate({"tos": "analysed_sst + 2"})
+        data2.assign(tos = lambda x: x.analysed_sst + 2)
         data2.run()
         # with pytest.raises(ValueError):
         with pytest.raises(ValueError):
@@ -395,7 +395,7 @@ class TestAddetc:
         tracker = nc.open_data(ff)
         ff2 = "data/2003.nc"
         data2 = nc.open_data(ff2)
-        data2.mutate({"tos": "analysed_sst + 2"})
+        data2.assign(tos = lambda x:  x.analysed_sst + 2)
         data2.run()
         with pytest.raises(ValueError):
             tracker.subtract(data2)
@@ -406,7 +406,7 @@ class TestAddetc:
         tracker = nc.open_data(ff)
         ff2 = "data/2003.nc"
         data2 = nc.open_data(ff2)
-        data2.mutate({"tos": "analysed_sst + 2"})
+        data2.assign(tos = lambda x:  x.analysed_sst + 2)
         data2.run()
         with pytest.raises(ValueError):
             tracker.divide(data2)
@@ -445,7 +445,7 @@ class TestAddetc:
         tracker = nc.open_data(ff)
         ff2 = "data/2003.nc"
         data2 = nc.open_data(ff2)
-        data2.mutate({"tos": "analysed_sst+2"})
+        data2.assign(tos = lambda x: x.analysed_sst + 2)
         data2.run()
         with pytest.raises(ValueError):
             tracker.multiply(data2)

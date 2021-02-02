@@ -15,7 +15,7 @@ ff2 = "data/2004.nc"
 class TestAppend:
     def test_append(self):
         new = nc.open_data(ff)
-        new.mutate({"tos": "sst+273.15"})
+        new.assign(tos = lambda x: x.sst+273.15)
         new.append(ff)
 
         assert len(new.current) == 2

@@ -66,28 +66,12 @@ class TestCalls:
 
         assert data.history[0] == "cdo -seltimestep,1"
 
-    def test_mutatecall(self):
-        nc.options(lazy=True)
-        data = nc.open_data(ff)
-        data.mutate({"k": "sst+273.15"})
 
-        assert data.history[0] == 'cdo -aexpr,"k=sst+273.15"'
-
-        data = nc.open_data(ff)
-        data.mutate({"k": "sst+273.15", "k1": "k+7"})
-        assert data.history[0] == 'cdo -aexpr,"k=sst+273.15;k1=k+7"'
-
-    def test_mutatecall(self):
-        nc.options(lazy=True)
-        data = nc.open_data(ff)
-        data.transmute({"k": "sst+273.15"})
-
-        assert data.history[0] == 'cdo -expr,"k=sst+273.15"'
 
     def test_sumallcall(self):
         nc.options(lazy=True)
         data = nc.open_data(ff)
-        data.mutate({"k": "sst+273.15"})
+        data.assign(k = lambda x: x.sst+273.15)
         data.sum_all()
 
         assert data.history[1] == 'cdo -expr,total=k+sst '
@@ -155,81 +139,81 @@ class TestCalls:
         # seasonal mean
 
         data = nc.open_data(ff)
-        data.seasonal_mean()
+        data.tmean(["year", "season"])
 
         assert data.history[0] == "cdo -seasmean"
 
         data = nc.open_data(ff)
-        data.seasonal_min()
+        data.tmin(["year", "season"])
 
         assert data.history[0] == "cdo -seasmin"
 
         data = nc.open_data(ff)
-        data.seasonal_max()
+        data.tmax(["year", "season"])
 
         assert data.history[0] == "cdo -seasmax"
 
         data = nc.open_data(ff)
-        data.seasonal_range()
+        data.trange(["year", "season"])
 
         assert data.history[0] == "cdo -seasrange"
 
         data = nc.open_data(ff)
-        data.seasonal_mean_climatology()
+        data.tmean("season")
         assert data.history[0] == "cdo -yseasmean"
 
         data = nc.open_data(ff)
-        data.seasonal_min_climatology()
+        data.tmin("season")
         assert data.history[0] == "cdo -yseasmin"
 
         data = nc.open_data(ff)
-        data.seasonal_max_climatology()
+        data.tmax("season")
         assert data.history[0] == "cdo -yseasmax"
 
         data = nc.open_data(ff)
-        data.seasonal_range_climatology()
+        data.trange("season")
         assert data.history[0] == "cdo -yseasrange"
 
         data = nc.open_data(ff)
-        data.annual_mean()
+        data.tmean("year")
         assert data.history[0] == "cdo -yearmean"
 
         data = nc.open_data(ff)
-        data.annual_min()
+        data.tmin("year")
         assert data.history[0] == "cdo -yearmin"
 
         data = nc.open_data(ff)
-        data.annual_max()
+        data.tmax("year")
         assert data.history[0] == "cdo -yearmax"
 
         data = nc.open_data(ff)
-        data.annual_range()
+        data.trange("year")
         assert data.history[0] == "cdo -yearrange"
 
         data = nc.open_data(ff)
-        data.annual_sum()
+        data.tsum("year")
         assert data.history[0] == "cdo -yearsum"
 
         # daily stats
 
         data = nc.open_data(ff)
-        data.daily_mean()
+        data.tmean(["year", "day"])
         assert data.history[0] == "cdo -daymean"
 
         data = nc.open_data(ff)
-        data.daily_min()
+        data.tmin(["year", "day"])
         assert data.history[0] == "cdo -daymin"
 
         data = nc.open_data(ff)
-        data.daily_max()
+        data.tmax(["year", "day"])
         assert data.history[0] == "cdo -daymax"
 
         data = nc.open_data(ff)
-        data.daily_range()
+        data.trange(["year", "day"])
         assert data.history[0] == "cdo -dayrange"
 
         data = nc.open_data(ff)
-        data.daily_sum()
+        data.tsum(["year", "day"])
         assert data.history[0] == "cdo -daysum"
 
         data = nc.open_data(ff)
@@ -237,51 +221,51 @@ class TestCalls:
         assert data.history[0] == "cdo -intntime,2"
 
         data = nc.open_data(ff)
-        data.monthly_mean()
+        data.tmean(["year", "month"])
         assert data.history[0] == "cdo -monmean"
 
         data = nc.open_data(ff)
-        data.monthly_min()
+        data.tmin(["year", "month"])
         assert data.history[0] == "cdo -monmin"
 
         data = nc.open_data(ff)
-        data.monthly_max()
+        data.tmax(["year", "month"])
         assert data.history[0] == "cdo -monmax"
 
         data = nc.open_data(ff)
-        data.monthly_range()
+        data.trange(["year", "month"])
         assert data.history[0] == "cdo -monrange"
 
         data = nc.open_data(ff)
-        data.monthly_mean_climatology()
+        data.tmean("month")
         assert data.history[0] == "cdo -ymonmean"
 
         data = nc.open_data(ff)
-        data.monthly_min_climatology()
+        data.tmin("month")
         assert data.history[0] == "cdo -ymonmin"
 
         data = nc.open_data(ff)
-        data.monthly_max_climatology()
+        data.tmax("month")
         assert data.history[0] == "cdo -ymonmax"
 
         data = nc.open_data(ff)
-        data.monthly_range_climatology()
+        data.trange("month")
         assert data.history[0] == "cdo -ymonrange"
 
         data = nc.open_data(ff)
-        data.daily_mean_climatology()
+        data.tmean("day")
         assert data.history[0] == "cdo -ydaymean"
 
         data = nc.open_data(ff)
-        data.daily_min_climatology()
+        data.tmin("day")
         assert data.history[0] == "cdo -ydaymin"
 
         data = nc.open_data(ff)
-        data.daily_max_climatology()
+        data.tmax("day")
         assert data.history[0] == "cdo -ydaymax"
 
         data = nc.open_data(ff)
-        data.daily_range_climatology()
+        data.trange("day")
         assert data.history[0] == "cdo -ydayrange"
 
         data = nc.open_data(ff)

@@ -5,7 +5,7 @@ import nctoolkit as nc
 nc.options(parallel = True)
 
 
-for i in range(0, 10):
+for i in range(0, 5):
     def process_chain(ff):
 
         data = nc.open_data(ff)

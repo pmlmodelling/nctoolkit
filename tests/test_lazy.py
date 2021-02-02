@@ -29,7 +29,7 @@ class TestLazy:
         tracker.select(months=[1, 2, 3, 4, 5])
         tracker.crop(lon=[0, 90])
         tracker.crop(lat=[0, 90])
-        tracker.annual_mean()
+        tracker.tmean("year")
         tracker.tmean()
         tracker.spatial_mean()
         tracker.run()
@@ -45,7 +45,7 @@ class TestLazy:
         tracker.select(months=[1, 2, 3, 4, 5])
         tracker.crop(lon=[0, 90])
         tracker.crop(lat=[0, 90])
-        tracker.annual_mean()
+        tracker.tmean("year")
         tracker.tmean()
         tracker.spatial_mean()
         tracker.run()
@@ -69,7 +69,7 @@ class TestLazy:
         tracker.select(months=[1, 2, 3, 4, 5])
         tracker.crop(lon=[0, 90])
         tracker.crop(lat=[0, 90])
-        tracker.annual_mean()
+        tracker.tmean("year")
         tracker.tmean()
         tracker.spatial_mean()
         tracker.run()
@@ -89,7 +89,7 @@ class TestLazy:
         tracker.select(months=[1, 2, 3, 4, 5])
         tracker.crop(lon=[0, 90])
         tracker.crop(lat=[0, 90])
-        tracker.annual_mean()
+        tracker.tmean("year")
         tracker.tmean()
         tracker.spatial_mean()
         tracker.run()
@@ -116,49 +116,12 @@ class TestLazy:
         n = len(nc.session_files())
         assert n == 1
 
-    def test_transmute_1(self):
-        ff = "data/sst.mon.mean.nc"
-        tracker = nc.open_data(ff)
-        tracker.transmute({"sst": "sst+273.15"})
-        tracker.select(years=list(range(1970, 1979)))
-        tracker.select(months=[1, 2, 3, 4, 5])
-        tracker.crop(lon=[0, 90])
-        tracker.crop(lat=[0, 90])
-        tracker.annual_mean()
-        tracker.tmean()
-        tracker.spatial_mean()
-        tracker.transmute({"sst": "sst-273.15"})
-        tracker.run()
-        x = tracker.to_xarray().sst.values[0][0][0].astype("float")
-        y = len(tracker.history)
-        assert x == 18.435571670532227
-        n = len(nc.session_files())
-        assert n == 1
 
-    def test_mutate_1(self):
-        ff = "data/sst.mon.mean.nc"
-        tracker = nc.open_data(ff)
-        tracker.mutate({"sst1": "sst+273.15"})
-        tracker.select(years=list(range(1970, 1979)))
-        tracker.select(months=[1, 2, 3, 4, 5])
-        tracker.crop(lon=[0, 90])
-        tracker.crop(lat=[0, 90])
-        tracker.annual_mean()
-        tracker.tmean()
-        tracker.spatial_mean()
-        tracker.transmute({"sst2": "sst1-273.15"})
-        tracker.run()
-        x = tracker.to_xarray().sst2.values[0][0][0].astype("float")
-        y = len(tracker.history)
-        assert x == 18.435571670532227
-
-        n = len(nc.session_files())
-        assert n == 1
 
     def test_seasonal_clim1(self):
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
-        tracker.seasonal_mean_climatology()
+        tracker.tmean("season")
         tracker.select(months=2)
         tracker.spatial_mean()
         tracker.run()
@@ -174,7 +137,7 @@ class TestLazy:
         tracker2.rename({"sst": "tos"})
         tracker2.run()
         tracker = nc.merge(tracker1, tracker2)
-        tracker.transmute({"bias": "sst-tos"})
+        tracker.assign(bias=  lambda x: x.sst-x.tos)
         tracker.tmean()
         tracker.spatial_mean()
         tracker.run()

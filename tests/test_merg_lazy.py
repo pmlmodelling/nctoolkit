@@ -74,7 +74,7 @@ class TestMerge:
         new.run()
         data = nc.open_data([new.current[0], tracker.current[0]])
         data.merge()
-        data.mutate({"test1": "tos-sst"})
+        data.assign(test1 = lambda x:  x.tos-x.sst)
         data.spatial_mean()
         x = data.to_dataframe().test1.values[0]
         assert x == 0

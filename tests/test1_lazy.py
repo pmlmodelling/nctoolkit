@@ -18,7 +18,7 @@ class TestOne:
         tracker.ensemble_mean(nco=True)
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         tracker = nc.open_data(ff)
-        tracker.monthly_mean_climatology()
+        tracker.tmean(["month"])
         y = tracker.to_xarray().sst.values[0][0][0].astype("float")
         assert x == -1.7026667594909668
         assert x == y
@@ -34,7 +34,7 @@ class TestOne:
         tracker.spatial_mean()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         tracker = nc.open_data(ff)
-        tracker.monthly_mean_climatology()
+        tracker.tmean("month")
         tracker.crop(lon=[50, 60])
         tracker.spatial_mean()
         y = tracker.to_xarray().sst.values[0][0][0].astype("float")

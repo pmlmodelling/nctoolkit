@@ -21,7 +21,7 @@ class TestDelete:
         tracker.select(years=list(range(1970, 1971)))
         tracker.select(months=[1])
         tracker.set_date(year=1990, month=1, day=1)
-        tracker.mutate({"tos": "sst+273.15"})
+        tracker.assign(tos = lambda x: x.sst+273.15)
         tracker.drop("sst")
         tracker.run()
         x = tracker.variables

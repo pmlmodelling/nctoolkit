@@ -16,7 +16,7 @@ class TestSelect:
 
     def test_strvar(self):
         tracker = nc.open_data(ff)
-        tracker.mutate({"tos": "sst+1"})
+        tracker.assign(tos =  lambda x: x.sst+1)
         tracker.select(variables="tos")
         tracker.run()
         x = tracker.variables
@@ -226,8 +226,8 @@ class TestSelect:
 
     def test_var_list(self):
         tracker = nc.open_data(ff)
-        tracker.mutate({"tos": "sst+1"})
-        tracker.mutate({"tos1": "sst+1"})
+        tracker.assign(tos =  lambda x: x.sst+1)
+        tracker.assign(tos1 =  lambda x: x.sst+1)
         tracker.select(variables=["tos", "sst"])
         tracker.run()
         x = tracker.variables
@@ -236,8 +236,8 @@ class TestSelect:
         assert n == 1
 
         tracker = nc.open_data(ff)
-        tracker.mutate({"tos": "sst+1"})
-        tracker.mutate({"tos1": "sst+1"})
+        tracker.assign(tos =  lambda x: x.sst+1)
+        tracker.assign(tos1 =  lambda x: x.sst+1)
         tracker.select(var = ["tos", "sst"])
         tracker.run()
         x = tracker.variables

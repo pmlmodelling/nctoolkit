@@ -37,3 +37,9 @@ class TestClip:
 
 
 
+        tracker = nc.open_data(ff)
+        tracker.assign(sst1 = lambda x: x.sst + 0)
+        tracker.centre("latitude")
+        x = tracker.to_dataframe().sst1.values[0].astype("float")
+
+        assert x == -6.278953552246094
