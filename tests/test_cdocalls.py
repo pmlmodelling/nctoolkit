@@ -22,16 +22,16 @@ ensemble = nc.create_ensemble("data/ensemble")
 
 class TestCalls:
     def test_cellcall(self):
-        nc.options(lazy=True)
         data = nc.open_data(ff)
-        data.cell_areas(join=False)
+        data.cell_area(join=False)
 
         assert data.history[0] == 'cdo -setattribute,cell_area@units="m^2" -gridarea'
 
         data = nc.open_data(ff)
-        data.cell_areas(join=True)
+        data.cell_area(join=True)
 
         if cdo_version() in ["1.9.2", "1.9.3", "1.9.4", "1.9.5", "1.9.6"]:
+            print(data.history)
             assert len(data.history) == 3
             assert "cdo -L -merge data/sst.mon.mean.nc" in data.history[1]
             assert "cdo -L -gridarea data/sst.mon.mean.nc" in data.history[0]

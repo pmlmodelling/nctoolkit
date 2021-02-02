@@ -1,10 +1,18 @@
 import nctoolkit as nc
+import subprocess
 
 nc.options(lazy=True)
 import pandas as pd
 import xarray as xr
 import os, pytest
 
+def cdo_version():
+    cdo_check = subprocess.run(
+        "cdo --version", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+    )
+    cdo_check = str(cdo_check.stderr).replace("\\n", "")
+    cdo_check = cdo_check.replace("b'", "").strip()
+    return cdo_check.split("(")[0].strip().split(" ")[-1]
 
 class TestEnsemble:
     def test_empty(self):
@@ -202,7 +210,10 @@ class TestEnsemble:
             data.ensemble_min()
 
         n = len(nc.session_files())
-        assert n == 0
+        if cdo_version() == "1.9.3":
+            assert n == 1
+        else:
+            assert n == 0
 
         data = nc.open_data(nc.create_ensemble("data/ensemble")[0])
         with pytest.warns(UserWarning):

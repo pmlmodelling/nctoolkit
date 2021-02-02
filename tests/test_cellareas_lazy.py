@@ -21,10 +21,11 @@ class TestCell:
         tracker.select(months=[1])
         tracker.run()
 
-        tracker.cell_areas()
+        tracker.cell_area()
         x = tracker.variables
 
         assert x == ["cell_area", "sst"]
+        print(tracker.history)
         n = len(nc.session_files())
 
         assert n == 1
@@ -33,7 +34,7 @@ class TestCell:
         tracker = nc.open_data(ff)
         tracker.select(years=list(range(1970, 1971)))
         tracker.select(months=[1])
-        tracker.cell_areas(join=False)
+        tracker.cell_area(join=False)
         tracker.run()
 
         x = tracker.variables
@@ -46,7 +47,7 @@ class TestCell:
         tracker = nc.open_data(ff)
         tracker.select(timesteps=[0, 1])
         tracker.split("yearmonth")
-        tracker.cell_areas(join=True)
+        tracker.cell_area(join=True)
         tracker.merge_time()
         tracker.run()
         x = tracker.variables
@@ -56,10 +57,10 @@ class TestCell:
 
     def test_error(self):
         tracker = nc.open_data(ff)
-        tracker.cell_areas(join=True)
+        tracker.cell_area(join=True)
         with pytest.raises(ValueError):
-            tracker.cell_areas(join=True)
+            tracker.cell_area(join=True)
         with pytest.raises(TypeError):
-            tracker.cell_areas(join="x")
+            tracker.cell_area(join="x")
         n = len(nc.session_files())
         assert n == 1

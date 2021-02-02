@@ -282,6 +282,12 @@ class TestAddetc:
         n = len(nc.session_files())
         assert n == 3
 
+        del new
+        del out
+        del tracker
+        n = len(nc.session_files())
+        assert n == 0
+
     def test_multiply2(self):
         tracker = nc.open_data(ff)
         tracker.select(years=list(range(1970, 1971)))
