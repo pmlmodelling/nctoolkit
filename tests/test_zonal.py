@@ -15,8 +15,6 @@ def cdo_version():
     cdo_check = cdo_check.replace("b'", "").strip()
     return cdo_check.split("(")[0].strip().split(" ")[-1]
 
-print(cdo_version())
-print(cdo_version() in ["1.9.3", "1.9.4"])
 
 
 
@@ -82,10 +80,10 @@ class TestClip:
         data.tmean()
         data.zonal_range()
         data.spatial_mean()
-        if cdo_version() in [ "1.9.4"]:
+        if cdo_version() not in [ "1.9.3"]:
             assert (
                 data.to_dataframe().sst[0].values[0].astype("float")
-                == 7.356211185455322
+                == 7.356204986572266
             )
         if cdo_version() in [ "1.9.3"]:
             assert (
@@ -93,8 +91,3 @@ class TestClip:
                 == 7.345167636871338
             )
 
-        if cdo_version() not in ["1.9.3", "1.9.4"]:
-            assert (
-                data.to_dataframe().sst[0].values[0].astype("float")
-                == 7.345167636871338
-            )
