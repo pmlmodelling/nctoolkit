@@ -26,9 +26,6 @@ limit it to the number of cores on your machine.
 Parallel processing using multiprocessing
 -----------------------------------------
 
-**Please note: this only works with the development version, but will be
-available in the major v0.3.0 coming in February 2021.**
-
 A common task is taking a bunch of files in a folder, doing things to
 them, and then saving a modified version of each file in a new folder.
 We want to be able to parallelize that, and we can using the
