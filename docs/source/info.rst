@@ -6,6 +6,13 @@ Package info
 This package was created by Robert Wilson at Plymouth Marine Laboratory (PML).
 
 
+Acknowledgements
+------------------
+
+The current codebase of nctoolkit was developed using funding from the NERC Climate Linked Atlantic Sector Science programme 
+(`NE/R015953/1 <https://gtr.ukri.org/projects?ref=NE%2FR015953%2F1>`__)  and a combination of UK Research and Innovation (UKRI) 
+and European Research Council (ERC) funded research projects.
+
 Bugs and issues
 ------------------
 
