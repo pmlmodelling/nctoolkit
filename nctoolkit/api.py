@@ -1278,6 +1278,7 @@ class DataSet(object):
     from nctoolkit.ensembles import ensemble_sum
 
     from nctoolkit.ensembles import ensemble_percentile
+    from nctoolkit.esoteric import assign_coords
     from nctoolkit.expr import sum_all
 
     from nctoolkit.fldstat import spatial_mean
