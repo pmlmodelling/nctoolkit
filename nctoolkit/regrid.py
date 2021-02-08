@@ -45,7 +45,8 @@ def regrid(self, grid=None, method="bil"):
     if "DataSet" in str(type(grid)):
         grid.run()
         grid = grid.current[0]
-        warnings.warn(message="The first file in dataset used for regridding!")
+        if len(grid) > 1:
+            warnings.warn(message="The first file in dataset used for regridding!")
         grid_type = "nc"
 
     if grid_type is None:
