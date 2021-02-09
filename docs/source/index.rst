@@ -69,6 +69,7 @@ Documentation
    temporals 
    subsetting 
    variables
+   interpolation
    exporting 
    merging_notebook 
    parallel 
