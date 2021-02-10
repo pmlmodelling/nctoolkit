@@ -1264,6 +1264,8 @@ class DataSet(object):
 
     from nctoolkit.compare import compare
 
+    from nctoolkit.compare_data import gt
+
     from nctoolkit.corr import cor_space
     from nctoolkit.corr import cor_time
 
