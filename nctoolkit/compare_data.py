@@ -7,22 +7,36 @@ import warnings
 import os
 
 
-
-def gt(self, ff):
+def gt(self, x):
     """
-    Method to calculate if variable in dataset is greater than that in another file
+    Method to calculate if variable in dataset is greater than that in another file or dataset
+    This currently only works with single file datasets
 
     Parameters
     -------------
-    ff: str
-        File path
+    x: str or single file dataset
+        File path or nctoolkit dataset
 
     """
 
+    self.run()
+
+    ff = None
+
+    if "api.DataSet" in str(type(x)):
+        x.run()
+        if len(x) != 1:
+            raise ValueError("This only works on single file datasets currently!")
+        ff = x[0]
+
+    if type(x) is str:
+        ff = x
+
+    if ff is None:
+        raise ValueError("ff needs to be a file path or nctoolkit dataset")
+
     if os.path.exists(ff) == False:
         raise ValueError(f"{ff} does not exist!")
-
-    self.run()
 
     if len(self) > 1:
         raise ValueError("This only works on single file datasets currently!")
