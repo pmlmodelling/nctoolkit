@@ -119,7 +119,7 @@ def run_nco(command, target, out_file=None, overwrite=False):
             )
             result1, ignore = out.communicate()
             if "ERROR" in str(result1):
-                remove_safet(target)
+                remove_safe(target)
                 raise ValueError(
                     str(result1).replace("b'", "").replace("\\n", "").replace("'", "")
                 )
