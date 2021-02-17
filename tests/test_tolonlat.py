@@ -35,7 +35,25 @@ class TestTolonat:
         n = len(nc.session_files())
         assert n == 1
 
-    def test_latlon2(self):
+
+        tracker = nc.open_data(ff)
+        tracker.select(years=1990)
+        tracker.select(months=1)
+        tracker.to_latlon(lon=[0.5, 89.5], lat=[0.5, 89.5], res=[1, 1], method="nn", recycle = True)
+        tracker.spatial_mean()
+        y = tracker.to_dataframe().sst.values[0].astype("float")
+
+        tracker1 = nc.open_data(ff)
+        tracker1.select(years=1990)
+        tracker1.select(months=1)
+        tracker1.regrid(tracker)
+        tracker1.spatial_mean()
+        x = tracker1.to_dataframe().sst.values[0].astype("float")
+
+        assert x == y
+
+        del tracker1
+
         tracker = nc.open_data(ff)
 
         with pytest.raises(TypeError):
@@ -113,7 +131,6 @@ class TestTolonat:
         with pytest.raises(ValueError):
             tracker.to_latlon(lon=[1, 2], lat=[2, 1], res=1)
 
-    def test_latlon4(self):
         tracker = nc.open_data(ff)
         tracker.select(years=1990)
         tracker.select(months=1)
