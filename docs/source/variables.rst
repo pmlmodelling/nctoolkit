@@ -1,5 +1,9 @@
-Creating variables
+Manipulating variables
 ==================
+
+Creating new variables
+----------------------------------------------------
+
 
 Variable creation in nctoolkit can be done using the ``assign`` method,
 which works in a similar way to the method available in pandas. 
@@ -231,4 +235,66 @@ lambda functions.
 | ``zonal_sum``         | Zonal sum of variable | ``zonal_sum(x.var)``     |
 |                       | at time-step          |                          |
 +-----------------------+-----------------------+--------------------------+
+
+Simple mathematical operations on variables
+----------------------------------------------------
+
+If you want to do simple operations like adding or subtracting numbers from the variables in datasets you can use
+the ``add``, ``subtract``, ``divide`` and ``multiply`` methods. For example if you wanted to add 10 to every variable
+in a dataset, you would do the following:
+
+.. code:: ipython3
+
+    data.add(10)
+
+If you wanted to multiply everything by 10, you would do this:
+
+.. code:: ipython3
+
+    data.multiply(10)
+
+
+These methods will also let you use other datasets or NetCDF files. So, you could add the values in a dataset data2 to a dataset
+called data1 as follows:
+
+
+.. code:: ipython3
+
+    data1.add(data2)
+
+
+Please note that this will require that the datasets are structured in a way that the operation makes sense. So each dimension in the datasets
+will either have to be identical, with the exception of when one dataset has a single value for a dimension. So for example if data2 above has
+data covering only 1 timestep, but data1 has multiple timesteps the data from that single time step will be added to all timesteps in data1.
+But if the time steps match, then the data from the first time step in data2 will be added to the data in the first time step in data1, and the
+same will happen with the following time steps.
+
+
+Simple numerical comparisons 
+----------------------------------------------------
+
+If you want to do something as simple as working out whether the values of the variables in a dataset are greater than zero, you can use the 
+``compare`` method. This method accepts a simple comparison formula, which follows Python conventions. For example, if you wanted to figure
+out if the values in a dataset were greater than zero, you would do the following:
+
+.. code:: ipython3
+
+    data.compare(">0")
+
+If you wanted to know if they were equal to zero you would do this:
+
+.. code:: ipython3
+
+    data.compare("==0")
+
+
+
+
+
+
+
+
+
+
+
 
