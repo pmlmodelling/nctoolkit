@@ -51,13 +51,14 @@ Documentation
    :caption: User Guide 
 
    datasets
+   exporting 
    temporals 
    subsetting 
    variables
    interpolation
-   exporting 
    merging_notebook 
    parallel 
+   hacks 
    globals 
 
 
