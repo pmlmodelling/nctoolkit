@@ -27,4 +27,41 @@ If you wanted to shift time forward by 12 hours, this would do it:
 Note: this method allows partial matches to the arguments, so you could use hour, day, month or year just as easily. 
 
 
+Adding cell areas to a dataset
+================
+
+You can add grid cell areas to a dataset as follows:
+
+.. code:: ipython3
+
+    data.cell_area()
+
+By default, this will add the cell area (in square metres) to the dataset. If you want the dataset to only include cell areas
+you need to set the ``join`` argument to ``False``:
+
+
+.. code:: ipython3
+
+    data.cell_area(join = False)
+
+Of course, this method will only if it is possible to calculate the areas the grid cells.
+
+
+Changing the format of the NetCDF files in a dataset
+================
+
+Sometimes you will want to change the format of the files in a dataset. You can do this using the ``format`` method. This let's
+you set the format, with the following options: 
+  * NetCDF = "nc1"
+  * NetCDF version 2 (64-bit offset) = "nc2"/"nc"
+  * NetCDF4 (HDF5) = "nc4"
+  * NetCDF4-classi = "nc4c"
+  * NetCDF version 5 (64-bit data) = "nc5"
+
+
+So, if you want to set the format to NetCDF4, you would do the following:
+
+.. code:: ipython3
+
+    data.format("nc4")
 
