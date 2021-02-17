@@ -1,12 +1,20 @@
 import os
 import tempfile
-
-from nctoolkit.session import session_info
-from nctoolkit.session import  get_tempdirs, append_tempdirs
 import platform
 
+from nctoolkit.session import session_info
+from nctoolkit.session import get_tempdirs, append_tempdirs
 
 def temp_file(ext=""):
+    """
+    Function to create a temporary file.
+    This accounts for OS
+
+    Parameters
+    --------------------
+    ext : str
+        File extension
+    """
 
     # this needs to work differently on Linux
     if platform.system() == "Linux":
@@ -56,6 +64,5 @@ def temp_file(ext=""):
             os.path.dirname(target) + "/",
             os.path.dirname(target) + "/" + session_info["stamp"],
         )
-
 
         return target

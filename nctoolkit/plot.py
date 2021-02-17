@@ -1,6 +1,3 @@
-
-
-
 def plot(self, vars=None):
     from ncplot import view
 
@@ -25,13 +22,12 @@ def plot(self, vars=None):
 
     >>> data.plot("var_of_choice")
 
-
     """
 
+    # run any commands
     self.run()
 
     if len(self) > 1:
         raise TypeError("You cannot view multiple files!")
 
-    return view(self[0], vars = vars)
-
+    return view(self[0], vars=vars)
