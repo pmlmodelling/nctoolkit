@@ -65,3 +65,19 @@ So, if you want to set the format to NetCDF4, you would do the following:
 
     data.format("nc4")
 
+
+
+Getting rid of dimensions with only one value
+================
+
+Sometimes you will have a dataset that has a dimension with only one value, and you might want to get rid of that dimension. For example,
+you might only have one one timestep and keeping it may have no value. Getting rid of that dimension can be done using the ``reduce_dims`` method. 
+It works as follows:
+
+.. code:: ipython3
+
+    data.reduce_dims() 
+
+
+
+
