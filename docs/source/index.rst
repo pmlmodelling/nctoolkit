@@ -22,21 +22,6 @@ Core abilities include:
    - Calculating phenological metrics
 
 
-Fixing plotting problem due to xarray bug
----------------------
-
-There is currently a bug in xarray caused by the update of pandas to version 1.1. As a result some plots will fail in nctoolkit. To fix this ensure pandas version 1.0.5 is installed. Do this after installing nctoolkit. This can be done as follows::
-
-
-   $ conda install -c conda-forge pandas=1.0.5 
-
-or::
-
-   $ pip install pandas==1.0.5
-
-
-
-
 Documentation
 -------------
 **Quick overview**
