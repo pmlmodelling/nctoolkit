@@ -1,15 +1,14 @@
-
-import subprocess
-
-import xarray as xr
-import pandas as pd
-import netCDF4
 import logging
-
-
+import netCDF4
+import pandas as pd
+import re
+import subprocess
+import xarray as xr
 
 def is_curvilinear(ff):
-    """Function to work out if a file contains a curvilinear grid"""
+    """
+    Function to work out if a file contains a curvilinear grid
+    """
     cdo_result = subprocess.run(
         f"cdo sinfo {ff}", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
     )
@@ -26,19 +25,21 @@ def is_curvilinear(ff):
     )
 
 
-import re
-import subprocess
-
 # check version of cdo installed
 
 
 def validate_version():
+    """
+    Function to tell the user whether a valid version of CDO is installed
+    """
 
     try:
         version = cdo_version()
         actual_version = version
         if version is None:
-            print("Please install CDO version 1.9.3 or above: https://code.mpimet.mpg.de/projects/cdo/ or https://anaconda.org/conda-forge/cdo")
+            print(
+                "Please install CDO version 1.9.3 or above: https://code.mpimet.mpg.de/projects/cdo/ or https://anaconda.org/conda-forge/cdo"
+            )
         sub = "."
         wanted = ""
         n = 3
@@ -51,27 +52,35 @@ def validate_version():
         after = after.replace(sub, wanted)
         newString = before + after
         if float(newString) >= 1.93 == False:
-            print("Please install CDO version 1.9.3 or above: https://code.mpimet.mpg.de/projects/cdo/ or https://anaconda.org/conda-forge/cdo")
+            print(
+                "Please install CDO version 1.9.3 or above: https://code.mpimet.mpg.de/projects/cdo/ or https://anaconda.org/conda-forge/cdo"
+            )
         else:
             print(f"nctoolkit is using CDO version {actual_version}")
     except:
-            print("Please install CDO version 1.9.3 or above: https://code.mpimet.mpg.de/projects/cdo/ or https://anaconda.org/conda-forge/cdo")
-
+        print(
+            "Please install CDO version 1.9.3 or above: https://code.mpimet.mpg.de/projects/cdo/ or https://anaconda.org/conda-forge/cdo"
+        )
 
 
 def cdo_version():
+    """
+    Function to identify the CDO version
+    """
     cdo_check = subprocess.run(
         "cdo --version", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
     )
 
-    version =  [x for x in cdo_check.stderr.decode("utf-8").split("\n") if "version" in x and "cdo" in x]
+    version = [
+        x
+        for x in cdo_check.stderr.decode("utf-8").split("\n")
+        if "version" in x and "cdo" in x
+    ]
     if len(version) == 0:
         return None
     version = version[0]
 
-    candidates =  [x for x in version.split(" ") if x.startswith("1") or x.startswith("2")]
+    candidates = [
+        x for x in version.split(" ") if x.startswith("1") or x.startswith("2")
+    ]
     return candidates[0]
-
-
-
-
