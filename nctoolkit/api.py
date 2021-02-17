@@ -1326,7 +1326,6 @@ class DataSet(object):
 
     from nctoolkit.regrid import regrid
 
-    from nctoolkit.release import run
 
     from nctoolkit.rename import rename
 
@@ -1337,6 +1336,8 @@ class DataSet(object):
     from nctoolkit.rollstat import rolling_max
     from nctoolkit.rollstat import rolling_range
     from nctoolkit.rollstat import rolling_sum
+
+    from nctoolkit.run import run
 
     from nctoolkit.select import select
 
