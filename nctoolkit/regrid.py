@@ -12,7 +12,7 @@ from nctoolkit.session import nc_safe, append_safe, remove_safe
 from nctoolkit.temp_file import temp_file
 
 
-def regrid(self, grid=None, method="bil"):
+def regrid(self, grid=None, method="bil", recycle = False):
     """
     Regrid a dataset to a target grid
 
@@ -33,6 +33,17 @@ def regrid(self, grid=None, method="bil"):
     """
 
     valid_methods = ["bil", "nn", "bic", "dis", "con", "con2", "laf"]
+
+    if "DataSet" in str(type(grid)):
+        if grid._weights is not None and grid._grid is not None:
+            target_grid = grid._grid
+            weights_nc = grid._weights
+            cdo_command = f"cdo -remap,{target_grid},{weights_nc}"
+            run_this(cdo_command, self, output="ensemble")
+            print("recycling")
+
+            return None
+
 
     del_grid = None
     if grid is None:
@@ -71,6 +82,10 @@ def regrid(self, grid=None, method="bil"):
 
     self.run()
 
+    if len(self) > 1 and recycle:
+        raise ValueError("You cannot recycle multi-file datasets")
+
+
     for ff in self:
         cdo_result = subprocess.run(
             f"cdo griddes {ff}",
@@ -94,6 +109,9 @@ def regrid(self, grid=None, method="bil"):
             target_grid = grid
     new_files = []
 
+    if recycle:
+        append_safe(target_grid)
+
     for key in grid_split:
         # first we need to generate the weights for remapping
         # and add this to the files created list and self.weights
@@ -102,6 +120,7 @@ def regrid(self, grid=None, method="bil"):
         )
 
         weights_nc = temp_file("nc")
+
 
         cdo_command = (
             f"cdo -gen{method},{target_grid} {tracker.current[0]} {weights_nc}"
@@ -114,13 +133,18 @@ def regrid(self, grid=None, method="bil"):
             remove_safe(weights_nc)
             raise ValueError(e)
 
+        if recycle:
+            self._weights = weights_nc
+            self._grid = target_grid
+
         cdo_command = f"cdo -remap,{target_grid},{weights_nc}"
 
         tracker._execute = True
 
         run_this(cdo_command, tracker, output="ensemble")
 
-        remove_safe(weights_nc)
+        if recycle == False:
+            remove_safe(weights_nc)
 
         new_files += tracker.current
 
@@ -129,7 +153,8 @@ def regrid(self, grid=None, method="bil"):
         self._hold_history = copy.deepcopy(self.history)
 
     if del_grid is not None:
-        remove_safe(del_grid)
+        if recycle == False:
+            remove_safe(del_grid)
 
     self.current = new_files
 

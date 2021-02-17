@@ -3,7 +3,7 @@ from nctoolkit.session import nc_safe, append_safe, remove_safe
 from nctoolkit.temp_file import temp_file
 
 
-def to_latlon(self, lon=None, lat=None, res=None, method="bil"):
+def to_latlon(self, lon=None, lat=None, res=None, method="bil", recycle = False):
     """
     Regrid a dataset to a regular latlon grid
 
@@ -26,6 +26,10 @@ def to_latlon(self, lon=None, lat=None, res=None, method="bil"):
         First order conservative remapping - "con"
         Second order conservative remapping - "con2"
         Large area fraction remapping - "laf"
+    recycle : bool
+        Do you want the grid and weights to be available for recycling and use in regrid?
+        Defaults to False
+
     """
 
     valid_methods = ["bil", "nn", "bic", "dis", "con", "con2", "laf"]
@@ -112,7 +116,7 @@ def to_latlon(self, lon=None, lat=None, res=None, method="bil"):
     append_safe(grid_file)
 
     # call regrid
-    self.regrid(grid=grid_file, method=method)
+    self.regrid(grid=grid_file, method=method, recycle = recycle)
 
     remove_safe(grid_file)
 
