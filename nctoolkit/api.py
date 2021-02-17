@@ -1289,7 +1289,6 @@ class DataSet(object):
 
     from nctoolkit.ensembles import ensemble_percentile
     from nctoolkit.esoteric import assign_coords
-    from nctoolkit.expr import sum_all
 
     from nctoolkit.fldstat import spatial_mean
     from nctoolkit.fldstat import spatial_min
@@ -1351,6 +1350,7 @@ class DataSet(object):
     from nctoolkit.split import split
 
     from nctoolkit.strip_vars import strip_variables
+    from nctoolkit.sumall import sum_all
 
     from nctoolkit.temporal_stat import tmean
     from nctoolkit.temporal_stat import tpercentile
@@ -1391,8 +1391,8 @@ class DataSet(object):
 
     # deprecated stuff
 
-    # from nctoolkit.expr import mutate
-    # from nctoolkit.expr import transmute
+    from nctoolkit.deprecated import mutate
+    from nctoolkit.deprecated import transmute
 
     from nctoolkit.deprecated import cell_areas
     from nctoolkit.deprecated import remove_variables
