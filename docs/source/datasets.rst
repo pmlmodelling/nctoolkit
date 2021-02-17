@@ -187,6 +187,16 @@ Similarly, you can remove files from a dataset using ``remove``:
 .. code:: ipython3
     data.remove("foo.nc") 
 
+In line with typical list behaviours, you can also create empty datasets as follows:
+
+
+.. code:: ipython3
+    data = nc.open_data() 
+
+
+This is particularly useful if you need to create an ensemble based on multiple files that need significant processing before being added to the dataset.
+
+
 
 
 
