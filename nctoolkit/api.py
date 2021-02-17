@@ -18,7 +18,16 @@ from netCDF4 import Dataset
 from nctoolkit.cleanup import cleanup, clean_all, temp_check
 from nctoolkit.flatten import str_flatten
 from nctoolkit.runthis import run_cdo
-from nctoolkit.session import nc_protected, session_info, nc_safe, append_safe, remove_safe, append_protected, remove_protected, append_tempdirs
+from nctoolkit.session import (
+    nc_protected,
+    session_info,
+    nc_safe,
+    append_safe,
+    remove_safe,
+    append_protected,
+    remove_protected,
+    append_tempdirs,
+)
 from nctoolkit.session import nc_safe_par
 from nctoolkit.show import (
     nc_variables,
@@ -79,7 +88,6 @@ session_info["parallel"] = False
 session_info["interactive"] = sys.__stdin__.isatty()
 
 
-
 if platform.system() == "Linux":
     result = os.statvfs("/tmp/")
     session_info["size"] = result.f_frsize * result.f_bavail
@@ -128,14 +136,7 @@ def options(**kwargs):
 
     """
 
-    valid_keys = [
-        "thread_safe",
-        "lazy",
-        "cores",
-        "precision",
-        "temp_dir",
-        "parallel"
-    ]
+    valid_keys = ["thread_safe", "lazy", "cores", "precision", "temp_dir", "parallel"]
 
     for key in kwargs:
         if key not in valid_keys:
@@ -156,7 +157,6 @@ def options(**kwargs):
                     for ff in nc_safe_par:
                         nc_safe.append(ff)
                         nc_safe_par.remove(ff)
-
 
         if type(kwargs[key]) is not bool:
             if key == "temp_dir":
@@ -201,6 +201,7 @@ def find_config():
 
     # now look in the home directory....
     from os.path import expanduser
+
     home = expanduser("~")
     for ff in [".nctoolkitrc", "nctoolkitrc"]:
         if os.path.exists(home + "/" + ff):
@@ -212,13 +213,7 @@ def find_config():
 config_file = find_config()
 
 if config_file is not None:
-    valid_keys = [
-        "thread_safe",
-        "lazy",
-        "cores",
-        "precision",
-        "temp_dir"
-    ]
+    valid_keys = ["thread_safe", "lazy", "cores", "precision", "temp_dir"]
 
     file1 = open(config_file, "r")
     Lines = file1.readlines()
@@ -333,7 +328,7 @@ def is_url(x):
     return re.match(regex, x) is not None
 
 
-#def options(**kwargs):
+# def options(**kwargs):
 #    """
 #    Define session options.
 #    Set the options in the session. Available options are thread_safe and lazy.
@@ -391,6 +386,7 @@ def is_url(x):
 #        else:
 #            session_info[key] = kwargs[key]
 #
+
 
 def convert_bytes(num):
     """
@@ -609,7 +605,7 @@ def open_data(x=[], suppress_messages=False, checks=False, **kwargs):
             if checks:
                 if suppress_messages is False:
                     warnings.warn("Performing basic checks on ensemble files")
-            #if len(x) == 0:
+            # if len(x) == 0:
             #    raise ValueError("You have not provided any files!")
 
             if len(x) > 1:
@@ -823,7 +819,12 @@ def cor_time(x=None, y=None):
 
     if len(x.variables) == 1:
         command = (
-            "cdo -setname,cor -timcor " + a.current[0] + " " + b.current[0] + " " + target
+            "cdo -setname,cor -timcor "
+            + a.current[0]
+            + " "
+            + b.current[0]
+            + " "
+            + target
         )
     else:
         command = "cdo -timcor " + a.current[0] + " " + b.current[0] + " " + target
@@ -879,7 +880,12 @@ def cor_space(x=None, y=None):
 
     if len(x.variables) == 1:
         command = (
-            "cdo -setname,cor -fldcor " + a.current[0] + " " + b.current[0] + " " + target
+            "cdo -setname,cor -fldcor "
+            + a.current[0]
+            + " "
+            + b.current[0]
+            + " "
+            + target
         )
     else:
         command = "cdo -fldcor " + a.current[0] + " " + b.current[0] + " " + target
@@ -920,8 +926,12 @@ class DataSet(object):
         self._thredds = False
         self._zip = False
         self._format = None
+
+        self._grid = None
+        self._weights = None
         # track number of held over commands
         self._ncommands = 0
+
 
     def __getitem__(self, index):
 
@@ -934,7 +944,6 @@ class DataSet(object):
         for ff in self.current:
             yield ff
         return
-
 
     def __repr__(self):
         current = str(len(self)) + " member ensemble"
@@ -985,12 +994,7 @@ class DataSet(object):
         result = "Number of files in ensemble: " + str(len(self)) + "\n"
         result = result + "Ensemble size: " + sum_size + "\n"
         result = (
-            result
-            + "Smallest file: "
-            + smallest_file
-            + " has size "
-            + min_size
-            + "\n"
+            result + "Smallest file: " + smallest_file + " has size " + min_size + "\n"
         )
         result = result + "Largest file: " + largest_file + " has size " + max_size
         return result
@@ -1098,7 +1102,7 @@ class DataSet(object):
         This will only display the variables in the first file of an ensemble.
         """
 
-        if len(self) >1:
+        if len(self) > 1:
             return (
                 "This DataSet object is a mult-file dataset. Please inspect individual"
                 "files using nc_variables"
@@ -1233,6 +1237,10 @@ class DataSet(object):
             remove_safe(ff)
         for ff in self._safe:
             remove_safe(ff)
+        if self._weights is not None:
+            remove_safe(self._weights)
+        if self._weights is not None:
+            remove_safe(self._grid)
 
         cleanup()
 
@@ -1383,12 +1391,9 @@ class DataSet(object):
 
     # deprecated stuff
 
-    #from nctoolkit.expr import mutate
-    #from nctoolkit.expr import transmute
-
+    # from nctoolkit.expr import mutate
+    # from nctoolkit.expr import transmute
 
     from nctoolkit.deprecated import cell_areas
     from nctoolkit.deprecated import remove_variables
     from nctoolkit.compare import compare_all
-
-
