@@ -6,6 +6,7 @@ from nctoolkit.session import remove_safe, append_safe
 from nctoolkit.runthis import run_this, tidy_command, run_cdo
 from nctoolkit.show import nc_variables
 from nctoolkit.temp_file import temp_file
+from nctoolkit.utils import cdo_version
 
 
 def cell_area(self, join=True):
@@ -38,13 +39,6 @@ def cell_area(self, join=True):
     if join:
         self.run()
 
-    # get the cdo version
-    cdo_check = subprocess.run(
-        "cdo --version", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
-    )
-    cdo_check = str(cdo_check.stderr).replace("\\n", "")
-    cdo_check = cdo_check.replace("b'", "").strip()
-    cdo_version = cdo_check.split("(")[0].strip().split(" ")[-1]
 
     # first run the join case
     if join:
@@ -54,7 +48,7 @@ def cell_area(self, join=True):
 
         for ff in self:
 
-            if cdo_version in ["1.9.3", "1.9.4", "1.9.5", "1.9.6"]:
+            if cdo_version() in ["1.9.3", "1.9.4", "1.9.5", "1.9.6"]:
 
                 # in cdo < 1.9.6 chaining doesn't work with merge
 
@@ -112,14 +106,8 @@ def cell_area(self, join=True):
 
     # add units
 
-
     self.set_units({"cell_area": "m^2"})
-
 
     if join:
         self.run()
         self.disk_clean()
-
-
-
-
