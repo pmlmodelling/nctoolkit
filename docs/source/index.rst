@@ -80,7 +80,6 @@ Documentation
 
 * :doc:`a_to_z`
 * :doc:`api`
-* :doc:`howto`
 * :doc:`info`
 
 .. toctree::
@@ -89,7 +88,6 @@ Documentation
    :caption: Reference & help
 
    a_to_z
-   howto
    api
    info
    
