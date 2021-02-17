@@ -28,7 +28,7 @@ from nctoolkit.session import (
     remove_protected,
     append_tempdirs,
 )
-from nctoolkit.session import nc_safe_par
+from nctoolkit.session import nc_safe_par, temp_dirs, nc_protected
 from nctoolkit.show import (
     nc_variables,
     nc_years,
@@ -146,18 +146,6 @@ def options(**kwargs):
             if type(kwargs[key]) is not bool:
                 raise TypeError(f"{key} should be boolean")
 
-            if kwargs[key]:
-                if len(nc_safe) > 0:
-                    for ff in nc_safe:
-                        nc_safe_par.append(ff)
-                        nc_safe.remove(ff)
-
-            if kwargs[key] == False:
-                if len(nc_safe_par) > 0:
-                    for ff in nc_safe_par:
-                        nc_safe.append(ff)
-                        nc_safe_par.remove(ff)
-
         if type(kwargs[key]) is not bool:
             if key == "temp_dir":
                 if type(kwargs[key]) is str:
@@ -188,6 +176,39 @@ def options(**kwargs):
                     raise AttributeError(key + " is not valid session info!")
         else:
             session_info[key] = kwargs[key]
+
+            # update safe-lists etc. if running in parallel
+            if kwargs[key] and key == "parallel":
+
+                if len(temp_dirs) > 0:
+                    for ff in temp_dirs:
+                        append_tempdirs(ff)
+
+                if len(nc_safe) > 0:
+                    for ff in nc_safe:
+                        nc_safe_par.append(ff)
+
+                if len(nc_protected) > 0:
+                    for ff in nc_protected:
+                        nc_protected_par.append(ff)
+                        nc_protected.remove(ff)
+                        nc_protected.remove(ff)
+
+            if (kwargs[key] == False) and key == "parallel":
+
+                if len(temp_dirs_par) > 0:
+                    for ff in temp_dirs_par:
+                        append_tempdirs(ff)
+
+                if len(nc_safe_par) > 0:
+                    for ff in nc_safe_par:
+                        nc_safe.append(ff)
+                        nc_safe_par.remove(ff)
+
+                if len(nc_protected_par) > 0:
+                    for ff in nc_protected_par:
+                        nc_protected.append(ff)
+                        nc_protected_par.remove(ff)
 
 
 # if nctoolkitrc exists, we need to read the possible options from there...
@@ -326,66 +347,6 @@ def is_url(x):
     )
 
     return re.match(regex, x) is not None
-
-
-# def options(**kwargs):
-#    """
-#    Define session options.
-#    Set the options in the session. Available options are thread_safe and lazy.
-#    Set thread_safe = True if hdf5 was built to be thread safe.
-#    Set lazy = True if you want methods to evaluate lazy by default.
-#
-#    Parameters
-#    ---------------
-#    **kwargs
-#        Define options using key, value pairs.
-#
-#    """
-#
-#    valid_keys = [
-#        "thread_safe",
-#        "lazy",
-#        "cores",
-#        "precision",
-#        "user",
-#        "password",
-#        "temp_dir",
-#    ]
-#
-#    for key in kwargs:
-#        if key not in valid_keys:
-#            raise AttributeError(key + " is not a valid option")
-#        if type(kwargs[key]) is not bool:
-#            if key == "temp_dir":
-#                if type(kwargs[key]) is str:
-#                    if os.path.exists(kwargs[key]) == False:
-#                        raise ValueError("The temp_dir specified does not exist!")
-#                    session_info[key] = os.path.abspath(kwargs[key])
-#                    session_info["user_dir"] = True
-#                return None
-#
-#            if key == "cores":
-#                if type(kwargs[key]) is int:
-#                    if kwargs[key] > mp.cpu_count():
-#                        raise ValueError(
-#                            str(kwargs[key])
-#                            + " is greater than the number of system cores ("
-#                            + str(mp.cpu_count())
-#                            + ")"
-#                        )
-#                    session_info[key] = kwargs[key]
-#                else:
-#                    raise TypeError("cores must be an int")
-#            else:
-#                if key == "precision":
-#                    if kwargs[key] not in ["I8", "I16", "I32", "F32", "F64"]:
-#                        raise ValueError("precision supplied is not valid!")
-#                    session_info[key] = kwargs[key]
-#                else:
-#                    raise AttributeError(key + " is not valid session info!")
-#        else:
-#            session_info[key] = kwargs[key]
-#
 
 
 def convert_bytes(num):
