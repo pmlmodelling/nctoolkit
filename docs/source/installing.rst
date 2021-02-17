@@ -10,9 +10,8 @@ Python dependencies
 - `numpy <http://www.numpy.org/>`__ (1.14 or later)
 - `pandas <http://pandas.pydata.org/>`__ (0.24 or later)
 - `xarray <http://xarray.pydata.org/en/stable/>`__ (0.14 or later)
-- `hvplot <https://hvplot.holoviz.org/>`__ (0.5 or later)
 - `NetCDF4 <https://unidata.github.io/NetCDF4-python/NetCDF4/index.html>`__ (1.53 or later)
-- `panel <https://panel.holoviz.org/>`__ (0.9.1 or later)
+- `hvplot <https://ncplot.readthedocs.io/en/stable/>`__ 
 
 How to install nctoolkit
 ---------------------
@@ -30,20 +29,6 @@ If you install nctoolkit from pypi, you will need to install the system dependen
 To install the development version from GitHub::
 
    $ pip install git+https://github.com/r4ecology/nctoolkit.git
-
-Fixing plotting problem due to xarray bug
----------------------
-
-There is currently a bug in xarray caused by the update of pandas to version 1.1. As a result some plots will fail in nctoolkit. To fix this ensure pandas version 1.0.5 is installed. Do this after installing nctoolkit. This can be done as follows::
-
-
-   $ conda install -c conda-forge pandas=1.0.5 
-
-or::
-
-   $ pip install pandas==1.0.5
-
-
 
 
 System dependencies
