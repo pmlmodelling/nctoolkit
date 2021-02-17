@@ -65,6 +65,41 @@ We can then use this new dataset as the target grid in ``regrid``. So
 This method will also work using NetCDF files. So, if you wanted you can
 also use a path to a NetCDF file as the target grid.
 
+
+How to reuse the weights for regridding
+---------------------------------------
+
+**Please note: recycling weights only works in the dev version, and will be included in v0.3.1, which will
+be released publicly in March 2021**
+Under the hood nctoolkit regrids data by first generating a weights file. There are situations where you 
+will want to be able to re-use these weights. For example, if you are post-processing a large number of files
+one after the other. To make this easier nctoolkit let's you recycle the regridding info. This let's you interpolate
+using either ``regrid`` or ``to_latlon``, but keep the regridding data for future use by ``regrid``.
+
+The example below illustrates this. First, we regrid a global dataset to a regular latlon grid covering the North Atlantic, setting the recycle argument to True.
+
+.. code:: ipython3
+
+    data = nc.open_thredds("https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc")
+    data.select(timestep = 0)
+    data.to_latlon(lon = [-79.5, 79.5], lat = [-0.75, 89.75], res = [1, 0.5], recycle = True)
+
+We can then use the grid from data for regridding:
+
+.. code:: ipython3
+
+    data1 = nc.open_thredds("https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc")
+    data1.select(timestep = 0)
+    data1.regrid(data)
+
+This, of course, requires that the grids in the datasets are consistent. If you want to access the weights and grid files generated, you can do the following:
+
+.. code:: ipython3
+    data._weights
+    data._grid
+
+These files are deleted either when ``data`` is deleted or when the Python session is existed.
+
 Resampling
 ----------
 
