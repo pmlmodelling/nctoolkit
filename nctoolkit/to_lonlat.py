@@ -18,8 +18,20 @@ def to_latlon(self, lon=None, lat=None, res=None, method="bil"):
         of the target grid. If 2 element list is given, the first element is the
         longitudinal resolution and the second is the latitudinal resolution.
     method : str
-        remapping method. Defaults to "bil". Bilinear: "bil"; Nearest neighbour: "nn".
+        Remapping method. Defaults to "bil". Methods available are:
+        bilinear - "bil";
+        nearest neighbour - "nn" - "nearest neighbour"
+        bicubic interpolation - "bic"
+        Distance-weighted average - "dis"
+        First order conservative remapping - "con"
+        Second order conservative remapping - "con2"
+        Large area fraction remapping - "laf"
     """
+
+    valid_methods = ["bil", "nn", "bic", "dis", "con", "con2", "laf"]
+
+    if method not in valid_methods:
+        raise ValueError(f"{mm} is not a valid method!")
 
     if lon is None:
         raise ValueError("Please supply lon")

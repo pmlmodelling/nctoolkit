@@ -22,10 +22,17 @@ def regrid(self, grid=None, method="bil"):
         The grid to remap to
 
     method : str
-        Remapping method. Defaults to "bil". Methods available are: bilinear - "bil";
-        nearest neighbour - "nn" - "nearest neighbour"; "bic" - "bicubic interpolation".
+        Remapping method. Defaults to "bil". Methods available are:
+        bilinear - "bil";
+        nearest neighbour - "nn" - "nearest neighbour"
+        bicubic interpolation - "bic"
+        Distance-weighted average - "dis"
+        First order conservative remapping - "con"
+        Second order conservative remapping - "con2"
+        Large area fraction remapping - "laf"
     """
 
+    valid_methods = ["bil", "nn", "bic", "dis", "con", "con2", "laf"]
 
     del_grid = None
     if grid is None:
@@ -53,7 +60,7 @@ def regrid(self, grid=None, method="bil"):
         raise ValueError("grid supplied is not valid")
 
     # check that the remapping method is valid
-    if (method in {"bil", "bic", "nn"}) is False:
+    if (method in valid_methods) is False:
         raise ValueError("remapping method is invalid. Please check")
 
     # check the number of grids in the dataset
@@ -87,7 +94,6 @@ def regrid(self, grid=None, method="bil"):
             target_grid = grid
     new_files = []
 
-
     for key in grid_split:
         # first we need to generate the weights for remapping
         # and add this to the files created list and self.weights
@@ -116,22 +122,16 @@ def regrid(self, grid=None, method="bil"):
 
         remove_safe(weights_nc)
 
-
         new_files += tracker.current
-
 
         self.history += tracker.history
 
         self._hold_history = copy.deepcopy(self.history)
 
-
-
     if del_grid is not None:
         remove_safe(del_grid)
 
-
     self.current = new_files
-
 
     self._thredds = False
     cleanup()
