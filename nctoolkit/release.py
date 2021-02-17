@@ -19,7 +19,9 @@ def run(self):
     # the first step is to set the run status to true
 
     if (self._execute is False) and (
-        len(self.history) > len(self._hold_history) or self._zip or self._format is not None
+        len(self.history) > len(self._hold_history)
+        or self._zip
+        or self._format is not None
     ):
         self._execute = True
 
@@ -46,3 +48,4 @@ def run(self):
         cleanup()
 
         self._ncommands = 0
+        self.disk_clean()
