@@ -7,6 +7,8 @@ from nctoolkit.runthis import run_this, run_cdo, tidy_command
 from nctoolkit.session import nc_safe, session_info, append_safe, remove_safe
 from nctoolkit.show import nc_variables
 from nctoolkit.temp_file import temp_file
+from nctoolkit.utils import cdo_version
+
 
 
 def arithall(self, stat="divc", x=None):
@@ -27,14 +29,6 @@ def operation(self, method="mul", ff=None, var=None):
     This is used by add etc.
     """
 
-    # get the cdo version
-    cdo_check = subprocess.run(
-        "cdo --version", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
-    )
-    cdo_check = str(cdo_check.stderr).replace("\\n", "")
-    cdo_check = cdo_check.replace("b'", "").strip()
-    cdo_version = cdo_check.split("(")[0].strip().split(" ")[-1]
-
     # If the dataset has to be merged,
     # then this operation will not work without running it first
     if self._merged:
@@ -54,7 +48,7 @@ def operation(self, method="mul", ff=None, var=None):
 
     # make sure the ff file is not removed from safe list in subsequent
     # actions prior to running
-    if (ff is not None) and (session_info["lazy"]) and (cdo_version != "1.9.3"):
+    if (ff is not None) and (session_info["lazy"]) and (cdo_version() != "1.9.3"):
         append_safe(ff)
         self._safe.append(ff)
 
@@ -272,7 +266,6 @@ def add(self, x=None, var=None):
 
 
     """
-
 
     # 1: int, float addition
     if isinstance(x, (int, float)):
