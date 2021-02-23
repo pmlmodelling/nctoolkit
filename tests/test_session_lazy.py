@@ -17,7 +17,7 @@ class TestSession:
     def test_session(self):
 
         nc.options(lazy=True)
-        assert nc.show_session()["lazy"]
+        assert nc.session.session_info["lazy"]
 
         nc.options(cores=2)
         x = nc.session.session_info["cores"]
