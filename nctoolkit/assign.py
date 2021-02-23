@@ -70,14 +70,15 @@ def find_parens2(s):
 
     return toret
 
+
 def find_parens3(s):
     toret = {}
     pstack = []
 
     for i, c in enumerate(s):
-        if c == '(':
+        if c == "(":
             pstack.append(i)
-        elif c == ')':
+        elif c == ")":
             if len(pstack) == 0:
                 raise IndexError("No matching closing parens at: " + str(i))
             toret[pstack.pop()] = i
@@ -86,7 +87,6 @@ def find_parens3(s):
         raise IndexError("No matching opening parens at: " + str(pstack.pop()))
 
     return toret
-
 
 
 funs = [
@@ -217,11 +217,17 @@ def assign(self, drop=False, **kwargs):
     interactive = False
     if session_info["interactive"]:
         import readline
+
         if readline.get_current_history_length() > 0:
             interactive = True
 
     if interactive:
-        import readline; start = ([str(readline.get_history_item(i + 1)) for i in range(readline.get_current_history_length())][-1])
+        import readline
+
+        start = [
+            str(readline.get_history_item(i + 1))
+            for i in range(readline.get_current_history_length())
+        ][-1]
     else:
         start = lambdas
         try:
@@ -394,17 +400,27 @@ def assign(self, drop=False, **kwargs):
             if ("[" in x and f"{lambda_value}." in x) == False:
                 if fun_pattern.search(x) is not None:
 
-                    for y in re.finditer(
-                        x.replace("(", "\\(").replace("[", "\\["), start
-                    ):
-                        if len(y.group()) > 0:
-                            old_start = start
-                            start_parens = find_parens3(start)
-                            x_term = (
-                                x
-                                + start[y.span()[1] : start_parens[y.span()[1] - 1] + 1]
-                            )
-                            start = start.replace(x_term, x_term.replace(" ", ""))
+                    fix = True
+                    n = 0
+                    n_limit = start.count("x")
+                    while fix:
+                        for y in re.finditer(
+                            x.replace("(", "\\(").replace("[", "\\["), start
+                        ):
+                            if len(y.group()) > 0:
+                                old_start = start
+                                start_parens = find_parens3(start)
+                                x_term = (
+                                    x
+                                    + start[y.span()[1] : start_parens[y.span()[1] - 1] + 1]
+                                )
+                                start = start.replace(x_term, x_term.replace(" ", ""))
+                                if old_start != start:
+                                    break
+                        n+=1
+
+                        if n > n_limit:
+                            fix = False
 
         error_message = None
 

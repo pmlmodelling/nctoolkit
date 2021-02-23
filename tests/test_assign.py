@@ -471,4 +471,15 @@ class TestAssign:
     data.assign(one2ten=lambda x: x.sst > 1 or x.sst < 10)
     assert data.history[0] == "cdo -aexpr,'one2ten=sst>1||sst<10'"
 
+
+    data = nc.open_data("data/sst.mon.mean.nc")
+    data.assign(one2ten=lambda x: abs(x.sst + 1) - abs(x.sst-1))
+    assert data.history[0] == "cdo -aexpr,'one2ten=abs(sst+1)-abs(sst-1)'"
+
+
+
+
+
+
+
     del data
