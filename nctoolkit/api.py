@@ -1325,6 +1325,8 @@ class DataSet(object):
     from nctoolkit.temporal_stat import tsum
     from nctoolkit.temporal_stat import tcumsum
 
+    from nctoolkit.thresholds import first_above
+
     from nctoolkit.to_lonlat import to_latlon
 
     from nctoolkit.to_nc import to_nc
@@ -1343,6 +1345,8 @@ class DataSet(object):
     from nctoolkit.verticals import bottom
     from nctoolkit.verticals import bottom_mask
     from nctoolkit.verticals import invert_levels
+
+    from nctoolkit.bloom_start import bloom_start
 
     from nctoolkit.zip import zip
 

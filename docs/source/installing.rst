@@ -22,7 +22,10 @@ The easiest way to install the package is using conda, which will install nctool
 
 nctoolkit is available from the `Python Packaging Index. <https://pypi.org/project/nctoolkit/>`__   To install nctoolkit using pip::
 
+   $ pip install numpy 
    $ pip install nctoolkit 
+
+If you already have numpy installed, ignore the first line. This is only included as it will make installing some dependencies smoother. nctoolkit partly relies on cartopy for plotting. This has some additional dependencies, so you may need to follow their guide `here <https://pypi.org/project/nctoolkit/>`__ to ensure cartopy is installed fully. If you install nctoolkit using conda, you will not need to worry about that.
 
 If you install nctoolkit from pypi, you will need to install the system dependencies listed below.
 
