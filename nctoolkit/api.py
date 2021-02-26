@@ -1346,7 +1346,7 @@ class DataSet(object):
     from nctoolkit.verticals import bottom_mask
     from nctoolkit.verticals import invert_levels
 
-    from nctoolkit.bloom_start import bloom_start
+    #from nctoolkit.bloom_start import bloom_start
 
     from nctoolkit.zip import zip
 
