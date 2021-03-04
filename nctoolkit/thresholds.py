@@ -28,8 +28,127 @@ def first_above(self, x=None):
 
     >>> data.first_above(10)
 
+    If you wanted to calculate the first time step where the value in a grid cell goes above that in another dataset, the
+    following will work. Note that both datasets must have the same grid, and can only have single variables. The second
+    dataset can, of course, only have one timestep.
+
+    >>> data.first_above(data1)
+
+    """
+
+    self.run()
+
+    if len(self.variables) > 1:
+        raise ValueError("This method only works with single variable datasets!")
+
+    run_code = False
+
+    # 1: int, float multiplication
+    if isinstance(x, (int, float)):
+        self.compare(f">{x}")
+        run_code = True
+
+    # 2: dataset or netcdf file multiplication
+    # get the netcdf file(s)
+    if ("api.DataSet" in str(type(x))) or (type(x) is str):
+        x.run()
+        self.gt(x)
+        run_code = True
+
+    if run_code:
+        self.rename({self.variables[0]: "target"})
+        self.set_missing(0)
+        self.assign(new=lambda x: (x.target == x.target) * (timestep(x.target) + 1), drop=True)
+        self.set_missing([0, 0.01])
+        self.tmin()
+        self.assign(first=lambda x: int(x.new) - 1, drop=True)
+        self.rename({"first": self.variables[0]})
+        self.run()
+        return None
+
+    raise TypeError("You have not supplied a valid type for x!")
+
+
+def first_below(self, x=None):
+    """
+    Identify the time step when a value is first below a threshold
+    This will do the comparison with either a number, a Dataset or a NetCDF file.
+    Parameters
+    ------------
+    x: int, float, DataSet or netcdf file
+        An int, float, single file dataset or netcdf file to use for the threshold(s).
+        If comparing with a dataset or single file there must only be a single variable
+        in it. The grids must be the same.
+
+    Examples
+    ------------
+
+    If you wanted to calculate the first time step where the value in a grid cell goes below 10, you would do the following
+
+    >>> data.first_below(10)
+
 
     If you wanted to calculate the first time step where the value in a grid cell goes above that in another dataset, the
+    following will work. Note that both datasets must have the same grid, and can only have single variables. The second
+    dataset can, of course, only have one timestep.
+
+    >>> data.first_below(data1)
+
+
+    """
+
+    self.run()
+
+    if len(self.variables) > 1:
+        raise ValueError("This method only works with single variable datasets!")
+
+    run_code = False
+
+    # 1: int, float multiplication
+    if isinstance(x, (int, float)):
+        self.compare(f"<{x}")
+        run_code = True
+
+    # 2: dataset or netcdf file multiplication
+    # get the netcdf file(s)
+    if ("api.DataSet" in str(type(x))) or (type(x) is str):
+        x.run()
+        self.lt(x)
+        run_code = True
+    if run_code:
+        self.rename({self.variables[0]: "target"})
+        self.set_missing(0)
+        self.assign(new=lambda x: (x.target == x.target) * (timestep(x.target) + 1), drop=True)
+        self.set_missing([0, 0.01])
+        self.tmin()
+        self.assign(first=lambda x: int(x.new) - 1, drop=True)
+        self.rename({"first": self.variables[0]})
+        self.run()
+        return None
+
+    raise TypeError("You have not supplied a valid type for x!")
+
+
+def last_above(self, x=None):
+    """
+    Identify the final time step when a value is above a threshold
+    This will do the comparison with either a number, a Dataset or a NetCDF file.
+    Parameters
+    ------------
+    x: int, float, DataSet or netcdf file
+        An int, float, single file dataset or netcdf file to use for the threshold(s).
+        If comparing with a dataset or single file there must only be a single variable
+        in it. The grids must be the same.
+
+    Examples
+    ------------
+
+    If you wanted to calculate the last time step where the value in a grid cell is above 10, you would do the following
+
+    >>> data.first_above(10)
+
+
+    If you wanted to calculate the last time step where the value in a grid cell goes above that in another dataset, the
     following will work. Note that both datasets must have the same grid, and can only have single variables. The second
     dataset can, of course, only have one timestep.
 
@@ -43,29 +162,93 @@ def first_above(self, x=None):
     if len(self.variables) > 1:
         raise ValueError("This method only works with single variable datasets!")
 
+    run_code = False
+
     # 1: int, float multiplication
     if isinstance(x, (int, float)):
         self.compare(f">{x}")
-        self.rename({self.variables[0]: "target"})
-        self.set_missing(0)
-        self.assign(new=lambda x: (x.target == x.target) * (timestep(x.target) + 1), drop=True)
-        self.set_missing([0, 0.01])
-        self.tmin()
-        self.assign(first=lambda x: int(x.new) - 1, drop=True)
-        self.run()
-        return None
+        run_code = True
 
     # 2: dataset or netcdf file multiplication
     # get the netcdf file(s)
     if ("api.DataSet" in str(type(x))) or (type(x) is str):
         x.run()
         self.gt(x)
+        run_code = True
+
+    if run_code:
         self.rename({self.variables[0]: "target"})
         self.set_missing(0)
         self.assign(new=lambda x: (x.target == x.target) * (timestep(x.target) + 1), drop=True)
         self.set_missing([0, 0.01])
+        self.multiply(-1)
         self.tmin()
-        self.assign(first=lambda x: int(x.new) - 1, drop=True)
+        self.multiply(-1)
+        self.assign(last=lambda x: int(x.new) - 1, drop=True)
+        self.rename({"last": self.variables[0]})
+        self.run()
+        return None
+
+    raise TypeError("You have not supplied a valid type for x!")
+
+
+def last_below(self, x=None):
+    """
+    Identify the last time step when a value is below a threshold
+    This will do the comparison with either a number, a Dataset or a NetCDF file.
+    Parameters
+    ------------
+    x: int, float, DataSet or netcdf file
+        An int, float, single file dataset or netcdf file to use for the threshold(s).
+        If comparing with a dataset or single file there must only be a single variable
+        in it. The grids must be the same.
+
+    Examples
+    ------------
+
+    If you wanted to calculate the last time step where the value in a grid cell is below 10, you would do the following
+
+    >>> data.last_below(10)
+
+
+    If you wanted to calculate the last time step where the value in a grid cell is above that in another dataset, the
+    following will work. Note that both datasets must have the same grid, and can only have single variables. The second
+    dataset can, of course, only have one timestep.
+
+    >>> data.last_below(data1)
+
+
+    """
+
+    self.run()
+
+    if len(self.variables) > 1:
+        raise ValueError("This method only works with single variable datasets!")
+
+    run_code = False
+
+    # 1: int, float multiplication
+    if isinstance(x, (int, float)):
+        self.compare(f"<{x}")
+        run_code = True
+
+    # 2: dataset or netcdf file multiplication
+    # get the netcdf file(s)
+    if ("api.DataSet" in str(type(x))) or (type(x) is str):
+        x.run()
+        self.lt(x)
+        run_code = True
+    if run_code:
+        self.rename({self.variables[0]: "target"})
+        self.set_missing(0)
+        self.assign(new=lambda x: (x.target == x.target) * -1 * (timestep(x.target) + 1), drop=True)
+        self.set_missing([0, 0.01])
+        self.assign(new=lambda x: int(x.new))
+        self.tmin()
+        self.multiply(-1)
+        self.assign(new=lambda x: int(x.new))
+        self.assign(last=lambda x: int(x.new) - 1, drop=True)
+        self.rename({"last": self.variables[0]})
         self.run()
         return None
 
