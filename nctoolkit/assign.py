@@ -99,6 +99,8 @@ funs = [
     "sin",
     "cos",
     "tan",
+    "int",
+    "float"
 ]
 
 translation = dict()
