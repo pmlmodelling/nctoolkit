@@ -1234,6 +1234,7 @@ class DataSet(object):
     from nctoolkit.compare import compare
 
     from nctoolkit.compare_data import gt
+    from nctoolkit.compare_data import lt
 
     from nctoolkit.corr import cor_space
     from nctoolkit.corr import cor_time
@@ -1326,6 +1327,9 @@ class DataSet(object):
     from nctoolkit.temporal_stat import tcumsum
 
     from nctoolkit.thresholds import first_above
+    from nctoolkit.thresholds import first_below
+    from nctoolkit.thresholds import last_above
+    from nctoolkit.thresholds import last_below
 
     from nctoolkit.to_lonlat import to_latlon
 
@@ -1346,7 +1350,6 @@ class DataSet(object):
     from nctoolkit.verticals import bottom_mask
     from nctoolkit.verticals import invert_levels
 
-    #from nctoolkit.bloom_start import bloom_start
 
     from nctoolkit.zip import zip
 
