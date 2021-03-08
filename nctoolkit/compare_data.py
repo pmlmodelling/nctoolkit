@@ -7,56 +7,6 @@ import warnings
 import os
 
 
-def gt(self, x):
-    """
-    Method to calculate if variable in dataset is greater than that in another file or dataset
-    This currently only works with single file datasets
-
-    Parameters
-    -------------
-    x: str or single file dataset
-        File path or nctoolkit dataset
-
-    """
-
-    self.run()
-
-    ff = None
-
-    if "api.DataSet" in str(type(x)):
-        x.run()
-        if len(x) != 1:
-            raise ValueError("This only works on single file datasets currently!")
-        ff = x[0]
-
-    if type(x) is str:
-        ff = x
-
-    if ff is None:
-        raise ValueError("ff needs to be a file path or nctoolkit dataset")
-
-    if os.path.exists(ff) == False:
-        raise ValueError(f"{ff} does not exist!")
-
-    if len(self) > 1:
-        raise ValueError("This only works on single file datasets currently!")
-
-    temp = temp_file(".nc")
-
-    cdo_command = f"cdo -gt {self[0]} {ff} {temp}"
-
-    target = run_cdo(cdo_command, temp)
-
-    self.history.append(cdo_command)
-    self._hold_history.append(cdo_command)
-
-    self.current = target
-
-    if len([x for x in get_safe() if x == target]) > 1:
-        remove_safe(target)
-
-    cleanup()
-
 
 def lt(self, x):
     """
@@ -72,38 +22,97 @@ def lt(self, x):
 
     self.run()
 
-    ff = None
+    x_ff = None
 
-    if "api.DataSet" in str(type(x)):
-        x.run()
-        if len(x) != 1:
-            raise ValueError("This only works on single file datasets currently!")
-        ff = x[0]
+    new_files = []
 
-    if type(x) is str:
-        ff = x
+    for ff in self:
 
-    if ff is None:
-        raise ValueError("ff needs to be a file path or nctoolkit dataset")
+        if "api.DataSet" in str(type(x)):
+            x.run()
+            if len(x) != 1:
+                raise ValueError("This only works on single file datasets")
+            x_ff = x[0]
 
-    if os.path.exists(ff) == False:
-        raise ValueError(f"{ff} does not exist!")
+        if type(x) is str:
+            x_ff = x
 
-    if len(self) > 1:
-        raise ValueError("This only works on single file datasets currently!")
+        if x_ff is None:
+            raise ValueError("ff needs to be a file path or nctoolkit dataset")
 
-    temp = temp_file(".nc")
+        if os.path.exists(x_ff) == False:
+            raise ValueError(f"{x_ff} does not exist!")
 
-    cdo_command = f"cdo -lt {self[0]} {ff} {temp}"
+        temp = temp_file(".nc")
 
-    target = run_cdo(cdo_command, temp)
+        cdo_command = f"cdo -lt {ff} {x_ff} {temp}"
+
+        target = run_cdo(cdo_command, temp)
+        new_files.append(target)
 
     self.history.append(cdo_command)
     self._hold_history.append(cdo_command)
 
-    self.current = target
+    self.current = new_files
 
-    if len([x for x in get_safe() if x == target]) > 1:
-        remove_safe(target)
+    for ff in new_files:
+        remove_safe(ff)
 
     cleanup()
+
+
+
+
+def gt(self, x):
+    """
+    Method to calculate if variable in dataset is greater than that in another file or dataset
+    This currently only works with single file datasets
+
+    Parameters
+    -------------
+    x: str or single file dataset
+        File path or nctoolkit dataset
+
+    """
+
+
+    self.run()
+
+    x_ff = None
+
+    new_files = []
+
+    for ff in self:
+
+        if "api.DataSet" in str(type(x)):
+            x.run()
+            if len(x) != 1:
+                raise ValueError("This only works on single file datasets")
+            x_ff = x[0]
+
+        if type(x) is str:
+            x_ff = x
+
+        if os.path.exists(x_ff) == False:
+            raise ValueError(f"{x_ff} does not exist!")
+
+        if x_ff is None:
+            raise ValueError("ff needs to be a file path or nctoolkit dataset")
+
+        temp = temp_file(".nc")
+
+        cdo_command = f"cdo -gt {ff} {x_ff} {temp}"
+
+        target = run_cdo(cdo_command, temp)
+        new_files.append(target)
+
+    self.history.append(cdo_command)
+    self._hold_history.append(cdo_command)
+
+    self.current = new_files
+
+    for ff in new_files:
+        remove_safe(ff)
+
+    cleanup()
+
