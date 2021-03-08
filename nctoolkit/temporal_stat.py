@@ -8,7 +8,7 @@ from nctoolkit.session import nc_safe, remove_safe
 import warnings
 
 
-def time_stat(self, stat="mean", over = "time"):
+def time_stat(self, stat="mean", over="time"):
     """Method to calculate a stat over all time steps"""
     # create cdo command and run it
     if over == "time":
@@ -47,53 +47,50 @@ def time_stat(self, stat="mean", over = "time"):
     # single variables
     # daily climatology
     if over == ["day"]:
-        ydaystat(self, stat = stat)
+        ydaystat(self, stat=stat)
         return None
 
     # monthly climatology
     if over == ["month"]:
-        ymonstat(self, stat = stat)
+        ymonstat(self, stat=stat)
         return None
 
     # annual mean
     if over == ["year"]:
-        yearlystat(self, stat = stat)
+        yearlystat(self, stat=stat)
         return None
 
     # seasonal climatology
     if over == ["season"]:
-        seasclim(self, stat = stat)
+        seasclim(self, stat=stat)
         return None
 
     # seasonal climatology
     if over == ["season", "year"]:
-        seasstat(self, stat = stat)
+        seasstat(self, stat=stat)
         return None
-
 
     # all three. This is daily mean
 
     if over == ["day", "month", "year"] or over == ["day", "year"]:
-        dailystat(self, stat = stat)
+        dailystat(self, stat=stat)
         return None
 
     # monthly mean
 
     if over == ["month", "year"]:
-        monstat(self, stat = stat)
+        monstat(self, stat=stat)
         return None
 
 
-
-
-def tsum(self, over = "time"):
+def tsum(self, over="time"):
     """
     Calculate the temporal sum of all variables
     """
-    time_stat(self, stat="sum", over = over)
+    time_stat(self, stat="sum", over=over)
 
 
-def tmean(self, over = "time"):
+def tmean(self, over="time"):
     """
     Calculate the temporal mean of all variables
 
@@ -132,10 +129,10 @@ def tmean(self, over = "time"):
 
 
     """
-    time_stat(self, stat="mean", over = over)
+    time_stat(self, stat="mean", over=over)
 
 
-def tmin(self, over = "time"):
+def tmin(self, over="time"):
     """
     Calculate the temporal minimum of all variables
 
@@ -173,10 +170,10 @@ def tmin(self, over = "time"):
         >>> data.tmin( "day")
 
     """
-    time_stat(self, stat="min", over = over)
+    time_stat(self, stat="min", over=over)
 
 
-def tmax(self, over = "time"):
+def tmax(self, over="time"):
     """
     Calculate the temporal maximum of all variables
 
@@ -213,9 +210,10 @@ def tmax(self, over = "time"):
 
         >>> data.tmax( "day")
     """
-    time_stat(self, stat="max", over = over)
+    time_stat(self, stat="max", over=over)
 
-def tmedian(self, over = "time"):
+
+def tmedian(self, over="time"):
     """
     Calculate the temporal median of all variables
     Parameters
@@ -251,10 +249,10 @@ def tmedian(self, over = "time"):
 
         >>> data.tmedian( "day")
     """
-    self.tpercentile(p = 50, over = over)
+    self.tpercentile(p=50, over=over)
 
 
-def trange(self, over = "time"):
+def trange(self, over="time"):
     """
     Calculate the temporal range of all variables
 
@@ -292,11 +290,10 @@ def trange(self, over = "time"):
         >>> data.trange( "day")
 
     """
-    time_stat(self, stat="range", over = over)
+    time_stat(self, stat="range", over=over)
 
 
-
-def tvariance(self, over = "time"):
+def tvariance(self, over="time"):
     """
     Calculate the temporal variance of all variables
 
@@ -333,9 +330,10 @@ def tvariance(self, over = "time"):
 
         >>> data.tvar( "day")
     """
-    time_stat(self, stat="var", over = over)
+    time_stat(self, stat="var", over=over)
 
-def tstdev(self, over = "time"):
+
+def tstdev(self, over="time"):
     """
     Calculate the temporal standard deviation of all variables
 
@@ -372,7 +370,7 @@ def tstdev(self, over = "time"):
 
         >>> data.tstdev("day")
     """
-    time_stat(self, stat="std", over = over)
+    time_stat(self, stat="std", over=over)
 
 
 def tcumsum(self):
@@ -390,7 +388,7 @@ def tcumsum(self):
     time_stat(self, stat="cumsum")
 
 
-def tpercentile(self, p=None, over = "time"):
+def tpercentile(self, p=None, over="time"):
     """
     Calculate the temporal percentile of all variables
 
@@ -441,7 +439,6 @@ def tpercentile(self, p=None, over = "time"):
     if over == ["day", "month"]:
         over = ["day"]
 
-
     if over == ["time"]:
         min_command = " -timmin "
         max_command = " -timmax "
@@ -472,7 +469,6 @@ def tpercentile(self, p=None, over = "time"):
         min_command = " -seasmin "
         max_command = " -seasmax "
 
-
     # all three. This is daily mean
 
     if over == ["day", "month", "year"] or over == ["day", "year"]:
@@ -484,7 +480,6 @@ def tpercentile(self, p=None, over = "time"):
     if over == ["month", "year"]:
         min_command = " -monmin "
         max_command = " -monmax "
-
 
     new_files = []
     new_commands = []
@@ -518,8 +513,3 @@ def tpercentile(self, p=None, over = "time"):
         remove_safe(ff)
 
     cleanup()
-
-
-
-
-

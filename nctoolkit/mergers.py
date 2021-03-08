@@ -93,8 +93,8 @@ def merge(self, match=["year", "month", "day"]):
 
     if len(set(all_grids)) > 1:
         raise ValueError(
-                "The files in the dataset to do not have the same grid. "
-                "Consider using regrid!"
+            "The files in the dataset to do not have the same grid. "
+            "Consider using regrid!"
         )
 
     # check the file times are compatible
@@ -114,8 +114,8 @@ def merge(self, match=["year", "month", "day"]):
     for i in range(1, len(all_times)):
         if (len(all_times[i]) != len(all_times[0])) and (len(all_times[i]) > 1):
             raise ValueError(
-                    "You are trying to merge data sets with an incompatible number "
-                    "of time steps"
+                "You are trying to merge data sets with an incompatible number "
+                "of time steps"
             )
 
     # remove files with more than one time step in it

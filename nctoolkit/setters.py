@@ -42,8 +42,10 @@ def set_date(self, year=None, month=None, day=None, base_year=1900):
     if type(day) is not int:
         raise TypeError("day supplied is not an int")
 
-    cdo_command = f"cdo -setreftime,{str(base_year)}-01-01 "\
-                  f"-setdate,{str(year)}-{str(month)}-{str(day)}"
+    cdo_command = (
+        f"cdo -setreftime,{str(base_year)}-01-01 "
+        f"-setdate,{str(year)}-{str(month)}-{str(day)}"
+    )
 
     run_this(cdo_command, self, output="ensemble")
 
@@ -154,7 +156,6 @@ def set_longnames(self, name_dict=None):
 
     self.history += new_commands
     self._hold_history = copy.deepcopy(self.history)
-
 
     self.current = new_files
 

@@ -1,13 +1,15 @@
 from nctoolkit.runthis import run_this
 import subprocess
-from nctoolkit.utils import  is_curvilinear
+from nctoolkit.utils import is_curvilinear
 
 
 def zonstat(self, stat="mean"):
     """Method to calculate the meridonial statistic from a netcdf file"""
     for ff in self:
         if is_curvilinear(ff):
-            raise TypeError(f"meridonal_{stat} cannot be calculated for curvilinear grids.")
+            raise TypeError(
+                f"meridonal_{stat} cannot be calculated for curvilinear grids."
+            )
     cdo_command = f"cdo -mer{stat}"
 
     run_this(cdo_command, self, output="ensemble")

@@ -65,4 +65,3 @@ def nco_command(self, command=None, ensemble=False):
     self._hold_history = copy.deepcopy(self.history)
 
     self.disk_clean()
-

@@ -244,7 +244,7 @@ def spatial_percentile(self, p=None):
     If you want to calculate the median of each variable across space for a dataset, just do the following:
 
     >>> data.spatial_percentile(50)
- """
+    """
 
     if p is None:
         raise ValueError("Please supply a percentile")

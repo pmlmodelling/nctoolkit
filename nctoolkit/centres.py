@@ -3,7 +3,7 @@ from nctoolkit.utils import is_curvilinear
 import subprocess
 
 
-def centre(self, by ="latitude", by_area = False):
+def centre(self, by="latitude", by_area=False):
     """
     Calculate the latitudinal or longitudinal centre for each year/month combination in files.
     This applies to each file in an ensemble.
@@ -21,7 +21,7 @@ def centre(self, by ="latitude", by_area = False):
 
     self.run()
 
-    if len(self) >1:
+    if len(self) > 1:
         raise TypeError("This method still does not work with lists! Consider merging.")
 
     data1 = self.copy()
@@ -35,14 +35,6 @@ def centre(self, by ="latitude", by_area = False):
     ops = ";".join(ops)
     ops = f"expr,'{ops}'"
     self.cdo_command(ops)
-    data1.spatial_sum(by_area = by_area)
-    self.spatial_sum(by_area = by_area)
+    data1.spatial_sum(by_area=by_area)
+    self.spatial_sum(by_area=by_area)
     self.divide(data1)
-
-
-
-
-
-
-
-

@@ -8,12 +8,14 @@ def ymonstat(self, stat="mean"):
 
     run_this(cdo_command, self, output="ensemble")
 
+
 def yearlystat(self, stat="mean"):
     """Function to calculate the seasonal statistic from a function"""
 
     cdo_command = f"cdo -year{stat}"
 
     run_this(cdo_command, self, output="ensemble")
+
 
 def ydaystat(self, stat="mean"):
     """
@@ -22,6 +24,7 @@ def ydaystat(self, stat="mean"):
     # create the cdo command and run it
     cdo_command = "cdo -yday" + stat
     run_this(cdo_command, self, output="ensemble")
+
 
 def seasclim(self, stat="mean"):
     """Method to calculate the seasonal statistic from a function"""
@@ -38,11 +41,13 @@ def dailystat(self, stat="mean"):
 
     run_this(cdo_command, self, output="ensemble")
 
+
 def monstat(self, stat="mean"):
     """Method to calculate the monthly statistic from a netcdf file"""
     cdo_command = f"cdo -mon{stat}"
 
     run_this(cdo_command, self, output="ensemble")
+
 
 def seasstat(self, stat="mean"):
     """Method to calculate the seasonal statistic from a function"""

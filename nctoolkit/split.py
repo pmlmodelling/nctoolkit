@@ -5,7 +5,7 @@ import platform
 
 from nctoolkit.cleanup import cleanup
 from nctoolkit.temp_file import temp_file
-from nctoolkit.session import session_info, get_tempdirs,  append_safe, remove_safe
+from nctoolkit.session import session_info, get_tempdirs, append_safe, remove_safe
 
 
 def split_cdo(self, method="year"):
@@ -74,7 +74,6 @@ def split_cdo(self, method="year"):
     for ff in bases:
         remove_safe(ff)
 
-
     cleanup()
     self.disk_clean()
 
@@ -103,7 +102,6 @@ def split(self, by=None):
     If you wanted to split by month, do the following:
 
         >>> data.split("month")
-
 
     """
 

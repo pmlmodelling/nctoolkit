@@ -5,7 +5,7 @@ from nctoolkit.runthis import run_nco
 from nctoolkit.temp_file import temp_file
 
 
-def strip_variables(self, vars = None):
+def strip_variables(self, vars=None):
     """
     Remove any variables, such as bnds etc., from variables.
     This should probably only be done at the end of a processing chain before converting to a dataframe etc., as it is stripping away critical info for NetCDF operations.
@@ -47,7 +47,6 @@ def strip_variables(self, vars = None):
 
         new_files.append(target)
         new_commands.append(the_command)
-
 
     self.current = new_files
 

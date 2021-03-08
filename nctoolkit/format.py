@@ -1,8 +1,7 @@
 from nctoolkit.runthis import run_this
 from nctoolkit.session import session_info
 
-
-def format(self, ext = None):
+def format(self, ext=None):
     """
     Zip the dataset
     This will compress the files within the dataset. This works lazily.
@@ -26,12 +25,8 @@ def format(self, ext = None):
     if ext not in ["nc", "nc1", "nc2", "nc4", "nc4c", "nc5"]:
         raise ValueError(f"{ext} is not a valid format!")
 
-
     self._format = ext
 
     if session_info["lazy"] == False:
         self._execute = False
         self.run()
-
-
-

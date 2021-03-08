@@ -1,7 +1,7 @@
 from nctoolkit.runthis import run_this
 
 
-def resample_grid(self, factor = None):
+def resample_grid(self, factor=None):
     """
     Resample the horizontal grid of a dataset
 

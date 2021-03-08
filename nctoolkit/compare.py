@@ -102,6 +102,7 @@ def fix_expr(expression):
 
     raise ValueError(expression + " is not valid!")
 
+
 def compare(self, expression=None):
     """
     Compare all variables to a constant

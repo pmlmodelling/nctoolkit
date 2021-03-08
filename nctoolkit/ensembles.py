@@ -240,6 +240,7 @@ def ensemble_range(self):
 
     self._merged = True
 
+
 def ensemble_sum(self):
     """
     Calculate an ensemble sum

@@ -7,7 +7,6 @@ from nctoolkit.show import nc_years
 from nctoolkit.crop import crop
 
 
-
 def select_seasons(self, season=None):
     """
     Select season from a dataset
@@ -177,7 +176,6 @@ def select_variables(self, vars=None):
     run_this(cdo_command, self, output="ensemble")
 
 
-
 def select_timesteps(self, times=None):
     """
     Select timesteps from a dataset
@@ -188,7 +186,6 @@ def select_timesteps(self, times=None):
         time step(s) to select. For example, if you wanted the first time step
         set times=0.
     """
-
 
     if times is None:
         raise ValueError("Please supply times")
@@ -280,62 +277,23 @@ def select(self, **kwargs):
 
         if "var" in key:
             select_variables(self, kwargs[key])
-            #self.select_variables(kwargs[key])
             non_selected = False
 
-        if "mon" in  key:
-            #self.select_months(kwargs[key])
+        if "mon" in key:
             select_months(self, kwargs[key])
             non_selected = False
 
         if "year" in key:
             select_years(self, kwargs[key])
-            #self.select_years(kwargs[key])
             non_selected = False
 
         if "seas" in key:
-            #self.select_seasons(kwargs[key])
             select_seasons(self, kwargs[key])
             non_selected = False
 
         if "time" in key:
-            #self.select_timesteps(kwargs[key])
             select_timesteps(self, kwargs[key])
             non_selected = False
 
-    ## Now we need to get crop working
-
-
-    #crop_it = False
-    #lon = None
-    #lat = None
-    #nco = False
-    #nco_vars = None
-    #for key in kwargs:
-    #    if "lon" == key:
-    #        non_selected = False
-    #        crop_it = True
-    #        lon = kwargs[key]
-    #    if "lat" == key:
-    #        non_selected = False
-    #        crop_it = True
-    #        lat = kwargs[key]
-    #    if "nco" == key:
-    #        nco = kwargs[key]
-    #    if "nco_vars" == key:
-    #        nco_vars = kwargs[key]
-
-    #if crop_it:
-    #    if lon is not None and lat is not None:
-    #        self.crop(lon = lon, lat = lat, nco = nco, nco_vars = nco_vars)
-    #    if lon is not None and lat is None:
-    #        self.crop(lon = lon,  nco = nco, nco_vars = nco_vars)
-    #    if lon is None and lat is not None:
-    #        self.crop(lat = lat,  nco = nco, nco_vars = nco_vars)
-
-
-
     if non_selected:
         raise AttributeError(f"{key} is not a valid select method")
-
-

@@ -63,9 +63,11 @@ def phenology(self, var=None, metric=None, p=None):
         for ff in self:
 
             target = temp_file(".nc")
-            command = f"cdo -timmin -setrtomiss,-10000,0 -expr,'peak=var*ctimestep()' "\
-                f"-eq -chname,{var},var -selname,{var} {ff} -timmax -chname,{var},var "\
+            command = (
+                f"cdo -timmin -setrtomiss,-10000,0 -expr,'peak=var*ctimestep()' "
+                f"-eq -chname,{var},var -selname,{var} {ff} -timmax -chname,{var},var "
                 f"-selname,{var} {ff} {target}"
+            )
 
             command = tidy_command(command)
             target = run_cdo(command, target=target)
@@ -108,10 +110,12 @@ def phenology(self, var=None, metric=None, p=None):
         for ff in self:
 
             target = temp_file(".nc")
-            command = f"cdo -timmin -setrtomiss,-10000,0 -expr,"\
-                      f"'{metric}=var*ctimestep()' -gt -timcumsum -chname,{var},var "\
-                      f"-selname,{var} {ff} -mulc,{start} -timsum -chname,{var},var "\
-                      f"-selname,{var} {ff} {target}"
+            command = (
+                f"cdo -timmin -setrtomiss,-10000,0 -expr,"
+                f"'{metric}=var*ctimestep()' -gt -timcumsum -chname,{var},var "
+                f"-selname,{var} {ff} -mulc,{start} -timsum -chname,{var},var "
+                f"-selname,{var} {ff} {target}"
+            )
 
             command = tidy_command(command)
             target = run_cdo(command, target=target)
@@ -130,8 +134,3 @@ def phenology(self, var=None, metric=None, p=None):
         cleanup()
 
         return None
-
-
-
-
-

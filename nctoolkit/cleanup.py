@@ -5,7 +5,14 @@ import platform
 import tempfile
 
 from nctoolkit.remove import nc_remove
-from nctoolkit.session import session_info, nc_safe, get_tempdirs, append_safe, remove_safe, get_safe
+from nctoolkit.session import (
+    session_info,
+    nc_safe,
+    get_tempdirs,
+    append_safe,
+    remove_safe,
+    get_safe,
+)
 
 # keep is a file you do not want to delete
 
@@ -186,7 +193,7 @@ def disk_clean(self):
             if result > 0.5 * 1e9:
                 return None
 
-        if session_info["temp_dir"] not in  ["/tmp/", "/var/tmp", "/usr/tmp"]:
+        if session_info["temp_dir"] not in ["/tmp/", "/var/tmp", "/usr/tmp"]:
             return None
 
         # at this point we want to change the temp dir,
@@ -211,6 +218,5 @@ def disk_clean(self):
                     self.current = [
                         new_ff if file == ff else file for file in self.current
                     ]
-
 
         cleanup()

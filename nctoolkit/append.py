@@ -61,6 +61,7 @@ def append(self, x=None):
         append_safe(ff)
         self.current.append(ff)
 
+
 def remove(self, x=None):
     """
     Remove file(s) from a dataset
@@ -76,21 +77,13 @@ def remove(self, x=None):
     if x is None:
         raise ValueError("Please provide files to remove!")
 
-
     if type(x) is str:
         x = [x]
-
 
     for ff in x:
         if ff not in self:
             raise ValueError(f"{x} is not a member of the dataset!")
 
-
-
     for ff in x:
         self.current.remove(ff)
         remove_safe(ff)
-
-
-
-

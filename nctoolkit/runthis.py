@@ -13,7 +13,7 @@ from nctoolkit.session import (
     session_info,
     append_safe,
     remove_safe,
-    get_protected
+    get_protected,
 )
 from nctoolkit.temp_file import temp_file
 

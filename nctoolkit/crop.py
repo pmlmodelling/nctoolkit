@@ -9,7 +9,7 @@ from nctoolkit.temp_file import temp_file
 from nctoolkit.session import remove_safe
 
 
-def crop(self, lon=[-180, 180], lat=[-90, 90], nco=False, nco_vars = None):
+def crop(self, lon=[-180, 180], lat=[-90, 90], nco=False, nco_vars=None):
     """
     Crop to a rectangular longitude and latitude box
 
@@ -86,7 +86,6 @@ def crop(self, lon=[-180, 180], lat=[-90, 90], nco=False, nco_vars = None):
         else:
             raise ValueError("The lonlat box supplied is not valid!")
 
-
     new_files = []
     new_commands = []
 
@@ -116,7 +115,7 @@ def crop(self, lon=[-180, 180], lat=[-90, 90], nco=False, nco_vars = None):
 
         # figure out if the unit is degrees east
 
-        max_lon = xr.open_dataset(ff, decode_times = False)[lon_name].values.max()
+        max_lon = xr.open_dataset(ff, decode_times=False)[lon_name].values.max()
 
         if lon != [-180, 180] and max_lon > 180:
             if lon[0] < 0:
@@ -124,7 +123,6 @@ def crop(self, lon=[-180, 180], lat=[-90, 90], nco=False, nco_vars = None):
 
             if lon[1] < 0:
                 lon[1] = 360 + lon[1]
-
 
         nco_command = (
             f"ncks {var_str} -d "

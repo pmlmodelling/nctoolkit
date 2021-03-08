@@ -93,11 +93,15 @@ def annual_anomaly(self, baseline=None, metric="absolute", window=1):
             raise ValueError("Check that the years in baseline are in the dataset!")
         # generate the cdo command
         if metric == "absolute":
-            cdo_command = f"cdo -sub -runmean,{window} -yearmean {ff} -timmean "\
-                    f"-selyear,{baseline[0]}/{baseline[1]} {ff} {target}"
+            cdo_command = (
+                f"cdo -sub -runmean,{window} -yearmean {ff} -timmean "
+                f"-selyear,{baseline[0]}/{baseline[1]} {ff} {target}"
+            )
         else:
-            cdo_command = f"cdo -div -runmean,{window} -yearmean {ff} -timmean "\
-                    f"-selyear,{baseline[0]}/{baseline[1]} {ff} {target}"
+            cdo_command = (
+                f"cdo -div -runmean,{window} -yearmean {ff} -timmean "
+                f"-selyear,{baseline[0]}/{baseline[1]} {ff} {target}"
+            )
 
         # run the command and save the temp file
 
@@ -171,8 +175,10 @@ def monthly_anomaly(self, baseline=None):
         # create the target file
         target = temp_file("nc")
         # create system command
-        cdo_command = f"cdo -ymonsub -monmean {ff} -ymonmean -selyear,"\
+        cdo_command = (
+            f"cdo -ymonsub -monmean {ff} -ymonmean -selyear,"
             f"{baseline[0]}/{baseline[1]} {ff} {target}"
+        )
 
         cdo_command = tidy_command(cdo_command)
 
