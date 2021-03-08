@@ -38,8 +38,8 @@ def first_above(self, x=None):
 
     self.run()
 
-    if len(self.variables) > 1:
-        raise ValueError("This method only works with single variable datasets!")
+    #if len(self.variables) > 1:
+    #    raise ValueError("This method only works with single variable datasets!")
 
     run_code = False
 
@@ -99,8 +99,8 @@ def first_below(self, x=None):
 
     self.run()
 
-    if len(self.variables) > 1:
-        raise ValueError("This method only works with single variable datasets!")
+    #if len(self.variables) > 1:
+    #    raise ValueError("This method only works with single variable datasets!")
 
     run_code = False
 
@@ -159,8 +159,8 @@ def last_above(self, x=None):
 
     self.run()
 
-    if len(self.variables) > 1:
-        raise ValueError("This method only works with single variable datasets!")
+    #if len(self.variables) > 1:
+    #    raise ValueError("This method only works with single variable datasets!")
 
     run_code = False
 
@@ -222,8 +222,8 @@ def last_below(self, x=None):
 
     self.run()
 
-    if len(self.variables) > 1:
-        raise ValueError("This method only works with single variable datasets!")
+    #if len(self.variables) > 1:
+    #    raise ValueError("This method only works with single variable datasets!")
 
     run_code = False
 
