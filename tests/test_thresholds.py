@@ -22,6 +22,21 @@ class TestClip:
 
         assert x == 349
 
+        tracker = nc.open_data(ff)
+
+        tracker = nc.open_data(ff)
+        tracker.assign(analysed_sst = lambda x: (x.analysed_sst == x.analysed_sst) * timestep(x.analysed_sst) + 0.01)
+        data = tracker.copy()
+        data.select(time = 350)
+        data.run()
+
+        tracker.last_below(data)
+        tracker.set_missing(0)
+        tracker.spatial_mean()
+
+        x = tracker.to_dataframe().analysed_sst.values[0]
+
+        assert x == 349
 
         tracker = nc.open_data(ff)
         tracker.assign(analysed_sst = lambda x: (x.analysed_sst == x.analysed_sst) * timestep(x.analysed_sst) + 0.01)
@@ -33,6 +48,17 @@ class TestClip:
 
         assert x == 350.0
 
+        tracker = nc.open_data(ff)
+        tracker.assign(analysed_sst = lambda x: (x.analysed_sst == x.analysed_sst) * timestep(x.analysed_sst) + 0.01)
+        data = tracker.copy()
+        data.select(time = 349)
+        tracker.first_above(data)
+        tracker.set_missing(0)
+        tracker.spatial_mean()
+
+        x = tracker.to_dataframe().analysed_sst.values[0]
+
+        assert x == 350.0
 
 
 
@@ -40,6 +66,19 @@ class TestClip:
         tracker.assign(analysed_sst = lambda x: (x.analysed_sst == x.analysed_sst) * timestep(x.analysed_sst) + 0.01)
         tracker.assign(analysed_sst = lambda x: -x.analysed_sst)
         tracker.last_above(-351)
+        tracker.set_missing(0)
+        tracker.spatial_mean()
+
+        x = tracker.to_dataframe().analysed_sst.values[0]
+
+        assert x == 350.0
+
+        tracker = nc.open_data(ff)
+        tracker.assign(analysed_sst = lambda x: (x.analysed_sst == x.analysed_sst) * timestep(x.analysed_sst) + 0.01)
+        tracker.assign(analysed_sst = lambda x: -x.analysed_sst)
+        data = tracker.copy()
+        data.select(time = 351)
+        tracker.last_above(data)
         tracker.set_missing(0)
         tracker.spatial_mean()
 
@@ -59,4 +98,22 @@ class TestClip:
         x = tracker.to_dataframe().analysed_sst.values[0]
 
         assert x == 351.0
+
+
+
+
+        tracker = nc.open_data(ff)
+        tracker.assign(analysed_sst = lambda x: (x.analysed_sst == x.analysed_sst) * timestep(x.analysed_sst) + 0.01)
+        tracker.assign(analysed_sst = lambda x: -x.analysed_sst)
+        data = tracker.copy()
+        data.select(time = 351)
+        tracker.first_below(data)
+        tracker.set_missing(0)
+        tracker.spatial_mean()
+
+        x = tracker.to_dataframe().analysed_sst.values[0]
+
+        assert x == 352.0
+
+
 
