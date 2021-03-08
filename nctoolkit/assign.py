@@ -107,6 +107,10 @@ translation = dict()
 for ff in funs:
     if ff in dir(np):
         translation[ff] = ff
+
+translation["int"] = "int"
+translation["float"] = "float"
+
 translation["arcsin"] = "asin"
 translation["arccos"] = "acos"
 translation["arctan"] = "atan"
