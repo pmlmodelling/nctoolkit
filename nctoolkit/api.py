@@ -381,7 +381,7 @@ def open_data(x=[], suppress_messages=False, checks=False, **kwargs):
         By default an empty dataset is created, ie. using open_data() will create an empty
         dataset that can then be expanded using append.
     thredds : boolean
-        Are you accessing a thredds server? Must end with .nc.
+        Are you accessing a thredds server?
     checks: boolean
         Do you want basic checks to ensure cdo can read files?
 
