@@ -60,7 +60,7 @@ def cor(self, var1=None, var2=None, method="fld"):
         if len([x for x in get_safe() if x == ff]) > 1:
             remove_safe(ff)
 
-    # tidy up the attributes of the netcdf file in the dataset
+    # tidy up the attributes of the NetCDF file in the dataset
     self.rename({var1: "cor"})
     self.set_units({"cor": "-"})
     self.set_longnames({"cor": f"Correlation between {var1} & {var2}"})

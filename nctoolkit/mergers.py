@@ -28,10 +28,10 @@ def merge(self, match=["year", "month", "day"]):
     Parameters
     -------------
     match: list, str
-        a list or str stating what must match in the netcdf files.
+        a list or str stating what must match in the NetCDF files.
         Defaults to year/month/day. This list must be some combination of
         year/month/day. An error will be thrown if the elements of time in match
-        do not match across all netcdf files. The only exception is if there is a
+        do not match across all NetCDF files. The only exception is if there is a
         single date file in the ensemble.
     """
 

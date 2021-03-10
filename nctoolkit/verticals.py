@@ -242,7 +242,7 @@ def bottom_mask(self):
     This converts a dataset to a mask identifying which cell represents the bottom,
     for example the seabed. 1 identifies the deepest cell with non-missing values.
     Everything else is 0, or missing. At present this method only uses the first
-    available variable from netcdf files, so it may not be suitable for all data
+    available variable from NetCDF files, so it may not be suitable for all data
     """
     self.run()
 

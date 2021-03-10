@@ -1,8 +1,8 @@
 
-nctoolkit: Fast and easy analysis of netCDF data in Python 
+nctoolkit: Fast and easy analysis of NetCDF data in Python 
 =======================================================
 
-nctoolkit is a comprehensive Python package for analyzing netCDF data on Linux and MacOS.
+nctoolkit is a comprehensive Python package for analyzing NetCDF data on Linux and macOS.
 
 Core abilities include:
 

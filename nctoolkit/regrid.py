@@ -18,7 +18,7 @@ def regrid(self, grid=None, method="bil", recycle = False):
 
     Parameters
     -------------
-    grid : nctoolkit.DataSet, pandas data frame or netcdf file
+    grid : nctoolkit.DataSet, pandas data frame or NetCDF file
         The grid to remap to
 
     method : str

@@ -39,7 +39,7 @@ def nc_format(ff):
 
 def nc_levels(ff):
     """
-    Function to get the depths available in a netcdf file
+    Function to get the depths available in a NetCDF file
     """
 
     cdo_result = subprocess.run(
@@ -60,7 +60,7 @@ def nc_levels(ff):
 
 def nc_years(ff):
     """
-    Function to get the years available in a netcdf file
+    Function to get the years available in a NetCDF file
     """
 
     all_years = []
@@ -80,7 +80,7 @@ def nc_years(ff):
 
 def nc_variables(ff):
     """
-    Function to get the variables available in a netcdf file
+    Function to get the variables available in a NetCDF file
     """
 
     cdo_result = subprocess.run(
@@ -97,7 +97,7 @@ def nc_variables(ff):
 
 def nc_months(ff):
     """
-    Function to get the months available in a netcdf file
+    Function to get the months available in a NetCDF file
     """
 
     cdo_result = subprocess.run(

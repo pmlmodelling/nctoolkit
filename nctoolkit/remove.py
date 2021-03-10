@@ -4,7 +4,7 @@ from nctoolkit.session import session_info, nc_safe, get_tempdirs, get_safe
 
 def nc_remove(ff, deep=False):
     """
-    Method for removing netcdf files.
+    Method for removing NetCDF files.
     This is ultra-safe and makes sure the file is in the tmp directory before deleting
 
     Parameters

@@ -11,7 +11,7 @@ def create_ensemble(path="", recursive=True):
     Parameters
     -------------
     path: str
-        The directory to search for netcdf files
+        The directory to search for NetCDF files
     recursive : boolean
         True/False depending on whether you want to search the path recursively.
         Defaults to True.

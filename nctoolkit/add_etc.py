@@ -25,7 +25,7 @@ def arithall(self, stat="divc", x=None):
 
 def operation(self, method="mul", ff=None, var=None):
     """
-    Method to add, subtract etc. a netcdf file from another one
+    Method to add, subtract etc. a NetCDF file from another one
     This is used by add etc.
     """
 
@@ -131,8 +131,8 @@ def multiply(self, x=None, var=None):
     This will multiply a dataset by a constant, another dataset or a NetCDF file.
     Parameters
     ------------
-    x: int, float, DataSet or netcdf file
-        An int, float, single file dataset or netcdf file to multiply the dataset by.
+    x: int, float, DataSet or NetCDF file
+        An int, float, single file dataset or NetCDF file to multiply the dataset by.
         If multiplying by a dataset or single file there must only be a single variable
         in it, unless var is supplied. The grids must be the same.
     var: str
@@ -162,8 +162,8 @@ def multiply(self, x=None, var=None):
         arithall(self, stat="mulc", x=x)
         return None
 
-    # 2: dataset or netcdf file multiplication
-    # get the netcdf file(s)
+    # 2: dataset or NetCDF file multiplication
+    # get the NetCDF file(s)
     if "api.DataSet" in str(type(x)):
         x.run()
         if len(x) == 1:
@@ -185,9 +185,9 @@ def subtract(self, x=None, var=None):
     This will subtract a constant, another dataset or a NetCDF file from the dataset.
     Parameters
     ------------
-    x: int, float, DataSet or netcdf file
-        An int, float, single file dataset or netcdf file to subtract from the dataset.
-        If a dataset or netcdf is supplied this must only have one variable,
+    x: int, float, DataSet or NetCDF file
+        An int, float, single file dataset or NetCDF file to subtract from the dataset.
+        If a dataset or NetCDF is supplied this must only have one variable,
         unless var is provided. The grids must be the same.
     var: str
         A variable in the x to use for the operation
@@ -216,8 +216,8 @@ def subtract(self, x=None, var=None):
         arithall(self, stat="subc", x=x)
         return None
 
-    # 2: dataset or netcdf file subtraction
-    # get the netcdf file(s)
+    # 2: dataset or NetCDF file subtraction
+    # get the NetCDF file(s)
     if "api.DataSet" in str(type(x)):
         x.run()
         if len(x) == 1:
@@ -239,9 +239,9 @@ def add(self, x=None, var=None):
     This will add a constant, another dataset or a NetCDF file to the dataset.
     Parameters
     ------------
-    x: int, float, DataSet or netcdf file
-        An int, float, single file dataset or netcdf file to add to the dataset.
-        If a dataset or netcdf file is supplied, this must have only one variable,
+    x: int, float, DataSet or NetCDF file
+        An int, float, single file dataset or NetCDF file to add to the dataset.
+        If a dataset or NetCDF file is supplied, this must have only one variable,
         unless var is provided. The grids must be the same.
     var: str
         A variable in the x to use for the operation
@@ -272,8 +272,8 @@ def add(self, x=None, var=None):
         arithall(self, stat="addc", x=x)
         return None
 
-    # 2: dataset or netcdf file addition
-    # get the netcdf file(s)
+    # 2: dataset or NetCDF file addition
+    # get the NetCDF file(s)
     if "api.DataSet" in str(type(x)):
         x.run()
         if len(x) == 1:
@@ -295,9 +295,9 @@ def divide(self, x=None, var=None):
     This will divide the dataset by a constant, another dataset or a NetCDF file.
     Parameters
     ------------
-    x: int, float, DataSet or netcdf file
-        An int, float, single file dataset or netcdf file to divide the dataset by.
-        If a dataset or netcdf file is supplied, this must have only one variable,
+    x: int, float, DataSet or NetCDF file
+        An int, float, single file dataset or NetCDF file to divide the dataset by.
+        If a dataset or NetCDF file is supplied, this must have only one variable,
         unless var is provided. The grids must be the same.
     var: str
         A variable in the x to use for the operation
@@ -326,8 +326,8 @@ def divide(self, x=None, var=None):
         arithall(self, stat="divc", x=x)
         return None
 
-    # 2: dataset or netcdf file division
-    # get the netcdf file(s)
+    # 2: dataset or NetCDF file division
+    # get the NetCDF file(s)
     if "api.DataSet" in str(type(x)):
         x.run()
         if len(x) == 1:

@@ -16,8 +16,8 @@ def first_above(self, x=None):
     This will do the comparison with either a number, a Dataset or a NetCDF file.
     Parameters
     ------------
-    x: int, float, DataSet or netcdf file
-        An int, float, single file dataset or netcdf file to use for the threshold(s).
+    x: int, float, DataSet or NetCDF file
+        An int, float, single file dataset or NetCDF file to use for the threshold(s).
         If comparing with a dataset or single file there must only be a single variable
         in it. The grids must be the same.
 
@@ -48,8 +48,8 @@ def first_above(self, x=None):
         self.compare(f">{x}")
         run_code = True
 
-    # 2: dataset or netcdf file multiplication
-    # get the netcdf file(s)
+    # 2: dataset or NetCDF file multiplication
+    # get the NetCDF file(s)
     if ("api.DataSet" in str(type(x))) or (type(x) is str):
         x.run()
         self.gt(x)
@@ -75,8 +75,8 @@ def first_below(self, x=None):
     This will do the comparison with either a number, a Dataset or a NetCDF file.
     Parameters
     ------------
-    x: int, float, DataSet or netcdf file
-        An int, float, single file dataset or netcdf file to use for the threshold(s).
+    x: int, float, DataSet or NetCDF file
+        An int, float, single file dataset or NetCDF file to use for the threshold(s).
         If comparing with a dataset or single file there must only be a single variable
         in it. The grids must be the same.
 
@@ -109,8 +109,8 @@ def first_below(self, x=None):
         self.compare(f"<{x}")
         run_code = True
 
-    # 2: dataset or netcdf file multiplication
-    # get the netcdf file(s)
+    # 2: dataset or NetCDF file multiplication
+    # get the NetCDF file(s)
     if ("api.DataSet" in str(type(x))) or (type(x) is str):
         x.run()
         self.lt(x)
@@ -135,8 +135,8 @@ def last_above(self, x=None):
     This will do the comparison with either a number, a Dataset or a NetCDF file.
     Parameters
     ------------
-    x: int, float, DataSet or netcdf file
-        An int, float, single file dataset or netcdf file to use for the threshold(s).
+    x: int, float, DataSet or NetCDF file
+        An int, float, single file dataset or NetCDF file to use for the threshold(s).
         If comparing with a dataset or single file there must only be a single variable
         in it. The grids must be the same.
 
@@ -169,8 +169,8 @@ def last_above(self, x=None):
         self.compare(f">{x}")
         run_code = True
 
-    # 2: dataset or netcdf file multiplication
-    # get the netcdf file(s)
+    # 2: dataset or NetCDF file multiplication
+    # get the NetCDF file(s)
     if ("api.DataSet" in str(type(x))) or (type(x) is str):
         x.run()
         self.gt(x)
@@ -198,8 +198,8 @@ def last_below(self, x=None):
     This will do the comparison with either a number, a Dataset or a NetCDF file.
     Parameters
     ------------
-    x: int, float, DataSet or netcdf file
-        An int, float, single file dataset or netcdf file to use for the threshold(s).
+    x: int, float, DataSet or NetCDF file
+        An int, float, single file dataset or NetCDF file to use for the threshold(s).
         If comparing with a dataset or single file there must only be a single variable
         in it. The grids must be the same.
 
@@ -232,8 +232,8 @@ def last_below(self, x=None):
         self.compare(f"<{x}")
         run_code = True
 
-    # 2: dataset or netcdf file multiplication
-    # get the netcdf file(s)
+    # 2: dataset or NetCDF file multiplication
+    # get the NetCDF file(s)
     if ("api.DataSet" in str(type(x))) or (type(x) is str):
         x.run()
         self.lt(x)
