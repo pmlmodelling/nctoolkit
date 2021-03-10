@@ -69,8 +69,6 @@ also use a path to a netCDF file as the target grid.
 How to reuse the weights for regridding
 ---------------------------------------
 
-**Please note: recycling weights only works in the dev version, and will be included in v0.3.1, which will
-be released publicly in March 2021**
 Under the hood nctoolkit regrids data by first generating a weights file. There are situations where you 
 will want to be able to re-use these weights. For example, if you are post-processing a large number of files
 one after the other. To make this easier nctoolkit let's you recycle the regridding info. This let's you interpolate
