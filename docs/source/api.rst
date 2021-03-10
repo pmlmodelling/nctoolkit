@@ -14,7 +14,7 @@ Session options
    options
 
 
-Reading/copying data
+Opening/copying data
 ------------------
 
 .. autosummary::
@@ -302,9 +302,15 @@ Miscellaneous methods
    :toctree: generated/
 
    DataSet.cell_area
+   DataSet.first_above
+   DataSet.first_below
+   DataSet.last_above
+   DataSet.last_above
    DataSet.cdo_command
    DataSet.nco_command
    DataSet.compare_all
+   DataSet.gt
+   DataSet.lt
    DataSet.reduce_dims
    DataSet.reduce_grid
 
