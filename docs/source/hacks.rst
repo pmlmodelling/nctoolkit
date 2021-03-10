@@ -47,19 +47,19 @@ you need to set the ``join`` argument to ``False``:
 Of course, this method will only if it is possible to calculate the areas the grid cells.
 
 
-Changing the format of the NetCDF files in a dataset
+Changing the format of the netCDF files in a dataset
 ================
 
 Sometimes you will want to change the format of the files in a dataset. You can do this using the ``format`` method. This let's
 you set the format, with the following options: 
-  * NetCDF = "nc1"
-  * NetCDF version 2 (64-bit offset) = "nc2"/"nc"
-  * NetCDF4 (HDF5) = "nc4"
-  * NetCDF4-classi = "nc4c"
-  * NetCDF version 5 (64-bit data) = "nc5"
+  * netCDF = "nc1"
+  * netCDF version 2 (64-bit offset) = "nc2"/"nc"
+  * netCDF4 (HDF5) = "nc4"
+  * netCDF4-classi = "nc4c"
+  * netCDF version 5 (64-bit data) = "nc5"
 
 
-So, if you want to set the format to NetCDF4, you would do the following:
+So, if you want to set the format to netCDF4, you would do the following:
 
 .. code:: ipython3
 

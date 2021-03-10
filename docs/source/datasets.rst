@@ -2,7 +2,7 @@ Datasets
 ========
 
 nctoolkit works with what it calls datasets. Each dataset is made up of
-or more NetCDF files. 
+or more netCDF files. 
 
 Opening datasets
 ----------------
@@ -20,7 +20,7 @@ all of the files in a folder called data as a dataset, you could do the followin
     data = nc.open_data("data/*.nc")
 
 If you want to use data that can be downloaded from a url, just use
-``open_url``. This will download the NetCDF files to a temporary folder,
+``open_url``. This will download the netCDF files to a temporary folder,
 and it can then be analyzed.
 
 

@@ -10,7 +10,7 @@ New methods will be introduced for identifying the first time step will specific
 ``first_above``, ``first_below``, ``last_above`` and ``last_below``. The thresholds are either single numbers or can come from a gridded dataset
 for grid-cell specific thresholds.
 
-Methods to compare a dataset with another dataset or NetCDF file have been added: ``gt`` and ``lt``, which stand for 'greater than' and 'less than'.
+Methods to compare a dataset with another dataset or netCDF file have been added: ``gt`` and ``lt``, which stand for 'greater than' and 'less than'.
 
 Users will now be able to recycle the weights calculated when interpolating data. This can enable much faster interpolation of multiple files with the
 same grid.

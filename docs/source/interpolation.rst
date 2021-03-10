@@ -62,8 +62,8 @@ We can then use this new dataset as the target grid in ``regrid``. So
 
 
 
-This method will also work using NetCDF files. So, if you wanted you can
-also use a path to a NetCDF file as the target grid.
+This method will also work using netCDF files. So, if you wanted you can
+also use a path to a netCDF file as the target grid.
 
 
 How to reuse the weights for regridding

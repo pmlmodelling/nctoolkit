@@ -254,7 +254,7 @@ If you wanted to multiply everything by 10, you would do this:
     data.multiply(10)
 
 
-These methods will also let you use other datasets or NetCDF files. So, you could add the values in a dataset data2 to a dataset
+These methods will also let you use other datasets or netCDF files. So, you could add the values in a dataset data2 to a dataset
 called data1 as follows:
 
 

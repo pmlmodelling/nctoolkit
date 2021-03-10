@@ -7,7 +7,7 @@ nctoolkit can work with data available on local file systems, urls and over thre
 Opening single files and ensembles
 ================
 
-If you want to import a single NetCDF file as a dataset, do the following:
+If you want to import a single netCDF file as a dataset, do the following:
 
 
 .. code:: ipython3
@@ -59,13 +59,13 @@ If you want to work with data that is available over a thredds server or OPeNDAP
 Exporting datasets
 ================
 
-nctoolkit has a number of built in methods for exporting data to NetCDF, pandas dataframes and xarray datasets.
+nctoolkit has a number of built in methods for exporting data to netCDF, pandas dataframes and xarray datasets.
 
-Save as a NetCDF
+Save as a netCDF
 ================
 
-The method ``write_nc`` lets users export a dataset to a NetCDF file. If
-you want this to be a zipped NetCDF file use the ``zip`` method before
+The method ``write_nc`` lets users export a dataset to a netCDF file. If
+you want this to be a zipped netCDF file use the ``zip`` method before
 to ``write_nc``. An example of usage is as follows:
 
 .. code:: ipython3

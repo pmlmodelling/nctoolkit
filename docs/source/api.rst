@@ -80,7 +80,7 @@ Variable modification
    DataSet.set_missing
    DataSet.sum_all
 
-NetCDF file attribute modification 
+netCDF file attribute modification 
 ---------------------
 
 .. autosummary::

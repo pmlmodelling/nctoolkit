@@ -1,7 +1,7 @@
 Parallel processing
 ===================
 
-nctoolkit is written to enable rapid processing and analysis of NetCDF
+nctoolkit is written to enable rapid processing and analysis of netCDF
 files, and this includes the ability to process in parallel. Two methods
 of parallel processing are available. First is the ability to carry out
 operations on multi-file datasets in parallel. Second is the ability to
