@@ -22,15 +22,6 @@ Core abilities include:
    - Calculating phenological metrics
 
 
-Documentation
--------------
-**Quick overview**
-
-* :doc:`installing`
-* :doc:`basic_usage`
-* :doc:`merging_notebook`
-* :doc:`lazy_methods`
-* :doc:`news`
 
 .. toctree::
    :maxdepth: 1
@@ -41,9 +32,6 @@ Documentation
    basic_usage
    news
 
-**User Guide**
-
-* :doc:`datasets`
 
 .. toctree::
    :maxdepth: 1
@@ -62,10 +50,6 @@ Documentation
    globals 
 
 
-**Reference and help**
-
-* :doc:`api`
-* :doc:`info`
 
 .. toctree::
    :maxdepth: 1
