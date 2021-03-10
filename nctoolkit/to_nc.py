@@ -38,6 +38,11 @@ def to_nc(self, out, zip=True, overwrite=False):
 
     """
 
+    out_dir = os.path.dirname(out)
+
+    if os.path.exists(out_dir) == False:
+        raise ValueError(f"{out_dir} does not exist!")
+
     # If you are trying to overwrite a file in self.current, cdo cannot simultaneously have it opened and written to
     if out in self and (overwrite is True):
         self.run()

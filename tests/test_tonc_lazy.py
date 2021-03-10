@@ -127,6 +127,12 @@ class TestTonnc:
         with pytest.raises(ValueError):
             data.to_nc("/tmp/test.nc")
 
+        with pytest.raises(ValueError):
+            data.to_nc("/tmp/asdfu1nuuu2/test.nc")
+
+
+
+
     def test_overwrite(self):
         ff = "data/sst.mon.mean.nc"
         data = nc.open_data(ff)
