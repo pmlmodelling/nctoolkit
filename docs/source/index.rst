@@ -64,7 +64,6 @@ Documentation
 
 **Reference and help**
 
-* :doc:`a_to_z`
 * :doc:`api`
 * :doc:`info`
 
