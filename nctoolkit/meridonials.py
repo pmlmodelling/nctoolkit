@@ -4,7 +4,7 @@ from nctoolkit.utils import is_curvilinear
 
 
 def zonstat(self, stat="mean"):
-    """Method to calculate the meridonial statistic from a NetCDF file"""
+    """Method to calculate the meridonial statistic from a netCDF file"""
     for ff in self:
         if is_curvilinear(ff):
             raise TypeError(

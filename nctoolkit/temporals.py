@@ -43,7 +43,7 @@ def dailystat(self, stat="mean"):
 
 
 def monstat(self, stat="mean"):
-    """Method to calculate the monthly statistic from a NetCDF file"""
+    """Method to calculate the monthly statistic from a netCDF file"""
     cdo_command = f"cdo -mon{stat}"
 
     run_this(cdo_command, self, output="ensemble")

@@ -3,7 +3,7 @@ import subprocess
 
 def nc_times(ff):
     """
-    Function to return times available in a NetCDF file
+    Function to return times available in a netCDF file
     """
 
     cdo_result = subprocess.run(
@@ -21,7 +21,7 @@ def nc_times(ff):
 
 def nc_format(ff):
     """
-    Function to return the format of a NetCDF file
+    Function to return the format of a netCDF file
     """
 
     cdo_result = subprocess.run(
@@ -39,7 +39,7 @@ def nc_format(ff):
 
 def nc_levels(ff):
     """
-    Function to get the depths available in a NetCDF file
+    Function to get the depths available in a netCDF file
     """
 
     cdo_result = subprocess.run(
@@ -60,7 +60,7 @@ def nc_levels(ff):
 
 def nc_years(ff):
     """
-    Function to get the years available in a NetCDF file
+    Function to get the years available in a netCDF file
     """
 
     all_years = []
@@ -80,7 +80,7 @@ def nc_years(ff):
 
 def nc_variables(ff):
     """
-    Function to get the variables available in a NetCDF file
+    Function to get the variables available in a netCDF file
     """
 
     cdo_result = subprocess.run(
@@ -97,7 +97,7 @@ def nc_variables(ff):
 
 def nc_months(ff):
     """
-    Function to get the months available in a NetCDF file
+    Function to get the months available in a netCDF file
     """
 
     cdo_result = subprocess.run(

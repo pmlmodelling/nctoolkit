@@ -2,7 +2,7 @@ from nctoolkit.runthis import run_this
 
 
 def rollstat(self, window=None, stat="mean"):
-    """Method to calculate the monthly statistic from a NetCDF file"""
+    """Method to calculate the monthly statistic from a netCDF file"""
     # check window supplied is valid
 
     if window is None:

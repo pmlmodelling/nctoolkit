@@ -1,5 +1,5 @@
 import logging
-import NetCDF4
+import netCDF4
 import pandas as pd
 import re
 import subprocess

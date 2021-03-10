@@ -25,7 +25,7 @@ def arithall(self, stat="divc", x=None):
 
 def operation(self, method="mul", ff=None, var=None):
     """
-    Method to add, subtract etc. a NetCDF file from another one
+    Method to add, subtract etc. a netCDF file from another one
     This is used by add etc.
     """
 
@@ -128,11 +128,11 @@ def operation(self, method="mul", ff=None, var=None):
 def multiply(self, x=None, var=None):
     """
     Multiply a dataset
-    This will multiply a dataset by a constant, another dataset or a NetCDF file.
+    This will multiply a dataset by a constant, another dataset or a netCDF file.
     Parameters
     ------------
-    x: int, float, DataSet or NetCDF file
-        An int, float, single file dataset or NetCDF file to multiply the dataset by.
+    x: int, float, DataSet or netCDF file
+        An int, float, single file dataset or netCDF file to multiply the dataset by.
         If multiplying by a dataset or single file there must only be a single variable
         in it, unless var is supplied. The grids must be the same.
     var: str
@@ -152,7 +152,7 @@ def multiply(self, x=None, var=None):
     Grids in the datasets must match. Multiplication will occur in matching timesteps in data1 and data2. If there is only 1 timestep in data2, then
     the data from that timestep in data2 will multiply the data in all timesteps in data1.
 
-    Multiplying a dataset by the data from another NetCDF file will work in the same way:
+    Multiplying a dataset by the data from another netCDF file will work in the same way:
 
     >>> data1.multiply("example.nc")
     """
@@ -162,8 +162,8 @@ def multiply(self, x=None, var=None):
         arithall(self, stat="mulc", x=x)
         return None
 
-    # 2: dataset or NetCDF file multiplication
-    # get the NetCDF file(s)
+    # 2: dataset or netCDF file multiplication
+    # get the netCDF file(s)
     if "api.DataSet" in str(type(x)):
         x.run()
         if len(x) == 1:
@@ -182,12 +182,12 @@ def multiply(self, x=None, var=None):
 def subtract(self, x=None, var=None):
     """
     Subtract from a dataset
-    This will subtract a constant, another dataset or a NetCDF file from the dataset.
+    This will subtract a constant, another dataset or a netCDF file from the dataset.
     Parameters
     ------------
-    x: int, float, DataSet or NetCDF file
-        An int, float, single file dataset or NetCDF file to subtract from the dataset.
-        If a dataset or NetCDF is supplied this must only have one variable,
+    x: int, float, DataSet or netCDF file
+        An int, float, single file dataset or netCDF file to subtract from the dataset.
+        If a dataset or netCDF is supplied this must only have one variable,
         unless var is provided. The grids must be the same.
     var: str
         A variable in the x to use for the operation
@@ -206,7 +206,7 @@ def subtract(self, x=None, var=None):
     Grids in the datasets must match. Division will occur in matching timesteps in data1 and data2 if there are matching timesteps. If there is only 1 timestep in data2, then
     the data from that timestep in data2 will be subtracted from the data in all timesteps in data1.
 
-    Subtracting of the data from another NetCDF file will work in the same way:
+    Subtracting of the data from another netCDF file will work in the same way:
 
     >>> data1.subtract("example.nc")
     """
@@ -216,8 +216,8 @@ def subtract(self, x=None, var=None):
         arithall(self, stat="subc", x=x)
         return None
 
-    # 2: dataset or NetCDF file subtraction
-    # get the NetCDF file(s)
+    # 2: dataset or netCDF file subtraction
+    # get the netCDF file(s)
     if "api.DataSet" in str(type(x)):
         x.run()
         if len(x) == 1:
@@ -236,12 +236,12 @@ def subtract(self, x=None, var=None):
 def add(self, x=None, var=None):
     """
     Add to a dataset
-    This will add a constant, another dataset or a NetCDF file to the dataset.
+    This will add a constant, another dataset or a netCDF file to the dataset.
     Parameters
     ------------
-    x: int, float, DataSet or NetCDF file
-        An int, float, single file dataset or NetCDF file to add to the dataset.
-        If a dataset or NetCDF file is supplied, this must have only one variable,
+    x: int, float, DataSet or netCDF file
+        An int, float, single file dataset or netCDF file to add to the dataset.
+        If a dataset or netCDF file is supplied, this must have only one variable,
         unless var is provided. The grids must be the same.
     var: str
         A variable in the x to use for the operation
@@ -260,7 +260,7 @@ def add(self, x=None, var=None):
     Grids in the datasets must match. Addition will occur in matching timesteps in data1 and data2. If there is only 1 timestep in data2, then
     the data from that timestep will be added to the data in all data1 time steps.
 
-    Adding the data from another NetCDF file will work in the same way:
+    Adding the data from another netCDF file will work in the same way:
 
     >>> data1.add("example.nc")
 
@@ -272,8 +272,8 @@ def add(self, x=None, var=None):
         arithall(self, stat="addc", x=x)
         return None
 
-    # 2: dataset or NetCDF file addition
-    # get the NetCDF file(s)
+    # 2: dataset or netCDF file addition
+    # get the netCDF file(s)
     if "api.DataSet" in str(type(x)):
         x.run()
         if len(x) == 1:
@@ -292,12 +292,12 @@ def add(self, x=None, var=None):
 def divide(self, x=None, var=None):
     """
     Divide the data
-    This will divide the dataset by a constant, another dataset or a NetCDF file.
+    This will divide the dataset by a constant, another dataset or a netCDF file.
     Parameters
     ------------
-    x: int, float, DataSet or NetCDF file
-        An int, float, single file dataset or NetCDF file to divide the dataset by.
-        If a dataset or NetCDF file is supplied, this must have only one variable,
+    x: int, float, DataSet or netCDF file
+        An int, float, single file dataset or netCDF file to divide the dataset by.
+        If a dataset or netCDF file is supplied, this must have only one variable,
         unless var is provided. The grids must be the same.
     var: str
         A variable in the x to use for the operation
@@ -316,7 +316,7 @@ def divide(self, x=None, var=None):
     Grids in the datasets must match. Division will occur in matching timesteps in data1 and data2. If there is only 1 timestep in data2, then
     the data from that timeste in data2 will divided the data in all data1 time steps.
 
-    Adding the data from another NetCDF file will work in the same way:
+    Adding the data from another netCDF file will work in the same way:
 
     >>> data1.divide("example.nc")
     """
@@ -326,8 +326,8 @@ def divide(self, x=None, var=None):
         arithall(self, stat="divc", x=x)
         return None
 
-    # 2: dataset or NetCDF file division
-    # get the NetCDF file(s)
+    # 2: dataset or netCDF file division
+    # get the netCDF file(s)
     if "api.DataSet" in str(type(x)):
         x.run()
         if len(x) == 1:

@@ -23,7 +23,7 @@ def to_nc(self, out, zip=True, overwrite=False):
 
     Examples
     ------------
-    If you want to export a dataset to a NetCDF file, do the following:
+    If you want to export a dataset to a netCDF file, do the following:
 
         >>> data.to_nc("out.nc")
 

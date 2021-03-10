@@ -9,11 +9,11 @@ def format(self, ext=None):
     -------------
     ext: str
         New format. Must be one of "nc", "nc1", "nc2",  "nc4" and "nc5" .
-        NetCDF = nc1
-        NetCDF version 2 (64-bit offset) = nc2/nc
-        NetCDF4 (HDF5) = nc4
-        NetCDF4-classi = nc4c
-        NetCDF version 5 (64-bit data) = nc5
+        netCDF = nc1
+        netCDF version 2 (64-bit offset) = nc2/nc
+        netCDF4 (HDF5) = nc4
+        netCDF4-classi = nc4c
+        netCDF version 5 (64-bit data) = nc5
     """
 
     if ext is None:

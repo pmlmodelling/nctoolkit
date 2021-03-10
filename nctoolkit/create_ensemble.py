@@ -11,7 +11,7 @@ def create_ensemble(path="", recursive=True):
     Parameters
     -------------
     path: str
-        The directory to search for NetCDF files
+        The directory to search for netCDF files
     recursive : boolean
         True/False depending on whether you want to search the path recursively.
         Defaults to True.
@@ -24,7 +24,7 @@ def create_ensemble(path="", recursive=True):
     Examples
     ------------
 
-    If you wanted to recursively find all NetCDF files available in a directory "data", you would do this:
+    If you wanted to recursively find all netCDF files available in a directory "data", you would do this:
 
     >>> import nctoolkit as nc
     >>> nc.create_ensemble("data")

@@ -11,9 +11,9 @@ from nctoolkit.runthis import run_this
 def bottom(self):
     """
     Extract the bottom level from a dataset
-    This extracts the bottom level from each NetCDF file. Please note that for
+    This extracts the bottom level from each netCDF file. Please note that for
     ensembles, it uses the first file to derive the index of the bottom level.
-    Use bottom_mask for files when the bottom cell in NetCDF files do not represent
+    Use bottom_mask for files when the bottom cell in netCDF files do not represent
     the actual bottom.
 
     Examples
@@ -242,7 +242,7 @@ def bottom_mask(self):
     This converts a dataset to a mask identifying which cell represents the bottom,
     for example the seabed. 1 identifies the deepest cell with non-missing values.
     Everything else is 0, or missing. At present this method only uses the first
-    available variable from NetCDF files, so it may not be suitable for all data
+    available variable from netCDF files, so it may not be suitable for all data
     """
     self.run()
 

@@ -21,7 +21,7 @@ def set_date(self, year=None, month=None, day=None, base_year=1900):
     day : int
         The day
     base_year : int
-        The base year for time creation in the NetCDF. Defaults to 1900.
+        The base year for time creation in the netCDF. Defaults to 1900.
     """
 
     if year is None:

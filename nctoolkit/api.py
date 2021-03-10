@@ -13,7 +13,7 @@ import warnings
 import urllib.request
 import platform
 
-from NetCDF4 import Dataset
+from netCDF4 import Dataset
 
 from nctoolkit.cleanup import cleanup, clean_all, temp_check
 from nctoolkit.flatten import str_flatten
@@ -370,12 +370,12 @@ def file_size(file_path):
 
 def open_data(x=[], checks=False, **kwargs):
     """
-    Read NetCDF data as a DataSet object
+    Read netCDF data as a DataSet object
 
     Parameters
     ---------------
     x : str or list
-        A string or list of NetCDF files or a single url. The function will check the
+        A string or list of netCDF files or a single url. The function will check the
         files exist. If x is not a list, but an iterable it will be converted to a list.
         If a *.nc style wildcard is supplied, open_data will use all files available.
         By default an empty dataset is created, ie. using open_data() will create an empty
@@ -656,7 +656,7 @@ def open_thredds(x=None, wait=None, checks=False):
 
 def open_url(x=None, ftp_details=None, wait=None, file_stop=None):
     """
-    Read NetCDF data from a url as a DataSet object
+    Read netCDF data from a url as a DataSet object
 
     Parameters
     ---------------
@@ -863,7 +863,7 @@ def cor_space(x=None, y=None):
 
 class DataSet(object):
     """
-    A modifiable ensemble of NetCDF files
+    A modifiable ensemble of netCDF files
     """
 
     def __init__(self, start=""):
