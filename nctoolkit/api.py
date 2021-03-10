@@ -368,7 +368,7 @@ def file_size(file_path):
         return file_info.st_size
 
 
-def open_data(x=[], suppress_messages=False, checks=False, **kwargs):
+def open_data(x=[], checks=False, **kwargs):
     """
     Read netcdf data as a DataSet object
 
@@ -380,10 +380,15 @@ def open_data(x=[], suppress_messages=False, checks=False, **kwargs):
         If a *.nc style wildcard is supplied, open_data will use all files available.
         By default an empty dataset is created, ie. using open_data() will create an empty
         dataset that can then be expanded using append.
-    thredds : boolean
-        Are you accessing a thredds server?
     checks: boolean
         Do you want basic checks to ensure cdo can read files?
+    **kwargs: kwargs
+        Optional arguments for internal use by open_thredds and open_url.
+
+    Returns
+    ---------------
+    open_data : nctoolkit.DataSet
+
 
     Examples
     ------------
@@ -393,22 +398,15 @@ def open_data(x=[], suppress_messages=False, checks=False, **kwargs):
     >>> import nctoolkit as nc
     >>> data = nc.open_data("example.nc")
 
-
     If you want to open a list of files as a multi-file dataset, you would do something like this:
-
 
     >>> import nctoolkit as nc
     >>> data = nc.open_data(["file1.nc", "file2.nc", "file3.nc"])
-
 
     If you wanted to open all files in a directory "data" as a multi-file dataset, you can use a wildcard:
 
     >>> import nctoolkit as nc
     >>> data = nc.open_data("data/*.nc")
-
-
-
-
 
     """
     # from nctoolkit.temp_file import temp_file
@@ -563,11 +561,6 @@ def open_data(x=[], suppress_messages=False, checks=False, **kwargs):
 
     if type(x) is list:
         if thredds is False:
-            if checks:
-                if suppress_messages is False:
-                    warnings.warn("Performing basic checks on ensemble files")
-            # if len(x) == 0:
-            #    raise ValueError("You have not provided any files!")
 
             if len(x) > 1:
                 for ff in x:
@@ -628,6 +621,10 @@ def open_thredds(x=None, wait=None, checks=False):
     wait : int
         Time to wait for thredds server to be checked. Limitless if not supplied.
 
+    Returns
+    ---------------
+    open_thredds : nctoolkit.DataSet
+
     Examples
     ------------
 
@@ -672,6 +669,10 @@ def open_url(x=None, ftp_details=None, wait=None, file_stop=None):
         Time to wait, in seconds, for data to download. A minimum of 3 attempts will be made to download the data.
     file_stop : int
         Time limit, in minutes, for individual attempts at downloading data. This is useful to get around download freezes.
+
+    Returns
+    ---------------
+    open_url : nctoolkit.DataSet
 
     Examples
     ------------

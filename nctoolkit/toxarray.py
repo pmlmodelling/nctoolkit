@@ -14,8 +14,9 @@ def to_xarray(self, decode_times=True, cdo_times=False):
     cdo_times: boolean
         Set to True if you do not want CDO to decode the times
 
-    Returns:
-        xarray.Dataset
+    Returns
+    ---------------
+    to_xarray :  xarray.Dataset
 
     Examples
     ------------
@@ -101,8 +102,9 @@ def to_dataframe(self, decode_times=True, cdo_times=False):
     cdo_times: boolean
         Set to True if you do not want CDO to decode the times
 
-    Returns:
-        pandas.DataFrame
+    Returns
+    ---------------
+    to_dataframe :  pandas.DataFrame
 
     """
     # everything must be run first
