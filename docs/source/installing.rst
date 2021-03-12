@@ -11,14 +11,11 @@ Python dependencies
 - `pandas <http://pandas.pydata.org/>`__ (0.24 or later)
 - `xarray <http://xarray.pydata.org/en/stable/>`__ (0.14 or later)
 - `netCDF4 <https://unidata.github.io/netCDF4-python/netCDF4/index.html>`__ (1.53 or later)
-- `hvplot <https://ncplot.readthedocs.io/en/stable/>`__ 
+- `ncplot <https://ncplot.readthedocs.io/en/stable/>`__ 
 
 How to install nctoolkit
 ---------------------
 
-The easiest way to install the package is using conda, which will install nctoolkit and all system dependencies::
-
-   $ conda install -c conda-forge nctoolkit
 
 nctoolkit is available from the `Python Packaging Index. <https://pypi.org/project/nctoolkit/>`__   To install nctoolkit using pip::
 
@@ -28,6 +25,12 @@ nctoolkit is available from the `Python Packaging Index. <https://pypi.org/proje
 If you already have numpy installed, ignore the first line. This is only included as it will make installing some dependencies smoother. nctoolkit partly relies on cartopy for plotting. This has some additional dependencies, so you may need to follow their guide `here <https://pypi.org/project/nctoolkit/>`__ to ensure cartopy is installed fully. If you install nctoolkit using conda, you will not need to worry about that.
 
 If you install nctoolkit from pypi, you will need to install the system dependencies listed below.
+
+nctoolkit can also be installed using conda, as follows. 
+
+   $ conda install -c conda-forge nctoolkit
+
+At present this can be very slow due to the time taken to resolve dependency versions. It is therefore likely that installing using pip will be smoother.
 
 To install the development version from GitHub::
 
