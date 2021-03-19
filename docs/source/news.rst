@@ -1,18 +1,25 @@
 News
 ============
 
+Release of v0.3.2 
+---------------
+
+Version 0.3.2 will be released in April/May 2021. This will be a minor release focusing on removing deprecated methods and some under the hood improvements.
+
+
+
 Release of v0.3.1 
 ---------------
 
-Version 0.3.1 will be released in March 2021. This is a minor release that includes new methods, under-the-hood improvements and the removal of deprecated methods.
+Version 0.3.1 was released in March 2021. This is a minor release that includes new methods, under-the-hood improvements and the removal of deprecated methods.
 
-New methods will be introduced for identifying the first time step will specific numerical thresholds are first exceeded or fallen below etc:
+New methods are introduced for identifying the first time step will specific numerical thresholds are first exceeded or fallen below etc:
 ``first_above``, ``first_below``, ``last_above`` and ``last_below``. The thresholds are either single numbers or can come from a gridded dataset
 for grid-cell specific thresholds.
 
 Methods to compare a dataset with another dataset or netCDF file have been added: ``gt`` and ``lt``, which stand for 'greater than' and 'less than'.
 
-Users will now be able to recycle the weights calculated when interpolating data. This can enable much faster interpolation of multiple files with the
+Users are be able to recycle the weights calculated when interpolating data. This can enable much faster interpolation of multiple files with the
 same grid.
 
 The temporal methods replaced by ``tmean`` etc. have now been removed from the package. So ``monthly_mean`` etc. can no longer be used.
