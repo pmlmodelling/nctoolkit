@@ -28,6 +28,7 @@ def cell_areas(self, join=True):
         Set to False if you only want the cell areas to be in the output.
         join=True adds the areas as a variable to the dataset. Defaults to True.
     """
+    warnings.warn(message="Warning: cell_areas is deprecated. Use cell_area!")
 
     if isinstance(join, bool) is False:
         raise TypeError("join is not boolean")

@@ -26,11 +26,11 @@ If you already have numpy installed, ignore the first line. This is only include
 
 If you install nctoolkit from pypi, you will need to install the system dependencies listed below.
 
-nctoolkit can also be installed using conda, as follows. 
+nctoolkit can also be installed using conda, as follows::
 
    $ conda install -c conda-forge nctoolkit
 
-At present this can be very slow due to the time taken to resolve dependency versions. It is therefore likely that installing using pip will be smoother.
+At present this can be slow due to the time taken to resolve dependency versions. If you run into problems just use pip. 
 
 To install the development version from GitHub::
 
