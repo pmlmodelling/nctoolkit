@@ -15,13 +15,13 @@ def append(self, x=None):
 
     Examples
     ------------
-    If you want to add a dataset data2 to another dataset data1, do the following:
+    If you want to add a dataset ds2 to another dataset ds1, do the following:
 
-    >>> data1.append(data2)
+    >>> ds1.append(ds2)
 
     If you want to add a new file to a dataset, do this:
 
-    >>> data.append("infile.nc")
+    >>> ds.append("infile.nc")
 
 
     """
@@ -71,6 +71,11 @@ def remove(self, x=None):
     x: str or list
      File path(s) to remove from a dataset
 
+    Examples
+    ------------
+    If you want to remove a file from a dataset do the following:
+
+    >>> ds.remove("infile.nc")
 
     """
 

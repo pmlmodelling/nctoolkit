@@ -39,7 +39,7 @@ def spatial_mean(self):
 
     If you want to calculate the spatial mean for a dataset, just do the following:
 
-    >>> data.spatial_mean()
+    >>> ds.spatial_mean()
 
     Note that this calculation will calculate the average using weights based on each cell's
     area. If cell areas cannot be calculated, it will take a straight average, and a warning
@@ -59,7 +59,7 @@ def spatial_min(self):
 
     If you want to calculate the spatial minimum for a dataset, just do the following:
 
-    >>> data.spatial_min()
+    >>> ds.spatial_min()
 
     """
     fldstat(self, stat="min")
@@ -74,7 +74,7 @@ def spatial_max(self):
     ------------
     If you want to calculate the spatial maximum for a dataset, just do the following:
 
-    >>> data.spatial_max()
+    >>> ds.spatial_max()
 
     """
     fldstat(self, stat="max")
@@ -89,7 +89,7 @@ def spatial_range(self):
     ------------
     If you want to calculate the range of each variable across space for a dataset, just do the following:
 
-    >>> data.spatial_max()
+    >>> ds.spatial_max()
     """
     fldstat(self, stat="range")
 
@@ -109,13 +109,13 @@ def spatial_sum(self, by_area=False):
     ------------
     If you want to calculate the spatial sum each variable across space for a dataset, just do the following:
 
-    >>> data.spatial_sum()
+    >>> ds.spatial_sum()
 
     By default, this method simply sums up each grid cell value. In some cases this is not suitable. For example,
     the values in each cell may concentrations or values per square metre etc. In this case multiplying each cell
     value by the cell area is more suitable. Do the following:
 
-    >>> data.spatial_sum(by_area = True)
+    >>> ds.spatial_sum(by_area = True)
 
     Each cell's value will be multiplied by the area of the cell (in square metres) prior to calculating the
     spatial sum.
@@ -243,7 +243,7 @@ def spatial_percentile(self, p=None):
     ------------
     If you want to calculate the median of each variable across space for a dataset, just do the following:
 
-    >>> data.spatial_percentile(50)
+    >>> ds.spatial_percentile(50)
     """
 
     if p is None:

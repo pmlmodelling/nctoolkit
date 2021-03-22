@@ -33,7 +33,7 @@ def rolling_mean(self, window=None):
 
     If you wanted to calculate a rolling mean with the mean calculated over every 10 time steps, do the following:
 
-    >>> data.rolling_mean(10)
+    >>> ds.rolling_mean(10)
 
     """
     rollstat(self, window=window, stat="mean")
@@ -53,7 +53,7 @@ def rolling_min(self, window=None):
 
     If you wanted to calculate a rolling minimum with the minimum calculated over every 10 time steps, do the following:
 
-    >>> data.rolling_min(10)
+    >>> ds.rolling_min(10)
     """
     rollstat(self, window=window, stat="min")
 
@@ -71,7 +71,7 @@ def rolling_max(self, window=None):
 
     If you wanted to calculate a rolling maximum with the maximum calculated over every 10 time steps, do the following:
 
-    >>> data.rolling_max(10)
+    >>> ds.rolling_max(10)
     """
     rollstat(self, window=window, stat="max")
 
@@ -90,7 +90,7 @@ def rolling_range(self, window=None):
 
     If you wanted to calculate a rolling range with the range calculated over every 10 time steps, do the following:
 
-    >>> data.rolling_range(10)
+    >>> ds.rolling_range(10)
     """
     rollstat(self, window=window, stat="range")
 
@@ -109,6 +109,6 @@ def rolling_sum(self, window=None):
 
     If you wanted to calculate a rolling sum with the sum calculated over every 10 time steps, do the following:
 
-    >>> data.rolling_sum(10)
+    >>> ds.rolling_sum(10)
     """
     rollstat(self, window=window, stat="sum")

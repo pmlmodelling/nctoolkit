@@ -22,13 +22,13 @@ def to_xarray(self, decode_times=True, cdo_times=False):
     ------------
     If you want to convert a dataset to an xarray dataset, do the following:
 
-    >>> data.to_xarray()
+    >>> ds.to_xarray()
 
     This will return an xarray dataset.
 
     If you do not want time to be decoded, do the following:
 
-    >>> data.to_xarray(decode_times = False)
+    >>> ds.to_xarray(decode_times = False)
 
 
     """

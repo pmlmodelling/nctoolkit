@@ -143,18 +143,18 @@ def multiply(self, x=None, var=None):
 
     If you wanted to multiply variables in a dataset by 10, you would do the following:
 
-    >>> data.multiply(10)
+    >>> ds.multiply(10)
 
-    To multiply the values in a dataset by the values of variables in dataset data2, you would do the following:
+    To multiply the values in a dataset by the values of variables in dataset ds2, you would do the following:
 
-    >>> data1.multiply(data2)
+    >>> ds1.multiply(ds2)
 
-    Grids in the datasets must match. Multiplication will occur in matching timesteps in data1 and data2. If there is only 1 timestep in data2, then
-    the data from that timestep in data2 will multiply the data in all timesteps in data1.
+    Grids in the datasets must match. Multiplication will occur in matching timesteps in ds1 and ds2. If there is only 1 timestep in ds2, then
+    the data from that timestep in ds2 will multiply the data in all timesteps in ds1.
 
     Multiplying a dataset by the data from another netCDF file will work in the same way:
 
-    >>> data1.multiply("example.nc")
+    >>> ds.multiply("example.nc")
     """
 
     # 1: int, float multiplication
@@ -197,18 +197,18 @@ def subtract(self, x=None, var=None):
 
     If you wanted to subtract 10 from all variables in a dataset, you would do the following:
 
-    >>> data.subtract(10)
+    >>> ds.subtract(10)
 
-    To substract the values in a dataset data2 from those in a dataset data1, you would do the following:
+    To substract the values in a dataset ds2 from those in a dataset ds1, you would do the following:
 
-    >>> data1.subtract(data2)
+    >>> ds1.subtract(ds2)
 
-    Grids in the datasets must match. Division will occur in matching timesteps in data1 and data2 if there are matching timesteps. If there is only 1 timestep in data2, then
-    the data from that timestep in data2 will be subtracted from the data in all timesteps in data1.
+    Grids in the datasets must match. Division will occur in matching timesteps in ds1 and ds2 if there are matching timesteps. If there is only 1 timestep in ds2, then
+    the data from that timestep in ds2 will be subtracted from the data in all timesteps in ds1.
 
     Subtracting of the data from another netCDF file will work in the same way:
 
-    >>> data1.subtract("example.nc")
+    >>> ds1.subtract("example.nc")
     """
 
     # 1: int, float subtraction
@@ -251,18 +251,18 @@ def add(self, x=None, var=None):
 
     If you wanted to add 10 to all variables in a dataset, you would do the following:
 
-    >>> data.add(10)
+    >>> ds.add(10)
 
-    To add the values in a dataset data2 from a dataset data1, you would do the following:
+    To add the values in a dataset ds2 from a dataset ds1, you would do the following:
 
-    >>> data1.add(data2)
+    >>> ds1.add(ds2)
 
-    Grids in the datasets must match. Addition will occur in matching timesteps in data1 and data2. If there is only 1 timestep in data2, then
-    the data from that timestep will be added to the data in all data1 time steps.
+    Grids in the datasets must match. Addition will occur in matching timesteps in ds1 and ds2. If there is only 1 timestep in ds2, then
+    the data from that timestep will be added to the data in all ds1 time steps.
 
     Adding the data from another netCDF file will work in the same way:
 
-    >>> data1.add("example.nc")
+    >>> ds1.add("example.nc")
 
 
     """
@@ -307,18 +307,18 @@ def divide(self, x=None, var=None):
 
     If you wanted to dividie all variables in a dataset by 20, you would do the following:
 
-    >>> data.divide(10)
+    >>> ds.divide(10)
 
-    To divide values in a dataset by those in the dataset data2 from a dataset data1, you would do the following:
+    To divide values in a dataset by those in the dataset ds2 from a dataset ds1, you would do the following:
 
-    >>> data1.divide(data2)
+    >>> ds1.divide(ds2)
 
-    Grids in the datasets must match. Division will occur in matching timesteps in data1 and data2. If there is only 1 timestep in data2, then
-    the data from that timeste in data2 will divided the data in all data1 time steps.
+    Grids in the datasets must match. Division will occur in matching timesteps in ds1 and ds2. If there is only 1 timestep in ds2, then
+    the data from that timestep in ds2 will divided the data in all ds1 time steps.
 
     Adding the data from another netCDF file will work in the same way:
 
-    >>> data1.divide("example.nc")
+    >>> ds.divide("example.nc")
     """
 
     # 1: int, float division

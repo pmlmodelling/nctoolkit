@@ -24,7 +24,7 @@ def meridonial_mean(self):
     ------------
     If you want to calculate the meridonial mean for a dataset, do the following:
 
-    >>> data.meridonial_mean()
+    >>> ds.meridonial_mean()
     """
     zonstat(self, stat="mean")
 
@@ -38,7 +38,7 @@ def meridonial_min(self):
     ------------
     If you want to calculate the meridonial minimum for a dataset, do the following:
 
-    >>> data.meridonial_min()
+    >>> ds.meridonial_min()
     """
     zonstat(self, stat="min")
 
@@ -52,7 +52,7 @@ def meridonial_max(self):
     ------------
     If you want to calculate the meridonial maximum for a dataset, do the following:
 
-    >>> data.meridonial_max()
+    >>> ds.meridonial_max()
 
     """
     zonstat(self, stat="max")
@@ -67,6 +67,6 @@ def meridonial_range(self):
     ------------
     If you want to calculate the meridonial range for a dataset, do the following:
 
-    >>> data.meridonial_max()
+    >>> ds.meridonial_max()
     """
     zonstat(self, stat="range")

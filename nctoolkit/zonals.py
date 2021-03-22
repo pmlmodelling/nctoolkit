@@ -25,7 +25,7 @@ def zonal_mean(self):
     ------------
     If you want to calculate the zonal mean for a dataset, do the following:
 
-    >>> data.zonal_mean()
+    >>> ds.zonal_mean()
 
     """
     zonstat(self, stat="mean")
@@ -40,7 +40,7 @@ def zonal_min(self):
     ------------
     If you want to calculate the zonal minimum for a dataset, do the following:
 
-    >>> data.zonal_min()
+    >>> ds.zonal_min()
     """
     zonstat(self, stat="min")
 
@@ -54,7 +54,7 @@ def zonal_max(self):
     ------------
     If you want to calculate the zonal maximum for a dataset, do the following:
 
-    >>> data.zonal_max()
+    >>> ds.zonal_max()
     """
     zonstat(self, stat="max")
 
@@ -68,7 +68,7 @@ def zonal_range(self):
     ------------
     If you want to calculate the zonal range for a dataset, do the following:
 
-    >>> data.zonal_range()
+    >>> ds.zonal_range()
 
     """
     zonstat(self, stat="range")

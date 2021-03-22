@@ -104,28 +104,28 @@ def tmean(self, over="time"):
     ------------
     If you want to calculate mean over all time steps. Do the following:
 
-        >>> data.tmean()
+        >>> ds.tmean()
 
     If you want to calculate the mean for each year in a dataset, do this:
 
-        >>> data.tmean("year")
+        >>> ds.tmean("year")
 
     If you want to calculate the mean for each month in a dataset, do this:
 
-        >>> data.tmean("month")
+        >>> ds.tmean("month")
 
     If you want to calculate the mean for each month in each year in a dataset, do this:
 
-        >>> data.tmean(["year", "month"])
+        >>> ds.tmean(["year", "month"])
 
     This method will also let you easily calculate climatologies. So, if you wanted to calculate
     a monthly climatological mean, you would do this:
 
-        >>> data.tmean( "month")
+        >>> ds.tmean( "month")
 
     A daily climatological mean would be the following:
 
-        >>> data.tmean( "day")
+        >>> ds.tmean( "day")
 
 
     """
@@ -146,28 +146,28 @@ def tmin(self, over="time"):
     ------------
     If you want to calculate minimum over all time steps. Do the following:
 
-        >>> data.tmin()
+        >>> ds.tmin()
 
     If you want to calculate the minimum for each year in a dataset, do this:
 
-        >>> data.tmin("year")
+        >>> ds.tmin("year")
 
     If you want to calculate the minimum for each month in a dataset, do this:
 
-        >>> data.tmin("month")
+        >>> ds.tmin("month")
 
     If you want to calculate the minimum for each month in each year in a dataset, do this:
 
-        >>> data.tmin(["year", "month"])
+        >>> ds.tmin(["year", "month"])
 
     This method will also let you easily calculate climatologies. So, if you wanted to calculate
     a monthly climatological min, you would do this:
 
-        >>> data.tmin( "month")
+        >>> ds.tmin( "month")
 
     A daily climatological minimum would be the following:
 
-        >>> data.tmin( "day")
+        >>> ds.tmin( "day")
 
     """
     time_stat(self, stat="min", over=over)
@@ -187,28 +187,28 @@ def tmax(self, over="time"):
     ------------
     If you want to calculate maximum over all time steps. Do the following:
 
-        >>> data.tmax()
+        >>> ds.tmax()
 
     If you want to calculate the maximum for each year in a dataset, do this:
 
-        >>> data.tmax("year")
+        >>> ds.tmax("year")
 
     If you want to calculate the maximum for each month in a dataset, do this:
 
-        >>> data.tmax("month")
+        >>> ds.tmax("month")
 
     If you want to calculate the maximum for each month in each year in a dataset, do this:
 
-        >>> data.tmax(["year", "month"])
+        >>> ds.tmax(["year", "month"])
 
     This method will also let you easily calculate climatologies. So, if you wanted to calculate
     a monthly climatological max, you would do this:
 
-        >>> data.tmax( "month")
+        >>> ds.tmax( "month")
 
     A daily climatological maximum would be the following:
 
-        >>> data.tmax( "day")
+        >>> ds.tmax( "day")
     """
     time_stat(self, stat="max", over=over)
 
@@ -226,28 +226,28 @@ def tmedian(self, over="time"):
     ------------
     If you want to calculate median over all time steps. Do the following:
 
-        >>> data.tmedian()
+        >>> ds.tmedian()
 
     If you want to calculate the median for each year in a dataset, do this:
 
-        >>> data.tmedian("year")
+        >>> ds.tmedian("year")
 
     If you want to calculate the median for each month in a dataset, do this:
 
-        >>> data.tmedian("month")
+        >>> ds.tmedian("month")
 
     If you want to calculate the median for each month in each year in a dataset, do this:
 
-        >>> data.tmedian(["year", "month"])
+        >>> ds.tmedian(["year", "month"])
 
     This method will also let you easily calculate climatologies. So, if you wanted to calculate
     a monthly climatological median, you would do this:
 
-        >>> data.tmedian( "month")
+        >>> ds.tmedian( "month")
 
     A daily climatological median would be the following:
 
-        >>> data.tmedian( "day")
+        >>> ds.tmedian( "day")
     """
     self.tpercentile(p=50, over=over)
 
@@ -266,28 +266,28 @@ def trange(self, over="time"):
     ------------
     If you want to calculate range over all time steps. Do the following:
 
-        >>> data.trange()
+        >>> ds.trange()
 
     If you want to calculate the range for each year in a dataset, do this:
 
-        >>> data.trange("year")
+        >>> ds.trange("year")
 
     If you want to calculate the range for each month in a dataset, do this:
 
-        >>> data.trange("month")
+        >>> ds.trange("month")
 
     If you want to calculate the range for each month in each year in a dataset, do this:
 
-        >>> data.trange(["year", "month"])
+        >>> ds.trange(["year", "month"])
 
     This method will also let you easily calculate climatologies. So, if you wanted to calculate
     a monthly climatological range, you would do this:
 
-        >>> data.trange( "month")
+        >>> ds.trange( "month")
 
     A daily climatological range would be the following:
 
-        >>> data.trange( "day")
+        >>> ds.trange( "day")
 
     """
     time_stat(self, stat="range", over=over)
@@ -307,28 +307,28 @@ def tvariance(self, over="time"):
     ------------
     If you want to calculate variance over all time steps. Do the following:
 
-        >>> data.tvar()
+        >>> ds.tvar()
 
     If you want to calculate the variance for each year in a dataset, do this:
 
-        >>> data.tvar("year")
+        >>> ds.tvar("year")
 
     If you want to calculate the variance for each month in a dataset, do this:
 
-        >>> data.tvar("month")
+        >>> ds.tvar("month")
 
     If you want to calculate the variance for each month in each year in a dataset, do this:
 
-        >>> data.tvar(["year", "month"])
+        >>> ds.tvar(["year", "month"])
 
     This method will also let you easily calculate climatologies. So, if you wanted to calculate
     a monthly climatological var, you would do this:
 
-        >>> data.tvar( "month")
+        >>> ds.tvar( "month")
 
     A daily climatological variance would be the following:
 
-        >>> data.tvar( "day")
+        >>> ds.tvar( "day")
     """
     time_stat(self, stat="var", over=over)
 
@@ -347,28 +347,28 @@ def tstdev(self, over="time"):
     ------------
     If you want to calculate standard deviation over all time steps. Do the following:
 
-        >>> data.tstdev()
+        >>> ds.tstdev()
 
     If you want to calculate the standard deviation for each year in a dataset, do this:
 
-        >>> data.tstdev("year")
+        >>> ds.tstdev("year")
 
     If you want to calculate the standard deviation for each month in a dataset, do this:
 
-        >>> data.tstdev("month")
+        >>> ds.tstdev("month")
 
     If you want to calculate the standard deviation for each month in each year in a dataset, do this:
 
-        >>> data.tstdev(["year", "month"])
+        >>> ds.tstdev(["year", "month"])
 
     This method will also let you easily calculate climatologies. So, if you wanted to calculate
     a monthly climatological var, you would do this:
 
-        >>> data.tstdev("month")
+        >>> ds.tstdev("month")
 
     A daily climatological standard deviation would be the following:
 
-        >>> data.tstdev("day")
+        >>> ds.tstdev("day")
     """
     time_stat(self, stat="std", over=over)
 
@@ -381,7 +381,7 @@ def tcumsum(self):
     ------------
     If you want to calculate the cumulative sum for all variables over all timesteps, do this:
 
-        >>> data.tcumsum()
+        >>> ds.tcumsum()
 
     """
     # create cdo command and runit
@@ -401,11 +401,11 @@ def tpercentile(self, p=None, over="time"):
     ------------
     If you want to calculate the 20th percentile over all time steps. Do the following:
 
-        >>> data.tpercentile(20)
+        >>> ds.tpercentile(20)
 
     If you want to calculate the 20th percentile for each year in a dataset, do this:
 
-        >>> data.tpercentile(20)
+        >>> ds.tpercentile(20)
 
     """
     over = over

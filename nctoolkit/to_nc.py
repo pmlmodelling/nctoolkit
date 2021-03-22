@@ -25,15 +25,15 @@ def to_nc(self, out, zip=True, overwrite=False):
     ------------
     If you want to export a dataset to a netCDF file, do the following:
 
-        >>> data.to_nc("out.nc")
+        >>> ds.to_nc("out.nc")
 
     By default this file will be zipped. If you do not want it zipped, do this:
 
-        >>> data.to_nc("out.nc", zip = False)
+        >>> ds.to_nc("out.nc", zip = False)
 
     By default this cannot overwrite files. If the output file exists, do the following:
 
-        >>> data.to_nc("out.nc", overwrite = True)
+        >>> ds.to_nc("out.nc", overwrite = True)
 
 
     """

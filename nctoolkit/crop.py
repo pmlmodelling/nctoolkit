@@ -33,12 +33,12 @@ def crop(self, lon=[-180, 180], lat=[-90, 90], nco=False, nco_vars=None):
     If you wanted to crop a dataset to longitudes between -40 and 30 and latitudes between -10 and 40,
     you would do the following:
 
-    >>> data.crop(lon = [-40, 30], lat = [-10, 40])
+    >>> ds.crop(lon = [-40, 30], lat = [-10, 40])
 
 
     If you wanted to select only the northern hemisphere, the following will work:
 
-    >>> data.crop(lat = [0, 90])
+    >>> ds.crop(lat = [0, 90])
 
 
     """

@@ -246,27 +246,27 @@ def select(self, **kwargs):
     ------------
     If you want to select a single variable do the following:
 
-        >>> data.select(variable = "var")
+        >>> ds.select(variable = "var")
 
     If you want to select a list of variables, do this:
 
-        >>> data.select(variable = ["var1", "var2"])
+        >>> ds.select(variable = ["var1", "var2"])
 
     If you want to select data for January, do the following:
 
-        >>> data.select(month = 1)
+        >>> ds.select(month = 1)
 
     If you want to select a range of months, do the following:
 
-        >>> data.select(months = range(1, 7))
+        >>> ds.select(months = range(1, 7))
 
     If you want to select a range of years, for example the 2010s, do the following:
 
-        >>> data.select(years = range(2010, 2020))
+        >>> ds.select(years = range(2010, 2020))
 
     If you want to select the first two timesteps in a dataset, do the following:
 
-        >>> data.select(timesteps = [0,1])
+        >>> ds.select(timesteps = [0,1])
 
 
     """

@@ -15,7 +15,7 @@ def resample_grid(self, factor=None):
     ------------
     If you wanted to select every other grid cell, you could do the following:
 
-        >>> data.resample_grid(2)
+        >>> ds.resample_grid(2)
     """
     if factor is None:
         raise ValueError("Please provide a resampling factor")

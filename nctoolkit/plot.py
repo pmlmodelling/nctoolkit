@@ -15,12 +15,12 @@ def plot(self, vars=None):
 
     If you want to plot all data in a dataset, do the following:
 
-    >>> data.plot()
+    >>> ds.plot()
 
     If you only want to plot a single variable, do the following. Note, this is often faster if you
     have a large dataset.
 
-    >>> data.plot("var_of_choice")
+    >>> ds.plot("var_of_choice")
 
     """
 

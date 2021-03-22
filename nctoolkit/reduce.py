@@ -11,7 +11,7 @@ def reduce_dims(self):
     ------------
     If you want to remove any dimensions that have only one value, do the following:
 
-        >>> data.reduce_dims("out.nc")
+        >>> ds.reduce_dims("out.nc")
 
     Note that this will work lazily. This method is most useful when you want to simplify
     datasets before exporting them to something like a pandas dataframe.

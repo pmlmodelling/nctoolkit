@@ -18,11 +18,11 @@ def drop(self, vars=None):
 
     If you wanted to remove a single variable 'var1'  from a dataset data, you would do the following:
 
-    >>> data.drop('var')
+    >>> ds.drop('var')
 
     If you wanted to remove a list of variables, you would do the following:
 
-    >>> data.drop(['var1', 'var2', 'var2'])
+    >>> ds.drop(['var1', 'var2', 'var2'])
 
 
     """

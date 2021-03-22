@@ -12,7 +12,7 @@ def run(self):
     ------------
     If evaluation is lazy and you need to evaluate commands on a dataset, do the following:
 
-    >>> data.run()
+    >>> ds.run()
 
     """
 

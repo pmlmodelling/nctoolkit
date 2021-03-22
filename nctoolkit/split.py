@@ -97,11 +97,11 @@ def split(self, by=None):
     If you want to split each file into a dataset into a separate files for each year, do
     the following:
 
-        >>> data.split("year")
+        >>> ds.split("year")
 
     If you wanted to split by month, do the following:
 
-        >>> data.split("month")
+        >>> ds.split("month")
 
     """
 

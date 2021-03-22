@@ -117,13 +117,13 @@ def compare(self, expression=None):
 
     If you wanted to identify grid cells with positive values you would do the following:
 
-    >>> data.compare(">0")
+    >>> ds.compare(">0")
 
     This will be calculcated for each time step.
 
     If you wanted to identify grid cells with negative values, you would do this
 
-    >>> data.compare("<0")
+    >>> ds.compare("<0")
 
 
     """
@@ -153,13 +153,13 @@ def compare_all(self, expression=None):
 
     If you wanted to identify grid cells with positive values you would do the following:
 
-    >>> data.compare_all(">0")
+    >>> ds.compare_all(">0")
 
     This will be calculcated for each time step.
 
     If you wanted to identify grid cells with negative values, you would do this
 
-    >>> data.compare_all("<0")
+    >>> ds.compare_all("<0")
 
 
     """

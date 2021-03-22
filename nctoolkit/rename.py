@@ -14,7 +14,7 @@ def rename(self, newnames):
     ------------
     If you want to rename a variable x to y, do the following:
 
-        >>> data.rename({"x":"y"})
+        >>> ds.rename({"x":"y"})
 
     """
 

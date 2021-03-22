@@ -116,26 +116,26 @@ def shift(self, **kwargs):
     ------------
     If you wanted to shift all times back 1 hour, you would do the following:
 
-    >>> data.shift(hours = -1)
+    >>> ds.shift(hours = -1)
 
     If you wanted to shift all times forward 2 days, you would do the following:
 
-    >>> data.shift(days = 2)
+    >>> ds.shift(days = 2)
 
     If you wanted to shift all times forward 6 months, you would do the following:
 
-    >>> data.shift(months = 6)
+    >>> ds.shift(months = 6)
 
     If you wanted to shift all times forward 1 year, you would do the following:
 
-    >>> data.shift(years = 1)
+    >>> ds.shift(years = 1)
 
     This method will allow partial matches in arguments. So the following will do the same
     thing:
 
-    >>> data.shift(year = 2)
+    >>> ds.shift(year = 2)
 
-    >>> data.shift(years = 2)
+    >>> ds.shift(years = 2)
 
 
 

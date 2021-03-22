@@ -24,11 +24,11 @@ def cell_area(self, join=True):
     ------------
     If you wanted to add the cell_areas as a new variable in a dataset, you would do the following:
 
-    >>> data.cell_area()
+    >>> ds.cell_area()
 
     If you wanted to replace a dataset with the cell areas of that dataset, you would do the following:
 
-    >>> data.cell_area(join = False)
+    >>> ds.cell_area(join = False)
 
     """
 

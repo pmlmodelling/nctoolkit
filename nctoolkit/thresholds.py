@@ -26,13 +26,13 @@ def first_above(self, x=None):
 
     If you wanted to calculate the first time step where the value in a grid cell goes above 10, you would do the following
 
-    >>> data.first_above(10)
+    >>> ds.first_above(10)
 
     If you wanted to calculate the first time step where the value in a grid cell goes above that in another dataset, the
     following will work. Note that both datasets must have the same grid, and can only have single variables. The second
     dataset can, of course, only have one timestep.
 
-    >>> data.first_above(data1)
+    >>> ds.first_above(ds1)
 
     """
 
@@ -85,14 +85,14 @@ def first_below(self, x=None):
 
     If you wanted to calculate the first time step where the value in a grid cell goes below 10, you would do the following
 
-    >>> data.first_below(10)
+    >>> ds.first_below(10)
 
 
     If you wanted to calculate the first time step where the value in a grid cell goes above that in another dataset, the
     following will work. Note that both datasets must have the same grid, and can only have single variables. The second
     dataset can, of course, only have one timestep.
 
-    >>> data.first_below(data1)
+    >>> ds.first_below(ds1)
 
 
     """
@@ -145,14 +145,14 @@ def last_above(self, x=None):
 
     If you wanted to calculate the last time step where the value in a grid cell is above 10, you would do the following
 
-    >>> data.first_above(10)
+    >>> ds.first_above(10)
 
 
     If you wanted to calculate the last time step where the value in a grid cell goes above that in another dataset, the
     following will work. Note that both datasets must have the same grid, and can only have single variables. The second
     dataset can, of course, only have one timestep.
 
-    >>> data.first_above(data1)
+    >>> ds.first_above(ds1)
 
 
     """
@@ -208,14 +208,14 @@ def last_below(self, x=None):
 
     If you wanted to calculate the last time step where the value in a grid cell is below 10, you would do the following
 
-    >>> data.last_below(10)
+    >>> ds.last_below(10)
 
 
     If you wanted to calculate the last time step where the value in a grid cell is above that in another dataset, the
     following will work. Note that both datasets must have the same grid, and can only have single variables. The second
     dataset can, of course, only have one timestep.
 
-    >>> data.last_below(data1)
+    >>> ds.last_below(ds1)
 
 
     """

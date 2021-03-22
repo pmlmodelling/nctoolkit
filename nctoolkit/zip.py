@@ -11,7 +11,7 @@ def zip(self):
     ------------
     If you want to zip the files in a dataset, do the following:
 
-        >>> data.zip()
+        >>> ds.zip()
 
     This will occur lazily, so will only occur after everything has been evaluated.
 
