@@ -396,17 +396,17 @@ def open_data(x=[], checks=False, **kwargs):
     If you want to open a single file as a dataset, do the following:
 
     >>> import nctoolkit as nc
-    >>> data = nc.open_data("example.nc")
+    >>> ds = nc.open_data("example.nc")
 
     If you want to open a list of files as a multi-file dataset, you would do something like this:
 
     >>> import nctoolkit as nc
-    >>> data = nc.open_data(["file1.nc", "file2.nc", "file3.nc"])
+    >>> ds = nc.open_data(["file1.nc", "file2.nc", "file3.nc"])
 
     If you wanted to open all files in a directory "data" as a multi-file dataset, you can use a wildcard:
 
     >>> import nctoolkit as nc
-    >>> data = nc.open_data("data/*.nc")
+    >>> ds = nc.open_data("data/*.nc")
 
     """
     # from nctoolkit.temp_file import temp_file
@@ -631,7 +631,7 @@ def open_thredds(x=None, wait=None, checks=False):
     If you want to open a file available over thredds or opendap, do the following:
 
     >>> import nctoolkit as nc
-    >>> data = nc.open_thredds("htttp:://foo.nc")
+    >>> ds = nc.open_thredds("htttp:://foo.nc")
 
 
     """
@@ -680,7 +680,7 @@ def open_url(x=None, ftp_details=None, wait=None, file_stop=None):
     If you want to open a file available over a url do the following:
 
     >>> import nctoolkit as nc
-    >>> data = nc.open_url("htttp:://foo.nc")
+    >>> ds = nc.open_url("htttp:://foo.nc")
 
     This will download the file as a temporary folder for use in the dataset.
 
