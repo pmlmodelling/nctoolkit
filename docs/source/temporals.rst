@@ -15,8 +15,8 @@ available. For example the following will calculate the temporal mean:
 .. code:: ipython3
 
     import nctoolkit as nc
-    data = nc.open_data("sst.mon.mean.nc")
-    data.tmean()
+    ds = nc.open_data("sst.mon.mean.nc")
+    ds.tmean()
 
 However, you may want to calculate, for example, an annual average. To
 do this we use ``over``. This is a list which tells the function which
@@ -25,14 +25,14 @@ an annual average:
 
 .. code:: ipython3
 
-    data.tmean(["year"])
+    ds.tmean(["year"])
 
 If you are only averaging over one time period, as above, you can simply
 use a character string:
 
 .. code:: ipython3
 
-    data.tmean("year")
+    ds.tmean("year")
 
 The possible options for ``over`` are “day”, “month”, “year”, and
 “season”. In this case “day” stands for day of year, not day of month.
@@ -42,7 +42,7 @@ of each year in the dataset.
 
 .. code:: ipython3
 
-    data.tmax(["month", "year"])
+    ds.tmax(["month", "year"])
 
 Calculating rolling averages
 -------------------------
@@ -55,14 +55,14 @@ value, you could do the following:
 
 .. code:: ipython3
 
-    data.rolling_mean(7)
+    ds.rolling_mean(7)
 
 
 If you wanted to calculated a rolling weekly sum, this would do:
 
 .. code:: ipython3
 
-    data.rolling_sum(7)
+    ds.rolling_sum(7)
 
 Calculating anomalies 
 -------------------------
@@ -76,7 +76,7 @@ So, if you wanted to calculate the annual anomaly compared with a baseline perio
 
 .. code:: ipython3
 
-    data.annual_anomaly(baseline = [1950, 1969])
+    ds.annual_anomaly(baseline = [1950, 1969])
 
 By default, the annual anomaly is calculated as the absolute difference between the annual mean in a year and the mean across the baseline period. However,
 in some cases this is not suitable. Instead you might want the relative change. In that case, you would do the following:
@@ -84,7 +84,7 @@ in some cases this is not suitable. Instead you might want the relative change. 
 
 .. code:: ipython3
 
-    data.annual_anomaly(baseline = [1950, 1969], metric = "relative")
+    ds.annual_anomaly(baseline = [1950, 1969], metric = "relative")
 
 
 You can also smooth out the anomalies, so that they are calculated on a rolling basis. The following will calculate the anomaly using a rolling window of 10
@@ -92,14 +92,14 @@ years.
 
 .. code:: ipython3
 
-    data.annual_anomaly(baseline = [1950, 1969], window = 10) 
+    ds.annual_anomaly(baseline = [1950, 1969], window = 10) 
 
 Monthly anomalies are calculated in the same way:
 
 
 .. code:: ipython3
 
-    data.monthly_anomaly(baseline = [1950, 1969] 
+    ds.monthly_anomaly(baseline = [1950, 1969] 
 
 Here the anomaly is the difference between the value in each month compared with the mean in that month during the baseline period.
 
@@ -112,7 +112,7 @@ following will calculate a seasonal climatology:
 
 .. code:: ipython3
 
-    data.tmean("season")
+    ds.tmean("season")
 
 These methods allow partial matches for the arguments, which means you do
 not need to remember the precise argument each time. For example, the
@@ -120,19 +120,19 @@ following will also calculate a seasonal climatology:
 
 .. code:: ipython3
 
-    data.tmean("Seas")
+    ds.tmean("Seas")
 
 Calculating a climatological monthly mean would require the following:
 
 .. code:: ipython3
 
-    data.tmean("month")
+    ds.tmean("month")
 
 and daily would be the following:
 
 .. code:: ipython3
 
-    data.tmean("day")
+    ds.tmean("day")
 
 
 Calculating climatologies
@@ -143,7 +143,7 @@ following will calculate a seasonal climatology:
 
 .. code:: ipython3
 
-    data.tmean("season")
+    ds.tmean("season")
 
 
 Cumulative sums
@@ -153,7 +153,7 @@ We can calculate the cumulative sum as follows:
 
 .. code:: ipython3
 
-    data.tcumsum()
+    ds.tcumsum()
 
 Please note that this can only calculate over all time periods, and does
 not accept an ``over`` argument.

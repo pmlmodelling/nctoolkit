@@ -13,7 +13,7 @@ If you want to import a single netCDF file as a dataset, do the following:
 .. code:: ipython3
 
     import nctoolkit as nc
-    data = nc.open_data(infile)
+    ds = nc.open_data(infile)
 
 
 The `open_data` function can also import multiple files. This can be done in two ways. If we have a list of files we can do the following:
@@ -21,7 +21,7 @@ The `open_data` function can also import multiple files. This can be done in two
 .. code:: ipython3
 
     import nctoolkit as nc
-    data = nc.open_data(file_list)
+    ds = nc.open_data(file_list)
 
 
 Alternatively, `open_data` is capable of handling wildcards. So if we have a folder called data, we can import all files in it as follows:
@@ -30,7 +30,7 @@ Alternatively, `open_data` is capable of handling wildcards. So if we have a fol
 .. code:: ipython3
 
     import nctoolkit as nc
-    data = nc.open_data("data/*.nc")
+    ds = nc.open_data("data/*.nc")
 
 
 
@@ -42,7 +42,7 @@ If we want to work with a file that is available at a url or ftp, we can use the
 .. code:: ipython3
 
     import nctoolkit as nc
-    data = nc.open_url(example_url)
+    ds = nc.open_url(www.foo.nc)
 
 
 Opening data available over thredds servers or OPeNDAP 
@@ -53,7 +53,7 @@ If you want to work with data that is available over a thredds server or OPeNDAP
 .. code:: ipython3
 
     import nctoolkit as nc
-    data = nc.open_thredds(example_url)
+    ds = nc.open_thredds(www.foo.nc)
 
 
 Exporting datasets
@@ -70,10 +70,10 @@ to ``write_nc``. An example of usage is as follows:
 
 .. code:: ipython3
 
-    data = nc.open_data(infile)
-    data.tmean()
-    data.zip()
-    data.write_nc(outfile)
+    ds = nc.open_data(infile)
+    ds.tmean()
+    ds.zip()
+    ds.write_nc(outfile)
 
 Convert to xarray Dataset
 ================
@@ -83,9 +83,9 @@ dataset. An example of usage is as follows:
 
 .. code:: ipython3
 
-    data = nc.open_data(infile)
-    data.tmean()
-    ds = data.to_xarray()
+    ds = nc.open_data(infile)
+    ds.tmean()
+    xr_ds = ds.to_xarray()
 
 Convert to pandas dataframe
 ================
@@ -95,6 +95,6 @@ dataframe.
 
 .. code:: ipython3
 
-    data = nc.open_data(infile)
-    data.tmean()
-    df = data.to_dataframe()
+    ds = nc.open_data(infile)
+    ds.tmean()
+    df = ds.to_dataframe()

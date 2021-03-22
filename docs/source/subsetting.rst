@@ -12,13 +12,13 @@ If you want to select specific variables, you would do the following:
 
 .. code:: ipython3
 
-    data.select(variables = ["var1", "var2"])
+    ds.select(variables = ["var1", "var2"])
 
 If you only want to select one variable, you can do this:
 
 .. code:: ipython3
 
-    data.select(variables = "var1")
+    ds.select(variables = "var1")
 
 Selecting years
 ---------------
@@ -29,26 +29,26 @@ Selecting years
 
 .. code:: ipython3
 
-    data.select(years = [2000, 2001])
+    ds.select(years = [2000, 2001])
 
 Again, if you want a single year the following will work:
 
 .. code:: ipython3
 
-    data.select(years = 2000)
+    ds.select(years = 2000)
 
 The ``select`` method allows partial matches for its arguments. So if we
 want to select the year 2000, the following will work:
 
 .. code:: ipython3
 
-    data.select(year = 2000)
+    ds.select(year = 2000)
 
 In this case we can also select a range. So the following will work:
 
 .. code:: ipython3
 
-    data.select(years = range(2000, 2010))
+    ds.select(years = range(2000, 2010))
 
 Selecting months
 ----------------
@@ -58,9 +58,9 @@ will all do the same thing:
 
 .. code:: ipython3
 
-    data.select(months = [1,2,3,4])
-    data.select(months = range(1,5))
-    data.select(mon = [1,2,3,4])
+    ds.select(months = [1,2,3,4])
+    ds.select(months = range(1,5))
+    ds.select(mon = [1,2,3,4])
 
 Selecting seasons
 -----------------
@@ -70,7 +70,7 @@ winter, you would do the following:
 
 .. code:: ipython3
 
-    data.select(season = "DJF")
+    ds.select(season = "DJF")
 
 Selecting timesteps
 -------------------
@@ -81,8 +81,8 @@ the following two methods will work:
 
 .. code:: ipython3
 
-    data.select(time = [0,1])
-    data.select(time = range(0,2))
+    ds.select(time = [0,1])
+    ds.select(time = range(0,2))
 
 Geographic subsetting
 ---------------------
@@ -95,4 +95,4 @@ longitudes between -80 and 90 and latitudes between 50 and 80:
 
 .. code:: ipython3
 
-    data.crop(lon = [-80, 90], lat = [50, 80])
+    ds.crop(lon = [-80, 90], lat = [50, 80])

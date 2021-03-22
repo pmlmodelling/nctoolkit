@@ -17,10 +17,10 @@ with longitude -30 and latitude 50.
 
     import nctoolkit as nc
     import pandas as pd
-    data = nc.open_thredds("https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc")
-    data.select(timestep = range(0, 12))
+    ds = nc.open_thredds("https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc")
+    ds.select(timestep = range(0, 12))
     coords = pd.DataFrame({"lon":[-30], "lat":[50]})
-    data.regrid(coords)
+    ds.regrid(coords)
 
 Interpolating to a regular latlon grid
 --------------------------------------
@@ -33,9 +33,9 @@ north-south by 1 degree east-west resolution, we could do the following:
 
 .. code:: ipython3
 
-    data = nc.open_thredds("https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc")
-    data.select(timestep = 0)
-    data.to_latlon(lon = [-79.5, 79.5], lat = [0.75, 89.75], res = [1, 0.5])
+    ds = nc.open_thredds("https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc")
+    ds.select(timestep = 0)
+    ds.to_latlon(lon = [-79.5, 79.5], lat = [0.75, 89.75], res = [1, 0.5])
 
 Interpolating to another dataset’s grid
 ---------------------------------------
@@ -48,17 +48,17 @@ covering the North Atlantic.
 
 .. code:: ipython3
 
-    data1 = nc.open_thredds("https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc")
-    data1.select(timestep = 0)
-    data1.to_latlon(lon = [-79.5, 79.5], lat = [-0.75, 89.75], res = [1, 0.5])
+    ds1 = nc.open_thredds("https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc")
+    ds1.select(timestep = 0)
+    ds1.to_latlon(lon = [-79.5, 79.5], lat = [-0.75, 89.75], res = [1, 0.5])
 
 We can then use this new dataset as the target grid in ``regrid``. So
 
 .. code:: ipython3
 
-    data2 = nc.open_thredds("https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc")
-    data2.select(timestep = 0)
-    data2.regrid(data1)
+    ds2 = nc.open_thredds("https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc")
+    ds2.select(timestep = 0)
+    ds2.regrid(ds1)
 
 
 
@@ -78,23 +78,23 @@ The example below illustrates this. First, we regrid a global dataset to a regul
 
 .. code:: ipython3
 
-    data = nc.open_thredds("https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc")
-    data.select(timestep = 0)
-    data.to_latlon(lon = [-79.5, 79.5], lat = [-0.75, 89.75], res = [1, 0.5], recycle = True)
+    ds = nc.open_thredds("https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc")
+    ds.select(timestep = 0)
+    ds.to_latlon(lon = [-79.5, 79.5], lat = [-0.75, 89.75], res = [1, 0.5], recycle = True)
 
 We can then use the grid from data for regridding:
 
 .. code:: ipython3
 
-    data1 = nc.open_thredds("https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc")
-    data1.select(timestep = 0)
-    data1.regrid(data)
+    ds1 = nc.open_thredds("https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc")
+    ds1.select(timestep = 0)
+    ds1.regrid(ds)
 
 This, of course, requires that the grids in the datasets are consistent. If you want to access the weights and grid files generated, you can do the following:
 
 .. code:: ipython3
-    data._weights
-    data._grid
+    ds._weights
+    ds._grid
 
 These files are deleted either when ``data`` is deleted or when the Python session is existed.
 
@@ -111,9 +111,9 @@ is selected in a north-south and east-west. In other words it is now a
 
 .. code:: ipython3
 
-    data = nc.open_thredds("https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc")
-    data.select(timestep = 0)
-    data.resample_grid(10)
+    ds = nc.open_thredds("https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc")
+    ds.select(timestep = 0)
+    ds.resample_grid(10)
 
 Vertical interpolation
 ----------------------
@@ -127,7 +127,7 @@ sea-depth in this case.
 
 .. code:: ipython3
 
-    data = nc.open_thredds("https://data.nodc.noaa.gov/thredds/dodsC/ncei/woa/temperature/A5B7/1.00/woa18_A5B7_t01_01.nc")
-    data.select(variables="t_an")
-    data.vertical_interp(levels= [500])
+    ds = nc.open_thredds("https://data.nodc.noaa.gov/thredds/dodsC/ncei/woa/temperature/A5B7/1.00/woa18_A5B7_t01_01.nc")
+    ds.select(variables="t_an")
+    ds.vertical_interp(levels= [500])
 

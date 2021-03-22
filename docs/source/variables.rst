@@ -14,7 +14,7 @@ the new variable 'new'. We would do the following:
 
 .. code:: ipython3
 
-    data.assign(new = lambda x: x.var + 10)
+    ds.assign(new = lambda x: x.var + 10)
 
 If you are unfamilar with lambda functions, note that the x after lambda 
 signifies that x represents the dataset in whatever comes after ':', which
@@ -25,7 +25,7 @@ only want the new variable or variables. In that case you can use the drop argum
 
 .. code:: ipython3
 
-    data.assign(new = lambda x: x.var+ 10, drop = True)
+    ds.assign(new = lambda x: x.var+ 10, drop = True)
 
 This results in only one variable.
 
@@ -34,8 +34,8 @@ drop can be positioned anywhere. So the following will do the same thing
 
 .. code:: ipython3
 
-    data.assign(new = lambda x: x.var+ 10, drop = True)
-    data.assign(drop = True, new = lambda x: x.var+ 10)
+    ds.assign(new = lambda x: x.var+ 10, drop = True)
+    ds.assign(drop = True, new = lambda x: x.var+ 10)
 
 
 At present, ``assign`` requires that it is written on a single line. So avoid doing something
@@ -43,8 +43,7 @@ like the following:
 
 .. code:: ipython3
 
-    data.assign(new = lambda x: x.var+ 10, 
-    drop = True)
+    ds.assign(new = lambda x: x.var+ 10, drop = True)
 
 The `assign` method will evaluate the lambda functions sent to it for 
 each dataset grid cell for each time step. So every part of the lambda function
@@ -53,7 +52,7 @@ must evaluate to a number. So the following will work:
 .. code:: ipython3
 
     k = 273.15
-    data.assign(drop = True, sst_k = lambda x: x.sst + k)
+    ds.assign(drop = True, sst_k = lambda x: x.sst + k)
 
 However, if you set ``k`` to a string or anything other than a number it
 will throw an error. For example, this will throw an error:
@@ -61,7 +60,7 @@ will throw an error. For example, this will throw an error:
 .. code:: ipython3
 
     k = "273.15"
-    data.assign(drop = True, sst_k = lambda x: x.sst + k)
+    ds.assign(drop = True, sst_k = lambda x: x.sst + k)
 
 Applying mathematical functions to dataset variables
 ----------------------------------------------------
@@ -76,14 +75,14 @@ could do the following:
 
 .. code:: ipython3
 
-    data.assign(new = lambda x: ceil(x.old))
+    ds.assign(new = lambda x: ceil(x.old))
 
 An example of using logs would be the following:
 
 
 .. code:: ipython3
 
-    data.assign(new = lambda x: log10(x.old+1))
+    ds.assign(new = lambda x: log10(x.old+1))
 
 
 Using spatial statistics
@@ -104,33 +103,33 @@ and the global mean:
 
 .. code:: ipython3
 
-    data.assign(temp_comp = lambda x: x.temperature - spatial_mean(x.temperature), drop = True)
+    ds.assign(temp_comp = lambda x: x.temperature - spatial_mean(x.temperature), drop = True)
 
 You can also do comparisons. In the above case, we instead might simply want to identify regions
 that are hotter than the global average. In that case we can simply do this:
 
 .. code:: ipython3
 
-    data.assign(temp_comp = lambda x: x.temperature > spatial_mean(x.temperature), drop = True)
+    ds.assign(temp_comp = lambda x: x.temperature > spatial_mean(x.temperature), drop = True)
 
 Let's say we wanted to map regions which are 3 degrees hotter than average. We could that as follows:
 
 .. code:: ipython3
 
-    data.assign(temp_comp = lambda x: x.temperature > spatial_mean(x.temperature + 3), drop = True)
+    ds.assign(temp_comp = lambda x: x.temperature > spatial_mean(x.temperature + 3), drop = True)
 
 or like this:
 
 .. code:: ipython3
 
-    data.assign(temp_comp = lambda x: x.temperature > (spatial_mean(x.temperature)+3), drop = True)
+    ds.assign(temp_comp = lambda x: x.temperature > (spatial_mean(x.temperature)+3), drop = True)
 
 Logical operators work in the standard Python way. So if we had a dataset with a variable called 'var'
 and we wanted to find cells with values between 1 and 10, we could do this:
 
 .. code:: ipython3
 
-    data.assign(one2ten = lambda x: x.var > 1 & x.var < 10) 
+    ds.assign(one2ten = lambda x: x.var > 1 & x.var < 10) 
 
 
 You can process multiple variables at once using ``assign``. Variables
@@ -143,7 +142,7 @@ everywhere:
 
 .. code:: ipython3
 
-    data.assign(var1 = lambda x: x.var + 1, var2 = lambda x: x.var1 + 1, diff = lambda x: x.var2 - x.var1)
+    ds.assign(var1 = lambda x: x.var + 1, var2 = lambda x: x.var1 + 1, diff = lambda x: x.var2 - x.var1)
 
 Functions that work with nctoolkit variables
 --------------------------------------------
@@ -245,13 +244,13 @@ in a dataset, you would do the following:
 
 .. code:: ipython3
 
-    data.add(10)
+    ds.add(10)
 
 If you wanted to multiply everything by 10, you would do this:
 
 .. code:: ipython3
 
-    data.multiply(10)
+    ds.multiply(10)
 
 
 These methods will also let you use other datasets or netCDF files. So, you could add the values in a dataset data2 to a dataset
@@ -260,13 +259,13 @@ called data1 as follows:
 
 .. code:: ipython3
 
-    data1.add(data2)
+    ds1.add(ds2)
 
 
 Please note that this will require that the datasets are structured in a way that the operation makes sense. So each dimension in the datasets
-will either have to be identical, with the exception of when one dataset has a single value for a dimension. So for example if data2 above has
-data covering only 1 timestep, but data1 has multiple timesteps the data from that single time step will be added to all timesteps in data1.
-But if the time steps match, then the data from the first time step in data2 will be added to the data in the first time step in data1, and the
+will either have to be identical, with the exception of when one dataset has a single value for a dimension. So for example if ds2 above has
+data covering only 1 timestep, but ds1 has multiple timesteps the data from that single time step will be added to all timesteps in ds1.
+But if the time steps match, then the data from the first time step in ds2 will be added to the data in the first time step in ds1, and the
 same will happen with the following time steps.
 
 
@@ -279,13 +278,13 @@ out if the values in a dataset were greater than zero, you would do the followin
 
 .. code:: ipython3
 
-    data.compare(">0")
+    ds.compare(">0")
 
 If you wanted to know if they were equal to zero you would do this:
 
 .. code:: ipython3
 
-    data.compare("==0")
+    ds.compare("==0")
 
 
 

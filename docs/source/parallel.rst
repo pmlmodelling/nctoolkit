@@ -58,10 +58,10 @@ input file and output file:
 .. code:: ipython3
 
     def process_chain(infile, outfile):
-        data = nc.open_data(ff) 
-        data.assign(tos = lambda x: x.sst + 273.15)
-        data.tmean()
-        data.to_nc(outfile)
+        ds = nc.open_data(ff) 
+        ds.assign(tos = lambda x: x.sst + 273.15)
+        ds.tmean()
+        ds.to_nc(outfile)
 
 We now want to loop through all of the files in a folder, apply the
 function to them and then save the results in a new folder called new:

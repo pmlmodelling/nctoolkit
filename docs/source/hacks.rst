@@ -15,14 +15,14 @@ as an argument. So, if you wanted to shift time backward by one year, you would 
 
 .. code:: ipython3
 
-    data.shift(years = -1)
+    ds.shift(years = -1)
 
 If you wanted to shift time forward by 12 hours, this would do it:
 
 
 .. code:: ipython3
 
-    data.shift(hours = 12)
+    ds.shift(hours = 12)
 
 Note: this method allows partial matches to the arguments, so you could use hour, day, month or year just as easily. 
 
@@ -34,7 +34,7 @@ You can add grid cell areas to a dataset as follows:
 
 .. code:: ipython3
 
-    data.cell_area()
+    ds.cell_area()
 
 By default, this will add the cell area (in square metres) to the dataset. If you want the dataset to only include cell areas
 you need to set the ``join`` argument to ``False``:
@@ -42,7 +42,7 @@ you need to set the ``join`` argument to ``False``:
 
 .. code:: ipython3
 
-    data.cell_area(join = False)
+    ds.cell_area(join = False)
 
 Of course, this method will only if it is possible to calculate the areas the grid cells.
 
@@ -63,7 +63,7 @@ So, if you want to set the format to netCDF4, you would do the following:
 
 .. code:: ipython3
 
-    data.format("nc4")
+    ds.format("nc4")
 
 
 
@@ -76,7 +76,7 @@ It works as follows:
 
 .. code:: ipython3
 
-    data.reduce_dims() 
+    ds.reduce_dims() 
 
 
 
