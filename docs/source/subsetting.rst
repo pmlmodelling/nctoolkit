@@ -23,9 +23,8 @@ If you only want to select one variable, you can do this:
 Selecting years
 ---------------
 
-.. code:: ipython3
 
-    If you want to select specific years, you can do the following:
+If you want to select specific years, you can do the following:
 
 .. code:: ipython3
 
