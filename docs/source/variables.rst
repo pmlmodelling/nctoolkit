@@ -43,7 +43,8 @@ like the following:
 
 .. code:: ipython3
 
-    ds.assign(new = lambda x: x.var+ 10, drop = True)
+    ds.assign(new = lambda x: x.var+ 10, 
+    drop = True)
 
 The `assign` method will evaluate the lambda functions sent to it for 
 each dataset grid cell for each time step. So every part of the lambda function
