@@ -29,7 +29,6 @@ Core abilities include:
    :caption: Quick overview 
 
    installing
-   basic_usage
    news
 
 
@@ -46,6 +45,7 @@ Core abilities include:
    interpolation
    merging_notebook 
    parallel 
+   examples
    hacks 
    globals 
 
