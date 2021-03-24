@@ -38,7 +38,7 @@ Core abilities include:
    :caption: User Guide 
 
    datasets
-   visualiztion
+   visualization
    exporting 
    temporals 
    subsetting 
