@@ -52,7 +52,7 @@ def assign_coords(self, lon_name=None, lat_name=None):
 
     self.run()
 
-    if type(self.current) is list:
+    if len(self) > 1:
         raise TypeError("This only works for single files currently")
 
     if (lon_name is None) or (lat_name is None):
