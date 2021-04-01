@@ -73,22 +73,16 @@ def assign_coords(self, lon_name=None, lat_name=None):
             "-a coordinates," + vv + ",c,c,'" + lon_name + " " + lat_name + "' "
         )
 
-    target = ""
-    if type(self.start) is list:
-        target = ""
-    else:
-        if self.start == self.current:
-            target = temp_file("nc")
+    target = temp_file("nc")
 
-    nco_command += self.current + " " + target
+    nco_command += self[0] + " " + target
 
     target = run_nco(nco_command, target)
 
-    if target != "":
-        self.current = target
+    self.current = target
 
     # clean up the directory
-    cleanup(keep=self.current)
+    cleanup()
 
     self.history.append(nco_command)
     self._hold_history = copy.deepcopy(self.history)
