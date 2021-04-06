@@ -64,16 +64,16 @@ nctoolkit has a number of built in methods for exporting data to netCDF, pandas 
 Save as a netCDF
 ================
 
-The method ``write_nc`` lets users export a dataset to a netCDF file. If
+The method ``to_nc`` lets users export a dataset to a netCDF file. If
 you want this to be a zipped netCDF file use the ``zip`` method before
-to ``write_nc``. An example of usage is as follows:
+to ``to_nc``. An example of usage is as follows:
 
 .. code:: ipython3
 
     ds = nc.open_data(infile)
     ds.tmean()
     ds.zip()
-    ds.write_nc(outfile)
+    ds.to_nc(outfile)
 
 Convert to xarray Dataset
 ================
