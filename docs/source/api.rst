@@ -308,7 +308,7 @@ Miscellaneous methods
    DataSet.last_above
    DataSet.cdo_command
    DataSet.nco_command
-   DataSet.compare_all
+   DataSet.compare
    DataSet.gt
    DataSet.lt
    DataSet.reduce_dims
