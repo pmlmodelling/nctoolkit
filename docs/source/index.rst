@@ -57,8 +57,8 @@ Core abilities include:
    :hidden:
    :caption: Reference & help
 
-   a_to_z
    api
+   cheat
    info
    
 
