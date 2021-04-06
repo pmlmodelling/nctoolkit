@@ -1,11 +1,15 @@
 News
 ============
 
+Release of v0.3.3
+---------------
+
+Version 0.3.3 will be a minor release focusing on performance improvements.
+
 Release of v0.3.2 
 ---------------
 
-Version 0.3.2 will be released in April/May 2021. This will be a minor release focusing on removing deprecated methods and some under the hood improvements.
-
+Version 0.3.2 was released in March 2021. This was a quick release to fix a bug causing ``to_nc`` to not save output in the base directory.
 
 
 Release of v0.3.1 
