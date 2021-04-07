@@ -4,6 +4,7 @@ ipykernel==5.1.2
 nbsphinx==0.7.0
 Pygments==2.7.4
 sphinx_rtd_theme==0.5.2
+docutils<0.17
 widgetsnbextension
 ipywidgets
 xarray
