@@ -29,6 +29,7 @@ Core abilities include:
    :caption: Quick overview 
 
    installing
+   introduction
    news
 
 
