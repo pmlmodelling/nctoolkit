@@ -39,6 +39,7 @@ Core abilities include:
    :caption: User Guide 
 
    datasets
+   cheat
    visualization
    exporting 
    temporals 
@@ -59,7 +60,6 @@ Core abilities include:
    :caption: Reference & help
 
    api
-   cheat
    info
    
 
