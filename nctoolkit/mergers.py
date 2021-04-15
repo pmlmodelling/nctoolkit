@@ -93,7 +93,7 @@ def merge(self, match=["year", "month", "day"]):
 
     if len(set(all_grids)) > 1:
         raise ValueError(
-            "The files in the dataset to do not have the same grid. "
+            "The files in the dataset do not have the same grid. "
             "Consider using regrid!"
         )
 
