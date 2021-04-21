@@ -1251,7 +1251,9 @@ class DataSet(object):
     from nctoolkit.ensembles import ensemble_sum
 
     from nctoolkit.ensembles import ensemble_percentile
+
     from nctoolkit.esoteric import assign_coords
+    from nctoolkit.esoteric import set_gridtype
 
     from nctoolkit.fldstat import spatial_mean
     from nctoolkit.fldstat import spatial_min
@@ -1364,6 +1366,4 @@ class DataSet(object):
     from nctoolkit.deprecated import mutate
     from nctoolkit.deprecated import transmute
 
-    from nctoolkit.deprecated import cell_areas
-    from nctoolkit.deprecated import remove_variables
     from nctoolkit.compare import compare_all
