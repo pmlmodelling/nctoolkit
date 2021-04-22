@@ -56,7 +56,7 @@ def validate_version():
                 "Please install CDO version 1.9.3 or above: https://code.mpimet.mpg.de/projects/cdo/ or https://anaconda.org/conda-forge/cdo"
             )
         else:
-            print(f"nctoolkit is using CDO version {actual_version}")
+            print(f"nctoolkit is using Climate Data Operators version {actual_version}")
     except:
         print(
             "Please install CDO version 1.9.3 or above: https://code.mpimet.mpg.de/projects/cdo/ or https://anaconda.org/conda-forge/cdo"
