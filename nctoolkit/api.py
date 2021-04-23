@@ -1255,6 +1255,8 @@ class DataSet(object):
     from nctoolkit.esoteric import assign_coords
     from nctoolkit.esoteric import set_gridtype
 
+    from nctoolkit.fill import fill_na
+
     from nctoolkit.fldstat import spatial_mean
     from nctoolkit.fldstat import spatial_min
     from nctoolkit.fldstat import spatial_max

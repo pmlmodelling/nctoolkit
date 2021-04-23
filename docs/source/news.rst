@@ -6,7 +6,10 @@ Release of v0.3.3
 
 Version 0.3.3 will be a minor release focusing on performance improvements.
 
+A new method ``fill_na`` has been introduced that allows missing values to be filled with the distanced weighted average.
+
 The methods ``remove_variables`` and ``cell_areas`` have been removed and are replaced permanently by ``drop`` and ``cell_area``.
+
 
 Release of v0.3.2 
 ---------------
