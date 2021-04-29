@@ -3,16 +3,6 @@
 Installation
 ============
 
-Python dependencies
----------------------
-
-- Python (3.6 or later)
-- `numpy <http://www.numpy.org/>`__ (1.14 or later)
-- `pandas <http://pandas.pydata.org/>`__ (0.24 or later)
-- `xarray <http://xarray.pydata.org/en/stable/>`__ (0.14 or later)
-- `netCDF4 <https://unidata.github.io/netCDF4-python/netCDF4/index.html>`__ (1.53 or later)
-- `ncplot <https://ncplot.readthedocs.io/en/stable/>`__ 
-
 How to install nctoolkit
 ---------------------
 
@@ -38,6 +28,15 @@ To install the development version from GitHub::
 
    $ pip install git+https://github.com/r4ecology/nctoolkit.git
 
+Python dependencies
+---------------------
+
+- Python (3.6 or later)
+- `numpy <http://www.numpy.org/>`__ (1.14 or later)
+- `pandas <http://pandas.pydata.org/>`__ (0.24 or later)
+- `xarray <http://xarray.pydata.org/en/stable/>`__ (0.14 or later)
+- `netCDF4 <https://unidata.github.io/netCDF4-python/netCDF4/index.html>`__ (1.53 or later)
+- `ncplot <https://ncplot.readthedocs.io/en/stable/>`__ 
 
 
 System dependencies
