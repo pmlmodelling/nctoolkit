@@ -1,10 +1,23 @@
 News
 ============
 
-Release of v0.3.3
+Release of v0.3.5
 ---------------
 
-Version 0.3.3 will be a minor release focusing on performance improvements.
+Version 0.3.5 will be released in May 2021.
+
+This will be a minor release focusing on improving the under-the hood handling of ensemble operation to improve performance.
+
+It will drop support for CDO version 1.9.3, as this becoming too time-consuming to continue given the increasingly low reward. Upcoming changes to how ensembles are handled may result in nctoolkit requiring CDO version 1.9.9 or above.
+
+
+
+Release of v0.3.4
+---------------
+
+Version 0.3.3 was released in April 2021. 
+
+This was a minor release focusing on performance improvements, removal of deprecated methods and introduction of one new method.
 
 A new method ``fill_na`` has been introduced that allows missing values to be filled with the distanced weighted average.
 
