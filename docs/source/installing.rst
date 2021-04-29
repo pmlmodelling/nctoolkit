@@ -20,7 +20,7 @@ nctoolkit can also be installed using conda, as follows::
 
    $ conda install -c conda-forge nctoolkit
 
-Note that recent releases are not available for macOS and Python 3.8 on conda. This issue is being investigated at the minute, and will hopefully be resolved shortly. In the meantime, if you are using macOS and Python 3.8, it is best to install using pip.
+Note that recent releases are not available for Python 3.8 on macOS on conda. This issue is being investigated at the minute, and will hopefully be resolved shortly. In the meantime, if you are using macOS and Python 3.8, it is best to install using pip.
 
 At present this can be slow due to the time taken to resolve dependency versions. If you run into problems just use pip. 
 
