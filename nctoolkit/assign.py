@@ -229,8 +229,10 @@ def assign(self, drop=False, **kwargs):
     try:
         start = lambdas
         try:
-            all_str = inspect.getsourcelines(start)
+            all_str = list(inspect.getsourcelines(start))[0]
+            all_str = "".join(all_str)
             start = all_str.replace("'", "").replace("\\n", "")[1:-1].replace("  ", " ")
+            start = start.replace("\n", "")
         except:
             start = dill.source.getsource(start).replace("\n", "").strip()
     except:
@@ -245,9 +247,17 @@ def assign(self, drop=False, **kwargs):
         else:
             start = lambdas
             try:
-                start = inspect.getsourcelines(start)[0][0].replace("\n", "").strip()
+                all_str = list(inspect.getsourcelines(start))[0]
+                all_str = "".join(all_str)
+                start = all_str.replace("'", "").replace("\\n", "")[1:-1].replace("  ", " ")
+                start = start.replace("\n", "")
+                #all_str = "".join(inspect.getsourcelines(start))
+                #start = all_str.replace("'", "").replace("\\n", "")[1:-1].replace("  ", " ")
+                #start = inspect.getsourcelines(start)[0][0].replace("\n", "").strip()
+
             except:
                 start = dill.source.getsource(start).replace("\n", "").strip()
+
 
     # we now need to figure out if what we have is one line
 
@@ -260,6 +270,7 @@ def assign(self, drop=False, **kwargs):
         raise ValueError("Please write assign methods as single line!")
 
     start = start[start.find("(") + 1 : -1]
+    #print(start)
 
     pattern1 = re.compile("drop\s*=\s*(True|False)")
     y = pattern1.search(start)
