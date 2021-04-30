@@ -275,6 +275,7 @@ def assign(self, drop=False, **kwargs):
         raise ValueError("Please write assign methods as single line!")
 
     start = start[start.find("(") + 1 : -1]
+    start = re.sub("\s\s+" , " ", start)
 
     pattern1 = re.compile("drop\s*=\s*(True|False)")
     y = pattern1.search(start)
