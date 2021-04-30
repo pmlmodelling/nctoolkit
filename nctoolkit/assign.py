@@ -243,17 +243,22 @@ def assign(self, drop=False, **kwargs):
             start = [
                 str(readline.get_history_item(i + 1))
                 for i in range(readline.get_current_history_length())
-            ][-1]
+            ]
+            i = 0
+            for ss in start:
+                if ".assign(" in ss:
+                    ind = i
+                i+=1
+
+            all_str = start[ind:len(start)]
+            all_str = "".join(all_str)
+            start = all_str.replace("'", "").replace("\\n", "").replace("  ", " ")
         else:
             start = lambdas
             try:
                 all_str = list(inspect.getsourcelines(start))[0]
                 all_str = "".join(all_str)
                 start = all_str.replace("'", "").replace("\\n", "")[1:-1].replace("  ", " ")
-                start = start.replace("\n", "")
-                #all_str = "".join(inspect.getsourcelines(start))
-                #start = all_str.replace("'", "").replace("\\n", "")[1:-1].replace("  ", " ")
-                #start = inspect.getsourcelines(start)[0][0].replace("\n", "").strip()
 
             except:
                 start = dill.source.getsource(start).replace("\n", "").strip()
@@ -270,7 +275,6 @@ def assign(self, drop=False, **kwargs):
         raise ValueError("Please write assign methods as single line!")
 
     start = start[start.find("(") + 1 : -1]
-    #print(start)
 
     pattern1 = re.compile("drop\s*=\s*(True|False)")
     y = pattern1.search(start)
