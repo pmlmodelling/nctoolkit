@@ -226,20 +226,30 @@ def assign(self, drop=False, **kwargs):
 
         if readline.get_current_history_length() > 0:
             interactive = True
-
-    if interactive:
-        import readline
-
-        start = [
-            str(readline.get_history_item(i + 1))
-            for i in range(readline.get_current_history_length())
-        ][-1]
-    else:
+    try:
         start = lambdas
         try:
+            #print("here")
+            #all_str = inspect.getsourcelines(start)
             start = inspect.getsourcelines(start)[0][0].replace("\n", "").strip()
+            #start = all_str.replace("'", "").replace("\\n", "")[1:-1].replace("  ", " ")
         except:
             start = dill.source.getsource(start).replace("\n", "").strip()
+    except:
+
+        if interactive:
+            import readline
+
+            start = [
+                str(readline.get_history_item(i + 1))
+                for i in range(readline.get_current_history_length())
+            ][-1]
+        else:
+            start = lambdas
+            try:
+                start = inspect.getsourcelines(start)[0][0].replace("\n", "").strip()
+            except:
+                start = dill.source.getsource(start).replace("\n", "").strip()
 
     # we now need to figure out if what we have is one line
 
