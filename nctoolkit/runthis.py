@@ -578,8 +578,9 @@ def run_this(os_command, self, output="one", out_file=None):
                 target = out_file
 
             os_command = (
-                os_command + " " + str_flatten(self.current, " ") + " " + target
+                os_command + " [ " + str_flatten(self.current, " ") + " ] " + target
             )
+
 
             zip_copy = False
             if self._zip and self._ncommands == 1:
