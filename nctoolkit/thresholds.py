@@ -38,6 +38,8 @@ def first_above(self, x=None):
 
     self.run()
 
+    variable = self.variables[0]
+
     #if len(self.variables) > 1:
     #    raise ValueError("This method only works with single variable datasets!")
 
@@ -62,7 +64,7 @@ def first_above(self, x=None):
         self.set_missing([0, 0.01])
         self.tmin()
         self.assign(first=lambda x: int(x.new) - 1, drop=True)
-        self.rename({"first": self.variables[0]})
+        self.rename({"first": variable})
         self.run()
         return None
 
@@ -99,6 +101,8 @@ def first_below(self, x=None):
 
     self.run()
 
+    variable = self.variables[0]
+
     #if len(self.variables) > 1:
     #    raise ValueError("This method only works with single variable datasets!")
 
@@ -122,7 +126,7 @@ def first_below(self, x=None):
         self.set_missing([0, 0.01])
         self.tmin()
         self.assign(first=lambda x: int(x.new) - 1, drop=True)
-        self.rename({"first": self.variables[0]})
+        self.rename({"first": variable})
         self.run()
         return None
 
@@ -159,6 +163,8 @@ def last_above(self, x=None):
 
     self.run()
 
+    variable = self.variables[0]
+
     #if len(self.variables) > 1:
     #    raise ValueError("This method only works with single variable datasets!")
 
@@ -185,7 +191,7 @@ def last_above(self, x=None):
         self.tmin()
         self.multiply(-1)
         self.assign(last=lambda x: int(x.new) - 1, drop=True)
-        self.rename({"last": self.variables[0]})
+        self.rename({"last": variable})
         self.run()
         return None
 
@@ -222,6 +228,8 @@ def last_below(self, x=None):
 
     self.run()
 
+    variable = self.variables[0]
+
     #if len(self.variables) > 1:
     #    raise ValueError("This method only works with single variable datasets!")
 
@@ -241,14 +249,15 @@ def last_below(self, x=None):
     if run_code:
         self.rename({self.variables[0]: "target"})
         self.set_missing([-1, 0.1])
-        self.assign(new=lambda x: (x.target == x.target) * -1 * (timestep(x.target) + 1), drop=True)
+        self.assign(new=lambda x: (x.target == x.target) *
+                -1 * (timestep(x.target) + 1), drop=True)
         self.set_missing([0, 0.01])
         self.assign(new=lambda x: int(x.new))
         self.tmin()
         self.multiply(-1)
         self.assign(new=lambda x: int(x.new))
         self.assign(last=lambda x: int(x.new) - 1, drop=True)
-        self.rename({"last": self.variables[0]})
+        self.rename({"last": variable})
         self.run()
         return None
 
