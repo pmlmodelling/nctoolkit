@@ -194,6 +194,19 @@ class TestAssign:
     data.history[0] == "cdo -aexpr,'new=sst+273.15;old=sst'"
 
     data = nc.open_data(ff)
+    data.assign(new=lambda x: x.sst + 273.15,
+            old=lambda x: x.sst)
+    data.history[0] == "cdo -aexpr,'new=sst+273.15;old=sst'"
+
+
+    data = nc.open_data(ff)
+    data.assign(new = lambda x:
+            x.sst + 273.15,
+            old=lambda
+            x: x.sst)
+    data.history[0] == "cdo -aexpr,'new=sst+273.15;old=sst'"
+
+    data = nc.open_data(ff)
     data.assign(new=lambda x: x.sst + 273.15, old=lambda x: x.sst, drop=False)
     data.history[0] == "cdo -aexpr,'new=sst+273.15;old=sst'"
 
