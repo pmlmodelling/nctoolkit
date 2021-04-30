@@ -198,7 +198,9 @@ def ensemble_mean(self, nco=False, ignore_time=False):
     """
 
     if nco is False:
-        self.run()
+
+        if cdo_version() not in ["9.9.9"]:
+            self.run()
 
         if len(self) == 1:
             warnings.warn(message="There is only one file in the dataset")
@@ -211,9 +213,11 @@ def ensemble_mean(self, nco=False, ignore_time=False):
             else:
                 cdo_command = "cdo --sortname -ensmean"
 
+
         run_this(cdo_command, self)
 
         self._merged = True
+
         if cdo_version() == "1.9.3" and ignore_time:
             self.run()
             self.tmean()

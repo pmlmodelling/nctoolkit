@@ -17,6 +17,8 @@ from nctoolkit.session import (
 )
 from nctoolkit.temp_file import temp_file
 
+from nctoolkit.utils import cdo_version
+
 
 def file_size(file_path):
     """
@@ -432,6 +434,16 @@ def run_this(os_command, self, output="one", out_file=None):
     if len(self) == 1:
         output = "ensemble"
 
+    if (len(self._hold_history) != len(self.history)):
+        if self._merged == False and len(self.history) > 0 and output == "one":
+
+            if cdo_version() in ["9.9.9"]:
+                the_command = self.history[-1].replace("cdo", "") + " "
+                the_command = the_command.replace(" -L ", " ").strip()
+                if "apply," not in the_command:
+                    self.history[-1] = f'-apply,"{the_command}"'
+
+
     if self._execute is False:
         if len(self._hold_history) == len(self.history):
             self.history.append(os_command)
@@ -553,6 +565,7 @@ def run_this(os_command, self, output="one", out_file=None):
             new_history = copy.deepcopy(self._hold_history)
 
             file_list = self.current
+
 
             if len(self.history) > len(self._hold_history):
                 os_command = f'{os_command} {self.history[-1].replace("cdo ", " ")}'
