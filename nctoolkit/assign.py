@@ -266,6 +266,9 @@ def assign(self, drop=False, **kwargs):
 
     # we now need to figure out if what we have is one line
 
+    if ";" in start:
+        raise ValueError("You cannot split assign calls using ;")
+
     if ".assign(" not in start:
         raise ValueError("Please write assign methods as single line!")
 
