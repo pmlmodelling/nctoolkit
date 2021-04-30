@@ -4,7 +4,7 @@ import subprocess
 from nctoolkit.cleanup import cleanup
 from nctoolkit.runthis import run_this, run_cdo, tidy_command
 from nctoolkit.temp_file import temp_file
-from nctoolkit.session import nc_safe, remove_safe
+from nctoolkit.session import nc_safe, remove_safe, append_safe
 
 
 def cdo_version():
@@ -154,6 +154,8 @@ def spatial_sum(self, by_area=False):
                 target2 = run_cdo(cdo_command, target=target2)
 
                 target = temp_file("nc")
+                #append_safe(target1)
+                #append_safe(target2)
 
                 cdo_command = f"cdo -fldsum {target2} {target}"
                 cdo_command = tidy_command(cdo_command)
