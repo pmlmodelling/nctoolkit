@@ -229,10 +229,8 @@ def assign(self, drop=False, **kwargs):
     try:
         start = lambdas
         try:
-            #print("here")
-            #all_str = inspect.getsourcelines(start)
-            start = inspect.getsourcelines(start)[0][0].replace("\n", "").strip()
-            #start = all_str.replace("'", "").replace("\\n", "")[1:-1].replace("  ", " ")
+            all_str = inspect.getsourcelines(start)
+            start = all_str.replace("'", "").replace("\\n", "")[1:-1].replace("  ", " ")
         except:
             start = dill.source.getsource(start).replace("\n", "").strip()
     except:
