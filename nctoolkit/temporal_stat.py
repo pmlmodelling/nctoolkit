@@ -11,6 +11,10 @@ import warnings
 def time_stat(self, stat="mean", over="time"):
     """Method to calculate a stat over all time steps"""
     # create cdo command and run it
+
+    if len(self) == 0:
+        raise ValueError("Failure due to empty dataset!")
+
     if over == "time":
         cdo_command = f"cdo -tim{stat}"
         run_this(cdo_command, self, output="ensemble")
@@ -408,6 +412,10 @@ def tpercentile(self, p=None, over="time"):
         >>> ds.tpercentile(20)
 
     """
+
+    if len(self) == 0:
+        raise ValueError("Failure due to empty dataset!")
+
     over = over
     if p is None:
         raise ValueError("Please supply p")

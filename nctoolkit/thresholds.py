@@ -3,7 +3,7 @@ import os
 import subprocess
 
 from nctoolkit.cleanup import cleanup
-from nctoolkit.runthis import run_this, run_cdo, tidy_command
+from nctoolkit.runthis import run_this
 from nctoolkit.session import nc_safe, session_info, append_safe, remove_safe
 from nctoolkit.show import nc_variables
 from nctoolkit.temp_file import temp_file

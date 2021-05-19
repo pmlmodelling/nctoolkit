@@ -9,6 +9,9 @@ from nctoolkit.session import nc_safe, remove_safe, get_safe
 
 def cor(self, var1=None, var2=None, method="fld"):
 
+    if len(self) == 0:
+        raise ValueError("Failure due to empty dataset!")
+
     # Make sure variables are given
     if (var1 is None) or (var2 is None):
         raise ValueError("Both variables are not given")

@@ -32,6 +32,9 @@ def regrid(self, grid=None, method="bil", recycle = False):
         Large area fraction remapping - "laf"
     """
 
+    if len(self) == 0:
+        raise ValueError("Failure due to empty dataset!")
+
     valid_methods = ["bil", "nn", "bic", "dis", "con", "con2", "laf"]
 
     if "DataSet" in str(type(grid)):

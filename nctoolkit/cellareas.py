@@ -32,6 +32,9 @@ def cell_area(self, join=True):
 
     """
 
+    if len(self) == 0:
+        raise ValueError("Failure due to empty dataset!")
+
     if isinstance(join, bool) is False:
         raise TypeError("join is not boolean")
 

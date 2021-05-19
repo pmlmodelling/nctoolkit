@@ -511,15 +511,15 @@ def open_data(x=[], checks=False, **kwargs):
                                 )
                                 if "Open failed" in str(out.stderr):
                                     raise ValueError(f"{x} is not compatible with CDO!")
-                        else:
-                            out = subprocess.run(
-                                "cdo sinfo " + x,
-                                shell=True,
-                                stdout=subprocess.PIPE,
-                                stderr=subprocess.PIPE,
-                            )
-                            if "Open failed" in str(out.stderr):
-                                raise ValueError(f"{x} is not compatible with CDO!")
+                        #else:
+                        #    out = subprocess.run(
+                        #        "cdo sinfo " + x,
+                        #        shell=True,
+                        #        stdout=subprocess.PIPE,
+                        #        stderr=subprocess.PIPE,
+                        #    )
+                        #    if "Open failed" in str(out.stderr):
+                        #        raise ValueError(f"{x} is not compatible with CDO!")
 
             else:
                 raise ValueError("Data set " + x + " does not exist!")

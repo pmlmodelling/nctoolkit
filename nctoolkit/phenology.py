@@ -29,6 +29,9 @@ def phenology(self, var=None, metric=None, p=None):
         Percentile to use for start or end.
     """
 
+    if len(self) == 0:
+        raise ValueError("Failure due to empty dataset!")
+
     if metric is None:
         raise ValueError("No metric was supplied!")
 

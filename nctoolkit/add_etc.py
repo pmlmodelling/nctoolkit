@@ -29,6 +29,9 @@ def operation(self, method="mul", ff=None, var=None):
     This is used by add etc.
     """
 
+    if len(self) == 0:
+        raise ValueError("Failure due to empty dataset!")
+
     # If the dataset has to be merged,
     # then this operation will not work without running it first
     if self._merged:

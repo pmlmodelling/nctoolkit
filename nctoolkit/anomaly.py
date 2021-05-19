@@ -151,6 +151,9 @@ def monthly_anomaly(self, baseline=None):
 
     """
 
+    if len(self) == 0:
+        raise ValueError("Failure due to empty dataset!")
+
     # check baseline is a list, etc.
     if type(baseline) is not list:
         raise TypeError("baseline years supplied is not a list")

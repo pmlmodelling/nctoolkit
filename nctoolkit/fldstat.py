@@ -19,6 +19,10 @@ def cdo_version():
 def fldstat(self, stat="mean"):
     """Method to calculate the spatial stat from a dataset"""
     # This cannot be chained in cdo version 1.9.3
+
+    if len(self) == 0:
+        raise ValueError("Failure due to empty dataset!")
+
     if cdo_version() in ["1.9.3"]:
         self.run()
 
@@ -122,6 +126,9 @@ def spatial_sum(self, by_area=False):
 
 
     """
+
+    if len(self) == 0:
+        raise ValueError("Failure due to empty dataset!")
 
     if isinstance(by_area, bool) is False:
         raise TypeError("by_area is not boolean")
@@ -247,6 +254,9 @@ def spatial_percentile(self, p=None):
 
     >>> ds.spatial_percentile(50)
     """
+
+    if len(self) == 0:
+        raise ValueError("Failure due to empty dataset!")
 
     if p is None:
         raise ValueError("Please supply a percentile")

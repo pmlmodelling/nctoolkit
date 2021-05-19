@@ -20,6 +20,9 @@ def lt(self, x):
 
     """
 
+    if len(self) == 0:
+        raise ValueError("Failure due to empty dataset!")
+
     self.run()
 
     x_ff = None
@@ -75,6 +78,8 @@ def gt(self, x):
 
     """
 
+    if len(self) == 0:
+        raise ValueError("Failure due to empty dataset!")
 
     self.run()
 

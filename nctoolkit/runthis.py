@@ -427,6 +427,9 @@ def run_cdo(command, target, out_file=None, overwrite=False):
 
 def run_this(os_command, self, output="one", out_file=None):
 
+    if len(self) == 0:
+        raise ValueError("Failure do to empty dataset!")
+
     self._ncommands += 1
 
     cores = session_info["cores"]
