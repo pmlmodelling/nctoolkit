@@ -183,13 +183,9 @@ def collect(self):
         warnings.warn(message="There is only file in the dataset. No need to merge!")
         return None
 
-    cdo_command = "cdo collgrid"
+    cdo_command = "cdo -collgrid"
 
     run_this(cdo_command, self, output="one")
 
-    if session_info["lazy"]:
-        self._merged = True
-
-    if cdo_version() in ["1.9.3"]:
-        self.run()
+    self.run()
 
