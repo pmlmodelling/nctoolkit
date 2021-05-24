@@ -8,7 +8,7 @@ from nctoolkit.api import open_data
 from nctoolkit.cleanup import cleanup
 from nctoolkit.generate_grid import generate_grid
 from nctoolkit.runthis import run_this, run_cdo
-from nctoolkit.session import nc_safe, append_safe, remove_safe
+from nctoolkit.session import nc_safe, append_safe, remove_safe, get_safe
 from nctoolkit.temp_file import temp_file
 
 
@@ -148,6 +148,9 @@ def regrid(self, grid=None, method="bil", recycle = False):
 
         if recycle == False:
             remove_safe(weights_nc)
+        
+        for ff in tracker:
+            append_safe(ff)
 
         new_files += tracker.current
 
@@ -160,6 +163,10 @@ def regrid(self, grid=None, method="bil", recycle = False):
             remove_safe(del_grid)
 
     self.current = new_files
+
+    for ff in self:
+        if len([x for x in get_safe() if x == ff]) > 1:
+            remove_safe(ff)
 
     self._thredds = False
     cleanup()
