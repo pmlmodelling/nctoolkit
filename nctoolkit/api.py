@@ -1242,6 +1242,8 @@ class DataSet(object):
 
     from nctoolkit.crop import crop
 
+    from nctoolkit.distgrid import distribute
+
     from nctoolkit.drop import drop
 
     from nctoolkit.ensembles import ensemble_mean
@@ -1271,6 +1273,7 @@ class DataSet(object):
 
     from nctoolkit.masking import mask_box
 
+    from nctoolkit.mergers import collect
     from nctoolkit.mergers import merge_time
     from nctoolkit.mergers import merge
 
