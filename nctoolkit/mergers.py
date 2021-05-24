@@ -174,9 +174,7 @@ def merge_time(self):
 
 def collect(self):
     """
-    Time-based merging of a multi-file ensemble into a single file
-    This method is ideal if you have the same data split over multiple
-    files covering different data sets.
+    Collect a dataset that has been split using distribute 
     """
 
     self.run()

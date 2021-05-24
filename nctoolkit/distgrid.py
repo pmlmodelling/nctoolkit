@@ -80,9 +80,7 @@ def dist_cdo(self, i = None, j = None):
 
 def distribute(self, i = 1, j = 1):
     """
-    Split the dataset
-    Each file in the ensemble will be separated into new files based on the
-    splitting argument.
+    Split the dataset into multiple evenly sized horizontal and vertical new files
 
     Parameters
     --------------------
