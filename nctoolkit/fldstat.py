@@ -18,19 +18,14 @@ def cdo_version():
 
 def fldstat(self, stat="mean"):
     """Method to calculate the spatial stat from a dataset"""
-    # This cannot be chained in cdo version 1.9.3
 
     if len(self) == 0:
         raise ValueError("Failure due to empty dataset!")
 
-    if cdo_version() in ["1.9.3"]:
-        self.run()
 
     cdo_command = f"cdo -fld{stat}"
 
     run_this(cdo_command, self, output="ensemble")
-    if cdo_version() in ["1.9.3"]:
-        self.run()
 
 
 def spatial_mean(self):
@@ -133,53 +128,12 @@ def spatial_sum(self, by_area=False):
     if isinstance(by_area, bool) is False:
         raise TypeError("by_area is not boolean")
 
-    # fldstats cannot be chained in cdo version 1.9.3, so run everything
-    if cdo_version() in ["1.9.3"]:
-        self.run()
-
     if len(self) == 1 or (by_area is False):
 
         if by_area:
             self.run()
 
-            if cdo_version() in ["1.9.3"]:
-
-                new_commands = []
-                target1 = temp_file("nc")
-
-                cdo_command = f"cdo -gridarea {self.current[0]} {target1}"
-                cdo_command = tidy_command(cdo_command)
-                new_commands.append(cdo_command)
-                target1 = run_cdo(cdo_command, target=target1)
-
-                target2 = temp_file("nc")
-
-                cdo_command = f"cdo -mul {self.current[0]} {target1} {target2}"
-                cdo_command = tidy_command(cdo_command)
-                new_commands.append(cdo_command)
-
-                target2 = run_cdo(cdo_command, target=target2)
-
-                target = temp_file("nc")
-                #append_safe(target1)
-                #append_safe(target2)
-
-                cdo_command = f"cdo -fldsum {target2} {target}"
-                cdo_command = tidy_command(cdo_command)
-                target = run_cdo(cdo_command, target=target)
-                self.history += new_commands
-                self._hold_history = copy.deepcopy(self.history)
-
-                self.current = target
-                remove_safe(target)
-                remove_safe(target1)
-                remove_safe(target2)
-
-                cleanup()
-
-                return None
-            else:
-                cdo_command = f"cdo -fldsum -mul {self.current[0]} -gridarea "
+            cdo_command = f"cdo -fldsum -mul {self.current[0]} -gridarea "
         else:
             cdo_command = "cdo -fldsum"
 
@@ -190,42 +144,14 @@ def spatial_sum(self, by_area=False):
     new_files = []
     new_commands = []
     for ff in self:
-        if cdo_version() in ["1.9.3"]:
 
-            target1 = temp_file("nc")
+        target = temp_file("nc")
 
-            cdo_command = f"cdo -gridarea {ff} {target1}"
-            cdo_command = tidy_command(cdo_command)
-            new_commands.append(cdo_command)
-            target1 = run_cdo(cdo_command, target=target1)
-
-            target2 = temp_file("nc")
-
-            cdo_command = f"cdo -mul {ff} {target1} {target2}"
-            cdo_command = tidy_command(cdo_command)
-            new_commands.append(cdo_command)
-
-            target2 = run_cdo(cdo_command, target=target2)
-
-            target = temp_file("nc")
-
-            cdo_command = f"cdo -fldsum {target2} {target}"
-            cdo_command = tidy_command(cdo_command)
-            target = run_cdo(cdo_command, target=target)
-            remove_safe(target1)
-            remove_safe(target2)
-            new_files.append(target)
-            new_commands.append(cdo_command)
-
-        else:
-
-            target = temp_file("nc")
-
-            cdo_command = f"cdo -fldsum -mul {ff} -gridarea {ff} {target}"
-            cdo_command = tidy_command(cdo_command)
-            target = run_cdo(cdo_command, target=target)
-            new_files.append(target)
-            new_commands.append(cdo_command)
+        cdo_command = f"cdo -fldsum -mul {ff} -gridarea {ff} {target}"
+        cdo_command = tidy_command(cdo_command)
+        target = run_cdo(cdo_command, target=target)
+        new_files.append(target)
+        new_commands.append(cdo_command)
 
     self.history += new_commands
     self._hold_history = copy.deepcopy(self.history)

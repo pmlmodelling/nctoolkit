@@ -123,18 +123,11 @@ def ensemble_max(self, nco=False, ignore_time=False):
         if ignore_time is False:
             cdo_command = "cdo --sortname -ensmax"
         else:
-            if cdo_version() != "1.9.3":
-                cdo_command = "cdo -timmax --sortname -ensmax"
-            else:
-                cdo_command = "cdo --sortname -ensmax"
+            cdo_command = "cdo -timmax --sortname -ensmax"
 
         run_this(cdo_command, self)
 
         self._merged = True
-
-        if cdo_version() == "1.9.3" and ignore_time:
-            self.run()
-            self.tmax()
 
         return None
 
@@ -164,18 +157,11 @@ def ensemble_min(self, nco=False, ignore_time=False):
         if ignore_time is False:
             cdo_command = "cdo --sortname -ensmin"
         else:
-            if cdo_version() != "1.9.3":
-                cdo_command = "cdo -timmin --sortname -ensmin"
-            else:
-                cdo_command = "cdo --sortname -ensmin"
+            cdo_command = "cdo -timmin --sortname -ensmin"
 
         run_this(cdo_command, self)
 
         self._merged = True
-        if cdo_version() == "1.9.3":
-            self.run()
-            if ignore_time:
-                self.tmin()
 
         return None
 
@@ -208,19 +194,11 @@ def ensemble_mean(self, nco=False, ignore_time=False):
         if ignore_time is False:
             cdo_command = "cdo --sortname -ensmean"
         else:
-            if cdo_version() != "1.9.3":
-                cdo_command = "cdo -timmean --sortname -ensmean"
-            else:
-                cdo_command = "cdo --sortname -ensmean"
-
+            cdo_command = "cdo -timmean --sortname -ensmean"
 
         run_this(cdo_command, self)
 
         self._merged = True
-
-        if cdo_version() == "1.9.3" and ignore_time:
-            self.run()
-            self.tmean()
 
         return None
 

@@ -38,7 +38,7 @@ def validate_version():
         actual_version = version
         if version is None:
             print(
-                "Please install CDO version 1.9.3 or above: https://code.mpimet.mpg.de/projects/cdo/ or https://anaconda.org/conda-forge/cdo"
+                "Please install CDO version 1.9.4 or above: https://code.mpimet.mpg.de/projects/cdo/ or https://anaconda.org/conda-forge/cdo"
             )
         sub = "."
         wanted = ""
@@ -51,15 +51,15 @@ def validate_version():
         after = version[where:]
         after = after.replace(sub, wanted)
         newString = before + after
-        if float(newString) >= 1.93 == False:
+        if float(newString) >= 1.94 == False:
             print(
-                "Please install CDO version 1.9.3 or above: https://code.mpimet.mpg.de/projects/cdo/ or https://anaconda.org/conda-forge/cdo"
+                "Please install CDO version 1.9.4 or above: https://code.mpimet.mpg.de/projects/cdo/ or https://anaconda.org/conda-forge/cdo"
             )
         else:
             print(f"nctoolkit is using Climate Data Operators version {actual_version}")
     except:
         print(
-            "Please install CDO version 1.9.3 or above: https://code.mpimet.mpg.de/projects/cdo/ or https://anaconda.org/conda-forge/cdo"
+            "Please install CDO version 1.9.4 or above: https://code.mpimet.mpg.de/projects/cdo/ or https://anaconda.org/conda-forge/cdo"
         )
 
 

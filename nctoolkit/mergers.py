@@ -142,9 +142,6 @@ def merge(self, match=["year", "month", "day"]):
     if session_info["lazy"]:
         self._merged = True
 
-    if cdo_version() in ["1.9.3"]:
-        self.run()
-
 
 def merge_time(self):
     """
@@ -166,15 +163,12 @@ def merge_time(self):
     if session_info["lazy"]:
         self._merged = True
 
-    if cdo_version() in ["1.9.3"]:
-        self.run()
-
 
 
 
 def collect(self):
     """
-    Collect a dataset that has been split using distribute 
+    Collect a dataset that has been split using distribute
     """
 
     self.run()

@@ -51,7 +51,7 @@ def cell_area(self, join=True):
 
         for ff in self:
 
-            if cdo_version() in ["1.9.3", "1.9.4", "1.9.5", "1.9.6"]:
+            if cdo_version() in ["1.9.4", "1.9.5", "1.9.6"]:
 
                 # in cdo < 1.9.6 chaining doesn't work with merge
 

@@ -51,7 +51,6 @@ def operation(self, method="mul", ff=None, var=None):
 
     # make sure the ff file is not removed from safe list in subsequent
     # actions prior to running
-    #if (ff is not None) and (session_info["lazy"]) and (cdo_version() != "1.9.3"):
     if (ff is not None) and (session_info["lazy"]) :
         append_safe(ff)
         self._safe.append(ff)
@@ -93,7 +92,7 @@ def operation(self, method="mul", ff=None, var=None):
 
     # run the command if not lazy
 
-    if (session_info["lazy"] is False) or (cdo_version in ["1.9.3"]):
+    if (session_info["lazy"] is False):
 
         new_files = []
         new_commands = []
