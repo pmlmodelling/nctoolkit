@@ -4,11 +4,20 @@ News
 Release of v0.3.5
 ---------------
 
-Version 0.3.5 will be released in May 2021.
+Version 0.3.5 was released in May 2021.
 
-This will be a minor release focusing on improving the under-the hood handling of ensemble operation to improve performance.
+This is a minor release focusing on some under-the-hood improvements in performance and a couple of new methods. 
 
-It will drop support for CDO version 1.9.3, as this is becoming too time-consuming to continue given the increasingly low reward. Upcoming changes to how ensembles are handled may result in nctoolkit requiring CDO version 1.9.9 or above towards the end of 2021.
+It drops support for CDO version 1.9.3, as this is becoming too time-consuming to continue given the increasingly low reward. 
+
+A couple of new methods have been added. ``distribute`` enables files to be split up spatially into equally sized m by n rectangles.  ``collect`` is the reverse of ``distribute``. It will collect distributed data into one file.
+
+In prior releases ``assign`` calls could not be split over multiple lines. This is now fixed.
+
+There was a bug in previous releases where ``regrid`` did not work with multi-file datasets. This was due to the enabling of parallel processing with nctoolkit. The issue is now fixed. 
+
+The deprecated methods ``mutate`` and ``assign`` have now been removed. Variable creation should use ``assign``.
+
 
 
 
