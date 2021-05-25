@@ -78,29 +78,28 @@ def dist_cdo(self, i = None, j = None):
     self.disk_clean()
 
 
-def distribute(self, i = 1, j = 1):
+def distribute(self, m = 1, n = 1):
     """
     Split the dataset into multiple evenly sized horizontal and vertical new files
 
     Parameters
     --------------------
-    i : int 
-        Number of columns 
-    j : int 
-        Number of rows 
-
+    m : int
+        Number of rows
+    n : int
+        Number of columns
 
     """
 
 
-    if type(i) is not int or type(j) is not int:
+    if type(m) is not int or type(n) is not int:
         raise ValueError("Please provide integers")
 
-    if i < 1:
+    if m < 1:
         raise ValueError("Please provide integers")
 
-    if j < 1:
+    if n < 1:
         raise ValueError("Please provide integers")
 
 
-    dist_cdo(self, i = i, j = j)
+    dist_cdo(self, i = n, j = m)
