@@ -13,6 +13,49 @@ class TestRegrid:
     def test_empty(self):
         n = len(nc.session_files())
         assert n == 0
+    def test_list(self):
+
+        tracker = nc.open_data(ff)
+        tracker.split("year")
+        tracker.to_latlon(lon = [-90, 90], lat = [0, 40], res = 1)
+        tracker.merge_time()
+        tracker.tmean()
+        tracker.spatial_mean()
+
+        x = tracker.to_dataframe().sst.values[0].astype("float")
+
+        tracker = nc.open_data(ff)
+        tracker.to_latlon(lon = [-90, 90], lat = [0, 40], res = 1)
+        tracker.tmean()
+        tracker.spatial_mean()
+
+        y = tracker.to_dataframe().sst.values[0].astype("float")
+
+
+        assert x == y
+
+        tracker = nc.open_data(ff)
+        tracker.select(year = 1990)
+        tracker.split("month")
+        tracker.to_latlon(lon = [-90, 90], lat = [0, 40], res = 1)
+        assert len(tracker) == 12
+        tracker.merge_time()
+        tracker.tmean()
+        tracker.spatial_mean()
+
+        x = tracker.to_dataframe().sst.values[0].astype("float")
+
+        tracker = nc.open_data(ff)
+        tracker.select(year = 1990)
+        tracker.to_latlon(lon = [-90, 90], lat = [0, 40], res = 1)
+        tracker.tmean()
+        tracker.spatial_mean()
+
+        y = tracker.to_dataframe().sst.values[0].astype("float")
+
+
+        assert x == y
+
 
     def test_regrid(self):
         tracker = nc.open_data(ff)
