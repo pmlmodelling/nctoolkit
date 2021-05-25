@@ -1368,7 +1368,4 @@ class DataSet(object):
 
     # deprecated stuff
 
-    from nctoolkit.deprecated import mutate
-    from nctoolkit.deprecated import transmute
-
     from nctoolkit.compare import compare_all
