@@ -277,6 +277,7 @@ def assign(self, drop=False, **kwargs):
     except:
         raise ValueError("Please write assign methods as single line!")
 
+    start = start.strip()
     start = start[start.find("(") + 1 : -1]
     start = re.sub("\s\s+" , " ", start)
 
