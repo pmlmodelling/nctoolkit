@@ -65,9 +65,9 @@ def regrid(self, grid=None, method="bil", recycle = False):
 
     if "DataSet" in str(type(grid)):
         grid.run()
-        grid = grid.current[0]
         if len(grid) > 1:
             warnings.warn(message="The first file in dataset used for regridding!")
+        grid = grid.current[0]
         grid_type = "nc"
 
     if grid_type is None:
@@ -148,7 +148,7 @@ def regrid(self, grid=None, method="bil", recycle = False):
 
         if recycle == False:
             remove_safe(weights_nc)
-        
+
         for ff in tracker:
             append_safe(ff)
 
