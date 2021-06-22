@@ -181,5 +181,8 @@ def collect(self):
 
     run_this(cdo_command, self, output="one")
 
+    if session_info["lazy"]:
+        self._merged = True
+
     self.run()
 
