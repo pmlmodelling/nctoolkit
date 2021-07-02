@@ -98,6 +98,46 @@ def ensemble_nco(self, method, ignore_time=False):
     cleanup()
     self.disk_clean()
 
+def ensemble_stdev(self):
+    """
+    Calculate an ensemble standard deviation
+
+    The ensemble standard deviation is calculated for each time steps; for example, if the ensemble is made up of 
+    monthly files the standard deviation for each month will be calculated.
+    """
+
+    self.run()
+
+    if len(self) == 1:
+        warnings.warn(message="There is only one file in the dataset")
+
+    cdo_command = "cdo --sortname -ensstd"
+
+    run_this(cdo_command, self)
+
+    self._merged = True
+
+def ensemble_var(self):
+    """
+    Calculate an ensemble variance 
+
+    The ensemble variance is calculated for each time steps; for example, if the ensemble is made up of 
+    monthly files the standard deviation for each month will be calculated.
+    """
+
+    self.run()
+
+    if len(self) == 1:
+        warnings.warn(message="There is only one file in the dataset")
+
+    cdo_command = "cdo --sortname -ensvar"
+
+    run_this(cdo_command, self)
+
+    self._merged = True
+
+
+
 
 def ensemble_max(self, nco=False, ignore_time=False):
     """
@@ -132,6 +172,7 @@ def ensemble_max(self, nco=False, ignore_time=False):
         return None
 
     ensemble_nco(self, "max", ignore_time=ignore_time)
+
 
 
 def ensemble_min(self, nco=False, ignore_time=False):

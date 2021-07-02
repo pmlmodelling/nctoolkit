@@ -240,3 +240,36 @@ class TestEnsemble:
         data = nc.open_data(nc.create_ensemble("data/ensemble"))
         with pytest.raises(ValueError):
             data.ensemble_percentile()
+
+
+        ds = nc.open_data("data/sst.mon.mean.nc")
+        ds.split("yearmonth")
+        ds.ensemble_stdev()
+        ds.run()
+        ds.spatial_mean()
+        x = ds.to_xarray().sst.values[0]
+        
+        ds = nc.open_data("data/sst.mon.mean.nc")
+        ds.tstdev()
+        ds.spatial_mean()
+        y = ds.to_xarray().sst.values[0]
+
+        assert x == y
+
+
+
+
+        ds = nc.open_data("data/sst.mon.mean.nc")
+        ds.split("yearmonth")
+        ds.ensemble_var()
+        ds.run()
+        ds.spatial_mean()
+        x = ds.to_xarray().sst.values[0]
+        
+        ds = nc.open_data("data/sst.mon.mean.nc")
+        ds.tvariance()
+        ds.spatial_mean()
+        y = ds.to_xarray().sst.values[0]
+
+        assert x == y
+

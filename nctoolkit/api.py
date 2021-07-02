@@ -1250,7 +1250,9 @@ class DataSet(object):
     from nctoolkit.ensembles import ensemble_max
     from nctoolkit.ensembles import ensemble_min
     from nctoolkit.ensembles import ensemble_range
+    from nctoolkit.ensembles import ensemble_stdev
     from nctoolkit.ensembles import ensemble_sum
+    from nctoolkit.ensembles import ensemble_var
 
     from nctoolkit.ensembles import ensemble_percentile
 
