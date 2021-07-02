@@ -1,6 +1,15 @@
 News
 ============
 
+Release of v0.3.6
+---------------
+
+Version 0.3.5 will be released in July 2021. This will be a minor release.
+
+New methods ``ensemble_mean`` and ``ensemble_stdev`` will be introduced for calculating variance and standard deviation across ensembles. The method ``tvariance`` will be deprecated and is now renamed ``tvar`` for naming consistency.
+
+
+
 Release of v0.3.5
 ---------------
 
