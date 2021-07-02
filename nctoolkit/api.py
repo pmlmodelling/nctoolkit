@@ -1331,6 +1331,7 @@ class DataSet(object):
     from nctoolkit.temporal_stat import tmedian
     from nctoolkit.temporal_stat import tmin
     from nctoolkit.temporal_stat import trange
+    from nctoolkit.temporal_stat import tvar
     from nctoolkit.temporal_stat import tvariance
     from nctoolkit.temporal_stat import tstdev
     from nctoolkit.temporal_stat import tsum

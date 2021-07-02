@@ -311,6 +311,47 @@ def tvariance(self, over="time"):
     ------------
     If you want to calculate variance over all time steps. Do the following:
 
+        >>> ds.tvariance()
+
+    If you want to calculate the variance for each year in a dataset, do this:
+
+        >>> ds.tvariance("year")
+
+    If you want to calculate the variance for each month in a dataset, do this:
+
+        >>> ds.tvariance("month")
+
+    If you want to calculate the variance for each month in each year in a dataset, do this:
+
+        >>> ds.tvariance(["year", "month"])
+
+    This method will also let you easily calculate climatologies. So, if you wanted to calculate
+    a monthly climatological var, you would do this:
+
+        >>> ds.tvariance( "month")
+
+    A daily climatological variance would be the following:
+
+        >>> ds.tvariance( "day")
+    """
+    warnings.warn(message="tvariance is deprecated and has been renamed tvar. Please use tvar!")
+    time_stat(self, stat="var", over=over)
+
+
+def tvar(self, over="time"):
+    """
+    Calculate the temporal variance of all variables
+
+    Parameters
+    -------------
+    over: str or list
+        Time periods to average over. Options are 'year', 'month', 'day'.
+
+
+    Examples
+    ------------
+    If you want to calculate variance over all time steps. Do the following:
+
         >>> ds.tvar()
 
     If you want to calculate the variance for each year in a dataset, do this:
@@ -335,6 +376,7 @@ def tvariance(self, over="time"):
         >>> ds.tvar( "day")
     """
     time_stat(self, stat="var", over=over)
+
 
 
 def tstdev(self, over="time"):
