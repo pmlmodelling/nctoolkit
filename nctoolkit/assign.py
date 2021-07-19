@@ -100,7 +100,8 @@ funs = [
     "cos",
     "tan",
     "int",
-    "float"
+    "float",
+    "log10"
 ]
 
 translation = dict()
