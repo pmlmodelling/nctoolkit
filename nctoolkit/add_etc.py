@@ -376,6 +376,14 @@ def power(self, x = None):
 
     run_this(cdo_command, self, output="ensemble")
 
+def exp(self):
+    """
+    Method to get the exponential of variables
+    """
+    cdo_command = f"cdo -exp"
+
+    run_this(cdo_command, self, output="ensemble")
+
 def square(self):
     """
     Method to get the square of variables
