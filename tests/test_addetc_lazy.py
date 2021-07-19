@@ -530,3 +530,119 @@ class TestAddetc:
     def test_empty(self):
         n = len(nc.session_files())
         assert n == 0
+
+
+
+    def test_ariths(self):
+
+        ds = nc.open_data(ff)
+        ds.select(time = 0)
+        ds.power(2)
+        ds.spatial_mean()
+        x = ds.to_dataframe().sst.values[0]
+
+
+
+        ds = nc.open_data(ff)
+        ds.select(time = 0)
+        ds.assign(sst = lambda x: x.sst ** 2)
+        ds.spatial_mean()
+        y = ds.to_dataframe().sst.values[0]
+
+        assert x == y
+
+
+
+
+        ds = nc.open_data(ff)
+        ds.select(time = 0)
+        ds.abs()
+        ds.spatial_mean()
+        x = ds.to_dataframe().sst.values[0]
+
+        ds = nc.open_data(ff)
+        ds.select(time = 0)
+        ds.assign(sst = lambda x: abs(x.sst))
+        ds.spatial_mean()
+        y = ds.to_dataframe().sst.values[0]
+
+        assert x == y
+
+
+        ds = nc.open_data(ff)
+        ds.select(time = 0)
+        ds.sqrt()
+        ds.spatial_mean()
+        x = ds.to_dataframe().sst.values[0]
+
+        ds = nc.open_data(ff)
+        ds.select(time = 0)
+        ds.assign(sst = lambda x: sqrt(x.sst))
+        ds.spatial_mean()
+        y = ds.to_dataframe().sst.values[0]
+
+        assert x == y
+
+        ds = nc.open_data(ff)
+        ds.select(time = 0)
+        ds.exp()
+        ds.spatial_mean()
+        x = ds.to_dataframe().sst.values[0]
+
+        ds = nc.open_data(ff)
+        ds.select(time = 0)
+        ds.assign(sst = lambda x: exp(x.sst))
+        ds.spatial_mean()
+        y = ds.to_dataframe().sst.values[0]
+
+        assert x == y
+
+        ds = nc.open_data(ff)
+        ds.select(time = 0)
+        ds.add(200)
+        ds.log()
+        ds.spatial_mean()
+        x = ds.to_dataframe().sst.values[0]
+
+        ds = nc.open_data(ff)
+        ds.select(time = 0)
+        ds.add(200)
+        ds.assign(sst = lambda x: log(x.sst))
+        ds.spatial_mean()
+        y = ds.to_dataframe().sst.values[0]
+
+        assert x == y
+
+        ds = nc.open_data(ff)
+        ds.select(time = 0)
+        ds.add(200)
+        ds.log10()
+        ds.spatial_mean()
+        x = ds.to_dataframe().sst.values[0]
+
+        ds = nc.open_data(ff)
+        ds.select(time = 0)
+        ds.add(200)
+        ds.assign(sst = lambda x: log10(x.sst))
+        ds.spatial_mean()
+        y = ds.to_dataframe().sst.values[0]
+
+        assert x == y
+
+
+        
+        ds = nc.open_data(ff)
+        ds.select(time = 0)
+        ds.power(2)
+        ds.spatial_mean()
+        x = ds.to_dataframe().sst.values[0]
+
+
+
+        ds = nc.open_data(ff)
+        ds.select(time = 0)
+        ds.square()
+        ds.spatial_mean()
+        y = ds.to_dataframe().sst.values[0]
+
+        assert x == y
