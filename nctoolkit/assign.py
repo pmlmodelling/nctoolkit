@@ -95,7 +95,7 @@ funs = [
     "ceil",
     "sqrt",
     "exp",
-    "log10",
+    "ln",
     "sin",
     "cos",
     "tan",

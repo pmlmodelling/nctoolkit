@@ -384,6 +384,14 @@ def exp(self):
 
     run_this(cdo_command, self, output="ensemble")
 
+def log(self):
+    """
+    Method to get the natural log of variables
+    """
+    cdo_command = f"cdo -ln"
+
+    run_this(cdo_command, self, output="ensemble")
+
 def square(self):
     """
     Method to get the square of variables
