@@ -383,3 +383,11 @@ def square(self):
     cdo_command = f"cdo -sqr"
 
     run_this(cdo_command, self, output="ensemble")
+
+def sqrt(self):
+    """
+    Method to get the square root of variables
+    """
+    cdo_command = f"cdo -sqrt"
+
+    run_this(cdo_command, self, output="ensemble")
