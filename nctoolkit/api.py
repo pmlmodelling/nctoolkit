@@ -1212,6 +1212,7 @@ class DataSet(object):
 
     # import the methods
 
+    from nctoolkit.add_etc import abs
     from nctoolkit.add_etc import add
     from nctoolkit.add_etc import subtract
     from nctoolkit.add_etc import multiply

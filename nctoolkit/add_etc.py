@@ -344,3 +344,18 @@ def divide(self, x=None, var=None):
         raise TypeError("You have not provided an int, float, dataset or file path!")
 
     operation(self=self, method="div", ff=ff, var=var)
+
+
+
+
+
+
+def abs(self):
+    """
+    Method to get the absolute value of variables
+    """
+    cdo_command = f"cdo -abs"
+
+    run_this(cdo_command, self, output="ensemble")
+
+
