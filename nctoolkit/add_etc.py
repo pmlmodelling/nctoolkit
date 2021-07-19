@@ -392,6 +392,14 @@ def log(self):
 
     run_this(cdo_command, self, output="ensemble")
 
+def log10(self):
+    """
+    Method to get the base 10 log of variables
+    """
+    cdo_command = f"cdo -log10"
+
+    run_this(cdo_command, self, output="ensemble")
+
 def square(self):
     """
     Method to get the square of variables
