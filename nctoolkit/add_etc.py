@@ -359,3 +359,19 @@ def abs(self):
     run_this(cdo_command, self, output="ensemble")
 
 
+
+def power(self, x = None):
+    """
+    Powers of variables in dataset 
+    Parameters
+    ------------
+    x: int, float
+        An int or float to take the variables to the power of 
+    """
+
+    if type(x) is not float and type(x) is not int:
+        raise TypeError("x is not a float or int")
+
+    cdo_command = f"cdo -pow,{x}"
+
+    run_this(cdo_command, self, output="ensemble")
