@@ -375,3 +375,11 @@ def power(self, x = None):
     cdo_command = f"cdo -pow,{x}"
 
     run_this(cdo_command, self, output="ensemble")
+
+def square(self):
+    """
+    Method to get the square of variables
+    """
+    cdo_command = f"cdo -sqr"
+
+    run_this(cdo_command, self, output="ensemble")
