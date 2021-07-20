@@ -4,7 +4,7 @@ News
 Release of v0.3.7
 ---------------
 
-Version 0.3.7 will released in August 2021. This will be a minor release.
+Version 0.3.7 was released in August 2021. This is a minor release.
 
 New mathematical methods for simple operations on variables will be added: ``abs``, ``power``, ``square``, ``sqrt``, ``exp``, ``log`` and ``log10``. These methods match numpy names.
 
@@ -17,7 +17,7 @@ Bug fixes: ``assign`` previously did not work with ``log10``. Now fixed.
 Release of v0.3.6
 ---------------
 
-Version 0.3.6 was released in July 2021. This will be a minor release.
+Version 0.3.6 was released in July 2021. This was a minor release.
 
 New methods ``ensemble_mean`` and ``ensemble_stdev`` will be introduced for calculating variance and standard deviation across ensembles. The method ``tvariance`` will be deprecated and is now renamed ``tvar`` for naming consistency.
 
