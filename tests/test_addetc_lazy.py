@@ -552,6 +552,21 @@ class TestAddetc:
         assert x == y
 
 
+        ds = nc.open_data(ff)
+        ds.select(time = 0)
+        ds.power(2.1)
+        ds.spatial_range()
+        x = ds.to_dataframe().sst.values[0]
+
+
+
+        ds = nc.open_data(ff)
+        ds.select(time = 0)
+        ds.assign(sst = lambda x: x.sst ** 2.1)
+        ds.spatial_range()
+        y = ds.to_dataframe().sst.values[0]
+
+        assert x == y
 
 
         ds = nc.open_data(ff)
@@ -630,7 +645,7 @@ class TestAddetc:
         assert x == y
 
 
-        
+
         ds = nc.open_data(ff)
         ds.select(time = 0)
         ds.power(2)
