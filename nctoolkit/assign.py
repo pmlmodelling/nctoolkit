@@ -703,7 +703,7 @@ def assign(self, drop=False, **kwargs):
 
         if "." in term:
             pattern1 = re.compile(r"[a-zA-Z]")
-            if len(pattern1.findall(term)) > 0:
+            if len(pattern1.findall(term)) > 0 and "^" not in term:
                 if term.split(".")[0] in frame.f_back.f_locals:
                     try:
                         new_term = eval(term, globals(), frame.f_back.f_locals)
