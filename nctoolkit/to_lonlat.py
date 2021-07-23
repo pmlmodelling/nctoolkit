@@ -3,7 +3,7 @@ from nctoolkit.session import nc_safe, append_safe, remove_safe
 from nctoolkit.temp_file import temp_file
 
 
-def to_latlon(self, lon=None, lat=None, res=None, method="bil", recycle = False):
+def to_latlon(self, lon=None, lat=None, res=None, method="bil", recycle=False):
     """
     Regrid a dataset to a regular latlon grid
 
@@ -35,7 +35,7 @@ def to_latlon(self, lon=None, lat=None, res=None, method="bil", recycle = False)
     valid_methods = ["bil", "nn", "bic", "dis", "con", "con2", "laf"]
 
     if method not in valid_methods:
-        raise ValueError(f"{mm} is not a valid method!")
+        raise ValueError(f"{method} is not a valid method!")
 
     if lon is None:
         raise ValueError("Please supply lon")
@@ -116,7 +116,7 @@ def to_latlon(self, lon=None, lat=None, res=None, method="bil", recycle = False)
     append_safe(grid_file)
 
     # call regrid
-    self.regrid(grid=grid_file, method=method, recycle = recycle)
+    self.regrid(grid=grid_file, method=method, recycle=recycle)
 
     remove_safe(grid_file)
 
