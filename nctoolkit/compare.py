@@ -139,38 +139,3 @@ def compare(self, expression=None):
     run_this(cdo_command, self, output="ensemble")
 
 
-def compare_all(self, expression=None):
-    """
-    Compare all variables to a constant
-
-    Parameters
-    -------------
-    expression: str
-        This a regular comparison such as "<0", ">0", "==0"
-
-    Examples
-    ------------
-
-    If you wanted to identify grid cells with positive values you would do the following:
-
-    >>> ds.compare_all(">0")
-
-    This will be calculcated for each time step.
-
-    If you wanted to identify grid cells with negative values, you would do this
-
-    >>> ds.compare_all("<0")
-
-
-    """
-    warnings.warn("compare_all is deprecated. Please use compare!")
-
-    if expression is None:
-        raise ValueError("No expression supplied")
-
-    if type(expression) is not str:
-        raise TypeError("Expression supplied is not str")
-
-    expression = fix_expr(expression)
-    cdo_command = f"cdo -{expression}"
-    run_this(cdo_command, self, output="ensemble")

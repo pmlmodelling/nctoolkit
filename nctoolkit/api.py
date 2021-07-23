@@ -1376,6 +1376,3 @@ class DataSet(object):
     from nctoolkit.zonals import zonal_max
     from nctoolkit.zonals import zonal_range
 
-    # deprecated stuff
-
-    from nctoolkit.compare import compare_all
