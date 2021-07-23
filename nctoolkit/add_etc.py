@@ -353,6 +353,14 @@ def divide(self, x=None, var=None):
 def abs(self):
     """
     Method to get the absolute value of variables
+
+    Examples
+    ------------
+
+    If you wanted to get the absolute value of each variable, you just need do this:
+
+    >>> ds.abs()
+
     """
     cdo_command = f"cdo -abs"
 
@@ -362,11 +370,19 @@ def abs(self):
 
 def power(self, x = None):
     """
-    Powers of variables in dataset 
+    Powers of variables in dataset
     Parameters
     ------------
     x: int, float
-        An int or float to take the variables to the power of 
+        An int or float to take the variables to the power of
+
+    Examples
+    ------------
+
+    If you wanted to take each variable to the power of 0.5 you would do this:
+
+    >>> ds.power(0.5)
+
     """
 
     if type(x) is not float and type(x) is not int:
@@ -379,6 +395,14 @@ def power(self, x = None):
 def exp(self):
     """
     Method to get the exponential of variables
+
+    Examples
+    ------------
+
+    If you wanted to calculate the exponential of a variable, you just need to do this:
+
+    >>> ds.exp(0.5)
+
     """
     cdo_command = f"cdo -exp"
 
@@ -387,6 +411,14 @@ def exp(self):
 def log(self):
     """
     Method to get the natural log of variables
+
+    Examples
+    ------------
+
+    If you wanted to calculate the natural log of each variable, you just need to do this:
+
+    >>> ds.log()
+
     """
     cdo_command = f"cdo -ln"
 
@@ -395,6 +427,14 @@ def log(self):
 def log10(self):
     """
     Method to get the base 10 log of variables
+
+    Examples
+    ------------
+
+    If you wanted to calculate the base 10 log of each variable, you just need to do this:
+
+    >>> ds.log10()
+
     """
     cdo_command = f"cdo -log10"
 
@@ -403,6 +443,14 @@ def log10(self):
 def square(self):
     """
     Method to get the square of variables
+
+    Examples
+    ------------
+
+    If you wanted to calculate the square of each variable, you just need to do this:
+
+    >>> ds.power()
+
     """
     cdo_command = f"cdo -sqr"
 
@@ -411,6 +459,14 @@ def square(self):
 def sqrt(self):
     """
     Method to get the square root of variables
+
+    Examples
+    ------------
+
+    If you wanted to calculate the square root of each variable, you just need to do this:
+
+    >>> ds.sqrt()
+
     """
     cdo_command = f"cdo -sqrt"
 

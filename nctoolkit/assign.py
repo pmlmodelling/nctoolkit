@@ -189,6 +189,9 @@ def assign(self, drop=False, **kwargs):
     Operations are carried out in the order give. So if a new variable is created in the first argument,
     it can then be used in following arguments.
 
+
+
+
     """
     frame = inspect.currentframe()
 
