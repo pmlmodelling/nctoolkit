@@ -17,6 +17,9 @@ def arithall(self, stat="divc", x=None):
     This is used by add etc.
     """
 
+    if len(self) == 0:
+        raise ValueError("This does not work on empty datasets!")
+
     # create the system command and run it
     cdo_command = f"cdo -{stat},{x}"
 
@@ -30,7 +33,7 @@ def operation(self, method="mul", ff=None, var=None):
     """
 
     if len(self) == 0:
-        raise ValueError("Failure due to empty dataset!")
+        raise ValueError("This does not work on empty datasets!")
 
     # If the dataset has to be merged,
     # then this operation will not work without running it first
@@ -172,7 +175,7 @@ def multiply(self, x=None, var=None):
         if len(x) == 1:
             ff = x.current[0]
         else:
-            raise TypeError("This can only work with single variable datasets")
+            raise ValueError("This can only work with single file datasets")
     else:
         ff = x
 
@@ -226,7 +229,7 @@ def subtract(self, x=None, var=None):
         if len(x) == 1:
             ff = x.current[0]
         else:
-            raise TypeError("This can only work with single variable datasets")
+            raise ValueError("This can only work with single file datasets")
     else:
         ff = x
 
@@ -282,7 +285,7 @@ def add(self, x=None, var=None):
         if len(x) == 1:
             ff = x.current[0]
         else:
-            raise TypeError("This can only work with single variable datasets")
+            raise ValueError("This can only work with single variable datasets")
     else:
         ff = x
 
@@ -336,7 +339,7 @@ def divide(self, x=None, var=None):
         if len(x) == 1:
             ff = x.current[0]
         else:
-            raise TypeError("This can only work with single variable datasets")
+            raise ValueError("This can only work with single file datasets")
     else:
         ff = x
 
