@@ -36,13 +36,14 @@ Merging or analyzing multiple datasets
     cor_space
     
 
-Adding file(s) to a dataset
+Adding and removing files to a dataset
 ------------------
 
 .. autosummary::
    :toctree: generated/
 
     append
+    remove
 
 Accessing attributes
 ------------------
@@ -158,10 +159,17 @@ Arithemetic methods
 .. autosummary::
    :toctree: generated/
 
-   DataSet.assign
+   DataSet.abs
    DataSet.add
-   DataSet.subtract
+   DataSet.assign
+   DataSet.exp
+   DataSet.log
+   DataSet.log10
    DataSet.multiply
+   DataSet.power
+   DataSet.sqrt
+   DataSet.square
+   DataSet.subtract
    DataSet.divide
 
 
@@ -176,7 +184,9 @@ Ensemble statistics
    DataSet.ensemble_max
    DataSet.ensemble_percentile
    DataSet.ensemble_range
+   DataSet.ensemble_stdev
    DataSet.ensemble_sum
+   DataSet.ensemble_var
 
 
 Subsetting operations
@@ -209,6 +219,7 @@ Interpolation and resampling methods
    DataSet.resample_grid
    DataSet.time_interp
    DataSet.timestep_interp
+   DataSet.fill_na
 
 
 Masking methods
@@ -218,6 +229,16 @@ Masking methods
    :toctree: generated/
 
    DataSet.mask_box
+
+
+Anomaly methods
+---------------------
+
+.. autosummary::
+   :toctree: generated/
+
+   DataSet.annual_anomaly
+   DataSet.monthly_anomaly
 
 
 
@@ -238,6 +259,7 @@ Statistical methods
    DataSet.tvariance
    DataSet.tstdev
    DataSet.tcumsum
+   DataSet.tvar
 
    DataSet.cor_space
    DataSet.cor_time
@@ -301,6 +323,8 @@ Miscellaneous methods
 .. autosummary::
    :toctree: generated/
 
+   DataSet.distribute
+   DataSet.collect
    DataSet.cell_area
    DataSet.first_above
    DataSet.first_below
