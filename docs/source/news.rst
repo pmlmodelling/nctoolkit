@@ -4,6 +4,14 @@ News
 Release of v0.3.7
 ---------------
 
+
+``compare_all`` was deleted after a period of deprecation.
+
+
+
+Release of v0.3.7
+---------------
+
 Version 0.3.7 was released in August 2021. This is a minor release.
 
 New mathematical methods for simple operations on variables will be added: ``abs``, ``power``, ``square``, ``sqrt``, ``exp``, ``log`` and ``log10``. These methods match numpy names.
