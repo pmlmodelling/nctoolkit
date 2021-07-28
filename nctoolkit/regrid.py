@@ -57,6 +57,8 @@ def regrid(self, grid=None, method="bil", recycle = False):
     # find the grid type
     if isinstance(grid, pd.DataFrame):
         grid_type = "df"
+        if len(grid) == 0:
+            raise ValueError("You have supplied an empty data frame as a grid!")
 
     if type(grid) is str:
         if os.path.exists(grid) is False:
