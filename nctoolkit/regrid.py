@@ -43,7 +43,6 @@ def regrid(self, grid=None, method="bil", recycle = False):
             weights_nc = grid._weights
             cdo_command = f"cdo -remap,{target_grid},{weights_nc}"
             run_this(cdo_command, self, output="ensemble")
-            print("recycling")
 
             return None
 
