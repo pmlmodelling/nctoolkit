@@ -51,6 +51,9 @@ def annual_anomaly(self, baseline=None, metric="absolute", window=1):
 
     """
 
+    if len(self) == 0:
+        raise ValueError("Failure due to empty dataset!")
+
     if type(window) is not int:
         raise TypeError("window is not an int")
 
