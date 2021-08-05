@@ -53,6 +53,9 @@ class TestApi2:
 
         assert x == y
 
+        with pytest.raises(TypeError):
+            nc.options(parallel = "x")
+
 
 
 

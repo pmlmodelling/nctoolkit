@@ -62,6 +62,10 @@ class TestPhenol:
         assert x == y
 
     def test_error(self):
+
+        data = nc.open_data()
+        with pytest.raises(ValueError):
+            data.phenology("sst", metric="this")
         data = nc.open_data(ff)
 
         with pytest.raises(ValueError):

@@ -25,7 +25,18 @@ class TestAnomaly:
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
         with pytest.raises(TypeError):
+            tracker.monthly_anomaly(baseline="x")
+        with pytest.raises(TypeError):
             tracker.annual_anomaly(baseline="x")
+        n = len(nc.session_files())
+        assert n == 0
+
+        tracker = nc.open_data()
+        with pytest.raises(ValueError):
+            tracker.annual_anomaly(baseline=[1970, 1979])
+
+        with pytest.raises(ValueError):
+            tracker.monthly_anomaly(baseline=[1970, 1979])
         n = len(nc.session_files())
         assert n == 0
 

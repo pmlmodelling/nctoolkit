@@ -27,21 +27,21 @@ class TestPar:
         n = len(nc.session_files())
         assert n == 0
 
-        nc.options(cores = 2)
+        nc.options(cores = 6)
         tracker = nc.open_data(ff)
         tracker.split("year")
         tracker.tmean()
         tracker.merge_time()
         tracker.tmean()
         tracker.spatial_mean()
-        x = tracker.to_dataframe().sst[0].values[0].astype("float")
+        x = tracker.to_dataframe().sst[0].astype("float")
 
 
         tracker = nc.open_data(ff)
         tracker.tmean("year")
         tracker.tmean()
         tracker.spatial_mean()
-        y = tracker.to_dataframe().sst[0].values[0].astype("float")
+        y = tracker.to_dataframe().sst[0].astype("float")
 
         assert x == y
 

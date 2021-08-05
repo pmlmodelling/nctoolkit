@@ -26,7 +26,19 @@ class TestCompare:
         n = len(nc.session_files())
         assert n == 1
 
+        tracker = nc.open_data()
+        with pytest.raises(ValueError):
+            tracker.gt(2)
 
+        with pytest.raises(ValueError):
+            tracker.cor_time("x1", "x2")
+
+        with pytest.raises(ValueError):
+            tracker.cor_space("x1", "x2")
+
+        tracker = nc.open_data()
+        with pytest.raises(ValueError):
+            tracker.lt(2)
 
 
         tracker = nc.open_data(ff)

@@ -56,6 +56,10 @@ class TestCell:
         assert n == 1
 
     def test_error(self):
+        tracker = nc.open_data()
+        with pytest.raises(ValueError):
+            tracker.cell_area(join=True)
+
         tracker = nc.open_data(ff)
         tracker.cell_area(join=True)
         with pytest.raises(ValueError):

@@ -26,6 +26,10 @@ class TestTolonat:
         tracker = nc.open_data(ff)
         tracker.select(years=1990)
         tracker.select(months=1)
+
+        with pytest.raises(ValueError):
+            tracker.to_latlon(lon=[0.5, 89.5], lat=[0.5, 89.5], res=[1, 1], method="sdafkjasdf")
+
         tracker.to_latlon(lon=[0.5, 89.5], lat=[0.5, 89.5], res=[1, 1], method="nn")
         tracker.spatial_mean()
         y = tracker.to_dataframe().sst.values[0].astype("float")

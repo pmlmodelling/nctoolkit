@@ -495,7 +495,54 @@ class TestAssign:
     assert data.history[0] == "cdo -aexpr,'one2ten=abs(sst+1)-abs(sst-1)'"
 
 
-
-
-
     del data
+
+
+
+    ds1 = nc.open_data("data/woa18_decav_t01_01.nc")
+    ds1.select(variables = "t_an")
+    ds1.vertical_mean()
+
+    
+    ds2 = nc.open_data("data/woa18_decav_t01_01.nc")
+    ds2.assign(t_an = lambda x: x.t_an/vertical_mean(x.t_an))
+    ds2.surface()
+    ds2.run()
+
+    ds3 = nc.open_data("data/woa18_decav_t01_01.nc")
+    ds3.surface()
+    ds3.divide(ds1)
+    ds3.run()
+
+    ds2.spatial_mean()
+    ds3.spatial_mean()
+
+    x = ds2.to_dataframe().t_an.values[0]
+    y = ds3.to_dataframe().t_an.values[0]
+
+
+    assert x ==y
+
+    del ds1
+    del ds2
+    del ds3
+
+
+
+    ds = nc.open_data("data/sst.mon.mean.nc")
+    ds.select(time = 0)
+    ds.spatial_mean()
+    x = ds.to_dataframe().sst.values[0]
+
+    ds = nc.open_data("data/sst.mon.mean.nc")
+    ds.select(time = 0)
+    ##ds.assign(sst = lambda x: x.sst + spatial_mean(x.sst)*(isnan(x.sst)<1))
+    ds.assign(sst = lambda x: x.sst + spatial_mean(x.sst))
+    ds.spatial_mean()
+    y = ds.to_dataframe().sst.values[0]
+
+
+    assert 2*x == y
+    del ds
+
+

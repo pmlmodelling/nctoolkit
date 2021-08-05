@@ -26,6 +26,12 @@ class TestAppend:
             new.append(ff)
 
         with pytest.raises(ValueError):
+            new.remove()
+
+        with pytest.raises(ValueError):
+            new.remove("df")
+
+        with pytest.raises(ValueError):
             new.append("xyz")
 
         new = nc.open_data(ff)

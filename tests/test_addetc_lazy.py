@@ -391,7 +391,6 @@ class TestAddetc:
         data2 = nc.open_data(ff2)
         data2.assign(tos = lambda x: x.analysed_sst + 2)
         data2.run()
-        # with pytest.raises(ValueError):
         with pytest.raises(ValueError):
             tracker.add(data2.current[0])
         n = len(nc.session_files())
@@ -465,6 +464,64 @@ class TestAddetc:
             tracker.multiply([1, 2])
         n = len(nc.session_files())
         assert n == 0
+
+        tracker = nc.open_data()
+        ff2 = "data/2003.nc"
+        with pytest.raises(TypeError):
+            tracker.multiply([1, 2])
+        n = len(nc.session_files())
+        assert n == 0
+
+        tracker = nc.open_data()
+        ff2 = "data/2003.nc"
+        with pytest.raises(ValueError):
+            tracker.multiply(1)
+        n = len(nc.session_files())
+        assert n == 0
+
+        tracker = nc.open_data()
+        ff2 = "data/2003.nc"
+        with pytest.raises(ValueError):
+            tracker.add(1)
+        n = len(nc.session_files())
+        assert n == 0
+
+        tracker = nc.open_data()
+        ff2 = "data/2003.nc"
+        with pytest.raises(ValueError):
+            tracker.subtract(1)
+        n = len(nc.session_files())
+        assert n == 0
+
+        tracker = nc.open_data()
+        ff2 = "data/2003.nc"
+        tracker2 = nc.open_data(ff2)
+        with pytest.raises(ValueError):
+            tracker.divide(tracker2)
+        n = len(nc.session_files())
+        assert n == 0
+
+        ff2 = "data/2003.nc"
+        tracker = nc.open_data(ff2)
+        tracker2 = nc.open_data()
+        with pytest.raises(ValueError):
+            tracker.add(tracker2)
+        with pytest.raises(ValueError):
+            tracker.subtract(tracker2)
+        with pytest.raises(ValueError):
+            tracker.multiply(tracker2)
+        with pytest.raises(ValueError):
+            tracker.divide(tracker2)
+        n = len(nc.session_files())
+        assert n == 0
+
+        tracker = nc.open_data(ff2)
+
+        with pytest.raises(TypeError):
+            tracker.power("x")
+
+
+
 
     def test_file_typeerror1(self):
         tracker = nc.open_data(ff)

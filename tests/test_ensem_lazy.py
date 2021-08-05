@@ -273,3 +273,19 @@ class TestEnsemble:
 
         assert x == y
 
+
+
+        ds = nc.open_data("data/sst.mon.mean.nc")
+        ds.split("yearmonth")
+        ds.ensemble_sum()
+        ds.run()
+        ds.spatial_mean()
+        x = ds.to_xarray().sst.values[0]
+        
+        ds = nc.open_data("data/sst.mon.mean.nc")
+        ds.tsum()
+        ds.spatial_mean()
+        y = ds.to_xarray().sst.values[0]
+
+        assert x == y
+

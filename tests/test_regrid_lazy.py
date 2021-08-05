@@ -127,6 +127,12 @@ class TestRegrid:
             tracker.regrid(grid=1)
         n = len(nc.session_files())
         assert n == 0
+        tracker = nc.open_data()
+        with pytest.raises(ValueError):
+            tracker.regrid(grid=1)
+
+
+
 
     def test_error1(self):
         tracker = nc.open_data(ff)
