@@ -1,6 +1,7 @@
 import copy
 import xarray as xr
 import subprocess
+import numbers
 
 from nctoolkit.cleanup import cleanup
 from nctoolkit.flatten import str_flatten
@@ -59,11 +60,11 @@ def crop(self, lon=[-180, 180], lat=[-90, 90], nco=False, nco_vars=None):
         raise ValueError("lat is a list of more than 2 variables")
 
     for ll in lon:
-        if (type(ll) is not int) and (type(ll) is not float):
+        if isinstance(ll, numbers.Number) == False:
             raise TypeError(f"{ll} from lon is not a float or int")
 
     for ll in lat:
-        if (type(ll) is not int) and (type(ll) is not float):
+        if isinstance(ll, numbers.Number) == False:
             raise TypeError(f"{ll} from lat is not a float or int")
 
     # now, clip to the lonlat box we need
