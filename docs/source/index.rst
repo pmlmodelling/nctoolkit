@@ -61,6 +61,7 @@ Core abilities include:
 
    api
    info
+   test
    
 
 
