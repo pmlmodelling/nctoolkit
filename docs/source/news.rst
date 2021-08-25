@@ -1,11 +1,8 @@
 News
 ============
 
-Release of v0.3.7
----------------
 
 
-``compare_all`` was deleted after a period of deprecation.
 
 
 
@@ -19,6 +16,7 @@ New mathematical methods for simple operations on variables will be added: ``abs
 
 Bug fixes: ``assign`` previously did not work with ``log10``. Now fixed.
 
+``compare_all`` was deleted after a period of deprecation.
 
 
 
