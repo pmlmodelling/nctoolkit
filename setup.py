@@ -26,6 +26,8 @@ Operation of the package requires the installation of Climate Data Operators (CD
 
 The package is designed for both intensive bulk processing of NetCDF files and interactive Jupyter notebook analysis. It features an interactive plotting feature which allows users to view the contents of NetCDF files either within Jupyter notebooks or a web browser.
 
+Plotting requires the use of cartopy, which has some additional system dependencies. Follow the instructions `here <https://scitools.org.uk/cartopy/docs/latest/installing.html>`__ to install them.
+
 Documentation and a user guide are available `here <https://nctoolkit.readthedocs.io/en/stable>`__.
 
 """
