@@ -184,6 +184,41 @@ def vertical_range(self):
     """
     vertstat(self, stat="range")
 
+def vertical_integration(self, thickness = None):
+    """
+    Calculate the vertically integrated sum 
+    This calculates the sum of the variable multiplied by the cell thickness 
+
+    Examples
+    ------------
+
+    If you wanted to sum of values across all vertical levels of every variable in a dataset, you would do this:
+
+    >>> ds.vertical_sum()
+
+    """
+
+    self.run()
+
+    if len(self) > 1:
+        raise ValueError("This only works with single file datasets currently")
+
+
+    if thickness is None or type(thickness) is not str:
+        raise ValueError("Please provide a thickness variable")
+
+    ds_depth = self.copy() 
+    ds_depth.select(variable = thickness) 
+    ds_depth.run()
+
+    self.select(variables = self.variables_detailed.query("levels > 1").variable)
+
+    self.multiply(ds_depth)
+    self.vertical_sum()
+    ds_depth.vertical_sum()
+    self.divide(ds_depth)
+    self.run()
+
 
 def vertical_sum(self):
     """

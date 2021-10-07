@@ -1399,6 +1399,7 @@ class DataSet(object):
     from nctoolkit.verticals import vertical_max
     from nctoolkit.verticals import vertical_range
     from nctoolkit.verticals import vertical_sum
+    from nctoolkit.verticals import vertical_integration
     from nctoolkit.verticals import vertical_cumsum
     from nctoolkit.verticals import surface
     from nctoolkit.verticals import vertical_interp
