@@ -215,8 +215,8 @@ def vertical_integration(self, thickness = None):
 
     self.multiply(ds_depth)
     self.vertical_sum()
-    ds_depth.vertical_sum()
-    self.divide(ds_depth)
+    ##ds_depth.vertical_sum()
+    ##self.divide(ds_depth)
     self.run()
 
 
