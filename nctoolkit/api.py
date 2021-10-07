@@ -45,6 +45,17 @@ import signal
 import time
 from contextlib import contextmanager
 
+def get_long(ds, x):
+    try:
+        return ds.variables[x].long_name
+    except:
+        return None
+    
+def get_units(ds, x):
+    try:
+        return ds.variables[x].units
+    except:
+        return None
 
 class TimeoutException(Exception):
     pass
@@ -1137,6 +1148,34 @@ class DataSet(object):
 
         return df
 
+#dataset = Dataset(path)
+## list(ds.variables)
+#ds = xr.open_dataset(path)
+#variables = list(ds.data_vars)
+#variables = [vv for vv in variables if len(ds[vv].coords) > 0]
+#longs = None
+#units = None
+#
+#def get_long(ds, x):
+#    try:
+#        return ds.variables[x].long_name
+#    except:
+#        return None
+#    
+#def get_units(ds, x):
+#    try:
+#        return ds.variables[x].units
+#    except:
+#        return None
+#    
+#longs = [get_long(dataset, x) for x in variables]
+#
+#units = [get_units(dataset, x) for x in variables]
+#pd.DataFrame({"variable":variables, "long_name":longs, "unit":units})
+
+
+    
+
     @property
     def start(self):
         """
@@ -1283,7 +1322,6 @@ class DataSet(object):
     from nctoolkit.masking import mask_box
 
     from nctoolkit.mergers import collect
-    from nctoolkit.mergers import merge_time
     from nctoolkit.mergers import merge
 
     from nctoolkit.meridonials import meridonial_mean
@@ -1376,3 +1414,5 @@ class DataSet(object):
     from nctoolkit.zonals import zonal_max
     from nctoolkit.zonals import zonal_range
 
+    # Deprecated methods
+    from nctoolkit.deprecated import merge_time

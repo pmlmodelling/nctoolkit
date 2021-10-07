@@ -293,7 +293,6 @@ Merging methods
    :toctree: generated/
 
    DataSet.merge
-   DataSet.merge_time
 
 
 Splitting methods

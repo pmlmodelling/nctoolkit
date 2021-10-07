@@ -4,6 +4,14 @@ News
 
 
 
+Release of v0.3.8
+---------------
+
+Versions 0.3.8 will be released in November 2021. This will be a minor release, focusing on under-the-hood improvements.
+
+``merge_time`` will be deprecated, and its functionality will be incorporated into ``merge``. So, following this release will ensemble merging should use ``merge``.
+
+
 
 
 Release of v0.3.7

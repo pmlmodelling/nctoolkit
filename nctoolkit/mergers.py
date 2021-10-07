@@ -8,22 +8,54 @@ from nctoolkit.runthis import run_this
 from nctoolkit.session import session_info
 
 
-def merge(self, match=["year", "month", "day"]):
+def merge(self, join = "variables", match=["year", "month", "day"]):
     """
     Merge a multi-file ensemble into a single file
-    Merging will occur based on the time steps in the first file.
-    This will only be effective if you want to merge files with the same times,
-    but with different variables.
+    2 methods are available. 1) merging files with different variables, but the same time steps.
+    2) merging files with the same variables, with different times.
 
     Parameters
     -------------
+    join: str
+        This defines the type of merging to carry out. "variables": this will merge by variable, so that an ensemble
+        with different variables, but the same number of time steps is merged to a single file.
+        "time": this will merge files with the same variables, but different times to a single file, into a single file
+        with ordered times.  join defaults to "variables", and uses partial matches, so "var" will give variable based merging.
+
     match: list, str
-        a list or str stating what must match in the netCDF files.
+        Optional argument when join = 'variables'. A list or str stating what must match in the netCDF files.
         Defaults to year/month/day. This list must be some combination of
         year/month/day. An error will be thrown if the elements of time in match
         do not match across all netCDF files. The only exception is if there is a
         single date file in the ensemble.
     """
+    if type(join) is not str:
+        raise TypeError("join supplied is not a str")
+
+    join_valid = False
+
+    if join.startswith("var"):
+        join_valid = True
+
+    if join.startswith("time"):
+        self.run()
+
+        if len(self) == 1:
+            warnings.warn(message="There is only file in the dataset. No need to merge!")
+            return None
+
+        cdo_command = "cdo --sortname -mergetime"
+
+        run_this(cdo_command, self, output="one")
+
+        if session_info["lazy"]:
+            self._merged = True
+        return None
+
+    if join_valid == False:
+        raise TypeError("join supplied is not valid")
+
+    
 
     # basic checks on match criteria
     if type(match) is str:
@@ -131,29 +163,6 @@ def merge(self, match=["year", "month", "day"]):
 
     if session_info["lazy"]:
         self._merged = True
-
-
-def merge_time(self):
-    """
-    Time-based merging of a multi-file ensemble into a single file
-    This method is ideal if you have the same data split over multiple
-    files covering different data sets.
-    """
-
-    self.run()
-
-    if len(self) == 1:
-        warnings.warn(message="There is only file in the dataset. No need to merge!")
-        return None
-
-    cdo_command = "cdo --sortname -mergetime"
-
-    run_this(cdo_command, self, output="one")
-
-    if session_info["lazy"]:
-        self._merged = True
-
-
 
 
 def collect(self):
