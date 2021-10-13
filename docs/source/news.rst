@@ -11,6 +11,8 @@ Versions 0.3.8 will be released in November 2021. This will be a minor release, 
 
 ``merge_time`` will be deprecated, and its functionality will be incorporated into ``merge``. So, following this release will ensemble merging should use ``merge``.
 
+It will introduce methods for calculated vertical means and water column averages for netCDF data of oceanic data, where the vertical levels vary spatially.
+
 
 
 
