@@ -191,8 +191,10 @@ def vertical_integration(self, thickness = None, depth_range = None):
 
     Parameters
     -------------
-    thickness: str
-        The variable that gives the cell thickness, which will be used to multiply the variable in each cell 
+    thickness: str or Dataset
+        One of: a variable, in the dataset, which contains the variable thicknesses; a .nc file which contains
+        the thicknesses; or a Dataset that contains the thicknesses. Note: the .nc file or Dataset must only contain
+        one variable.
     depth_range: list
         Set a depth range if desired. Should be of the form [min_depth, max_depth]. 
 
@@ -217,27 +219,42 @@ def vertical_integration(self, thickness = None, depth_range = None):
             raise ValueError("Please provide a list for the depth range!")
 
 
-    if thickness is None or type(thickness) is not str:
-        raise ValueError("Please provide a thickness variable")
+
+    if "api.DataSet" not in str(type(thickness)):
+        if thickness is None or type(thickness) is not str:
+            raise ValueError("Please provide a thickness variable")
 
     self.run()
 
     if len(self) > 1:
         raise ValueError("This only works with single file datasets currently")
 
-    #if file is not None:
-    #    if os.path.exists(file) == False:
-    #        raise ValueError(f"{file} does not exist")
+    # Set up the thickness
+
+    sorted = False
+
+    if "api.DataSet" in str(type(thickness)):
+        ds_thick = thickness.copy()
+        if len(ds_thick.variables) != 1:
+            raise ValueError("Please provide a thickness dataset with 1 variable!")
+        sorted = True
 
 
-    ds_thick = self.copy() 
-    ds_thick.select(variable = thickness) 
-    ds_thick.run()
+    if sorted == False:
+        if thickness in self.variables: 
+            ds_thick = self.copy() 
+            ds_thick.select(variable = thickness) 
+            ds_thick.run()
+        else:
+            ds_thick = open_data(thickness)
+            if len(ds_thick.variables) != 1:
+                raise ValueError("Please provide a thickness file with 1 variable!")
 
+    thick_var = ds_thick.variables[0]
     # modify the depth if it is a list
     if type(depth_range) is list:
 
-        ds_thick.rename({thickness: "thickness"})
+        ds_thick.rename({thick_var: "thickness"})
         ds_thick.run()
         ds_depth = ds_thick.copy()
         ds_depth.vertical_cumsum()
