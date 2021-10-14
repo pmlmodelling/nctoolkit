@@ -117,10 +117,21 @@ def vertstat(self, stat="mean"):
     run_this(cdo_command, self, output="ensemble")
 
 
-def vertical_mean(self):
+def vertical_mean(self, thickness = None, depth_range = None):
     """
     Calculate the depth-averaged mean for each variable
     This is calculated for each time step and grid cell
+
+    Optional parameters
+    -------------
+    thickness: str or Dataset
+        Only use when vertical levels vary in space
+        One of: a variable, in the dataset, which contains the variable thicknesses; a .nc file which contains
+        the thicknesses; or a Dataset that contains the thicknesses. Note: the .nc file or Dataset must only contain
+        one variable.
+    depth_range: list
+        Only use when vertical levels vary in space
+        Set a depth range if desired. Should be of the form [min_depth, max_depth]. 
 
     Examples
     ------------
@@ -129,12 +140,91 @@ def vertical_mean(self):
 
     >>> ds.vertical_mean()
 
+
     This method will calculate the vertical mean weighted by the thickness of each cell. Note that
     if cell thickness cannot be derived it will just average the values in each vertical cell.
 
 
     """
-    vertstat(self, stat="mean")
+    if thickness is None and depth_range is None:
+        vertstat(self, stat="mean")
+        return None
+
+
+    if type(depth_range) is list:
+
+        if len(depth_range) != 2:
+            raise ValueError("Please provide a 2 variable list for depth range")
+        if depth_range[1] <= depth_range[0]:
+            raise ValueError("Please provide a correctly ordered depth range")
+
+    if depth_range is not None:
+        if type(depth_range) is not list:
+            raise ValueError("Please provide a list for the depth range!")
+
+
+
+    if "api.DataSet" not in str(type(thickness)):
+        if thickness is None or type(thickness) is not str:
+            raise ValueError("Please provide a thickness variable")
+
+    self.run()
+
+    if len(self) > 1:
+        raise ValueError("This only works with single file datasets currently")
+
+    # Set up the thickness
+
+    sorted = False
+
+    if "api.DataSet" in str(type(thickness)):
+        ds_thick = thickness.copy()
+        if len(ds_thick.variables) != 1:
+            raise ValueError("Please provide a thickness dataset with 1 variable!")
+        sorted = True
+
+
+    if sorted == False:
+        if thickness in self.variables: 
+            ds_thick = self.copy() 
+            ds_thick.select(variable = thickness) 
+            ds_thick.run()
+        else:
+            ds_thick = open_data(thickness)
+            if len(ds_thick.variables) != 1:
+                raise ValueError("Please provide a thickness file with 1 variable!")
+
+    thick_var = ds_thick.variables[0]
+    # modify the depth if it is a list
+    if type(depth_range) is list:
+
+        ds_thick.rename({thick_var: "thickness"})
+        ds_thick.run()
+        ds_depth = ds_thick.copy()
+        ds_depth.vertical_cumsum()
+        ds_depth.rename({"thickness":"depth"})
+        ds_thick.append(ds_depth)
+        ds_thick.merge()
+        ds_thick.assign(z_min = lambda x: x.depth - x.thickness)
+        ds_thick.assign(z_min = lambda x: x.z_min * (x.z_min >= depth_range[0]) + depth_range[0] * (x.z_min < depth_range[0])   )
+        ds_thick.assign(depth = lambda x: x.depth * (x.depth <= depth_range[1]) + depth_range[1] * (x.depth > depth_range[1])   )
+        ds_thick.assign(thickness = lambda x: x.depth - x.z_min, drop = True)
+        ds_thick.assign(thickness= lambda x: x.thickness * (x.thickness > 0), drop = True)
+
+
+
+    self.select(variables = self.variables_detailed.query("levels > 1").variable)
+
+    self.multiply(ds_thick)
+    self.vertical_sum()
+    self.run()
+
+    ds_thick.vertical_sum()
+    self.divide(ds_thick)
+    
+    del ds_thick
+    if type(depth_range) is list:
+        del ds_depth
 
 
 def vertical_min(self):
