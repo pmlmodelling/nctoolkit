@@ -258,7 +258,8 @@ def vertical_integration(self, thickness = None, depth_range = None):
     self.vertical_sum()
     self.run()
     del ds_thick
-    del ds_depth
+    if type(depth_range) is list:
+        del ds_depth
 
 
 def vertical_sum(self):
