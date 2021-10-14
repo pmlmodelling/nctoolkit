@@ -104,6 +104,7 @@ Vertical/level methods
    DataSet.vertical_max
    DataSet.vertical_range
    DataSet.vertical_sum
+   DataSet.vertical_integration
    DataSet.vertical_cumsum
    DataSet.invert_levels
    DataSet.bottom_mask
