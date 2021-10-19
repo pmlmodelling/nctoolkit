@@ -13,6 +13,8 @@ Versions 0.3.8 will be released in November 2021. This will be a minor release, 
 
 It will introduce methods for calculated vertical means and water column averages for netCDF data of oceanic data, where the vertical levels vary spatially.
 
+``open_url`` is now able to handle multiple urls. Previously it could only handle one.
+
 
 
 
