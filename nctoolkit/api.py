@@ -431,6 +431,9 @@ def open_data(x=[], checks=False, **kwargs):
     ftp_details = None
     wait = None
     file_stop = None
+
+    source = "file"
+
     for key in kwargs:
         if key == "thredds":
             thredds = kwargs[key]
@@ -440,6 +443,8 @@ def open_data(x=[], checks=False, **kwargs):
             wait = kwargs[key]
         if key == "file_stop":
             file_stop = kwargs[key]
+        if key == "source":
+            source = kwargs[key]
 
     # make sure data has been supplied
     if x is None:
@@ -464,7 +469,8 @@ def open_data(x=[], checks=False, **kwargs):
         stop_time = min(file_stop, stop_time)
 
     if type(x) is str:
-        if os.path.exists(x) is False:
+        ##if os.path.exists(x) is False:
+        if source != "file" or os.path.exists(x) is False:
 
             if is_url(x):
 
@@ -571,6 +577,64 @@ def open_data(x=[], checks=False, **kwargs):
     #        x = x[0]
 
     if type(x) is list:
+        if source == "url":
+
+            for ff in x:
+
+                if is_url(ff) == False:
+                    raise ValueError(f"{x} is not a url")
+
+            new_files = []
+            for ff in x:
+
+                if is_url(ff):
+
+                    if thredds is False:
+                        new_x = temp_file(".nc")
+                        print(f"Downloading {ff}")
+                        print("\033[A                             \033[A")
+
+                        if ftp_details is not None and x.startswith("ftp"):
+                            user = ftp_details["user"]
+                            password = ftp_details["password"]
+                            ff = ff.replace("ftp://", f"ftp://{user}:{password}@")
+
+                        start = time.time()
+
+                        i = 0
+
+                        search = True
+                        while search:
+                            if os.path.exists(new_x) == False:
+                                try:
+                                    # work out if there is a time limit for individual files
+                                    if stop_time != 10000000000000000000000000000000000:
+                                        with time_limit(stop_time):
+                                            urllib.request.urlretrieve(ff, new_x)
+                                    else:
+                                        urllib.request.urlretrieve(ff, new_x)
+                                except:
+                                    nothing = "x"
+                            search += 1
+                            if os.path.exists(new_x):
+                                break
+
+                            if wait is None:
+                                if search == 3:
+                                    break
+                            else:
+                                end = time.time()
+                                if (end - start) > wait:
+                                    break
+                        if os.path.exists(new_x) == False:
+                            raise ValueError(f"Could not download {x}")
+
+                        new_files.append(new_x) 
+                x = new_files
+
+
+
+    if type(x) is list and source != "url":
         if thredds is False:
 
             if len(x) > 1:
@@ -662,7 +726,7 @@ def open_thredds(x=None, wait=None, checks=False):
         )
         session_info["cores"] = 1
 
-    return open_data(x=x, thredds=True, wait=wait, checks=checks)
+    return open_data(x=x, thredds=True, wait=wait, checks=checks, source = "thredds")
 
 
 def open_url(x=None, ftp_details=None, wait=None, file_stop=None):
@@ -721,7 +785,7 @@ def open_url(x=None, ftp_details=None, wait=None, file_stop=None):
     else:
         new_dict = None
 
-    return open_data(x=x, ftp_details=new_dict, wait=wait, file_stop=file_stop)
+    return open_data(x=x, ftp_details=new_dict, wait=wait, file_stop=file_stop, source = "url")
 
 
 def merge(*datasets, match=["day", "year", "month"]):
