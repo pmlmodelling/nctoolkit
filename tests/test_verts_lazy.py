@@ -8,6 +8,68 @@ import warnings
 
 
 class TestVerts:
+
+
+    def test_integration(self):
+
+        ff = "data/vertical_tester.nc"
+        ds = nc.open_data(ff)
+        ds.vertical_integration("e3t")
+        ds.select(variable = "one")
+        ds.run()
+        ds1 = nc.open_data(ff)
+        ds1.assign(e3t = lambda x: x.e3t * (isnan(x.one) is False ) )
+        ds1.select(variables = "e3t")
+        ds1.set_missing(0)
+        ds1.vertical_sum()
+        ds1.run()
+        
+        ds2 = ds.copy()
+        ds2.subtract(ds1)
+        ds2.spatial_sum()
+        assert ds2.to_dataframe().one.sum() == 0
+
+
+
+        ds = nc.open_data(ff)
+        ds3 = nc.open_data(ff)
+        ds3.select(variable = "e3t")
+        ds.vertical_integration(ds3)
+        ds.select(variable = "one")
+        ds.run()
+        ds1 = nc.open_data(ff)
+        ds1.assign(e3t = lambda x: x.e3t * (isnan(x.one) is False ) )
+        ds1.select(variables = "e3t")
+        ds1.set_missing(0)
+        ds1.vertical_sum()
+        ds1.run()
+        
+        ds2 = ds.copy()
+        ds2.subtract(ds1)
+        ds2.spatial_sum()
+        ds2.to_dataframe().one.sum() == 0
+
+        ds = nc.open_data(ff)
+        ds3 = nc.open_data(ff)
+        ds3.select(variable = "e3t")
+        ds3.run()
+        ds.vertical_integration(ds3[0])
+        ds.select(variable = "one")
+        ds.run()
+        ds1 = nc.open_data(ff)
+        ds1.assign(e3t = lambda x: x.e3t * (isnan(x.one) is False ) )
+        ds1.select(variables = "e3t")
+        ds1.set_missing(0)
+        ds1.vertical_sum()
+        ds1.run()
+        
+        ds2 = ds.copy()
+        ds2.subtract(ds1)
+        ds2.spatial_sum()
+        ds2.to_dataframe().one.sum() == 0
+
+
+
     def test_mean(self):
         ff = "data/woa18_decav_t01_01.nc"
 
