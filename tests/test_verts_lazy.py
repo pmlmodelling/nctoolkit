@@ -29,6 +29,10 @@ class TestVerts:
         ds2.spatial_sum()
         assert ds2.to_dataframe().one.sum() == 0
 
+        ds = nc.open_data(ff)
+        ds.vertical_integration(depth_range=[2, 302], thickness="e3t")
+        ds.spatial_max()
+        assert ds.to_dataframe().one[0].astype("int") == 300
 
 
         ds = nc.open_data(ff)
