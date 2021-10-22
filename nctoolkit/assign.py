@@ -224,6 +224,7 @@ def assign(self, drop=False, **kwargs):
 
     # now, we need to parse things.
 
+
     interactive = False
     if session_info["interactive"]:
         import readline
@@ -461,6 +462,18 @@ def assign(self, drop=False, **kwargs):
                             fix = False
 
         error_message = None
+
+        if "is False" in start:
+            start = start.replace(" is False", " < 1") 
+
+        if "is True" in start:
+            start = start.replace(" is True", " > 0") 
+
+        if " = = True" in start:
+            start = start.replace(" = = True", " > 0") 
+
+        if " = = False" in start:
+            start = start.replace(" = = False", " < 1") 
 
         for x in start.split(" "):
             if "(" in x:
