@@ -45,17 +45,20 @@ import signal
 import time
 from contextlib import contextmanager
 
+
 def get_long(ds, x):
     try:
         return ds.variables[x].long_name
     except:
         return None
-    
+
+
 def get_units(ds, x):
     try:
         return ds.variables[x].units
     except:
         return None
+
 
 class TimeoutException(Exception):
     pass
@@ -528,7 +531,7 @@ def open_data(x=[], checks=False, **kwargs):
                                 )
                                 if "Open failed" in str(out.stderr):
                                     raise ValueError(f"{x} is not compatible with CDO!")
-                        #else:
+                        # else:
                         #    out = subprocess.run(
                         #        "cdo sinfo " + x,
                         #        shell=True,
@@ -629,10 +632,8 @@ def open_data(x=[], checks=False, **kwargs):
                         if os.path.exists(new_x) == False:
                             raise ValueError(f"Could not download {x}")
 
-                        new_files.append(new_x) 
+                        new_files.append(new_x)
                 x = new_files
-
-
 
     if type(x) is list and source != "url":
         if thredds is False:
@@ -726,7 +727,7 @@ def open_thredds(x=None, wait=None, checks=False):
         )
         session_info["cores"] = 1
 
-    return open_data(x=x, thredds=True, wait=wait, checks=checks, source = "thredds")
+    return open_data(x=x, thredds=True, wait=wait, checks=checks, source="thredds")
 
 
 def open_url(x=None, ftp_details=None, wait=None, file_stop=None):
@@ -785,7 +786,9 @@ def open_url(x=None, ftp_details=None, wait=None, file_stop=None):
     else:
         new_dict = None
 
-    return open_data(x=x, ftp_details=new_dict, wait=wait, file_stop=file_stop, source = "url")
+    return open_data(
+        x=x, ftp_details=new_dict, wait=wait, file_stop=file_stop, source="url"
+    )
 
 
 def merge(*datasets, match=["day", "year", "month"]):
@@ -968,7 +971,6 @@ class DataSet(object):
         self._weights = None
         # track number of held over commands
         self._ncommands = 0
-
 
     def __getitem__(self, index):
 
@@ -1163,10 +1165,20 @@ class DataSet(object):
 
         longs = None
         units = None
-        if "long_name" in str(dataset.variables[cdo_result[0]]):
-            longs = [dataset.variables[x].long_name for x in cdo_result]
-        if "units" in str(dataset.variables[cdo_result[0]]):
-            units = [dataset.variables[x].units for x in cdo_result]
+        longs = []
+        for x in cdo_result:
+            try:
+                longs.append(dataset.variables[x].long_name)
+            except:
+                longs.append(None)
+        # longs = [dataset.variables[x].long_name for x in cdo_result]
+        units = []
+        for x in cdo_result:
+            try:
+                units.append(dataset.variables[x].units)
+            except:
+                units.append(None)
+        ##units = [dataset.variables[x].units for x in cdo_result]
 
         if longs is None and units is None:
             return cdo_result
@@ -1212,33 +1224,30 @@ class DataSet(object):
 
         return df
 
-#dataset = Dataset(path)
-## list(ds.variables)
-#ds = xr.open_dataset(path)
-#variables = list(ds.data_vars)
-#variables = [vv for vv in variables if len(ds[vv].coords) > 0]
-#longs = None
-#units = None
-#
-#def get_long(ds, x):
-#    try:
-#        return ds.variables[x].long_name
-#    except:
-#        return None
-#    
-#def get_units(ds, x):
-#    try:
-#        return ds.variables[x].units
-#    except:
-#        return None
-#    
-#longs = [get_long(dataset, x) for x in variables]
-#
-#units = [get_units(dataset, x) for x in variables]
-#pd.DataFrame({"variable":variables, "long_name":longs, "unit":units})
-
-
-    
+    # dataset = Dataset(path)
+    ## list(ds.variables)
+    # ds = xr.open_dataset(path)
+    # variables = list(ds.data_vars)
+    # variables = [vv for vv in variables if len(ds[vv].coords) > 0]
+    # longs = None
+    # units = None
+    #
+    # def get_long(ds, x):
+    #    try:
+    #        return ds.variables[x].long_name
+    #    except:
+    #        return None
+    #
+    # def get_units(ds, x):
+    #    try:
+    #        return ds.variables[x].units
+    #    except:
+    #        return None
+    #
+    # longs = [get_long(dataset, x) for x in variables]
+    #
+    # units = [get_units(dataset, x) for x in variables]
+    # pd.DataFrame({"variable":variables, "long_name":longs, "unit":units})
 
     @property
     def start(self):
@@ -1407,7 +1416,6 @@ class DataSet(object):
 
     from nctoolkit.regrid import regrid
 
-
     from nctoolkit.rename import rename
 
     from nctoolkit.resample import resample_grid
@@ -1470,7 +1478,6 @@ class DataSet(object):
     from nctoolkit.verticals import bottom
     from nctoolkit.verticals import bottom_mask
     from nctoolkit.verticals import invert_levels
-
 
     from nctoolkit.zip import zip
 
