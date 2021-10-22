@@ -7,13 +7,16 @@ News
 Release of v0.3.8
 ---------------
 
-Versions 0.3.8 will be released in November 2021. This will be a minor release, focusing on under-the-hood improvements.
+Version 0.3.8 was released in October 2021. This is a minor release, focusing on under-the-hood improvements and introducing better handling of files with varying vertical layers.
 
-``merge_time`` will be deprecated, and its functionality will be incorporated into ``merge``. So, following this release will ensemble merging should use ``merge``.
 
-It will introduce methods for calculated vertical means and water column averages for netCDF data of oceanic data, where the vertical levels vary spatially.
+A method, ``vertical_integration`` for calculating vertically integrated totals for netCDF data of the likes of oceanic data, where the vertical levels vary spatially, were introduced. ``vertical_mean`` has been improved and can now calculate vertical mean in cases where the cell thickness varies in space.
+
+``merge_time`` is deprecated, and its functionality will be incorporated into ``merge``. So, following this release ensemble merging should use ``merge``.
 
 ``open_url`` is now able to handle multiple urls. Previously it could only handle one.
+
+Some under-the-hood improvements have been made to ``assign`` to ensure that truth statements do not occassionally throw an error.
 
 
 
