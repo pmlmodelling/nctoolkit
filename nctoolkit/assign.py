@@ -101,7 +101,7 @@ funs = [
     "tan",
     "int",
     "float",
-    "log10"
+    "log10",
 ]
 
 translation = dict()
@@ -224,7 +224,6 @@ def assign(self, drop=False, **kwargs):
 
     # now, we need to parse things.
 
-
     interactive = False
     if session_info["interactive"]:
         import readline
@@ -253,9 +252,9 @@ def assign(self, drop=False, **kwargs):
             for ss in start:
                 if ".assign(" in ss:
                     ind = i
-                i+=1
+                i += 1
 
-            all_str = start[ind:len(start)]
+            all_str = start[ind : len(start)]
             all_str = "".join(all_str)
             start = all_str.replace("'", "").replace("\\n", "").replace("  ", " ")
         else:
@@ -263,11 +262,12 @@ def assign(self, drop=False, **kwargs):
             try:
                 all_str = list(inspect.getsourcelines(start))[0]
                 all_str = "".join(all_str)
-                start = all_str.replace("'", "").replace("\\n", "")[1:-1].replace("  ", " ")
+                start = (
+                    all_str.replace("'", "").replace("\\n", "")[1:-1].replace("  ", " ")
+                )
 
             except:
                 start = dill.source.getsource(start).replace("\n", "").strip()
-
 
     # we now need to figure out if what we have is one line
 
@@ -284,7 +284,7 @@ def assign(self, drop=False, **kwargs):
 
     start = start.strip()
     start = start[start.find("(") + 1 : -1]
-    start = re.sub("\s\s+" , " ", start)
+    start = re.sub("\s\s+", " ", start)
 
     pattern1 = re.compile("drop\s*=\s*(True|False)")
     y = pattern1.search(start)
@@ -451,12 +451,14 @@ def assign(self, drop=False, **kwargs):
                                 start_parens = find_parens3(start)
                                 x_term = (
                                     x
-                                    + start[y.span()[1] : start_parens[y.span()[1] - 1] + 1]
+                                    + start[
+                                        y.span()[1] : start_parens[y.span()[1] - 1] + 1
+                                    ]
                                 )
                                 start = start.replace(x_term, x_term.replace(" ", ""))
                                 if old_start != start:
                                     break
-                        n+=1
+                        n += 1
 
                         if n > n_limit:
                             fix = False
@@ -464,16 +466,16 @@ def assign(self, drop=False, **kwargs):
         error_message = None
 
         if "is False" in start:
-            start = start.replace(" is False", " < 1") 
+            start = start.replace(" is False", " < 1")
 
         if "is True" in start:
-            start = start.replace(" is True", " > 0") 
+            start = start.replace(" is True", " > 0")
 
         if " = = True" in start:
-            start = start.replace(" = = True", " > 0") 
+            start = start.replace(" = = True", " > 0")
 
         if " = = False" in start:
-            start = start.replace(" = = False", " < 1") 
+            start = start.replace(" = = False", " < 1")
 
         for x in start.split(" "):
             if "(" in x:
@@ -640,8 +642,16 @@ def assign(self, drop=False, **kwargs):
                             raise ValueError(f"{term} does not evaluate to a numeric!")
 
                         if is_number(str(new_term)) == False:
-                            error_message = f"{term} does not evaluate to a numeric!"
-                            raise ValueError(f"{term} does not evaluate to a numeric!")
+                            print(type(new_term) is bool)
+                            if type(new_term) is bool:
+                                new_term = float(new_term)
+                            else:
+                                error_message = (
+                                    f"{term} does not evaluate to a numeric!"
+                                )
+                                raise ValueError(
+                                    f"{term} does not evaluate to a numeric!"
+                                )
 
                         new_start = ""
                         for y in start.split(" "):
