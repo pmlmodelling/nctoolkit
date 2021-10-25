@@ -2,6 +2,12 @@ News
 ============
 
 
+Release of v0.3.9
+---------------
+
+Version 0.3.9 will be released in November 2021. This will be a minor release focusing on under-the-hood improvements.
+
+Improvements to  ``merge`` have been made. When variables are not included in all files nctoolkit will now only merge those in each file in a multi-file dataset. Previously it threw an error.
 
 
 Release of v0.3.8
