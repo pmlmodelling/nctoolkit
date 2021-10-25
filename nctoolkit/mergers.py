@@ -8,7 +8,7 @@ from nctoolkit.runthis import run_this
 from nctoolkit.session import session_info
 
 
-def merge(self, join = "variables", match=["year", "month", "day"]):
+def merge(self, join="variables", match=["year", "month", "day"]):
     """
     Merge a multi-file ensemble into a single file
     2 methods are available. 1) merging files with different variables, but the same time steps.
@@ -41,7 +41,9 @@ def merge(self, join = "variables", match=["year", "month", "day"]):
         self.run()
 
         if len(self) == 1:
-            warnings.warn(message="There is only file in the dataset. No need to merge!")
+            warnings.warn(
+                message="There is only file in the dataset. No need to merge!"
+            )
             return None
 
         cdo_command = "cdo --sortname -mergetime"
@@ -54,8 +56,6 @@ def merge(self, join = "variables", match=["year", "month", "day"]):
 
     if join_valid == False:
         raise TypeError("join supplied is not valid")
-
-    
 
     # basic checks on match criteria
     if type(match) is str:
@@ -184,4 +184,3 @@ def collect(self):
         self._merged = True
 
     self.run()
-

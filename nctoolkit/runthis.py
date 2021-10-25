@@ -17,6 +17,8 @@ from nctoolkit.session import (
 )
 from nctoolkit.temp_file import temp_file
 
+from nctoolkit.show import nc_variables
+
 from nctoolkit.utils import cdo_version
 
 
@@ -437,7 +439,7 @@ def run_this(os_command, self, output="one", out_file=None):
     if len(self) == 1:
         output = "ensemble"
 
-    if (len(self._hold_history) != len(self.history)):
+    if len(self._hold_history) != len(self.history):
         if self._merged == False and len(self.history) > 0 and output == "one":
 
             if cdo_version() in ["9.9.9"]:
@@ -445,7 +447,6 @@ def run_this(os_command, self, output="one", out_file=None):
                 the_command = the_command.replace(" -L ", " ").strip()
                 if "apply," not in the_command:
                     self.history[-1] = f'-apply,"{the_command}"'
-
 
     if self._execute is False:
         if len(self._hold_history) == len(self.history):
@@ -533,6 +534,7 @@ def run_this(os_command, self, output="one", out_file=None):
                     temp = pool.apply_async(run_cdo, [ff_command, target, out_file])
                     results[ff] = temp
                 else:
+
                     target = run_cdo(ff_command, target, out_file)
                     target_list.append(target)
 
@@ -569,7 +571,6 @@ def run_this(os_command, self, output="one", out_file=None):
 
             file_list = self.current
 
-
             if len(self.history) > len(self._hold_history):
                 os_command = f'{os_command} {self.history[-1].replace("cdo ", " ")}'
                 os_command = os_command.replace("  ", " ")
@@ -596,7 +597,6 @@ def run_this(os_command, self, output="one", out_file=None):
             os_command = (
                 os_command + " [ " + str_flatten(self.current, " ") + " ] " + target
             )
-
 
             zip_copy = False
             if self._zip and self._ncommands == 1:
@@ -625,7 +625,37 @@ def run_this(os_command, self, output="one", out_file=None):
 
             os_command = tidy_command(os_command)
 
-            target = run_cdo(os_command, target, out_file)
+            if "mergetime" in os_command:
+                try:
+                    target = run_cdo(os_command, target, out_file)
+                except:
+
+                    var_list = []
+                    var_com = []
+
+                    for ff in self:
+                        var_list += nc_variables(ff)
+                        var_com.append(nc_variables(ff))
+                    new_list = []
+
+                    for var in set(var_list):
+                        if len(var_com) == len([x for x in var_com if var in x]):
+                            new_list.append(var)
+                    f_list = ",".join(new_list)
+                    os_command = os_command.replace(
+                        "-mergetime ", f'-mergetime -apply,"-selname,{f_list}" '
+                    )
+
+                    removed = ",".join([x for x in set(var_list) if x not in new_list])
+                    if len([x for x in set(var_list) if x not in new_list]) > 0:
+                        warnings.warn(
+                            f"The following variables are not in all files, so were ignored when merging: {removed}"
+                        )
+
+                    target = run_cdo(os_command, target, out_file)
+                    # print(new_list)
+            else:
+                target = run_cdo(os_command, target, out_file)
 
             remove_safe(target)
 
