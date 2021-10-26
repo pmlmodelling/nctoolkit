@@ -23,6 +23,7 @@ Opening/copying data
    open_data
    open_url
    open_thredds
+   from_xarray 
    DataSet.copy
 
 Merging or analyzing multiple datasets
