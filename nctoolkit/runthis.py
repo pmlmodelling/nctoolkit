@@ -188,8 +188,14 @@ def run_cdo(command, target, out_file=None, overwrite=False):
     out.wait()
     result, ignore = out.communicate()
 
-    # this will potentially fail because of floating point precision. A quick fix to see if that is the case....
+    # If it is a generic grid, it's better to not throw the CDO error which might be confusing.
+    if "generic" in result.decode("utf-8").lower():
+        if "unsupported" in result.decode("utf-8").lower():
+            raise ValueError(
+                "Dataset contains generic grids. Please fix to lonlat or curvilinear"
+            )
 
+    # this will potentially fail because of floating point precision. A quick fix to see if that is the case....
     if "Use the CDO option -b F32" in (result.decode("utf-8")):
         command_chunks = command.split(" ")
 
