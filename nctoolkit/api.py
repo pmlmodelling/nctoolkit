@@ -12,6 +12,7 @@ import subprocess
 import warnings
 import urllib.request
 import platform
+import xarray as xr
 
 from netCDF4 import Dataset
 
@@ -381,6 +382,27 @@ def file_size(file_path):
         file_info = os.stat(file_path)
         return file_info.st_size
 
+def from_xarray(ds):
+
+    """
+    Convert an xarray dataset to an nctoolkit dataset 
+
+    Parameters
+    ---------------
+    ds : xarray dataset 
+    ---------------
+    from_xarray : nctoolkit.DataSet
+    """
+
+    ff = temp_file(".nc")
+    ds.to_netcdf(ff)
+    
+    d = DataSet(ff)
+    return d
+    
+
+
+    
 
 def open_data(x=[], checks=False, **kwargs):
     """

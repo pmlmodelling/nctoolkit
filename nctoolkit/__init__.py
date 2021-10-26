@@ -1,5 +1,6 @@
 from nctoolkit.api import (
     open_data,
+    from_xarray,
     merge,
     cor_time,
     cor_space,
