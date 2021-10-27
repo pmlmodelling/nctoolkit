@@ -94,6 +94,47 @@ def tsum(self, over="time"):
     time_stat(self, stat="sum", over=over)
 
 
+def na_count(self, over="time"):
+    """
+    Calculate the number of missing values 
+
+    Parameters
+    -------------
+    over: str or list
+        Time periods to to the count over over. Options are 'time', 'year', 'month', 'day'.
+
+    """
+
+    self.run()
+
+
+    for vv in self.variables:
+        self.cdo_command(f"-aexpr,'{vv}=isMissval({vv})'")
+
+    self.tsum(over = over)
+        
+def na_frac(self, over="time"):
+    """
+    Calculate the number of missing values 
+
+    Parameters
+    -------------
+    over: str or list
+        Time periods to to the count over over. Options are 'time', 'year', 'month', 'day'.
+
+    """
+
+    self.run()
+
+
+    for vv in self.variables:
+        self.cdo_command(f"-aexpr,'{vv}=isMissval({vv})'")
+
+    self.tmean(over = over)
+        
+
+
+
 def tmean(self, over="time"):
     """
     Calculate the temporal mean of all variables

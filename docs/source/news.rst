@@ -9,6 +9,8 @@ Version 0.3.9 will be released in November 2021. This will be a minor release fo
 
 A new method, ``from_xarray`` will be added for converting xarray datasets to nctoolkit datasets.
 
+Methods for identifying how many missing values appear in datasets have been added: `na_count` and `na_frac`. These will identify the number or fraction of values are missing values in each grid cell. The methods operate the same way as the temporal methods. So `ds.na_frac("year")` will result in what fraction of values are missing values each year.
+
 Improvements to  ``merge`` have been made. When variables are not included in all files nctoolkit will now only merge those in each file in a multi-file dataset. Previously it threw an error.
 
 

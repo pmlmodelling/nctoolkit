@@ -1473,6 +1473,8 @@ class DataSet(object):
     from nctoolkit.temporal_stat import tstdev
     from nctoolkit.temporal_stat import tsum
     from nctoolkit.temporal_stat import tcumsum
+    from nctoolkit.temporal_stat import na_count
+    from nctoolkit.temporal_stat import na_frac
 
     from nctoolkit.thresholds import first_above
     from nctoolkit.thresholds import first_below
