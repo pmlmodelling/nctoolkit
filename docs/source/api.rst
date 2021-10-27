@@ -324,6 +324,8 @@ Miscellaneous methods
 .. autosummary::
    :toctree: generated/
 
+   DataSet.na_count
+   DataSet.na_frac
    DataSet.distribute
    DataSet.collect
    DataSet.cell_area
