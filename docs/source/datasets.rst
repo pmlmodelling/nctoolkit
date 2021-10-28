@@ -165,6 +165,12 @@ If we want to know the variables available in a dataset called ds, we would do:
 
     ds.variables
 
+If you want more details about the variables, access the ``contents`` attribute. This will tell you details such as long names, units, number of time steps etc. for each variable.
+
+.. code:: ipython3
+
+    ds.contents
+
 If we want to know the vertical levels available in the dataset, we use the following. 
 
 .. code:: ipython3
