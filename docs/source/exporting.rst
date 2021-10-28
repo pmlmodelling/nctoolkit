@@ -75,17 +75,6 @@ to ``to_nc``. An example of usage is as follows:
     ds.zip()
     ds.to_nc(outfile)
 
-Convert to xarray Dataset
-================
-
-The method ``to_xarray`` lets users export a dataset to an xarray
-dataset. An example of usage is as follows:
-
-.. code:: ipython3
-
-    ds = nc.open_data(infile)
-    ds.tmean()
-    xr_ds = ds.to_xarray()
 
 Convert to pandas dataframe
 ================
@@ -98,3 +87,23 @@ dataframe.
     ds = nc.open_data(infile)
     ds.tmean()
     df = ds.to_dataframe()
+
+
+Interacting with xarray datasets
+================
+
+If you want to move between nctoolkit and xarray dataset, you can using ``from_xarray`` and ``to_xarray``.
+The method ``to_xarray`` lets users export a dataset to an xarray
+dataset. An example of usage is as follows:
+
+.. code:: ipython3
+
+    ds = nc.open_data(infile)
+    ds.tmean()
+    xr_ds = ds.to_xarray()
+
+If you want to convert an xarray dataset to an nctoolkit dataset, you can just the ``from_xarray`` function, as follows::
+
+.. code:: ipython3
+    ds = nc.from_xarray(ds_xr)
+
