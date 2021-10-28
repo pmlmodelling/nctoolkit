@@ -92,7 +92,8 @@ dataframe.
 Interacting with xarray datasets
 ================
 
-If you want to move between nctoolkit and xarray dataset, you can using ``from_xarray`` and ``to_xarray``.
+If you want to move between nctoolkit and xarray dataset, you can use ``from_xarray`` and ``to_xarray``.
+
 The method ``to_xarray`` lets users export a dataset to an xarray
 dataset. An example of usage is as follows:
 
@@ -106,4 +107,7 @@ If you want to convert an xarray dataset to an nctoolkit dataset, you can just t
 
 .. code:: ipython3
     ds = nc.from_xarray(ds_xr)
+
+
+
 
