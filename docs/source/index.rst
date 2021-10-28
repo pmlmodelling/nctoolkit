@@ -39,18 +39,18 @@ Core abilities include:
    :caption: User Guide 
 
    datasets
-   cheat
    visualization
    exporting 
+   interpolation
    temporals 
    subsetting 
    variables
-   interpolation
    merging_notebook 
    parallel 
    examples
    hacks 
    globals 
+   cheat
 
 
 
