@@ -16,12 +16,107 @@ def cdo_version():
     return cdo_check.split("(")[0].strip().split(" ")[-1]
 
 
-def fldstat(self, stat="mean"):
+def boxstat(self, stat="mean", x=1, y=1):
     """Method to calculate the spatial stat from a dataset"""
 
     if len(self) == 0:
         raise ValueError("Failure due to empty dataset!")
 
+    cdo_command = f"cdo -gridbox{stat},{x},{y}"
+
+    run_this(cdo_command, self, output="ensemble")
+
+
+def box_mean(self, x=1, y=1):
+    """
+    Calculate the grid box mean for all variables
+    This is performed for each time step.
+
+    Parameters
+    -------------
+    x: int
+        Number of boxes in the x, e.g. east-west direction
+    y: int or float
+        Number of boxes in the y, e.g. north-south direction
+
+    """
+
+    boxstat(self, stat="mean", x=x, y=y)
+
+
+def box_max(self, x=1, y=1):
+    """
+    Calculate the grid box max for all variables
+    This is performed for each time step.
+
+    Parameters
+    -------------
+    x: int
+        Number of boxes in the x, e.g. east-west direction
+    y: int or float
+        Number of boxes in the y, e.g. north-south direction
+
+    """
+
+    boxstat(self, stat="max", x=x, y=y)
+
+
+def box_min(self, x=1, y=1):
+    """
+    Calculate the grid box min for all variables
+    This is performed for each time step.
+
+    Parameters
+    -------------
+    x: int
+        Number of boxes in the x, e.g. east-west direction
+    y: int or float
+        Number of boxes in the y, e.g. north-south direction
+
+    """
+
+    boxstat(self, stat="min", x=x, y=y)
+
+
+def box_sum(self, x=1, y=1):
+    """
+    Calculate the grid box sum for all variables
+    This is performed for each time step.
+
+    Parameters
+    -------------
+    x: int
+        Number of boxes in the x, e.g. east-west direction
+    y: int or float
+        Number of boxes in the y, e.g. north-south direction
+
+    """
+
+    boxstat(self, stat="sum", x=x, y=y)
+
+
+def box_range(self, x=1, y=1):
+    """
+    Calculate the grid box range for all variables
+    This is performed for each time step.
+
+    Parameters
+    -------------
+    x: int
+        Number of boxes in the x, e.g. east-west direction
+    y: int or float
+        Number of boxes in the y, e.g. north-south direction
+
+    """
+
+    boxstat(self, stat="range", x=x, y=y)
+
+
+def fldstat(self, stat="mean"):
+    """Method to calculate the spatial stat from a dataset"""
+
+    if len(self) == 0:
+        raise ValueError("Failure due to empty dataset!")
 
     cdo_command = f"cdo -fld{stat}"
 

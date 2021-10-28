@@ -222,6 +222,11 @@ Interpolation and resampling methods
    DataSet.time_interp
    DataSet.timestep_interp
    DataSet.fill_na
+   DataSet.box_mean
+   DataSet.box_max
+   DataSet.box_min
+   DataSet.box_sum
+   DataSet.box_range
 
 
 Masking methods

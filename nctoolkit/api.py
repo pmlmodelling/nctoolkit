@@ -1556,6 +1556,12 @@ class DataSet(object):
     from nctoolkit.fldstat import spatial_sum
     from nctoolkit.fldstat import spatial_percentile
 
+    from nctoolkit.fldstat import box_mean
+    from nctoolkit.fldstat import box_max
+    from nctoolkit.fldstat import box_min
+    from nctoolkit.fldstat import box_sum
+    from nctoolkit.fldstat import box_range
+
     from nctoolkit.format import format
 
     from nctoolkit.inttime import time_interp
