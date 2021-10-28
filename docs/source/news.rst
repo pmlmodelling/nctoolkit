@@ -13,6 +13,8 @@ Methods for identifying how many missing values appear in datasets have been add
 
 Improvements to  ``merge`` have been made. When variables are not included in all files nctoolkit will now only merge those in each file in a multi-file dataset. Previously it threw an error.
 
+The attribute ``variables_detailed`` has been changed to ``contents``. It will also now give the number of time steps available for each variable.
+
 
 Release of v0.3.8
 ---------------
