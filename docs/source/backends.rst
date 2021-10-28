@@ -26,6 +26,13 @@ If we wanted to use this in nctoolkit, we would just do this:
 
     ds.cdo_command("yearmean")
 
+If the CDO command is an ensemble method that takes multiple files as input and produces one, you will need to specify that it is an ensemble method, as follows:
+
+.. code:: ipython3
+
+    ds.cdo_command("ensmean", ensemble = True)
+
+
 
 Using NCO commands
 ----------------
