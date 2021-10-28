@@ -1155,6 +1155,129 @@ class DataSet(object):
         return all_years
 
     @property
+    def contents(self):
+        """
+        Detailed list of variables contained in a dataset.
+        This will only display the variables in the first file of an ensemble.
+        """
+
+        if len(self) > 1:
+            return (
+                "This DataSet object is a mult-file dataset. Please inspect individual"
+                "files using nc_variables"
+            )
+
+        cdo_result = subprocess.run(
+            "cdo showname " + self.current[0],
+            shell=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        cdo_result = (
+            str(cdo_result.stdout)
+            .replace("b'", "")
+            .replace("\\n", "")
+            .replace("'", "")
+            .strip()
+        )
+        cdo_result = cdo_result.split()
+        dataset = Dataset(self.current[0])
+
+        longs = None
+        units = None
+        longs = []
+        for x in cdo_result:
+            try:
+                longs.append(dataset.variables[x].long_name)
+            except:
+                longs.append(None)
+        # longs = [dataset.variables[x].long_name for x in cdo_result]
+        units = []
+        for x in cdo_result:
+            try:
+                units.append(dataset.variables[x].units)
+            except:
+                units.append(None)
+        ##units = [dataset.variables[x].units for x in cdo_result]
+
+        if longs is None and units is None:
+            return cdo_result
+
+        out = subprocess.run(
+            "cdo sinfon " + self.current[0],
+            shell=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        out = out.stdout.decode("utf-8")
+        out = out.split("\n")
+        out_inc = ["Grid coordinates :" in ff for ff in out]
+        var_det = []
+        i = 1
+        while True:
+            if out_inc[i]:
+                break
+            i += 1
+            var_det.append(out[i - 1])
+
+        var_det = [ff.replace(":", "") for ff in var_det]
+        var_det = [" ".join(ff.split()) for ff in var_det]
+        var_det = [
+            ff.replace("Parameter name", "variable").split(" ") for ff in var_det
+        ]
+        sales = var_det[1:]
+        labels = var_det[0]
+        df = pd.DataFrame.from_records(sales, columns=labels)
+        df = df.loc[:, ["Levels", "Points", "variable"]]
+        df = df.rename(columns={"Levels": "nlevels", "Points": "npoints"})
+
+        df = pd.DataFrame({"variable": cdo_result}).merge(df)
+
+        if longs is not None:
+            df["long_name"] = longs
+        if units is not None:
+            df["unit"] = units
+
+        df = df.assign(nlevels=lambda x: x.nlevels.astype("int")).assign(
+            npoints=lambda x: x.npoints.astype("int")
+        )
+
+        times = []
+
+        ds = self.to_xarray()
+
+        # get time name
+
+        time_name = [x for x in ds.coords if "time" in x and x in ds.dims]
+        if len(time_name) > 0:
+            time_name = time_name[0]
+        else:
+            time_name = "time"
+
+        for vv in cdo_result:
+            done = False
+            try:
+                ds_times = ds[vv][time_name].values
+            except:
+                times.append(None)
+                done = True
+
+            if done is False:
+                try:
+                    n_times = len(ds_times)
+                except:
+                    n_times = 1
+                times.append(n_times)
+
+        df["ntimes"] = times
+
+        df = df.loc[
+            :, ["variable", "ntimes", "npoints", "nlevels", "long_name", "unit"]
+        ]
+
+        return df
+
+    @property
     def variables_detailed(self):
         """
         Detailed list of variables contained in a dataset.

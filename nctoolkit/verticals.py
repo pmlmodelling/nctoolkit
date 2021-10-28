@@ -117,7 +117,7 @@ def vertstat(self, stat="mean"):
     run_this(cdo_command, self, output="ensemble")
 
 
-def vertical_mean(self, thickness = None, depth_range = None):
+def vertical_mean(self, thickness=None, depth_range=None):
     """
     Calculate the depth-averaged mean for each variable
     This is calculated for each time step and grid cell
@@ -131,7 +131,7 @@ def vertical_mean(self, thickness = None, depth_range = None):
         one variable.
     depth_range: list
         Only use when vertical levels vary in space
-        Set a depth range if desired. Should be of the form [min_depth, max_depth]. 
+        Set a depth range if desired. Should be of the form [min_depth, max_depth].
 
     Examples
     ------------
@@ -150,7 +150,6 @@ def vertical_mean(self, thickness = None, depth_range = None):
         vertstat(self, stat="mean")
         return None
 
-
     if type(depth_range) is list:
 
         if len(depth_range) != 2:
@@ -161,8 +160,6 @@ def vertical_mean(self, thickness = None, depth_range = None):
     if depth_range is not None:
         if type(depth_range) is not list:
             raise ValueError("Please provide a list for the depth range!")
-
-
 
     if "api.DataSet" not in str(type(thickness)):
         if thickness is None or type(thickness) is not str:
@@ -183,11 +180,10 @@ def vertical_mean(self, thickness = None, depth_range = None):
             raise ValueError("Please provide a thickness dataset with 1 variable!")
         sorted = True
 
-
     if sorted == False:
-        if thickness in self.variables: 
-            ds_thick = self.copy() 
-            ds_thick.select(variable = thickness) 
+        if thickness in self.variables:
+            ds_thick = self.copy()
+            ds_thick.select(variable=thickness)
             ds_thick.run()
         else:
             ds_thick = open_data(thickness)
@@ -202,18 +198,22 @@ def vertical_mean(self, thickness = None, depth_range = None):
         ds_thick.run()
         ds_depth = ds_thick.copy()
         ds_depth.vertical_cumsum()
-        ds_depth.rename({"thickness":"depth"})
+        ds_depth.rename({"thickness": "depth"})
         ds_thick.append(ds_depth)
         ds_thick.merge()
-        ds_thick.assign(z_min = lambda x: x.depth - x.thickness)
-        ds_thick.assign(z_min = lambda x: x.z_min * (x.z_min >= depth_range[0]) + depth_range[0] * (x.z_min < depth_range[0])   )
-        ds_thick.assign(depth = lambda x: x.depth * (x.depth <= depth_range[1]) + depth_range[1] * (x.depth > depth_range[1])   )
-        ds_thick.assign(thickness = lambda x: x.depth - x.z_min, drop = True)
-        ds_thick.assign(thickness= lambda x: x.thickness * (x.thickness > 0), drop = True)
+        ds_thick.assign(z_min=lambda x: x.depth - x.thickness)
+        ds_thick.assign(
+            z_min=lambda x: x.z_min * (x.z_min >= depth_range[0])
+            + depth_range[0] * (x.z_min < depth_range[0])
+        )
+        ds_thick.assign(
+            depth=lambda x: x.depth * (x.depth <= depth_range[1])
+            + depth_range[1] * (x.depth > depth_range[1])
+        )
+        ds_thick.assign(thickness=lambda x: x.depth - x.z_min, drop=True)
+        ds_thick.assign(thickness=lambda x: x.thickness * (x.thickness > 0), drop=True)
 
-
-
-    self.select(variables = self.variables_detailed.query("levels > 1").variable)
+    self.select(variables=self.contents.query("nlevels > 1").variable)
 
     self.multiply(ds_thick)
     self.vertical_sum()
@@ -221,7 +221,7 @@ def vertical_mean(self, thickness = None, depth_range = None):
 
     ds_thick.vertical_sum()
     self.divide(ds_thick)
-    
+
     del ds_thick
     if type(depth_range) is list:
         del ds_depth
@@ -274,10 +274,11 @@ def vertical_range(self):
     """
     vertstat(self, stat="range")
 
-def vertical_integration(self, thickness = None, depth_range = None):
+
+def vertical_integration(self, thickness=None, depth_range=None):
     """
     Calculate the vertically integrated sum over the water column
-    This calculates the sum of the variable multiplied by the cell thickness 
+    This calculates the sum of the variable multiplied by the cell thickness
 
     Parameters
     -------------
@@ -286,7 +287,7 @@ def vertical_integration(self, thickness = None, depth_range = None):
         the thicknesses; or a Dataset that contains the thicknesses. Note: the .nc file or Dataset must only contain
         one variable.
     depth_range: list
-        Set a depth range if desired. Should be of the form [min_depth, max_depth]. 
+        Set a depth range if desired. Should be of the form [min_depth, max_depth].
 
     Examples
     ------------
@@ -308,8 +309,6 @@ def vertical_integration(self, thickness = None, depth_range = None):
         if type(depth_range) is not list:
             raise ValueError("Please provide a list for the depth range!")
 
-
-
     if "api.DataSet" not in str(type(thickness)):
         if thickness is None or type(thickness) is not str:
             raise ValueError("Please provide a thickness variable")
@@ -329,11 +328,10 @@ def vertical_integration(self, thickness = None, depth_range = None):
             raise ValueError("Please provide a thickness dataset with 1 variable!")
         sorted = True
 
-
     if sorted == False:
-        if thickness in self.variables: 
-            ds_thick = self.copy() 
-            ds_thick.select(variable = thickness) 
+        if thickness in self.variables:
+            ds_thick = self.copy()
+            ds_thick.select(variable=thickness)
             ds_thick.run()
         else:
             ds_thick = open_data(thickness)
@@ -348,18 +346,20 @@ def vertical_integration(self, thickness = None, depth_range = None):
         ds_thick.run()
         ds_depth = ds_thick.copy()
         ds_depth.vertical_cumsum()
-        ds_depth.rename({"thickness":"depth"})
+        ds_depth.rename({"thickness": "depth"})
         ds_thick.append(ds_depth)
         ds_thick.merge()
-        ds_thick.assign(z_min = lambda x: x.depth - x.thickness)
-        ds_thick.assign(z_min = lambda x: x.z_min * (x.z_min >= depth_range[0]) + depth_range[0] * (x.z_min < depth_range[0])   )
-        ds_thick.assign(depth = lambda x: x.depth * (x.depth <= depth_range[1]) + depth_range[1] * (x.depth > depth_range[1])   )
-        ds_thick.assign(thickness = lambda x: x.depth - x.z_min, drop = True)
-        ds_thick.assign(thickness= lambda x: x.thickness * (x.thickness > 0), drop = True)
+        ds_thick.assign(z_min=lambda x: x.depth - x.thickness)
+        ds_thick.assign( z_min=lambda x: x.z_min * (x.z_min >= depth_range[0])
+            + depth_range[0] * (x.z_min < depth_range[0])
+        )
+        ds_thick.assign( depth=lambda x: x.depth * (x.depth <= depth_range[1])
+            + depth_range[1] * (x.depth > depth_range[1])
+        )
+        ds_thick.assign(thickness=lambda x: x.depth - x.z_min, drop=True)
+        ds_thick.assign(thickness=lambda x: x.thickness * (x.thickness > 0), drop=True)
 
-
-
-    self.select(variables = self.variables_detailed.query("levels > 1").variable)
+    self.select(variables=self.contents.query("nlevels > 1").variable)
 
     self.multiply(ds_thick)
     self.vertical_sum()
@@ -434,10 +434,10 @@ def bottom_mask(self):
         raise TypeError("This only works for single file datasets")
     data = open_data(self.current)
 
-    if len(data.variables_detailed.query("levels>1")) == 0:
+    if len(data.contents.query("nlevels>1")) == 0:
         raise ValueError("There is only one vertical level in this file!")
 
-    var_use = data.variables_detailed.query("levels>1").variable[0]
+    var_use = data.contents.query("nlevels>1").variable[0]
     data.select(variables=var_use)
     data.select(timesteps=0)
     data.set_missing([0, 0])
