@@ -50,6 +50,7 @@ Core abilities include:
    examples
    hacks 
    globals 
+   backends
    cheat
 
 
