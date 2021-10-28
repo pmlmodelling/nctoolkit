@@ -3,7 +3,7 @@ import subprocess
 from nctoolkit.runthis import run_this
 
 
-def cdo_command(self, command=None):
+def cdo_command(self, command=None, ensemble=False):
     """
     Apply a cdo command
 
@@ -12,6 +12,8 @@ def cdo_command(self, command=None):
     command : string
         cdo command to call. This command must be such that
         "cdo {command} infile outfile" will run.
+    ensemble : bool
+        Is this an ensemble command?
     """
 
     # First, check that the command is valid
@@ -41,7 +43,7 @@ def cdo_command(self, command=None):
     output = "ensemble"
     cdo_command = "cdo " + command + " "
 
-    if ("merge " in cdo_command) or ("mergetime " in cdo_command):
+    if ("merge " in cdo_command) or ("mergetime " in cdo_command) or ensemble:
         output = "one"
         self._merged = True
 
