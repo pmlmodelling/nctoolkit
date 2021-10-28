@@ -44,6 +44,7 @@ from nctoolkit.temp_file import temp_file
 import signal
 import time
 from contextlib import contextmanager
+import xarray as xr
 
 
 def get_long(ds, x):
@@ -1161,121 +1162,146 @@ class DataSet(object):
         This will only display the variables in the first file of an ensemble.
         """
 
-        if len(self) > 1:
-            return (
-                "This DataSet object is a mult-file dataset. Please inspect individual"
-                "files using nc_variables"
+        # if len(self) > 1:
+        #    return (
+        #        "This DataSet object is a mult-file dataset. Please inspect individual"
+        #        "files using nc_variables"
+        #    )
+
+        list_contents = []
+
+        use_names = True
+
+        for ff in self:
+            if "nctoolkit" in ff:
+                use_names = False
+
+        for ff in self:
+
+            cdo_result = subprocess.run(
+                "cdo showname " + ff,
+                shell=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+            )
+            cdo_result = (
+                str(cdo_result.stdout)
+                .replace("b'", "")
+                .replace("\\n", "")
+                .replace("'", "")
+                .strip()
+            )
+            cdo_result = cdo_result.split()
+            dataset = Dataset(ff)
+
+            longs = None
+            units = None
+            longs = []
+            for x in cdo_result:
+                try:
+                    longs.append(dataset.variables[x].long_name)
+                except:
+                    longs.append(None)
+            # longs = [dataset.variables[x].long_name for x in cdo_result]
+            units = []
+            for x in cdo_result:
+                try:
+                    units.append(dataset.variables[x].units)
+                except:
+                    units.append(None)
+            ##units = [dataset.variables[x].units for x in cdo_result]
+
+            if longs is None and units is None:
+                return cdo_result
+
+            out = subprocess.run(
+                "cdo sinfon " + ff,
+                shell=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+            )
+            out = out.stdout.decode("utf-8")
+            out = out.split("\n")
+            out_inc = ["Grid coordinates :" in ff for ff in out]
+            var_det = []
+            i = 1
+            while True:
+                if out_inc[i]:
+                    break
+                i += 1
+                var_det.append(out[i - 1])
+
+            var_det = [ff.replace(":", "") for ff in var_det]
+            var_det = [" ".join(ff.split()) for ff in var_det]
+            var_det = [
+                ff.replace("Parameter name", "variable").split(" ") for ff in var_det
+            ]
+            sales = var_det[1:]
+            labels = var_det[0]
+            df = pd.DataFrame.from_records(sales, columns=labels)
+            df = df.loc[:, ["Levels", "Points", "variable"]]
+            df = df.rename(columns={"Levels": "nlevels", "Points": "npoints"})
+
+            df = pd.DataFrame({"variable": cdo_result}).merge(df)
+
+            if longs is not None:
+                df["long_name"] = longs
+            if units is not None:
+                df["unit"] = units
+
+            df = df.assign(nlevels=lambda x: x.nlevels.astype("int")).assign(
+                npoints=lambda x: x.npoints.astype("int")
             )
 
-        cdo_result = subprocess.run(
-            "cdo showname " + self.current[0],
-            shell=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        cdo_result = (
-            str(cdo_result.stdout)
-            .replace("b'", "")
-            .replace("\\n", "")
-            .replace("'", "")
-            .strip()
-        )
-        cdo_result = cdo_result.split()
-        dataset = Dataset(self.current[0])
+            times = []
 
-        longs = None
-        units = None
-        longs = []
-        for x in cdo_result:
-            try:
-                longs.append(dataset.variables[x].long_name)
-            except:
-                longs.append(None)
-        # longs = [dataset.variables[x].long_name for x in cdo_result]
-        units = []
-        for x in cdo_result:
-            try:
-                units.append(dataset.variables[x].units)
-            except:
-                units.append(None)
-        ##units = [dataset.variables[x].units for x in cdo_result]
+            ds = xr.open_dataset(ff, decode_times=False)
 
-        if longs is None and units is None:
-            return cdo_result
+            # get time name
 
-        out = subprocess.run(
-            "cdo sinfon " + self.current[0],
-            shell=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        out = out.stdout.decode("utf-8")
-        out = out.split("\n")
-        out_inc = ["Grid coordinates :" in ff for ff in out]
-        var_det = []
-        i = 1
-        while True:
-            if out_inc[i]:
-                break
-            i += 1
-            var_det.append(out[i - 1])
+            time_name = [x for x in ds.coords if "time" in x and x in ds.dims]
+            if len(time_name) > 0:
+                time_name = time_name[0]
+            else:
+                time_name = "time"
 
-        var_det = [ff.replace(":", "") for ff in var_det]
-        var_det = [" ".join(ff.split()) for ff in var_det]
-        var_det = [
-            ff.replace("Parameter name", "variable").split(" ") for ff in var_det
-        ]
-        sales = var_det[1:]
-        labels = var_det[0]
-        df = pd.DataFrame.from_records(sales, columns=labels)
-        df = df.loc[:, ["Levels", "Points", "variable"]]
-        df = df.rename(columns={"Levels": "nlevels", "Points": "npoints"})
-
-        df = pd.DataFrame({"variable": cdo_result}).merge(df)
-
-        if longs is not None:
-            df["long_name"] = longs
-        if units is not None:
-            df["unit"] = units
-
-        df = df.assign(nlevels=lambda x: x.nlevels.astype("int")).assign(
-            npoints=lambda x: x.npoints.astype("int")
-        )
-
-        times = []
-
-        ds = self.to_xarray()
-
-        # get time name
-
-        time_name = [x for x in ds.coords if "time" in x and x in ds.dims]
-        if len(time_name) > 0:
-            time_name = time_name[0]
-        else:
-            time_name = "time"
-
-        for vv in cdo_result:
-            done = False
-            try:
-                ds_times = ds[vv][time_name].values
-            except:
-                times.append(None)
-                done = True
-
-            if done is False:
+            for vv in cdo_result:
+                done = False
                 try:
-                    n_times = len(ds_times)
+                    ds_times = ds[vv][time_name].values
                 except:
-                    n_times = 1
-                times.append(n_times)
+                    times.append(None)
+                    done = True
 
-        df["ntimes"] = times
+                if done is False:
+                    try:
+                        n_times = len(ds_times)
+                    except:
+                        n_times = 1
+                    times.append(n_times)
 
-        df = df.loc[
-            :, ["variable", "ntimes", "npoints", "nlevels", "long_name", "unit"]
-        ]
+            df["ntimes"] = times
 
-        return df
+            df = df.loc[
+                :, ["variable", "ntimes", "npoints", "nlevels", "long_name", "unit"]
+            ]
+            list_contents.append(df.assign(file=ff))
+
+        if len(list_contents) == 1:
+            return list_contents[0]
+
+        if use_names == False:
+            new_df = []
+            i = 1
+            for x in list_contents:
+                new_df.append(x.assign(file=f"file {i}"))
+                i += 1
+
+            new_df = pd.concat(new_df).set_index("file")
+
+            return new_df
+        else:
+            return pd.concat(list_contents).set_index("file")
 
     @property
     def variables_detailed(self):
