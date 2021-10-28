@@ -15,6 +15,8 @@ Improvements to  ``merge`` have been made. When variables are not included in al
 
 The attribute ``variables_detailed`` has been changed to ``contents``. It will also now give the number of time steps available for each variable.
 
+``cdo_command`` now allows users to specify whether the CDO command used is an ensemble method. Previously methods applied on a file by file basis.
+
 
 Release of v0.3.8
 ---------------
