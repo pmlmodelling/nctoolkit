@@ -102,7 +102,7 @@ dataset. An example of usage is as follows:
     ds.tmean()
     xr_ds = ds.to_xarray()
 
-If you want to convert an xarray dataset to an nctoolkit dataset, you can just the ``from_xarray`` function, as follows::
+If you want to convert an xarray dataset to an nctoolkit dataset, you can just the ``from_xarray`` function, as follows:
 
 .. code:: ipython3
     ds = nc.from_xarray(ds_xr)

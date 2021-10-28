@@ -12,14 +12,14 @@ Using CDO commands
 
 If you want to apply a CDO command in nctoolkit, all you need to do is remove the beginning and end, i.e. 'cdo' and the file names.
 
-So, a typical CDO command looks like this::
+So, a typical CDO command looks like this:
 
 
 .. code:: ipython3
 
     cdo yearmean infile.nc outfile.nc 
 
-If we wanted to use this in nctoolkit, we would just do this::
+If we wanted to use this in nctoolkit, we would just do this:
 
 
 .. code:: ipython3
@@ -32,14 +32,14 @@ Using NCO commands
 
 nctoolkit also allows you to apply NCO commands to datasets using the ``nco_command`` method. You just need to remove the two file names from the command you want to apply.
 
-So, the following command::
+So, the following command:
 
 
 .. code:: ipython3
 
     ncks -v kd_490 -d lat,40.0,70.0 -d lon,-20.0,15.0 infile.nc outfile.nc
 
-would become::
+would become:
 
 .. code:: ipython3
 
