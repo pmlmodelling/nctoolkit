@@ -11,11 +11,14 @@ A new method, ``from_xarray`` will be added for converting xarray datasets to nc
 
 Methods for identifying how many missing values appear in datasets have been added: `na_count` and `na_frac`. These will identify the number or fraction of values are missing values in each grid cell. The methods operate the same way as the temporal methods. So `ds.na_frac("year")` will result in what fraction of values are missing values each year.
 
+Methods for better upscaling of datasets will be added: ``box_mean``, ``box_sum``, ``box_max``. This will you to upscale to , for example, each 10 by 10 grid box using the mean of that grid box. This is useful for upscaling things like population data where you want the upscaled grid boxes to represent the entirety of the grid box, not the centre.
+
 Improvements to  ``merge`` have been made. When variables are not included in all files nctoolkit will now only merge those in each file in a multi-file dataset. Previously it threw an error.
 
 The attribute ``variables_detailed`` has been changed to ``contents``. It will also now give the number of time steps available for each variable.
 
 ``cdo_command`` now allows users to specify whether the CDO command used is an ensemble method. Previously methods applied on a file by file basis.
+
 
 
 Release of v0.3.8
