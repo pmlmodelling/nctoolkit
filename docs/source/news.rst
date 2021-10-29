@@ -15,6 +15,8 @@ Methods for better upscaling of datasets will be added: ``box_mean``, ``box_sum`
 
 Improvements to  ``merge`` have been made. When variables are not included in all files nctoolkit will now only merge those in each file in a multi-file dataset. Previously it threw an error.
 
+Functions for finding the times and months in netCDF files are now available: ``nc_years`` and ``nc_months`.
+
 The attribute ``variables_detailed`` has been changed to ``contents``. It will also now give the number of time steps available for each variable.
 
 ``cdo_command`` now allows users to specify whether the CDO command used is an ensemble method. Previously methods applied on a file by file basis.
