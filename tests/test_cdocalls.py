@@ -423,6 +423,109 @@ class TestCalls:
         assert data.history[0] == "cdo -ltc,0"
 
         data = nc.open_data(ff)
+        data.compare("==0")
+        assert data.history[0] == "cdo -eqc,0"
+
+        data = nc.open_data(ff)
+        data.compare("!=0")
+        assert data.history[0] == "cdo -nec,0"
+
+        data = nc.open_data(ff)
+        data.compare("<=0")
+        assert data.history[0] == "cdo -lec,0"
+
+        data = nc.open_data(ff)
+        data.compare("<0")
+        assert data.history[0] == "cdo -ltc,0"
+
+        data = nc.open_data(ff)
+        data.compare("<-1")
+        assert data.history[0] == "cdo -ltc,-1"
+
+
+        data = nc.open_data(ff)
+        data.compare(">=0")
+        assert data.history[0] == "cdo -gec,0"
+
+        data = nc.open_data(ff)
+        data.compare(">=-1")
+        assert data.history[0] == "cdo -gec,-1"
+
+
+        data = nc.open_data(ff)
+        data.compare(">-1")
+        assert data.history[0] == "cdo -gtc,-1"
+
+        data = nc.open_data(ff)
+        data.compare(">1")
+        assert data.history[0] == "cdo -gtc,1"
+
+
+
+        data = nc.open_data(ff)
+        data.compare("!=-1")
+        assert data.history[0] == "cdo -nec,-1"
+
+        data = nc.open_data(ff)
+        data.compare("<=-1")
+        assert data.history[0] == "cdo -lec,-1"
+
+        data = nc.open_data(ff)
+
+        with pytest.raises(ValueError):
+            data.compare("e")
+
+        with pytest.raises(ValueError):
+            data.compare("==e")
+
+        with pytest.raises(ValueError):
+            data.compare()
+
+        with pytest.raises(TypeError):
+            data.compare(1)
+
+        with pytest.raises(ValueError):
+            data.compare(">=e")
+        with pytest.raises(ValueError):
+            data.compare(">=-e")
+        with pytest.raises(ValueError):
+            data.compare(">e")
+        with pytest.raises(ValueError):
+            data.compare(">-e")
+
+        with pytest.raises(ValueError):
+            data.compare("!=e")
+        with pytest.raises(ValueError):
+            data.compare("!=-e")
+
+        with pytest.raises(ValueError):
+            data.compare("<=e")
+        with pytest.raises(ValueError):
+            data.compare("<=-e")
+
+
+
+        with pytest.raises(ValueError):
+            data.compare("==-e")
+        with pytest.raises(ValueError):
+            data.compare("<-e")
+        with pytest.raises(ValueError):
+            data.compare(">-e")
+        with pytest.raises(ValueError):
+            data.compare("<=e")
+        with pytest.raises(ValueError):
+            data.compare(">=-e")
+        with pytest.raises(ValueError):
+            data.compare("<e")
+
+
+
+
+        data = nc.open_data(ff)
+        data.compare("==-1")
+        assert data.history[0] == "cdo -eqc,-1"
+
+        data = nc.open_data(ff)
         data.add(1)
         assert data.history[0] == "cdo -addc,1"
 
