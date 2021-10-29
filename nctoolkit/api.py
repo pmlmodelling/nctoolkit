@@ -47,20 +47,6 @@ from contextlib import contextmanager
 import xarray as xr
 
 
-def get_long(ds, x):
-    try:
-        return ds.variables[x].long_name
-    except:
-        return None
-
-
-def get_units(ds, x):
-    try:
-        return ds.variables[x].units
-    except:
-        return None
-
-
 class TimeoutException(Exception):
     pass
 
@@ -395,9 +381,10 @@ def from_xarray(ds):
     ---------------
     from_xarray : nctoolkit.DataSet
     """
-
     ff = temp_file(".nc")
     ds.to_netcdf(ff)
+
+    append_safe(ff)
 
     d = DataSet(ff)
     return d
@@ -1392,31 +1379,6 @@ class DataSet(object):
         )
 
         return df
-
-    # dataset = Dataset(path)
-    ## list(ds.variables)
-    # ds = xr.open_dataset(path)
-    # variables = list(ds.data_vars)
-    # variables = [vv for vv in variables if len(ds[vv].coords) > 0]
-    # longs = None
-    # units = None
-    #
-    # def get_long(ds, x):
-    #    try:
-    #        return ds.variables[x].long_name
-    #    except:
-    #        return None
-    #
-    # def get_units(ds, x):
-    #    try:
-    #        return ds.variables[x].units
-    #    except:
-    #        return None
-    #
-    # longs = [get_long(dataset, x) for x in variables]
-    #
-    # units = [get_units(dataset, x) for x in variables]
-    # pd.DataFrame({"variable":variables, "long_name":longs, "unit":units})
 
     @property
     def start(self):
