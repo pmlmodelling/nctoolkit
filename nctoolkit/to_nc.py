@@ -39,7 +39,7 @@ def to_nc(self, out, zip=True, overwrite=False):
     """
 
     if len(self) == 0:
-        raise ValueError("Failure due to empty dataset!")
+        raise ValueError("You cannot save an empty dataset!")
 
     if os.path.basename(out) != out:
         out_dir = os.path.dirname(out)
