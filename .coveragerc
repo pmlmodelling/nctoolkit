@@ -3,6 +3,7 @@ omit =
     *tests*
     nctoolkit/view.py 
     nctoolkit/deprecated.py 
+    nctoolkit/esoteric.py 
     nctoolkit/bloom.py 
 [report]
 show_missing = True
