@@ -6,16 +6,6 @@ from nctoolkit.runthis import run_this, run_cdo, tidy_command
 from nctoolkit.temp_file import temp_file
 from nctoolkit.session import nc_safe, remove_safe, append_safe
 
-
-def cdo_version():
-    cdo_check = subprocess.run(
-        "cdo --version", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
-    )
-    cdo_check = str(cdo_check.stderr).replace("\\n", "")
-    cdo_check = cdo_check.replace("b'", "").strip()
-    return cdo_check.split("(")[0].strip().split(" ")[-1]
-
-
 def boxstat(self, stat="mean", x=1, y=1):
     """Method to calculate the spatial stat from a dataset"""
 
