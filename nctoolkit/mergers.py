@@ -55,7 +55,7 @@ def merge(self, join="variables", match=["year", "month", "day"]):
         return None
 
     if join_valid == False:
-        raise TypeError("join supplied is not valid")
+        raise ValueError("join supplied is not valid")
 
     # basic checks on match criteria
     if type(match) is str:
