@@ -159,7 +159,7 @@ def vertical_mean(self, thickness=None, depth_range=None):
 
     if depth_range is not None:
         if type(depth_range) is not list:
-            raise ValueError("Please provide a list for the depth range!")
+            raise TypeError("Please provide a list for the depth range!")
 
     if "api.DataSet" not in str(type(thickness)):
         if thickness is None or type(thickness) is not str:
@@ -202,12 +202,10 @@ def vertical_mean(self, thickness=None, depth_range=None):
         ds_thick.append(ds_depth)
         ds_thick.merge()
         ds_thick.assign(z_min=lambda x: x.depth - x.thickness)
-        ds_thick.assign(
-            z_min=lambda x: x.z_min * (x.z_min >= depth_range[0])
+        ds_thick.assign(z_min=lambda x: x.z_min * (x.z_min >= depth_range[0])
             + depth_range[0] * (x.z_min < depth_range[0])
         )
-        ds_thick.assign(
-            depth=lambda x: x.depth * (x.depth <= depth_range[1])
+        ds_thick.assign( depth=lambda x: x.depth * (x.depth <= depth_range[1])
             + depth_range[1] * (x.depth > depth_range[1])
         )
         ds_thick.assign(thickness=lambda x: x.depth - x.z_min, drop=True)
@@ -307,7 +305,7 @@ def vertical_integration(self, thickness=None, depth_range=None):
 
     if depth_range is not None:
         if type(depth_range) is not list:
-            raise ValueError("Please provide a list for the depth range!")
+            raise TypeError("Please provide a list for the depth range!")
 
     if "api.DataSet" not in str(type(thickness)):
         if thickness is None or type(thickness) is not str:
