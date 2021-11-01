@@ -1,4 +1,5 @@
 import nctoolkit as nc
+import platform
 import subprocess
 import pandas as pd
 import xarray as xr
@@ -27,7 +28,8 @@ class TestPar:
         n = len(nc.session_files())
         assert n == 0
 
-        nc.options(cores = 2)
+        if platform.system() == "Linux":
+            nc.options(cores = 2)
         tracker = nc.open_data(ff)
         tracker.split("year")
         tracker.tmean()

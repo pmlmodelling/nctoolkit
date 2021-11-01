@@ -51,6 +51,74 @@ class TestFldsta:
         n = len(nc.session_files())
         assert n == 1
 
+
+    def test_box(self):
+        ff = "data/sst.mon.mean.nc"
+        data = nc.open_data(ff)
+        data.select(time = 0)
+        data.box_mean(2,2)
+        data.spatial_mean()
+
+        x = data.to_dataframe().sst.values[0].astype("float")
+        assert x ==  17.86652374267578 
+
+        data = nc.open_data()
+        with pytest.raises(ValueError):
+            data.box_mean(2,2)
+
+        with pytest.raises(ValueError):
+            data.spatial_mean()
+
+        with pytest.raises(ValueError):
+            data.spatial_sum()
+
+        with pytest.raises(ValueError):
+            data.spatial_percentile(p = 0.05)
+
+        data = nc.open_data(ff)
+        data.select(time = 0)
+        data.box_sum(2,2)
+        data.spatial_mean()
+
+        x = data.to_dataframe().sst.values[0].astype("float")
+        assert x ==  69.14716339111328
+ 
+
+
+        data = nc.open_data(ff)
+        data.select(time = 0)
+        data.box_max(2,2)
+        data.spatial_mean()
+
+        x = data.to_dataframe().sst.values[0].astype("float")
+
+
+        assert x == 18.1085262298584 
+
+        data = nc.open_data(ff)
+        data.select(time = 0)
+        data.box_min(2,2)
+        data.spatial_mean()
+
+        x = data.to_dataframe().sst.values[0].astype("float")
+
+
+        assert x == 17.62028694152832
+
+
+        data = nc.open_data(ff)
+        data.select(time = 0)
+        data.box_range(2,2)
+        data.spatial_mean()
+
+        x = data.to_dataframe().sst.values[0].astype("float")
+
+
+        assert x == 0.4882393181324005
+ 
+
+
+
     def test_range(self):
         ff = "data/sst.mon.mean.nc"
         data = nc.open_data(ff)

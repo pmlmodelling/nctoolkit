@@ -59,7 +59,7 @@ class TestApi:
             nc.options(this=1)
 
     def test_options_invalid2(self):
-        with pytest.raises(AttributeError):
+        with pytest.raises(TypeError):
             nc.options(lazy="x")
 
     def test_file_size(self):

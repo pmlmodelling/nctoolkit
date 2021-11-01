@@ -14,6 +14,85 @@ class TestVerts:
 
         ff = "data/vertical_tester.nc"
         ds = nc.open_data(ff)
+
+        with pytest.raises(TypeError):
+            ds.vertical_integration("e3t", depth_range = 1)
+
+        with pytest.raises(ValueError):
+            ds.vertical_integration("e3t", depth_range = [1,2,3])
+
+        with pytest.raises(ValueError):
+            ds.vertical_integration("e3t", depth_range = [30,20])
+
+        with pytest.raises(TypeError):
+            ds.vertical_mean("e3t", depth_range = 1)
+
+        with pytest.raises(ValueError):
+            ds.vertical_mean("e3t", depth_range = [1,2,3])
+
+        with pytest.raises(ValueError):
+            ds.vertical_mean("e3t", depth_range = [30,20])
+
+        with pytest.raises(ValueError):
+            ds.vertical_mean(thickness = 1)
+
+        with pytest.raises(ValueError):
+            ds.vertical_integration(thickness = 1)
+
+        with pytest.raises(ValueError):
+            ds.vertical_integration(thickness = ff)
+
+        with pytest.raises(ValueError):
+            ds.vertical_mean(thickness = ff)
+
+        with pytest.raises(ValueError):
+            ds1 = nc.open_data(ff)
+            ds.vertical_mean(thickness = ds1)
+
+        with pytest.raises(ValueError):
+            ds1 = nc.open_data(ff)
+            ds.vertical_integration(thickness = ds1)
+
+        ds = nc.open_data("data/vertical_tester.nc")
+        ds.vertical_mean("e3t", depth_range = [0, 30])
+        ds.spatial_sum()
+        x = ds.to_dataframe().one.sum() 
+
+        ds = nc.open_data("data/vertical_tester.nc")
+        ds1 = nc.open_data("data/vertical_tester.nc")
+        ds1.select(variables = "e3t")
+        ds.vertical_mean(ds1, depth_range = [0,30])
+        ds.spatial_sum()
+        y = ds.to_dataframe().one.sum() 
+
+        assert x == y
+
+
+        ds = nc.open_data("data/vertical_tester.nc")
+        ds.vertical_mean("e3t")
+        ds.spatial_sum()
+        x = ds.to_dataframe().one.sum() 
+
+        ds = nc.open_data("data/vertical_tester.nc")
+        ds1 = nc.open_data("data/vertical_tester.nc")
+        ds1.select(variables = "e3t")
+        ds.vertical_mean(ds1)
+        ds.spatial_sum()
+        y = ds.to_dataframe().one.sum() 
+
+        assert x == y
+
+        ds = nc.open_data("data/vertical_tester.nc")
+        ds1 = nc.open_data("data/vertical_tester.nc")
+        ds1.select(variables = "e3t")
+        ds1.run()
+        ds.vertical_mean(ds1[0])
+        ds.spatial_sum()
+        y = ds.to_dataframe().one.sum() 
+
+        assert x == y
+
+        ds = nc.open_data("data/vertical_tester.nc")
         ds.vertical_integration("e3t")
         ds.select(variable = "one")
         ds.run()

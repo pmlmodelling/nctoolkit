@@ -47,6 +47,15 @@ class TestShifters:
         with pytest.raises(AttributeError):
             data.shift(none = "x")
 
+        with pytest.raises(ValueError):
+            data.shift(hours=None)
+        with pytest.raises(ValueError):
+            data.shift(days=None)
+        with pytest.raises(ValueError):
+            data.shift(months=None)
+        with pytest.raises(ValueError):
+            data.shift(years=None)
+
         with pytest.raises(TypeError):
             data.shift(hours="x")
         with pytest.raises(TypeError):

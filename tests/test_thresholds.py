@@ -10,6 +10,73 @@ ff = "data/2003.nc"
 class TestClip:
     def test_thresholds(self):
 
+        ds1 = nc.open_data(ff)
+        ds2 = nc.open_data(ff)
+        ds2.tmean()
+        ds1.first_above(ds2)
+        x = ds1.to_dataframe().analysed_sst.values[0]
+
+        ds1 = nc.open_data(ff)
+        ds2 = nc.open_data(ff)
+        ds2.tmean()
+        ds2.run()
+        ds1.first_above(ds2[0])
+        y = ds1.to_dataframe().analysed_sst.values[0]
+
+        assert x == y
+
+        ds1 = nc.open_data(ff)
+        ds2 = nc.open_data(ff)
+        ds2.tmean()
+        ds1.last_above(ds2)
+        x = ds1.to_dataframe().analysed_sst.values[0]
+
+        ds1 = nc.open_data(ff)
+        ds2 = nc.open_data(ff)
+        ds2.tmean()
+        ds2.run()
+        ds1.last_above(ds2[0])
+        y = ds1.to_dataframe().analysed_sst.values[0]
+
+        assert x == y
+
+        ds1 = nc.open_data(ff)
+        ds2 = nc.open_data(ff)
+        ds2.tmean()
+        ds1.first_below(ds2)
+        x = ds1.to_dataframe().analysed_sst.values[0]
+
+        ds1 = nc.open_data(ff)
+        ds2 = nc.open_data(ff)
+        ds2.tmean()
+        ds2.run()
+        ds1.first_below(ds2[0])
+        y = ds1.to_dataframe().analysed_sst.values[0]
+
+        assert x == y
+
+        ds1 = nc.open_data(ff)
+        ds2 = nc.open_data(ff)
+        ds2.tmean()
+        ds1.last_below(ds2)
+        x = ds1.to_dataframe().analysed_sst.values[0]
+
+        ds1 = nc.open_data(ff)
+        ds2 = nc.open_data(ff)
+        ds2.tmean()
+        ds2.run()
+        ds1.last_below(ds2[0])
+        y = ds1.to_dataframe().analysed_sst.values[0]
+
+        assert x == y
+
+
+
+        del ds1
+        del ds2
+
+
+
         tracker = nc.open_data(ff)
 
         tracker = nc.open_data(ff)
@@ -21,6 +88,26 @@ class TestClip:
         x = tracker.to_dataframe().analysed_sst.values[0]
 
         assert x == 349
+
+        tracker = nc.open_data(ff)
+        with pytest.raises(ValueError):
+            tracker.first_above("x")
+        with pytest.raises(ValueError):
+            tracker.last_above("x")
+        with pytest.raises(ValueError):
+            tracker.first_below("x")
+        with pytest.raises(ValueError):
+            tracker.last_below("x")
+
+        with pytest.raises(TypeError):
+            tracker.first_above([])
+        with pytest.raises(TypeError):
+            tracker.last_above([])
+        with pytest.raises(TypeError):
+            tracker.first_below([])
+        with pytest.raises(TypeError):
+            tracker.last_below([])
+
 
         tracker = nc.open_data(ff)
 

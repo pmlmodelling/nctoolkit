@@ -125,6 +125,14 @@ class TestRegrid:
         tracker = nc.open_data(ff)
         with pytest.raises(ValueError):
             tracker.regrid(grid=1)
+
+        tracker = nc.open_data("data/20*.nc")
+        with pytest.raises(ValueError):
+            tracker.regrid(grid=ff, recycle = True)
+
+        with pytest.raises(ValueError):
+            tracker.regrid(grid=pd.DataFrame())
+
         n = len(nc.session_files())
         assert n == 0
         tracker = nc.open_data()

@@ -181,6 +181,21 @@ class TestSelect:
         with pytest.raises(ValueError):
             tracker.select(months=0)
 
+        with pytest.raises(ValueError):
+            tracker.select(season=None)
+
+        with pytest.raises(ValueError):
+            tracker.select(years=None)
+
+        with pytest.raises(ValueError):
+            tracker.select(months=None)
+
+        with pytest.raises(ValueError):
+            tracker.select(variables=None)
+
+        with pytest.raises(ValueError):
+            tracker.select(times=None)
+
         with pytest.raises(AttributeError):
             tracker.select(problem = 0)
 

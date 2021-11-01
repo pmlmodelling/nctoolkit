@@ -10,6 +10,9 @@ class TestTonnc:
     def test_empty(self):
         n = len(nc.session_files())
         assert n == 0
+        ds = nc.open_data()
+        with pytest.raises(ValueError):
+            ds.to_nc("/tmp/test.nc") 
 
     def test_1(self):
         ff = "data/sst.mon.mean.nc"

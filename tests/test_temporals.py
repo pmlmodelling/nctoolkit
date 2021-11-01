@@ -14,6 +14,19 @@ class TestTemporals:
         n = len(nc.session_files())
         assert n == 0
 
+        ds = nc.open_data(ff)
+        ds.na_count()
+        ds.spatial_sum()
+        ds.to_dataframe()
+        assert ds.to_dataframe().sst.values[0] == 7560360.0 
+
+        ds = nc.open_data(ff)
+        ds.na_frac()
+        ds.spatial_sum()
+        ds.to_dataframe()
+        assert ds.to_dataframe().sst.values[0] == 21001.0 
+
+        del ds
 
         # monthly climatology
 
@@ -23,8 +36,40 @@ class TestTemporals:
         x = float(tracker.to_dataframe().sst.values[0])
 
 
+        ds = nc.open_data("data/sst.mon.mean.nc")
+        ds.tvar()
+        ds.spatial_sum()
+        ds.to_dataframe()
+        assert ds.to_dataframe().sst.values[0] == 133869.140625 
+
+        del ds
+
         assert x == 18.002004623413086
 
+        tracker = nc.open_data(ff)
+        tracker.tmean(["month", "day"])
+        tracker.spatial_mean()
+        y = float(tracker.to_dataframe().sst.values[0])
+        assert y == x 
+
+        tracker = nc.open_data(ff)
+        tracker.tpercentile(over = ["month"], p =0.05)
+        tracker.spatial_mean()
+        x = float(tracker.to_dataframe().sst.values[0])
+
+
+        tracker = nc.open_data(ff)
+        tracker.tpercentile( over = ["month", "day"], p = 0.05)
+        tracker.spatial_mean()
+        y = float(tracker.to_dataframe().sst.values[0])
+        assert y == x 
+
+        tracker = nc.open_data()
+        with pytest.raises(ValueError):
+            tracker.tmean()
+
+        with pytest.raises(ValueError):
+            tracker.tpercentile(p = 0.05)
 
         # annual mean
 

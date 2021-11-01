@@ -40,5 +40,10 @@ class TestNCO:
         data.spatial_mean()
 
         y = data.to_dataframe().sst.values[0].astype("float")
+        tracker = nc.open_data("data/2003.nc")
+        with pytest.raises(ValueError):
+            tracker.nco_command()
+        with pytest.raises(TypeError):
+            tracker.nco_command(1)
 
         assert x == y

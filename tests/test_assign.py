@@ -21,6 +21,44 @@ class TestAssign:
         with pytest.raises(TypeError):
             nc.temp_file.temp_file(1)
 
+    ds = nc.open_data("data/woa18_decav_t01_01.nc")
+    with pytest.raises(ValueError):
+        ds.assign(t_an = lambda x: x.t_an == vert_max(x.t_an), drop = True)
+    with pytest.raises(ValueError):
+        ds.assign(t_an = lambda x: x.t_an == spati_max(x.t_an), drop = True)
+    with pytest.raises(ValueError):
+        ds.assign(t_an = lambda x: x.t_an == zon_max(x.t_an), drop = True);ds.assign(t_an = lambda x: x.tan - 8)
+    with pytest.raises(ValueError):
+        ds.assign(t_an = lambda x: x.t_an == zon_max(x.t_an), drop = True);ds.assign(t_an = lambda x: x.tan - 8)
+    with pytest.raises(ValueError):
+        ds.assign(
+            t_an = lambda x: x.t_an == zon_max(x.t_an), drop = True)
+    with pytest.raises(ValueError):
+        this = "x"
+        ds.assign(
+            t_an = lambda x: x.t_an + this, drop = True)
+
+    ds.assign(t_an = lambda x: x.t_an == vertical_max(x.t_an), drop = True)
+    ds.vertical_max()
+    ds.spatial_max()
+    assert ds.to_dataframe().t_an.values[0] == 1.0
+
+    ds = nc.open_data("data/woa18_decav_t01_01.nc")
+    ds.assign(t_an = lambda x: x.t_an is False) 
+    assert ds.history[0] == "cdo -aexpr,'t_an=t_an<1'"
+
+    ds = nc.open_data("data/woa18_decav_t01_01.nc")
+    ds.assign(t_an = lambda x: x.t_an is True) 
+    assert ds.history[0] == "cdo -aexpr,'t_an=t_an>0'"
+
+    ds = nc.open_data("data/woa18_decav_t01_01.nc")
+    ds.assign(t_an = lambda x: x.t_an == True) 
+    assert ds.history[0] == "cdo -aexpr,'t_an=t_an>0'"
+
+    ds = nc.open_data("data/woa18_decav_t01_01.nc")
+    ds.assign(t_an = lambda x: x.t_an == False) 
+    assert ds.history[0] == "cdo -aexpr,'t_an=t_an<1'"
+
     ff = "data/sst.mon.mean.nc"
 
     data = nc.open_data(ff)
@@ -61,6 +99,7 @@ class TestAssign:
 
     class MyClass:
         t = 273.15
+
 
     k = MyClass()
     data.assign(new=lambda x: x.sst + k.t)

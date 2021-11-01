@@ -25,6 +25,13 @@ class TestApi2:
         with pytest.raises(ValueError):
             nc.options(temp_dir = "/adsfjasdfiwnnck")
 
+        ff = "data/sst.mon.mean.nc"
+        tracker = nc.open_data(ff)
+        assert tracker.contents.long_name[0] == 'Monthly Means of Global Sea Surface Temperature'
+        tracker.assign(sst2 = lambda x: x.sst + 283)
+        tracker.run()
+        assert tracker.contents.long_name[1] == None
+        
 
         # check wildcard
 
@@ -56,6 +63,23 @@ class TestApi2:
         with pytest.raises(TypeError):
             nc.options(parallel = "x")
 
+        with pytest.raises(ValueError):
+            nc.options(cores = 10000) 
+
+        with pytest.raises(ValueError):
+            nc.options(precision = "x") 
+
+        with pytest.raises(TypeError):
+            nc.options(cores = "x") 
+
+        with pytest.raises(TypeError):
+            nc.options(lazy = "x") 
+
+        with pytest.raises(TypeError):
+            nc.options(thread_safe = "x") 
+
+        ds = nc.open_data(ff1)
+        assert ds.current[0] == ds.start[0]
 
 
 

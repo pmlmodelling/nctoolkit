@@ -193,6 +193,23 @@ class TestMerge:
         n = len(nc.session_files())
         assert n == 2
 
+    def test_collect(self):
+        tracker = nc.open_data(ff)
+        tracker.select(time =0)
+        tracker.distribute(4,4)
+        tracker.collect()
+        tracker.spatial_sum()
+        x = tracker.to_dataframe().sst.values[0]
+        
+        tracker = nc.open_data(ff)
+        tracker.select(time =0)
+        tracker.distribute(4,4)
+        tracker.collect()
+        tracker.spatial_sum()
+        y = tracker.to_dataframe().sst.values[0]
+
+        assert x == y
+
     def test_merge_error3(self):
         tracker = nc.open_data(ff)
         tracker.select(timesteps=[0, 1])
@@ -206,8 +223,15 @@ class TestMerge:
         new.crop(lon=[50, 80])
         new.run()
         data = nc.open_data([new.current[0], tracker.current[0]])
+
         with pytest.raises(ValueError):
             data.merge(match=["year", "month"])
+
+        with pytest.raises(ValueError):
+            data.merge(join = "error")
+
+        with pytest.raises(TypeError):
+            data.merge(1)
         n = len(nc.session_files())
         assert n == 2
 

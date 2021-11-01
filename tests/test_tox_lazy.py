@@ -31,6 +31,21 @@ class TestToxar:
         assert x == y
 
 
+        tracker = nc.open_data(ff)
+        tracker.select(timesteps=[0])
+        tracker.spatial_mean()
+        x = tracker.to_dataframe(decode_times=True).reset_index().time.dt.year.values[0]
+
+        tracker = nc.open_data(ff)
+        tracker.select(timesteps=[0])
+        ds = tracker.to_xarray()
+        tracker = nc.from_xarray(ds)
+        tracker.spatial_mean()
+        y = tracker.to_dataframe(decode_times=True).reset_index().time.dt.year.values[0]
+
+        assert x == y
+
+
 
         tracker = nc.open_data(ff)
         ds1 = tracker.to_xarray()
