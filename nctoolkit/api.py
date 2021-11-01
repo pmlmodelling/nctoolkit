@@ -143,7 +143,7 @@ def options(**kwargs):
         if key not in valid_keys:
             raise AttributeError(key + " is not a valid option")
 
-        if key == "parallel":
+        if key == "parallel" or key == "lazy" or key == "thread_safe":
             if type(kwargs[key]) is not bool:
                 raise TypeError(f"{key} should be boolean")
 
@@ -174,7 +174,7 @@ def options(**kwargs):
                         raise ValueError("precision supplied is not valid!")
                     session_info[key] = kwargs[key]
                 else:
-                    raise AttributeError(key + " is not valid session info!")
+                    raise ValueError(kwargs[key] + " is not valid session info!")
         else:
             session_info[key] = kwargs[key]
 
@@ -1197,9 +1197,6 @@ class DataSet(object):
                 except:
                     units.append(None)
             ##units = [dataset.variables[x].units for x in cdo_result]
-
-            if longs is None and units is None:
-                return cdo_result
 
             out = subprocess.run(
                 "cdo sinfon " + ff,
