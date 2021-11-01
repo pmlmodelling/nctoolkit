@@ -12,7 +12,7 @@ def shift_hours(self, shift=None):
     """
 
     if shift is None:
-        raise TypeError("Please supply a shift value")
+        raise ValueError("Please supply a shift value")
 
     if type(shift) is float:
         shift = int(shift)
@@ -36,7 +36,7 @@ def shift_days(self, shift=None):
     """
 
     if shift is None:
-        raise TypeError("Please supply a shift value")
+        raise ValueError("Please supply a shift value")
 
     if type(shift) is float:
         shift = int(shift)
@@ -60,7 +60,7 @@ def shift_months(self, shift=None):
     """
 
     if shift is None:
-        raise TypeError("Please supply a shift value")
+        raise ValueError("Please supply a shift value")
 
     if type(shift) is float:
         shift = int(shift)
@@ -84,7 +84,7 @@ def shift_years(self, shift=None):
     """
 
     if shift is None:
-        raise TypeError("Please supply a shift value")
+        raise ValueError("Please supply a shift value")
 
     if type(shift) is float:
         shift = int(shift)
