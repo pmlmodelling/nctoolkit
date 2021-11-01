@@ -35,4 +35,3 @@ def sum_all(self, drop=True):
                     break
                 i += 1
             self.cdo_command("aexpr,total" + str(i) + "=" + "+".join(self.variables))
-            # self.mutate({"total" + str(i): "+".join(self.variables)})

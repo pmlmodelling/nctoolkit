@@ -642,7 +642,6 @@ def assign(self, drop=False, **kwargs):
                             raise ValueError(f"{term} does not evaluate to a numeric!")
 
                         if is_number(str(new_term)) == False:
-                            print(type(new_term) is bool)
                             if type(new_term) is bool:
                                 new_term = float(new_term)
                             else:
