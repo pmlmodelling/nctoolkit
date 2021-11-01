@@ -12,7 +12,7 @@ from nctoolkit.api import (
 from nctoolkit.cleanup import cleanup, clean_all, deep_clean, temp_check
 from nctoolkit.create_ensemble import create_ensemble
 from nctoolkit.session import session_files
-from nctoolkit.show import nc_variables, nc_years
+from nctoolkit.show import nc_variables, nc_years, nc_months, nc_times
 
 import re
 import subprocess
