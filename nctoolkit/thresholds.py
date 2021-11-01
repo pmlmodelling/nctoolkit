@@ -38,10 +38,11 @@ def first_above(self, x=None):
 
     self.run()
 
-    variable = self.variables[0]
+    if type(x) is str:
+        if os.path.exists(x) is False:
+            raise ValueError(f"{x} does not exist on disk!")
 
-    #if len(self.variables) > 1:
-    #    raise ValueError("This method only works with single variable datasets!")
+    variable = self.variables[0]
 
     run_code = False
 
@@ -53,7 +54,8 @@ def first_above(self, x=None):
     # 2: dataset or netCDF file multiplication
     # get the netCDF file(s)
     if ("api.DataSet" in str(type(x))) or (type(x) is str):
-        x.run()
+        if ("api.DataSet" in str(type(x))):
+            x.run()
         self.gt(x)
         run_code = True
 
@@ -99,6 +101,10 @@ def first_below(self, x=None):
 
     """
 
+    if type(x) is str:
+        if os.path.exists(x) is False:
+            raise ValueError(f"{x} does not exist on disk!")
+
     self.run()
 
     variable = self.variables[0]
@@ -116,7 +122,8 @@ def first_below(self, x=None):
     # 2: dataset or netCDF file multiplication
     # get the netCDF file(s)
     if ("api.DataSet" in str(type(x))) or (type(x) is str):
-        x.run()
+        if ("api.DataSet" in str(type(x))):
+            x.run()
         self.lt(x)
         run_code = True
     if run_code:
@@ -160,6 +167,9 @@ def last_above(self, x=None):
 
 
     """
+    if type(x) is str:
+        if os.path.exists(x) is False:
+            raise ValueError(f"{x} does not exist on disk!")
 
     self.run()
 
@@ -178,7 +188,8 @@ def last_above(self, x=None):
     # 2: dataset or netCDF file multiplication
     # get the netCDF file(s)
     if ("api.DataSet" in str(type(x))) or (type(x) is str):
-        x.run()
+        if ("api.DataSet" in str(type(x))):
+            x.run()
         self.gt(x)
         run_code = True
 
@@ -225,6 +236,9 @@ def last_below(self, x=None):
 
 
     """
+    if type(x) is str:
+        if os.path.exists(x) is False:
+            raise ValueError(f"{x} does not exist on disk!")
 
     self.run()
 
@@ -243,9 +257,11 @@ def last_below(self, x=None):
     # 2: dataset or netCDF file multiplication
     # get the netCDF file(s)
     if ("api.DataSet" in str(type(x))) or (type(x) is str):
-        x.run()
+        if ("api.DataSet" in str(type(x))):
+            x.run()
         self.lt(x)
         run_code = True
+
     if run_code:
         self.rename({self.variables[0]: "target"})
         self.set_missing([-1, 0.1])
