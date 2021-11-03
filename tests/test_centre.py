@@ -24,7 +24,7 @@ class TestClip:
         tracker.centre("longitude")
         x = tracker.to_dataframe().sst.values[0].astype("float")
 
-        assert x == 192.1805877685547
+        assert x == 192.18060302734375 
 
         tracker = nc.open_data(ff)
         tracker.centre("latitude")

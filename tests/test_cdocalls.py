@@ -539,24 +539,7 @@ class TestCalls:
 
         data = nc.open_data(ff)
         data.divide(1)
-        assert data.history[0] == "cdo -divc,1"
-
-        if cdo_version() not in ["1.9.2", "1.9.3"]:
-            data = nc.open_data(ff)
-            data.add(data)
-            assert data.history[0] == "cdo -add  infile09178 data/sst.mon.mean.nc"
-
-            data = nc.open_data(ff)
-            data.subtract(data)
-            assert data.history[0] == "cdo -sub  infile09178 data/sst.mon.mean.nc"
-
-            data = nc.open_data(ff)
-            data.multiply(data)
-            assert data.history[0] == "cdo -mul  infile09178 data/sst.mon.mean.nc"
-
-            data = nc.open_data(ff)
-            data.divide(data)
-            assert data.history[0] == "cdo -div  infile09178 data/sst.mon.mean.nc"
+        assert data.history[0].startswith("cdo -divc,1")
 
         data = nc.open_data(ff)
         data.set_date(year=1990, month=10, day=1)

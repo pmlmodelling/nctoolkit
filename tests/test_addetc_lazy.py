@@ -124,13 +124,13 @@ class TestAddetc:
         tracker.select(months=[1])
         tracker.run()
         new = tracker.copy()
-        tracker.assign(tos = lambda x: x.sst+1-1)
+        tracker.assign(tos = lambda x: x.sst+1-1, drop = True)
         tracker.run()
         new.add(tracker, var="tos")
         new.spatial_mean()
         tracker.spatial_mean()
 
-        x = tracker.to_dataframe().sst.values[0]
+        x = tracker.to_dataframe().tos.values[0]
         y = new.to_dataframe().sst.values[0]
 
         assert x + x == y
