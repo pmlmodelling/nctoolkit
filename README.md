@@ -68,35 +68,6 @@ If you want to install CDO from source, bash scripts are available [here](https:
 nctoolkit is tested with continuous integration using Travis (for Linux) and GitHub actions (for Mac OS). It will not work on Windows platforms today or in future, because of system dependency limitations. 
 
 
-
-## Fixing plotting problem due to xarray bug
-
-There is currently a bug in xarray caused by the update of pandas to version 1.1. As a result some plots will fail in nctoolkit. To fix this ensure pandas version 1.0.5 is installed. Do this after installing nctoolkit. This can be done as follows:
-
-
-```sh
-conda install -c conda-forge pandas=1.0.5 
-```
-
-or
-
-```sh
-pip install pandas==1.0.5
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## Reference and tutorials
 
 A full API reference, in depth tutorials and a how-to guide are available at [readthedocs](https://nctoolkit.readthedocs.io/en/latest/).
