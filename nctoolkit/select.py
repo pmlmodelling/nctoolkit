@@ -1,10 +1,101 @@
 import warnings
+from datetime import datetime
+import copy
 
 from nctoolkit.cleanup import cleanup
 from nctoolkit.flatten import str_flatten
-from nctoolkit.runthis import run_this
-from nctoolkit.show import nc_years
+from nctoolkit.session import nc_safe, session_info, append_safe, remove_safe
+from nctoolkit.temp_file import temp_file
+from nctoolkit.runthis import run_this, run_cdo
+from nctoolkit.show import nc_years, nc_times
 from nctoolkit.crop import crop
+
+
+def to_date(x):
+    if "-" in x:
+        new = x.split("-")
+    if "/" in x:
+        new = x.split("/")
+    if len(new) != 3:
+        raise ValueError(f"{x} could not be parsed")
+    day = int(new[0])
+    month = int(new[1])
+    year = int(new[2])
+    return datetime(year, month, day)
+
+
+def select_period(self, period=None):
+    """
+    Select season from a dataset
+
+    Parameters
+    -------------
+    period : list
+        List of the form [date_min, date_max], where dates must be datetime objects or strings of the form "DD/MM/YYYY" or "DD-MM-YYYY".
+    """
+
+    if period is None:
+        raise ValueError("No season supplied")
+
+    if type(period) is not list:
+        raise TypeError("Invalid period supplied")
+
+    if len(period) != 2:
+        raise ValueError("period must be a 2 variable list!")
+
+    if type(period[0]) is str and type(period[1]) is str:
+        period = [to_date(x) for x in period]
+
+    for x in period:
+        if isinstance(x, datetime) is False:
+            raise ValueError("Please provide datetime objects in period")
+
+    if period[0] >= period[1]:
+        raise ValueError("period order is incorrect")
+
+    self.run()
+
+    # fix date if it's
+
+    new_files = []
+    new_commands = []
+
+    for ff in self:
+
+        ff_times = nc_times(ff)
+        if isinstance(ff_times[0], datetime) is False:
+            raise ValueError("Unable to parse times in dataset")
+
+        selection = []
+        for i in range(0, len(ff_times)):
+            if (ff_times[i] >= period[0]) and (ff_times[i] < period[1]):
+                selection.append(i + 1)
+        if len(selection) == 0:
+            raise ValueError("Period given does not overlap with times in dataset")
+
+        target = temp_file(".nc")
+        cdo_command = (
+            "cdo seltimestep,"
+            + ",".join([str(x) for x in selection])
+            + " "
+            + ff
+            + " "
+            + target
+        )
+        # cdo_command = f"{cdo_command} {target}"
+        target = run_cdo(cdo_command, target)
+        new_files.append(target)
+        new_commands.append(cdo_command)
+
+    for cc in new_commands:
+        self.history.append(cc.replace("  ", " "))
+
+    self.current = new_files
+
+    for ff in new_files:
+        remove_safe(ff)
+    self._hold_history = copy.deepcopy(self.history)
+    cleanup()
 
 
 def select_seasons(self, season=None):
@@ -237,6 +328,9 @@ def select(self, **kwargs):
         Month(s) to select.
     years : list,range or int
         Years(s) to select. These should be integers
+    range : list
+        List of the form [date_min, date_max], where dates must be datetime objects or strings of the form "DD/MM/YYYY" or "DD-MM-YYYY".
+        Times selected will be on or after date_min and before date_max.
 
     timesteps : list or int
         time step(s) to select. For example, if you wanted the first time step
@@ -275,23 +369,27 @@ def select(self, **kwargs):
 
     for key in kwargs:
 
-        if "var" in key:
+        if "ran" in key and non_selected:
+            select_period(self, kwargs[key])
+            non_selected = False
+
+        if "var" in key and non_selected:
             select_variables(self, kwargs[key])
             non_selected = False
 
-        if "mon" in key:
+        if "mon" in key and non_selected:
             select_months(self, kwargs[key])
             non_selected = False
 
-        if "year" in key:
+        if "year" in key and non_selected:
             select_years(self, kwargs[key])
             non_selected = False
 
-        if "seas" in key:
+        if "seas" in key and non_selected:
             select_seasons(self, kwargs[key])
             non_selected = False
 
-        if "time" in key:
+        if "time" in key and non_selected:
             select_timesteps(self, kwargs[key])
             non_selected = False
 
