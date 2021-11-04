@@ -80,10 +80,11 @@ def to_xarray(self, decode_times=True, cdo_times=False):
 
     if len(self) == 1:
 
-        times = [
-            datetime.strptime(ss.replace("T", " "), "%Y-%m-%d %H:%M:%S")
-            for ss in self.times
-        ]
+        if isinstance(self.times[0], datetime):
+            times = self.times
+        else:
+            times = [
+                datetime.strptime(ss.replace("T", " "), "%Y-%m-%d %H:%M:%S") for ss in self.times ]
 
         data = xr.open_dataset(self.current[0], decode_times=False)
         data = data.assign_coords(time=times)
