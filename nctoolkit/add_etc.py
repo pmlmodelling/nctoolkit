@@ -70,7 +70,7 @@ def operation(self, method="mul", ff=None, var=None):
     merge_files = False
 
     if len(self) == 1:
-        if len([x for x in self.times if "-02-29" in x]) > 0:
+        if len([x for x in self.times if "-02-29" in str(x)]) > 0:
             self.split("year")
             merge_files = True
 

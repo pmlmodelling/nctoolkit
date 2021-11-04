@@ -1,4 +1,5 @@
 import subprocess
+from dateutil.parser import parse
 
 
 def nc_times(ff):
@@ -16,7 +17,12 @@ def nc_times(ff):
     cdo_result = cdo_result.replace("b'", "").strip()
     cdo_result = cdo_result.replace("'", "").strip()
     cdo_result = cdo_result.split()
-    return cdo_result
+
+    try:
+        cdo_result = [parse(x) for x in cdo_result]
+        return cdo_result
+    except:
+        return cdo_result
 
 
 def nc_format(ff):
