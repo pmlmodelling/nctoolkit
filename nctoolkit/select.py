@@ -321,7 +321,8 @@ def select(self, **kwargs):
     Each kwarg works as follows:
 
     variables : str or list
-        A variable or list of variables to select
+        A variable or list of variables to select. This method will accept wild cards. 
+        So using 'var*' would select all variables beginning with 'var'.
     seasons : str
         Seasons to select. One of "DJF", "MAM", "JJA", "SON".
     months : list, range or int
