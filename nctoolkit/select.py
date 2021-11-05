@@ -1,5 +1,5 @@
 import warnings
-from datetime import datetime
+from datetime import datetime, timedelta
 import copy
 
 from nctoolkit.cleanup import cleanup
@@ -53,49 +53,12 @@ def select_period(self, period=None):
     if period[0] >= period[1]:
         raise ValueError("period order is incorrect")
 
-    self.run()
+    start = str(period[0]).split(" ")[0]
+    end = period[1] - timedelta(days=1)
+    end = str(end).split(" ")[0]
+    cdo_command = f"cdo -seldate,{start},{end}"
 
-    # fix date if it's
-
-    new_files = []
-    new_commands = []
-
-    for ff in self:
-
-        ff_times = nc_times(ff)
-        if isinstance(ff_times[0], datetime) is False:
-            raise ValueError("Unable to parse times in dataset")
-
-        selection = []
-        for i in range(0, len(ff_times)):
-            if (ff_times[i] >= period[0]) and (ff_times[i] < period[1]):
-                selection.append(i + 1)
-        if len(selection) == 0:
-            raise ValueError("Period given does not overlap with times in dataset")
-
-        target = temp_file(".nc")
-        cdo_command = (
-            "cdo seltimestep,"
-            + ",".join([str(x) for x in selection])
-            + " "
-            + ff
-            + " "
-            + target
-        )
-        # cdo_command = f"{cdo_command} {target}"
-        target = run_cdo(cdo_command, target)
-        new_files.append(target)
-        new_commands.append(cdo_command)
-
-    for cc in new_commands:
-        self.history.append(cc.replace("  ", " "))
-
-    self.current = new_files
-
-    for ff in new_files:
-        remove_safe(ff)
-    self._hold_history = copy.deepcopy(self.history)
-    cleanup()
+    run_this(cdo_command, self, "ensemble")
 
 
 def select_seasons(self, season=None):
@@ -321,7 +284,7 @@ def select(self, **kwargs):
     Each kwarg works as follows:
 
     variables : str or list
-        A variable or list of variables to select. This method will accept wild cards. 
+        A variable or list of variables to select. This method will accept wild cards.
         So using 'var*' would select all variables beginning with 'var'.
     seasons : str
         Seasons to select. One of "DJF", "MAM", "JJA", "SON".
