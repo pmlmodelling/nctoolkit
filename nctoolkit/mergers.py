@@ -6,7 +6,17 @@ from datetime import datetime
 
 from nctoolkit.runthis import run_this
 from nctoolkit.session import session_info
+from nctoolkit.show import nc_variables
+from nctoolkit.utils import cdo_version, version_below, version_above
 
+def below(x,y):
+    x = x.split(".")
+    x = int(x[0])* 1000 +  int(x[1]) * 100+  int(x[2])
+    
+    y = y.split(".")
+    y = int(y[0])* 1000 +  int(y[1]) * 100+  int(y[2])
+    
+    return x < y
 
 def merge(self, join="variables", match=["year", "month", "day"]):
     """
@@ -39,6 +49,29 @@ def merge(self, join="variables", match=["year", "month", "day"]):
 
     if join.startswith("time"):
         self.run()
+        if version_below(cdo_version(), "1.9.9"): 
+            var_list = []
+            var_com = []
+
+            for ff in self:
+                var_list += nc_variables(ff)
+                var_com.append(nc_variables(ff))
+            new_list = []
+
+            for var in set(var_list):
+                if len(var_com) == len([x for x in var_com if var in x]):
+                    new_list.append(var)
+
+            self.select(variables=new_list)
+            self.run()
+
+            removed = ",".join([x for x in set(var_list) if x not in new_list])
+            if len([x for x in set(var_list) if x not in new_list]) > 0:
+                warnings.warn(
+                    f"The following variables are not in all files, so were ignored when merging: {removed}"
+                )
+                self.select(variables=new_list)
+                self.run()
 
         if len(self) == 1:
             warnings.warn(

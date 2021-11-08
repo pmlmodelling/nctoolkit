@@ -23,8 +23,23 @@ def is_curvilinear(ff):
         )
         > 0
     )
+def version_below(x,y):
+    x = x.split(".")
+    x = int(x[0])* 1000 +  int(x[1]) * 100+  int(x[2])
+    
+    y = y.split(".")
+    y = int(y[0])* 1000 +  int(y[1]) * 100+  int(y[2])
+    
+    return x < y
 
-
+def version_above(x,y):
+    x = x.split(".")
+    x = int(x[0])* 1000 +  int(x[1]) * 100+  int(x[2])
+    
+    y = y.split(".")
+    y = int(y[0])* 1000 +  int(y[1]) * 100+  int(y[2])
+    
+    return x > y
 # check version of cdo installed
 
 
