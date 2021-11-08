@@ -8,7 +8,7 @@ def fill_na(self, n = 1):
     Parameters
     -------------
     n: int
-        Number of nearest neighbours to use. Defaults to 1.
+        Number of nearest neighbours to use. Defaults to 1. To 
     """
 
     cdo_command = f"cdo -setmisstodis,{n}"

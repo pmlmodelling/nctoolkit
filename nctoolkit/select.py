@@ -35,23 +35,23 @@ def select_period(self, period=None):
     """
 
     if period is None:
-        raise ValueError("No season supplied")
+        raise ValueError("No range supplied")
 
     if type(period) is not list:
-        raise TypeError("Invalid period supplied")
+        raise TypeError("Invalid range supplied")
 
     if len(period) != 2:
-        raise ValueError("period must be a 2 variable list!")
+        raise ValueError("range must be a 2 variable list!")
 
     if type(period[0]) is str and type(period[1]) is str:
         period = [to_date(x) for x in period]
 
     for x in period:
         if isinstance(x, datetime) is False:
-            raise ValueError("Please provide datetime objects in period")
+            raise ValueError("Please provide datetime objects in range")
 
     if period[0] >= period[1]:
-        raise ValueError("period order is incorrect")
+        raise ValueError("Range order is incorrect")
 
     start = str(period[0]).split(" ")[0]
     end = period[1] - timedelta(days=1)

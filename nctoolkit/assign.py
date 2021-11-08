@@ -27,6 +27,7 @@ import numpy as np
 from nctoolkit.flatten import str_flatten
 from nctoolkit.runthis import run_this
 from nctoolkit.session import session_info
+from nctoolkit.utils import cdo_version
 
 
 def split_equation(mystr):
