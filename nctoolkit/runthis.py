@@ -196,7 +196,8 @@ def run_cdo(command, target, out_file=None, overwrite=False):
             )
 
     # this will potentially fail because of floating point precision. A quick fix to see if that is the case....
-    if "Use the CDO option -b F32" in (result.decode("utf-8")):
+    if "Use the CDO option -b F32" in (result.decode("utf-8")) or "not represent" in result.decode("utf-8"):
+        print("Switching to 32 bit precision!")
         command_chunks = command.split(" ")
 
         i = 0
@@ -210,7 +211,10 @@ def run_cdo(command, target, out_file=None, overwrite=False):
             command = str_flatten(command_chunks, " ")
         else:
             command = command.replace("cdo ", "cdo -b F32 ")
-        command
+        
+        new_target = temp_file("nc")
+        command = command.replace(target, new_target)
+        target = new_target
 
         out = subprocess.Popen(
             command,
@@ -575,8 +579,6 @@ def run_this(os_command, self, output="one", out_file=None):
 
             new_history = copy.deepcopy(self._hold_history)
 
-            file_list = self.current
-
             if len(self.history) > len(self._hold_history):
                 os_command = f'{os_command} {self.history[-1].replace("cdo ", " ")}'
                 os_command = os_command.replace("  ", " ")
@@ -647,19 +649,30 @@ def run_this(os_command, self, output="one", out_file=None):
                     for var in set(var_list):
                         if len(var_com) == len([x for x in var_com if var in x]):
                             new_list.append(var)
-                    f_list = ",".join(new_list)
-                    os_command = os_command.replace(
-                        "-mergetime ", f'-mergetime -apply,"-selname,{f_list}" '
-                    )
+                    if (
+                        "1.9.4" in cdo_version()
+                        or "1.9.5" in cdo_version()
+                        or "1.9.6" in cdo_version()
+                        or "1.9.7" in cdo_version()
+                        or "1.9.8" in cdo_version()
+                    ):
 
-                    removed = ",".join([x for x in set(var_list) if x not in new_list])
-                    if len([x for x in set(var_list) if x not in new_list]) > 0:
-                        warnings.warn(
-                            f"The following variables are not in all files, so were ignored when merging: {removed}"
+                        target = run_cdo(os_command, target, out_file)
+                    else:
+                        f_list = ",".join(new_list)
+                        os_command = os_command.replace(
+                            "-mergetime ", f'-mergetime -apply,"-selname,{f_list}" '
                         )
 
-                    target = run_cdo(os_command, target, out_file)
-                    # print(new_list)
+                        removed = ",".join(
+                            [x for x in set(var_list) if x not in new_list]
+                        )
+                        if len([x for x in set(var_list) if x not in new_list]) > 0:
+                            warnings.warn(
+                                f"The following variables are not in all files, so were ignored when merging: {removed}"
+                            )
+
+                        target = run_cdo(os_command, target, out_file)
             else:
                 target = run_cdo(os_command, target, out_file)
 
