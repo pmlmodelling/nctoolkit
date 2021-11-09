@@ -55,7 +55,7 @@ class TestMerge:
         ds2 = nc.open_data("data/2004.nc")
         ds2.assign(sst = lambda x: x.analysed_sst - 273.15)
         ds1.append(ds2)
-        ds1.merge_time()
+        ds1.merge("time")
         ds1.tmean()
         ds1.spatial_mean()
         x = ds1.to_dataframe().analysed_sst.values[0]
@@ -63,7 +63,7 @@ class TestMerge:
         ds1 = nc.open_data("data/2003.nc")
         ds2 = nc.open_data("data/2004.nc")
         ds1.append(ds2)
-        ds1.merge_time()
+        ds1.merge("time")
         ds1.tmean()
         ds1.spatial_mean()
 

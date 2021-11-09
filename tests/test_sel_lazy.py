@@ -14,6 +14,27 @@ class TestSelect:
         n = len(nc.session_files())
         assert n == 0
 
+    def test_range(self):
+        ds = nc.open_data("data/200*.nc")
+        ds.merge("time")
+        ds.select(range = ["01/01/2003", "11/09/2004"])
+        ds.run()
+        assert len(ds.times) == 619
+
+        ds = nc.open_data(ff)
+        with pytest.raises(TypeError):
+            ds.select(range = 1)
+
+        ds = nc.open_data(ff)
+        with pytest.raises(ValueError):
+            ds.select(range = ["01/01/2003", "01/01/2002"])
+
+        with pytest.raises(ValueError):
+            ds.select(range = ["01/01/2003", 1])
+
+        with pytest.raises(ValueError):
+            ds.select(range = ["01/01/2003", 1, 3])
+
     def test_strvar(self):
         tracker = nc.open_data(ff)
         tracker.assign(tos =  lambda x: x.sst+1)

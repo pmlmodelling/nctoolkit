@@ -152,6 +152,8 @@ class TestClip:
         tracker = nc.open_data(ff)
         tracker.assign(analysed_sst = lambda x: (x.analysed_sst == x.analysed_sst) * timestep(x.analysed_sst) + 0.01)
         tracker.assign(analysed_sst = lambda x: -x.analysed_sst)
+        tracker.run()
+        print(tracker.variables)
         tracker.last_above(-351)
         tracker.set_missing(0)
         tracker.spatial_mean()
