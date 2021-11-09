@@ -196,7 +196,9 @@ def run_cdo(command, target, out_file=None, overwrite=False):
             )
 
     # this will potentially fail because of floating point precision. A quick fix to see if that is the case....
-    if "Use the CDO option -b F32" in (result.decode("utf-8")) or "not represent" in result.decode("utf-8"):
+    if "Use the CDO option -b F32" in (
+        result.decode("utf-8")
+    ) or "not represent" in result.decode("utf-8"):
         print("Switching to 32 bit precision!")
         command_chunks = command.split(" ")
 
@@ -207,12 +209,18 @@ def run_cdo(command, target, out_file=None, overwrite=False):
             if "-b" == cc.strip():
                 change = i
         if change is not None:
-            command_chunks[change] = "F32"
+            command_chunks[change] = "32"
             command = str_flatten(command_chunks, " ")
         else:
-            command = command.replace("cdo ", "cdo -b F32 ")
-        
+            command = command.replace("cdo ", "cdo -b 32 ")
+
+        if os.path.exists(target):
+            if out_file is None:
+                os.remove(target)
+                remove_safe(target)
+
         new_target = temp_file("nc")
+        append_safe(new_target)
         command = command.replace(target, new_target)
         target = new_target
 
