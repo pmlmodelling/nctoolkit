@@ -137,24 +137,26 @@ def shift(self, **kwargs):
 
     >>> ds.shift(years = 2)
 
-
-
     """
 
-    valid_keys = ["days", "hours", "months", "years"]
-
+    checked = False
     for key in kwargs:
-        if key not in valid_keys:
-            raise AttributeError(f"{key} is not a valid shifting method")
+        # if key not in valid_keys:
 
         if "day" in key:
             shift_days(self, kwargs[key])
+            return None
 
         if "hour" in key:
             shift_hours(self, kwargs[key])
+            return None
 
         if "mon" in key:
             shift_months(self, kwargs[key])
+            return None
 
         if "year" in key:
             shift_years(self, kwargs[key])
+            return None
+
+    raise AttributeError(f"{key} is not a valid shifting method")
