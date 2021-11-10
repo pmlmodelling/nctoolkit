@@ -1272,7 +1272,7 @@ class DataSet(object):
             list_contents.append(df.assign(file=ff))
 
         if len(list_contents) == 1:
-            return list_contents[0]
+            return list_contents[0].drop(columns = "file")
 
         if use_names == False:
             new_df = []
@@ -1283,7 +1283,10 @@ class DataSet(object):
 
             new_df = pd.concat(new_df).set_index("file")
 
-            return new_df
+            if len(set(new_df.file)) == 1:
+                return new_df.drop(columns = "file")
+            else:
+                return new_df
         else:
             return pd.concat(list_contents).set_index("file")
 
