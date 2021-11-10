@@ -2,6 +2,7 @@ import copy
 import os
 import subprocess
 import warnings
+import pandas as pd
 
 from nctoolkit.cleanup import cleanup
 from nctoolkit.runthis import run_this, run_cdo, tidy_command
@@ -57,22 +58,68 @@ def operation(self, method="mul", ff=None, var=None):
             n_vars = len(nc_variables(ff))
             if len(nc_times(x)) != len(nc_times(ff)):
                 for x in self:
-                    print(nc_variables(x))
-                    print(nc_variables(ff))
                     if len(nc_variables(x)) != n_vars:
                         raise ValueError(
                             "Datasets/files do not have the same number of variables!"
                         )
 
+    ff_ntimes = len(nc_times(ff))
+    ff_nyears = len(nc_years(ff))
+
+    year_sub = False
+
+    if ff_ntimes == ff_nyears:
+        year_sub = True
+
     self.run()
     # leap years are tricky....
 
-    merge_files = False
+    # throw an error if things are ambiguous
 
-    if len(self) == 1:
-        if len([x for x in self.times if "-02-29" in str(x)]) > 0:
-            self.split("year")
-            merge_files = True
+    ff_ntimes = len(nc_times(ff))
+
+    if method == "mul":
+        nc_operation = "multiplication"
+    if method == "sub":
+        nc_operation = "subtraction"
+    if method == "add":
+        nc_operation = "addition"
+    if method == "div":
+        nc_operation = "division"
+
+    if year_sub is False:
+        if (
+            len(nc_times(ff))
+            == len(nc_months(ff) or len(nc_years(ff)) == len(nc_times(ff)))
+        ) == False:
+            for x in self:
+                x_times = nc_times(x)
+                if len(x_times) != ff_ntimes:
+                    for y in (
+                        pd.DataFrame(
+                            {"time": x_times, "year": [x.year for x in x_times]}
+                        )
+                        .groupby("year")
+                        .size()
+                    ):
+                        if y != len(nc_times(ff)):
+                            raise ValueError(
+                                f"Inconsistent number of time steps across years in dataset versus target dataset/file ({y} in one year versus {ff_ntimes} in the target file), resulting in ambiguous {nc_operation}"
+                            )
+
+    if year_sub is False:
+        merge_files = False
+        if len(nc_times(ff)) != len(nc_months(ff)):
+            if len(self) == 1:
+                if len([x for x in self.times if "-02-29" in str(x)]) > 0:
+                    if len([x for x in self.times if "-02-28" in str(x)]) > len(
+                        [x for x in self.times if "-02-29" in str(x)]
+                    ):
+                        warnings.warn(
+                            f"Warning: Dataset contains years with and without leap years, so {nc_operation} will match time indices each year, not actual times, which are ambiguous!"
+                        )
+                        self.split("year")
+                        merge_files = True
 
     if method == "mul":
         nc_operation = "multiply"
@@ -191,7 +238,8 @@ def operation(self, method="mul", ff=None, var=None):
         for ff in new_files:
             remove_safe(ff)
         self._hold_history = copy.deepcopy(self.history)
-        self.merge("time")
+        if len(self) > 1:
+            self.merge("time")
         cleanup()
 
         return None
