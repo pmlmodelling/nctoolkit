@@ -20,6 +20,7 @@ from nctoolkit.flatten import str_flatten
 from nctoolkit.runthis import run_cdo
 from nctoolkit.session import (
     nc_protected,
+    nc_protected_par,
     session_info,
     nc_safe,
     append_safe,
@@ -28,7 +29,7 @@ from nctoolkit.session import (
     remove_protected,
     append_tempdirs,
 )
-from nctoolkit.session import nc_safe_par, temp_dirs, nc_protected
+from nctoolkit.session import nc_safe_par, temp_dirs, nc_protected, temp_dirs_par
 from nctoolkit.show import (
     nc_variables,
     nc_years,
@@ -192,7 +193,6 @@ def options(**kwargs):
                 if len(nc_protected) > 0:
                     for ff in nc_protected:
                         nc_protected_par.append(ff)
-                        nc_protected.remove(ff)
                         nc_protected.remove(ff)
 
             if (kwargs[key] == False) and key == "parallel":
