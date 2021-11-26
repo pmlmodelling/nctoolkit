@@ -19,7 +19,9 @@ import subprocess
 
 # check version of cdo installed
 
-from nctoolkit.utils import validate_version
+from nctoolkit.utils import validate_version, cdo_version
+from nctoolkit.session import session_info
 
+session_info["cdo"] = cdo_version()
 
 validate_version()
