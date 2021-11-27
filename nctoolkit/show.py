@@ -13,10 +13,19 @@ def nc_times(ff):
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
     )
-    cdo_result = str(cdo_result.stdout).replace("\\n", "")
-    cdo_result = cdo_result.replace("b'", "").strip()
-    cdo_result = cdo_result.replace("'", "").strip()
-    cdo_result = cdo_result.split()
+    cdo_result = [
+        x
+        for x in " ".join(
+            [
+                x
+                for x in cdo_result.stdout.decode("utf-8").split("\n")
+                if "cdo" not in x and len(x) > 0
+            ]
+        )
+        .replace("  ", " ")
+        .split(" ")
+        if len(x) > 0
+    ]
 
     try:
         cdo_result = [parse(x) for x in cdo_result]
@@ -36,11 +45,11 @@ def nc_format(ff):
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
     )
-    cdo_result = str(cdo_result.stdout).replace("\\n", "")
-    cdo_result = cdo_result.replace("b'", "").strip()
-    cdo_result = cdo_result.replace("'", "").strip()
-    cdo_result = cdo_result.split()
-    return cdo_result
+    return [
+        x
+        for x in cdo_result.stdout.decode("utf-8").split("\n")
+        if "cdo" not in x and len(x) > 0
+    ]
 
 
 def nc_levels(ff):
@@ -54,14 +63,21 @@ def nc_levels(ff):
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
     )
-    cdo_result = str(cdo_result.stdout).replace("\\n", "")
-    cdo_result = cdo_result.replace("b'", "").strip()
-    cdo_result = cdo_result.replace("'", "").strip()
-    cdo_result = cdo_result.split()
-    cdo_result = list(set(cdo_result))
-    cdo_result = [float(v) for v in cdo_result]
-    cdo_result.sort()
-    return cdo_result
+    return list(
+        set(
+            [
+                int(x)
+                for x in " ".join(
+                    [
+                        x
+                        for x in cdo_result.stdout.decode("utf-8").split("\n")
+                        if "cdo" not in x
+                    ]
+                ).split(" ")
+                if len(x) > 0
+            ]
+        )
+    )
 
 
 def nc_years(ff):
@@ -73,15 +89,21 @@ def nc_years(ff):
     cdo_result = subprocess.run(
         f"cdo showyear {ff}", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
     )
-    cdo_result = str(cdo_result.stdout).replace("\\n", "")
-    cdo_result = cdo_result.replace("b'", "").strip()
-    cdo_result = cdo_result.replace("'", "").strip()
-    cdo_result = cdo_result.split()
-    all_years += cdo_result
-    all_years = list(set(all_years))
-    all_years = [int(v) for v in all_years]
-    all_years.sort()
-    return all_years
+    return list(
+        set(
+            [
+                int(x)
+                for x in " ".join(
+                    [
+                        x
+                        for x in cdo_result.stdout.decode("utf-8").split("\n")
+                        if "cdo" not in x
+                    ]
+                ).split(" ")
+                if len(x) > 0
+            ]
+        )
+    )
 
 
 def nc_variables(ff):
@@ -92,13 +114,15 @@ def nc_variables(ff):
     cdo_result = subprocess.run(
         f"cdo showname {ff}", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
     )
-    cdo_result = str(cdo_result.stdout).replace("\\n", "")
-    cdo_result = cdo_result.replace("b'", "").strip()
-    cdo_result = cdo_result.replace("'", "").strip()
-    cdo_result = cdo_result.split()
-    cdo_result = list(set(cdo_result))
-    cdo_result.sort()
-    return cdo_result
+    return [
+        x
+        for x in [
+            x
+            for x in cdo_result.stdout.decode("utf-8").split("\n")
+            if "cdo" not in x and len(x) > 0
+        ][0].split(" ")
+        if len(x) > 0
+    ]
 
 
 def nc_months(ff):
@@ -112,11 +136,19 @@ def nc_months(ff):
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
     )
-    cdo_result = str(cdo_result.stdout).replace("\\n", "")
-    cdo_result = cdo_result.replace("b'", "").strip()
-    cdo_result = cdo_result.replace("'", "").strip()
-    cdo_result = cdo_result.split()
-    all_months = list(set(cdo_result))
-    all_months = [int(v) for v in all_months]
-    all_months.sort()
-    return all_months
+
+    return list(
+        set(
+            [
+                int(x)
+                for x in " ".join(
+                    [
+                        x
+                        for x in cdo_result.stdout.decode("utf-8").split("\n")
+                        if "cdo" not in x
+                    ]
+                ).split(" ")
+                if len(x) > 0
+            ]
+        )
+    )
