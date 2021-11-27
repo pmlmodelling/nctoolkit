@@ -560,7 +560,8 @@ class TestAssign:
     y = ds3.to_dataframe().t_an.values[0]
 
 
-    assert x ==y
+    assert np.round(x, 9) == np.round(y, 9)
+    #assert x == y 
 
     del ds1
     del ds2
