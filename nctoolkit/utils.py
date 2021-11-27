@@ -88,11 +88,17 @@ def cdo_version():
 
     version = [
         x
-        for x in cdo_check.stderr.decode("utf-8").split("\n")
+        for x in str(cdo_check.stderr).split("\n")
         if "version" in x and "cdo" in x
     ]
     if len(version) == 0:
-        return None
+        version = [
+            x
+            for x in str(cdo_check.stdout).split("\n")
+            if "version" in x and "cdo" in x
+        ]
+        if len(version) == 0:
+            return None
     version = version[0]
 
     candidates = [
