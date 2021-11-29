@@ -14,7 +14,7 @@ class TestFormat:
     def test_format(self):
         ff = "data/sst.mon.mean.nc"
         data = nc.open_data(ff)
-        assert data.ncformat == ['NetCDF4', 'classic', 'zip']
+        assert data.ncformat == ['NetCDF4 classic zip']
 
         data = nc.open_data(ff)
         data.format("nc2")
