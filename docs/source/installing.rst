@@ -6,7 +6,6 @@ Installation
 How to install nctoolkit
 ---------------------
 
-
 nctoolkit is available from the `Python Packaging Index. <https://pypi.org/project/nctoolkit/>`__   To install nctoolkit using pip::
 
    $ pip install numpy 
@@ -27,6 +26,15 @@ At present this can be slow due to the time taken to resolve dependency versions
 To install the development version from GitHub::
 
    $ pip install git+https://github.com/r4ecology/nctoolkit.git
+
+CDO update issue
+---------------------
+
+The latest version of CDO is incompatible with nctoolkit at present, due to the switch to C++14 in CDO. This will be rectified in an upcoming version of nctoolkit. For now, if you have version 2.0.0 of CDO installed, you should downgrade it. If you are using conda, just do this::
+
+    $ conda install -c conda-forge cdo=1.9.10
+
+
 
 Python dependencies
 ---------------------
