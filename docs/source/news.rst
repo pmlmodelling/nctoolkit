@@ -8,6 +8,8 @@ Version 0.4.0 will be released in December 2021. This will be a major release th
 
 This version of nctoolkit updates these methods so that it can figure out what kind of addition etc. it should carry out. For example, if you have a dataset which has monthly values for each year from 1950 to 1999, and use ``subtract`` to subtract the values from a file which contains annual means for each year from 1950, it will subtract the annual mean for 1950 from each month in 1950 and the the annual mean for 1951 from each month in 1951, and so on. 
 
+The ``split`` method now allows users to split datasets into multiple files by variable.
+
 ``ds.times`` now returns a datetime object, not a str as before.
 
 Release of v0.3.9
