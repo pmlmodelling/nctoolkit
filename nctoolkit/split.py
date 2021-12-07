@@ -87,10 +87,11 @@ def split(self, by=None):
     Parameters
     --------------------
     by : str
-        Available by arguments are 'year', 'month', 'yearmonth', 'season', 'day'.
+        Available by arguments are 'year', 'month', 'yearmonth', 'season', 'day' 'name'.
         year will split files by year, month will split files by month, yearmonth
         will split files by year and month; season will split files by year, day
         will split files by day.
+        'name' will split by variable name
 
     Examples
     ------------
@@ -123,6 +124,12 @@ def split(self, by=None):
 
     if by == "day":
         method = "day"
+
+    if by == "name":
+        method = "name"
+
+    if "var" in by:
+        method = "name"
 
     if method is None:
         raise ValueError("No valid split method supplied")
