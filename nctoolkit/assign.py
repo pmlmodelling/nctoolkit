@@ -27,7 +27,7 @@ import numpy as np
 from nctoolkit.flatten import str_flatten
 from nctoolkit.runthis import run_this
 from nctoolkit.session import session_info
-from nctoolkit.utils import cdo_version
+from nctoolkit.utils import cdo_version, version_below
 
 
 def split_equation(mystr):
@@ -112,6 +112,10 @@ for ff in funs:
 
 translation["int"] = "int"
 translation["float"] = "float"
+
+# if version_below(session_info["cdo"], "2.0.0") is False:
+# translation["thickness"] = "cdeltaz"
+
 
 translation["arcsin"] = "asin"
 translation["arccos"] = "acos"

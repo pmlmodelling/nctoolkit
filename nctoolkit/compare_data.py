@@ -7,7 +7,6 @@ import warnings
 import os
 
 
-
 def lt(self, x):
     """
     Method to calculate if variable in dataset is less than that in another file or dataset
@@ -50,7 +49,7 @@ def lt(self, x):
 
         cdo_command = f"cdo -lt {ff} {x_ff} {temp}"
 
-        target = run_cdo(cdo_command, temp)
+        target = run_cdo(cdo_command, temp, precision=self._precision)
         new_files.append(target)
 
     self.history.append(cdo_command)
@@ -62,8 +61,6 @@ def lt(self, x):
         remove_safe(ff)
 
     cleanup()
-
-
 
 
 def gt(self, x):
@@ -108,7 +105,7 @@ def gt(self, x):
 
         cdo_command = f"cdo -gt {ff} {x_ff} {temp}"
 
-        target = run_cdo(cdo_command, temp)
+        target = run_cdo(cdo_command, temp, precision=self._precision)
         new_files.append(target)
 
     self.history.append(cdo_command)
@@ -120,4 +117,3 @@ def gt(self, x):
         remove_safe(ff)
 
     cleanup()
-

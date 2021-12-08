@@ -6,7 +6,7 @@ from nctoolkit.cleanup import cleanup
 from nctoolkit.flatten import str_flatten
 from nctoolkit.session import nc_safe, session_info, append_safe, remove_safe
 from nctoolkit.temp_file import temp_file
-from nctoolkit.runthis import run_this, run_cdo
+from nctoolkit.runthis import run_this
 from nctoolkit.show import nc_years, nc_times
 from nctoolkit.crop import crop
 

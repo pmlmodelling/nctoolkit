@@ -151,7 +151,7 @@ def operation(self, method="mul", ff=None, var=None):
 
                     target = temp_file(".nc")
                     cdo_command = f"{cdo_command} {target}"
-                    target = run_cdo(cdo_command, target)
+                    target = run_cdo(cdo_command, target, precision=self._precision)
                     new_files.append(target)
                     new_commands.append(cdo_command)
                 else:
@@ -161,7 +161,7 @@ def operation(self, method="mul", ff=None, var=None):
                         cdo_command = f"cdo -ymon{method} {x} {ff}"
                     target = temp_file(".nc")
                     cdo_command = f"{cdo_command} {target}"
-                    target = run_cdo(cdo_command, target)
+                    target = run_cdo(cdo_command, target, precision=self._precision)
                     new_files.append(target)
                     new_commands.append(cdo_command)
                     # run_this(cdo_command, self, output = "ensemble")
@@ -185,7 +185,7 @@ def operation(self, method="mul", ff=None, var=None):
 
                     target = temp_file(".nc")
                     cdo_command = f"{cdo_command} {target}"
-                    target = run_cdo(cdo_command, target)
+                    target = run_cdo(cdo_command, target, precision=self._precision)
                     new_files.append(target)
                     new_commands.append(cdo_command)
                 else:
@@ -195,7 +195,7 @@ def operation(self, method="mul", ff=None, var=None):
                         cdo_command = f"cdo -yday{method} {x} {ff}"
                     target = temp_file(".nc")
                     cdo_command = f"{cdo_command} {target}"
-                    target = run_cdo(cdo_command, target)
+                    target = run_cdo(cdo_command, target, precision=self._precision)
                     new_files.append(target)
                     new_commands.append(cdo_command)
 
@@ -210,7 +210,7 @@ def operation(self, method="mul", ff=None, var=None):
                     cdo_command = f"cdo -year{method} {x} {ff}"
                 target = temp_file(".nc")
                 cdo_command = f"{cdo_command} {target}"
-                target = run_cdo(cdo_command, target)
+                target = run_cdo(cdo_command, target, precision=self._precision)
                 new_files.append(target)
                 new_commands.append(cdo_command)
 
@@ -225,7 +225,7 @@ def operation(self, method="mul", ff=None, var=None):
                 cdo_command = f"cdo -{method} {x} {ff}"
             target = temp_file(".nc")
             cdo_command = f"{cdo_command} {target}"
-            target = run_cdo(cdo_command, target)
+            target = run_cdo(cdo_command, target, precision=self._precision)
             new_files.append(target)
             new_commands.append(cdo_command)
 
@@ -297,7 +297,7 @@ def operation(self, method="mul", ff=None, var=None):
             target = temp_file(".nc")
             the_command = cdo_command.replace("infile09178", FF) + " " + target
             the_command = tidy_command(the_command)
-            target = run_cdo(the_command, target)
+            target = run_cdo(the_command, target, precision=self._precision)
             new_files.append(target)
             new_commands.append(the_command)
 

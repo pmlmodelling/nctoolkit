@@ -689,6 +689,20 @@ def open_data(x=[], checks=False, **kwargs):
 
     d = DataSet(x)
     d._thredds = thredds
+
+    if len(d) > 0:
+        df = d.contents.reset_index(drop=True).query("data_type.str.contains('I')")
+        if len(df) > 0:
+            check = ",".join(list(df.variable))
+            if "," in check:
+                warnings.warn(
+                    message=f"The variable(s) {check} have integer data type. Consider setting data type to float 'F64' or 'F32' using set_precision."
+                )
+            else:
+                warnings.warn(
+                    message=f"The variable {check} has integer data type. Consider setting data type to float 'F64' or 'F32' using set_precision."
+                )
+
     return d
 
 
@@ -877,7 +891,7 @@ def cor_time(x=None, y=None):
     else:
         command = "cdo -timcor " + a.current[0] + " " + b.current[0] + " " + target
 
-    target = run_cdo(command, target=target)
+    target = run_cdo(command, target=target, precision=x._precision)
 
     data = open_data(target)
 
@@ -938,7 +952,7 @@ def cor_space(x=None, y=None):
     else:
         command = "cdo -fldcor " + a.current[0] + " " + b.current[0] + " " + target
 
-    target = run_cdo(command, target=target)
+    target = run_cdo(command, target=target, precision=x._precision)
 
     data = open_data(target)
 
@@ -974,6 +988,8 @@ class DataSet(object):
         self._thredds = False
         self._zip = False
         self._format = None
+
+        self._precision = "default"
 
         self._grid = None
         self._weights = None
@@ -1223,8 +1239,10 @@ class DataSet(object):
             sales = var_det[1:]
             labels = var_det[0]
             df = pd.DataFrame.from_records(sales, columns=labels)
-            df = df.loc[:, ["Levels", "Points", "variable"]]
-            df = df.rename(columns={"Levels": "nlevels", "Points": "npoints"})
+            df = df.loc[:, ["Levels", "Points", "variable", "Dtype"]]
+            df = df.rename(
+                columns={"Levels": "nlevels", "Points": "npoints", "Dtype": "data_type"}
+            )
 
             df = pd.DataFrame({"variable": cdo_result}).merge(df)
 
@@ -1267,12 +1285,21 @@ class DataSet(object):
             df["ntimes"] = times
 
             df = df.loc[
-                :, ["variable", "ntimes", "npoints", "nlevels", "long_name", "unit"]
+                :,
+                [
+                    "variable",
+                    "ntimes",
+                    "npoints",
+                    "nlevels",
+                    "long_name",
+                    "unit",
+                    "data_type",
+                ],
             ]
             list_contents.append(df.assign(file=ff))
 
         if len(list_contents) == 1:
-            return list_contents[0].drop(columns = "file")
+            return list_contents[0].drop(columns="file")
 
         if use_names == False:
             new_df = []
@@ -1281,11 +1308,12 @@ class DataSet(object):
                 new_df.append(x.assign(file=f"file {i}"))
                 i += 1
 
-            new_df = pd.concat(new_df).set_index("file")
+            new_df = pd.concat(new_df)
 
             if len(set(new_df.file)) == 1:
-                return new_df.drop(columns = "file")
+                return new_df.drop(columns="file")
             else:
+                new_df = new_df.set_index("file")
                 return new_df
         else:
             return pd.concat(list_contents).set_index("file")
@@ -1571,6 +1599,7 @@ class DataSet(object):
     from nctoolkit.setters import set_missing
     from nctoolkit.setters import set_units
     from nctoolkit.setters import set_longnames
+    from nctoolkit.setters import set_precision
 
     from nctoolkit.shift import shift
 

@@ -6,6 +6,28 @@ from nctoolkit.temp_file import temp_file
 from nctoolkit.session import append_safe, remove_safe
 
 
+def set_precision(self, x):
+    """
+    Set the precision in a dataset
+
+    Parameters
+    -------------
+    x : str
+        The precision. One of 'I8', 'I16', 'I32', 'F32', 'F64'.
+    month : int
+        The month
+    day : int
+        The day
+    base_year : int
+        The base year for time creation in the netCDF. Defaults to 1900.
+    """
+
+    if x not in ["I8", "I16", "I32", "F32", "F64"]:
+        raise ValueError(f"{x} is not a valid precision")
+
+    self._precision = x
+
+
 def set_date(self, year=None, month=None, day=None, base_year=1900):
     """
     Set the date in a dataset

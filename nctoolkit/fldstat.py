@@ -6,6 +6,7 @@ from nctoolkit.runthis import run_this, run_cdo, tidy_command
 from nctoolkit.temp_file import temp_file
 from nctoolkit.session import nc_safe, remove_safe, append_safe
 
+
 def boxstat(self, stat="mean", x=1, y=1):
     """Method to calculate the spatial stat from a dataset"""
 
@@ -234,7 +235,7 @@ def spatial_sum(self, by_area=False):
 
         cdo_command = f"cdo -fldsum -mul {ff} -gridarea {ff} {target}"
         cdo_command = tidy_command(cdo_command)
-        target = run_cdo(cdo_command, target=target)
+        target = run_cdo(cdo_command, target=target, precision=self._precision)
         new_files.append(target)
         new_commands.append(cdo_command)
 

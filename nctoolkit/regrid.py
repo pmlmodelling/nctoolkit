@@ -12,7 +12,7 @@ from nctoolkit.session import nc_safe, append_safe, remove_safe, get_safe
 from nctoolkit.temp_file import temp_file
 
 
-def regrid(self, grid=None, method="bil", recycle = False):
+def regrid(self, grid=None, method="bil", recycle=False):
     """
     Regrid a dataset to a target grid
 
@@ -45,7 +45,6 @@ def regrid(self, grid=None, method="bil", recycle = False):
             run_this(cdo_command, self, output="ensemble")
 
             return None
-
 
     del_grid = None
     if grid is None:
@@ -89,7 +88,6 @@ def regrid(self, grid=None, method="bil", recycle = False):
     if len(self) > 1 and recycle:
         raise ValueError("You cannot recycle multi-file datasets")
 
-
     for ff in self:
         cdo_result = subprocess.run(
             f"cdo griddes {ff}",
@@ -125,13 +123,14 @@ def regrid(self, grid=None, method="bil", recycle = False):
 
         weights_nc = temp_file("nc")
 
-
         cdo_command = (
             f"cdo -gen{method},{target_grid} {tracker.current[0]} {weights_nc}"
         )
 
         try:
-            weights_nc = run_cdo(cdo_command, target=weights_nc)
+            weights_nc = run_cdo(
+                cdo_command, target=weights_nc, precision=self._precision
+            )
         except Exception as e:
             del tracker
             remove_safe(weights_nc)

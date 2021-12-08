@@ -109,7 +109,7 @@ def annual_anomaly(self, baseline=None, metric="absolute", window=1):
         # run the command and save the temp file
 
         cdo_command = tidy_command(cdo_command)
-        target = run_cdo(cdo_command, target)
+        target = run_cdo(cdo_command, target, precision=self._precision)
 
         # updae the new files and commands
         new_files.append(target)
@@ -189,7 +189,7 @@ def monthly_anomaly(self, baseline=None):
         cdo_command = tidy_command(cdo_command)
 
         # run the command and save the temp file
-        target = run_cdo(cdo_command, target)
+        target = run_cdo(cdo_command, target, precision=self._precision)
 
         new_files.append(target)
         new_commands.append(cdo_command)

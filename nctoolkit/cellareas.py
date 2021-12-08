@@ -42,7 +42,6 @@ def cell_area(self, join=True):
     if join:
         self.run()
 
-
     # first run the join case
     if join:
 
@@ -62,14 +61,14 @@ def cell_area(self, join=True):
 
                 cdo_command = f"cdo -gridarea {ff} {target1}"
                 cdo_command = tidy_command(cdo_command)
-                target1 = run_cdo(cdo_command, target1)
+                target1 = run_cdo(cdo_command, target1, precision=self._precision)
                 new_commands.append(cdo_command)
 
                 target = temp_file(".nc")
 
                 cdo_command = f"cdo -merge {ff} {target1} {target}"
                 cdo_command = tidy_command(cdo_command)
-                target = run_cdo(cdo_command, target)
+                target = run_cdo(cdo_command, target, precision=self._precision)
                 new_files.append(target)
                 remove_safe(target1)
 
@@ -84,7 +83,7 @@ def cell_area(self, join=True):
 
                 cdo_command = f"cdo -merge {ff} -gridarea {ff} {target}"
                 cdo_command = tidy_command(cdo_command)
-                target = run_cdo(cdo_command, target)
+                target = run_cdo(cdo_command, target, precision=self._precision)
 
                 new_files.append(target)
 

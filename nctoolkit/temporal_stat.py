@@ -96,7 +96,7 @@ def tsum(self, over="time"):
 
 def na_count(self, over="time"):
     """
-    Calculate the number of missing values 
+    Calculate the number of missing values
 
     Parameters
     -------------
@@ -107,15 +107,15 @@ def na_count(self, over="time"):
 
     self.run()
 
-
     for vv in self.variables:
         self.cdo_command(f"-aexpr,'{vv}=isMissval({vv})'")
 
-    self.tsum(over = over)
-        
+    self.tsum(over=over)
+
+
 def na_frac(self, over="time"):
     """
-    Calculate the number of missing values 
+    Calculate the number of missing values
 
     Parameters
     -------------
@@ -126,13 +126,10 @@ def na_frac(self, over="time"):
 
     self.run()
 
-
     for vv in self.variables:
         self.cdo_command(f"-aexpr,'{vv}=isMissval({vv})'")
 
-    self.tmean(over = over)
-        
-
+    self.tmean(over=over)
 
 
 def tmean(self, over="time"):
@@ -375,7 +372,9 @@ def tvariance(self, over="time"):
 
         >>> ds.tvariance( "day")
     """
-    warnings.warn(message="tvariance is deprecated and has been renamed tvar. Please use tvar!")
+    warnings.warn(
+        message="tvariance is deprecated and has been renamed tvar. Please use tvar!"
+    )
     time_stat(self, stat="var", over=over)
 
 
@@ -417,7 +416,6 @@ def tvar(self, over="time"):
         >>> ds.tvar( "day")
     """
     time_stat(self, stat="var", over=over)
-
 
 
 def tstdev(self, over="time"):
@@ -591,7 +589,7 @@ def tpercentile(self, p=None, over="time"):
         )
 
         cdo_command = tidy_command(cdo_command)
-        target = run_cdo(cdo_command, target)
+        target = run_cdo(cdo_command, target, precision=self._precision)
         new_files.append(target)
         new_commands.append(cdo_command)
 

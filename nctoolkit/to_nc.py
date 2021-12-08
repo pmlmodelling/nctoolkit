@@ -73,7 +73,9 @@ def to_nc(self, out, zip=True, overwrite=False):
     if len(self.history) == len(self._hold_history):
         if zip:
             cdo_command = f"cdo -z zip_9 copy {ff[0]} {out}"
-            run_cdo(cdo_command, target=out, overwrite=overwrite)
+            run_cdo(
+                cdo_command, target=out, overwrite=overwrite, precision=self._precision
+            )
 
             self.history.append(cdo_command)
             self._hold_history = copy.deepcopy(self.history)
@@ -82,7 +84,9 @@ def to_nc(self, out, zip=True, overwrite=False):
 
         else:
             cdo_command = f"cdo copy {ff[0]} {out}"
-            run_cdo(cdo_command, target=out, overwrite=overwrite)
+            run_cdo(
+                cdo_command, target=out, overwrite=overwrite, precision=self._precision
+            )
             self.history.append(cdo_command)
             self._hold_history = copy.deepcopy(self.history)
 

@@ -73,7 +73,7 @@ def phenology(self, var=None, metric=None, p=None):
             )
 
             command = tidy_command(command)
-            target = run_cdo(command, target=target)
+            target = run_cdo(command, target=target, precision=self._precision)
 
             new_files.append(target)
             new_commands.append(command)
@@ -121,7 +121,7 @@ def phenology(self, var=None, metric=None, p=None):
             )
 
             command = tidy_command(command)
-            target = run_cdo(command, target=target)
+            target = run_cdo(command, target=target, precision=self._precision)
 
             new_files.append(target)
             new_commands.append(command)

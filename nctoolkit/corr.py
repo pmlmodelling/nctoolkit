@@ -48,7 +48,7 @@ def cor(self, var1=None, var2=None, method="fld"):
             f"cdo -{method}cor -selname,{var1} {ff} -selname,{var2} {ff} {target}"
         )
         cdo_command = tidy_command(cdo_command)
-        target = run_cdo(cdo_command, target)
+        target = run_cdo(cdo_command, target, precision=self._precision)
 
         new_files.append(target)
         new_commands.append(cdo_command)
