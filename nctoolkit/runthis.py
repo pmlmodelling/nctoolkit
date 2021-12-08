@@ -162,7 +162,6 @@ def run_cdo(command = None, target = None, out_file=None, overwrite=False, preci
     if precision in ["I8", "I16", "I32", "F32", "F64"]:
         if " -b " not in command:
             command = command.replace("cdo ", f"cdo -b {precision} ")
-    print(command)
 
 
     # make sure the output file does not exist
