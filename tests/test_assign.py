@@ -1,4 +1,5 @@
 import nctoolkit as nc
+import copy
 import subprocess
 import platform
 import pandas as pd
@@ -581,8 +582,7 @@ class TestAssign:
     ds.spatial_mean()
     y = ds.to_dataframe().sst.values[0]
 
-
-    assert 2*x == y
+    assert 2 * x == y
     del ds
 
 

@@ -1,4 +1,5 @@
 import nctoolkit as nc
+import numpy as np
 import pandas as pd
 import xarray as xr
 import os, pytest
@@ -135,7 +136,7 @@ class TestCrop:
         tracker.spatial_mean()
         y = tracker.to_dataframe().sst.values[0].astype("float")
 
-        assert x == y
+        assert np.round(x, 7) == np.round(y, 7)
         n = len(nc.session_files())
         assert n == 1
 

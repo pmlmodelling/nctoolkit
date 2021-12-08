@@ -69,25 +69,6 @@ class TestSplit:
         n = len(nc.session_files())
         assert n == y
 
-    def test_error(self):
-        from pathlib import Path
-        import os, pytest
-
-        out = nc.temp_file.temp_file() + ".nc"
-        Path(out).touch()
-
-        # do not run the check below for cdo 1.9.5 as the behaviour is not the same there
-        if cdo_version() not in ["1.9.5"]:
-            with pytest.raises(ValueError):
-                tracker = nc.open_data(out, checks=True)
-
-        tracker = nc.open_data(out)
-        with pytest.raises(ValueError):
-            tracker.split()
-
-        os.remove(out)
-        n = len(nc.session_files())
-        assert n == 0
 
     def test_error2(self):
         tracker = nc.open_data(ff)

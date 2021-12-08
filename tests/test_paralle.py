@@ -33,7 +33,7 @@ class TestPar:
         tracker = nc.open_data(ff)
         tracker.split("year")
         tracker.tmean()
-        tracker.merge_time()
+        tracker.merge("time")
         tracker.tmean()
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst[0].astype("float")

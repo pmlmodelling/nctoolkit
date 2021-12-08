@@ -1,4 +1,5 @@
 import nctoolkit as nc
+import numpy as np
 import pandas as pd
 import xarray as xr
 import os, pytest
@@ -24,13 +25,13 @@ class TestClip:
         tracker.centre("longitude")
         x = tracker.to_dataframe().sst.values[0].astype("float")
 
-        assert x == 192.18060302734375 
+        assert np.round(x,4) == np.round(192.18060302734375 , 4)
 
         tracker = nc.open_data(ff)
         tracker.centre("latitude")
         x = tracker.to_dataframe().sst.values[0].astype("float")
 
-        assert x == -6.278953552246094
+        assert np.round(x, 5) == np.round(-6.278953552246094, 5)
 
         n = len(nc.session_files())
         assert n == 1
@@ -42,4 +43,4 @@ class TestClip:
         tracker.centre("latitude")
         x = tracker.to_dataframe().sst1.values[0].astype("float")
 
-        assert x == -6.278953552246094
+        assert np.round(x, 5) == np.round(-6.278953552246094, 5)
