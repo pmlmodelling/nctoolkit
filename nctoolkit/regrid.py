@@ -121,7 +121,8 @@ def regrid(self, grid=None, method="bil", recycle=False):
             grid_split[key], suppress_messages=True, thredds=self._thredds
         )
 
-        tracker.set_precision(self._precision)
+        if tracker._precision != "default":
+            tracker.set_precision(self._precision)
 
         weights_nc = temp_file("nc")
 
