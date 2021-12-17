@@ -240,7 +240,6 @@ if config_file is not None:
     file1 = open(config_file, "r")
     Lines = file1.readlines()
 
-    # pattern = re.compile("[a-z]+\:[0-9A-Za-z]+")
     count = 0
     # Strips the newline character
     for line in Lines:
@@ -539,18 +538,9 @@ def open_data(x=[], checks=False, **kwargs):
                                 )
                                 if "Open failed" in str(out.stderr):
                                     raise ValueError(f"{x} is not compatible with CDO!")
-                        # else:
-                        #    out = subprocess.run(
-                        #        "cdo sinfo " + x,
-                        #        shell=True,
-                        #        stdout=subprocess.PIPE,
-                        #        stderr=subprocess.PIPE,
-                        #    )
-                        #    if "Open failed" in str(out.stderr):
-                        #        raise ValueError(f"{x} is not compatible with CDO!")
 
             else:
-                raise ValueError("Data set " + x + " does not exist!")
+                raise FileNotFoundError("Data set " + x + " does not exist!")
 
         if checks:
             out = subprocess.run(
@@ -582,10 +572,6 @@ def open_data(x=[], checks=False, **kwargs):
         x = list(dict.fromkeys(x))
         if len(x) < orig_size:
             warnings.warn(message="Duplicates in data set have been removed!")
-
-    # if type(x) is list:
-    #    if len(x) == 1:
-    #        x = x[0]
 
     if type(x) is list:
         if source == "url":
@@ -646,41 +632,18 @@ def open_data(x=[], checks=False, **kwargs):
     if type(x) is list and source != "url":
         if thredds is False:
 
+            for ff in x:
+                if os.path.exists(ff) is False:
+                    raise FileNotFoundError(f"{ff} does not exist!")
+            for ff in x:
+                append_safe(ff)
+                append_protected(ff)
+
             if len(x) > 1:
                 for ff in x:
 
                     if os.path.exists(ff) is False:
-                        raise ValueError("Data set " + ff + " does not exist!")
-                    else:
-                        if checks:
-                            out = subprocess.run(
-                                "cdo sinfo " + ff,
-                                shell=True,
-                                stdout=subprocess.PIPE,
-                                stderr=subprocess.PIPE,
-                            )
-                            if "Open failed" in out.stderr.decode("utf-8"):
-                                mes = (
-                                    out.stderr.decode("utf-8")
-                                    .replace("cdo    sinfo: ", "")
-                                    .replace("<\n", "")
-                                    .replace("\n", "")
-                                )
-                                mes = re.sub(" +", " ", mes)
-                                raise ValueError(mes)
-                        append_safe(ff)
-                        append_protected(ff)
-        else:
-            out = subprocess.run(
-                "cdo sinfo " + x[0],
-                shell=True,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-            )
-            if "Open failed" in str(out.stderr):
-                raise ValueError(
-                    "First file in the ensemble is not compatible with CDO!"
-                )
+                        raise FileNotFoundError("Data set " + ff + " does not exist!")
 
     # if there is only one file in the list, change it to a single file
     if type(x) is list:
@@ -1165,12 +1128,6 @@ class DataSet(object):
         This will only display the variables in the first file of an ensemble.
         """
 
-        # if len(self) > 1:
-        #    return (
-        #        "This DataSet object is a mult-file dataset. Please inspect individual"
-        #        "files using nc_variables"
-        #    )
-
         list_contents = []
 
         use_names = True
@@ -1181,38 +1138,7 @@ class DataSet(object):
 
         for ff in self:
 
-            cdo_result = subprocess.run(
-                "cdo showname " + ff,
-                shell=True,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-            )
-            cdo_result = (
-                str(cdo_result.stdout)
-                .replace("b'", "")
-                .replace("\\n", "")
-                .replace("'", "")
-                .strip()
-            )
-            cdo_result = cdo_result.split()
             dataset = Dataset(ff)
-
-            longs = None
-            units = None
-            longs = []
-            for x in cdo_result:
-                try:
-                    longs.append(dataset.variables[x].long_name)
-                except:
-                    longs.append(None)
-            # longs = [dataset.variables[x].long_name for x in cdo_result]
-            units = []
-            for x in cdo_result:
-                try:
-                    units.append(dataset.variables[x].units)
-                except:
-                    units.append(None)
-            ##units = [dataset.variables[x].units for x in cdo_result]
 
             out = subprocess.run(
                 "cdo sinfon " + ff,
@@ -1220,6 +1146,16 @@ class DataSet(object):
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
             )
+            if "Unsupported file structure" in str(out.stderr):
+                for ff in self:
+                    remove_safe(ff)
+                    remove_protected(ff)
+                raise ValueError("Unsupported file structure")
+            if "expandWildCards" in out.stderr.decode("utf-8"):
+                for ff in self:
+                    remove_safe(ff)
+                    remove_protected(ff)
+                raise ValueError(out.stderr.decode("utf-8"))
             out = out.stdout.decode("utf-8")
             out = out.split("\n")
             out_inc = ["Grid coordinates :" in ff for ff in out]
@@ -1231,18 +1167,66 @@ class DataSet(object):
                 i += 1
                 var_det.append(out[i - 1])
 
-            var_det = [ff.replace(":", "") for ff in var_det]
-            var_det = [" ".join(ff.split()) for ff in var_det]
-            var_det = [
-                ff.replace("Parameter name", "variable").split(" ") for ff in var_det
-            ]
-            sales = var_det[1:]
-            labels = var_det[0]
-            df = pd.DataFrame.from_records(sales, columns=labels)
+            def split_var(x):
+                x = x.replace(":", "").split(" ")
+                x = [x for x in x if len(x) > 0]
+                new_x = []
+                include = False
+                for y in x[1:]:
+                    if y.isnumeric():
+                        include = True
+
+                    if include:
+                        new_x.append(y)
+                return new_x
+
+            def fix_head(x):
+                x = (
+                    x.replace(":", "")
+                    .replace("  ", " ")
+                    .replace("Parameter name", "variable")
+                )
+                x = x[x.find("Level") :].replace("  ", " ")
+                return x.split(" ")
+
+            def fix_type(x):
+                position = [m.start() for m in re.finditer(":", x)][-1]
+
+                return (
+                    x[: (position - 4)]
+                    + x[(position - 4) : position].replace(" ", "")
+                    + " "
+                    + x[(position):]
+                )
+
+            var_det[0] = fix_head(var_det[0])
+            for ii in range(1, len(var_det)):
+                var_det[ii] = fix_type(var_det[ii])
+                var_det[ii] = split_var(var_det[ii])
+
+            df = pd.DataFrame.from_records(var_det[1:], columns=var_det[0])
             df = df.loc[:, ["Levels", "Points", "variable", "Dtype"]]
             df = df.rename(
                 columns={"Levels": "nlevels", "Points": "npoints", "Dtype": "data_type"}
             )
+
+            longs = None
+            units = None
+            longs = []
+
+            cdo_result = list(df.variable)
+
+            for x in cdo_result:
+                try:
+                    longs.append(dataset.variables[x].long_name)
+                except:
+                    longs.append(None)
+            units = []
+            for x in cdo_result:
+                try:
+                    units.append(dataset.variables[x].units)
+                except:
+                    units.append(None)
 
             df = pd.DataFrame({"variable": cdo_result}).merge(df)
 
@@ -1257,11 +1241,11 @@ class DataSet(object):
 
             times = []
 
-            ds = xr.open_dataset(ff, decode_times=False)
+            ds = Dataset(ff)
+            time_name = [x for x in ds.variables if "time" in x]
 
             # get time name
 
-            time_name = [x for x in ds.coords if "time" in x and x in ds.dims]
             if len(time_name) > 0:
                 time_name = time_name[0]
             else:
@@ -1389,9 +1373,10 @@ class DataSet(object):
         var_det = [
             ff.replace("Parameter name", "variable").split(" ") for ff in var_det
         ]
-        sales = var_det[1:]
+        df_vars = var_det[1:]
         labels = var_det[0]
-        df = pd.DataFrame.from_records(sales, columns=labels)
+
+        df = pd.DataFrame.from_records(df_vars, columns=labels)
         df = df.loc[:, ["Levels", "Points", "variable"]]
         df = df.rename(columns={"Levels": "levels", "Points": "points"})
 

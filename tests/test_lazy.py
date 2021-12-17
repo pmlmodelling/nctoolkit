@@ -1,6 +1,6 @@
 import nctoolkit as nc
 
-nc.options(lazy=True)
+#nc.options(lazy=True)
 
 import pandas as pd
 import xarray as xr

@@ -22,7 +22,7 @@ class TestApi:
 
     def test_no_data(self):
 
-        with pytest.raises(ValueError):
+        with pytest.raises(FileNotFoundError):
             data = nc.open_data("")
 
     def test_no_files1(self):
@@ -46,7 +46,7 @@ class TestApi:
 
 
     def test_missing_file_list(self):
-        with pytest.raises(ValueError):
+        with pytest.raises(FileNotFoundError):
             x = nc.open_data(["none.nc"])
 
     def test_simplifying(self):
@@ -162,7 +162,7 @@ class TestApi:
 
     def test_opendatamissing(self):
 
-        with pytest.raises(ValueError):
+        with pytest.raises(FileNotFoundError):
             data = nc.open_data(
                 ["nctoolkit/clip.py", "nctoolkit/regrid.py"], checks=True
             )

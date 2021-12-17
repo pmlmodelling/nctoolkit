@@ -16,10 +16,10 @@ class TestApi2:
         ff = "this_file_does_not_exist.nc"
         ff2 = "this_file_does_not_exist2.nc"
 
-        with pytest.raises(ValueError):
+        with pytest.raises(FileNotFoundError):
             tracker = nc.open_data(ff)
 
-        with pytest.raises(ValueError):
+        with pytest.raises(FileNotFoundError):
             tracker = nc.open_data([ff, ff2])
 
         with pytest.raises(ValueError):
@@ -31,7 +31,7 @@ class TestApi2:
         tracker.assign(sst2 = lambda x: x.sst + 283)
         tracker.run()
         assert tracker.contents.long_name[1] == None
-        
+
 
         # check wildcard
 
@@ -64,19 +64,19 @@ class TestApi2:
             nc.options(parallel = "x")
 
         with pytest.raises(ValueError):
-            nc.options(cores = 10000) 
+            nc.options(cores = 10000)
 
         with pytest.raises(ValueError):
-            nc.options(precision = "x") 
+            nc.options(precision = "x")
 
         with pytest.raises(TypeError):
-            nc.options(cores = "x") 
+            nc.options(cores = "x")
 
         with pytest.raises(TypeError):
-            nc.options(lazy = "x") 
+            nc.options(lazy = "x")
 
         with pytest.raises(TypeError):
-            nc.options(thread_safe = "x") 
+            nc.options(thread_safe = "x")
 
         ds = nc.open_data(ff1)
         assert ds.current[0] == ds.start[0]
