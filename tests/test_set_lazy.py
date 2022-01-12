@@ -109,7 +109,7 @@ class TestSetters:
 
         tracker.set_units({"sst": "C"})
         tracker.run()
-        x = tracker.variables_detailed.units[0]
+        x = tracker.contents.unit[0]
 
         assert x == "C"
         n = len(nc.session_files())
@@ -189,7 +189,7 @@ class TestSetters:
 
         tracker.set_longnames({"sst": "temp"})
         tracker.run()
-        x = tracker.variables_detailed.long_name[0]
+        x = tracker.contents.long_name[0]
 
         assert x == "temp"
         n = len(nc.session_files())
@@ -204,7 +204,7 @@ class TestSetters:
         tracker.merge_time()
         tracker.run()
 
-        x = tracker.variables_detailed.long_name[0]
+        x = tracker.contents.long_name[0]
 
         assert x == "temp"
         n = len(nc.session_files())

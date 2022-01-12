@@ -96,10 +96,10 @@ class TestApi:
         data = nc.open_data(nc.create_ensemble("data/ensemble"))
         assert "Files: 60 member ensemble" in str(data)
 
-    def test_variables_detailed(self):
+    def test_contents(self):
         ff = "data/sst.mon.mean.nc"
         data = nc.open_data(ff)
-        x = data.variables_detailed.query("variable == 'sst'").long_name.values
+        x = data.contents.query("variable == 'sst'").long_name.values
         assert x == "Monthly Means of Global Sea Surface Temperature"
 
     def test_cor_time(self):
