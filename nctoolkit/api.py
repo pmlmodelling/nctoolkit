@@ -1626,7 +1626,6 @@ class DataSet(object):
     from nctoolkit.verticals import vertical_sum
     from nctoolkit.verticals import vertical_integration
     from nctoolkit.verticals import vertical_cumsum
-    from nctoolkit.verticals import surface
     from nctoolkit.verticals import top
     from nctoolkit.verticals import vertical_interp
     from nctoolkit.verticals import bottom
@@ -1642,3 +1641,4 @@ class DataSet(object):
 
     # Deprecated methods
     from nctoolkit.deprecated import merge_time
+    from nctoolkit.deprecated import surface

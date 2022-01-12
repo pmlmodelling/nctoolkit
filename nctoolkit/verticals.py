@@ -110,24 +110,6 @@ def vertical_interp(self, levels=None):
     run_this(cdo_command, self, output="ensemble")
 
 
-def surface(self):
-    """
-    Extract the top/surface level from a dataset
-    This extracts the first vertical level from each file in a dataset.
-
-    Examples
-    ------------
-
-    If you wanted to extract the top vertical level of a dataset, do the following:
-
-    >>> ds.surface()
-
-    This method is most useful for things like oceanic data, where this method will extract the sea surface.
-    """
-
-    cdo_command = "cdo -sellevidx,1"
-    run_this(cdo_command, self, output="ensemble")
-
 
 def vertical_interp(self, levels=None):
     """
