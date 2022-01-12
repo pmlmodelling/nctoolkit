@@ -4,7 +4,7 @@ News
 Release of v0.4.0
 ---------------
 
-Version 0.4.0 will be released in December 2021. This will be a major release that features some breaking changes. Methods for adding, subtracting, multipling and substracting datasets from each other will be enhanced. Until now these methods used a simplistic approach values from matching time steps were added to each other, etc. So if you are subtracting a 12 time step file from a dataset, only the first 12 time steps were subtracted from. However, often this is not what you want. For example, you might want to subtract yearly months from a file which contains montly values for each year. 
+Version 0.4.0 will be released in January 2022. This will be a major release that features some breaking changes. Methods for adding, subtracting, multipling and substracting datasets from each other will be enhanced. Until now these methods used a simplistic approach values from matching time steps were added to each other, etc. So if you are subtracting a 12 time step file from a dataset, only the first 12 time steps were subtracted from. However, often this is not what you want. For example, you might want to subtract yearly months from a file which contains montly values for each year. 
 
 This version of nctoolkit updates these methods so that it can figure out what kind of addition etc. it should carry out. For example, if you have a dataset which has monthly values for each year from 1950 to 1999, and use ``subtract`` to subtract the values from a file which contains annual means for each year from 1950, it will subtract the annual mean for 1950 from each month in 1950 and the the annual mean for 1951 from each month in 1951, and so on. 
 
