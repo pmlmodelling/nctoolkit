@@ -50,6 +50,65 @@ def bottom(self):
 
     run_this(cdo_command, self, output="ensemble")
 
+def top(self):
+    """
+    Extract the top/surface level from a dataset
+    This extracts the first vertical level from each file in a dataset.
+
+    Examples
+    ------------
+
+    If you wanted to extract the top vertical level of a dataset, do the following:
+
+    >>> ds.top()
+
+    This method is most useful for things like oceanic data, where this method will extract the sea surface.
+    """
+
+    cdo_command = "cdo -sellevidx,1"
+    run_this(cdo_command, self, output="ensemble")
+
+
+def vertical_interp(self, levels=None):
+    """
+    Verticaly interpolate a dataset based on given vertical levels
+    This is calculated for each time step and grid cell
+
+    Parameters
+    -------------
+    levels : list, int or str
+        list of vertical levels, for example depths for an ocean model, to vertically
+        interpolate to. These must be floats or ints.
+
+    Examples
+    ------------
+
+    If you wanted to vertically interpolate a dataset to 5 and 10 metres, you would do the following:
+
+    >>> ds.vertical_interp([5,10])
+
+    This method is most useful for things like oceanic data, where you need to interpolate to certain depth levels.
+    It will require that vertical levels are the same in every grid cell.
+
+    """
+
+    if levels is None:
+        raise ValueError("Please supply vertical depths")
+
+    # first a quick fix for the case when there is only one vertical depth
+
+    if (type(levels) == int) or (type(levels) == float):
+        levels = {levels}
+
+    for vv in levels:
+        if (type(vv) is not float) and (type(vv) is not int):
+            raise TypeError(f"{vv} is not a valid depth")
+
+    levels = str_flatten(levels, ",")
+    cdo_command = f"cdo -intlevel,{levels}"
+
+    run_this(cdo_command, self, output="ensemble")
+
 
 def surface(self):
     """

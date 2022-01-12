@@ -1627,6 +1627,7 @@ class DataSet(object):
     from nctoolkit.verticals import vertical_integration
     from nctoolkit.verticals import vertical_cumsum
     from nctoolkit.verticals import surface
+    from nctoolkit.verticals import top
     from nctoolkit.verticals import vertical_interp
     from nctoolkit.verticals import bottom
     from nctoolkit.verticals import bottom_mask
