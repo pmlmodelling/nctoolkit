@@ -579,7 +579,7 @@ class TestCalls:
         assert data.history[0] == "cdo -vertcum"
 
         data = nc.open_data(ff1)
-        data.surface()
+        data.top()
         assert data.history[0] == "cdo -sellevidx,1"
 
         data = nc.open_data(ff1)
@@ -603,7 +603,7 @@ class TestCalls:
         assert data.history[0] == "cdo --reduce_dim copy"
 
         data = nc.open_data(ff1)
-        data.surface()
+        data.top()
         data.reduce_dims()
         assert data.history[0] == "cdo --reduce_dim -sellevidx,1"
 

@@ -45,19 +45,19 @@ class TestAssign:
     assert ds.to_dataframe().t_an.values[0] == 1.0
 
     ds = nc.open_data("data/woa18_decav_t01_01.nc")
-    ds.assign(t_an = lambda x: x.t_an is False) 
+    ds.assign(t_an = lambda x: x.t_an is False)
     assert ds.history[0] == "cdo -aexpr,'t_an=t_an<1'"
 
     ds = nc.open_data("data/woa18_decav_t01_01.nc")
-    ds.assign(t_an = lambda x: x.t_an is True) 
+    ds.assign(t_an = lambda x: x.t_an is True)
     assert ds.history[0] == "cdo -aexpr,'t_an=t_an>0'"
 
     ds = nc.open_data("data/woa18_decav_t01_01.nc")
-    ds.assign(t_an = lambda x: x.t_an == True) 
+    ds.assign(t_an = lambda x: x.t_an == True)
     assert ds.history[0] == "cdo -aexpr,'t_an=t_an>0'"
 
     ds = nc.open_data("data/woa18_decav_t01_01.nc")
-    ds.assign(t_an = lambda x: x.t_an == False) 
+    ds.assign(t_an = lambda x: x.t_an == False)
     assert ds.history[0] == "cdo -aexpr,'t_an=t_an<1'"
 
     ff = "data/sst.mon.mean.nc"
@@ -542,14 +542,14 @@ class TestAssign:
     ds1 = nc.open_data("data/woa18_decav_t01_01.nc")
     ds1.select(variables = "t_an")
     ds1.vertical_mean()
-    
+
     ds2 = nc.open_data("data/woa18_decav_t01_01.nc")
     ds2.assign(t_an = lambda x: x.t_an/vertical_mean(x.t_an))
-    ds2.surface()
+    ds2.top()
     ds2.run()
 
     ds3 = nc.open_data("data/woa18_decav_t01_01.nc")
-    ds3.surface()
+    ds3.top()
     ds3.select(variables = "t_an")
     ds3.divide(ds1)
     ds3.run()
@@ -562,7 +562,7 @@ class TestAssign:
 
 
     assert np.round(x, 9) == np.round(y, 9)
-    #assert x == y 
+    #assert x == y
 
     del ds1
     del ds2

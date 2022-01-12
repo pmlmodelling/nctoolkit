@@ -56,14 +56,14 @@ class TestVerts:
         ds = nc.open_data("data/vertical_tester.nc")
         ds.vertical_mean("e3t", depth_range = [0, 30])
         ds.spatial_sum()
-        x = ds.to_dataframe().one.sum() 
+        x = ds.to_dataframe().one.sum()
 
         ds = nc.open_data("data/vertical_tester.nc")
         ds1 = nc.open_data("data/vertical_tester.nc")
         ds1.select(variables = "e3t")
         ds.vertical_mean(ds1, depth_range = [0,30])
         ds.spatial_sum()
-        y = ds.to_dataframe().one.sum() 
+        y = ds.to_dataframe().one.sum()
 
         assert x == y
 
@@ -71,14 +71,14 @@ class TestVerts:
         ds = nc.open_data("data/vertical_tester.nc")
         ds.vertical_mean("e3t")
         ds.spatial_sum()
-        x = ds.to_dataframe().one.sum() 
+        x = ds.to_dataframe().one.sum()
 
         ds = nc.open_data("data/vertical_tester.nc")
         ds1 = nc.open_data("data/vertical_tester.nc")
         ds1.select(variables = "e3t")
         ds.vertical_mean(ds1)
         ds.spatial_sum()
-        y = ds.to_dataframe().one.sum() 
+        y = ds.to_dataframe().one.sum()
 
         assert x == y
 
@@ -88,7 +88,7 @@ class TestVerts:
         ds1.run()
         ds.vertical_mean(ds1[0])
         ds.spatial_sum()
-        y = ds.to_dataframe().one.sum() 
+        y = ds.to_dataframe().one.sum()
 
         assert x == y
 
@@ -102,7 +102,7 @@ class TestVerts:
         ds1.set_missing(0)
         ds1.vertical_sum()
         ds1.run()
-        
+
         ds2 = ds.copy()
         ds2.subtract(ds1)
         ds2.spatial_sum()
@@ -126,7 +126,7 @@ class TestVerts:
         ds1.set_missing(0)
         ds1.vertical_sum()
         ds1.run()
-        
+
         ds2 = ds.copy()
         ds2.subtract(ds1)
         ds2.spatial_sum()
@@ -145,7 +145,7 @@ class TestVerts:
         ds1.set_missing(0)
         ds1.vertical_sum()
         ds1.run()
-        
+
         ds2 = ds.copy()
         ds2.subtract(ds1)
         ds2.spatial_sum()
@@ -227,7 +227,7 @@ class TestVerts:
         tracker = nc.open_data(ff)
 
         tracker.select(variables="t_an")
-        tracker.surface()
+        tracker.top()
         tracker.spatial_mean()
         x = tracker.to_dataframe().t_an.values[0].astype("float")
 
