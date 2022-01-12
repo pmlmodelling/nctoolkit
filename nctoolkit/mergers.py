@@ -6,16 +6,16 @@ from datetime import datetime
 
 from nctoolkit.runthis import run_this
 from nctoolkit.session import session_info
-from nctoolkit.show import nc_variables
+from nctoolkit.show import nc_variables, nc_times
 from nctoolkit.utils import cdo_version, version_below, version_above
 
 def below(x,y):
     x = x.split(".")
     x = int(x[0])* 1000 +  int(x[1]) * 100+  int(x[2])
-    
+
     y = y.split(".")
     y = int(y[0])* 1000 +  int(y[1]) * 100+  int(y[2])
-    
+
     return x < y
 
 def merge(self, join="variables", match=["year", "month", "day"]):
@@ -49,7 +49,7 @@ def merge(self, join="variables", match=["year", "month", "day"]):
 
     if join.startswith("time"):
         self.run()
-        if version_below(cdo_version(), "1.9.9"): 
+        if version_below(cdo_version(), "1.9.9"):
             var_list = []
             var_com = []
 
@@ -126,9 +126,12 @@ def merge(self, join="variables", match=["year", "month", "day"]):
             shell=True,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
-        ).stdout
-        cdo_result = str(cdo_result).replace("b'", "").strip()
-        ntime = int(cdo_result.split("\\")[0])
+        )
+        cdo_result =  cdo_result.stdout.decode("utf-8")
+        #.stdout
+        #''cdo_result = str(cdo_result).replace("b'", "").strip()
+        cdo_result = str(cdo_result)
+        ntime = int(cdo_result.split("\n")[0])
         all_times.append(ntime)
     if len(set(all_times)) > 1:
         warnings.warn(
@@ -155,15 +158,15 @@ def merge(self, join="variables", match=["year", "month", "day"]):
     # check the file times are compatible
     all_times = []
     for ff in self:
-        cdo_result = subprocess.run(
-            f"cdo showtimestamp {ff}",
-            shell=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        ).stdout
-        cdo_result = str(cdo_result).replace("b'", "").strip()
-        cdo_result = cdo_result.split()
-        cdo_result = pd.Series((v for v in cdo_result))
+        cdo_result = nc_times(ff)
+        #    f"cdo showtimestamp {ff}",
+        #    shell=True,
+        #    stdout=subprocess.PIPE,
+        #    stderr=subprocess.PIPE,
+        #).stdout
+        #cdo_result = str(cdo_result).replace("b'", "").strip()
+        #cdo_result = cdo_result.split()
+        #cdo_result = pd.Series((v for v in cdo_result))
         all_times.append(cdo_result)
 
     for i in range(1, len(all_times)):
@@ -179,9 +182,9 @@ def merge(self, join="variables", match=["year", "month", "day"]):
     all_df = []
     if len(all_times) > 1:
         for i in range(0, len(all_times)):
-            month = [datetime.strptime(v[0:10], "%Y-%m-%d").month for v in all_times[i]]
-            year = [datetime.strptime(v[0:10], "%Y-%m-%d").year for v in all_times[i]]
-            day = [datetime.strptime(v[0:10], "%Y-%m-%d").day for v in all_times[i]]
+            month = [v.month for v in all_times[i]]
+            year = [v.year for v in all_times[i]]
+            day = [v.day for v in all_times[i]]
             i_data = pd.DataFrame({"year": year, "month": month, "day": day})
             i_data = i_data.loc[:, match]
             all_df.append(i_data)
