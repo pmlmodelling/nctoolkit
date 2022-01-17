@@ -1,15 +1,14 @@
 import copy
 import os
 import subprocess
-import warnings
-import pandas as pd
 
 from nctoolkit.cleanup import cleanup
 from nctoolkit.runthis import run_this, run_cdo, tidy_command
 from nctoolkit.session import nc_safe, session_info, append_safe, remove_safe
-from nctoolkit.show import nc_variables, nc_years, nc_months, nc_times
+from nctoolkit.show import nc_variables
 from nctoolkit.temp_file import temp_file
 from nctoolkit.utils import cdo_version
+
 
 
 def arithall(self, stat="divc", x=None):
@@ -33,14 +32,13 @@ def operation(self, method="mul", ff=None, var=None):
     This is used by add etc.
     """
 
-    self1 = self.copy()
-
-    if len(self1) == 0:
+    if len(self) == 0:
         raise ValueError("This does not work on empty datasets!")
 
     # If the dataset has to be merged,
     # then this operation will not work without running it first
-    self1.run()
+    if self._merged:
+        self.run()
 
     # throw error if the file to operate with does not exist
     if ff is not None:
@@ -54,245 +52,9 @@ def operation(self, method="mul", ff=None, var=None):
         if var not in nc_variables(ff):
             raise ValueError("var supplied is not available in the dataset")
 
-    bad_vars = False
-
-    for x in self1:
-        n_vars = len(nc_variables(ff))
-        x_vars = len(nc_variables(x))
-
-        if n_vars > x_vars:
-            raise ValueError("Incompatible number of variables in datasets!")
-
-        if n_vars != x_vars:
-            if n_vars > 1:
-                raise ValueError("Incompatible number of variables in datasets!")
-
-    ff_ntimes = len(nc_times(ff))
-    ff_nyears = len(nc_years(ff))
-
-    year_sub = False
-
-    if ff_ntimes == ff_nyears:
-        year_sub = True
-
-    self1.run()
-    # leap years are tricky....
-
-    # throw an error if things are ambiguous
-
-    ff_ntimes = len(nc_times(ff))
-
-    merge_names = False
-
-    if len(self1) == 1:
-        if len(self1.variables) > len(nc_variables(ff)):
-            merge_names = True
-
-    if merge_names:
-        self1.split("variable")
-
-    if method == "mul":
-        nc_operation = "multiplication"
-        nc_str = "Multiplying by a"
-    if method == "sub":
-        nc_operation = "subtraction"
-        nc_str = "Subtracting a"
-    if method == "add":
-        nc_operation = "addition"
-        nc_str = "Adding a"
-    if method == "div":
-        nc_operation = "division"
-        nc_str = "Dividing by a"
-
-    if year_sub is False:
-        if (
-            len(nc_times(ff))
-            == len(nc_months(ff) or len(nc_years(ff)) == len(nc_times(ff)))
-        ) == False:
-            for x in self1:
-                x_times = nc_times(x)
-                if len(x_times) != ff_ntimes:
-                    for y in (
-                        pd.DataFrame(
-                            {"time": x_times, "year": [x.year for x in x_times]}
-                        )
-                        .groupby("year")
-                        .size()
-                    ):
-                        if y != len(nc_times(ff)):
-                            raise ValueError(
-                                f"Inconsistent number of time steps across years in dataset versus target dataset/file ({y} in one year versus {ff_ntimes} in the target file), resulting in ambiguous {nc_operation}"
-                            )
-
-    merge_files = False
-    if year_sub is False:
-        merge_files = False
-        if len(nc_times(ff)) != len(nc_months(ff)):
-            if len(self1) == 1:
-                if len([x for x in self1.times if "-02-29" in str(x)]) > 0:
-                    if len([x for x in self1.times if "-02-28" in str(x)]) > len(
-                        [x for x in self1.times if "-02-29" in str(x)]
-                    ):
-                        warnings.warn(
-                            f"Warning: Dataset contains years with and without leap years, so {nc_operation} will match time indices each year, not actual times, which are ambiguous!"
-                        )
-                        self1.split("year")
-                        merge_files = True
-
-    if method == "mul":
-        nc_operation = "multiply"
-    if method == "sub":
-        nc_operation = "subtract"
-    if method == "add":
-        nc_operation = "add"
-    if method == "div":
-        nc_operation = "divide"
-
-    new_commands = []
-    new_files = []
-
-    for x in self1:
-
-        run = False
-
-        ## monthly time series
-
-        if nc_months(x) == nc_months(ff):
-            if len(nc_months(ff)) == len(nc_times(ff)):
-                run = True
-
-                if nc_years(ff) == nc_years(x):
-
-                    if bad_vars:
-                        raise ValueError(
-                            "Datasets/files do not have the same number of variables!"
-                        )
-                    if var is not None:
-                        cdo_command = f"cdo -mon{method} {x} -selname,{var} {ff}"
-                    else:
-                        cdo_command = f"cdo -mon{method} {x} {ff}"
-
-                    target = temp_file(".nc")
-                    cdo_command = f"{cdo_command} {target}"
-                    target = run_cdo(cdo_command, target, precision=self1._precision)
-                    new_files.append(target)
-                    new_commands.append(cdo_command)
-                    warnings.warn(f"{nc_str} monthly time series")
-                else:
-                    if var is not None:
-                        cdo_command = f"cdo -ymon{method} {x} -selname,{var} {ff}"
-                    else:
-                        cdo_command = f"cdo -ymon{method} {x} {ff}"
-                    target = temp_file(".nc")
-                    cdo_command = f"{cdo_command} {target}"
-                    target = run_cdo(cdo_command, target, precision=self1._precision)
-                    new_files.append(target)
-                    new_commands.append(cdo_command)
-                    warnings.warn(f"{nc_str} multi-year monthly time series")
-
-        if len(nc_years(ff)) == 1 and run is False:
-            if (len(nc_times(x)) / len(nc_years(x))) == len(nc_times(ff)):
-                run = True
-
-                if (nc_years(ff) == nc_years(x)) or (
-                    len(nc_times(ff)) == len(nc_times(x))
-                ):
-
-                    if len(nc_times(x)) < len(nc_times(ff)):
-                        warnings.warn(
-                            f"Warning: Files do not have the same number of time steps. Only matching time steps used by {nc_operation}."
-                        )
-                    if var is not None:
-                        cdo_command = f"cdo -{method} {x} -selname,{var} {ff}"
-                    else:
-                        cdo_command = f"cdo -{method} {x} {ff}"
-
-                    target = temp_file(".nc")
-                    cdo_command = f"{cdo_command} {target}"
-                    target = run_cdo(cdo_command, target, precision=self1._precision)
-                    new_files.append(target)
-                    new_commands.append(cdo_command)
-                else:
-                    if var is not None:
-                        cdo_command = f"cdo -yday{method} {x} -selname,{var} {ff}"
-                    else:
-                        cdo_command = f"cdo -yday{method} {x} {ff}"
-                    target = temp_file(".nc")
-                    cdo_command = f"{cdo_command} {target}"
-                    target = run_cdo(cdo_command, target, precision=self1._precision)
-                    new_files.append(target)
-                    new_commands.append(cdo_command)
-
-        ## yearly time series
-
-        if self1.years == nc_years(ff) and run is False and len(nc_times(ff)) > 1:
-            if len(nc_years(ff)) == len(nc_times(ff)):
-                run = True
-                if var is not None:
-                    cdo_command = f"cdo -year{method} {x} -selname,{var} {ff}"
-                else:
-                    cdo_command = f"cdo -year{method} {x} {ff}"
-                target = temp_file(".nc")
-                cdo_command = f"{cdo_command} {target}"
-                target = run_cdo(cdo_command, target, precision=self1._precision)
-                new_files.append(target)
-                new_commands.append(cdo_command)
-                warnings.warn(f"{nc_str} yearly time series")
-
-        if run is False:
-            if len(nc_times(x)) < len(nc_times(ff)):
-                warnings.warn(
-                    f"Warning: Files do not have the same number of time steps. Only matching time steps used by {nc_operation}."
-                )
-
-            if len(nc_times(x)) != len(nc_times(ff)) and len(nc_times(ff)) > 1:
-                raise ValueError(
-                    f"Time steps in datasets are not compatible for {nc_operation} method! Operations require yearly/monthly or daily time series"
-                )
-
-            run = True
-
-            if var is not None:
-                cdo_command = f"cdo -{method} {x} -selname,{var} {ff}"
-            else:
-                cdo_command = f"cdo -{method} {x} {ff}"
-            target = temp_file(".nc")
-            cdo_command = f"{cdo_command} {target}"
-            target = run_cdo(cdo_command, target, precision=self1._precision)
-            new_files.append(target)
-            new_commands.append(cdo_command)
-            warnings.warn(f"{nc_str} single time step time series")
-
-    if run is False:
-        raise ValueError(
-            f"Time steps in datasets are not compatible for {nc_operation} method! Operations require yearly/monthly or daily time series"
-        )
-
-    if len(new_commands) > 0:
-        for cc in new_commands:
-            self1.history.append(cc.replace("  ", " "))
-
-        self1.current = new_files
-
-        for ff in new_files:
-            remove_safe(ff)
-        self1._hold_history = copy.deepcopy(self1.history)
-        if merge_files:
-            self1.merge("time")
-        if merge_names:
-            self1.merge()
-            self1.run()
-        cleanup()
-
-        self.history = self1.history
-        self._hold_history = self1._hold_history
-        self.current = self1.current
-
-        return None
-
     # make sure the ff file is not removed from safe list in subsequent
     # actions prior to running
-    if (ff is not None) and (session_info["lazy"]):
+    if (ff is not None) and (session_info["lazy"]) :
         append_safe(ff)
         self._safe.append(ff)
 
@@ -333,7 +95,7 @@ def operation(self, method="mul", ff=None, var=None):
 
     # run the command if not lazy
 
-    if session_info["lazy"] is False:
+    if (session_info["lazy"] is False):
 
         new_files = []
         new_commands = []
@@ -343,7 +105,7 @@ def operation(self, method="mul", ff=None, var=None):
             target = temp_file(".nc")
             the_command = cdo_command.replace("infile09178", FF) + " " + target
             the_command = tidy_command(the_command)
-            target = run_cdo(the_command, target, precision=self._precision)
+            target = run_cdo(the_command, target)
             new_files.append(target)
             new_commands.append(the_command)
 
@@ -587,6 +349,10 @@ def divide(self, x=None, var=None):
     operation(self=self, method="div", ff=ff, var=var)
 
 
+
+
+
+
 def abs(self):
     """
     Method to get the absolute value of variables
@@ -604,7 +370,8 @@ def abs(self):
     run_this(cdo_command, self, output="ensemble")
 
 
-def power(self, x=None):
+
+def power(self, x = None):
     """
     Powers of variables in dataset
     Parameters
@@ -628,7 +395,6 @@ def power(self, x=None):
 
     run_this(cdo_command, self, output="ensemble")
 
-
 def exp(self):
     """
     Method to get the exponential of variables
@@ -644,7 +410,6 @@ def exp(self):
     cdo_command = f"cdo -exp"
 
     run_this(cdo_command, self, output="ensemble")
-
 
 def log(self):
     """
@@ -662,7 +427,6 @@ def log(self):
 
     run_this(cdo_command, self, output="ensemble")
 
-
 def log10(self):
     """
     Method to get the base 10 log of variables
@@ -679,7 +443,6 @@ def log10(self):
 
     run_this(cdo_command, self, output="ensemble")
 
-
 def square(self):
     """
     Method to get the square of variables
@@ -695,7 +458,6 @@ def square(self):
     cdo_command = f"cdo -sqr"
 
     run_this(cdo_command, self, output="ensemble")
-
 
 def sqrt(self):
     """
