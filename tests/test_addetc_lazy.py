@@ -11,6 +11,65 @@ ff = "data/sst.mon.mean.nc"
 
 
 class TestAddetc:
+
+
+    def test_yearlyts(self):
+        ds1 = nc.open_data(ff)
+        ds2 = nc.open_data(ff)
+        ds2.tmean("year")
+        ds1.subtract(ds2)
+        ds1.tmean("year")
+        sst_max = ds1.to_dataframe().sst.max()
+        sst_min = ds1.to_dataframe().sst.min()
+
+        assert (sst_max < 1e-6) and (sst_min > -1e-6)
+
+
+        ff1 = "data/2003.nc"
+        ds1 = nc.open_data(ff1)
+        ds2 = nc.open_data(ff1)
+        ds2.tmean("month")
+        ds1.subtract(ds2)
+        ds1.tmean("month")
+        sst_max = ds1.to_dataframe().analysed_sst.max()
+        sst_min = ds1.to_dataframe().analysed_sst.min()
+        assert (sst_max < 1e-6) and (sst_min > -0.02)
+
+        ff1 = "data/2003.nc"
+        ff2 = "data/2004.nc"
+        ds1 = nc.open_data([ff1, ff2])
+        ds1.merge("time")
+        ds2 = nc.open_data(ff1)
+        ds2.tmean("month")
+        ds1.subtract(ds2)
+        ds1.tmean(["year","month"])
+        sst_max = ds1.to_dataframe().analysed_sst.max()
+        sst_min = ds1.to_dataframe().analysed_sst.min()
+
+
+        assert sst_max > 1
+
+        ds1.select(year = 2003)
+
+        sst_max = ds1.to_dataframe().analysed_sst.max()
+        sst_min = ds1.to_dataframe().analysed_sst.min()
+
+        assert (sst_max < 1e-6) and (sst_min > -0.02)
+
+        ff1 = "data/2003.nc"
+        ff2 = "data/2004.nc"
+        ds1 = nc.open_data([ff1, ff2])
+        ds1.merge("time")
+        ds2 = ds1.copy()
+        ds2.tmean(["year", "month"])
+        ds1.subtract(ds2)
+        ds1.tmean(["year", "month"])
+
+        sst_max = ds1.to_dataframe().analysed_sst.max()
+        sst_min = ds1.to_dataframe().analysed_sst.min()
+
+        assert (sst_max < 1e-6) and (sst_min > -0.02)
+
     def test_merger(self):
         new = nc.open_data(ff)
         tracker = nc.open_data(ff)
