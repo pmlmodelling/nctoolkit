@@ -65,6 +65,10 @@ def to_nc(self, out, zip=True, overwrite=False):
     if write is False:
         raise ValueError("You cannot save multiple files!")
 
+    if (os.path.exists(out)) and (overwrite is True):
+        if len(self) > 1:
+            self.run()
+
     # Check if outfile exists and overwrite is set to False
     # This should maybe be a warning, not an error
     if (os.path.exists(out)) and (overwrite is False):
