@@ -654,7 +654,7 @@ def open_data(x=[], checks=False, **kwargs):
     d._thredds = thredds
 
     if len(d) == 1:
-        df = d.contents.reset_index(drop=True).query("data_type.str.contains('I')")
+        df = d.contents.reset_index(drop=True).query("'I' in data_type")
         if len(df) > 0:
             check = ",".join(list(df.variable))
             if "," in check:
