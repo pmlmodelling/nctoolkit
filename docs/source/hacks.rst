@@ -80,4 +80,14 @@ It works as follows:
 
 
 
+Removing leap days
+================
+
+If you want to remove a leap day from a dataset, just do the following:
+
+.. code:: ipython3
+
+    ds.drop(month = 2, day = 29) 
+
+
 
