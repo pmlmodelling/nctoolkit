@@ -45,6 +45,7 @@ Core abilities include:
    temporals 
    subsetting 
    variables
+   adding
    merging_notebook 
    parallel 
    examples
