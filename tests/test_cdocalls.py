@@ -321,7 +321,19 @@ class TestCalls:
         )
 
         data = nc.open_data(ff)
-        data.drop("sst")
+        data.drop(month =  1)
+        assert data.history[0] == "cdo -delete,month=1"
+
+        data = nc.open_data(ff)
+        data.drop(month =  [1,2])
+        assert data.history[0] == "cdo -delete,month=1,2"
+
+        data = nc.open_data(ff)
+        data.drop(years =  [2000,2001])
+        assert data.history[0] == "cdo -delete,year=2000,2001"
+
+        data = nc.open_data(ff)
+        data.drop(var = "sst")
         assert data.history[0] == "cdo -delete,name=sst"
 
         if cdo_version() not in ["1.9.2", "1.9.3"]:
