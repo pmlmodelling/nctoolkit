@@ -179,7 +179,7 @@ def operation(self, method="mul", ff=None, var=None):
             if op_method == "single" and run == False:
                 run = True
                 if len(ff_times_df) == 1:
-                 warnings.warn(f"{nc_str} single time step time series")
+                    warnings.warn(f"{nc_str} single time step time series")
 
                 if len(ff_times_df) == len(nc_times(x)):
 
