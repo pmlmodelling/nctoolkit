@@ -47,9 +47,11 @@ def validate_version():
     """
     Function to tell the user whether a valid version of CDO is installed
     """
+    bad = False
 
     try:
         version = cdo_version()
+        bad = version_above(cdo_version(), "2.0.0")
         actual_version = version
         if version is None:
             print(
@@ -76,6 +78,8 @@ def validate_version():
         print(
             "Please install CDO version 1.9.4 or above: https://code.mpimet.mpg.de/projects/cdo/ or https://anaconda.org/conda-forge/cdo"
         )
+    if bad: 
+        raise ValueError("This version of nctoolkit is not compatible with CDO versions 2.0.0 and above")
 
 
 def cdo_version():
