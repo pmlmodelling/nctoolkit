@@ -57,28 +57,32 @@ def operation(self, method="mul", ff=None, var=None):
                 raise ValueError(f"{ff} does not exist!")
 
         ff_times = nc_times(ff)
-        ff_times_df = pd.DataFrame({"time":ff_times}).assign(year = lambda x: x.time.dt.year, month = lambda x: x.time.dt.month).drop(columns = "time")
+        ff_times_df = pd.DataFrame({"time":ff_times}).assign(year = lambda x: x.time.dt.year, month = lambda x: x.time.dt.month, day = lambda x: x.time.dt.day).drop(columns = "time")
 
         # work out if it's a yearmon method
 
-        yearmon = False
         op_method = None
 
         if len(ff_times_df) > 1:
             if len(ff_times_df) == len(ff_times_df.drop_duplicates()):
+                if len(ff_times_df) > len(ff_times_df.loc[:,["year", "month"]].drop_duplicates()):
+                    if len(ff_times_df) == len(ff_times_df.loc[:,["year", "month", "day"]].drop_duplicates()):
+                        op_method = "yday"
+
+        if len(ff_times_df) > 1:
+            if len(ff_times_df) == len(ff_times_df.drop(columns = "day").drop_duplicates()):
                 if len(set(ff_times_df.year)) > 1:
                     if len(set(ff_times_df.month)) > 1:
-                        yearmon = True
                         op_method = "yearmon"
 
         if len(ff_times_df) > 1:
-            if len(ff_times_df) == len(ff_times_df.drop_duplicates()):
+            if len(ff_times_df) == len(ff_times_df.drop(columns = "day").drop_duplicates()):
                 if len(set(ff_times_df.year)) == 1:
                     if len(set(ff_times_df.month)) > 1:
                         op_method = "mon"
 
         if len(ff_times_df) > 1:
-            if len(ff_times_df) == len(ff_times_df.drop_duplicates()):
+            if len(ff_times_df) == len(ff_times_df.drop(columns = "day").drop_duplicates()):
                 if len(set(ff_times_df.year)) > 1:
                     if len(set(ff_times_df.year)) == len(ff_times_df): 
                         op_method = "year"
@@ -134,32 +138,18 @@ def operation(self, method="mul", ff=None, var=None):
             nc_operation = "division"
             nc_str = "Dividing by a"
 
-        #if len(ff_times_df) > 1:
-        #    if len(ff_times_df) > len(ff_times_df.drop_duplicates()):
-        #        for ff in self1:
-        #            ff_times = nc_times(ff)
-        #            if len([x for x in ff_times if "-02-29" in str(x)]) > 0 and len(ff_times) != len(ff_times):
-        #                raise ValueError("Dataset contains leap years, so the operation is ambiguous")
+        if op_method == "yday":
+            for file in self1:
+                file_times = nc_times(file)
+                if len([x for x in file_times if "-02-29" in str(x)]) > 0:
+                    raise ValueError("Dataset contains leap years, so the operation is ambiguous. Consider removing 29th February!")
+                df_times = pd.DataFrame({"year":[x.year for x in file_times], "month":[x.month for x in file_times], "day": [x.day for x in file_times]}).drop_duplicates()
 
-        #if year_sub is False and yearmon is False:
-        #    if (
-        #        len(nc_times(ff))
-        #        == len(nc_months(ff) or len(nc_years(ff)) == len(nc_times(ff)))
-        #    ) == False:
-        #        for x in self1:
-        #            x_times = nc_times(x)
-        #            if len(x_times) != ff_ntimes:
-        #                for y in (
-        #                    pd.DataFrame(
-        #                        {"time": x_times, "year": [x.year for x in x_times]}
-        #                    )
-        #                    .groupby("year")
-        #                    .size()
-        #                ):
-        #                    if y != len(nc_times(ff)):
-        #                        raise ValueError(
-        #                            f"Inconsistent number of time steps across years in dataset versus target dataset/file ({y} in one year versus {ff_ntimes} in the target file), resulting in ambiguous {nc_operation}"
-        #                        )
+                for yy in df_times.year:
+                    if len(df_times.query("year == @yy").merge(ff_times_df)) != len(ff_times_df):
+                        raise ValueError(f"Time steps for the datasets/files are not compatible for the {nc_operation} method")
+                    if len(df_times.query("year == @yy").merge(ff_times_df)) != len(df_times.query("year == @yy")):
+                        raise ValueError(f"Time steps for the datasets/files are not compatible for the {nc_operation} method")
 
         if method == "mul":
             nc_operation = "multiply"
@@ -200,6 +190,19 @@ def operation(self, method="mul", ff=None, var=None):
                 target = run_cdo(cdo_command, target, precision=self1._precision)
                 new_files.append(target)
                 new_commands.append(cdo_command)
+
+            if op_method == "yday" and run == False:
+                if var is not None:
+                    cdo_command = f"cdo -yday{method} {x} -selname,{var} {ff}"
+                else:
+                    cdo_command = f"cdo -yday{method} {x} {ff}"
+                run = True
+                target = temp_file(".nc")
+                cdo_command = f"{cdo_command} {target}"
+                target = run_cdo(cdo_command, target, precision=self1._precision)
+                new_files.append(target)
+                new_commands.append(cdo_command)
+                warnings.warn(f"{nc_str} daily time series")
 
             if op_method == "yearmon" and run == False:
                 if var is not None:
@@ -316,7 +319,7 @@ def operation(self, method="mul", ff=None, var=None):
 
         if run is False:
             raise ValueError(
-                f"Time steps in datasets are not compatible for {nc_operation} method! Operations require yearly/monthly or daily time series"
+                f"nctoolkit cannot automatically determine {nc_operation} method for the dataset timesteps given!"
             )
 
         if len(new_commands) > 0:
@@ -533,7 +536,7 @@ def add(self, x=None, var=None):
     """
     Add to a dataset
     This will add a constant, another dataset or a netCDF file to the dataset.
-    Parameters
+     Parameters
     ------------
     x: int, float, DataSet or netCDF file
         An int, float, single file dataset or netCDF file to add to the dataset.
@@ -542,7 +545,7 @@ def add(self, x=None, var=None):
     var: str
         A variable in the x to use for the operation
 
-    Examples
+      Examples
     ------------
 
     If you wanted to add 10 to all variables in a dataset, you would do the following:
