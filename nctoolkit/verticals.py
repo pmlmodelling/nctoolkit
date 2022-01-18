@@ -50,6 +50,7 @@ def bottom(self):
 
     run_this(cdo_command, self, output="ensemble")
 
+
 def top(self):
     """
     Extract the top/surface level from a dataset
@@ -201,12 +202,8 @@ def vertical_mean(self, thickness=None, depth_range=None):
         ds_thick.append(ds_depth)
         ds_thick.merge()
         ds_thick.assign(z_min=lambda x: x.depth - x.thickness)
-        ds_thick.assign(z_min=lambda x: x.z_min * (x.z_min >= depth_range[0])
-            + depth_range[0] * (x.z_min < depth_range[0])
-        )
-        ds_thick.assign( depth=lambda x: x.depth * (x.depth <= depth_range[1])
-            + depth_range[1] * (x.depth > depth_range[1])
-        )
+        ds_thick.assign(z_min=lambda x: x.z_min * (x.z_min >= depth_range[0]) + depth_range[0] * (x.z_min < depth_range[0]))
+        ds_thick.assign( depth=lambda x: x.depth * (x.depth <= depth_range[1]) + depth_range[1] * (x.depth > depth_range[1]))
         ds_thick.assign(thickness=lambda x: x.depth - x.z_min, drop=True)
         ds_thick.assign(thickness=lambda x: x.thickness * (x.thickness > 0), drop=True)
 
@@ -347,12 +344,8 @@ def vertical_integration(self, thickness=None, depth_range=None):
         ds_thick.append(ds_depth)
         ds_thick.merge()
         ds_thick.assign(z_min=lambda x: x.depth - x.thickness)
-        ds_thick.assign( z_min=lambda x: x.z_min * (x.z_min >= depth_range[0])
-            + depth_range[0] * (x.z_min < depth_range[0])
-        )
-        ds_thick.assign( depth=lambda x: x.depth * (x.depth <= depth_range[1])
-            + depth_range[1] * (x.depth > depth_range[1])
-        )
+        ds_thick.assign( z_min=lambda x: x.z_min * (x.z_min >= depth_range[0]) + depth_range[0] * (x.z_min < depth_range[0]))
+        ds_thick.assign( depth=lambda x: x.depth * (x.depth <= depth_range[1]) + depth_range[1] * (x.depth > depth_range[1]))
         ds_thick.assign(thickness=lambda x: x.depth - x.z_min, drop=True)
         ds_thick.assign(thickness=lambda x: x.thickness * (x.thickness > 0), drop=True)
 
