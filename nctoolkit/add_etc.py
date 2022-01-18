@@ -151,6 +151,15 @@ def operation(self, method="mul", ff=None, var=None):
                     if len(df_times.query("year == @yy").merge(ff_times_df)) != len(df_times.query("year == @yy")):
                         raise ValueError(f"Time steps for the datasets/files are not compatible for the {nc_operation} method")
 
+        if op_method == "year":
+            for file in self1:
+                ff_years = list(set([x.year for x in ff_times]))
+                file_times = nc_times(file)
+                file_years = list(set([x.year for x in file_times]))
+
+                if ff_years != file_years:
+                    raise ValueError("Years in datasets/files are not identical!")
+
         if method == "mul":
             nc_operation = "multiply"
         if method == "sub":
@@ -535,7 +544,9 @@ def subtract(self, x=None, var=None):
 def add(self, x=None, var=None):
     """
     Add to a dataset
-    This will add a constant, another dataset or a netCDF file to the dataset.
+    This will add a constant, another dataset or a netCDF file to the dataset. 
+    nctoolkit will automatically determine the appropriate comparison required.
+
      Parameters
     ------------
     x: int, float, DataSet or netCDF file
