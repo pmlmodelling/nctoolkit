@@ -1,14 +1,15 @@
 import copy
 import os
 import subprocess
+import warnings
+import pandas as pd
 
 from nctoolkit.cleanup import cleanup
 from nctoolkit.runthis import run_this, run_cdo, tidy_command
 from nctoolkit.session import nc_safe, session_info, append_safe, remove_safe
-from nctoolkit.show import nc_variables
+from nctoolkit.show import nc_variables, nc_years, nc_months, nc_times
 from nctoolkit.temp_file import temp_file
-from nctoolkit.utils import cdo_version
-
+from nctoolkit.utils import cdo_version, version_above
 
 
 def arithall(self, stat="divc", x=None):
@@ -32,103 +33,392 @@ def operation(self, method="mul", ff=None, var=None):
     This is used by add etc.
     """
 
-    if len(self) == 0:
-        raise ValueError("This does not work on empty datasets!")
+    new = False
 
-    # If the dataset has to be merged,
-    # then this operation will not work without running it first
-    if self._merged:
-        self.run()
+    if version_above(cdo_version(), "1.9.9"):
+        new = True
+    else:
+        warnings.warn("Use CDO>=1.9.9 for more smarter operations")
 
-    # throw error if the file to operate with does not exist
-    if ff is not None:
-        if os.path.exists(ff) is False:
-            raise ValueError(f"{ff} does not exist!")
+    if new:
 
-    # throw error if there is a problem with var
-    if var is not None:
-        if type(var) is not str:
-            raise TypeError("var supplied is not a string")
-        if var not in nc_variables(ff):
-            raise ValueError("var supplied is not available in the dataset")
+        self1 = self.copy()
 
-    # make sure the ff file is not removed from safe list in subsequent
-    # actions prior to running
-    if (ff is not None) and (session_info["lazy"]) :
-        append_safe(ff)
-        self._safe.append(ff)
+        if len(self1) == 0:
+            raise ValueError("This does not work on empty datasets!")
 
-    if len(self.history) == len(self._hold_history):
+        # If the dataset has to be merged,
+        # then this operation will not work without running it first
+        self1.run()
 
-        for x in self:
+        # throw error if the file to operate with does not exist
+        if ff is not None:
+            if os.path.exists(ff) is False:
+                raise ValueError(f"{ff} does not exist!")
 
-            # check that the datasets can actually be worked with
-            if var is None:
-                if (len(nc_variables(ff)) != len(nc_variables(x))) and (
-                    len(nc_variables(ff)) != 1
-                ):
-                    raise ValueError(
-                        "Datasets have incompatible variable numbers for the operation!"
+        ff_times = nc_times(ff)
+        ff_times_df = pd.DataFrame({"time":ff_times}).assign(year = lambda x: x.time.dt.year, month = lambda x: x.time.dt.month).drop(columns = "time")
+
+        # work out if it's a yearmon method
+
+        yearmon = False
+        op_method = None
+
+        if len(ff_times_df) > 1:
+            if len(ff_times_df) == len(ff_times_df.drop_duplicates()):
+                if len(set(ff_times_df.year)) > 1:
+                    if len(set(ff_times_df.month)) > 1:
+                        yearmon = True
+                        op_method = "yearmon"
+
+        if len(ff_times_df) > 1:
+            if len(ff_times_df) == len(ff_times_df.drop_duplicates()):
+                if len(set(ff_times_df.year)) == 1:
+                    if len(set(ff_times_df.month)) > 1:
+                        op_method = "mon"
+
+        if len(ff_times_df) > 1:
+            if len(ff_times_df) == len(ff_times_df.drop_duplicates()):
+                if len(set(ff_times_df.year)) > 1:
+                    if len(set(ff_times_df.year)) == len(ff_times_df): 
+                        op_method = "year"
+
+        if len(ff_times_df) == 1:
+            op_method = "single"
+
+
+        # throw error if there is a problem with var
+        if var is not None:
+            if type(var) is not str:
+                raise TypeError("var supplied is not a string")
+            if var not in nc_variables(ff):
+                raise ValueError("var supplied is not available in the dataset")
+
+        bad_vars = False
+
+        for x in self1:
+            n_vars = len(nc_variables(ff))
+            x_vars = len(nc_variables(x))
+
+            if n_vars > x_vars:
+                raise ValueError("Incompatible number of variables in datasets!")
+
+            if n_vars != x_vars:
+                if n_vars > 1:
+                    raise ValueError("Incompatible number of variables in datasets!")
+
+        self1.run()
+        # leap years are tricky....
+
+        # throw an error if things are ambiguous
+
+        merge_names = False
+
+        if len(self1) == 1:
+            if len(self1.variables) > len(nc_variables(ff)):
+                merge_names = True
+
+        if merge_names:
+            self1.split("variable")
+
+        if method == "mul":
+            nc_operation = "multiplication"
+            nc_str = "Multiplying by a"
+        if method == "sub":
+            nc_operation = "subtraction"
+            nc_str = "Subtracting a"
+        if method == "add":
+            nc_operation = "addition"
+            nc_str = "Adding a"
+        if method == "div":
+            nc_operation = "division"
+            nc_str = "Dividing by a"
+
+        #if len(ff_times_df) > 1:
+        #    if len(ff_times_df) > len(ff_times_df.drop_duplicates()):
+        #        for ff in self1:
+        #            ff_times = nc_times(ff)
+        #            if len([x for x in ff_times if "-02-29" in str(x)]) > 0 and len(ff_times) != len(ff_times):
+        #                raise ValueError("Dataset contains leap years, so the operation is ambiguous")
+
+        #if year_sub is False and yearmon is False:
+        #    if (
+        #        len(nc_times(ff))
+        #        == len(nc_months(ff) or len(nc_years(ff)) == len(nc_times(ff)))
+        #    ) == False:
+        #        for x in self1:
+        #            x_times = nc_times(x)
+        #            if len(x_times) != ff_ntimes:
+        #                for y in (
+        #                    pd.DataFrame(
+        #                        {"time": x_times, "year": [x.year for x in x_times]}
+        #                    )
+        #                    .groupby("year")
+        #                    .size()
+        #                ):
+        #                    if y != len(nc_times(ff)):
+        #                        raise ValueError(
+        #                            f"Inconsistent number of time steps across years in dataset versus target dataset/file ({y} in one year versus {ff_ntimes} in the target file), resulting in ambiguous {nc_operation}"
+        #                        )
+
+        if method == "mul":
+            nc_operation = "multiply"
+        if method == "sub":
+            nc_operation = "subtract"
+        if method == "add":
+            nc_operation = "add"
+        if method == "div":
+            nc_operation = "divide"
+
+        new_commands = []
+        new_files = []
+
+        for x in self1:
+
+            run = False
+
+            if op_method == "single" and run == False:
+                run = True
+                if len(ff_times_df) == 1:
+                 warnings.warn(f"{nc_str} single time step time series")
+
+                if len(ff_times_df) == len(nc_times(x)):
+
+                    warnings.warn(f"{nc_str} time series with the same number of time steps")
+
+                if len(nc_times(x)) < len(nc_times(ff)):
+                    warnings.warn(
+                        f"Warning: Files do not have the same number of time steps. Only matching time steps used by {nc_operation}."
+                    )
+                if var is not None:
+                    cdo_command = f"cdo -{method} {x} -selname,{var} {ff}"
+                else:
+                    cdo_command = f"cdo -{method} {x} {ff}"
+
+                target = temp_file(".nc")
+                cdo_command = f"{cdo_command} {target}"
+                target = run_cdo(cdo_command, target, precision=self1._precision)
+                new_files.append(target)
+                new_commands.append(cdo_command)
+
+            if op_method == "yearmon" and run == False:
+                if var is not None:
+                    cdo_command = f"cdo -mon{method} {x} -selname,{var} {ff}"
+                else:
+                    cdo_command = f"cdo -mon{method} {x} {ff}"
+                run = True
+                target = temp_file(".nc")
+                cdo_command = f"{cdo_command} {target}"
+                target = run_cdo(cdo_command, target, precision=self1._precision)
+                new_files.append(target)
+                new_commands.append(cdo_command)
+
+            ## monthly time series
+
+            if op_method == "mon" and run == False:
+               run = True
+
+               if bad_vars:
+                   raise ValueError(
+                       "Datasets/files do not have the same number of variables!"
+                   )
+               if var is not None:
+                   cdo_command = f"cdo -ymon{method} {x} -selname,{var} {ff}"
+               else:
+                   cdo_command = f"cdo -ymon{method} {x} {ff}"
+
+               target = temp_file(".nc")
+               cdo_command = f"{cdo_command} {target}"
+               target = run_cdo(cdo_command, target, precision=self1._precision)
+               new_files.append(target)
+               new_commands.append(cdo_command)
+               warnings.warn(f"{nc_str} monthly time series")
+            ## yearly time series
+
+            if op_method == "year" and run == False:  
+                run = True
+                if var is not None:
+                    cdo_command = f"cdo -year{method} {x} -selname,{var} {ff}"
+                else:
+                    cdo_command = f"cdo -year{method} {x} {ff}"
+                target = temp_file(".nc")
+                cdo_command = f"{cdo_command} {target}"
+                target = run_cdo(cdo_command, target, precision=self1._precision)
+                new_files.append(target)
+                new_commands.append(cdo_command)
+                warnings.warn(f"{nc_str} yearly time series")
+
+
+            if len(nc_years(ff)) == 1 and run is False:
+                if (len(nc_times(x)) / len(nc_years(x))) == len(nc_times(ff)):
+                    run = True
+
+                    if (nc_years(ff) == nc_years(x)) or (
+                        len(nc_times(ff)) == len(nc_times(x))
+                    ):
+
+                        if len(ff_times_df) == 1:
+                            warnings.warn(f"{nc_str} single time step time series")
+
+                        if len(ff_times_df) == len(nc_times(x)):
+
+                            warnings.warn(f"{nc_str} time series with the same number of time steps")
+
+                        if len(nc_times(x)) < len(nc_times(ff)):
+                            warnings.warn(
+                                f"Warning: Files do not have the same number of time steps. Only matching time steps used by {nc_operation}."
+                            )
+                        if var is not None:
+                            cdo_command = f"cdo -{method} {x} -selname,{var} {ff}"
+                        else:
+                            cdo_command = f"cdo -{method} {x} {ff}"
+
+                        target = temp_file(".nc")
+                        cdo_command = f"{cdo_command} {target}"
+                        target = run_cdo(cdo_command, target, precision=self1._precision)
+                        new_files.append(target)
+                        new_commands.append(cdo_command)
+                    else:
+                        if var is not None:
+                            cdo_command = f"cdo -yday{method} {x} -selname,{var} {ff}"
+                        else:
+                            cdo_command = f"cdo -yday{method} {x} {ff}"
+                        target = temp_file(".nc")
+                        cdo_command = f"{cdo_command} {target}"
+                        target = run_cdo(cdo_command, target, precision=self1._precision)
+                        new_files.append(target)
+                        new_commands.append(cdo_command)
+
+
+            if run is False:
+                if len(nc_times(x)) < len(nc_times(ff)):
+                    warnings.warn(
+                        f"Warning: Files do not have the same number of time steps. Only matching time steps used by {nc_operation}."
                     )
 
-        prior_command = ""
+                if len(nc_times(x)) != len(nc_times(ff)) and len(nc_times(ff)) > 1:
+                    raise ValueError(
+                        f"Time steps in datasets are not compatible for {nc_operation} method! Operations require yearly/monthly or daily time series"
+                    )
 
-    else:
+                run = True
 
-        prior_command = self.history[-1].replace("cdo ", " ").replace("  ", " ")
+                if var is not None:
+                    cdo_command = f"cdo -{method} {x} -selname,{var} {ff}"
+                else:
+                    cdo_command = f"cdo -{method} {x} {ff}"
+                target = temp_file(".nc")
+                cdo_command = f"{cdo_command} {target}"
+                target = run_cdo(cdo_command, target, precision=self1._precision)
+                new_files.append(target)
+                new_commands.append(cdo_command)
+                warnings.warn(f"{nc_str} single time step time series")
 
-    # we need to make sure you can chain multiple adds etc.#
-    # the approach below will work, but can probably be improved on
-
-    if var is None:
-        if "infile09178" in prior_command:
-            cdo_command = f"cdo -{method} {prior_command} {ff}"
-        else:
-            cdo_command = f"cdo -{method} {prior_command} infile09178 {ff}"
-    else:
-        if "infile09178" in prior_command:
-            cdo_command = f"cdo -{method} {prior_command} -selname,{var} {ff}"
-        else:
-            cdo_command = (
-                f"cdo -{method} {prior_command} infile09178 -selname,{var} {ff}"
+        if run is False:
+            raise ValueError(
+                f"Time steps in datasets are not compatible for {nc_operation} method! Operations require yearly/monthly or daily time series"
             )
 
-    # run the command if not lazy
+        if len(new_commands) > 0:
+            for cc in new_commands:
+                self1.history.append(cc.replace("  ", " "))
 
-    if (session_info["lazy"] is False):
+            self1.current = new_files
 
-        new_files = []
-        new_commands = []
+            for ff in new_files:
+                remove_safe(ff)
+            self1._hold_history = copy.deepcopy(self1.history)
 
-        for FF in self:
+            if merge_names:
+                self1.merge()
+                self1.run()
+            cleanup()
 
-            target = temp_file(".nc")
-            the_command = cdo_command.replace("infile09178", FF) + " " + target
-            the_command = tidy_command(the_command)
-            target = run_cdo(the_command, target)
-            new_files.append(target)
-            new_commands.append(the_command)
+            self.history = self1.history
+            self._hold_history = self1._hold_history
+            self.current = self1.current
 
-        for cc in new_commands:
-            self.history.append(cc.replace("  ", " "))
+            return None
 
-        self.current = new_files
+    if new == False:
 
-        for ff in new_files:
-            remove_safe(ff)
-        self._hold_history = copy.deepcopy(self.history)
-        cleanup()
+        # make sure the ff file is not removed from safe list in subsequent
+        # actions prior to running
+        if (ff is not None) and (session_info["lazy"]):
+            append_safe(ff)
+            self._safe.append(ff)
 
-    # update history if lazy
-    else:
-        if len(self.history) > len(self._hold_history):
-            self.history[-1] = cdo_command
+        if len(self.history) == len(self._hold_history):
+
+            for x in self:
+
+                # check that the datasets can actually be worked with
+                if var is None:
+                    if (len(nc_variables(ff)) != len(nc_variables(x))) and (
+                        len(nc_variables(ff)) != 1
+                    ):
+                        raise ValueError(
+                            "Datasets have incompatible variable numbers for the operation!"
+                        )
+
+            prior_command = ""
+
         else:
-            self.history.append(cdo_command)
 
-    # remove anything from self._safe if it was ever set up
+            prior_command = self.history[-1].replace("cdo ", " ").replace("  ", " ")
 
-    cleanup()
+        # we need to make sure you can chain multiple adds etc.#
+        # the approach below will work, but can probably be improved on
+
+        if var is None:
+            if "infile09178" in prior_command:
+                cdo_command = f"cdo -{method} {prior_command} {ff}"
+            else:
+                cdo_command = f"cdo -{method} {prior_command} infile09178 {ff}"
+        else:
+            if "infile09178" in prior_command:
+                cdo_command = f"cdo -{method} {prior_command} -selname,{var} {ff}"
+            else:
+                cdo_command = (
+                    f"cdo -{method} {prior_command} infile09178 -selname,{var} {ff}"
+                )
+
+        # run the command if not lazy
+
+        if session_info["lazy"] is False:
+
+            new_files = []
+            new_commands = []
+
+            for FF in self:
+
+                target = temp_file(".nc")
+                the_command = cdo_command.replace("infile09178", FF) + " " + target
+                the_command = tidy_command(the_command)
+                target = run_cdo(the_command, target, precision=self._precision)
+                new_files.append(target)
+                new_commands.append(the_command)
+
+            for cc in new_commands:
+                self.history.append(cc.replace("  ", " "))
+
+            self.current = new_files
+
+            for ff in new_files:
+                remove_safe(ff)
+            self._hold_history = copy.deepcopy(self.history)
+            cleanup()
+
+        # update history if lazy
+        else:
+            if len(self.history) > len(self._hold_history):
+                self.history[-1] = cdo_command
+            else:
+                self.history.append(cdo_command)
+
+        # remove anything from self._safe if it was ever set up
+
+        cleanup()
 
 
 def multiply(self, x=None, var=None):
@@ -349,10 +639,6 @@ def divide(self, x=None, var=None):
     operation(self=self, method="div", ff=ff, var=var)
 
 
-
-
-
-
 def abs(self):
     """
     Method to get the absolute value of variables
@@ -370,8 +656,7 @@ def abs(self):
     run_this(cdo_command, self, output="ensemble")
 
 
-
-def power(self, x = None):
+def power(self, x=None):
     """
     Powers of variables in dataset
     Parameters
@@ -395,6 +680,7 @@ def power(self, x = None):
 
     run_this(cdo_command, self, output="ensemble")
 
+
 def exp(self):
     """
     Method to get the exponential of variables
@@ -410,6 +696,7 @@ def exp(self):
     cdo_command = f"cdo -exp"
 
     run_this(cdo_command, self, output="ensemble")
+
 
 def log(self):
     """
@@ -427,6 +714,7 @@ def log(self):
 
     run_this(cdo_command, self, output="ensemble")
 
+
 def log10(self):
     """
     Method to get the base 10 log of variables
@@ -443,6 +731,7 @@ def log10(self):
 
     run_this(cdo_command, self, output="ensemble")
 
+
 def square(self):
     """
     Method to get the square of variables
@@ -458,6 +747,7 @@ def square(self):
     cdo_command = f"cdo -sqr"
 
     run_this(cdo_command, self, output="ensemble")
+
 
 def sqrt(self):
     """
