@@ -35,6 +35,13 @@ def regrid(self, grid=None, method="bil", recycle=False):
     if len(self) == 0:
         raise ValueError("Failure due to empty dataset!")
 
+    if type(method) is str:
+        if "nearest" in method:
+            method = "nn"
+        if "neighbour" in method:
+            method = "nn"
+
+
     valid_methods = ["bil", "nn", "bic", "dis", "con", "con2", "laf"]
 
     if "DataSet" in str(type(grid)):
