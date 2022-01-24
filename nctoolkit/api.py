@@ -389,7 +389,7 @@ def from_xarray(ds):
     return d
 
 
-def open_data(x=[], checks=False, **kwargs):
+def open_data(x=[], checks=True, **kwargs):
     """
     Read netCDF data as a DataSet object
 
@@ -656,7 +656,7 @@ def open_data(x=[], checks=False, **kwargs):
     d = DataSet(x)
     d._thredds = thredds
 
-    if len(d) == 1 and False:
+    if (len(d) == 1) and checks and (thredds is False):
 
         list1 = d.contents.reset_index(drop=True).data_type
         positions = [ind for ind, x in enumerate(list1) if x.startswith("I")]
@@ -1502,7 +1502,7 @@ class DataSet(object):
 
     from nctoolkit.centres import centre
 
-    #from nctoolkit.checks import check
+    from nctoolkit.checks import check
 
     from nctoolkit.cleanup import disk_clean
 
