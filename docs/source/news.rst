@@ -1,6 +1,16 @@
 News
 ============
 
+Release of v0.4.1
+---------------
+
+Version 0.4.1 will be released in March 2022. This will be maintenance release focusing on improving nctoolkit internals.
+
+A new method, called ``checks`` will be introduced that can be used to troubleshoot data problems and to ensure there are no obvious data issues (such as a lack of CF-compliance).
+
+This update can be previewed by installing the development version of nctoolkit.
+
+
 Release of v0.4.0
 ---------------
 
