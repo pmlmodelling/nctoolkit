@@ -389,7 +389,7 @@ def from_xarray(ds):
     return d
 
 
-def open_data(x=[], checks=True, **kwargs):
+def open_data(x=[], checks=False, **kwargs):
     """
     Read netCDF data as a DataSet object
 
@@ -559,6 +559,9 @@ def open_data(x=[], checks=True, **kwargs):
                 mes = re.sub(" +", " ", mes)
                 raise ValueError(mes)
 
+            append_safe(x)
+            append_protected(x)
+
         else:
             append_safe(x)
             append_protected(x)
@@ -653,10 +656,16 @@ def open_data(x=[], checks=True, **kwargs):
     d = DataSet(x)
     d._thredds = thredds
 
-    if len(d) == 1 and checks:
-        df = d.contents.reset_index(drop=True).query("'I' in data_type")
-        if len(df) > 0:
-            check = ",".join(list(df.variable))
+    if len(d) == 1 and False:
+
+        list1 = d.contents.reset_index(drop=True).data_type
+        positions = [ind for ind, x in enumerate(list1) if x.startswith("I")]
+        if len(positions):
+            bad = list(d.contents.reset_index(drop=True).data_type[positions])
+
+        #df = d.contents.reset_index(drop=True).query("'I' in data_type")
+        if len(positions) > 0:
+            check = ",".join(bad)
             if "," in check:
                 warnings.warn(
                     message=f"The variable(s) {check} have integer data type. Consider setting data type to float 'F64' or 'F32' using set_precision."
@@ -1492,6 +1501,8 @@ class DataSet(object):
     from nctoolkit.cellareas import cell_area
 
     from nctoolkit.centres import centre
+
+    #from nctoolkit.checks import check
 
     from nctoolkit.cleanup import disk_clean
 
