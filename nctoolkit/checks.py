@@ -61,4 +61,33 @@ def check(self):
                     stderr=subprocess.STDOUT,
                 )
                 result, ignore = out.communicate()
-                print(result.decode())
+
+                result_split = result.decode("utf-8").split("\n")
+                splits = [
+                    index
+                    for index, value in enumerate(result_split)
+                    if "Checking variable" in value
+                ]
+                end = [
+                    index
+                    for index, value in enumerate(result_split)
+                    if "ERRORS dete" in value
+                ][0]
+                for i in range(0, len(splits)):
+                    if i < (len(splits) - 1):
+
+                        i_result = result_split[splits[i] : splits[i + 1]]
+                        i_result = "\n".join(i_result)
+                        if "ERROR: " in i_result:
+                            i_result = i_result.replace(
+                                "Checking variable:", "Issue with variable:"
+                            )
+                            print(i_result)
+                    else:
+                        i_result = result_split[splits[i] : end]
+                        i_result = "\n".join(i_result)
+                        if "ERROR: " in i_result:
+                            i_result = i_result.replace(
+                                "Checking variable:", "Issue with variable:"
+                            )
+                            print(i_result)
