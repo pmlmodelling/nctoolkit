@@ -653,7 +653,7 @@ def open_data(x=[], checks=False, **kwargs):
     d = DataSet(x)
     d._thredds = thredds
 
-    if len(d) == 1:
+    if len(d) == 1 and checks:
         df = d.contents.reset_index(drop=True).query("'I' in data_type")
         if len(df) > 0:
             check = ",".join(list(df.variable))
