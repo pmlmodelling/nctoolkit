@@ -389,7 +389,7 @@ def from_xarray(ds):
     return d
 
 
-def open_data(x=[], checks=False, **kwargs):
+def open_data(x=[], checks=True, **kwargs):
     """
     Read netCDF data as a DataSet object
 
@@ -402,7 +402,7 @@ def open_data(x=[], checks=False, **kwargs):
         By default an empty dataset is created, ie. using open_data() will create an empty
         dataset that can then be expanded using append.
     checks: boolean
-        Do you want basic checks to ensure cdo can read files?
+        Do you want basic checks to ensure cdo can read files? Default to True
     **kwargs: kwargs
         Optional arguments for internal use by open_thredds and open_url.
 
