@@ -1,10 +1,12 @@
 import copy
 
+from nctoolkit.api import open_data
 from nctoolkit.cleanup import cleanup
 from nctoolkit.runthis import run_cdo, tidy_command
 from nctoolkit.show import nc_years
 from nctoolkit.temp_file import temp_file
-from nctoolkit.session import nc_safe, remove_safe
+from nctoolkit.session import nc_safe, remove_safe, session_info
+from nctoolkit.utils import version_below
 
 
 def annual_anomaly(self, baseline=None, metric="absolute", window=1):
@@ -170,6 +172,14 @@ def monthly_anomaly(self, baseline=None):
         raise ValueError("Second baseline year is before the first!")
 
     self.run()
+
+    if version_below(session_info["cdo"], "1.9.10"):
+        for ff in self:
+            ds = open_data(ff, checks=False)
+            if len(set(ds.contents.npoints)) > 1:
+                raise ValueError(
+                    "Variables have different grids. This causes problems with the CDO version installed. Select specific variables before monthly_anomaly or upgrade to CDO>=1.9.10. See npoints in dataset contents to identify differences in grids"
+                )
 
     new_files = []
     new_commands = []
