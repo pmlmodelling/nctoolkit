@@ -663,7 +663,7 @@ def open_data(x=[], checks=True, **kwargs):
         if len(positions):
             bad = list(d.contents.reset_index(drop=True).data_type[positions])
 
-        #df = d.contents.reset_index(drop=True).query("'I' in data_type")
+        # df = d.contents.reset_index(drop=True).query("'I' in data_type")
         if len(positions) > 0:
             check = ",".join(bad)
             if "," in check:
@@ -1310,97 +1310,6 @@ class DataSet(object):
                 return new_df
         else:
             return pd.concat(list_contents).set_index("file")
-
-    @property
-    def variables_detailed(self):
-        """
-        Detailed list of variables contained in a dataset.
-        This will only display the variables in the first file of an ensemble.
-        """
-
-        if len(self) > 1:
-            return (
-                "This DataSet object is a mult-file dataset. Please inspect individual"
-                "files using nc_variables"
-            )
-
-        cdo_result = subprocess.run(
-            "cdo showname " + self.current[0],
-            shell=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        cdo_result = (
-            str(cdo_result.stdout)
-            .replace("b'", "")
-            .replace("\\n", "")
-            .replace("'", "")
-            .strip()
-        )
-        cdo_result = cdo_result.split()
-        dataset = Dataset(self.current[0])
-
-        longs = None
-        units = None
-        longs = []
-        for x in cdo_result:
-            try:
-                longs.append(dataset.variables[x].long_name)
-            except:
-                longs.append(None)
-        # longs = [dataset.variables[x].long_name for x in cdo_result]
-        units = []
-        for x in cdo_result:
-            try:
-                units.append(dataset.variables[x].units)
-            except:
-                units.append(None)
-        ##units = [dataset.variables[x].units for x in cdo_result]
-
-        if longs is None and units is None:
-            return cdo_result
-
-        out = subprocess.run(
-            "cdo sinfon " + self.current[0],
-            shell=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        out = out.stdout.decode("utf-8")
-        out = out.split("\n")
-        out_inc = ["Grid coordinates :" in ff for ff in out]
-        var_det = []
-        i = 1
-        while True:
-            if out_inc[i]:
-                break
-            i += 1
-            var_det.append(out[i - 1])
-
-        var_det = [ff.replace(":", "") for ff in var_det]
-        var_det = [" ".join(ff.split()) for ff in var_det]
-        var_det = [
-            ff.replace("Parameter name", "variable").split(" ") for ff in var_det
-        ]
-        df_vars = var_det[1:]
-        labels = var_det[0]
-
-        df = pd.DataFrame.from_records(df_vars, columns=labels)
-        df = df.loc[:, ["Levels", "Points", "variable"]]
-        df = df.rename(columns={"Levels": "levels", "Points": "points"})
-
-        df = pd.DataFrame({"variable": cdo_result}).merge(df)
-
-        if longs is not None:
-            df["long_name"] = longs
-        if units is not None:
-            df["units"] = units
-
-        df = df.assign(levels=lambda x: x.levels.astype("int")).assign(
-            points=lambda x: x.points.astype("int")
-        )
-
-        return df
 
     @property
     def start(self):
