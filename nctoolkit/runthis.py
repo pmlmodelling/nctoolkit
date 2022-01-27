@@ -19,7 +19,7 @@ from nctoolkit.temp_file import temp_file
 
 from nctoolkit.show import nc_variables
 
-from nctoolkit.utils import cdo_version
+from nctoolkit.utils import version_below 
 
 
 def file_size(file_path):
@@ -150,19 +150,17 @@ def run_nco(command, target, out_file=None, overwrite=False):
     return target
 
 
-def run_cdo(command = None, target = None, out_file=None, overwrite=False, precision = None):
-
+def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision=None):
 
     if type(precision) is not str:
         raise ValueError("Precision must be str")
-    
+
     if precision not in ["I8", "I16", "I32", "F32", "F64", "default"]:
         raise ValueError(f"Precision - {precision} - is not valid")
-        
+
     if precision in ["I8", "I16", "I32", "F32", "F64"]:
         if " -b " not in command:
             command = command.replace("cdo ", f"cdo -b {precision} ")
-
 
     # make sure the output file does not exist
 
@@ -472,7 +470,7 @@ def run_this(os_command, self, output="one", out_file=None):
     if len(self._hold_history) != len(self.history):
         if self._merged == False and len(self.history) > 0 and output == "one":
 
-            if cdo_version() in ["9.9.9"]:
+            if session_info["cdo"] in ["9.9.9"]:
                 the_command = self.history[-1].replace("cdo", "") + " "
                 the_command = the_command.replace(" -L ", " ").strip()
                 if "apply," not in the_command:
@@ -561,11 +559,15 @@ def run_this(os_command, self, output="one", out_file=None):
                 new_history.append(ff_command)
 
                 if cores > 1:
-                    temp = pool.apply_async(run_cdo, [ff_command, target, out_file,  False, self._precision])
+                    temp = pool.apply_async(
+                        run_cdo, [ff_command, target, out_file, False, self._precision]
+                    )
                     results[ff] = temp
                 else:
 
-                    target = run_cdo(ff_command, target, out_file, precision = self._precision)
+                    target = run_cdo(
+                        ff_command, target, out_file, precision=self._precision
+                    )
                     target_list.append(target)
 
             if cores > 1:
@@ -655,7 +657,9 @@ def run_this(os_command, self, output="one", out_file=None):
 
             if "mergetime" in os_command:
                 try:
-                    target = run_cdo(os_command, target, out_file, precision = self._precision)
+                    target = run_cdo(
+                        os_command, target, out_file, precision=self._precision
+                    )
                 except:
 
                     var_list = []
@@ -669,15 +673,11 @@ def run_this(os_command, self, output="one", out_file=None):
                     for var in set(var_list):
                         if len(var_com) == len([x for x in var_com if var in x]):
                             new_list.append(var)
-                    if (
-                        "1.9.4" in cdo_version()
-                        or "1.9.5" in cdo_version()
-                        or "1.9.6" in cdo_version()
-                        or "1.9.7" in cdo_version()
-                        or "1.9.8" in cdo_version()
-                    ):
+                    if version_below(session_info["cdo"], "1.9.9"):
 
-                        target = run_cdo(os_command, target, out_file, precision = self._precision)
+                        target = run_cdo(
+                            os_command, target, out_file, precision=self._precision
+                        )
                     else:
                         f_list = ",".join(new_list)
                         os_command = os_command.replace(
@@ -692,9 +692,13 @@ def run_this(os_command, self, output="one", out_file=None):
                                 f"The following variables are not in all files, so were ignored when merging: {removed}"
                             )
 
-                        target = run_cdo(os_command, target, out_file, precision = self._precision)
+                        target = run_cdo(
+                            os_command, target, out_file, precision=self._precision
+                        )
             else:
-                target = run_cdo(os_command, target, out_file, precision = self._precision)
+                target = run_cdo(
+                    os_command, target, out_file, precision=self._precision
+                )
 
             remove_safe(target)
 

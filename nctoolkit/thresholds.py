@@ -7,8 +7,6 @@ from nctoolkit.runthis import run_this
 from nctoolkit.session import nc_safe, session_info, append_safe, remove_safe
 from nctoolkit.show import nc_variables
 from nctoolkit.temp_file import temp_file
-from nctoolkit.utils import cdo_version
-
 
 def first_above(self, x=None):
     """

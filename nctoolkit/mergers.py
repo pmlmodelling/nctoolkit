@@ -7,7 +7,7 @@ from datetime import datetime
 from nctoolkit.runthis import run_this
 from nctoolkit.session import session_info
 from nctoolkit.show import nc_variables, nc_times
-from nctoolkit.utils import cdo_version, version_below, version_above
+from nctoolkit.utils import version_below, version_above
 
 def below(x,y):
     x = x.split(".")
@@ -49,7 +49,7 @@ def merge(self, join="variables", match=["year", "month", "day"]):
 
     if join.startswith("time"):
         self.run()
-        if version_below(cdo_version(), "1.9.9"):
+        if version_below(session_info["cdo"], "1.9.9"):
             var_list = []
             var_com = []
 

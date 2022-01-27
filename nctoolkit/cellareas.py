@@ -2,11 +2,10 @@ import copy
 import subprocess
 
 from nctoolkit.cleanup import cleanup
-from nctoolkit.session import remove_safe, append_safe
+from nctoolkit.session import remove_safe, append_safe, session_info
 from nctoolkit.runthis import run_this, tidy_command, run_cdo
 from nctoolkit.show import nc_variables
 from nctoolkit.temp_file import temp_file
-from nctoolkit.utils import cdo_version
 
 
 def cell_area(self, join=True):
@@ -50,7 +49,7 @@ def cell_area(self, join=True):
 
         for ff in self:
 
-            if cdo_version() in ["1.9.4", "1.9.5", "1.9.6"]:
+            if session_info["cdo"] in ["1.9.4", "1.9.5", "1.9.6"]:
 
                 # in cdo < 1.9.6 chaining doesn't work with merge
 

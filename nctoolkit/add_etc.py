@@ -9,7 +9,7 @@ from nctoolkit.runthis import run_this, run_cdo, tidy_command
 from nctoolkit.session import nc_safe, session_info, append_safe, remove_safe
 from nctoolkit.show import nc_variables, nc_years, nc_months, nc_times
 from nctoolkit.temp_file import temp_file
-from nctoolkit.utils import cdo_version, version_above
+from nctoolkit.utils import version_above
 
 
 def arithall(self, stat="divc", x=None):
@@ -35,7 +35,7 @@ def operation(self, method="mul", ff=None, var=None):
 
     new = False
 
-    if version_above(cdo_version(), "1.9.9"):
+    if version_above(session_info["cdo"], "1.9.9"):
         new = True
     else:
         warnings.warn("Use CDO>=1.9.10 for smarter operations")

@@ -9,16 +9,6 @@ from nctoolkit.temp_file import temp_file
 from nctoolkit.session import get_safe, remove_safe
 
 
-def cdo_version():
-    """Function to find cdo version"""
-    cdo_check = subprocess.run(
-        "cdo --version", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
-    )
-    cdo_check = str(cdo_check.stderr).replace("\\n", "")
-    cdo_check = cdo_check.replace("b'", "").strip()
-    return cdo_check.split("(")[0].strip().split(" ")[-1]
-
-
 def ensemble_percentile(self, p=None):
     """
     Calculate an ensemble percentile
@@ -226,8 +216,7 @@ def ensemble_mean(self, nco=False, ignore_time=False):
 
     if nco is False:
 
-        if cdo_version() not in ["9.9.9"]:
-            self.run()
+        self.run()
 
         if len(self) == 1:
             warnings.warn(message="There is only one file in the dataset")
