@@ -12,6 +12,8 @@ This update can be previewed by installing the development version of nctoolkit.
 
 The dataset attribute `variables_detailed` is now removed after being replaced by `contents` in version 0.3.9.
 
+This version will recommend CDO versions greater than 1.9.8, because ensuring nctoolkit compatibility with earlier versions was becoming difficult and likely of little need to users.
+
 
 Release of v0.4.0
 ---------------
