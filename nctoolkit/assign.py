@@ -27,6 +27,7 @@ import numpy as np
 from nctoolkit.flatten import str_flatten
 from nctoolkit.runthis import run_this
 from nctoolkit.session import session_info
+from nctoolkit.utils import version_below
 
 def split_equation(mystr):
     return re.split("[-+^!=*/(&|)\[\]]", mystr)
@@ -694,6 +695,10 @@ def assign(self, drop=False, **kwargs):
 
         start = start.replace(" lambda ", " ").replace(" ", "")
 
+        version = session_info["cdo"]
+        if version_below(version, "1.9.8"):
+            if "isnan(" in start:
+                raise ValueError("Please install version >=1.9.8 of CDO to access isnan")
         # We need to fix pow functions potentially. Though, it might be better to stick with ^
 
         # translate numpy style functions to cdo functions
