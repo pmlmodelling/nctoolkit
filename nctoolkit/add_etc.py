@@ -35,10 +35,11 @@ def operation(self, method="mul", ff=None, var=None):
 
     new = False
 
-    if version_above(session_info["cdo"], "1.9.9"):
+    if version_above(session_info["cdo"], "1.9.8"):
         new = True
     else:
         warnings.warn("Use CDO>=1.9.10 for smarter operations")
+        self.run()
 
     if new:
 
