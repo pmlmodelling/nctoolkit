@@ -661,7 +661,7 @@ def open_data(x=[], checks=True, **kwargs):
         list1 = d.contents.reset_index(drop=True).data_type
         positions = [ind for ind, x in enumerate(list1) if x.startswith("I")]
         if len(positions):
-            bad = list(d.contents.reset_index(drop=True).data_type[positions])
+            bad = list(d.contents.reset_index(drop=True).variable[positions])
 
         # df = d.contents.reset_index(drop=True).query("'I' in data_type")
         if len(positions) > 0:
