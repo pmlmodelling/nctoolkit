@@ -1,4 +1,4 @@
-def plot(self, vars=None):
+def plot(self, vars=None, autoscale=True):
     from ncplot import view
 
     """
@@ -30,4 +30,22 @@ def plot(self, vars=None):
     if len(self) > 1:
         raise TypeError("You cannot view multiple files!")
 
-    return view(self[0], vars=vars)
+    if vars is None:
+        if len(set(self.contents.nlevels)) > 1:
+            raise ValueError(
+                "Unable to plot datasets where variables have differing levels"
+            )
+
+    if type(vars) is str:
+        vars = [vars]
+
+    if type(vars) is not list:
+        raise ValueError("vars must be a list")
+
+    if type(vars) is list:
+        if len(set(self.contents.query("variable in @vars").nlevels)) > 1:
+            raise ValueError(
+                "Unable to plot datasets where variables have differing levels"
+            )
+
+    return view(self[0], vars=vars, autoscale=autoscale)
