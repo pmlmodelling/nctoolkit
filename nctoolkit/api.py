@@ -1448,8 +1448,10 @@ class DataSet(object):
     from nctoolkit.fldstat import spatial_min
     from nctoolkit.fldstat import spatial_max
     from nctoolkit.fldstat import spatial_range
+    from nctoolkit.fldstat import spatial_stdev
     from nctoolkit.fldstat import spatial_sum
     from nctoolkit.fldstat import spatial_percentile
+    from nctoolkit.fldstat import spatial_var
 
     from nctoolkit.fldstat import box_mean
     from nctoolkit.fldstat import box_max

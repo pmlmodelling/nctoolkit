@@ -164,6 +164,32 @@ def spatial_max(self):
     """
     fldstat(self, stat="max")
 
+def spatial_stdev(self):
+    """
+    Calculate the spatial range for all variables
+    This is performed for each time step.
+
+    Examples
+    ------------
+    If you want to calculate the range of each variable across space for a dataset, just do the following:
+
+    >>> ds.spatial_max()
+    """
+    fldstat(self, stat="std")
+
+def spatial_var(self):
+    """
+    Calculate the spatial range for all variables
+    This is performed for each time step.
+
+    Examples
+    ------------
+    If you want to calculate the range of each variable across space for a dataset, just do the following:
+
+    >>> ds.spatial_max()
+    """
+    fldstat(self, stat="var")
+
 
 def spatial_range(self):
     """
