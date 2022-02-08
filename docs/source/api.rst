@@ -97,7 +97,7 @@ Vertical/level methods
 .. autosummary::
    :toctree: generated/
 
-   DataSet.surface
+   DataSet.top
    DataSet.bottom
    DataSet.vertical_interp
    DataSet.vertical_mean
