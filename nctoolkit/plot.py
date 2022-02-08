@@ -1,3 +1,26 @@
+import signal
+import time
+from contextlib import contextmanager
+import xarray as xr
+
+
+class TimeoutException(Exception):
+    pass
+
+
+@contextmanager
+def time_limit(seconds):
+    def signal_handler(signum, frame):
+        raise TimeoutException("Timed out. Try plotting only one variable!")
+
+    signal.signal(signal.SIGALRM, signal_handler)
+    signal.alarm(seconds)
+    try:
+        yield
+    finally:
+        signal.alarm(0)
+
+
 def plot(self, vars=None, autoscale=True):
     from ncplot import view
 
@@ -33,7 +56,7 @@ def plot(self, vars=None, autoscale=True):
     if vars is None:
         if len(set(self.contents.nlevels)) > 1:
             raise ValueError(
-                "Unable to plot datasets where variables have differing levels"
+                "Unable to plot datasets when variables have differing levels"
             )
 
     if type(vars) is str:
@@ -45,7 +68,14 @@ def plot(self, vars=None, autoscale=True):
     if type(vars) is list:
         if len(set(self.contents.query("variable in @vars").nlevels)) > 1:
             raise ValueError(
-                "Unable to plot datasets where variables have differing levels"
+                "Unable to plot datasets when variables have differing levels"
             )
+    if vars is None and len(self.variables) > 1:
+        with time_limit(15):
+            return view(self[0], vars=vars, autoscale=autoscale)
+
+    if type(vars) is list and len(vars) > 1:
+        with time_limit(15):
+            return view(self[0], vars=vars, autoscale=autoscale)
 
     return view(self[0], vars=vars, autoscale=autoscale)
