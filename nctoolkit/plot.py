@@ -62,7 +62,7 @@ def plot(self, vars=None, autoscale=True):
     if type(vars) is str:
         vars = [vars]
 
-    if type(vars) is not list:
+    if type(vars) is not list and vars is not None:
         raise ValueError("vars must be a list")
 
     if type(vars) is list:
@@ -71,11 +71,11 @@ def plot(self, vars=None, autoscale=True):
                 "Unable to plot datasets when variables have differing levels"
             )
     if vars is None and len(self.variables) > 1:
-        with time_limit(15):
-            return view(self[0], vars=vars, autoscale=autoscale)
+        with time_limit(20):
+            return view(self[0], autoscale=autoscale)
 
     if type(vars) is list and len(vars) > 1:
-        with time_limit(15):
+        with time_limit(20):
             return view(self[0], vars=vars, autoscale=autoscale)
 
     return view(self[0], vars=vars, autoscale=autoscale)
