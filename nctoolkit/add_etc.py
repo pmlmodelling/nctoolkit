@@ -75,7 +75,7 @@ def operation(self, method="mul", ff=None, var=None):
 
             op_method = None
 
-            if len(ff_times_df) > 1:
+            if len(ff_times_df) > 1 and op_method is not None:
                 if len(ff_times_df) == len(ff_times_df.drop_duplicates()):
                     if len(ff_times_df) > len(
                         ff_times_df.loc[:, ["year", "month"]].drop_duplicates()
@@ -87,7 +87,7 @@ def operation(self, method="mul", ff=None, var=None):
                         ):
                             op_method = "yday"
 
-            if len(ff_times_df) > 1:
+            if len(ff_times_df) > 1 and op_method is not None:
                 if len(ff_times_df) == len(
                     ff_times_df.drop(columns="day").drop_duplicates()
                 ):
@@ -95,7 +95,7 @@ def operation(self, method="mul", ff=None, var=None):
                         if len(set(ff_times_df.month)) > 1:
                             op_method = "yearmon"
 
-            if len(ff_times_df) > 1:
+            if len(ff_times_df) > 1 and op_method is not None:
                 if len(ff_times_df) == len(
                     ff_times_df.drop(columns="day").drop_duplicates()
                 ):
@@ -103,7 +103,7 @@ def operation(self, method="mul", ff=None, var=None):
                         if len(set(ff_times_df.month)) > 1:
                             op_method = "mon"
 
-            if len(ff_times_df) > 1:
+            if len(ff_times_df) > 1 and op_method is not None:
                 if len(ff_times_df) == len(
                     ff_times_df.drop(columns="day").drop_duplicates()
                 ):
@@ -214,9 +214,17 @@ def operation(self, method="mul", ff=None, var=None):
         new_commands = []
         new_files = []
 
+        orig_op_method = op_method
+
         for x in self1:
 
+            op_method = orig_op_method
+
+            if len(nc_times(x)) == len(ff_times):
+                op_method = "single"
+
             run = False
+
 
             if op_method == "single" and run == False:
                 run = True
@@ -386,8 +394,8 @@ def operation(self, method="mul", ff=None, var=None):
 
             self1.current = new_files
 
-            for ff in new_files:
-                remove_safe(ff)
+            for ff1 in new_files:
+                remove_safe(ff1)
             self1._hold_history = copy.deepcopy(self1.history)
 
             if merge_names:
@@ -465,8 +473,8 @@ def operation(self, method="mul", ff=None, var=None):
 
             self.current = new_files
 
-            for ff in new_files:
-                remove_safe(ff)
+            for ff1 in new_files:
+                remove_safe(ff1)
             self._hold_history = copy.deepcopy(self.history)
             cleanup()
 
