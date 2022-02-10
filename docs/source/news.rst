@@ -8,6 +8,8 @@ Version 0.4.1 will be released in March 2022. This will be maintenance release f
 
 A new method, called ``checks`` will be introduced that can be used to troubleshoot data problems and to ensure there are no obvious data issues (such as a lack of CF-compliance).
 
+Users can now access dataset calendars using ``ds.calendar``.
+
 This update can be previewed by installing the development version of nctoolkit.
 
 The dataset attribute `variables_detailed` is now removed after being replaced by `contents` in version 0.3.9.
