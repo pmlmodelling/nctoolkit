@@ -1035,6 +1035,36 @@ class DataSet(object):
         return result
 
     @property
+    def calendar(self):
+        """
+        List calendars of dataset files
+        """
+
+        # return None
+
+        cals = []
+        for ff in self:
+            ds = Dataset(ff)
+            for x in [x for x in ds.variables.keys() if "time" in x]:
+                y = ds.variables[x]
+                try:
+                    cal = y.getncattr("calendar")
+                except:
+                    cal = None
+                if cal is not None:
+                    break
+            if cal is None:
+                raise ValueError("Unable to parse the calendars")
+
+            cals.append(pd.DataFrame({"file": ff, "calendar": [cal]}))
+
+        cals = pd.concat(cals).reset_index(drop=True)
+
+        if len(set(cals.calendar)) == 1:
+            return cals.calendar[0]
+        return cals
+
+    @property
     def variables(self):
         """
         List variables contained in a dataset
