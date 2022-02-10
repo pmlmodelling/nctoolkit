@@ -16,7 +16,7 @@ The dataset attribute `variables_detailed` is now removed after being replaced b
 
 This version will recommend CDO versions greater than 1.9.8, because ensuring nctoolkit compatibility with earlier versions was becoming difficult and likely of little need to users.
 
-Bug fix: The methods ``multiply`` etc. failed when datasets did not have time as a dimension in version 0.4.0. This is now fixed.
+Bug fixes: The methods ``multiply`` etc. failed when datasets did not have time as a dimension in version 0.4.0. This is now fixed. Previously, `ds.contents` always returned None for the number of time steps. Now fixed.
 
 
 Release of v0.4.0
