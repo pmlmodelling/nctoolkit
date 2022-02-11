@@ -33,6 +33,13 @@ def operation(self, method="mul", ff=None, var=None):
     This is used by add etc.
     """
 
+    # throw error if there is a problem with var
+    if var is not None:
+        if type(var) is not str:
+            raise TypeError("var supplied is not a string")
+        if var not in nc_variables(ff):
+            raise ValueError("var supplied is not available in the dataset")
+
     new = False
     # throw error if the file to operate with does not exist
     if ff is not None:
@@ -73,7 +80,6 @@ def operation(self, method="mul", ff=None, var=None):
         # then this operation will not work without running it first
         self1.run()
 
-
         self_times = []
         for x in self1:
             x_times = nc_times(x)
@@ -82,7 +88,9 @@ def operation(self, method="mul", ff=None, var=None):
                 months = [x.month for x in x_times]
                 days = [x.day for x in x_times]
                 hours = [x.hour for x in x_times]
-                df = pd.DataFrame({"year":years, "month":months, "day":days, "hour":hours})
+                df = pd.DataFrame(
+                    {"year": years, "month": months, "day": days, "hour": hours}
+                )
                 df["path"] = x
                 self_times.append(df)
             else:
@@ -99,7 +107,8 @@ def operation(self, method="mul", ff=None, var=None):
         method_dict[x] = None
 
     # figure out if a yearly will do
-    if new and possible_switch:
+    possible_switch = True
+    if new:
         if ff_times_df.groupby("year").size().max() == 1:
             for ss in self_times:
                 if set(ss.year) != set([x for x in list(ff_times_df.year)]):
@@ -107,28 +116,28 @@ def operation(self, method="mul", ff=None, var=None):
                 else:
                     if method_dict[x] is not None:
                         method_dict[x] = f"year{method}"
-                    
 
             if possible_switch:
                 method = f"year{method}"
                 new = False
 
     # now if all of the files have the same number of time steps
-    if new and possible_switch:
+    possible_switch = True
+    if new:
         for ss in self_times:
-            if len(ff_times_df) !=  len(self_times):
+            if len(ff_times_df) != len(self_times):
                 possible_switch = False
             else:
                 if method_dict[x] is not None:
-                    method_dict[x] = method 
+                    method_dict[x] = method
 
             if possible_switch:
-                method = method 
+                method = method
                 new = False
 
-
     # figure out if a single year monthly will do
-    if new and possible_switch:
+    possible_switch = True
+    if new:
         if ff_times_df.groupby("month").size().max() == 1:
             for ss in self_times:
                 if set(ss.month) != set([x for x in list(ff_times_df.month)]):
@@ -136,16 +145,38 @@ def operation(self, method="mul", ff=None, var=None):
                 else:
                     if method_dict[x] is not None:
                         method_dict[x] = f"ymon{method}"
-                    
 
             if possible_switch:
                 method = f"ymon{method}"
                 new = False
 
+    # figure out if a single year monthly will do
+    if new and possible_switch:
+        if ff_times_df.groupby(["month", "year"]).size().max() == 1:
+            for ss in self_times:
+                if (
+                    ss.loc[:, ["month", "year"]]
+                    .drop_duplicates()
+                    .reset_index(drop=True)
+                    .equals(
+                        ff_times_df.loc[:, ["month", "year"]]
+                        .drop_duplicates()
+                        .reset_index(drop=True)
+                    )
+                    == False
+                ):
+                    possible_switch = False
+                else:
+                    if method_dict[x] is not None:
+                        method_dict[x] = f"mon{method}"
+
+            if possible_switch:
+                method = f"mon{method}"
+                new = False
 
     if new:
 
-    #'if possible_switch:
+        #'if possible_switch:
 
         ff_times = nc_times(ff)
         if len(ff_times) == 0:
@@ -165,7 +196,7 @@ def operation(self, method="mul", ff=None, var=None):
 
             op_method = None
 
-            #if len(ff_times_df) > 1 and op_method is not None:
+            # if len(ff_times_df) > 1 and op_method is not None:
             if len(ff_times_df) > 1:
                 if len(ff_times_df) == len(ff_times_df.drop_duplicates()):
                     if len(ff_times_df) > len(
@@ -178,7 +209,7 @@ def operation(self, method="mul", ff=None, var=None):
                         ):
                             op_method = "yday"
 
-            #if len(ff_times_df) > 1 and op_method is not None:
+            # if len(ff_times_df) > 1 and op_method is not None:
             if len(ff_times_df) > 1:
                 if len(ff_times_df) == len(
                     ff_times_df.drop(columns="day").drop_duplicates()
@@ -187,7 +218,7 @@ def operation(self, method="mul", ff=None, var=None):
                         if len(set(ff_times_df.month)) > 1:
                             op_method = "yearmon"
 
-            #if len(ff_times_df) > 1 and op_method is not None:
+            # if len(ff_times_df) > 1 and op_method is not None:
             if len(ff_times_df) > 1:
                 if len(ff_times_df) == len(
                     ff_times_df.drop(columns="day").drop_duplicates()
@@ -196,7 +227,7 @@ def operation(self, method="mul", ff=None, var=None):
                         if len(set(ff_times_df.month)) > 1:
                             op_method = "mon"
 
-            #if len(ff_times_df) > 1 and op_method is not None:
+            # if len(ff_times_df) > 1 and op_method is not None:
             if len(ff_times_df) > 1:
                 if len(ff_times_df) == len(
                     ff_times_df.drop(columns="day").drop_duplicates()
@@ -207,13 +238,6 @@ def operation(self, method="mul", ff=None, var=None):
 
             if len(ff_times_df) == 1:
                 op_method = "single"
-
-        # throw error if there is a problem with var
-        if var is not None:
-            if type(var) is not str:
-                raise TypeError("var supplied is not a string")
-            if var not in nc_variables(ff):
-                raise ValueError("var supplied is not available in the dataset")
 
         bad_vars = False
 
@@ -318,7 +342,6 @@ def operation(self, method="mul", ff=None, var=None):
                 op_method = "single"
 
             run = False
-
 
             if op_method == "single" and run == False:
                 run = True
