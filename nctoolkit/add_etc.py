@@ -34,12 +34,33 @@ def operation(self, method="mul", ff=None, var=None):
     """
 
     new = False
+    # throw error if the file to operate with does not exist
+    if ff is not None:
+        if os.path.exists(ff) is False:
+            raise ValueError(f"{ff} does not exist!")
 
     if version_above(session_info["cdo"], "1.9.8"):
         new = True
     else:
         warnings.warn("Use CDO>=1.9.10 for smarter operations")
         self.run()
+
+    if new:
+        ff_times = nc_times(ff)
+        if len(ff_times) <= 1:
+            op_method = "single"
+            new = False
+            method = method
+        else:
+            ff_times_df = (
+                pd.DataFrame({"time": ff_times})
+                .assign(
+                    year=lambda x: x.time.dt.year,
+                    month=lambda x: x.time.dt.month,
+                    day=lambda x: x.time.dt.day,
+                )
+                .drop(columns="time")
+            )
 
     if new:
 
@@ -52,10 +73,62 @@ def operation(self, method="mul", ff=None, var=None):
         # then this operation will not work without running it first
         self1.run()
 
-        # throw error if the file to operate with does not exist
-        if ff is not None:
-            if os.path.exists(ff) is False:
-                raise ValueError(f"{ff} does not exist!")
+
+        self_times = []
+        for x in self1:
+            x_times = nc_times(x)
+            if x_times != []:
+                years = [x.year for x in x_times]
+                months = [x.month for x in x_times]
+                days = [x.day for x in x_times]
+                hours = [x.hour for x in x_times]
+                df = pd.DataFrame({"year":years, "month":months, "day":days, "hour":hours})
+                df["path"] = x
+                self_times.append(df)
+            else:
+                self_times.append(None)
+
+        possible_switch = True
+        for x in self_times:
+            if x is None:
+                possible_switch = False
+
+    method_dict = dict()
+
+    for x in self:
+        method_dict[x] = None
+
+    # figure out if a yearly will do
+    if new and possible_switch:
+        if ff_times_df.groupby("year").size().max() == 1:
+            for ss in self_times:
+                if set(ss.year) != set([x for x in list(ff_times_df.year)]):
+                    possible_switch = False
+                else:
+                    if method_dict[x] is not None:
+                        method_dict[x] = f"year{method}"
+                    
+
+            if possible_switch:
+                method = f"year{method}"
+                new = False
+
+    # now if all of the files have the same number of time steps
+    if new and possible_switch:
+        for ss in self_times:
+            if len(ff_times_df) !=  len(self_times):
+                possible_switch = False
+            else:
+                if method_dict[x] is not None:
+                    method_dict[x] = method 
+
+            if possible_switch:
+                method = method 
+                new = False
+
+    if new:
+
+    #'if possible_switch:
 
         ff_times = nc_times(ff)
         if len(ff_times) == 0:
@@ -75,7 +148,8 @@ def operation(self, method="mul", ff=None, var=None):
 
             op_method = None
 
-            if len(ff_times_df) > 1 and op_method is not None:
+            #if len(ff_times_df) > 1 and op_method is not None:
+            if len(ff_times_df) > 1:
                 if len(ff_times_df) == len(ff_times_df.drop_duplicates()):
                     if len(ff_times_df) > len(
                         ff_times_df.loc[:, ["year", "month"]].drop_duplicates()
@@ -87,7 +161,8 @@ def operation(self, method="mul", ff=None, var=None):
                         ):
                             op_method = "yday"
 
-            if len(ff_times_df) > 1 and op_method is not None:
+            #if len(ff_times_df) > 1 and op_method is not None:
+            if len(ff_times_df) > 1:
                 if len(ff_times_df) == len(
                     ff_times_df.drop(columns="day").drop_duplicates()
                 ):
@@ -95,7 +170,8 @@ def operation(self, method="mul", ff=None, var=None):
                         if len(set(ff_times_df.month)) > 1:
                             op_method = "yearmon"
 
-            if len(ff_times_df) > 1 and op_method is not None:
+            #if len(ff_times_df) > 1 and op_method is not None:
+            if len(ff_times_df) > 1:
                 if len(ff_times_df) == len(
                     ff_times_df.drop(columns="day").drop_duplicates()
                 ):
@@ -103,7 +179,8 @@ def operation(self, method="mul", ff=None, var=None):
                         if len(set(ff_times_df.month)) > 1:
                             op_method = "mon"
 
-            if len(ff_times_df) > 1 and op_method is not None:
+            #if len(ff_times_df) > 1 and op_method is not None:
+            if len(ff_times_df) > 1:
                 if len(ff_times_df) == len(
                     ff_times_df.drop(columns="day").drop_duplicates()
                 ):
