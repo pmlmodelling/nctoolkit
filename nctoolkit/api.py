@@ -1280,7 +1280,7 @@ class DataSet(object):
 
             times = []
 
-            ds = xr.open_dataset(ff)
+            ds = xr.open_dataset(ff, decode_times = False)
             time_name = [x for x in ds.variables if "time" in x]
 
             # get time name
