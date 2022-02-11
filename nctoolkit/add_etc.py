@@ -126,6 +126,23 @@ def operation(self, method="mul", ff=None, var=None):
                 method = method 
                 new = False
 
+
+    # figure out if a single year monthly will do
+    if new and possible_switch:
+        if ff_times_df.groupby("month").size().max() == 1:
+            for ss in self_times:
+                if set(ss.month) != set([x for x in list(ff_times_df.month)]):
+                    possible_switch = False
+                else:
+                    if method_dict[x] is not None:
+                        method_dict[x] = f"ymon{method}"
+                    
+
+            if possible_switch:
+                method = f"ymon{method}"
+                new = False
+
+
     if new:
 
     #'if possible_switch:
