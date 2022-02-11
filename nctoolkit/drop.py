@@ -20,11 +20,13 @@ def drop(self, **kwargs):
         A variable or list of variables to select. This method will accept wild cards.
         So using 'var*' would select all variables beginning with 'var'.
     day : list, range or int
-        Day(s) to select.
+        Day(s) to drop.
     month : list, range or int
-        Month(s) to select.
+        Month(s) to drop.
     year : list, range or int
-        Year(s) to select.
+        Year(s) to drop.
+    time : list, range or int
+         Time steps to to drop. This can include negative indices.
 
     Examples
     ------------
@@ -47,7 +49,7 @@ def drop(self, **kwargs):
     if len(kwargs) == 0:
         raise ValueError("Please provide terms to drop")
 
-    valids = ["var", "mon", "day", "year"]
+    valids = ["var", "mon", "day", "year", "time"]
 
 
     for key in kwargs:
@@ -61,6 +63,21 @@ def drop(self, **kwargs):
     temporal_command = "cdo -delete"
 
     for key in kwargs:
+        if "time" in key:
+            vars = kwargs[key]
+
+            if type(vars) is not list:
+                vars = [vars]
+
+            for vv in vars:
+                if type(vv) is not int:
+                    raise TypeError(f"{vv} is not an int")
+
+            vars = str_flatten(vars, ",")
+
+            # create the cdo command and run it
+            cdo_command = f"cdo -delete,timestep={vars}"
+            run_this(cdo_command, self, output="ensemble")
 
         if "var" in key:
             vars = kwargs[key]
