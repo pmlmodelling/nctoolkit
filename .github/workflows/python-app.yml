@@ -65,8 +65,6 @@ jobs:
        run: |
          conda activate foo
          pytest tests/test*.py --cov=./ --cov-report=xml
-
-
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
         with:
@@ -79,11 +77,3 @@ jobs:
           name: codecov-umbrella
           path_to_write_report: ./coverage/codecov_report.txt
           verbose: true
-
-
-
-
-
-
-
-
