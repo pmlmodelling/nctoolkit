@@ -35,8 +35,9 @@ jobs:
             coverage run -m pytest tests/test_assign.py
             coverage report
             coverage html
+            coverage xml
       - store_artifacts:
           path: htmlcov
       
       - codecov/upload:
-          file: htmlcov/*.html
+          file: htmlcov/*.xml
