@@ -33,8 +33,6 @@ jobs:
             coverage html
       - store_artifacts:
           path: htmlcov
-jobs:
-  build:
-    steps:
+
       - codecov/upload:
-        file: htmlcov
+          file: htmlcov/*.html
