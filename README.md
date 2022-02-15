@@ -6,7 +6,7 @@
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/pmlmodelling/nctoolkit/issues) 
 [![codecov](https://codecov.io/gh/pmlmodelling/nctoolkit/branch/master/graph/badge.svg)](https://codecov.io/gh/pmlmodelling/nctoolkit)
 [![Build Status](https://app.travis-ci.com/pmlmodelling/nctoolkit.svg?branch=master)](https://app.travis-ci.com/github/pmlmodelling/nctoolkit)
-[![CircleCI](https://circleci.com/github/pmlmodelling/nctoolkit.svg?style=svg)](https://circleci.com/github/pmlmodelling/nctoolkit)
+[![CircleCI](https://circleci.com/gh/pmlmodelling/nctoolkit/tree/master.svg?style=svg)](https://circleci.com/gh/pmlmodelling/nctoolkit/tree/master)
 
 [![Documentation Status](https://readthedocs.org/projects/nctoolkit/badge/?version=latest)](https://nctoolkit.readthedocs.io/en/latest/?badge=latest)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4494237.svg)](https://doi.org/10.5281/zenodo.4494237)
