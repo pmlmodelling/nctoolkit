@@ -65,7 +65,7 @@ conda install -c conda-forge nco
 
 If you want to install CDO from source, bash scripts are available [here](https://github.com/pmlmodelling/nctoolkit/tree/master/cdo_installers).
  
-nctoolkit is tested with continuous integration using Travis (for Linux) and GitHub actions (for Mac OS). It will not work on Windows platforms today or in future, because of system dependency limitations. 
+nctoolkit is tested with continuous integration using Circle CI (for Linux) and GitHub actions (for Mac OS). It will not work on Windows platforms today or in future, because of system dependency limitations. 
 
 
 ## Reference and tutorials
