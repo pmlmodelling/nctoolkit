@@ -35,3 +35,4 @@ jobs:
           path: htmlcov
       
       - codecov/upload:
+        file: htmlcov/*html
