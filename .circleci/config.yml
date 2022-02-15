@@ -28,10 +28,10 @@ jobs:
             pip install pytest
             pip install coverage
             pip install .
-            coverage run -m pytest tests/te*.py
+            coverage run -m pytest tests/test_assign.py
             coverage report
             coverage html
       - store_artifacts:
           path: htmlcov
       - codecov/upload:
-          file: htmlcov/index.html
+          file: htmlcov/*.html
