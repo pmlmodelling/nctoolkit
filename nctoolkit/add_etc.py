@@ -52,6 +52,20 @@ def operation(self, method="mul", ff=None, var=None):
         warnings.warn("Use CDO>=1.9.10 for smarter operations")
         self.run()
 
+    # grab the method string
+    if new:
+        if method == "mul":
+            nc_str = "Multiplying by a"
+        if method == "sub":
+            nc_operation = "subtraction"
+            nc_str = "Subtracting a"
+        if method == "add":
+            nc_operation = "addition"
+            nc_str = "Adding a"
+        if method == "div":
+            nc_operation = "division"
+            nc_str = "Dividing by a"
+
     if new:
         ff_times = nc_times(ff)
         if len(ff_times) <= 1:
@@ -59,15 +73,21 @@ def operation(self, method="mul", ff=None, var=None):
             new = False
             method = method
         else:
-            ff_times_df = (
-                pd.DataFrame({"time": ff_times})
-                .assign(
-                    year=lambda x: x.time.dt.year,
-                    month=lambda x: x.time.dt.month,
-                    day=lambda x: x.time.dt.day,
+            if type(ff_times[0]) == str:
+                years = [int(x.split("T")[0].split("-")[0]) for x in ff_times]
+                months = [int(x.split("T")[0].split("-")[1]) for x in ff_times]
+                days = [int(x.split("T")[0].split("-")[2]) for x in ff_times]
+                ff_times_df = pd.DataFrame({"year":years, "month":months, "day":months})
+            else:
+                ff_times_df = (
+                    pd.DataFrame({"time": ff_times})
+                    .assign(
+                        year=lambda x: x.time.dt.year,
+                        month=lambda x: x.time.dt.month,
+                        day=lambda x: x.time.dt.day,
+                    )
+                    .drop(columns="time")
                 )
-                .drop(columns="time")
-            )
 
     if new:
 
@@ -84,15 +104,23 @@ def operation(self, method="mul", ff=None, var=None):
         for x in self1:
             x_times = nc_times(x)
             if x_times != []:
-                years = [x.year for x in x_times]
-                months = [x.month for x in x_times]
-                days = [x.day for x in x_times]
-                hours = [x.hour for x in x_times]
-                df = pd.DataFrame(
-                    {"year": years, "month": months, "day": days, "hour": hours}
-                )
-                df["path"] = x
-                self_times.append(df)
+                if type(x_times[0]) == str:
+                    years = [int(x.split("T")[0].split("-")[0]) for x in x_times]
+                    months = [int(x.split("T")[0].split("-")[1]) for x in x_times]
+                    days = [int(x.split("T")[0].split("-")[2]) for x in x_times]
+                    df = pd.DataFrame({"year":years, "month":months, "day":months})
+                    self_times.append(df)
+
+                else:
+                    years = [x.year for x in x_times]
+                    months = [x.month for x in x_times]
+                    days = [x.day for x in x_times]
+                    hours = [x.hour for x in x_times]
+                    df = pd.DataFrame(
+                        {"year": years, "month": months, "day": days, "hour": hours}
+                    )
+                    df["path"] = x
+                    self_times.append(df)
             else:
                 self_times.append(None)
 
@@ -120,12 +148,13 @@ def operation(self, method="mul", ff=None, var=None):
             if possible_switch:
                 method = f"year{method}"
                 new = False
+                warnings.warn(f"{nc_str} yearly time series")
 
     # now if all of the files have the same number of time steps
     possible_switch = True
     if new:
         for ss in self_times:
-            if len(ff_times_df) != len(self_times):
+            if len(ff_times_df) != len(ss):
                 possible_switch = False
             else:
                 if method_dict[x] is not None:
@@ -134,6 +163,7 @@ def operation(self, method="mul", ff=None, var=None):
             if possible_switch:
                 method = method
                 new = False
+                warnings.warn(f"{nc_str}t time series with the same number of time steps")
 
     # figure out if a single year monthly will do
     possible_switch = True
@@ -149,9 +179,11 @@ def operation(self, method="mul", ff=None, var=None):
             if possible_switch:
                 method = f"ymon{method}"
                 new = False
+                warnings.warn(f"{nc_str} monthly time series")
 
     # figure out if a single year monthly will do
-    if new and possible_switch:
+    possible_switch = True
+    if new:
         if ff_times_df.groupby(["month", "year"]).size().max() == 1:
             for ss in self_times:
                 if (
@@ -173,6 +205,7 @@ def operation(self, method="mul", ff=None, var=None):
             if possible_switch:
                 method = f"mon{method}"
                 new = False
+                warnings.warn(f"{nc_str} multi-year monthly time series")
 
     if new:
 
