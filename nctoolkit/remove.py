@@ -1,6 +1,8 @@
 import os
 import warnings
 from nctoolkit.session import session_info, nc_safe, get_tempdirs, get_safe
+import time
+from threading import Thread
 
 def nc_remove(ff, deep=False):
     """
@@ -51,7 +53,21 @@ def nc_remove(ff, deep=False):
 
     # if things are going in parallel, it's possible the file will have been deleted by another process
     # so use simple exception handling in case this has happend
-    try:
-        os.remove(ff)
-    except:
-        x = "1"
+
+    # If things are in parallel, it's safer to add a delay here
+    if session_info["parallel"] == False:
+        try:
+            os.remove(ff)
+        except:
+            x = "1"
+    else:
+        def del_this():
+            time.sleep(10)
+            try:
+                os.remove(ff)
+            except:
+                x = "1"
+
+        t = Thread(target = del_this)
+        t.start()
+
