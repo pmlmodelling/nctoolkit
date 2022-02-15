@@ -27,6 +27,7 @@ jobs:
             conda install -c conda-forge cdo=1.9.10 nco cartopy -y
             pip install pytest
             pip install coverage
+            pip install --user codecov
             pip install .
             coverage run -m pytest tests/test_assign.py
             coverage report
