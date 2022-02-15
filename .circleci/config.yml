@@ -26,4 +26,4 @@ jobs:
             pip install pytest
             pip install .
             #flake8 --statistics
-            pytest -v --cov
+            pytest tests/te*.py
