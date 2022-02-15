@@ -22,7 +22,7 @@ jobs:
           command: |
             conda init bash
             source activate nctoolkit
-            conda install cdo=1.9.10 nco cartopy -y
+            conda install -c conda-forge cdo=1.9.10 nco cartopy -y
             pip install pytest
             pip install .
             #flake8 --statistics
