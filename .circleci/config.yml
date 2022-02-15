@@ -1,0 +1,29 @@
+# Python CircleCI 2.0 configuration file
+version: 2
+jobs:
+  build:
+    docker:
+      - image: continuumio/miniconda3
+
+    working_directory: ~/repo
+
+    steps:
+      # Step 1: obtain repo from GitHub
+      - checkout
+      # Step 2: create virtual env and install dependencies
+      - run:
+          name: install dependencies
+          command: |
+            conda create -n nctoolkit python=3.9 
+
+      # Step 3: run linter and tests
+      - run:
+          name: run tests
+          command: |
+            conda init bash
+            source activate nctoolkit
+            conda install cdo=1.9.10 nco cartopy -y
+            pip install pytest
+            pip install .
+            #flake8 --statistics
+            pytest -v --cov
