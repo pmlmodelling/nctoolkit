@@ -1,4 +1,6 @@
 # Python CircleCI 2.0 configuration file
+orbs:
+  codecov: codecov/codecov@1.0.2
 version: 2
 jobs:
   build:
@@ -31,10 +33,8 @@ jobs:
             coverage html
       - store_artifacts:
           path: htmlcov
-orbs:
-  codecov: codecov/codecov@1.0.2
 jobs:
-    build:
-      steps:
-        - codecov/upload:
-          file: htmlcov
+  build:
+    steps:
+      - codecov/upload:
+        file: htmlcov
