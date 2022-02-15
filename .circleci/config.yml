@@ -32,7 +32,7 @@ jobs:
             pip install coverage
             pip install --user codecov
             pip install .
-            coverage run -m pytest tests/test_assign.py
+            coverage run -m pytest tests/test_*.py
             coverage report
             coverage xml
       - store_artifacts:
