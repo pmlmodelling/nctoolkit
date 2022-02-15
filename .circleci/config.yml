@@ -1,7 +1,7 @@
 # Python CircleCI 2.0 configuration file
 version: 2.1
 orbs:
-  codecov: codecov/codecov@3.2.2
+  codecov: codecov/codecov@3.1.1
 jobs:
   build:
     docker:
@@ -35,4 +35,4 @@ jobs:
           path: htmlcov
       
       - codecov/upload:
-          file: htmlcov/*.json
+          file: htmlcov/index.html
