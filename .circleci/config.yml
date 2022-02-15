@@ -28,6 +28,7 @@ jobs:
             pip install pytest
             pip install coverage
             pip install --user codecov
+            conda install -c conda-forge curl
             pip install .
             coverage run -m pytest tests/test_assign.py
             coverage report
