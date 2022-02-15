@@ -18,6 +18,8 @@ jobs:
           command: |
             conda create -n nctoolkit python=3.9 
             conda install -c conda-forge curl
+            conda install -c conda-forge gnupg
+
 
       # Step 3: run linter and tests
       - run:
