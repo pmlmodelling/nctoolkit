@@ -4,6 +4,11 @@ import shutil
 import platform
 import tempfile
 
+import time, os, stat
+
+def file_age_in_seconds(pathname):
+    return time.time() - os.stat(pathname)[stat.ST_MTIME]
+
 from nctoolkit.remove import nc_remove
 from nctoolkit.session import (
     session_info,
@@ -56,9 +61,16 @@ def cleanup():
     if len(delete_these) == 0:
         return None
 
-    for dd in delete_these:
-        if os.path.exists(dd):
-            nc_remove(dd)
+    # ignore stuff less than a minute old...
+
+    if session_info["parallel"]:
+        for dd in delete_these:
+            if os.path.exists(dd) and file_age_in_seconds(dd) > 60:
+                    nc_remove(dd)
+    else:
+        for dd in delete_these:
+            if os.path.exists(dd):
+                    nc_remove(dd)
 
     # only update the session size on linux
 
