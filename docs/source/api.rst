@@ -277,6 +277,8 @@ Statistical methods
    DataSet.spatial_percentile
    DataSet.spatial_range
    DataSet.spatial_sum
+   DataSet.spatial_stdev
+   DataSet.spatial_var
 
    DataSet.centre
 
@@ -337,7 +339,7 @@ Miscellaneous methods
    DataSet.first_above
    DataSet.first_below
    DataSet.last_above
-   DataSet.last_above
+   DataSet.last_below
    DataSet.cdo_command
    DataSet.nco_command
    DataSet.compare
@@ -345,6 +347,8 @@ Miscellaneous methods
    DataSet.lt
    DataSet.reduce_dims
    DataSet.reduce_grid
+   DataSet.set_precision
+   DataSet.check
 
 
 
@@ -355,6 +359,7 @@ Ecological methods
    :toctree: generated/
 
    DataSet.phenology
+   DataSet.initiation
 
 
 
