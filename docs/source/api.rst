@@ -53,14 +53,17 @@ Accessing attributes
    :toctree: generated/
 
    DataSet.variables
+   DataSet.contents
+   DataSet.times
    DataSet.years
    DataSet.months
-   DataSet.times
    DataSet.levels
    DataSet.size
    DataSet.current
    DataSet.history
    DataSet.start
+   DataSet.calendar
+   DataSet.ncformat
 
 Plotting
 ------------------
