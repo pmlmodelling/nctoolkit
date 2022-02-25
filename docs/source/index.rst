@@ -21,8 +21,10 @@ Core abilities include:
    - Calculating ensemble averages
    - Calculating phenological metrics
 
+nctoolkit is developed as open source software by the Marine Systems Modelling group at `Plymouth Marine Laboratory. <https://www.pml.ac.uk/science/Marine-Systems-Modelling/>`__ 
+
 .. image:: pml-logo.gif 
-  :width: 400
+  :width: 600
 
 
 .. toctree::
