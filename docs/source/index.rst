@@ -21,6 +21,8 @@ Core abilities include:
    - Calculating ensemble averages
    - Calculating phenological metrics
 
+.. image:: pml-logo.gif 
+  :width: 400
 
 
 .. toctree::
