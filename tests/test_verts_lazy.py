@@ -92,64 +92,66 @@ class TestVerts:
 
         assert x == y
 
-        ds = nc.open_data("data/vertical_tester.nc")
-        ds.vertical_integration("e3t")
-        ds.select(variable = "one")
-        ds.run()
-        ds1 = nc.open_data(ff)
-        ds1.assign(e3t = lambda x: x.e3t * (isnan(x.one) is False ) )
-        ds1.select(variables = "e3t")
-        ds1.set_missing(0)
-        ds1.vertical_sum()
-        ds1.run()
+        version = nc.utils.cdo_version()
+        if nc.utils.version_below(version, "1.9.8") == False:
+            ds = nc.open_data("data/vertical_tester.nc")
+            ds.vertical_integration("e3t")
+            ds.select(variable = "one")
+            ds.run()
+            ds1 = nc.open_data(ff)
+            ds1.assign(e3t = lambda x: x.e3t * (isnan(x.one) is False ) )
+            ds1.select(variables = "e3t")
+            ds1.set_missing(0)
+            ds1.vertical_sum()
+            ds1.run()
 
-        ds2 = ds.copy()
-        ds2.subtract(ds1)
-        ds2.spatial_sum()
-        assert ds2.to_dataframe().one.sum() == 0
+            ds2 = ds.copy()
+            ds2.subtract(ds1)
+            ds2.spatial_sum()
+            assert ds2.to_dataframe().one.sum() == 0
 
-        ds = nc.open_data(ff)
-        ds.vertical_integration(depth_range=[2, 302], thickness="e3t")
-        ds.spatial_max()
-        assert ds.to_dataframe().one[0].astype("int") == 300
+            ds = nc.open_data(ff)
+            ds.vertical_integration(depth_range=[2, 302], thickness="e3t")
+            ds.spatial_max()
+            assert ds.to_dataframe().one[0].astype("int") == 300
 
 
-        ds = nc.open_data(ff)
-        ds3 = nc.open_data(ff)
-        ds3.select(variable = "e3t")
-        ds.vertical_integration(ds3)
-        ds.select(variable = "one")
-        ds.run()
-        ds1 = nc.open_data(ff)
-        ds1.assign(e3t = lambda x: x.e3t * (isnan(x.one) is False ) )
-        ds1.select(variables = "e3t")
-        ds1.set_missing(0)
-        ds1.vertical_sum()
-        ds1.run()
+            ds = nc.open_data(ff)
+            ds3 = nc.open_data(ff)
+            ds3.select(variable = "e3t")
+            ds.vertical_integration(ds3)
+            ds.select(variable = "one")
+            ds.run()
+            ds1 = nc.open_data(ff)
+            ds1.assign(e3t = lambda x: x.e3t * (isnan(x.one) is False ) )
+            ds1.select(variables = "e3t")
+            ds1.set_missing(0)
+            ds1.vertical_sum()
+            ds1.run()
 
-        ds2 = ds.copy()
-        ds2.subtract(ds1)
-        ds2.spatial_sum()
-        ds2.to_dataframe().one.sum() == 0
+            ds2 = ds.copy()
+            ds2.subtract(ds1)
+            ds2.spatial_sum()
+            ds2.to_dataframe().one.sum() == 0
 
-        ds = nc.open_data(ff)
-        ds3 = nc.open_data(ff)
-        ds3.select(variable = "e3t")
-        ds3.run()
-        ds.vertical_integration(ds3[0])
-        ds.select(variable = "one")
-        ds.run()
-        ds1 = nc.open_data(ff)
-        ds1.assign(e3t = lambda x: x.e3t * (isnan(x.one) is False ) )
-        ds1.select(variables = "e3t")
-        ds1.set_missing(0)
-        ds1.vertical_sum()
-        ds1.run()
+            ds = nc.open_data(ff)
+            ds3 = nc.open_data(ff)
+            ds3.select(variable = "e3t")
+            ds3.run()
+            ds.vertical_integration(ds3[0])
+            ds.select(variable = "one")
+            ds.run()
+            ds1 = nc.open_data(ff)
+            ds1.assign(e3t = lambda x: x.e3t * (isnan(x.one) is False ) )
+            ds1.select(variables = "e3t")
+            ds1.set_missing(0)
+            ds1.vertical_sum()
+            ds1.run()
 
-        ds2 = ds.copy()
-        ds2.subtract(ds1)
-        ds2.spatial_sum()
-        ds2.to_dataframe().one.sum() == 0
+            ds2 = ds.copy()
+            ds2.subtract(ds1)
+            ds2.spatial_sum()
+            ds2.to_dataframe().one.sum() == 0
 
 
 

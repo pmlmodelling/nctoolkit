@@ -11,22 +11,24 @@ ff = "data/sst.mon.mean.nc"
 
 class TestTemporals:
     def test_temporals_mean(self):
+        version = nc.utils.cdo_version()
         n = len(nc.session_files())
         assert n == 0
 
-        ds = nc.open_data(ff)
-        ds.na_count()
-        ds.spatial_sum()
-        ds.to_dataframe()
-        assert ds.to_dataframe().sst.values[0] == 7560360.0 
+        if nc.utils.version_below(version, "1.9.8") == False:
+            ds = nc.open_data(ff)
+            ds.na_count()
+            ds.spatial_sum()
+            ds.to_dataframe()
+            assert ds.to_dataframe().sst.values[0] == 7560360.0 
 
-        ds = nc.open_data(ff)
-        ds.na_frac()
-        ds.spatial_sum()
-        ds.to_dataframe()
-        assert ds.to_dataframe().sst.values[0] == 21001.0 
+            ds = nc.open_data(ff)
+            ds.na_frac()
+            ds.spatial_sum()
+            ds.to_dataframe()
+            assert ds.to_dataframe().sst.values[0] == 21001.0 
 
-        del ds
+            del ds
 
         # monthly climatology
 
