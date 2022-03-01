@@ -7,7 +7,10 @@ import tempfile
 import time, os, stat
 
 def file_age_in_seconds(pathname):
-    return time.time() - os.stat(pathname)[stat.ST_MTIME]
+    try:
+        return time.time() - os.stat(pathname)[stat.ST_MTIME]
+    except:
+        return 0
 
 from nctoolkit.remove import nc_remove
 from nctoolkit.session import (
