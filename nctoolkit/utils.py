@@ -26,19 +26,19 @@ def is_curvilinear(ff):
 def version_below(x,y):
     x = x.split(".")
     x = int(x[0])* 1000 +  int(x[1]) * 100+  int(x[2])
-    
+
     y = y.split(".")
     y = int(y[0])* 1000 +  int(y[1]) * 100+  int(y[2])
-    
+
     return x < y
 
 def version_above(x,y):
     x = x.split(".")
     x = int(x[0])* 1000 +  int(x[1]) * 100+  int(x[2])
-    
+
     y = y.split(".")
     y = int(y[0])* 1000 +  int(y[1]) * 100+  int(y[2])
-    
+
     return x > y
 # check version of cdo installed
 
@@ -51,11 +51,11 @@ def validate_version():
 
     try:
         version = cdo_version()
-        bad = version_above(cdo_version(), "2.0.0") and version_below(cdo_version(), "2.0.4")
+        bad = version_above(cdo_version(), "2.0.0")
         actual_version = version
         if version is None:
             print(
-                "Please install CDO version 1.9.4 or above: https://code.mpimet.mpg.de/projects/cdo/ or https://anaconda.org/conda-forge/cdo"
+                "Please install CDO version 1.9.7 or above: https://code.mpimet.mpg.de/projects/cdo/ or https://anaconda.org/conda-forge/cdo"
             )
         sub = "."
         wanted = ""
@@ -68,17 +68,17 @@ def validate_version():
         after = version[where:]
         after = after.replace(sub, wanted)
         newString = before + after
-        if version_below(cdo_version(), "1.9.8"): 
+        if version_below(cdo_version(), "1.9.7"):
             print(
-                "Please install CDO version 1.9.8 or above: https://code.mpimet.mpg.de/projects/cdo/ or https://anaconda.org/conda-forge/cdo"
+                "Please install CDO version 1.9.7 or above: https://code.mpimet.mpg.de/projects/cdo/ or https://anaconda.org/conda-forge/cdo"
             )
         else:
             print(f"nctoolkit is using Climate Data Operators version {actual_version}")
     except:
         print(
-            "Please install CDO version 1.9.8 or above: https://code.mpimet.mpg.de/projects/cdo/ or https://anaconda.org/conda-forge/cdo"
+            "Please install CDO version 1.9.7 or above: https://code.mpimet.mpg.de/projects/cdo/ or https://anaconda.org/conda-forge/cdo"
         )
-    if bad: 
+    if bad:
         raise ValueError("This version of nctoolkit is not compatible with CDO versions 2.0.0 and above")
 
 
