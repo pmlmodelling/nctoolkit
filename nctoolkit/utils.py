@@ -51,7 +51,7 @@ def validate_version():
 
     try:
         version = cdo_version()
-        bad = version_above(cdo_version(), "2.0.0")
+        bad = version_above(cdo_version(), "2.0.0") and version_below(cdo_version(), "2.0.4")
         actual_version = version
         if version is None:
             print(
