@@ -4,19 +4,19 @@ News
 Release of v0.4.1
 ---------------
 
-Version 0.4.1 will be released in March 2022. This will be maintenance release focusing on improving nctoolkit internals.
+Version 0.4.1 was released in March 2022. This is a minor release focusing on improving nctoolkit internals.
 
-A new method, called ``checks`` will be introduced that can be used to troubleshoot data problems and to ensure there are no obvious data issues (such as a lack of CF-compliance).
+A new method, called ``check`` is introduced that can be used to troubleshoot data problems and to ensure there are no obvious data issues (such as a lack of CF-compliance).
 
 Users can now access dataset calendars using ``ds.calendar``.
-
-This update can be previewed by installing the development version of nctoolkit.
 
 The ``drop`` method now lets you remove time steps using the ``times`` argument.
 
 The dataset attribute `variables_detailed` is now removed after being replaced by `contents` in version 0.3.9.
 
-This version will recommend CDO versions greater than 1.9.8, because ensuring nctoolkit compatibility with earlier versions was becoming difficult and likely of little need to users.
+This version will recommend CDO versions greater than 1.9.7, because ensuring nctoolkit compatibility with earlier versions was becoming difficult and likely of little need to users.
+
+Some coding improvements have enhanced the performance of the ``add``, ``subtract`` etc. methods.
 
 Bug fixes: The methods ``multiply`` etc. failed when datasets did not have time as a dimension in version 0.4.0. This is now fixed. Previously, `ds.contents` always returned None for the number of time steps. Now fixed.
 
