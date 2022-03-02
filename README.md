@@ -7,7 +7,7 @@
 [![codecov](https://codecov.io/gh/pmlmodelling/nctoolkit/branch/master/graph/badge.svg)](https://codecov.io/gh/pmlmodelling/nctoolkit)
 [![CircleCI](https://circleci.com/gh/pmlmodelling/nctoolkit/tree/master.svg?style=svg)](https://circleci.com/gh/pmlmodelling/nctoolkit/tree/master)
 [![Documentation Status](https://readthedocs.org/projects/nctoolkit/badge/?version=latest)](https://nctoolkit.readthedocs.io/en/latest/?badge=latest)
-[![DOI](https://doi.org/10.5281/zenodo.3938745.svg)](https://doi.org/10.5281/zenodo.3938745)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3938745.svg)](https://doi.org/10.5281/zenodo.3938745)
 
 
 
