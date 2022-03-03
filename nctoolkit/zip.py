@@ -1,4 +1,3 @@
-from nctoolkit.runthis import run_this
 from nctoolkit.session import session_info
 
 
@@ -17,6 +16,6 @@ def zip(self):
 
     """
     self._zip = True
-    if session_info["lazy"] == False:
+    if session_info["lazy"] is False:
         self._execute = False
         self.run()

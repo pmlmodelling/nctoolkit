@@ -1,13 +1,12 @@
 import copy
 import os
-import subprocess
 import warnings
 import pandas as pd
 
 from nctoolkit.cleanup import cleanup
 from nctoolkit.runthis import run_this, run_cdo, tidy_command
-from nctoolkit.session import nc_safe, session_info, append_safe, remove_safe
-from nctoolkit.show import nc_variables, nc_years, nc_months, nc_times
+from nctoolkit.session import session_info, append_safe, remove_safe
+from nctoolkit.show import nc_variables, nc_years, nc_times
 from nctoolkit.temp_file import temp_file
 from nctoolkit.utils import version_above
 
@@ -77,7 +76,9 @@ def operation(self, method="mul", ff=None, var=None):
                 years = [int(x.split("T")[0].split("-")[0]) for x in ff_times]
                 months = [int(x.split("T")[0].split("-")[1]) for x in ff_times]
                 days = [int(x.split("T")[0].split("-")[2]) for x in ff_times]
-                ff_times_df = pd.DataFrame({"year":years, "month":months, "day":months})
+                ff_times_df = pd.DataFrame(
+                    {"year": years, "month": months, "day": months}
+                )
             else:
                 ff_times_df = (
                     pd.DataFrame({"time": ff_times})
@@ -108,7 +109,7 @@ def operation(self, method="mul", ff=None, var=None):
                     years = [int(x.split("T")[0].split("-")[0]) for x in x_times]
                     months = [int(x.split("T")[0].split("-")[1]) for x in x_times]
                     days = [int(x.split("T")[0].split("-")[2]) for x in x_times]
-                    df = pd.DataFrame({"year":years, "month":months, "day":months})
+                    df = pd.DataFrame({"year": years, "month": months, "day": months})
                     self_times.append(df)
 
                 else:
@@ -163,7 +164,9 @@ def operation(self, method="mul", ff=None, var=None):
             if possible_switch:
                 method = method
                 new = False
-                warnings.warn(f"{nc_str}t time series with the same number of time steps")
+                warnings.warn(
+                    f"{nc_str}t time series with the same number of time steps"
+                )
 
     # figure out if a single year monthly will do
     possible_switch = True
@@ -195,7 +198,7 @@ def operation(self, method="mul", ff=None, var=None):
                         .drop_duplicates()
                         .reset_index(drop=True)
                     )
-                    == False
+                    is False
                 ):
                     possible_switch = False
                 else:
@@ -208,8 +211,6 @@ def operation(self, method="mul", ff=None, var=None):
                 warnings.warn(f"{nc_str} multi-year monthly time series")
 
     if new:
-
-        #'if possible_switch:
 
         ff_times = nc_times(ff)
         if len(ff_times) == 0:
@@ -376,7 +377,7 @@ def operation(self, method="mul", ff=None, var=None):
 
             run = False
 
-            if op_method == "single" and run == False:
+            if op_method == "single" and run is False:
                 run = True
                 if len(ff_times) > 0:
                     if len(ff_times_df) == 1:
@@ -403,7 +404,7 @@ def operation(self, method="mul", ff=None, var=None):
                 new_files.append(target)
                 new_commands.append(cdo_command)
 
-            if op_method == "yday" and run == False:
+            if op_method == "yday" and run is False:
                 if var is not None:
                     cdo_command = f"cdo -yday{method} {x} -selname,{var} {ff}"
                 else:
@@ -416,7 +417,7 @@ def operation(self, method="mul", ff=None, var=None):
                 new_commands.append(cdo_command)
                 warnings.warn(f"{nc_str} daily time series")
 
-            if op_method == "yearmon" and run == False:
+            if op_method == "yearmon" and run is False:
                 if var is not None:
                     cdo_command = f"cdo -mon{method} {x} -selname,{var} {ff}"
                 else:
@@ -428,9 +429,9 @@ def operation(self, method="mul", ff=None, var=None):
                 new_files.append(target)
                 new_commands.append(cdo_command)
 
-            ## monthly time series
+            # monthly time series
 
-            if op_method == "mon" and run == False:
+            if op_method == "mon" and run is False:
                 run = True
 
                 if bad_vars:
@@ -448,9 +449,9 @@ def operation(self, method="mul", ff=None, var=None):
                 new_files.append(target)
                 new_commands.append(cdo_command)
                 warnings.warn(f"{nc_str} monthly time series")
-            ## yearly time series
+            # yearly time series
 
-            if op_method == "year" and run == False:
+            if op_method == "year" and run is False:
                 run = True
                 if var is not None:
                     cdo_command = f"cdo -year{method} {x} -selname,{var} {ff}"
@@ -559,7 +560,7 @@ def operation(self, method="mul", ff=None, var=None):
 
             return None
 
-    if new == False:
+    if new is False:
 
         # make sure the ff file is not removed from safe list in subsequent
         # actions prior to running

@@ -3,8 +3,7 @@ import copy
 
 from nctoolkit.cleanup import cleanup
 from nctoolkit.runthis import run_this, run_cdo
-from nctoolkit.session import nc_safe, remove_safe
-import warnings
+from nctoolkit.session import remove_safe
 
 
 def to_nc(self, out, zip=True, overwrite=False):
@@ -43,7 +42,7 @@ def to_nc(self, out, zip=True, overwrite=False):
 
     if os.path.basename(out) != out:
         out_dir = os.path.dirname(out)
-        if os.path.exists(out_dir) == False:
+        if os.path.exists(out_dir) is False:
             raise ValueError(f"{out_dir} does not exist!")
 
     # If you are trying to overwrite a file in self.current, cdo cannot simultaneously have it opened and written to

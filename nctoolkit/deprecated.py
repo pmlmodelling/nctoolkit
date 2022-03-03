@@ -1,4 +1,3 @@
-
 import pandas as pd
 import subprocess
 import warnings
@@ -7,6 +6,8 @@ from datetime import datetime
 
 from nctoolkit.runthis import run_this
 from nctoolkit.session import session_info
+
+
 def merge_time(self):
     """
     Time-based merging of a multi-file ensemble into a single file
@@ -28,6 +29,7 @@ def merge_time(self):
     if session_info["lazy"]:
         self._merged = True
 
+
 def surface(self):
     """
     Extract the top/surface level from a dataset
@@ -46,4 +48,3 @@ def surface(self):
 
     cdo_command = "cdo -sellevidx,1"
     run_this(cdo_command, self, output="ensemble")
-

@@ -1,16 +1,7 @@
-# to-do
-# some kind of method to identify similar function names
-
-
-
 import re
 import dill
 import inspect
-import sys
-import numpy as np
 
-from nctoolkit.flatten import str_flatten
-from nctoolkit.runthis import run_this
 from nctoolkit.session import session_info
 
 
@@ -74,9 +65,7 @@ def find_parens3(s):
     return toret
 
 
-phen_funs = [
-        "min", "max", "mean", "median"
-]
+phen_funs = ["min", "max", "mean", "median"]
 
 # split using all possible mathematical operators
 def split1(mystr):
@@ -116,27 +105,16 @@ def bloom_start(self, drop=False, **kwargs):
     if type(drop) is not bool:
         raise ValueError("drop is not boolean!")
 
-    # first we need to check if everything is a lambda function
-    # for k, v in kwargs.items():
-    #    if k == "drop":
-    #        if type(v) is not bool:
-    #            raise ValueError("drop must be boolean!")
-    #        drop_vars = v
-    #    else:
-    #        if is_lambda(v) == False:
-    #            raise ValueError("Please check everything is a lambda function!")
-    #        lambdas = v
-
     if len(kwargs) == 0:
         raise ValueError("Please provide assignments!")
 
     for k, v in kwargs.items():
-        if is_lambda(v) == False:
+        if is_lambda(v) is False:
             raise ValueError("Please check everything is a lambda function!")
         lambdas = v
 
     for k, v in kwargs.items():
-        if is_lambda(v) == True:
+        if is_lambda(v) is True:
             break
     lambdas = v
 
@@ -325,7 +303,7 @@ def bloom_start(self, drop=False, **kwargs):
         )
 
         for x in terms:
-            if ("[" in x and f"{lambda_value}." in x) == False:
+            if ("[" in x and f"{lambda_value}." in x) is False:
                 if fun_pattern.search(x) is not None:
 
                     fix = True
@@ -340,12 +318,14 @@ def bloom_start(self, drop=False, **kwargs):
                                 start_parens = find_parens3(start)
                                 x_term = (
                                     x
-                                    + start[y.span()[1] : start_parens[y.span()[1] - 1] + 1]
+                                    + start[
+                                        y.span()[1] : start_parens[y.span()[1] - 1] + 1
+                                    ]
                                 )
                                 start = start.replace(x_term, x_term.replace(" ", ""))
                                 if old_start != start:
                                     break
-                        n+=1
+                        n += 1
 
                         if n > n_limit:
                             fix = False
@@ -364,7 +344,7 @@ def bloom_start(self, drop=False, **kwargs):
                         if type(new_x) is str:
                             error_message = f"{x} evaluates to a string!"
                             raise ValueError(f"{x} evaluates to a string")
-                        if is_number(str(new_x)) == False:
+                        if is_number(str(new_x)) is False:
                             error_message = f"{x} does not evaluate to numeric!"
                             raise ValueError(f"{x} does not evaluate to numeric!")
 
@@ -382,7 +362,7 @@ def bloom_start(self, drop=False, **kwargs):
                         if x_fun in phen_funs:
                             x_term = between_brackets(x)
 
-                            if (f"{lambda_value}." in x_term) == False:
+                            if (f"{lambda_value}." in x_term) is False:
                                 raise ValueError(
                                     f"Error for {x}: nctoolkit functions must take dataset variables as args!"
                                 )
@@ -517,7 +497,7 @@ def bloom_start(self, drop=False, **kwargs):
                             error_message = f"{term} does not evaluate to a numeric!"
                             raise ValueError(f"{term} does not evaluate to a numeric!")
 
-                        if is_number(str(new_term)) == False:
+                        if is_number(str(new_term)) is False:
                             error_message = f"{term} does not evaluate to a numeric!"
                             raise ValueError(f"{term} does not evaluate to a numeric!")
 
@@ -599,7 +579,7 @@ def bloom_start(self, drop=False, **kwargs):
                         new_term = eval(term, globals(), frame.f_back.f_locals)
                         if type(new_term) is str:
                             raise ValueError(f"{new_term} is not numeric!")
-                        if is_number(str(new_term)) == False:
+                        if is_number(str(new_term)) is False:
                             raise ValueError(f"{new_term} is not numeric!")
                         new_start = ""
                         for y in command.split(" "):
@@ -618,11 +598,10 @@ def bloom_start(self, drop=False, **kwargs):
     del frame
 
     # create the cdo call and run it
-    if drop == False:
+    if drop is False:
         cdo_command = f"cdo -aexpr,'{command}'"
     else:
         cdo_command = f"cdo -expr,'{command}'"
-
 
     # at this point, we need to generate a new datasets with the min, max values etc.
     #
@@ -632,14 +611,4 @@ def bloom_start(self, drop=False, **kwargs):
     # data = nc.open_data()
     #
 
-
-    #run_this(cdo_command, self, output="ensemble")
-
-
-
-
-
-
-
-
-
+    # run_this(cdo_command, self, output="ensemble")

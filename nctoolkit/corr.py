@@ -4,7 +4,7 @@ from nctoolkit.cleanup import cleanup
 from nctoolkit.runthis import run_cdo, tidy_command
 from nctoolkit.show import nc_variables
 from nctoolkit.temp_file import temp_file
-from nctoolkit.session import nc_safe, remove_safe, get_safe
+from nctoolkit.session import remove_safe, get_safe
 
 
 def cor(self, var1=None, var2=None, method="fld"):

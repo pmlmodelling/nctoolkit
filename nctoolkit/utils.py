@@ -1,9 +1,6 @@
-import logging
-import netCDF4
-import pandas as pd
 import re
 import subprocess
-import xarray as xr
+
 
 def is_curvilinear(ff):
     """
@@ -23,23 +20,28 @@ def is_curvilinear(ff):
         )
         > 0
     )
-def version_below(x,y):
+
+
+def version_below(x, y):
     x = x.split(".")
-    x = int(x[0])* 1000 +  int(x[1]) * 100+  int(x[2])
+    x = int(x[0]) * 1000 + int(x[1]) * 100 + int(x[2])
 
     y = y.split(".")
-    y = int(y[0])* 1000 +  int(y[1]) * 100+  int(y[2])
+    y = int(y[0]) * 1000 + int(y[1]) * 100 + int(y[2])
 
     return x < y
 
-def version_above(x,y):
+
+def version_above(x, y):
     x = x.split(".")
-    x = int(x[0])* 1000 +  int(x[1]) * 100+  int(x[2])
+    x = int(x[0]) * 1000 + int(x[1]) * 100 + int(x[2])
 
     y = y.split(".")
-    y = int(y[0])* 1000 +  int(y[1]) * 100+  int(y[2])
+    y = int(y[0]) * 1000 + int(y[1]) * 100 + int(y[2])
 
     return x > y
+
+
 # check version of cdo installed
 
 
@@ -67,7 +69,6 @@ def validate_version():
         before = version[:where]
         after = version[where:]
         after = after.replace(sub, wanted)
-        newString = before + after
         if version_below(cdo_version(), "1.9.7"):
             print(
                 "Please install CDO version 1.9.7 or above: https://code.mpimet.mpg.de/projects/cdo/ or https://anaconda.org/conda-forge/cdo"
@@ -79,7 +80,9 @@ def validate_version():
             "Please install CDO version 1.9.7 or above: https://code.mpimet.mpg.de/projects/cdo/ or https://anaconda.org/conda-forge/cdo"
         )
     if bad:
-        raise ValueError("This version of nctoolkit is not compatible with CDO versions 2.0.0 and above")
+        raise ValueError(
+            "This version of nctoolkit is not compatible with CDO versions 2.0.0 and above"
+        )
 
 
 def cdo_version():
@@ -91,9 +94,7 @@ def cdo_version():
     )
 
     version = [
-        x
-        for x in str(cdo_check.stderr).split("\n")
-        if "version" in x and "cdo" in x
+        x for x in str(cdo_check.stderr).split("\n") if "version" in x and "cdo" in x
     ]
     if len(version) == 0:
         version = [

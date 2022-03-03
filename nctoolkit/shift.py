@@ -139,7 +139,6 @@ def shift(self, **kwargs):
 
     """
 
-    checked = False
     for key in kwargs:
         # if key not in valid_keys:
 

@@ -4,8 +4,7 @@ from nctoolkit.cleanup import cleanup
 from nctoolkit.runthis import run_cdo, tidy_command
 from nctoolkit.show import nc_years
 from nctoolkit.temp_file import temp_file
-from nctoolkit.api import open_data
-from nctoolkit.session import nc_safe, remove_safe
+from nctoolkit.session import remove_safe
 from nctoolkit.show import nc_variables
 
 

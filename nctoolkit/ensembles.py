@@ -1,6 +1,5 @@
 import copy
 import warnings
-import subprocess
 
 from nctoolkit.cleanup import cleanup
 from nctoolkit.flatten import str_flatten
@@ -88,11 +87,12 @@ def ensemble_nco(self, method, ignore_time=False):
     cleanup()
     self.disk_clean()
 
+
 def ensemble_stdev(self):
     """
     Calculate an ensemble standard deviation
 
-    The ensemble standard deviation is calculated for each time steps; for example, if the ensemble is made up of 
+    The ensemble standard deviation is calculated for each time steps; for example, if the ensemble is made up of
     monthly files the standard deviation for each month will be calculated.
     """
 
@@ -107,11 +107,12 @@ def ensemble_stdev(self):
 
     self._merged = True
 
+
 def ensemble_var(self):
     """
-    Calculate an ensemble variance 
+    Calculate an ensemble variance
 
-    The ensemble variance is calculated for each time steps; for example, if the ensemble is made up of 
+    The ensemble variance is calculated for each time steps; for example, if the ensemble is made up of
     monthly files the standard deviation for each month will be calculated.
     """
 
@@ -125,8 +126,6 @@ def ensemble_var(self):
     run_this(cdo_command, self)
 
     self._merged = True
-
-
 
 
 def ensemble_max(self, nco=False, ignore_time=False):
@@ -162,7 +161,6 @@ def ensemble_max(self, nco=False, ignore_time=False):
         return None
 
     ensemble_nco(self, "max", ignore_time=ignore_time)
-
 
 
 def ensemble_min(self, nco=False, ignore_time=False):

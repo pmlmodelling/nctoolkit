@@ -1,5 +1,5 @@
 from nctoolkit.cleanup import cleanup
-from nctoolkit.session import nc_safe, append_safe, remove_safe
+from nctoolkit.session import append_safe, remove_safe
 from nctoolkit.temp_file import temp_file
 
 

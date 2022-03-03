@@ -5,7 +5,7 @@ from nctoolkit.cleanup import cleanup
 from nctoolkit.runthis import run_cdo, tidy_command
 from nctoolkit.show import nc_years
 from nctoolkit.temp_file import temp_file
-from nctoolkit.session import nc_safe, remove_safe, session_info
+from nctoolkit.session import remove_safe, session_info
 from nctoolkit.utils import version_below
 
 

@@ -1,6 +1,4 @@
 import xarray as xr
-from nctoolkit.runthis import run_this
-from nctoolkit.utils import is_curvilinear
 import subprocess
 
 
@@ -99,21 +97,14 @@ def check(self):
     for ff in self:
         command = f"cdo griddes {ff}"
         out = subprocess.Popen(
-                    command,
-                    shell=True,
-                    stdin=subprocess.PIPE,
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.STDOUT,
-                )
+            command,
+            shell=True,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+        )
         result, ignore = out.communicate()
 
         result = result.decode("utf-8")
         if result.count("gridID") > 1:
             print("Dataset file(s) contain variables with different grids.")
-
-
-
-
-
-
-

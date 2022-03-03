@@ -85,7 +85,6 @@ def nc_years(ff):
     Function to get the years available in a netCDF file
     """
 
-    all_years = []
     cdo_result = subprocess.run(
         f"cdo showyear {ff}", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
     )

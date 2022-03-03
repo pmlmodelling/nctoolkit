@@ -3,7 +3,8 @@ import tempfile
 import platform
 
 from nctoolkit.session import session_info
-from nctoolkit.session import get_tempdirs, append_tempdirs
+from nctoolkit.session import append_tempdirs
+
 
 def temp_file(ext=""):
     """

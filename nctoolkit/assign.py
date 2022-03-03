@@ -1,5 +1,27 @@
-# to-do
-# some kind of method to identify similar function names
+import re
+import dill
+import inspect
+import numpy as np
+
+from nctoolkit.runthis import run_this
+from nctoolkit.session import session_info
+from nctoolkit.utils import version_below
+
+
+def split_equation(mystr):
+    return re.split("[-+^!=*/(&|)\[\]]", mystr)
+
+
+def is_number(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        return False
+
+
+def between_brackets(s):
+    return s[s.find("(") + 1 : s.find(")")]
 
 
 def find_possible(x):
@@ -16,33 +38,6 @@ def find_possible(x):
             if y in x:
                 return f"zonal_{y}"
     return None
-
-
-import re
-import dill
-import inspect
-import sys
-import numpy as np
-
-from nctoolkit.flatten import str_flatten
-from nctoolkit.runthis import run_this
-from nctoolkit.session import session_info
-from nctoolkit.utils import version_below
-
-def split_equation(mystr):
-    return re.split("[-+^!=*/(&|)\[\]]", mystr)
-
-
-def is_number(s):
-    try:
-        float(s)
-        return True
-    except ValueError:
-        return False
-
-
-def between_brackets(s):
-    return s[s.find("(") + 1 : s.find(")")]
 
 
 def find_parens(s):
@@ -198,27 +193,16 @@ def assign(self, drop=False, **kwargs):
     if type(drop) is not bool:
         raise ValueError("drop is not boolean!")
 
-    # first we need to check if everything is a lambda function
-    # for k, v in kwargs.items():
-    #    if k == "drop":
-    #        if type(v) is not bool:
-    #            raise ValueError("drop must be boolean!")
-    #        drop_vars = v
-    #    else:
-    #        if is_lambda(v) == False:
-    #            raise ValueError("Please check everything is a lambda function!")
-    #        lambdas = v
-
     if len(kwargs) == 0:
         raise ValueError("Please provide assignments!")
 
     for k, v in kwargs.items():
-        if is_lambda(v) == False:
+        if is_lambda(v) is False:
             raise ValueError("Please check everything is a lambda function!")
         lambdas = v
 
     for k, v in kwargs.items():
-        if is_lambda(v) == True:
+        if is_lambda(v) is True:
             break
     lambdas = v
 
@@ -436,7 +420,7 @@ def assign(self, drop=False, **kwargs):
         )
 
         for x in terms:
-            if ("[" in x and f"{lambda_value}." in x) == False:
+            if ("[" in x and f"{lambda_value}." in x) is False:
                 if fun_pattern.search(x) is not None:
 
                     fix = True
@@ -482,14 +466,13 @@ def assign(self, drop=False, **kwargs):
                 x_fun = x.split("(")[0]
                 pattern1 = re.compile("[A-Za-z0-9\\.\\_]*")
                 if fun_pattern.match(x) is not None:
-                    # if pattern1.findall(x_fun)[0] == x_fun:
                     try:
                         # need to tweak this so that it captures the output and returns an appropriate error
                         new_x = eval(x, globals(), frame.f_back.f_locals)
                         if type(new_x) is str:
                             error_message = f"{x} evaluates to a string!"
                             raise ValueError(f"{x} evaluates to a string")
-                        if is_number(str(new_x)) == False:
+                        if is_number(str(new_x)) is False:
                             error_message = f"{x} does not evaluate to numeric!"
                             raise ValueError(f"{x} does not evaluate to numeric!")
 
@@ -506,7 +489,7 @@ def assign(self, drop=False, **kwargs):
 
                         if x_fun in translation.keys():
                             x_term = between_brackets(x)
-                            if (f"{lambda_value}." in x_term) == False:
+                            if (f"{lambda_value}." in x_term) is False:
                                 raise ValueError(
                                     f"Error for {x}: nctoolkit functions must take dataset variables as args!"
                                 )
@@ -547,7 +530,7 @@ def assign(self, drop=False, **kwargs):
         pattern1 = re.compile("lambda [a-zA-Z\_][a-zA-Z\_z0-9]*\:")
         for x in pattern1.findall(start):
             start = start.replace(x, x + " ")
-        rtart = start.replace("  ", " ")
+        start = start.replace("  ", " ")
 
         terms = (
             start.replace(" . ", ".")
@@ -641,7 +624,7 @@ def assign(self, drop=False, **kwargs):
                             error_message = f"{term} does not evaluate to a numeric!"
                             raise ValueError(f"{term} does not evaluate to a numeric!")
 
-                        if is_number(str(new_term)) == False:
+                        if is_number(str(new_term)) is False:
                             if type(new_term) is bool:
                                 new_term = float(new_term)
                             else:
@@ -698,7 +681,9 @@ def assign(self, drop=False, **kwargs):
         version = session_info["cdo"]
         if version_below(version, "1.9.8"):
             if "isnan(" in start:
-                raise ValueError("Please install version >=1.9.8 of CDO to access isnan")
+                raise ValueError(
+                    "Please install version >=1.9.8 of CDO to access isnan"
+                )
         # We need to fix pow functions potentially. Though, it might be better to stick with ^
 
         # translate numpy style functions to cdo functions
@@ -738,7 +723,7 @@ def assign(self, drop=False, **kwargs):
                         new_term = eval(term, globals(), frame.f_back.f_locals)
                         if type(new_term) is str:
                             raise ValueError(f"{new_term} is not numeric!")
-                        if is_number(str(new_term)) == False:
+                        if is_number(str(new_term)) is False:
                             raise ValueError(f"{new_term} is not numeric!")
                         new_start = ""
                         for y in command.split(" "):
@@ -757,7 +742,7 @@ def assign(self, drop=False, **kwargs):
     del frame
 
     # create the cdo call and run it
-    if drop == False:
+    if drop is False:
         cdo_command = f"cdo -aexpr,'{command}'"
     else:
         cdo_command = f"cdo -expr,'{command}'"

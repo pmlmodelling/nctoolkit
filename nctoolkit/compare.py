@@ -1,5 +1,4 @@
 from nctoolkit.runthis import run_this
-import warnings
 
 
 def fix_expr(expression):
@@ -137,5 +136,3 @@ def compare(self, expression=None):
     expression = fix_expr(expression)
     cdo_command = f"cdo -{expression}"
     run_this(cdo_command, self, output="ensemble")
-
-

@@ -1,7 +1,6 @@
 import copy
 
 from .temp_file import temp_file
-from .session import nc_safe
 from .cleanup import cleanup
 from .runthis import run_this
 from .runthis import run_nco

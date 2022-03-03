@@ -1,9 +1,7 @@
-from nctoolkit.runthis import run_this
 from nctoolkit.temp_file import temp_file
 from nctoolkit.runthis import run_cdo
-from nctoolkit.session import remove_safe, get_safe
+from nctoolkit.session import remove_safe
 from nctoolkit.cleanup import cleanup
-import warnings
 import os
 
 
@@ -42,7 +40,7 @@ def lt(self, x):
         if x_ff is None:
             raise ValueError("ff needs to be a file path or nctoolkit dataset")
 
-        if os.path.exists(x_ff) == False:
+        if os.path.exists(x_ff) is False:
             raise ValueError(f"{x_ff} does not exist!")
 
         temp = temp_file(".nc")
@@ -95,7 +93,7 @@ def gt(self, x):
         if type(x) is str:
             x_ff = x
 
-        if os.path.exists(x_ff) == False:
+        if os.path.exists(x_ff) is False:
             raise ValueError(f"{x_ff} does not exist!")
 
         if x_ff is None:

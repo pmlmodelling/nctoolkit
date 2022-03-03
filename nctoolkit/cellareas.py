@@ -1,8 +1,7 @@
 import copy
-import subprocess
 
 from nctoolkit.cleanup import cleanup
-from nctoolkit.session import remove_safe, append_safe, session_info
+from nctoolkit.session import remove_safe, session_info
 from nctoolkit.runthis import run_this, tidy_command, run_cdo
 from nctoolkit.show import nc_variables
 from nctoolkit.temp_file import temp_file

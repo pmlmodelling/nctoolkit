@@ -65,7 +65,7 @@ def to_xarray(self, decode_times=True, cdo_times=False):
 
     # if it does, then just open the data in xarray
 
-    if cdo_times == True and len(self) > 1:
+    if cdo_times is True and len(self) > 1:
         raise ValueError("xarray cannot decode times. Set decode_times to False")
 
     if cdo_times is False:
@@ -84,7 +84,9 @@ def to_xarray(self, decode_times=True, cdo_times=False):
             times = self.times
         else:
             times = [
-                datetime.strptime(ss.replace("T", " "), "%Y-%m-%d %H:%M:%S") for ss in self.times ]
+                datetime.strptime(ss.replace("T", " "), "%Y-%m-%d %H:%M:%S")
+                for ss in self.times
+            ]
 
         data = xr.open_dataset(self.current[0], decode_times=False)
         data = data.assign_coords(time=times)

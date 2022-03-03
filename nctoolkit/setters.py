@@ -3,7 +3,7 @@ import copy
 from nctoolkit.cleanup import cleanup
 from nctoolkit.runthis import run_this, run_nco
 from nctoolkit.temp_file import temp_file
-from nctoolkit.session import append_safe, remove_safe
+from nctoolkit.session import remove_safe
 
 
 def set_precision(self, x):

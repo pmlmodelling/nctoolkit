@@ -14,11 +14,6 @@ from nctoolkit.create_ensemble import create_ensemble
 from nctoolkit.session import session_files
 from nctoolkit.show import nc_variables, nc_years, nc_months, nc_times
 
-import re
-import subprocess
-
-# check version of cdo installed
-
 from nctoolkit.utils import validate_version, cdo_version
 from nctoolkit.session import session_info
 

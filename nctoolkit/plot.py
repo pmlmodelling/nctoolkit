@@ -1,7 +1,5 @@
 import signal
-import time
 from contextlib import contextmanager
-import xarray as xr
 
 
 class TimeoutException(Exception):

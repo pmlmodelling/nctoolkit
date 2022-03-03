@@ -8,7 +8,7 @@ from nctoolkit.temp_file import temp_file
 from nctoolkit.session import session_info, get_tempdirs, append_safe, remove_safe
 
 
-def dist_cdo(self, i = None, j = None):
+def dist_cdo(self, i=None, j=None):
     """
     Method to split files by period
     """
@@ -78,7 +78,7 @@ def dist_cdo(self, i = None, j = None):
     self.disk_clean()
 
 
-def distribute(self, m = 1, n = 1):
+def distribute(self, m=1, n=1):
     """
     Split the dataset into multiple evenly sized horizontal and vertical new files
 
@@ -91,7 +91,6 @@ def distribute(self, m = 1, n = 1):
 
     """
 
-
     if type(m) is not int or type(n) is not int:
         raise ValueError("Please provide integers")
 
@@ -101,5 +100,4 @@ def distribute(self, m = 1, n = 1):
     if n < 1:
         raise ValueError("Please provide integers")
 
-
-    dist_cdo(self, i = n, j = m)
+    dist_cdo(self, i=n, j=m)

@@ -1,12 +1,5 @@
-import copy
 import os
-import subprocess
 
-from nctoolkit.cleanup import cleanup
-from nctoolkit.runthis import run_this
-from nctoolkit.session import nc_safe, session_info, append_safe, remove_safe
-from nctoolkit.show import nc_variables
-from nctoolkit.temp_file import temp_file
 
 def first_above(self, x=None):
     """
@@ -52,7 +45,7 @@ def first_above(self, x=None):
     # 2: dataset or netCDF file multiplication
     # get the netCDF file(s)
     if ("api.DataSet" in str(type(x))) or (type(x) is str):
-        if ("api.DataSet" in str(type(x))):
+        if "api.DataSet" in str(type(x)):
             x.run()
         self.gt(x)
         run_code = True
@@ -60,7 +53,7 @@ def first_above(self, x=None):
     if run_code:
         self.rename({self.variables[0]: "target"})
         self.set_missing([-1, 0.1])
-        self.assign(new=lambda x: (x.target == x.target) * (timestep(x.target) + 1), drop=True)
+        self.assign( new=lambda x: (x.target == x.target) * (timestep(x.target) + 1), drop=True)
         self.set_missing([0, 0.01])
         self.tmin()
         self.assign(first=lambda x: int(x.new) - 1, drop=True)
@@ -107,9 +100,6 @@ def first_below(self, x=None):
 
     variable = self.variables[0]
 
-    #if len(self.variables) > 1:
-    #    raise ValueError("This method only works with single variable datasets!")
-
     run_code = False
 
     # 1: int, float multiplication
@@ -120,14 +110,14 @@ def first_below(self, x=None):
     # 2: dataset or netCDF file multiplication
     # get the netCDF file(s)
     if ("api.DataSet" in str(type(x))) or (type(x) is str):
-        if ("api.DataSet" in str(type(x))):
+        if "api.DataSet" in str(type(x)):
             x.run()
         self.lt(x)
         run_code = True
     if run_code:
         self.rename({self.variables[0]: "target"})
         self.set_missing([-1, 0.1])
-        self.assign(new=lambda x: (x.target == x.target) * (timestep(x.target) + 1), drop=True)
+        self.assign( new=lambda x: (x.target == x.target) * (timestep(x.target) + 1), drop=True)
         self.set_missing([0, 0.01])
         self.tmin()
         self.assign(first=lambda x: int(x.new) - 1, drop=True)
@@ -173,7 +163,7 @@ def last_above(self, x=None):
 
     variable = self.variables[0]
 
-    #if len(self.variables) > 1:
+    # if len(self.variables) > 1:
     #    raise ValueError("This method only works with single variable datasets!")
 
     run_code = False
@@ -186,7 +176,7 @@ def last_above(self, x=None):
     # 2: dataset or netCDF file multiplication
     # get the netCDF file(s)
     if ("api.DataSet" in str(type(x))) or (type(x) is str):
-        if ("api.DataSet" in str(type(x))):
+        if "api.DataSet" in str(type(x)):
             x.run()
         self.gt(x)
         run_code = True
@@ -194,7 +184,7 @@ def last_above(self, x=None):
     if run_code:
         self.rename({self.variables[0]: "target"})
         self.set_missing([-1, 0.1])
-        self.assign(new=lambda x: (x.target == x.target) * (timestep(x.target) + 1), drop=True)
+        self.assign( new=lambda x: (x.target == x.target) * (timestep(x.target) + 1), drop=True)
         self.set_missing([0, 0.01])
         self.multiply(-1)
         self.tmin()
@@ -242,7 +232,7 @@ def last_below(self, x=None):
 
     variable = self.variables[0]
 
-    #if len(self.variables) > 1:
+    # if len(self.variables) > 1:
     #    raise ValueError("This method only works with single variable datasets!")
 
     run_code = False
@@ -255,7 +245,7 @@ def last_below(self, x=None):
     # 2: dataset or netCDF file multiplication
     # get the netCDF file(s)
     if ("api.DataSet" in str(type(x))) or (type(x) is str):
-        if ("api.DataSet" in str(type(x))):
+        if "api.DataSet" in str(type(x)):
             x.run()
         self.lt(x)
         run_code = True
@@ -263,8 +253,7 @@ def last_below(self, x=None):
     if run_code:
         self.rename({self.variables[0]: "target"})
         self.set_missing([-1, 0.1])
-        self.assign(new=lambda x: (x.target == x.target) *
-                -1 * (timestep(x.target) + 1), drop=True)
+        self.assign( new=lambda x: (x.target == x.target) * -1 * (timestep(x.target) + 1), drop=True,)
         self.set_missing([0, 0.01])
         self.assign(new=lambda x: int(x.new))
         self.tmin()

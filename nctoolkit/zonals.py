@@ -1,6 +1,4 @@
 from nctoolkit.runthis import run_this
-import subprocess
-
 from nctoolkit.utils import is_curvilinear
 
 

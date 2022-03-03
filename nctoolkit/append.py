@@ -1,6 +1,6 @@
 import os
 import warnings
-from nctoolkit.session import nc_safe, append_safe, remove_safe
+from nctoolkit.session import append_safe, remove_safe
 
 
 def append(self, x=None):

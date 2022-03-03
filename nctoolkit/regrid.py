@@ -8,7 +8,7 @@ from nctoolkit.api import open_data
 from nctoolkit.cleanup import cleanup
 from nctoolkit.generate_grid import generate_grid
 from nctoolkit.runthis import run_this, run_cdo
-from nctoolkit.session import nc_safe, append_safe, remove_safe, get_safe
+from nctoolkit.session import append_safe, remove_safe, get_safe
 from nctoolkit.temp_file import temp_file
 
 
@@ -40,7 +40,6 @@ def regrid(self, grid=None, method="bil", recycle=False):
             method = "nn"
         if "neighbour" in method:
             method = "nn"
-
 
     valid_methods = ["bil", "nn", "bic", "dis", "con", "con2", "laf"]
 
@@ -156,7 +155,7 @@ def regrid(self, grid=None, method="bil", recycle=False):
 
         run_this(cdo_command, tracker, output="ensemble")
 
-        if recycle == False:
+        if recycle is False:
             remove_safe(weights_nc)
 
         for ff in tracker:
@@ -169,7 +168,7 @@ def regrid(self, grid=None, method="bil", recycle=False):
         self._hold_history = copy.deepcopy(self.history)
 
     if del_grid is not None:
-        if recycle == False:
+        if recycle is False:
             remove_safe(del_grid)
 
     self.current = new_files

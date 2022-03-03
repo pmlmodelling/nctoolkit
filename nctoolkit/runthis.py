@@ -9,7 +9,6 @@ import multiprocessing
 from nctoolkit.cleanup import cleanup
 from nctoolkit.flatten import str_flatten
 from nctoolkit.session import (
-    nc_protected,
     session_info,
     append_safe,
     remove_safe,
@@ -19,7 +18,7 @@ from nctoolkit.temp_file import temp_file
 
 from nctoolkit.show import nc_variables
 
-from nctoolkit.utils import version_below 
+from nctoolkit.utils import version_below
 
 
 def file_size(file_path):
@@ -61,7 +60,6 @@ def tidy_command(command):
 def run_nco(command, target, out_file=None, overwrite=False):
     command = command.strip()
     append_safe(target)
-    original_target = target
     if (
         command.startswith("ncea ")
         or command.startswith("ncra ")
@@ -468,7 +466,7 @@ def run_this(os_command, self, output="one", out_file=None):
         output = "ensemble"
 
     if len(self._hold_history) != len(self.history):
-        if self._merged == False and len(self.history) > 0 and output == "one":
+        if self._merged is False and len(self.history) > 0 and output == "one":
 
             if session_info["cdo"] in ["9.9.9"]:
                 the_command = self.history[-1].replace("cdo", "") + " "
@@ -550,7 +548,7 @@ def run_this(os_command, self, output="one", out_file=None):
                             "cdo ", f"cdo -f {self._format} "
                         )
 
-                if self._zip and zip_copy and format_it == False:
+                if self._zip and zip_copy and format_it is False:
                     ff_command = ff_command.replace("cdo ", "cdo -z zip copy ")
                 else:
                     if self._zip:
@@ -597,7 +595,7 @@ def run_this(os_command, self, output="one", out_file=None):
 
             return None
 
-        if ((output == "one") and (len(self) > 1)) or self._zip == False:
+        if ((output == "one") and (len(self) > 1)) or self._zip is False:
 
             new_history = copy.deepcopy(self._hold_history)
 
@@ -643,7 +641,7 @@ def run_this(os_command, self, output="one", out_file=None):
                 else:
                     os_command = os_command.replace("cdo ", f"cdo -f {self._format} ")
 
-            if self._zip and zip_copy and format_it == False:
+            if self._zip and zip_copy and format_it is False:
                 os_command = os_command.replace("cdo ", "cdo -z zip copy ")
             else:
                 if self._zip:

@@ -10,7 +10,7 @@ def drop(self, **kwargs):
     Parameters
     -------------
     *kwargs
-        Possible arguments: var, year, month, day 
+        Possible arguments: var, year, month, day
 
         Note: this uses partial matches. So years, month, variable etc. will also work
 
@@ -39,9 +39,9 @@ def drop(self, **kwargs):
 
     >>> ds.drop(variable = ['var1', 'var2', 'var2'])
 
-    If you wanted to remove the 29th Feburary you would do the following: 
+    If you wanted to remove the 29th Feburary you would do the following:
 
-    >>> ds.drop(month = 2, day = 29) 
+    >>> ds.drop(month = 2, day = 29)
 
 
     """
@@ -50,7 +50,6 @@ def drop(self, **kwargs):
         raise ValueError("Please provide terms to drop")
 
     valids = ["var", "mon", "day", "year", "time"]
-
 
     for key in kwargs:
         key_check = 0
@@ -107,7 +106,6 @@ def drop(self, **kwargs):
 
             vars = str_flatten(vars, ",")
 
-
             # create the cdo command and run it
             if "day" in key:
                 temporal_command = temporal_command + f",day={vars}"
@@ -116,8 +114,5 @@ def drop(self, **kwargs):
             if "year" in key:
                 temporal_command = temporal_command + f",year={vars}"
 
-        
     if len(temporal_command) > len("cdo -delete"):
         run_this(temporal_command, self, output="ensemble")
-
-

@@ -1,11 +1,3 @@
-import inspect
-import warnings
-
-from nctoolkit.runthis import run_this
-
-
-
-
 def sum_all(self, drop=True):
     """
     Calculate the sum of all variables for each time step

@@ -1,7 +1,3 @@
-from nctoolkit.runthis import run_this
-from nctoolkit.utils import is_curvilinear
-import subprocess
-
 
 def centre(self, by="latitude", by_area=False):
     """

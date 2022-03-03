@@ -60,11 +60,11 @@ def crop(self, lon=[-180, 180], lat=[-90, 90], nco=False, nco_vars=None):
         raise ValueError("lat is a list of more than 2 variables")
 
     for ll in lon:
-        if isinstance(ll, numbers.Number) == False:
+        if isinstance(ll, numbers.Number) is False:
             raise TypeError(f"{ll} from lon is not a float or int")
 
     for ll in lat:
-        if isinstance(ll, numbers.Number) == False:
+        if isinstance(ll, numbers.Number) is False:
             raise TypeError(f"{ll} from lat is not a float or int")
 
     # now, clip to the lonlat box we need

@@ -180,7 +180,7 @@ def vertical_mean(self, thickness=None, depth_range=None):
             raise ValueError("Please provide a thickness dataset with 1 variable!")
         sorted = True
 
-    if sorted == False:
+    if sorted is False:
         if thickness in self.variables:
             ds_thick = self.copy()
             ds_thick.select(variable=thickness)
@@ -202,7 +202,7 @@ def vertical_mean(self, thickness=None, depth_range=None):
         ds_thick.append(ds_depth)
         ds_thick.merge()
         ds_thick.assign(z_min=lambda x: x.depth - x.thickness)
-        ds_thick.assign(z_min=lambda x: x.z_min * (x.z_min >= depth_range[0]) + depth_range[0] * (x.z_min < depth_range[0]))
+        ds_thick.assign( z_min=lambda x: x.z_min * (x.z_min >= depth_range[0]) + depth_range[0] * (x.z_min < depth_range[0]))
         ds_thick.assign( depth=lambda x: x.depth * (x.depth <= depth_range[1]) + depth_range[1] * (x.depth > depth_range[1]))
         ds_thick.assign(thickness=lambda x: x.depth - x.z_min, drop=True)
         ds_thick.assign(thickness=lambda x: x.thickness * (x.thickness > 0), drop=True)
@@ -322,7 +322,7 @@ def vertical_integration(self, thickness=None, depth_range=None):
             raise ValueError("Please provide a thickness dataset with 1 variable!")
         sorted = True
 
-    if sorted == False:
+    if sorted is False:
         if thickness in self.variables:
             ds_thick = self.copy()
             ds_thick.select(variable=thickness)

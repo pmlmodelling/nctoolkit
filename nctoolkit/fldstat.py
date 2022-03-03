@@ -1,10 +1,9 @@
 import copy
-import subprocess
 
 from nctoolkit.cleanup import cleanup
 from nctoolkit.runthis import run_this, run_cdo, tidy_command
 from nctoolkit.temp_file import temp_file
-from nctoolkit.session import nc_safe, remove_safe, append_safe
+from nctoolkit.session import remove_safe
 
 
 def boxstat(self, stat="mean", x=1, y=1):
@@ -164,6 +163,7 @@ def spatial_max(self):
     """
     fldstat(self, stat="max")
 
+
 def spatial_stdev(self):
     """
     Calculate the spatial range for all variables
@@ -176,6 +176,7 @@ def spatial_stdev(self):
     >>> ds.spatial_max()
     """
     fldstat(self, stat="std")
+
 
 def spatial_var(self):
     """

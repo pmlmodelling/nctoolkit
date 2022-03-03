@@ -4,7 +4,7 @@ from nctoolkit.cleanup import cleanup
 from nctoolkit.runthis import run_this, run_cdo, tidy_command
 from nctoolkit.temporals import *
 from nctoolkit.temp_file import temp_file
-from nctoolkit.session import nc_safe, remove_safe
+from nctoolkit.session import remove_safe
 import warnings
 
 

@@ -29,7 +29,7 @@ from nctoolkit.session import (
     remove_protected,
     append_tempdirs,
 )
-from nctoolkit.session import nc_safe_par, temp_dirs, nc_protected, temp_dirs_par
+from nctoolkit.session import nc_safe_par, temp_dirs, temp_dirs_par
 from nctoolkit.show import (
     nc_variables,
     nc_years,
@@ -151,7 +151,7 @@ def options(**kwargs):
         if type(kwargs[key]) is not bool:
             if key == "temp_dir":
                 if type(kwargs[key]) is str:
-                    if os.path.exists(kwargs[key]) == False:
+                    if os.path.exists(kwargs[key]) is False:
                         raise ValueError("The temp_dir specified does not exist!")
                     session_info[key] = os.path.abspath(kwargs[key])
                     session_info["user_dir"] = True
@@ -195,7 +195,7 @@ def options(**kwargs):
                         nc_protected_par.append(ff)
                         nc_protected.remove(ff)
 
-            if (kwargs[key] == False) and key == "parallel":
+            if (kwargs[key] is False) and key == "parallel":
 
                 if len(temp_dirs_par) > 0:
                     for ff in temp_dirs_par:
@@ -290,7 +290,7 @@ if config_file is not None:
 
         if key == "temp_dir":
             if type(value) is str:
-                if os.path.exists(value) == False:
+                if os.path.exists(value) is False:
                     raise ValueError(
                         f"The temp_dir specified by {config_file} does not exist: {value}"
                     )
@@ -479,7 +479,6 @@ def open_data(x=[], checks=True, **kwargs):
         stop_time = min(file_stop, stop_time)
 
     if type(x) is str:
-        ##if os.path.exists(x) is False:
         if source != "file" or os.path.exists(x) is False:
 
             if is_url(x):
@@ -496,11 +495,9 @@ def open_data(x=[], checks=True, **kwargs):
 
                     start = time.time()
 
-                    i = 0
-
                     search = True
                     while search:
-                        if os.path.exists(new_x) == False:
+                        if os.path.exists(new_x) is False:
                             try:
                                 # work out if there is a time limit for individual files
                                 if stop_time != 10000000000000000000000000000000000:
@@ -521,7 +518,7 @@ def open_data(x=[], checks=True, **kwargs):
                             end = time.time()
                             if (end - start) > wait:
                                 break
-                    if os.path.exists(new_x) == False:
+                    if os.path.exists(new_x) is False:
                         raise ValueError(f"Could not download {x}")
 
                     x = new_x
@@ -581,7 +578,7 @@ def open_data(x=[], checks=True, **kwargs):
 
             for ff in x:
 
-                if is_url(ff) == False:
+                if is_url(ff) is False:
                     raise ValueError(f"{x} is not a url")
 
             new_files = []
@@ -601,11 +598,9 @@ def open_data(x=[], checks=True, **kwargs):
 
                         start = time.time()
 
-                        i = 0
-
                         search = True
                         while search:
-                            if os.path.exists(new_x) == False:
+                            if os.path.exists(new_x) is False:
                                 try:
                                     # work out if there is a time limit for individual files
                                     if stop_time != 10000000000000000000000000000000000:
@@ -626,7 +621,7 @@ def open_data(x=[], checks=True, **kwargs):
                                 end = time.time()
                                 if (end - start) > wait:
                                     break
-                        if os.path.exists(new_x) == False:
+                        if os.path.exists(new_x) is False:
                             raise ValueError(f"Could not download {x}")
 
                         new_files.append(new_x)
@@ -1280,7 +1275,7 @@ class DataSet(object):
 
             times = []
 
-            ds = xr.open_dataset(ff, decode_times = False)
+            ds = xr.open_dataset(ff, decode_times=False)
             time_name = [x for x in ds.variables if "time" in x]
 
             # get time name
@@ -1324,7 +1319,7 @@ class DataSet(object):
         if len(list_contents) == 1:
             return list_contents[0].drop(columns="file")
 
-        if use_names == False:
+        if use_names is False:
             new_df = []
             i = 1
             for x in list_contents:

@@ -2,21 +2,21 @@ import pandas as pd
 import subprocess
 import warnings
 
-from datetime import datetime
-
 from nctoolkit.runthis import run_this
 from nctoolkit.session import session_info
 from nctoolkit.show import nc_variables, nc_times
-from nctoolkit.utils import version_below, version_above
+from nctoolkit.utils import version_below
 
-def below(x,y):
+
+def below(x, y):
     x = x.split(".")
-    x = int(x[0])* 1000 +  int(x[1]) * 100+  int(x[2])
+    x = int(x[0]) * 1000 + int(x[1]) * 100 + int(x[2])
 
     y = y.split(".")
-    y = int(y[0])* 1000 +  int(y[1]) * 100+  int(y[2])
+    y = int(y[0]) * 1000 + int(y[1]) * 100 + int(y[2])
 
     return x < y
+
 
 def merge(self, join="variables", match=["year", "month", "day"]):
     """
@@ -87,7 +87,7 @@ def merge(self, join="variables", match=["year", "month", "day"]):
             self._merged = True
         return None
 
-    if join_valid == False:
+    if join_valid is False:
         raise ValueError("join supplied is not valid")
 
     # basic checks on match criteria
@@ -127,8 +127,8 @@ def merge(self, join="variables", match=["year", "month", "day"]):
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )
-        cdo_result =  cdo_result.stdout.decode("utf-8")
-        #.stdout
+        cdo_result = cdo_result.stdout.decode("utf-8")
+        # .stdout
         #''cdo_result = str(cdo_result).replace("b'", "").strip()
         cdo_result = str(cdo_result)
         ntime = int(cdo_result.split("\n")[0])
@@ -163,10 +163,10 @@ def merge(self, join="variables", match=["year", "month", "day"]):
         #    shell=True,
         #    stdout=subprocess.PIPE,
         #    stderr=subprocess.PIPE,
-        #).stdout
-        #cdo_result = str(cdo_result).replace("b'", "").strip()
-        #cdo_result = cdo_result.split()
-        #cdo_result = pd.Series((v for v in cdo_result))
+        # ).stdout
+        # cdo_result = str(cdo_result).replace("b'", "").strip()
+        # cdo_result = cdo_result.split()
+        # cdo_result = pd.Series((v for v in cdo_result))
         all_times.append(cdo_result)
 
     for i in range(1, len(all_times)):

@@ -1,8 +1,6 @@
 import os
-import warnings
-from nctoolkit.session import session_info, nc_safe, get_tempdirs, get_safe
-import time
-from threading import Thread
+from nctoolkit.session import session_info, get_tempdirs, get_safe
+
 
 def nc_remove(ff, deep=False):
     """
@@ -59,5 +57,3 @@ def nc_remove(ff, deep=False):
         os.remove(ff)
     except:
         x = "1"
-
-
