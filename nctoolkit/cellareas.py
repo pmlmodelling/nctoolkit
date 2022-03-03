@@ -48,44 +48,18 @@ def cell_area(self, join=True):
 
         for ff in self:
 
-            if session_info["cdo"] in ["1.9.4", "1.9.5", "1.9.6"]:
+            if "cell_area" in nc_variables(ff):
+                raise ValueError("cell_area is already a variable")
 
-                # in cdo < 1.9.6 chaining doesn't work with merge
+            target = temp_file(".nc")
 
-                if "cell_area" in nc_variables(ff):
-                    raise ValueError("cell_area is already a variable")
+            cdo_command = f"cdo -merge {ff} -gridarea {ff} {target}"
+            cdo_command = tidy_command(cdo_command)
+            target = run_cdo(cdo_command, target, precision=self._precision)
 
-                target1 = temp_file(".nc")
+            new_files.append(target)
 
-                cdo_command = f"cdo -gridarea {ff} {target1}"
-                cdo_command = tidy_command(cdo_command)
-                target1 = run_cdo(cdo_command, target1, precision=self._precision)
-                new_commands.append(cdo_command)
-
-                target = temp_file(".nc")
-
-                cdo_command = f"cdo -merge {ff} {target1} {target}"
-                cdo_command = tidy_command(cdo_command)
-                target = run_cdo(cdo_command, target, precision=self._precision)
-                new_files.append(target)
-                remove_safe(target1)
-
-                new_commands.append(cdo_command)
-
-            else:
-
-                if "cell_area" in nc_variables(ff):
-                    raise ValueError("cell_area is already a variable")
-
-                target = temp_file(".nc")
-
-                cdo_command = f"cdo -merge {ff} -gridarea {ff} {target}"
-                cdo_command = tidy_command(cdo_command)
-                target = run_cdo(cdo_command, target, precision=self._precision)
-
-                new_files.append(target)
-
-                new_commands.append(cdo_command)
+            new_commands.append(cdo_command)
 
         for x in new_commands:
             self.history.append(x)
