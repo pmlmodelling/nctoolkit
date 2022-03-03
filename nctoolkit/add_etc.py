@@ -51,6 +51,22 @@ def operation(self, method="mul", ff=None, var=None):
         warnings.warn("Use CDO>=1.9.10 for smarter operations")
         self.run()
 
+    bad_vars = False
+
+    if var is None:
+        for x in self:
+            n_vars = len(nc_variables(ff))
+            x_vars = len(nc_variables(x))
+
+            #if n_vars > x_vars:
+                #raise ValueError("Incompatible number of variables in datasets!")
+
+            if n_vars != x_vars:
+                if n_vars > 1:
+                    raise ValueError(
+                        "Incompatible number of variables in datasets!"
+                    )
+
     # grab the method string
     if new:
         if method == "mul":
@@ -130,11 +146,6 @@ def operation(self, method="mul", ff=None, var=None):
             if x is None:
                 possible_switch = False
 
-    method_dict = dict()
-
-    for x in self:
-        method_dict[x] = None
-
     # figure out if a yearly will do
     possible_switch = True
     if new:
@@ -142,9 +153,6 @@ def operation(self, method="mul", ff=None, var=None):
             for ss in self_times:
                 if set(ss.year) != set([x for x in list(ff_times_df.year)]):
                     possible_switch = False
-                else:
-                    if method_dict[x] is not None:
-                        method_dict[x] = f"year{method}"
 
             if possible_switch:
                 method = f"year{method}"
@@ -157,9 +165,6 @@ def operation(self, method="mul", ff=None, var=None):
         for ss in self_times:
             if len(ff_times_df) != len(ss):
                 possible_switch = False
-            else:
-                if method_dict[x] is not None:
-                    method_dict[x] = method
 
             if possible_switch:
                 method = method
@@ -175,9 +180,6 @@ def operation(self, method="mul", ff=None, var=None):
             for ss in self_times:
                 if set(ss.month) != set([x for x in list(ff_times_df.month)]):
                     possible_switch = False
-                else:
-                    if method_dict[x] is not None:
-                        method_dict[x] = f"ymon{method}"
 
             if possible_switch:
                 method = f"ymon{method}"
@@ -201,364 +203,37 @@ def operation(self, method="mul", ff=None, var=None):
                     is False
                 ):
                     possible_switch = False
-                else:
-                    if method_dict[x] is not None:
-                        method_dict[x] = f"mon{method}"
 
             if possible_switch:
                 method = f"mon{method}"
                 new = False
                 warnings.warn(f"{nc_str} multi-year monthly time series")
 
+    # figure out if this is a multi-year daily ts
+    possible_switch = True
     if new:
-
-        ff_times = nc_times(ff)
-        if len(ff_times) == 0:
-            op_method = "single"
-        else:
-            ff_times_df = (
-                pd.DataFrame({"time": ff_times})
-                .assign(
-                    year=lambda x: x.time.dt.year,
-                    month=lambda x: x.time.dt.month,
-                    day=lambda x: x.time.dt.day,
-                )
-                .drop(columns="time")
-            )
-
-            # work out if it's a yearmon method
-
-            op_method = None
-
-            # if len(ff_times_df) > 1 and op_method is not None:
-            if len(ff_times_df) > 1:
-                if len(ff_times_df) == len(ff_times_df.drop_duplicates()):
-                    if len(ff_times_df) > len(
-                        ff_times_df.loc[:, ["year", "month"]].drop_duplicates()
-                    ):
-                        if len(ff_times_df) == len(
-                            ff_times_df.loc[
-                                :, ["year", "month", "day"]
-                            ].drop_duplicates()
-                        ):
-                            op_method = "yday"
-
-            # if len(ff_times_df) > 1 and op_method is not None:
-            if len(ff_times_df) > 1:
-                if len(ff_times_df) == len(
-                    ff_times_df.drop(columns="day").drop_duplicates()
+        if ff_times_df.groupby(["month", "year", "day"]).size().max() == 1:
+            for ss in self_times:
+                if (
+                    ss.loc[:, ["month", "year", "day"]]
+                    .drop_duplicates()
+                    .reset_index(drop=True)
+                    .equals(
+                        ff_times_df.loc[:, ["month", "year", "day"]]
+                        .drop_duplicates()
+                        .reset_index(drop=True)
+                    )
+                    is False
                 ):
-                    if len(set(ff_times_df.year)) > 1:
-                        if len(set(ff_times_df.month)) > 1:
-                            op_method = "yearmon"
+                    possible_switch = False
 
-            # if len(ff_times_df) > 1 and op_method is not None:
-            if len(ff_times_df) > 1:
-                if len(ff_times_df) == len(
-                    ff_times_df.drop(columns="day").drop_duplicates()
-                ):
-                    if len(set(ff_times_df.year)) == 1:
-                        if len(set(ff_times_df.month)) > 1:
-                            op_method = "mon"
+            if possible_switch:
+                method = f"yday{method}"
+                new = False
+                warnings.warn(f"{nc_str} multi-year daily time series")
 
-            # if len(ff_times_df) > 1 and op_method is not None:
-            if len(ff_times_df) > 1:
-                if len(ff_times_df) == len(
-                    ff_times_df.drop(columns="day").drop_duplicates()
-                ):
-                    if len(set(ff_times_df.year)) > 1:
-                        if len(set(ff_times_df.year)) == len(ff_times_df):
-                            op_method = "year"
-
-            if len(ff_times_df) == 1:
-                op_method = "single"
-
-        bad_vars = False
-
-        if var is None:
-            for x in self1:
-                n_vars = len(nc_variables(ff))
-                x_vars = len(nc_variables(x))
-
-                if n_vars > x_vars:
-                    raise ValueError("Incompatible number of variables in datasets!")
-
-                if n_vars != x_vars:
-                    if n_vars > 1:
-                        raise ValueError(
-                            "Incompatible number of variables in datasets!"
-                        )
-
-        self1.run()
-        # leap years are tricky....
-
-        # throw an error if things are ambiguous
-
-        merge_names = False
-
-        if len(self1) == 1:
-            if len(self1.variables) > len(nc_variables(ff)):
-                merge_names = True
-
-        if merge_names:
-            self1.split("variable")
-
-        if method == "mul":
-            nc_operation = "multiplication"
-            nc_str = "Multiplying by a"
-        if method == "sub":
-            nc_operation = "subtraction"
-            nc_str = "Subtracting a"
-        if method == "add":
-            nc_operation = "addition"
-            nc_str = "Adding a"
-        if method == "div":
-            nc_operation = "division"
-            nc_str = "Dividing by a"
-
-        if op_method == "yday":
-            for file in self1:
-                file_times = nc_times(file)
-                if len([x for x in file_times if "-02-29" in str(x)]) > 0:
-                    raise ValueError(
-                        "Dataset contains leap years, so the operation is ambiguous. Consider removing 29th February!"
-                    )
-                df_times = pd.DataFrame(
-                    {
-                        "year": [x.year for x in file_times],
-                        "month": [x.month for x in file_times],
-                        "day": [x.day for x in file_times],
-                    }
-                ).drop_duplicates()
-
-                for yy in df_times.year:
-                    if len(df_times.query("year == @yy").merge(ff_times_df)) != len(
-                        ff_times_df
-                    ):
-                        raise ValueError(
-                            f"Time steps for the datasets/files are not compatible for the {nc_operation} method"
-                        )
-                    if len(df_times.query("year == @yy").merge(ff_times_df)) != len(
-                        df_times.query("year == @yy")
-                    ):
-                        raise ValueError(
-                            f"Time steps for the datasets/files are not compatible for the {nc_operation} method"
-                        )
-
-        if op_method == "year":
-            for file in self1:
-                ff_years = list(set([x.year for x in ff_times]))
-                file_times = nc_times(file)
-                file_years = list(set([x.year for x in file_times]))
-
-                if ff_years != file_years:
-                    raise ValueError("Years in datasets/files are not identical!")
-
-        if method == "mul":
-            nc_operation = "multiply"
-        if method == "sub":
-            nc_operation = "subtract"
-        if method == "add":
-            nc_operation = "add"
-        if method == "div":
-            nc_operation = "divide"
-
-        new_commands = []
-        new_files = []
-
-        orig_op_method = op_method
-
-        for x in self1:
-
-            op_method = orig_op_method
-
-            if len(nc_times(x)) == len(ff_times):
-                op_method = "single"
-
-            run = False
-
-            if op_method == "single" and run is False:
-                run = True
-                if len(ff_times) > 0:
-                    if len(ff_times_df) == 1:
-                        warnings.warn(f"{nc_str} single time step time series")
-
-                    if len(ff_times_df) == len(nc_times(x)):
-
-                        warnings.warn(
-                            f"{nc_str} time series with the same number of time steps"
-                        )
-
-                    if len(nc_times(x)) < len(nc_times(ff)):
-                        warnings.warn(
-                            f"Warning: Files do not have the same number of time steps. Only matching time steps used by {nc_operation}."
-                        )
-                if var is not None:
-                    cdo_command = f"cdo -{method} {x} -selname,{var} {ff}"
-                else:
-                    cdo_command = f"cdo -{method} {x} {ff}"
-
-                target = temp_file(".nc")
-                cdo_command = f"{cdo_command} {target}"
-                target = run_cdo(cdo_command, target, precision=self1._precision)
-                new_files.append(target)
-                new_commands.append(cdo_command)
-
-            if op_method == "yday" and run is False:
-                if var is not None:
-                    cdo_command = f"cdo -yday{method} {x} -selname,{var} {ff}"
-                else:
-                    cdo_command = f"cdo -yday{method} {x} {ff}"
-                run = True
-                target = temp_file(".nc")
-                cdo_command = f"{cdo_command} {target}"
-                target = run_cdo(cdo_command, target, precision=self1._precision)
-                new_files.append(target)
-                new_commands.append(cdo_command)
-                warnings.warn(f"{nc_str} daily time series")
-
-            if op_method == "yearmon" and run is False:
-                if var is not None:
-                    cdo_command = f"cdo -mon{method} {x} -selname,{var} {ff}"
-                else:
-                    cdo_command = f"cdo -mon{method} {x} {ff}"
-                run = True
-                target = temp_file(".nc")
-                cdo_command = f"{cdo_command} {target}"
-                target = run_cdo(cdo_command, target, precision=self1._precision)
-                new_files.append(target)
-                new_commands.append(cdo_command)
-
-            # monthly time series
-
-            if op_method == "mon" and run is False:
-                run = True
-
-                if bad_vars:
-                    raise ValueError(
-                        "Datasets/files do not have the same number of variables!"
-                    )
-                if var is not None:
-                    cdo_command = f"cdo -ymon{method} {x} -selname,{var} {ff}"
-                else:
-                    cdo_command = f"cdo -ymon{method} {x} {ff}"
-
-                target = temp_file(".nc")
-                cdo_command = f"{cdo_command} {target}"
-                target = run_cdo(cdo_command, target, precision=self1._precision)
-                new_files.append(target)
-                new_commands.append(cdo_command)
-                warnings.warn(f"{nc_str} monthly time series")
-            # yearly time series
-
-            if op_method == "year" and run is False:
-                run = True
-                if var is not None:
-                    cdo_command = f"cdo -year{method} {x} -selname,{var} {ff}"
-                else:
-                    cdo_command = f"cdo -year{method} {x} {ff}"
-                target = temp_file(".nc")
-                cdo_command = f"{cdo_command} {target}"
-                target = run_cdo(cdo_command, target, precision=self1._precision)
-                new_files.append(target)
-                new_commands.append(cdo_command)
-                warnings.warn(f"{nc_str} yearly time series")
-
-            if len(nc_years(ff)) == 1 and run is False:
-                if (len(nc_times(x)) / len(nc_years(x))) == len(nc_times(ff)):
-                    run = True
-
-                    if (nc_years(ff) == nc_years(x)) or (
-                        len(nc_times(ff)) == len(nc_times(x))
-                    ):
-
-                        if len(ff_times_df) == 1:
-                            warnings.warn(f"{nc_str} single time step time series")
-
-                        if len(ff_times_df) == len(nc_times(x)):
-
-                            warnings.warn(
-                                f"{nc_str} time series with the same number of time steps"
-                            )
-
-                        if len(nc_times(x)) < len(nc_times(ff)):
-                            warnings.warn(
-                                f"Warning: Files do not have the same number of time steps. Only matching time steps used by {nc_operation}."
-                            )
-                        if var is not None:
-                            cdo_command = f"cdo -{method} {x} -selname,{var} {ff}"
-                        else:
-                            cdo_command = f"cdo -{method} {x} {ff}"
-
-                        target = temp_file(".nc")
-                        cdo_command = f"{cdo_command} {target}"
-                        target = run_cdo(
-                            cdo_command, target, precision=self1._precision
-                        )
-                        new_files.append(target)
-                        new_commands.append(cdo_command)
-                    else:
-                        if var is not None:
-                            cdo_command = f"cdo -yday{method} {x} -selname,{var} {ff}"
-                        else:
-                            cdo_command = f"cdo -yday{method} {x} {ff}"
-                        target = temp_file(".nc")
-                        cdo_command = f"{cdo_command} {target}"
-                        target = run_cdo(
-                            cdo_command, target, precision=self1._precision
-                        )
-                        new_files.append(target)
-                        new_commands.append(cdo_command)
-
-            if run is False:
-                if len(nc_times(x)) < len(nc_times(ff)):
-                    warnings.warn(
-                        f"Warning: Files do not have the same number of time steps. Only matching time steps used by {nc_operation}."
-                    )
-
-                if len(nc_times(x)) != len(nc_times(ff)) and len(nc_times(ff)) > 1:
-                    raise ValueError(
-                        f"Time steps in datasets are not compatible for {nc_operation} method! Operations require yearly/monthly or daily time series"
-                    )
-
-                run = True
-
-                if var is not None:
-                    cdo_command = f"cdo -{method} {x} -selname,{var} {ff}"
-                else:
-                    cdo_command = f"cdo -{method} {x} {ff}"
-                target = temp_file(".nc")
-                cdo_command = f"{cdo_command} {target}"
-                target = run_cdo(cdo_command, target, precision=self1._precision)
-                new_files.append(target)
-                new_commands.append(cdo_command)
-                warnings.warn(f"{nc_str} single time step time series")
-
-        if run is False:
-            raise ValueError(
-                f"nctoolkit cannot automatically determine {nc_operation} method for the dataset timesteps given!"
-            )
-
-        if len(new_commands) > 0:
-            for cc in new_commands:
-                self1.history.append(cc.replace("  ", " "))
-
-            self1.current = new_files
-
-            for ff1 in new_files:
-                remove_safe(ff1)
-            self1._hold_history = copy.deepcopy(self1.history)
-
-            if merge_names:
-                self1.merge()
-                self1.run()
-            cleanup()
-
-            self.history = self1.history
-            self._hold_history = self1._hold_history
-            self.current = self1.current
-
-            return None
+    if new:
+        raise ValueError("Unable to carry out operation given times in datasets!")
 
     if new is False:
 
