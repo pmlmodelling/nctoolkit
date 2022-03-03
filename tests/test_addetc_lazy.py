@@ -12,9 +12,22 @@ ff = "data/sst.mon.mean.nc"
 
 class TestAddetc:
 
+    def test_dailyts(self):
+        ds = nc.open_data("data/hourly/01/*.nc")
+        ds.set_precision("F64")
+        ds.merge("time")
+        ds.tmean("day")
+        ds.run()
+        ds1 = nc.open_data("data/hourly/01/*.nc")
+        ds1.set_precision("F64")
+        ds1.merge("time")
+        ds1.subtract(ds)
+        ds1.tmean("day")
+        ds1.to_dataframe().abs().max()
+        assert float(ds1.to_dataframe().abs().max()) < 1e-6
 
     def test_yearlyts(self):
-        version = nc.utils.cdo_version()
+        version = nc.cdo_version()
         if nc.utils.version_below(version, "1.9.9") == False:
             ds1 = nc.open_data(ff)
             ds2 = nc.open_data(ff)
@@ -318,7 +331,7 @@ class TestAddetc:
 
         x = tracker.to_dataframe().sst.values[0].astype("float") * 10.0
         y = new.to_dataframe().sst.values[0].astype("float")
-    
+
 
         assert np.round(x, 3) == np.round(y, 3)
         n = len(nc.session_files())

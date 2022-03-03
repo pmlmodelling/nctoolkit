@@ -12,7 +12,19 @@ class TestTonnc:
         assert n == 0
         ds = nc.open_data()
         with pytest.raises(ValueError):
-            ds.to_nc("/tmp/test.nc") 
+            ds.to_nc("/tmp/test.nc")
+
+        out_file = "test123.nc"
+        ds = nc.open_data(["data/2003.nc", "data/2004.nc"])
+        ds.select(time = 0)
+        ds.merge("time")
+        ds.to_nc(out_file, overwrite=True)
+        os.path.exists(out_file)
+        ds = nc.open_data(["data/2003.nc", "data/2004.nc"])
+        ds.select(time = 0)
+        ds.merge("time")
+        ds.to_nc(out_file, overwrite=True)
+        os.remove(out_file)
 
     def test_1(self):
         ff = "data/sst.mon.mean.nc"

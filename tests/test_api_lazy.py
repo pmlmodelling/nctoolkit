@@ -13,6 +13,17 @@ ff2 = "data/2004.nc"
 
 class TestApi2:
     def test_errors(self):
+        ff1 = "data/2003.nc"
+        ff2 = "data/2004.nc"
+
+        ds = nc.open_data([ff1, ff2])
+        ds.select(time = 0)
+        ds.run()
+
+        assert ds.calendar == 'gregorian'
+
+        assert "file 1" in list(ds.contents.reset_index().file)
+
         ff = "this_file_does_not_exist.nc"
         ff2 = "this_file_does_not_exist2.nc"
 
