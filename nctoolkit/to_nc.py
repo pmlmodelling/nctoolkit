@@ -45,10 +45,6 @@ def to_nc(self, out, zip=True, overwrite=False):
         if os.path.exists(out_dir) is False:
             raise ValueError(f"{out_dir} does not exist!")
 
-    # If you are trying to overwrite a file in self.current, cdo cannot simultaneously have it opened and written to
-    if out in self and (overwrite is True):
-        self.run()
-
     ff = copy.deepcopy(self.current)
 
     # Figure out if it is possible to write the file, i.e. if a dataset is still an
