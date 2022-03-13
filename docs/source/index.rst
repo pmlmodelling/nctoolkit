@@ -50,7 +50,7 @@ nctoolkit is developed as open source software by the Marine Systems Modelling g
    subsetting 
    variables
    adding
-   merging_notebook 
+   ensembles 
    parallel 
    examples
    hacks 
