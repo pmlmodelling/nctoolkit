@@ -1,4 +1,4 @@
-Multi-file methods
+Multi-file datasets
 ==================
 
 nctoolkit is built to handle multi-file datasets easily and efficiently.
