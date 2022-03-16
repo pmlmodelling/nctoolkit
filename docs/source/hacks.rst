@@ -91,3 +91,12 @@ If you want to remove a leap day from a dataset, just do the following:
 
 
 
+Renaming variables
+================
+
+If you want to rename variables, you can use the `rename` method. Just provide a dictionary where the keys are the original
+variable names and the values are the new names. So if you wanted to rename a variable x to y, you would do this:
+
+.. code:: ipython3
+
+    ds.rename({"x":"y"})
