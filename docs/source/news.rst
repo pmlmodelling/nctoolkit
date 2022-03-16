@@ -1,6 +1,13 @@
 News
 ============
 
+Release of v0.4.2
+---------------
+
+Version 0.4.2 will be released in April 2022. This is expected to be a minor release to improve some internals.
+
+The `nco_command` method has been enhanced, so that it will automatically run on multiple cores when this is specified using `nc.options`.
+
 Release of v0.4.1
 ---------------
 
