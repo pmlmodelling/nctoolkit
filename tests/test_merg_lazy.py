@@ -51,31 +51,6 @@ class TestMerge:
     def test_merge_time(self):
 
 
-        ds1 = nc.open_data("data/2003.nc")
-        ds2 = nc.open_data("data/2004.nc")
-        ds2.assign(sst = lambda x: x.analysed_sst - 273.15)
-        ds1.append(ds2)
-        ds1.merge("time")
-        ds1.tmean()
-        ds1.spatial_mean()
-        x = ds1.to_dataframe().analysed_sst.values[0]
-
-        ds1 = nc.open_data("data/2003.nc")
-        ds2 = nc.open_data("data/2004.nc")
-        ds1.append(ds2)
-        ds1.merge("time")
-        ds1.tmean()
-        ds1.spatial_mean()
-
-        y = ds1.to_dataframe().analysed_sst.values[0]
-
-
-        assert x == y
-
-        del ds1
-        del ds2
-
-
         tracker = nc.open_data(ff)
         tracker.split("year")
         tracker.merge_time()
@@ -147,6 +122,11 @@ class TestMerge:
         with pytest.raises(TypeError):
             data.merge(match=1)
 
+
+        with pytest.raises(ValueError):
+            ds = nc.open_data(["data/sst.mon.mean.nc", "data/2003.nc"] )
+            ds.merge("time")
+
     def test_merge_error1(self):
         tracker = nc.open_data(ff)
         tracker.select(timesteps=[0])
@@ -200,7 +180,7 @@ class TestMerge:
         tracker.collect()
         tracker.spatial_sum()
         x = tracker.to_dataframe().sst.values[0]
-        
+
         tracker = nc.open_data(ff)
         tracker.select(time =0)
         tracker.distribute(4,4)
