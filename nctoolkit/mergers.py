@@ -79,6 +79,16 @@ def merge(self, join="variables", match=["year", "month", "day"]):
             )
             return None
 
+        # check variable names are consistent
+
+        var_list = set()
+        for ff in self:
+            var_list.add(",".join(nc_variables(ff)))
+        if len(var_list) > 1:
+            raise ValueError("You are trying to merge files with different variables!")
+
+
+
         cdo_command = "cdo --sortname -mergetime"
 
         run_this(cdo_command, self, output="one")
