@@ -19,7 +19,7 @@ def time_limit(seconds):
         signal.alarm(0)
 
 
-def plot(self, vars=None, autoscale=True):
+def plot(self, vars=None, autoscale=True, out = None):
     from ncplot import view
 
     """
@@ -30,6 +30,9 @@ def plot(self, vars=None, autoscale=True):
     -------------
     vars: str or list
         A string or list of the variables to plot
+
+    out: str
+        Name of output file if you want to save as html. Defaults to None.
 
     Examples
     ------------
@@ -76,4 +79,4 @@ def plot(self, vars=None, autoscale=True):
         with time_limit(20):
             return view(self[0], vars=vars, autoscale=autoscale)
 
-    return view(self[0], vars=vars, autoscale=autoscale)
+    return view(self[0], vars=vars, autoscale=autoscale, file = out)
