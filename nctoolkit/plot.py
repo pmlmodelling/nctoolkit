@@ -79,4 +79,4 @@ def plot(self, vars=None, autoscale=True, out = None):
         with time_limit(20):
             return view(self[0], vars=vars, autoscale=autoscale)
 
-    return view(self[0], vars=vars, autoscale=autoscale, file = out)
+    return view(self[0], vars=vars, autoscale=autoscale, out = out)
