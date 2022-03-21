@@ -1,12 +1,22 @@
 News
 ============
 
+Release of v0.4.3
+---------------
+
+
+Version 0.4.3 is expected to be released in May 2022. This will be a minor release with some improvements to internals and methods.
+
+The methods ``to_xarray`` and ``to_dataframe`` no long accept the `cdo_times` argument, as this has essentially been redundant for a few nctoolkit versions. 
+
 Release of v0.4.2
 ---------------
 
-Version 0.4.2 will be released in April 2022. This is expected to be a minor release to improve some internals.
+Version 0.4.2 was released in March 2022.
 
-The `nco_command` method has been enhanced, so that it will automatically run on multiple cores when this is specified using `nc.options`.
+This is a minor release with a couple of method enhancements. Plots can now be saved to html files using the `out` arguments. The ``nco_command`` method now works over multiple cores when these are set using ``nc.options``.
+
+
 
 Release of v0.4.1
 ---------------
@@ -51,7 +61,7 @@ The ``split`` method now allows users to split datasets into multiple files by v
 Release of v0.3.9
 ---------------
 
-Version 0.3.9 was in November 2021. This is minor release focusing on under-the-hood improvements and new methods.
+Version 0.3.9 was released in November 2021. This is minor release focusing on under-the-hood improvements and new methods.
 
 A new method, ``from_xarray`` is added for converting xarray datasets to nctoolkit datasets.
 
