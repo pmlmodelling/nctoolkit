@@ -2,7 +2,7 @@ from datetime import datetime
 import xarray as xr
 
 
-def to_xarray(self, decode_times=True, cdo_times=False):
+def to_xarray(self, decode_times=True):
     """
     Open a dataset as an xarray object
 
@@ -11,8 +11,6 @@ def to_xarray(self, decode_times=True, cdo_times=False):
     decode_times: boolean
         Set to False if you do not want xarray to decode the times. Default is True.
         If xarray cannot decode times, CDO will be used.
-    cdo_times: boolean
-        Set to True if you do not want CDO to decode the times
 
     Returns
     ---------------
@@ -31,7 +29,10 @@ def to_xarray(self, decode_times=True, cdo_times=False):
     >>> ds.to_xarray(decode_times = False)
 
 
+
     """
+
+    cdo_times = False
     # 3 possibilities:
     #   1: decode_times is False - just open in xarray
     #   2: decode_times is True, and xarray can decodes times -
@@ -93,7 +94,7 @@ def to_xarray(self, decode_times=True, cdo_times=False):
         return data
 
 
-def to_dataframe(self, decode_times=True, cdo_times=False):
+def to_dataframe(self, decode_times=True):
     """
     Open a dataset as a pandas data frame
 
@@ -102,8 +103,6 @@ def to_dataframe(self, decode_times=True, cdo_times=False):
     decode_times: boolean
         Set to False if you do not want xarray to decode the times prior to
         conversion to data frame. Default is True.
-    cdo_times: boolean
-        Set to True if you do not want CDO to decode the times
 
     Returns
     ---------------
@@ -112,4 +111,4 @@ def to_dataframe(self, decode_times=True, cdo_times=False):
     """
     # everything must be run first
     self.run()
-    return self.to_xarray(decode_times=decode_times, cdo_times=cdo_times).to_dataframe()
+    return self.to_xarray(decode_times=decode_times).to_dataframe()
