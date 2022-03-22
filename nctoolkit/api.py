@@ -1465,6 +1465,7 @@ class DataSet(object):
     from nctoolkit.ensembles import ensemble_percentile
 
     from nctoolkit.esoteric import assign_coords
+    from nctoolkit.esoteric import fix_nemo_ersem_grid
     from nctoolkit.esoteric import set_gridtype
 
     from nctoolkit.fill import fill_na

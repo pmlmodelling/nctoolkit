@@ -1,9 +1,68 @@
 import copy
+import pandas as pd
+import numpy as np
 
 from .temp_file import temp_file
 from .cleanup import cleanup
 from .runthis import run_this
 from .runthis import run_nco
+from .api import open_data
+
+def fix_nemo_ersem_grid(self):
+    """
+    A quick hack to change the grid file in North West European shelf Nemo grids.
+
+    """
+
+    ds = open_data(self[0])
+
+    lon_name = [x for x in ds.to_xarray().coords if "lon" in x][0]
+    lat_name = [x for x in ds.to_xarray().coords if "lat" in x][0]
+    lons = ds.to_xarray()[lon_name].values.flatten()
+    if len(set(list(pd.DataFrame({"lon":lons}).groupby("lon").size().sort_values()))) == 1:
+        raise ValueError("There appears to be nothing to fix!")
+    lons =  list(set(lons))
+    
+    for i in range(1, len(lons)):
+        if np.round(lons[i] - lons[i-1], 5) == np.round(lons[i+1] - lons[i], 5):
+            break
+    xinc = np.round(lons[i] - lons[i-1], 5)
+    
+    lats = ds.to_xarray()[lat_name].values.flatten()
+    lats =  list(set(lats))
+    
+    for i in range(1, len(lats)):
+        if np.round(lats[i] - lats[i-1], 5) == np.round(lats[i+1] - lats[i], 5):
+            break
+    yinc = np.round(lats[i] - lats[i-1], 5)
+    grid_file = temp_file().replace(".", "")
+    ysize = ds.to_xarray()[lon_name].shape[0]
+    xsize = ds.to_xarray()[lat_name].shape[1]
+    xfirst = min(lons)
+    lats = ds.to_xarray()[lat_name].values.flatten()
+    yfirst = min(pd.DataFrame({"lat":lats}).groupby("lat").size().sort_values().reset_index()["lat"][0:-1])
+    with open(grid_file, 'a') as file:
+        file.write('#\n')
+        file.write('# gridID 1\n')
+        file.write('#\n')
+        file.write('gridtype = lonlat\n')
+        file.write(f'gridsize = {xsize*ysize}\n')
+        file.write(f'xsize = {xsize}\n')
+        file.write(f'ysize = {ysize}\n')
+        file.write('xname = lon\n')
+        file.write('xlongname= longitude\n')
+        file.write('xunits= degrees_east\n')
+        file.write('yname = lat\n')
+        file.write('ylongname= latitude\n')
+        file.write('yunits= degrees_north\n')
+        file.write(f'xfirst= {xfirst}\n')
+        file.write(f'xinc= {xinc}\n')
+        file.write(f'yfirst= {yfirst}\n')
+        file.write(f'yinc= {yinc}\n')
+    self.cdo_command(f"setgrid,{grid_file}")
+    self.run()
+
+
 
 
 def set_gridtype(self, grid):
