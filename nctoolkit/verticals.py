@@ -450,3 +450,23 @@ def bottom_mask(self):
     self._hold_history = copy.deepcopy(self.history)
 
     cleanup()
+
+def surface_mask(self):
+    """
+    Create a mask identifying the shallowest cell without missing values.
+    This converts a dataset to a mask identifying which cell represents top level,
+    for example the sea surface. 1 identifies the shallowest cell with non-missing values.
+    Everything else is 0, or missing. At present this method only uses the first
+    available variable from netCDF files, so it may not be suitable for all data
+    """
+
+    self.invert_levels()
+    self.bottom_mask()
+    self.invert_levels()
+
+
+
+
+
+
+
