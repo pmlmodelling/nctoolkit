@@ -9,6 +9,10 @@ Version 0.4.3 is expected to be released in May 2022. This will be a minor relea
 
 The methods ``to_xarray`` and ``to_dataframe`` no long accept the `cdo_times` argument, as this has essentially been redundant for a few nctoolkit versions. 
 
+A new method ``surface_mask`` has been added to enable identifying top levels with data in cases when there are missing values in the actual top level.
+
+The ``plot`` method now let's users send kwargs to hvplot to make customizations, such as log-scales an option.
+
 Release of v0.4.2
 ---------------
 
