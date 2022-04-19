@@ -7,6 +7,8 @@ Release of v0.4.3
 
 Version 0.4.3 is expected to be released in May 2022. This will be a minor release with some improvements to internals and methods.
 
+A new method ``unify`` will be introduced. This will provide an automated procedure for putting datasets on the same spatial and temporal framework. The method will put the datasets onto the same horizontal and vertical grids by interpolating the second dataset onto the first dataset's grids. Temporal matching will occur so that, for example, if one dataset has daily data and another has monthly data, a monthly mean will replace the daily dataset.
+
 The methods ``to_xarray`` and ``to_dataframe`` no long accept the `cdo_times` argument, as this has essentially been redundant for a few nctoolkit versions. 
 
 A new method ``surface_mask`` has been added to enable identifying top levels with data in cases when there are missing values in the actual top level.
