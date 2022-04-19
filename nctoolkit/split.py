@@ -87,10 +87,10 @@ def split(self, by=None):
     Parameters
     --------------------
     by : str
-        Available by arguments are 'year', 'month', 'yearmonth', 'season', 'day' 'name'.
+        Available by arguments are 'year', 'month', 'yearmonth', 'season', 'day' 'name', "timestep".
         year will split files by year, month will split files by month, yearmonth
         will split files by year and month; season will split files by year, day
-        will split files by day.
+        will split files by day. Using "timestep" will split files by timestep.
         'name' will split by variable name
 
     Examples
