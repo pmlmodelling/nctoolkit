@@ -15,6 +15,11 @@ A new method ``surface_mask`` has been added to enable identifying top levels wi
 
 The ``plot`` method now let's users send kwargs to hvplot to make customizations, such as log-scales an option.
 
+
+The ``split`` method now allows splitting by timestep using ``split("timestep")``.
+
+
+
 Release of v0.4.2
 ---------------
 
