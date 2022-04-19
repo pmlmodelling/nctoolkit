@@ -9,6 +9,10 @@ from nctoolkit.api import (
     open_thredds,
     open_url,
 )
+
+from nctoolkit.unify import unify
+
+
 from nctoolkit.cleanup import cleanup, clean_all, deep_clean, temp_check
 from nctoolkit.create_ensemble import create_ensemble
 from nctoolkit.session import session_files
