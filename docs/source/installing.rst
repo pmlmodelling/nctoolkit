@@ -30,7 +30,7 @@ To install the development version from GitHub::
 Plotting issue
 ---------------------
 
-An update to a dependency of a dependency has broken plotting in nctoolkit. If you experience an error related to jinja2, downgrad the package as follows:
+An update to a dependency of a dependency has broken plotting in nctoolkit. If you experience an error related to jinja2, downgrad the package as follows::
 
         $ conda install jinja2=3.0.3 -y
         $ pip install jinja2==3.0.3
