@@ -1,5 +1,25 @@
 from nctoolkit.runthis import run_this
 
+def hourstat(self, stat="mean"):
+    """Method to calculate the hourly statistic from a function"""
+
+    cdo_command = f"cdo -hour{stat}"
+
+    run_this(cdo_command, self, output="ensemble")
+
+def yhourstat(self, stat="mean"):
+    """Method to calculate the hourly statistic from a function"""
+
+    cdo_command = f"cdo -yhour{stat}"
+
+    run_this(cdo_command, self, output="ensemble")
+
+def dhourstat(self, stat="mean"):
+    """Method to calculate the hourly statistic from a function"""
+
+    cdo_command = f"cdo -dhour{stat}"
+
+    run_this(cdo_command, self, output="ensemble")
 
 def ymonstat(self, stat="mean"):
     """Method to calculate the seasonal statistic from a function"""

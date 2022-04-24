@@ -33,7 +33,7 @@ def time_stat(self, stat="mean", over="time"):
     over = ["season" if "sea" in x else x for x in over]
 
     for x in over:
-        if x not in ["day", "month", "year", "season"]:
+        if x not in ["day", "month", "year", "season", "hour"]:
             raise ValueError(f"{x} is not a valid group!")
 
     #  grouping over season and day and month makes no sense
@@ -46,45 +46,77 @@ def time_stat(self, stat="mean", over="time"):
     if over == ["day", "month"]:
         over = ["day"]
 
+    if over == ["day", "hour", "month"]:
+        over = ["day", "hour"]
+
+    if over == ["day", "hour", "month", "year"]:
+        over = ["day", "hour", "year"]
     # sort over alphabetically
+
+    run = False
 
     # single variables
     # daily climatology
     if over == ["day"]:
+        run = True
         ydaystat(self, stat=stat)
+        return None
+
+    if over == ["day", "hour"]:
+        run = True
+        yhourstat(self, stat=stat)
+        return None
+
+    if over == ["day", "hour",  "year"]:
+        run = True
+        hourstat(self, stat=stat)
+        return None
+
+    if over == ["hour"]:
+        run = True
+        dhourstat(self, stat=stat)
         return None
 
     # monthly climatology
     if over == ["month"]:
+        run = True
         ymonstat(self, stat=stat)
         return None
 
     # annual mean
     if over == ["year"]:
+        run = True
         yearlystat(self, stat=stat)
         return None
 
     # seasonal climatology
     if over == ["season"]:
+        run = True
         seasclim(self, stat=stat)
         return None
 
     # seasonal climatology
     if over == ["season", "year"]:
+        run = True
         seasstat(self, stat=stat)
         return None
 
     # all three. This is daily mean
 
     if over == ["day", "month", "year"] or over == ["day", "year"]:
+        run = True
         dailystat(self, stat=stat)
         return None
 
     # monthly mean
 
     if over == ["month", "year"]:
+        run = True
         monstat(self, stat=stat)
         return None
+    if run is False:
+        raise ValueError(f"Grouping {over} is currently not supported!")
+
 
 
 def tsum(self, over="time"):
@@ -529,44 +561,52 @@ def tpercentile(self, p=None, over="time"):
         over = ["day"]
 
     if over == ["time"]:
+        perc_term = "cdo -timpctl,"
         min_command = " -timmin "
         max_command = " -timmax "
 
     # single variables
     # daily climatology
     if over == ["day"]:
+        perc_term = "cdo -ydaypctl,"
         min_command = " -ydaymin "
         max_command = " -ydaymax "
 
     # monthly climatology
     if over == ["month"]:
+        perc_term = "cdo -ymonpctl,"
         min_command = " -ymonmin "
         max_command = " -ymonmax "
 
     # annual mean
     if over == ["year"]:
+        perc_term = "cdo -yearpctl,"
         min_command = " -yearmin "
         max_command = " -yearmax "
 
     # seasonal climatology
     if over == ["season"]:
+        perc_term = "cdo -yseaspctl,"
         min_command = " -yseasmin "
         max_command = " -yseasmax "
 
     # seasonal climatology
     if over == ["season", "year"]:
+        perc_term = "cdo -seaspctl,"
         min_command = " -seasmin "
         max_command = " -seasmax "
 
     # all three. This is daily mean
 
     if over == ["day", "month", "year"] or over == ["day", "year"]:
+        perc_term = "cdo -daypctl,"
         min_command = " -daymin "
         max_command = " -daymax "
 
     # monthly mean
 
     if over == ["month", "year"]:
+        perc_term = "cdo -monpctl,"
         min_command = " -monmin "
         max_command = " -monmax "
 
@@ -576,7 +616,8 @@ def tpercentile(self, p=None, over="time"):
         target = temp_file("nc")
 
         cdo_command = (
-            "cdo -timpctl,"
+                perc_term
+            #"cdo -timpctl,"
             + str(p)
             + " "
             + ff

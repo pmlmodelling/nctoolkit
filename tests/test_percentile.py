@@ -42,6 +42,9 @@ class TestPercentile:
             assert commands[4] == part1
 
             assert commands[6] == part2
+            part0 = part1.replace("min","pctl")
+            pct_c = [x for x in commands if "pct" in x][0].split(",")[0]
+            assert pct_c == part0
 
 
 
