@@ -12,6 +12,8 @@ from nctoolkit.api import (
 
 from nctoolkit.unify import unify
 
+from nctoolkit.validator import validator
+
 
 from nctoolkit.cleanup import cleanup, clean_all, deep_clean, temp_check
 from nctoolkit.create_ensemble import create_ensemble
