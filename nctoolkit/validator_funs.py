@@ -17,14 +17,14 @@ class Validation(object):
         self.data = None
         #self.plot = None
         self.plot_type = None
-        self.meta = None
+        self.info = None
     def __repr__(self):
-        return f"Validation object: {self.meta}"
+        return f"Validation object: {self.info}"
 
     @property
     def plot(self):
         if self.plot_type == "nctoolkit":
-            return self.data.plot(title = self.meta)
+            return self.data.plot(title = self.info)
         else:
             return self._ggplot
 
@@ -136,7 +136,7 @@ def is_equation(x):
     regexp = re.compile(r"[+,\-,/, \* ]")
     return len(regexp.findall(x)) > 0
 
-def matchup(self):
+def matchup(self, levels = "top", na_match = False):
 
     expected_model_vars = []
     for key, value in self.model_map.items():
@@ -178,8 +178,14 @@ def matchup(self):
     self.model.select(variables=keep_these)
 
     # Only select the top level
-    self.model.top()
-    self.obs.top()
+
+    if levels == "top":
+        self.model.top()
+        self.obs.top()
+
+    self.model.merge("time")
+    self.obs.merge("time")
+
 
     self.model.run()
 
@@ -219,6 +225,29 @@ def matchup(self):
 
     self.aggregation = get_type(self.model)
 
+
+    if na_match:
+
+        mask = self.model.copy()
+        mask.rename({list(self.model_map.keys())[0]: "variable"})
+        mask.assign(variable = lambda x: isnan(x.variable) == False)
+        mask.set_missing(0)
+
+        self.model.multiply(mask)
+        self.obs.multiply(mask)
+
+        mask = self.obs.copy()
+        mask.rename({list(self.model_map.keys())[0]: "variable"})
+        mask.assign(variable = lambda x: isnan(x.variable) == False)
+        mask.set_missing(0)
+
+        self.model.multiply(mask)
+        self.obs.multiply(mask)
+
+        self.model.run()
+        self.obs.run()
+
+
     self.matched = True
 
 
@@ -247,7 +276,7 @@ def validate(self, region = None):
         ds_cor = cor_time(ds_model, ds_obs)
 
         val.data = ds_cor.copy()
-        val.meta = f"Temporal correlation coefficient between monthly climatological {model_vars} in model and observation"
+        val.info = f"Temporal correlation coefficient between monthly climatological {model_vars} in model and observation"
 
         val.plot_type = "nctoolkit"
 
@@ -268,7 +297,7 @@ def validate(self, region = None):
         ds_model.subtract(ds_obs)
         ds_model.tmean()
 
-        val.meta= "Annual climatological bias (model - observation)"
+        val.info= "Annual climatological bias (model - observation)"
         val.plot_type = "nctoolkit"
         val.data = ds_model.copy()
         self.results.append(val)
@@ -358,7 +387,7 @@ def validate(self, region = None):
 
             val = Validation()
 
-            val.meta = f"Monthly climatologies of model and observational data for {ylab}"
+            val.info = f"Monthly climatologies of model and observational data for {ylab}"
 
             if ylab in model_units.keys():
                 ylab = ylab + "(" + model_units[ylab] + ")"
@@ -367,7 +396,7 @@ def validate(self, region = None):
                 ggplot(all_df)
                 + geom_line(aes("month", "value", colour="source"))
                 + labs(y=ylab)
-                + labs(title=val.meta)
+                + labs(title=val.info)
             )
 
             val._ggplot = plot
@@ -463,8 +492,9 @@ def validate(self, region = None):
             all_df = all_df.melt(value_vars=model_vars, id_vars=id_vars)
 
             ylab = model_vars[0]
+            val = Validation()
 
-            title = f"Monthly climatologies of model and observational data for {ylab}"
+            val.info =  f"Monthly climatologies of model and observational data for {ylab}"
 
             if ylab in model_units.keys():
                 ylab = ylab + "(" + model_units[ylab] + ")"
@@ -474,19 +504,26 @@ def validate(self, region = None):
                 + geom_line(aes("month", "value", colour="source"))
                 + facet_wrap("region")
                 + labs(y=ylab)
-                + labs(title=title)
+                + labs(title=val.info)
             )
+            val._ggplot = plot
+            val.plot_type = "plotnine"
 
-            self.plots.append(plot)
+            self.results.append(val)
 
         # Monthly biases plot
+        val = Validation()
+
+        val.info = "Monthly climatological bias (model - observation)"
 
         ds_bias = self.model.copy()
         ds_bias.subtract(self.obs)
         ds_bias.tmean("month")
-        plot = ds_bias.plot()
-        plot = plot.opts(title="Monthly climatological bias (model - observation)")
-        self.plots.append(plot)
+
+        val.data = ds_bias.copy()
+
+        val.plot_type  = "nctoolkit"
+        self.results.append(val)
 
     # Plot the annual time series...
     if "year" in self.aggregation and len(self.model.years) > 1:
@@ -582,7 +619,8 @@ def validate(self, region = None):
 
             ylab = model_vars[0]
 
-            title = f"Annual means of model and observational data for {ylab}"
+            val = Validation()
+            val.info =  f"Annual means of model and observational data for {ylab}"
 
             if ylab in model_units.keys():
                 ylab = ylab + "(" + model_units[ylab] + ")"
@@ -592,10 +630,12 @@ def validate(self, region = None):
                 + geom_line(aes("year", "value", colour="source"))
                 + facet_wrap("region")
                 + labs(y=ylab)
-                + labs(title=title)
+                + labs(title=val.info)
             )
+            val._ggplot = plot
+            val.plot_type = "plotnine"
 
-            self.plots.append(plot)
+            self.results.append(val)
 
         if region is None:
 
@@ -677,7 +717,7 @@ def validate(self, region = None):
             ylab = model_vars[0]
 
             val = Validation()
-            val.meta = f"Annual means of model and observational data for {ylab}"
+            val.info = f"Annual means of model and observational data for {ylab}"
 
             if ylab in model_units.keys():
                 ylab = ylab + "(" + model_units[ylab] + ")"
@@ -686,7 +726,7 @@ def validate(self, region = None):
                 ggplot(all_df)
                 + geom_line(aes("year", "value", colour="source"))
                 + labs(y=ylab)
-                + labs(title=val.meta)
+                + labs(title=val.info)
             )
 
             val._ggplot = plot
