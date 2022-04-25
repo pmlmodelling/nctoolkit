@@ -66,7 +66,7 @@ def nc_levels(ff):
     return list(
         set(
             [
-                int(x)
+                float(x)
                 for x in " ".join(
                     [
                         x
