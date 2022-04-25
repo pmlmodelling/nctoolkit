@@ -5,9 +5,11 @@ Release of v0.4.3
 ---------------
 
 
-Version 0.4.3 is expected to be released in May 2022. This will be a minor release with some improvements to internals and methods.
+Version 0.4.3 is expected to be released in May 2022. This will be a release with some new methods, improvements to internals some bug fixes. 
 
 A new method ``unify`` will be introduced. This will provide an automated procedure for putting datasets on the same spatial and temporal framework. The method will put the datasets onto the same horizontal and vertical grids by interpolating the second dataset onto the first dataset's grids. Temporal matching will occur so that, for example, if one dataset has daily data and another has monthly data, a monthly mean will replace the daily dataset.
+
+This version will introduce a new experimental class called ``Validator``. The aim of this class is to provide a streamlined automated validation procedure for climate and marine models. It will ingest gridded NetCDF data of model and observational data and generate validation plots and summaries.
 
 The methods ``to_xarray`` and ``to_dataframe`` no long accept the `cdo_times` argument, as this has essentially been redundant for a few nctoolkit versions. 
 
