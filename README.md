@@ -48,7 +48,7 @@ pip install nctoolkit
 
 Install the development version using using pip:
 ```sh
-pip install --force-reinstall git+https://github.com/pmlmodelling/nctoolkit.git
+pip install git+https://github.com/pmlmodelling/nctoolkit.git
 ```
 
 This package requires the installation of [Climate Data Operators](https://code.mpimet.mpg.de/projects/cdo/wiki). The conda installation will handle this for you. Otherwise, you will have to install it.  The easiest way is using conda:
