@@ -433,7 +433,7 @@ def open_data(x=[], checks=True, **kwargs):
     # from nctoolkit.temp_file import temp_file
 
     if type(x) is str:
-        if x.endswith("*.nc"):
+        if "*" in x:
             x = glob.glob(x)
 
     thredds = False
