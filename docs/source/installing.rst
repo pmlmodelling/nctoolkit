@@ -32,8 +32,20 @@ Plotting issue
 
 An update to a dependency of a dependency has broken plotting in nctoolkit. If you experience an error related to jinja2, downgrad the package as follows::
 
-        $ conda install jinja2=3.0.3 -y
+        $ conda install jinja2=3.0.3 
         $ pip install jinja2==3.0.3
+
+Jupyter notebook issue
+---------------------
+
+A recent update to ipykernel has broken some functionality in jupyter notebooks, with Python not exiting properly when notebooks are restarted or closed. This is resulting in nctoolkit not automatically deleting temporary files at the end of sessions. To fix this just downgrade ipykernel::
+
+        $ conda install ipykernel=6.9.1
+        $ pip install ipykernel==6.9.1
+
+
+
+
 
 CDO update issue
 ---------------------
