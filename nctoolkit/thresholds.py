@@ -253,7 +253,7 @@ def last_below(self, x=None):
     if run_code:
         self.rename({self.variables[0]: "target"})
         self.set_missing([-1, 0.1])
-        self.assign( new=lambda x: (x.target == x.target) * -1 * (timestep(x.target) + 1), drop=True,)
+        self.assign( new=lambda x: (x.target == x.target) * -1 * (timestep(x.target) + 1), drop=True)
         self.set_missing([0, 0.01])
         self.assign(new=lambda x: int(x.new))
         self.tmin()
