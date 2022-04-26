@@ -318,6 +318,9 @@ def assign(self, drop=False, **kwargs):
     if pattern_missing.search(start) is not None:
         raise ValueError("Ensure lambda functions of the form 'lambda x:'")
 
+    if starts.endswith(","):
+        starts = starts[:-1]
+
     for start in starts.split(";"):
 
         patternl = re.compile("lambda \w*:")
