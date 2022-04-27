@@ -48,7 +48,7 @@ def get_type(df):
 
 
 
-def unify(x=None, y=None):
+def unify(x=None, y=None, **kwargs):
     """
     Unify datasets temporally and spatially 
 
@@ -139,6 +139,21 @@ def unify(x=None, y=None):
 
     # Regrid to the bervational dataset
     print("Horizontally regridding the second dataset to the first dataset's grid")
+
+    fix_nemo = False
+    for kk in kwargs:
+        if kk.lower() == "amm7":
+            if kwargs[kk]:
+                fix_nemo = True
+
+
+    if fix_nemo:
+        a.fix_nemo_ersem_grid()
+
+    #try:
+    #    b.fix_nemo_ersem_grid()
+    #except:
+    #    whatever = "Not the dev version of nctoolkit"
 
     b.regrid(a)
 
@@ -261,11 +276,6 @@ def unify(x=None, y=None):
     a.run()
     b.run()
 
-    try:
-        a.fix_nemo_ersem_grid()
-        b.fix_nemo_ersem_grid()
-    except:
-        whatever = "Not the dev version of nctoolkit"
 
     if len(a.times) != len(b.times):
         raise ValueError("Problems matching times")

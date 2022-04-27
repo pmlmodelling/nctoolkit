@@ -56,7 +56,7 @@ def get_type(ds):
 
 
 
-def add_model(self, ds = None, map = None, nan = 0 , precision = None):
+def add_model(self, ds = None, map = None, nan = None , precision = None, **kwargs):
     """
     Add model data
     Parameters
@@ -67,7 +67,7 @@ def add_model(self, ds = None, map = None, nan = 0 , precision = None):
         Dictionary mapping model variables to validation variables
 
     nan: float or list
-        Value or range of values to set to nan. Defaults to 0.
+        Value or range of values to set to nan. Defaults to None, o no changes to missing values.
     precision: numerical precision if needed
         Choose "F64" if advised by a warning
 
@@ -87,6 +87,11 @@ def add_model(self, ds = None, map = None, nan = 0 , precision = None):
     self.model_map = map
     self.model_nan = nan
     self.model_precision = precision
+
+    for kk in kwargs:
+        if kk == "amm7":
+            if kwargs[kk]:
+                self.model.amm7 = True
 
 
 def add_observations(self, ds = None, map = None, nan = None , precision = None):
@@ -136,7 +141,7 @@ def is_equation(x):
     regexp = re.compile(r"[+,\-,/, \* ]")
     return len(regexp.findall(x)) > 0
 
-def matchup(self, levels = "top", na_match = False):
+def matchup(self, levels = "top", na_match = False, **kwargs):
 
     expected_model_vars = []
     for key, value in self.model_map.items():
@@ -183,8 +188,11 @@ def matchup(self, levels = "top", na_match = False):
         self.model.top()
         self.obs.top()
 
-    self.model.merge("time")
-    self.obs.merge("time")
+    if len(self.model) > 1:
+        self.model.merge("time")
+
+    if len(self.obs) > 1:
+        self.obs.merge("time")
 
 
     self.model.run()
@@ -220,8 +228,11 @@ def matchup(self, levels = "top", na_match = False):
     self.obs.select(variables=list(self.obs_map.keys()))
 
 
-    unify(self.model, self.obs)
-
+    try:
+        self.model.amm7
+        unify(self.model, self.obs, amm7 = True) 
+    except:
+        unify(self.model, self.obs) 
 
     self.aggregation = get_type(self.model)
 
