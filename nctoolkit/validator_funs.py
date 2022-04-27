@@ -2,6 +2,7 @@ import pandas as pd
 from plotnine import *
 
 from nctoolkit.unify import unify
+from nctoolkit.api import open_data
 from nctoolkit.api import cor_time
 from nctoolkit.api import cor_space
 
@@ -299,6 +300,7 @@ def validate(self, region = None):
 
         val = Validation()
 
+        ds_val = open_data()
         ds_model = self.model.copy()
         ds_obs = self.obs.copy()
         ds_model.tmean(["year", "month"])
@@ -307,10 +309,29 @@ def validate(self, region = None):
         ds_obs.tmean(["year"])
         ds_model.subtract(ds_obs)
         ds_model.tmean()
+        ds_model.rename({self.model.variables[0]: "absolute"})
+        ds_val.append(ds_model)
+        
 
-        val.info= "Annual climatological bias (model - observation)"
+        ds_model = self.model.copy()
+        ds_obs = self.obs.copy()
+        ds_model.tmean(["year", "month"])
+        ds_obs.tmean(["year", "month"])
+        ds_model.tmean(["year"])
+        ds_obs.tmean(["year"])
+        ds_model.tmean()
+        ds_model.divide(ds_obs)
+        ds_model.subtract(1)
+        ds_model.multiply(100)
+        ds_model.rename({self.model.variables[0]: "relative"})
+        ds_model.set_longnames({ "relative":"Percentage difference"})
+        ds_model.set_units({ "relative":"%"})
+        ds_val.append(ds_model)
+        ds_val.merge("variable")
+
+        val.info= "Annual climatological bias (model -/ observation)"
         val.plot_type = "nctoolkit"
-        val.data = ds_model.copy()
+        val.data = ds_val.copy()
         self.results.append(val)
 
 
