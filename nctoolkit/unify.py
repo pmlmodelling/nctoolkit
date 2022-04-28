@@ -48,7 +48,7 @@ def get_type(df):
 
 
 
-def unify(x=None, y=None, **kwargs):
+def unify(x=None, y=None, ignore = [], **kwargs):
     """
     Unify datasets temporally and spatially 
 
@@ -58,6 +58,9 @@ def unify(x=None, y=None, **kwargs):
         First dataset to use
     y: dataset
         Second dataset to use
+    ignore: list
+        List, made up of "time" and "grid", "levels" of dimensions to ignore.
+        
     """
 
     if ("DataSet" in str(type(x))) is False:
@@ -70,75 +73,108 @@ def unify(x=None, y=None, **kwargs):
     x.run()
     y.run()
 
-    if len(x) > 1 or len(y) > 1:
-        raise TypeError("cor_time only accepts single file datasets!")
+    #if len(x) > 1 or len(y) > 1:
+    #    raise TypeError("cor_time only accepts single file datasets!")
 
     a = x.copy()
     b = y.copy()
 
-    a_times = a.times
-    b_times = b.times
+    unify_time = True
+    unify_grid = True
+    unify_levels = True
 
-    a_times_df = pd.DataFrame(
-        {
-            "year": [x.year for x in a_times],
-            "month": [x.month for x in a_times],
-            "day": [x.day for x in a_times],
-        }
-    )
 
-    b_times_df = pd.DataFrame(
-        {
-            "year": [x.year for x in b_times],
-            "month": [x.month for x in b_times],
-            "day": [x.day for x in b_times],
-        }
-    )
+    if type(ignore) is str:
+        ignore = [ignore]
 
-    # If the years do not match, we will need to get them to match...
 
-    b_years = list(set(b_times_df["year"]))
-    a_years = list(set(a_times_df["year"]))
-    if a_years != b_years:
 
-        if len(b_years) > 1 and len(b_years) > 1:
-            years = [x for x in b_years if x in a_years]
-            f_years = ",".join([str(y) for y in years])
-            print(f"Selecting matching years {f_years}")
 
-            b.select(years=years)
-            a.select(years=years)
+    for ii in ignore:
+        if "time" in ii.lower():
+            unify_time = False
 
-    # If the years do not match, we will need to get them to match...
-    b_months = list(set(b_times_df["month"]))
-    a_months = list(set(a_times_df["month"]))
+    for ii in ignore:
+        if "grid" in ii.lower():
+            unify_grid = False
 
-    if a_months != b_months:
+    for ii in ignore:
+        if "level" in ii.lower():
+            unify_levels = False
 
-        if len(b_months) > 1 and len(b_months) > 1:
-            months = [x for x in b_months if x in a_months]
-            f_months = ",".join([str(y) for y in months])
-            print(f"Selecting matching months {f_months}")
-            if b_months != months:
-                b.select(months=months)
-            if a_months != months:
-                a.select(months=months)
 
-    if len(a.levels) > 1 and len(b.levels) > 1:
-        run = False
-        try:
-            b.vertical_interp(levels= a.levels)
-            run = True
-        except:
-            warnings.warn("Unable to interpolate vertically. Original vertical levels are maintained!")
-        if run:
-            print("Vertically interpolating the second dataset to the first dataset's levels!")
+
+    if unify_time:
+        a_times = a.times
+        b_times = b.times
+
+        a_times_df = pd.DataFrame(
+            {
+                "year": [x.year for x in a_times],
+                "month": [x.month for x in a_times],
+                "day": [x.day for x in a_times],
+            }
+        )
+
+        b_times_df = pd.DataFrame(
+            {
+                "year": [x.year for x in b_times],
+                "month": [x.month for x in b_times],
+                "day": [x.day for x in b_times],
+            }
+        )
+
+        # If the years do not match, we will need to get them to match...
+
+        b_years = list(set(b_times_df["year"]))
+        a_years = list(set(a_times_df["year"]))
+        if a_years != b_years:
+
+            if len(b_years) > 1 and len(b_years) > 1:
+                years = [x for x in b_years if x in a_years]
+                f_years = ",".join([str(y) for y in years])
+                print(f"Selecting matching years {f_years}")
+
+                b.select(years=years)
+                a.select(years=years)
+
+        # If the years do not match, we will need to get them to match...
+        b_months = list(set(b_times_df["month"]))
+        a_months = list(set(a_times_df["month"]))
+        if len(a) > 1:
+            a.merge("time")
+
+        if len(b) > 1:
+            b.merge("time")
+
+
+        if a_months != b_months:
+
+            if len(b_months) > 1 and len(b_months) > 1:
+                months = [x for x in b_months if x in a_months]
+                f_months = ",".join([str(y) for y in months])
+                print(f"Selecting matching months {f_months}")
+                if b_months != months:
+                    b.select(months=months)
+                if a_months != months:
+                    a.select(months=months)
+
+
+    if unify_levels:
+        if len(a.levels) > 1 and len(b.levels) > 1:
+            run = False
+            try:
+                b.vertical_interp(levels= a.levels)
+                run = True
+            except:
+                warnings.warn("Unable to interpolate vertically. Original vertical levels are maintained!")
+            if run:
+                print("Vertically interpolating the second dataset to the first dataset's levels!")
 
 
     a.run()
 
     # Regrid to the bervational dataset
-    print("Horizontally regridding the second dataset to the first dataset's grid")
 
     fix_nemo = False
     for kk in kwargs:
@@ -155,130 +191,127 @@ def unify(x=None, y=None, **kwargs):
     #except:
     #    whatever = "Not the dev version of nctoolkit"
 
-    b.regrid(a)
+    if unify_grid:
+        print("Horizontally regridding the second dataset to the first dataset's grid")
+        b.regrid(a)
 
-    if len(a) > 1:
-        a.merge("time")
+    if unify_time:
+        mod_ag = get_type(a_times_df)
+        b_ag = get_type(b_times_df)
 
-    if len(b) > 1:
-        b.merge("time")
+        if mod_ag != b_ag:
 
-    mod_ag = get_type(a_times_df)
-    b_ag = get_type(b_times_df)
+            ag = [x for x in mod_ag if x in b_ag]
 
-    if mod_ag != b_ag:
+            if ag == []:
+                if "year" in mod_ag or "year" in b_ag:
+                    ag = ["year"]
 
-        ag = [x for x in mod_ag if x in b_ag]
+            if ag == []:
+                if "month" in mod_ag or "month" in b_ag:
+                    ag = ["month"]
 
-        if ag == []:
-            if "year" in mod_ag or "year" in b_ag:
-                ag = ["year"]
+            if ag == []:
+                raise ValueError("not working")
 
-        if ag == []:
-            if "month" in mod_ag or "month" in b_ag:
-                ag = ["month"]
+            if ag == ["month"]:
+                print("Using a monthly climatology for matchups!")
 
-        if ag == []:
-            raise ValueError("not working")
+            if ag == ["yearly"]:
+                print("Using an annual climatology for matchups!")
 
-        if ag == ["month"]:
-            print("Using a monthly climatology for matchups!")
+            if ag == ["daily"]:
+                print("Using a daily climatology for matchups!")
 
-        if ag == ["yearly"]:
-            print("Using an annual climatology for matchups!")
+            a.tmean(ag)
 
-        if ag == ["daily"]:
-            print("Using a daily climatology for matchups!")
+            b.tmean(ag)
+        else:
+            ag = mod_ag
 
-        a.tmean(ag)
+        aggregation = ag
 
-        b.tmean(ag)
-    else:
-        ag = mod_ag
+        a.run()
+        b.run()
 
-    aggregation = ag
+        if len(a.times) != len(b.times):
 
-    a.run()
-    b.run()
+            if ag == ["year", "month"]:
+                mod_times = (
+                    get_timedf(a)
+                    .loc[:, ["month", "year"]]
+                    .reset_index()
+                    .rename(columns={"index": "a_index"})
+                )
+                b_times = (
+                    get_timedf(b)
+                    .loc[:, ["month", "year"]]
+                    .reset_index()
+                    .rename(columns={"index": "b_index"})
+                )
 
-    if len(a.times) != len(b.times):
+                indices = mod_times.merge(b_times)
+                mod_index = [int(x) for x in indices.a_index]
+                b_index = [int(x) for x in indices.b_index]
 
-        if ag == ["year", "month"]:
-            mod_times = (
-                get_timedf(a)
-                .loc[:, ["month", "year"]]
-                .reset_index()
-                .rename(columns={"index": "a_index"})
-            )
-            b_times = (
-                get_timedf(b)
-                .loc[:, ["month", "year"]]
-                .reset_index()
-                .rename(columns={"index": "b_index"})
-            )
+                a.select(times=mod_index)
+                b.select(times=b_index)
 
-            indices = mod_times.merge(b_times)
-            mod_index = [int(x) for x in indices.a_index]
-            b_index = [int(x) for x in indices.b_index]
+                print("Only selecting matching years and months!")
 
-            a.select(times=mod_index)
-            b.select(times=b_index)
+            if "day" in ag and len(a.years) == 1:
+                mod_times = (
+                    get_timedf(a)
+                    .loc[:, ["month", "day"]]
+                    .reset_index()
+                    .rename(columns={"index": "a_index"})
+                )
+                b_times = (
+                    get_timedf(b)
+                    .loc[:, ["month", "day"]]
+                    .reset_index()
+                    .rename(columns={"index": "b_index"})
+                )
 
-            print("Only selecting matching years and months!")
+                indices = mod_times.merge(b_times)
+                mod_index = [int(x) for x in indices.a_index]
+                b_index = [int(x) for x in indices.b_index]
 
-        if "day" in ag and len(a.years) == 1:
-            mod_times = (
-                get_timedf(a)
-                .loc[:, ["month", "day"]]
-                .reset_index()
-                .rename(columns={"index": "a_index"})
-            )
-            b_times = (
-                get_timedf(b)
-                .loc[:, ["month", "day"]]
-                .reset_index()
-                .rename(columns={"index": "b_index"})
-            )
+                a.select(times=mod_index)
+                b.select(times=b_index)
 
-            indices = mod_times.merge(b_times)
-            mod_index = [int(x) for x in indices.a_index]
-            b_index = [int(x) for x in indices.b_index]
+                print("Only selecting matching days!")
 
-            a.select(times=mod_index)
-            b.select(times=b_index)
+            if "day" in ag and len(a.years) > 1:
+                mod_times = (
+                    get_timedf(a)
+                    .loc[:, ["year", "month", "day"]]
+                    .reset_index()
+                    .rename(columns={"index": "a_index"})
+                )
+                b_times = (
+                    get_timedf(b)
+                    .loc[:, ["year", "month", "day"]]
+                    .reset_index()
+                    .rename(columns={"index": "b_index"})
+                )
 
-            print("Only selecting matching days!")
+                indices = mod_times.merge(b_times)
+                mod_index = [int(x) for x in indices.a_index]
+                b_index = [int(x) for x in indices.b_index]
 
-        if "day" in ag and len(a.years) > 1:
-            mod_times = (
-                get_timedf(a)
-                .loc[:, ["year", "month", "day"]]
-                .reset_index()
-                .rename(columns={"index": "a_index"})
-            )
-            b_times = (
-                get_timedf(b)
-                .loc[:, ["year", "month", "day"]]
-                .reset_index()
-                .rename(columns={"index": "b_index"})
-            )
+                a.select(times=mod_index)
+                b.select(times=b_index)
 
-            indices = mod_times.merge(b_times)
-            mod_index = [int(x) for x in indices.a_index]
-            b_index = [int(x) for x in indices.b_index]
-
-            a.select(times=mod_index)
-            b.select(times=b_index)
-
-            print("Only selecting matching days!")
+                print("Only selecting matching days!")
 
 
-    a.run()
-    b.run()
+        a.run()
+        b.run()
 
 
-    if len(a.times) != len(b.times):
-        raise ValueError("Problems matching times")
+        if len(a.times) != len(b.times):
+            raise ValueError("Problems matching times")
 
 
     x.current = a.current
