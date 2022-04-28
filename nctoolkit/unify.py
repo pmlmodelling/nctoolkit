@@ -170,6 +170,8 @@ def unify(x=None, y=None, ignore = [], **kwargs):
                 warnings.warn("Unable to interpolate vertically. Original vertical levels are maintained!")
             if run:
                 print("Vertically interpolating the second dataset to the first dataset's levels!")
+        if len(a.levels) > 1 and len(b.levels) == 1:
+            print("Only one level in second dataset. Unable to vertically interpolate!")
 
 
     a.run()
