@@ -87,21 +87,27 @@ def unify(x=None, y=None, ignore = [], **kwargs):
     if type(ignore) is str:
         ignore = [ignore]
 
-
-
-
+    if len(ignore) == 0:
+        checked = True
+    checked = False
     for ii in ignore:
         if "time" in ii.lower():
             unify_time = False
+            checked = True
 
     for ii in ignore:
         if "grid" in ii.lower():
             unify_grid = False
+            checked = True
 
     for ii in ignore:
         if "level" in ii.lower():
             unify_levels = False
+            checked = True
 
+
+    if checked is False:
+        raise ValueError(f"ignore is not valid: {ignore}")
 
 
     if unify_time:
@@ -161,7 +167,7 @@ def unify(x=None, y=None, ignore = [], **kwargs):
 
 
     if unify_levels:
-        if len(a.levels) > 1 and len(b.levels) > 1:
+        if len(a.levels) >= 1 and len(b.levels) > 1:
             run = False
             try:
                 b.vertical_interp(levels= a.levels)
