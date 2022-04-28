@@ -199,8 +199,10 @@ def matchup(self, levels = "top", na_match = False, **kwargs):
     self.model.run()
 
     if self.model_nan is not None:
+        print("Fixing missing values in model data!")
         self.model.set_missing(self.model_nan)
     if self.obs_nan is not None:
+        print("Fixing missing values in observation data!")
         self.model.set_missing(self.obs_nan)
 
     for key, value in self.model_map.items():
@@ -231,14 +233,15 @@ def matchup(self, levels = "top", na_match = False, **kwargs):
 
     try:
         self.model.amm7
-        unify(self.model, self.obs, amm7 = True) 
+        unify(self.model, self.obs, amm7 = True)
     except:
-        unify(self.model, self.obs) 
+        unify(self.model, self.obs)
 
     self.aggregation = get_type(self.model)
 
 
     if na_match:
+        print("Matching missing values in model and observation datasets")
 
         mask = self.model.copy()
         mask.rename({list(self.model_map.keys())[0]: "variable"})
@@ -311,7 +314,7 @@ def validate(self, region = None):
         ds_model.tmean()
         ds_model.rename({self.model.variables[0]: "absolute"})
         ds_val.append(ds_model)
-        
+
 
         ds_model = self.model.copy()
         ds_obs = self.obs.copy()
@@ -425,7 +428,7 @@ def validate(self, region = None):
                 ylab = ylab + "(" + model_units[ylab] + ")"
 
             plot = (
-                ggplot(all_df)
+                ggplot(all_df.dropna())
                 + geom_line(aes("month", "value", colour="source"))
                 + labs(y=ylab)
                 + labs(title=val.info)
@@ -532,7 +535,7 @@ def validate(self, region = None):
                 ylab = ylab + "(" + model_units[ylab] + ")"
 
             plot = (
-                ggplot(all_df)
+                ggplot(all_df.dropna())
                 + geom_line(aes("month", "value", colour="source"))
                 + facet_wrap("region")
                 + labs(y=ylab)
