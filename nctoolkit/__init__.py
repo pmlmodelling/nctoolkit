@@ -1,5 +1,6 @@
 from nctoolkit.api import (
     open_data,
+    open_geotiff,
     from_xarray,
     merge,
     cor_time,

@@ -13,6 +13,8 @@ This version will introduce a new experimental class called ``Validator``. The a
 
 The methods ``to_xarray`` and ``to_dataframe`` no long accept the `cdo_times` argument, as this has essentially been redundant for a few nctoolkit versions. 
 
+A new function ``open_geotiff`` will allow GeoTiff. This is a wrapper around rioxarray, which will convert the GeoTiff to NetCDF. It will require rioxarray to be installed.
+
 A new method ``surface_mask`` has been added to enable identifying top levels with data in cases when there are missing values in the actual top level.
 
 The ``plot`` method now let's users send kwargs to hvplot to make customizations, such as log-scales an option.

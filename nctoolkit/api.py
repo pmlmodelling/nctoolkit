@@ -388,6 +388,41 @@ def from_xarray(ds):
     d = DataSet(ff)
     return d
 
+def open_geotiff(x = []):
+    """
+    Read geotiff and convert to nctoolkit dataset 
+
+    Parameters
+    ---------------
+    x : str or list
+        A string or list of geotiff files or a single url. 
+        This requires rioxarray to be installed.
+
+    Returns
+    ---------------
+    open_data : nctoolkit.DataSet
+    """
+
+    if type(x) is str:
+        x = [x]
+
+    if type(x) is not list:
+        raise ValueError("List of str was not supplied!")
+
+    try:
+        import rioxarray
+    except:
+        raise ValueError("This requires rioxarray to be installed")
+
+    ds = open_data()
+    if len(x) > 0:
+        for ff in x:
+            raster = rioxarray.open_rasterio(ff)
+            out_file = temp_file() + "nc"
+            raster.rio.to_raster(out_file)
+            ds.append(out_file)
+    return ds
+
 
 def open_data(x=[], checks=True, **kwargs):
     """
@@ -430,11 +465,11 @@ def open_data(x=[], checks=True, **kwargs):
     >>> ds = nc.open_data("data/*.nc")
 
     """
-    # from nctoolkit.temp_file import temp_file
 
     if type(x) is str:
-        if "*" in x:
-            x = glob.glob(x)
+        x = glob.glob(x)
+        if len(x) == 0:
+            raise FileNotFoundError("Please provide files that exist")
 
     thredds = False
 
