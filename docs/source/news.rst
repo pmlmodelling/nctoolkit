@@ -17,7 +17,9 @@ A new function ``open_geotiff`` will allow GeoTiff files to be opened. This is a
 
 A new method ``surface_mask`` has been added to enable identifying top levels with data in cases when there are missing values in the actual top level.
 
-The ``plot`` method now let's users send kwargs to hvplot to make customizations, such as log-scales an option.
+The ``plot`` method now lets users send kwargs to hvplot to make customizations, such as log-scales an option.
+
+The ``select`` method now lets user select days of month, using ``ds.select(day = 1)``.
 
 
 The ``split`` method now allows splitting by timestep using ``split("timestep")``.

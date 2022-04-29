@@ -80,6 +80,46 @@ def select_seasons(self, season=None):
     run_this(cdo_command, self, output="ensemble")
 
 
+def select_days(self, days=None):
+    """
+    Select days from a dataset
+    This method will subset the dataset to only contain days within the list given.
+    A warning message will be provided when there are missing days.
+
+    Parameters
+    -------------
+    days : list, range or int
+        Month(s) to select.
+    """
+
+    if days is None:
+        raise ValueError("Please supply days")
+
+    # check validity of days
+    if type(days) is range:
+        days = list(days)
+
+    if type(days) is not list:
+        days = [days]
+    # all of the variables in days need to be converted to ints,
+    # just in case floats have been provided
+    # coerce to int if numpy float etc.
+
+    days = [int(x) if "int" in str(type(x)) else x for x in days]
+
+
+    for x in days:
+        if type(x) is not int:
+            raise TypeError(f"{x} is not an int")
+        if x not in list(range(1, 13)):
+            raise ValueError(f"{x} is not a day")
+
+    days = str_flatten(days, ",")
+
+    cdo_command = f"cdo -selday,{days}"
+    run_this(cdo_command, self, output="ensemble")
+
+
 def select_months(self, months=None):
     """
     Select months from a dataset
@@ -103,6 +143,10 @@ def select_months(self, months=None):
         months = [months]
     # all of the variables in months need to be converted to ints,
     # just in case floats have been provided
+    # coerce to int if numpy float etc.
+
+    months = [int(x) if "int" in str(type(x)) else x for x in months]
+
 
     for x in months:
         if type(x) is not int:
@@ -137,6 +181,7 @@ def select_years(self, years=None):
         years = [years]
 
     # convert years to int
+    years = [int(x) if "int" in str(type(x)) else x for x in years]
 
     for yy in years:
         if type(yy) is not int:
@@ -284,6 +329,8 @@ def select(self, **kwargs):
         So using 'var*' would select all variables beginning with 'var'.
     seasons : str
         Seasons to select. One of "DJF", "MAM", "JJA", "SON".
+    days : list, range or int
+        Days(s) to select.
     months : list, range or int
         Month(s) to select.
     years : list,range or int
@@ -351,6 +398,10 @@ def select(self, **kwargs):
 
         if "time" in key and non_selected:
             select_timesteps(self, kwargs[key])
+
+        if "day" in key and non_selected:
+            select_days(self, kwargs[key])
+            non_selected = False
             non_selected = False
 
     if non_selected:
