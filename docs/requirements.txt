@@ -11,6 +11,7 @@ xarray
 hvplot
 netCDF4
 numpy
+plotnine
 dill
 
 
