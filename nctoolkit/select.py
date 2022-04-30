@@ -398,10 +398,10 @@ def select(self, **kwargs):
 
         if "time" in key and non_selected:
             select_timesteps(self, kwargs[key])
+            non_selected = False
 
         if "day" in key and non_selected:
             select_days(self, kwargs[key])
-            non_selected = False
             non_selected = False
 
     if non_selected:
