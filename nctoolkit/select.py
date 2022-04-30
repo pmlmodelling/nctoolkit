@@ -376,31 +376,31 @@ def select(self, **kwargs):
 
     for key in kwargs:
 
-        if "ran" in key and non_selected:
+        if "ran" in key:
             select_period(self, kwargs[key])
             non_selected = False
 
-        if "var" in key and non_selected:
+        if "var" in key:
             select_variables(self, kwargs[key])
             non_selected = False
 
-        if "mon" in key and non_selected:
+        if "mon" in key:
             select_months(self, kwargs[key])
             non_selected = False
 
-        if "year" in key and non_selected:
+        if "year" in key:
             select_years(self, kwargs[key])
             non_selected = False
 
-        if "seas" in key and non_selected:
+        if "seas" in key:
             select_seasons(self, kwargs[key])
             non_selected = False
 
-        if "time" in key and non_selected:
+        if "time" in key:
             select_timesteps(self, kwargs[key])
             non_selected = False
 
-        if "day" in key and non_selected:
+        if "day" in key:
             select_days(self, kwargs[key])
             non_selected = False
 
