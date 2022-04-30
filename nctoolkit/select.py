@@ -111,7 +111,7 @@ def select_days(self, days=None):
     for x in days:
         if type(x) is not int:
             raise TypeError(f"{x} is not an int")
-        if x not in list(range(1, 13)):
+        if x not in list(range(1, 32)):
             raise ValueError(f"{x} is not a day")
 
     days = str_flatten(days, ",")
