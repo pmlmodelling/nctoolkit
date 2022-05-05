@@ -6,6 +6,8 @@ Installation
 How to install nctoolkit
 ---------------------
 
+You will need a Linux or Mac operating system for nctoolkit to work. It will not work on Windows due to system requirements. 
+
 nctoolkit is available from the `Python Packaging Index. <https://pypi.org/project/nctoolkit/>`__   To install nctoolkit using pip::
 
    $ pip install numpy 

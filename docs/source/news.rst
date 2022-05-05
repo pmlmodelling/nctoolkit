@@ -21,7 +21,6 @@ The ``plot`` method now lets users send kwargs to hvplot to make customizations,
 
 The ``select`` method now lets user select days of month, using ``ds.select(day = 1)``.
 
-
 The ``split`` method now allows splitting by timestep using ``split("timestep")``.
 
 
