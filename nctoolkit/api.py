@@ -1472,6 +1472,7 @@ class DataSet(object):
     from nctoolkit.centres import centre
 
     from nctoolkit.checks import check
+    from nctoolkit.checks import is_corrupt
 
     from nctoolkit.cleanup import disk_clean
 

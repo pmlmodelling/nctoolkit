@@ -1,5 +1,30 @@
 import xarray as xr
+from nctoolkit.temp_file import temp_file
 import subprocess
+
+
+def is_corrupt(self):
+    """
+    Check if files are corrupt 
+    """
+
+    for ff in self:
+        the_temp = temp_file() + "nc"
+        command = f"cdo -copy {ff}  {the_temp}"
+        out = subprocess.Popen(
+            command,
+            shell=True,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+        )
+        result, ignore = out.communicate()
+        print(f"Checking {ff}. This may be slow if file is large")
+        if "error" in str(result):
+            print(f"{ff} appears to be corrupt")
+        else:
+            print(f"{ff} does not appear to be corrupt")
+
 
 
 def check(self):

@@ -285,9 +285,10 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
         ):
             remove_safe(target)
             remove_safe(start_target)
-            raise ValueError(
-                str(result).replace("b'", "").replace("\\n", "").replace("'", "")
-            )
+            raise ValueError("HDF error when running CDO. Check if files are corrupt using the is_corrupt method")
+            #raise ValueError(
+            #    str(result).replace("b'", "").replace("\\n", "").replace("'", "")
+            #)
         else:
             return out_file
 
@@ -322,6 +323,9 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
             command = command.replace(target, new_target)
             target = new_target
             append_safe(target)
+
+            if "HDF error" in str(result):
+                raise ValueError("HDF error when running CDO. Check if files are corrupt using the is_corrupt method")
 
             out = subprocess.Popen(
                 command,
