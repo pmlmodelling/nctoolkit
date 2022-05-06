@@ -97,6 +97,9 @@ def drop(self, **kwargs):
         if ("mon" in key) or ("day" in key) or ("year" in key):
             vars = kwargs[key]
 
+            if type(vars) is range:
+                vars = list(vars)
+
             if type(vars) is not list:
                 vars = [vars]
 
