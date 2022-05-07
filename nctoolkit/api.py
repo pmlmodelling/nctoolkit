@@ -466,11 +466,6 @@ def open_data(x=[], checks=True, **kwargs):
 
     """
 
-    if type(x) is str:
-        x = glob.glob(x)
-        if len(x) == 0:
-            raise FileNotFoundError("Please provide files that exist")
-
     thredds = False
 
     ftp_details = None
@@ -490,6 +485,13 @@ def open_data(x=[], checks=True, **kwargs):
             file_stop = kwargs[key]
         if key == "source":
             source = kwargs[key]
+
+    if type(x) is str and thredds is False:
+        if is_url(x) is False:
+            x = glob.glob(x)
+            if len(x) == 0:
+                raise FileNotFoundError("Please provide files that exist")
+
 
     # make sure data has been supplied
     if x is None:
