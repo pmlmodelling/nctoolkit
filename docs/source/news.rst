@@ -1,28 +1,33 @@
 News
 ============
 
+Release of v0.4.4
+---------------
+
+Version 0.4.4 will be released in later May 2022.
+
+This version will introduce a new experimental class called ``Validator``. The aim of this class is to provide a streamlined automated validation procedure for climate and marine models. It will ingest gridded NetCDF data of model and observational data and generate validation plots and summaries.
+
+A new method ``unify`` will be introduced. This will provide an automated procedure for putting datasets on the same spatial and temporal framework. The method will put the datasets onto the same horizontal and vertical grids by interpolating the second dataset onto the first dataset's grids. Temporal matching will occur so that, for example, if one dataset has daily data and another has monthly data, a monthly mean will replace the daily dataset.
+
+
 Release of v0.4.3
 ---------------
 
 
-Version 0.4.3 is expected to be released in May 2022. This will be a release with some new methods, improvements to internals some bug fixes. 
+Version 0.4.3 was released in May 2022. This is release with some new methods, improvements to internals some bug fixes. Code written for previous 0.4x versions of nctoolkit will be compatible.
 
-A new method ``unify`` will be introduced. This will provide an automated procedure for putting datasets on the same spatial and temporal framework. The method will put the datasets onto the same horizontal and vertical grids by interpolating the second dataset onto the first dataset's grids. Temporal matching will occur so that, for example, if one dataset has daily data and another has monthly data, a monthly mean will replace the daily dataset.
-
-This version will introduce a new experimental class called ``Validator``. The aim of this class is to provide a streamlined automated validation procedure for climate and marine models. It will ingest gridded NetCDF data of model and observational data and generate validation plots and summaries.
-
-The methods ``to_xarray`` and ``to_dataframe`` no long accept the `cdo_times` argument, as this has essentially been redundant for a few nctoolkit versions. 
+This version will be compatible with CDO versions 2.0.5x.
 
 A new function ``open_geotiff`` will allow GeoTiff files to be opened. This is a wrapper around rioxarray, which will convert the GeoTiff to NetCDF. It will require rioxarray to be installed.
 
 A new method ``surface_mask`` has been added to enable identifying top levels with data in cases when there are missing values in the actual top level.
 
+A new method ``is_corrupt`` has been added. This can identify whether NetCDF files are likely to be corrupt. Under-the hood, methods will now suggest running ``is_corrupt`` when system errors imply the files are corrupt. 
 
-A new method ``is_corrupt`` has been added. This can identify whether NetCDF files are likely to be corrupt. Under-the hood methods will now suggest running ``is_corrupt`` when system errors imply the files are corrupt. 
+The methods ``to_xarray`` and ``to_dataframe`` no long accept the `cdo_times` argument, as this has essentially been redundant for a few nctoolkit versions. 
 
-
-
-The ``plot`` method now lets users send kwargs to hvplot to make customizations, such as log-scales an option.
+The ``plot`` method now lets users send kwargs to hvplot to make customizations, such as log-scales an option. This will require the latest version of ncplot.
 
 The ``select`` method now lets user select days of month, using ``ds.select(day = 1)``.
 
