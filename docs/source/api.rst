@@ -352,6 +352,11 @@ Miscellaneous methods
    DataSet.reduce_grid
    DataSet.set_precision
    DataSet.check
+   DataSet.is_corrupt
+   DataSet.fix_nemo_ersem_grid
+   DataSet.set_gridtype
+   DataSet.surface_mask
+   DataSet.strip_variables
 
 
 
