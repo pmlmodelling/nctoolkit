@@ -68,6 +68,7 @@ def split_cdo(self, method="year"):
 
     self._merged = False
     self.current = new_files
+    self.current.sort()
 
     # remove the bases from the split list. This is for parallel processing
 
