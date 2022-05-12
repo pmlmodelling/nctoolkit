@@ -6,6 +6,22 @@ from nctoolkit.temp_file import temp_file
 from nctoolkit.session import remove_safe
 
 
+def set_year(self, x):
+    """
+    Set the precision in a dataset
+
+    Parameters
+    -------------
+    x : int
+        Year to set dataset to 
+    """
+
+    if type(x) is not int:
+        raise ValueError(f"{x} is not a int")
+    self.cdo_command(f"setyear,{x}")
+
+    self._precision = x
+
 def set_precision(self, x):
     """
     Set the precision in a dataset
