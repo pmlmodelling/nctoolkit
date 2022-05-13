@@ -1505,6 +1505,7 @@ class DataSet(object):
     from nctoolkit.esoteric import assign_coords
     from nctoolkit.esoteric import fix_nemo_ersem_grid
     from nctoolkit.esoteric import set_gridtype
+    from nctoolkit.esoteric import no_leaps
 
     from nctoolkit.fill import fill_na
 
@@ -1567,6 +1568,7 @@ class DataSet(object):
     from nctoolkit.select import select
 
     from nctoolkit.setters import set_date
+    from nctoolkit.setters import set_year
     from nctoolkit.setters import set_missing
     from nctoolkit.setters import set_units
     from nctoolkit.setters import set_longnames

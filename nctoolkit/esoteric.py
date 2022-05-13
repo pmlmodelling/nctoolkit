@@ -63,6 +63,16 @@ def fix_nemo_ersem_grid(self):
     self.run()
 
 
+def no_leaps(self):
+    """
+    Remove leap years.
+    This uses an undocumented CDO feature to remove Feb 29 and sets the calendar to leap year free
+
+    """
+
+    cdo_command = f"cdo -delfeb29"
+
+    run_this(cdo_command, self, output="ensemble")
 
 
 def set_gridtype(self, grid):
