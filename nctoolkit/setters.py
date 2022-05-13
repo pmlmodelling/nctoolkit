@@ -8,7 +8,7 @@ from nctoolkit.session import remove_safe
 
 def set_year(self, x):
     """
-    Set the precision in a dataset
+    Set the year in a dataset
 
     Parameters
     -------------
@@ -18,9 +18,10 @@ def set_year(self, x):
 
     if type(x) is not int:
         raise ValueError(f"{x} is not a int")
-    self.cdo_command(f"setyear,{x}")
+    cdo_command = f"cdo -setyear,{x}"
+    run_this(cdo_command, self, output="ensemble")
+    #self.cdo_command(f"setyear,{x}")
 
-    self._precision = x
 
 def set_precision(self, x):
     """
