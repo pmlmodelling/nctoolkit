@@ -14,6 +14,7 @@ from nctoolkit.api import (
 from nctoolkit.unify import unify
 
 from nctoolkit.validator import validator
+from nctoolkit.matchpoint import open_matchpoint
 
 
 from nctoolkit.cleanup import cleanup, clean_all, deep_clean, temp_check
