@@ -1,7 +1,7 @@
 import pandas as pd
 from nctoolkit.api import open_data
 import xarray as xr
-from matchpoint.utils import get_type
+from nctoolkit.mp_utils import get_type
 
 
 def add_model(self, files=None, map=None, nan=0, precision=None):
