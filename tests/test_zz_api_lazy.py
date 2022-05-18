@@ -94,7 +94,7 @@ class TestApi:
     def test_repr(self):
 
         data = nc.open_data(nc.create_ensemble("data/ensemble"))
-        assert "Files: 60 member ensemble" in str(data)
+        assert "Number of files: 60" in str(data)
 
     def test_contents(self):
         ff = "data/sst.mon.mean.nc"
