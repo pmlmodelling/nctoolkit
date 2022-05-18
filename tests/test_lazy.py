@@ -64,7 +64,7 @@ class TestLazy:
         tracker = nc.open_data(ff)
         tracker.split(by="year")
         assert len(tracker.current) == 30
-        tracker.merge_time()
+        tracker.merge("time")
         tracker.select(years=list(range(1970, 1979)))
         tracker.select(months=[1, 2, 3, 4, 5])
         tracker.crop(lon=[0, 90])
@@ -84,7 +84,7 @@ class TestLazy:
         tracker = nc.open_data(ff)
         tracker.split(by="year")
         n_files = len(tracker.current)
-        tracker.merge_time()
+        tracker.merge("time")
         tracker.select(years=list(range(1970, 1979)))
         tracker.select(months=[1, 2, 3, 4, 5])
         tracker.crop(lon=[0, 90])

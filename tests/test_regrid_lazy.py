@@ -18,7 +18,7 @@ class TestRegrid:
         tracker = nc.open_data(ff)
         tracker.split("year")
         tracker.to_latlon(lon = [-90, 90], lat = [0, 40], res = 1)
-        tracker.merge_time()
+        tracker.merge("time")
         tracker.tmean()
         tracker.spatial_mean()
 
@@ -39,7 +39,7 @@ class TestRegrid:
         tracker.split("month")
         tracker.to_latlon(lon = [-90, 90], lat = [0, 40], res = 1)
         assert len(tracker) == 12
-        tracker.merge_time()
+        tracker.merge("time")
         tracker.tmean()
         tracker.spatial_mean()
 
@@ -97,7 +97,7 @@ class TestRegrid:
         tracker.select(years=1990)
         tracker.split("yearmonth")
         tracker.regrid(new)
-        tracker.merge_time()
+        tracker.merge("time")
         tracker.select(months=1)
         tracker.spatial_mean()
 

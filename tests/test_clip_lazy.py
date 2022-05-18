@@ -166,7 +166,7 @@ class TestCrop:
         tracker.select(timesteps=[0, 1])
         tracker.split("yearmonth")
         tracker.crop(lon=[0, 90], nco=False)
-        tracker.merge_time()
+        tracker.merge("time")
         tracker.select(timesteps=0)
         tracker.spatial_mean()
         y = tracker.to_dataframe().sst.values[0].astype("float")

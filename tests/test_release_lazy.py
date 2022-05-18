@@ -17,7 +17,7 @@ class Testrun:
         print(nc.session.nc_safe)
         tracker = nc.open_data(ff)
         tracker.split(("year"))
-        tracker.merge_time()
+        tracker.merge("time")
         tracker.select(timesteps=0)
         tracker.spatial_mean()
         tracker.run()

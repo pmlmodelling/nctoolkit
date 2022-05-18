@@ -27,7 +27,7 @@ class TestNCO:
     def test_mean2_nco(self):
         data = nc.open_data(nc.create_ensemble("data/ensemble"))
         data.tmean()
-        data.merge_time()
+        data.merge("time")
         data.tmean()
         data.spatial_mean()
         x = data.to_dataframe().sst.values[0].astype("float")
@@ -35,7 +35,7 @@ class TestNCO:
         data = nc.open_data(nc.create_ensemble("data/ensemble"))
         data.nco_command("ncra -y mean", ensemble=False)
 
-        data.merge_time()
+        data.merge("time")
         data.tmean()
         data.spatial_mean()
 

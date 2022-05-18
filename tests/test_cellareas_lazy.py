@@ -48,7 +48,7 @@ class TestCell:
         tracker.select(timesteps=[0, 1])
         tracker.split("yearmonth")
         tracker.cell_area(join=True)
-        tracker.merge_time()
+        tracker.merge("time")
         tracker.run()
         x = tracker.variables
         assert x == ["cell_area", "sst"]

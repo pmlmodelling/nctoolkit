@@ -334,7 +334,7 @@ class TestVerts:
         data = nc.open_data(nc.create_ensemble("data/ensemble"))
 
         with pytest.raises(ValueError):
-            data.merge_time()
+            data.merge("time")
             data.bottom_mask()
 
     def test_empty(self):

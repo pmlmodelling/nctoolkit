@@ -1783,7 +1783,6 @@ class DataSet(object):
     from nctoolkit.temporal_stat import tmin
     from nctoolkit.temporal_stat import trange
     from nctoolkit.temporal_stat import tvar
-    from nctoolkit.temporal_stat import tvariance
     from nctoolkit.temporal_stat import tstdev
     from nctoolkit.temporal_stat import tsum
     from nctoolkit.temporal_stat import tcumsum
@@ -1824,5 +1823,3 @@ class DataSet(object):
     from nctoolkit.zonals import zonal_range
 
     # Deprecated methods
-    from nctoolkit.deprecated import merge_time
-    from nctoolkit.deprecated import surface

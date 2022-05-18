@@ -26,7 +26,7 @@ class TestMerge:
         tracker = nc.open_data(ff)
 
         with pytest.warns(UserWarning):
-            tracker.merge_time()
+            tracker.merge("time")
         tracker.run()
         n = len(nc.session_files())
         assert n == 0
@@ -53,7 +53,7 @@ class TestMerge:
 
         tracker = nc.open_data(ff)
         tracker.split("year")
-        tracker.merge_time()
+        tracker.merge("time")
         tracker.tmean()
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0]

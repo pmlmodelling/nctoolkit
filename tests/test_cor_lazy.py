@@ -54,7 +54,7 @@ class TestCor:
         tracker.split("year")
         tracker.cor_time(var1="tos", var2="sst")
         assert 10 == len(tracker.current)
-        tracker.merge_time()
+        tracker.merge("time")
         assert 10 == len(tracker.years)
         tracker.tmean()
         tracker.spatial_mean()

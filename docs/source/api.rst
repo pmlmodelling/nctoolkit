@@ -267,7 +267,6 @@ Statistical methods
    DataSet.tmax
    DataSet.tsum
    DataSet.trange
-   DataSet.tvariance
    DataSet.tstdev
    DataSet.tcumsum
    DataSet.tvar

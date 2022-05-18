@@ -4,7 +4,7 @@ News
 Release of v0.4.4
 ---------------
 
-Version 0.4.4 will be released in later May 2022.
+Version 0.4.4 will be released in late May 2022.
 
 This version will introduce a new experimental class called ``Validator``. The aim of this class is to provide a streamlined automated validation procedure for climate and marine models. It will ingest gridded NetCDF data of model and observational data and generate validation plots and summaries.
 
@@ -12,8 +12,10 @@ A new method ``unify`` will be introduced. This will provide an automated proced
 
 For datasets, ``ds`` will now provide a more informative summary of dataset contents.
 
-
 The ``split`` method now automatically sorts the files, so that they are sorted by date when temporal splitting occurs. 
+
+
+The methods ``surface``, ``merge_time`` and ``tvariance``` have been removed after periods of deprecation. Use ``top``, ``merge`` and ``tvar`` instead.
 
 
 Release of v0.4.3

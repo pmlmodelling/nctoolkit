@@ -46,7 +46,7 @@ class TestEnsemble:
         x = data.to_dataframe().sst.values[0].astype("float")
 
         data = nc.open_data(nc.create_ensemble("data/ensemble"))
-        data.merge_time()
+        data.merge("time")
         data.tmax()
         data.spatial_mean()
         y = data.to_dataframe().sst.values[0].astype("float")
@@ -100,7 +100,7 @@ class TestEnsemble:
         x = data.to_dataframe().sst.values[0].astype("float")
 
         data = nc.open_data(nc.create_ensemble("data/ensemble"))
-        data.merge_time()
+        data.merge("time")
         data.tmean()
         data.spatial_mean()
         y = data.to_dataframe().sst.values[0].astype("float")
@@ -129,7 +129,7 @@ class TestEnsemble:
         x = data.to_dataframe().sst.values[0].astype("float")
 
         data = nc.open_data(nc.create_ensemble("data/ensemble"))
-        data.merge_time()
+        data.merge("time")
         data.tmean()
         data.spatial_mean()
         y = data.to_dataframe().sst.values[0].astype("float")
@@ -248,7 +248,7 @@ class TestEnsemble:
         ds.run()
         ds.spatial_mean()
         x = ds.to_xarray().sst.values[0]
-        
+
         ds = nc.open_data("data/sst.mon.mean.nc")
         ds.tstdev()
         ds.spatial_mean()
@@ -265,9 +265,9 @@ class TestEnsemble:
         ds.run()
         ds.spatial_mean()
         x = ds.to_xarray().sst.values[0]
-        
+
         ds = nc.open_data("data/sst.mon.mean.nc")
-        ds.tvariance()
+        ds.tvar()
         ds.spatial_mean()
         y = ds.to_xarray().sst.values[0]
 
@@ -281,7 +281,7 @@ class TestEnsemble:
         ds.run()
         ds.spatial_mean()
         x = ds.to_xarray().sst.values[0]
-        
+
         ds = nc.open_data("data/sst.mon.mean.nc")
         ds.tsum()
         ds.spatial_mean()

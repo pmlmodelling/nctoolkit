@@ -89,7 +89,7 @@ class TestTimestat:
         tracker = nc.open_data(ff)
         tracker.select(timesteps=range(0, 12))
 
-        tracker.tvariance()
+        tracker.tvar()
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0].astype("float")
 

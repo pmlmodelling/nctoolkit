@@ -140,7 +140,7 @@ class TestApi:
         x = len(data)
         assert x == 60
         data = nc.open_data(nc.create_ensemble("data/ensemble"))
-        data.merge_time()
+        data.merge("time")
         data.run()
         x = len(data)
         assert x == 1

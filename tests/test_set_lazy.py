@@ -201,7 +201,7 @@ class TestSetters:
         tracker.split("yearmonth")
 
         tracker.set_longnames({"sst": "temp"})
-        tracker.merge_time()
+        tracker.merge("time")
         tracker.run()
 
         x = tracker.contents.long_name[0]

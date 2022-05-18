@@ -60,7 +60,7 @@ class TestFldsta:
         data.spatial_mean()
 
         x = data.to_dataframe().sst.values[0].astype("float")
-        assert x ==  17.86652374267578 
+        assert x ==  17.86652374267578
 
         data = nc.open_data()
         with pytest.raises(ValueError):
@@ -82,7 +82,7 @@ class TestFldsta:
 
         x = data.to_dataframe().sst.values[0].astype("float")
         assert x ==  69.14716339111328
- 
+
 
 
         data = nc.open_data(ff)
@@ -93,7 +93,7 @@ class TestFldsta:
         x = data.to_dataframe().sst.values[0].astype("float")
 
 
-        assert x == 18.1085262298584 
+        assert x == 18.1085262298584
 
         data = nc.open_data(ff)
         data.select(time = 0)
@@ -115,7 +115,7 @@ class TestFldsta:
 
 
         assert x == 0.4882393181324005
- 
+
 
 
 
@@ -190,7 +190,7 @@ class TestFldsta:
         data.select(timesteps=range(0, 6))
         data.split("yearmonth")
         data.spatial_sum(by_area=True)
-        data.merge_time()
+        data.merge("time")
         data.tmean()
         data.run()
         x = data.to_dataframe().sst.values[0]

@@ -302,7 +302,7 @@ class TestCalls:
         assert data.history[0] == "cdo -timsum"
 
         data = nc.open_data(ff)
-        data.tvariance()
+        data.tvar()
         assert data.history[0] == "cdo -timvar"
 
         data = nc.open_data(ff)
@@ -338,7 +338,7 @@ class TestCalls:
 
         if cdo_version() not in ["1.9.2", "1.9.3"]:
             data = nc.open_data(ensemble)
-            data.merge_time()
+            data.merge("time")
             assert data.history[0] == "cdo --sortname -mergetime"
 
         data = nc.open_data(ff)

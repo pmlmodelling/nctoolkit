@@ -172,7 +172,7 @@ class TestSelect:
         x = tracker.to_dataframe().sst.values[0].astype("float")
 
         tracker = nc.open_data(ff)
-        tracker.select(year = 1990) 
+        tracker.select(year = 1990)
         tracker.select(month = 1)
         tracker.spatial_mean()
         y = tracker.to_dataframe().sst.values[0].astype("float")
@@ -300,7 +300,7 @@ class TestSelect:
     def test_ensemble(self):
         tracker = nc.open_data(ff)
         tracker.split("year")
-        tracker.merge_time()
+        tracker.merge("time")
         tracker.select(years=1990)
         tracker.run()
         x = tracker.years
