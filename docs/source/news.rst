@@ -10,6 +10,8 @@ This version will introduce a new experimental class called ``Validator``. The a
 
 A new method ``unify`` will be introduced. This will provide an automated procedure for putting datasets on the same spatial and temporal framework. The method will put the datasets onto the same horizontal and vertical grids by interpolating the second dataset onto the first dataset's grids. Temporal matching will occur so that, for example, if one dataset has daily data and another has monthly data, a monthly mean will replace the daily dataset.
 
+For datasets, ``ds`` will now provide a more informative summary of dataset contents.
+
 
 The ``split`` method now automatically sorts the files, so that they are sorted by date when temporal splitting occurs. 
 
