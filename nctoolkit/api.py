@@ -1617,6 +1617,7 @@ class DataSet(object):
     def copy(self):
         """
         Make a deep copy of an DataSet object
+        Note: This will not make disk copies of the temporary files underlying datasets, so it will be disk-space efficient.
         """
         self.run()
 
