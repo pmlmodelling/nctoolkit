@@ -10,6 +10,47 @@ from nctoolkit.show import nc_variables, nc_years, nc_times
 from nctoolkit.temp_file import temp_file
 from nctoolkit.utils import version_above
 
+def day_stat(self, operation = None,  x=None):
+    """
+    Do not use
+    """
+
+    if type(operation) is not str:
+        raise ValueError("operation must be a str")
+
+    if operation != "subtract":
+        raise ValueError("only subtract")
+
+    if operation == "subtract":
+        stat = "sub"
+
+    if type(x) is not str:
+        x = x.current
+        if len(x) > 1:
+            raise ValueError("requires single file")
+        else:
+            x = x[0]
+
+    # create the system command and run it
+    cdo_command = f"cdo -yday{stat} {self[0]} {x}"
+    target = temp_file(".nc")
+
+    the_command = cdo_command + " " + target
+
+    the_command = tidy_command(the_command)
+
+    target = run_cdo(the_command, target, precision=self._precision)
+
+    self.current = target
+    remove_safe(target)
+
+    self.history.append(the_command)
+
+    self._hold_history = copy.deepcopy(self.history)
+    cleanup()
+
+
+
 
 def arithall(self, stat="divc", x=None):
     """
