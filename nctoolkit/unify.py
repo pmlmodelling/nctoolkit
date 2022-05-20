@@ -48,7 +48,7 @@ def get_type(df):
 
 
 
-def unify(x=None, y=None, ignore = [], **kwargs):
+def unify(x=None, y=None, ignore = None, **kwargs):
     """
     Unify datasets temporally and spatially 
 
@@ -84,30 +84,31 @@ def unify(x=None, y=None, ignore = [], **kwargs):
     unify_levels = True
 
 
-    if type(ignore) is str:
-        ignore = [ignore]
+    if ignore is not None:
+        if type(ignore) is str:
+            ignore = [ignore]
 
-    if len(ignore) == 0:
-        checked = True
-    checked = False
-    for ii in ignore:
-        if "time" in ii.lower():
-            unify_time = False
+        if len(ignore) == 0:
             checked = True
+        checked = False
+        for ii in ignore:
+            if "time" in ii.lower():
+                unify_time = False
+                checked = True
 
-    for ii in ignore:
-        if "grid" in ii.lower():
-            unify_grid = False
-            checked = True
+        for ii in ignore:
+            if "grid" in ii.lower():
+                unify_grid = False
+                checked = True
 
-    for ii in ignore:
-        if "level" in ii.lower():
-            unify_levels = False
-            checked = True
+        for ii in ignore:
+            if "level" in ii.lower():
+                unify_levels = False
+                checked = True
 
 
-    if checked is False:
-        raise ValueError(f"ignore is not valid: {ignore}")
+            if checked is False:
+                raise ValueError(f"ignore is not valid: {ignore}")
 
 
     if unify_time:
