@@ -16,10 +16,10 @@ jobs:
       - run:
           name: install dependencies
           command: |
-            conda create -n nctoolkit python=3.9  -y
+            conda create -n nctoolkit python=3.9 -y
             conda install -c conda-forge curl -y
+            sudo apt-get install libstdc++6
             conda install -c conda-forge gnupg -y
-            conda install libgcc -y
 
 
       # Step 3: run linter and tests
