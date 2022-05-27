@@ -14,9 +14,11 @@ class Matcher(object):
     def __init__(self, start=""):
         """Initialize the starting file name etc"""
         # Attribuates of interest to users
-        self.model = None
-        self.obs = None
-        self.variable = None
+        self.data = None
+        self.points = None
+        self.temporal = True
+        self.depths = None
+        self.variables = None
         self.cores = 1
         self.top = True
 
@@ -24,6 +26,6 @@ class Matcher(object):
     # Import any methods
 
     from nctoolkit.mp_adders import add_depths
-    from nctoolkit.mp_adders import add_model
-    from nctoolkit.mp_adders import add_observations
+    from nctoolkit.mp_adders import add_data
+    from nctoolkit.mp_adders import add_points
     from nctoolkit.mp_matchups import matchup

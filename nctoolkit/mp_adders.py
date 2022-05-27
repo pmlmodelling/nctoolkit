@@ -4,15 +4,15 @@ import xarray as xr
 from nctoolkit.mp_utils import get_type
 
 
-def add_model(self, files=None, map=None, nan=0, precision=None):
+def add_data(self, files=None, variables=None, nan=0, precision=None):
     """
-    Add model data
+    Add dataset
     Parameters
     -------------
     files: str or list
-        File path(s) of the model data
-    map: dict
-        Dictionary mapping model variables to validation variables
+        File path(s) of the data
+    variables: str or list
+        Str or list of variables
 
     nan: float or list
         Value or range of values to set to nan. Defaults to 0.
@@ -21,32 +21,23 @@ def add_model(self, files=None, map=None, nan=0, precision=None):
 
     """
 
-    if self.model is not None:
-        raise ValueError("You have already added model data!")
+    if self.data is not None:
+        raise ValueError("You have already added data!")
 
-    if type(map) is not dict:
-        raise ValueError("You must provided a map")
+    if variables is None:
+        print("All variables will be used")
 
-    if len(map) != 1:
-        raise ValueError("There should only be one variable in the map!")
+    self.data = open_data(files, checks=False)
 
-    variable = list(map.keys())[0]
-
-    if self.variable is not None:
-        if variable != self.variable:
-            raise ValueError("Model and observational variable name")
-
-    self.model = open_data(files, checks=False)
-
-    if len(self.model) > 12:
+    if len(self.data) > 12:
         print("Checking file times. This could take a minute")
-    self.model_map = map
-    self.model_nan = nan
-    self.model_precision = precision
+
+    self.data_nan = nan
+    self.data_precision = precision
 
     # figure out the time dim
 
-    ds1 = open_data(self.model[0])
+    ds1 = open_data(self.data[0])
     pos_times = [
         x
         for x in [
@@ -56,40 +47,53 @@ def add_model(self, files=None, map=None, nan=0, precision=None):
     ]
 
     if len(pos_times) != 1:
-        raise ValueError("Unable to work out the name of time")
+        print("Unable to work out the name of time. Assuming no temporal matchups can occur.")
+        self.temporal = False
 
-    if len(pos_times) == 1:
-        time_name = pos_times[0]
+    if self.temporal:
 
-    df_times = []
+        if len(pos_times) == 1:
+            time_name = pos_times[0]
 
-    for ff in self.model:
-        ds = xr.open_dataset(ff)
-        times = ds[time_name]
-        days = [int(x.dt.day) for x in times]
-        months = [int(x.dt.month) for x in times]
-        years = [int(x.dt.year) for x in times]
-        df_times.append(
-            pd.DataFrame({"day": days, "month": months, "year": years}).assign(path=ff)
-        )
-    df_times = pd.concat(df_times)
+        df_times = []
 
-    if self.obs is not None:
-        df_times = self.obs.loc[
-            :, ["day", "month", "year"].drop(columns=self.ignore)
-        ].merge(df_times.drop(columns=self.ignore))
+        for ff in self.data:
+            ds = xr.open_dataset(ff)
+            times = ds[time_name]
+            days = [int(x.dt.day) for x in times]
+            months = [int(x.dt.month) for x in times]
+            years = [int(x.dt.year) for x in times]
+            df_times.append(
+                pd.DataFrame({"day": days, "month": months, "year": years}).assign(path=ff)
+            )
+        df_times = pd.concat(df_times)
 
-    files = list(set(df_times.path))
-    self.model = open_data(files, checks=False)
+        if self.points is not None:
+            df_times = self.points.loc[
+                :, ["day", "month", "year"].drop(columns=self.ignore)
+            ].merge(df_times.drop(columns=self.ignore))
 
-    self.model_times = df_times
+        files = list(set(df_times.path))
+    self.data = open_data(files, checks=False)
 
-    self.model_ag = get_type(self.model_times)
+    self.variables = variables
+
+    if self.temporal:
+        self.data_times = df_times
+        self.data_ag = get_type(self.data_times)
+    else:
+        self.data_times = None 
+        self.data_ag = None 
+
+    if self.temporal is False:
+        if len(self.data) > 1:
+            raise ValueError("You cannot provide more than one dataset without temporal information")
+
 
 
 def add_depths(self, x=None):
     """
-    Add observational data
+    Add depth 
     Parameters
     -------------
     x:  nctoolkit dataset or list
@@ -109,18 +113,16 @@ def add_depths(self, x=None):
         self.depths.rename({x.variables[0]: "depth"})
         self.depths.run()
 
-    self.top = False
 
-
-def add_observations(self, df=None, map=None):
+def add_points(self, df=None, map=None):
     """
-    Add observational data
+    Add point data
     Parameters
     -------------
     df: pandas dataframe
 
     map: dict
-        Dictionary mapping observational variables to validation variables
+        Dictionary mapping point location variables to required or optional dimensions.
         This must contain "lon" and "lat" as keys. Optionals: "day", "month", "year", "depth".
 
     """
@@ -146,24 +148,16 @@ def add_observations(self, df=None, map=None):
         )
         > 1
     ):
-        raise ValueError("There should only be one model variable")
+        raise ValueError("You have provided an invalid map")
 
-    variable = [
-        x for x in map if x not in ["lon", "lat", "year", "month", "day", "depth"]
-    ][0]
-    if self.variable is not None:
-        if variable != self.variable:
-            raise ValueError("Model and observational variable name")
-
-    if self.obs is not None:
+    if self.points is not None:
         raise ValueError("You have already added observation data!")
 
     df = df.loc[:, map.values()]
     map_switch = {y: x for x, y in map.items()}
     df = df.rename(columns=map_switch)
 
-    self.obs = df
+    self.points = df
 
-    self.obs = self.obs.dropna().reset_index(drop=True)
+    self.points = self.points.dropna().reset_index(drop=True)
 
-    self.variable = variable
