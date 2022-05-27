@@ -18,7 +18,6 @@ jobs:
           command: |
             conda create -n nctoolkit python=3.9 -y
             conda install -c conda-forge curl -y
-            sudo apt-get install libstdc++6
             conda install -c conda-forge gnupg -y
 
 
@@ -27,6 +26,7 @@ jobs:
           name: run tests
           command: |
             conda init bash
+            sudo apt install libstdc++6
 
             source activate nctoolkit
             conda install -c conda-forge cdo=1.9.10 nco cartopy -y
