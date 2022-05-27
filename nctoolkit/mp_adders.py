@@ -127,6 +127,13 @@ def add_points(self, df=None, map=None):
 
     """
 
+    self.points_temporal = False
+
+
+    for x in ["year", "month", "day"]:
+        if x in map:
+            self.points_temporal = True
+
     if type(map) is not dict:
         raise ValueError("You must provided a map")
 
