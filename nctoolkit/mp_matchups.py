@@ -283,7 +283,7 @@ def matchup(self, on=None):
 
                 for j in range(0, len(i_obs_locs)):
                     if self.depths is not None:
-                        df_depths = all_depths.merge(i_obs_locs)
+                        df_depths = df_depths 
 
                     j_obs = i_obs_locs.iloc[j : (j + 1), :].merge(i_obs_df)
 
