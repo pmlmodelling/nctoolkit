@@ -19,6 +19,7 @@ jobs:
             conda create -n nctoolkit python=3.9 -y
             conda install -c conda-forge curl -y
             conda install -c conda-forge gnupg -y
+            apt-get install -y sudo
 
 
       # Step 3: run linter and tests
