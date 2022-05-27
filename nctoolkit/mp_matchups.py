@@ -164,6 +164,8 @@ def matchup(self, on=None):
                         ds.select(year=i_year)
 
                     if self.points_temporal:
+                        if len(ds) > 1:
+                            ds.merge("time")
                         ds.tmean(self.ag_data)
 
             if self.data_nan is not None:
