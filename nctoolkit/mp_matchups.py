@@ -19,6 +19,7 @@ def matchup(self, on=None):
 
     #  loop through all time steps in the observational df....
 
+    n_levels = len(self.data.levels)
 
     if self.points_temporal is False:
         if self.temporal:
@@ -208,7 +209,6 @@ def matchup(self, on=None):
 
                 locs += ds.variables 
                 if len(ds.levels) > 1:
-                    n_levels = len(ds.levels)
                     adict = dict(ds.to_xarray().dims)
 
                     locs += [k for k in adict.keys() if adict[k]  == n_levels]
@@ -310,6 +310,12 @@ def matchup(self, on=None):
         raise ValueError("No data matches were found")
 
     df_merged = pd.concat(df_merged).drop_duplicates().reset_index(drop=True)
+
+    if self.temporal is False:
+        acceptable += ds.variables
+        acceptable = [x for x in df_merged.columns if x in acceptable]
+        df_merged = df_merged.loc[:,acceptable]
+
     if len([x for x in df_merged.columns if x.startswith("time")]) == 1:
         orig_df = df_merged
         try:
@@ -326,8 +332,5 @@ def matchup(self, on=None):
 
         except:
             df_merged = orig_df
-
-
-
 
     self.values = df_merged
