@@ -32,6 +32,8 @@ def matchup(self, on=None):
         if self.temporal is True:
             raise ValueError("You have not provided an on argument")
 
+    acceptable = ["lon", "lat", "year", "month", "day", "depth"]
+
     if self.temporal is False:
         # We need a quick hack
         df_times = []
@@ -203,7 +205,18 @@ def matchup(self, on=None):
                     locs = [time_name, "lon", "lat"]
                 else:
                     locs = [ "lon", "lat"]
+
                 locs += ds.variables 
+                if len(ds.levels) > 1:
+                    n_levels = len(ds.levels)
+                    adict = dict(ds.to_xarray().dims)
+
+                    locs += [k for k in adict.keys() if adict[k]  == n_levels]
+                    acceptable += [k for k in adict.keys() if adict[k]  == n_levels]
+                    locs = list(set(locs))
+
+                print(locs)
+            
                 df_model = df_model.loc[
                     :,  locs
                 ].drop_duplicates()
@@ -307,7 +320,6 @@ def matchup(self, on=None):
             df_merged["day"] = [x.day for x in times]
             df_merged = df_merged.drop(columns = time_name)
             # get acceptable variables....
-            acceptable = ["lon", "lat", "year", "month", "day", "depth"]
             acceptable += ds.variables
             acceptable = [x for x in df_merged.columns if x in acceptable]
             df_merged = df_merged.loc[:,acceptable]
