@@ -19,6 +19,27 @@ def matchup(self, on=None):
 
     #  loop through all time steps in the observational df....
 
+    # Figure out which points in the dataframe are actually in the dataframe...
+
+    ds = self.data.copy()
+    ds.top()
+    ds.select(variables = ds.variables[0])
+    ds.select(time = 0)
+    ds.rename({ds.variables[0]: "target"})
+    ds.run()
+    ds.assign(target = lambda x: isnan(x.target))
+    df = self.points.loc[:,["lon", "lat"]].drop_duplicates()
+    ds.regrid(df)
+    grid = ds.to_dataframe().reset_index(drop = True).dropna().loc[:,["lon", "lat"]].drop_duplicates()
+
+    n_start = len(self.points)
+
+    self.points = self.points.merge(grid)
+
+    if len(self.points) < n_start:
+        n_remove = n_start - len(self.points)
+        print(f"{n_remove} points are outside the dataset grid, and were therefore removed.")
+
     n_levels = len(self.data.levels)
 
     if self.points_temporal is False:
