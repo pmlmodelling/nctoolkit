@@ -4,25 +4,24 @@ import xarray as xr
 from nctoolkit.mp_utils import get_type
 
 
-def add_data(self, files=None, variables=None, depths = None, nan=0, precision=None, top = False):
+def add_data(self, x=None, variables=None, depths = None, nan=None, top = False):
     """
-    Add dataset
+    Add dataset for matching
     Parameters
     -------------
-    files: str or list
-        File path(s) of the data
+    x: nctoolkit dataset or str/list of file paths
+        Dataset or file(s) to match up with 
     variables: str or list
-        Str or list of variables
+        Str or list of variables. All variables are matched up if this is not supplied.
     depths:  nctoolkit dataset or list giving depths
         If each cell has different vertical levels, this must be provided as a dataset.
         If each cell has the same vertical levels, provide it as a list.
-
+        Only required if carrying out vertical matchups.
     nan: float or list
         Value or range of values to set to nan. Defaults to 0.
-    precision: numerical precision if needed
-        Choose "F64" if advised by a warning
+        Only required if values in dataset need changed to missing
     top: bool 
-        Set to True if you want only the top/surface level of the dataset to be selected.
+        Set to True if you want only the top/surface level of the dataset to be selected for matching.
 
     """
 
@@ -42,13 +41,12 @@ def add_data(self, files=None, variables=None, depths = None, nan=0, precision=N
     if variables is None:
         print("All variables will be used")
 
-    self.data = open_data(files, checks=False)
+    self.data = open_data(x) 
 
     if len(self.data) > 12:
         print("Checking file times. This could take a minute")
 
     self.data_nan = nan
-    self.data_precision = precision
 
     # figure out the time dim
 
@@ -88,8 +86,8 @@ def add_data(self, files=None, variables=None, depths = None, nan=0, precision=N
                 :, ["day", "month", "year"].drop(columns=self.ignore)
             ].merge(df_times.drop(columns=self.ignore))
 
-        files = list(set(df_times.path))
-    self.data = open_data(files, checks=False)
+        x = list(set(df_times.path))
+    self.data = open_data(x, checks = False) 
 
     self.variables = variables
 
@@ -111,14 +109,14 @@ def add_depths(self, x=None):
     Add depth 
     Parameters
     -------------
-    x:  nctoolkit dataset or list
+    x:  nctoolkit dataset or list/iterable
         If each cell has different vertical levels, this must be provided as a dataset.
         If each cell has the same vertical levels, provide it as a list.
 
     """
 
-    if type(x) is list:
-        self.depths = x
+    if "api.DataSet" not in str(type(x)):
+        self.depths = [y for y in x]
 
     if type(x) != list:
         if len(x.variables) > 1:
@@ -134,7 +132,7 @@ def add_points(self, df=None, map=None, **kwargs):
     Add point data
     Parameters
     -------------
-    df: pandas dataframe
+    df: pandas dataframe containing the spatiotemporal points to match with.
 
     map: dict
         Dictionary mapping point location variables to required or optional dimensions.
