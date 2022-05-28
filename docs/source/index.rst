@@ -47,6 +47,7 @@ nctoolkit is developed as open source software by the Marine Systems Modelling g
    exporting 
    interpolation
    temporals 
+   matchpoint 
    subsetting 
    variables
    adding
