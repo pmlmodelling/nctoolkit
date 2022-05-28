@@ -13,7 +13,6 @@ class Matcher(object):
 
     def __init__(self, start=""):
         """Initialize the starting file name etc"""
-        # Attribuates of interest to users
         self.data = None
         self.points = None
         self.temporal = True

@@ -93,10 +93,8 @@ def add_data(self, x=None, variables=None, depths = None, nan=None, top = False)
 
     if self.temporal:
         self.data_times = df_times
-        self.data_ag = get_type(self.data_times)
     else:
         self.data_times = None 
-        self.data_ag = None 
 
     if self.temporal is False:
         if len(self.data) > 1:

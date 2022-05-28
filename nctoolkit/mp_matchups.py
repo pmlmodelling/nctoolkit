@@ -66,9 +66,6 @@ def matchup(self, on=None):
 
     if self.temporal:
 
-        self.start_ag = self.data_ag
-        self.ag_data = self.start_ag
-
         if type(on) is str:
             on = [on]
 
@@ -82,8 +79,6 @@ def matchup(self, on=None):
             if x not in ["day", "month", "year", "all"]:
                 raise ValueError(f"{x} is not a valid")
 
-        self.ag_data = on
-
         for x in ["day", "month", "year"]:
             if x not in on:
                 if x in self.points.columns:
@@ -94,7 +89,7 @@ def matchup(self, on=None):
         if self.points_temporal:
             df_times = self.data_times.loc[:, on].merge(self.points.loc[:, on])
         else:
-            df_times = self.data_times.loc[:, self.data_ag]
+            df_times = self.data_times
         df_times = df_times.drop_duplicates()
         time_avail = [x for x in ["year", "month", "day"] if x in df_times.columns]
         df_times = df_times.sort_values(by=time_avail).reset_index(drop=True)
@@ -103,9 +98,6 @@ def matchup(self, on=None):
         df_times = self.data_times
 
     df_merged = []
-
-    if self.temporal:
-        self.ag_data = on
 
     # depths only need to be calculated once
     if self.depths is not None:
@@ -148,11 +140,11 @@ def matchup(self, on=None):
                 i_year = None
                 i_month = None
                 i_day = None
-                if "year" in self.ag_data:
+                if "year" in on:
                     i_year = i_df.year.values[0]
-                if "month" in self.ag_data:
+                if "month" in on:
                     i_month = i_df.month.values[0]
-                if "day" in self.ag_data:
+                if "day" in on:
                     i_day = i_df.day.values[0]
 
                 if on == ["all"]:
@@ -192,7 +184,7 @@ def matchup(self, on=None):
                     if self.points_temporal:
                         if len(ds) > 1:
                             ds.merge("time")
-                        ds.tmean(self.ag_data)
+                        ds.tmean(on)
 
             if self.data_nan is not None:
                 ds.set_missing(self.data_nan)
