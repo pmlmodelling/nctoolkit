@@ -4,7 +4,7 @@ import xarray as xr
 from nctoolkit.mp_utils import get_type
 
 
-def add_data(self, files=None, variables=None, nan=0, precision=None, top = False):
+def add_data(self, files=None, variables=None, depths = None, nan=0, precision=None, top = False):
     """
     Add dataset
     Parameters
@@ -13,6 +13,9 @@ def add_data(self, files=None, variables=None, nan=0, precision=None, top = Fals
         File path(s) of the data
     variables: str or list
         Str or list of variables
+    depths:  nctoolkit dataset or list giving depths
+        If each cell has different vertical levels, this must be provided as a dataset.
+        If each cell has the same vertical levels, provide it as a list.
 
     nan: float or list
         Value or range of values to set to nan. Defaults to 0.
@@ -22,6 +25,14 @@ def add_data(self, files=None, variables=None, nan=0, precision=None, top = Fals
         Set to True if you want only the top/surface level of the dataset to be selected.
 
     """
+
+    if depths is not None:
+        self.add_depths(depths)
+
+    if depths is None:
+        if self.points is not None:
+            if "depth" in self.points:
+                raise ValueError("You cannot match depths without supplying dataset depths")
 
     self.top = top
 
@@ -171,4 +182,9 @@ def add_points(self, df=None, map=None):
     self.points = df
 
     self.points = self.points.dropna().reset_index(drop=True)
+
+    if self.depths is None and self.data is not None:
+        if self.points is not None:
+            if "depth" in self.points:
+                raise ValueError("You cannot match depths without supplying dataset depths")
 

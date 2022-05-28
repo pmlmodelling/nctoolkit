@@ -19,13 +19,12 @@ class Matcher(object):
         self.temporal = True
         self.depths = None
         self.variables = None
-        self.cores = 1
         self.top = True
-
+        self.values = None
 
     # Import any methods
 
-    from nctoolkit.mp_adders import add_depths
     from nctoolkit.mp_adders import add_data
     from nctoolkit.mp_adders import add_points
+    from nctoolkit.mp_adders import add_depths
     from nctoolkit.mp_matchups import matchup

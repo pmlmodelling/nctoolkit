@@ -318,4 +318,4 @@ def matchup(self, on=None):
 
 
 
-    self.matched = df_merged
+    self.values = df_merged
