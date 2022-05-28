@@ -129,7 +129,7 @@ def add_depths(self, x=None):
         self.depths.run()
 
 
-def add_points(self, df=None, map=None):
+def add_points(self, df=None, map=None, **kwargs):
     """
     Add point data
     Parameters
@@ -139,11 +139,17 @@ def add_points(self, df=None, map=None):
     map: dict
         Dictionary mapping point location variables to required or optional dimensions.
         This must contain "lon" and "lat" as keys. Optionals: "day", "month", "year", "depth".
+        As an alternative, these can be provided as kwargs, i.e. lon = .., lat = ..., etc.
 
     """
 
     self.points_temporal = False
 
+    if len(kwargs) > 0 and map is None:
+        map = dict(kwargs)
+
+    if map is None:
+        raise ValueError("Please provide a map. Starting sugestion: {'lon':'lon', 'lat':'lat', 'depth':'depth','year':'year','month':'month','day':'day'}.")
 
     for x in ["year", "month", "day"]:
         if x in map:
