@@ -2,11 +2,10 @@
 
 def open_matchpoint():
 
-    val = Matcher()
-    return val
+    return Matchpoint()
 
 
-class Matcher(object):
+class Matchpoint(object):
     """
     A modifiable ensemble of netCDF files
     """
