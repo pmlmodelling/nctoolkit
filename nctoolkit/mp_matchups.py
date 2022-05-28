@@ -153,6 +153,8 @@ def matchup(self, on=None):
 
             if self.variables is not None:
                 ds.select(variables=self.variables)
+            if self.top:
+                ds.top()
 
             if self.temporal:
                 for opt in ["day", "year", "month"]:

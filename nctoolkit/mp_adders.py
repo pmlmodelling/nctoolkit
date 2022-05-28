@@ -4,7 +4,7 @@ import xarray as xr
 from nctoolkit.mp_utils import get_type
 
 
-def add_data(self, files=None, variables=None, nan=0, precision=None):
+def add_data(self, files=None, variables=None, nan=0, precision=None, top = False):
     """
     Add dataset
     Parameters
@@ -18,8 +18,12 @@ def add_data(self, files=None, variables=None, nan=0, precision=None):
         Value or range of values to set to nan. Defaults to 0.
     precision: numerical precision if needed
         Choose "F64" if advised by a warning
+    top: bool 
+        Set to True if you want only the top/surface level of the dataset to be selected.
 
     """
+
+    self.top = top
 
     if self.data is not None:
         raise ValueError("You have already added data!")
