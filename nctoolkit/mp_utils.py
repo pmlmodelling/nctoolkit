@@ -1,7 +1,6 @@
 import nctoolkit as nc
 import pandas as pd
 import re
-import scipy
 import numpy as np
 
 

@@ -1,8 +1,9 @@
 import pandas as pd
 import re
-import scipy
+import scipy.interpolate as interpolate
 import numpy as np
 from nctoolkit.api import open_data
+
 
 def matchup(self, on=None):
     """
@@ -305,7 +306,7 @@ def matchup(self, on=None):
                                 if self.depths is not None:
                                     i_var = 0
                                     for var in ds.variables:
-                                        f = scipy.interpolate.interp1d(
+                                        f = interpolate.interp1d(
                                             j_model.depth, j_model[var]
                                         )
                                         j_obs[var] = f(j_obs.depth)
