@@ -115,6 +115,9 @@ def add_depths(self, x=None):
 
     """
 
+    if self.depths is not None:
+        raise ValueError("You have already provided depths")
+
     if "api.DataSet" not in str(type(x)):
         self.depths = [y for y in x]
 
