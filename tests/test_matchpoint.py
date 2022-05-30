@@ -14,6 +14,45 @@ ff1 = "data/woa18_decav_t01_01.nc"
 
 class TestCrop:
     def test_matchpoint(self):
+
+        depths = nc.open_data("data/matchpoint_depths.nc")
+
+        ensemble = nc.create_ensemble("data/matchpoint")[0:3]
+
+        ds = nc.open_data("data/matchpoint/amm7_1d_20000101_20000131_ptrc_T.nc")
+        levels = ds.levels
+        levels += levels
+        ds.select(time = [0])
+        depths = nc.open_data("data/matchpoint_depths.nc")
+        # ds.select(time = 0)
+        ds.append(depths)
+        ds.merge()
+        ds.regrid(pd.DataFrame({"lon":[1, 2], "lat":[54.5, 54.7]}), method = "bil")
+
+
+        df = ds.to_dataframe().reset_index()
+        df["month" ] =  [x.month for x in df.time_counter]
+        df["year"] = [x.year for x in df.time_counter]
+        df["day"] = [x.day for x in df.time_counter]
+        df = df.loc[:,["lon", "lat", "month", "day", "year", "N3_n", "depth"]].drop_duplicates()
+        ds = nc.open_data("data/matchpoint/amm7_1d_20000101_20000131_ptrc_T.nc")
+        ds.select(time = [0])
+        ds.run()
+        matcher = nc.open_matchpoint()
+        depths = ds.levels
+        df["depth"]  = levels
+        matcher.add_points(df, map = {"lon":"lon", "lat":"lat", "month":"month", "day":"day", "year":"year", "depth":"depth"})
+        matcher.add_data(ds, variables = "N3_n", depths = depths)
+        with pytest.raises(ValueError):
+            matcher.add_data(ds, variables = "N3_n")
+        with pytest.raises(ValueError):
+            matcher.add_points(df, map = {"lon":"lon", "lat":"lat", "month":"month", "day":"day", "year":"year", "depth":"depth"})
+        matcher.matchup([ "month", "day"])
+
+
+        assert matcher.values.rename(columns = {"N3_n":"nitrate"}).merge( df).assign(bias = lambda x: np.abs(x.N3_n - x.nitrate)).bias.max() < 0.0001
+        assert len(matcher.values) == len(df)
+
         depths = nc.open_data("data/matchpoint_depths.nc")
 
         ensemble = nc.create_ensemble("data/matchpoint")[0:3]
@@ -128,6 +167,21 @@ class TestCrop:
         assert matcher.values.rename(columns = {"N3_n":"nitrate"}).merge( df).assign(bias = lambda x: np.abs(x.N3_n - x.nitrate)).bias.max() < 0.0001
         assert len(matcher.values) == len(df)
 
+        ds = nc.open_data("data/sst.mon.mean.nc")
+        df = pd.DataFrame({"lon":[-20], "lat":60})
+        
+        matcher = nc.open_matchpoint()
+        matcher.add_points(df, map = {"lon":"lon", "lat":"lat"})
+        matcher.add_data(ds)
+        matcher.matchup()
+        matcher.values
+        ds.regrid(df)
+        df_test = ds.to_dataframe().reset_index().drop_duplicates()
+        df_test["month"] = [x.month for x in df_test.time]
+        df_test["day"] = [x.day for x in df_test.time]
+        df_test["year"] = [x.year for x in df_test.time]
+        assert df_test.rename(columns = {"sst":"test"}).merge(matcher.values).assign(bias = lambda x: np.abs(x.sst - x.test)).bias.max() <  0.00001
+        assert len(matcher.values) == 360
 
 
         ds = nc.open_data("data/sst.mon.mean.nc")

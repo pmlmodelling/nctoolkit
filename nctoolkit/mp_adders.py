@@ -41,7 +41,7 @@ def add_data(self, x=None, variables=None, depths = None, nan=None, top = False)
     if variables is None:
         print("All variables will be used")
 
-    self.data = open_data(x) 
+    self.data = open_data(x, checks = False) 
 
     if len(self.data) > 12:
         print("Checking file times. This could take a minute")
@@ -81,11 +81,6 @@ def add_data(self, x=None, variables=None, depths = None, nan=None, top = False)
                 pd.DataFrame({"day": days, "month": months, "year": years}).assign(path=ff)
             )
         df_times = pd.concat(df_times)
-
-        if self.points is not None:
-            df_times = self.points.loc[
-                :, ["day", "month", "year"].drop(columns=self.ignore)
-            ].merge(df_times.drop(columns=self.ignore))
 
         x = list(set(df_times.path))
     self.data = open_data(x, checks = False) 
@@ -150,6 +145,14 @@ def add_points(self, df=None, map=None, **kwargs):
 
     if map is None:
         raise ValueError("Please provide a map. Starting sugestion: {'lon':'lon', 'lat':'lat', 'depth':'depth','year':'year','month':'month','day':'day'}.")
+
+    for x in map.keys():
+        if x not in ["lon", "lat", "year", "month", "day", "depth"]:
+            raise ValueError(f"{x} is not a valid mapping")
+
+    for x in map.values():
+        if x not in df.columns:
+            raise ValueError(f"{x} is not a column name")
 
     for x in ["year", "month", "day"]:
         if x in map:

@@ -22,7 +22,7 @@ def matchup(self, on=None):
 
     # Figure out which points in the dataframe are actually in the dataframe...
 
-    ds = self.data.copy()
+    ds = open_data(self.data[0], checks = False)
     ds.top()
     ds.select(variables = ds.variables[0])
     ds.select(time = 0)
@@ -130,6 +130,7 @@ def matchup(self, on=None):
     if points_merged is False:
 
         for i in range(0, len(df_times)):
+            print(i / len(df_times) * 100)
             if self.temporal:
                 i_df = df_times.iloc[
                     i : (i + 1) :,
