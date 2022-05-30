@@ -71,7 +71,8 @@ def add_data(self, x=None, variables=None, depths = None, nan=None, top = False)
         df_times = []
 
         for ff in self.data:
-            ds = xr.open_dataset(ff)
+            ds_ff = open_data(ff)
+            ds = ds_ff.to_xarray() 
             times = ds[time_name]
             days = [int(x.dt.day) for x in times]
             months = [int(x.dt.month) for x in times]
