@@ -11,9 +11,9 @@ from nctoolkit.api import (
     open_url,
 )
 
-#from nctoolkit.unify import unify
+from nctoolkit.unify import unify
 
-#from nctoolkit.validator import validator
+from nctoolkit.validator import validator
 from nctoolkit.matchpoint import open_matchpoint
 
 
