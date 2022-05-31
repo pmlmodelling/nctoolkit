@@ -5,7 +5,7 @@ import numpy as np
 from nctoolkit.api import open_data
 
 
-def matchup(self, on=None, tmean = True):
+def matchup(self, on=None, tmean = False):
     """
     Matchup gridded model and point observational data
     Parameters
@@ -16,7 +16,7 @@ def matchup(self, on=None, tmean = True):
         If you provide ['month', 'year'], the matches will occur by month, and days are ignored. In this case if the model resolution is daily,
         a monthly average will be calculated automatically.
     tmean: bool
-        Set to True or False, depending on whether you want temporal averaging at the level given by on. Defaults to True.
+        Set to True or False, depending on whether you want temporal averaging at the level given by on. Defaults to False.
         This is equivalent to doing `ds.tmean(on)` to the dataset.
 
     """
