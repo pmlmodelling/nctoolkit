@@ -38,6 +38,19 @@ class TestCrop:
         ds = nc.open_data("data/matchpoint/amm7_1d_20000101_20000131_ptrc_T.nc")
         ds.select(time = [0])
         ds.run()
+
+        matcher = nc.open_matchpoint()
+        depths = ds.levels
+        df["depth"]  = levels
+        matcher.add_points(df, map = {"lon":"lon", "lat":"lat", "month":"month", "day":"day", "year":"year", "depth":"depth"})
+        matcher.add_data(ds, variables = "N3_n", depths = depths)
+        matcher.matchup([ "month", "day"])
+
+
+        assert matcher.values.rename(columns = {"N3_n":"nitrate"}).merge( df).assign(bias = lambda x: np.abs(x.N3_n - x.nitrate)).bias.max() < 0.0001
+        assert len(matcher.values) == len(df)
+
+
         matcher = nc.open_matchpoint()
         depths = ds.levels
         df["depth"]  = levels
@@ -45,13 +58,18 @@ class TestCrop:
         matcher.add_data(ds, variables = "N3_n", depths = depths)
         with pytest.raises(ValueError):
             matcher.add_data(ds, variables = "N3_n")
+
+
+
+        matcher = nc.open_matchpoint()
+        depths = ds.levels
+        df["depth"]  = levels
+        matcher.add_points(df, map = {"lon":"lon", "lat":"lat", "month":"month", "day":"day", "year":"year", "depth":"depth"})
+        matcher.add_data(ds, variables = "N3_n", depths = depths)
         with pytest.raises(ValueError):
             matcher.add_points(df, map = {"lon":"lon", "lat":"lat", "month":"month", "day":"day", "year":"year", "depth":"depth"})
-        matcher.matchup([ "month", "day"])
 
 
-        assert matcher.values.rename(columns = {"N3_n":"nitrate"}).merge( df).assign(bias = lambda x: np.abs(x.N3_n - x.nitrate)).bias.max() < 0.0001
-        assert len(matcher.values) == len(df)
 
         depths = nc.open_data("data/matchpoint_depths.nc")
 
@@ -79,6 +97,7 @@ class TestCrop:
         matcher = nc.open_matchpoint()
         depths = ds.levels
         matcher.add_data(ds, variables = "N3_n", depths = depths)
+
         with pytest.raises(ValueError):
             matcher.add_data(ds, variables = "N3_n")
         df["depth"]  = levels
@@ -90,6 +109,9 @@ class TestCrop:
 
         assert matcher.values.rename(columns = {"N3_n":"nitrate"}).merge( df).assign(bias = lambda x: np.abs(x.N3_n - x.nitrate)).bias.max() < 0.0001
         assert len(matcher.values) == len(df)
+
+
+
 
         ds = nc.open_data(ensemble)
         ds.merge("time")
