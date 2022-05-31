@@ -25,10 +25,20 @@ def matchup(self, on=None, tmean = True):
 
     # Figure out which points in the dataframe are actually in the dataframe...
 
+    if on is None:
+        tmean = False
+
+    points = self.points
+
+    if type(on) is str:
+        on = [on]
+
     if on is not None:
-        for x in ["day", "month", "year"]:
-            if x not in on and x in self.points.columns: 
-                self.points = self.points.drop(columns = x)
+        if type(on) is list:
+            for x in ["day", "month", "year"]:
+                if x not in on and x in points.columns: 
+                    points = points.drop(columns = x)
+
 
     ds = open_data(self.data[0], checks = False)
     ds.select(variables = ds.variables[0])
@@ -37,20 +47,19 @@ def matchup(self, on=None, tmean = True):
     ds.top()
     ds.run()
     ds.assign(target = lambda x: isnan(x.target))
-    df = self.points.loc[:,["lon", "lat"]].drop_duplicates()
+    df = points.loc[:,["lon", "lat"]].drop_duplicates()
     ds.regrid(df)
-    print(ds.to_dataframe())
     grid = ds.to_dataframe().reset_index().dropna().loc[:,["lon", "lat"]].drop_duplicates()
 
-    n_start = len(self.points)
+    n_start = len(points)
 
-    self.points = self.points.merge(grid)
+    points = points.merge(grid)
 
-    if len(self.points) == 0:
+    if len(points) == 0:
         raise ValueError("None of the points are contained within the dataset grid")
 
-    if len(self.points) < n_start:
-        n_remove = n_start - len(self.points)
+    if len(points) < n_start:
+        n_remove = n_start - len(points)
         print(f"{n_remove} points are outside the dataset grid, and were therefore removed.")
 
 
@@ -80,14 +89,12 @@ def matchup(self, on=None, tmean = True):
 
 
     if self.temporal:
-        if tmean is True:
+        if tmean is True and on != "all":
 
-            if type(on) is str:
-                on = [on]
 
             if on == ["day"]:
                 on = ["day", "month"]
-                if "month" not in self.points.columns:
+                if "month" not in points.columns:
                     on.remove("month")
             if type(on) is not list:
                 raise ValueError("on must be a list")
@@ -97,13 +104,13 @@ def matchup(self, on=None, tmean = True):
 
             for x in ["day", "month", "year"]:
                 if x not in on:
-                    if x in self.points.columns:
-                        self.points = self.points.drop(columns=x)
+                    if x in points.columns:
+                        points = points.drop(columns=x)
 
             # This needs to work when there is no time
 
             if self.points_temporal:
-                df_times = self.data_times.loc[:, on].merge(self.points.loc[:, on])
+                df_times = self.data_times.loc[:, on].merge(points.loc[:, on])
             else:
                 df_times = self.data_times
             df_times = df_times.drop_duplicates()
@@ -121,7 +128,7 @@ def matchup(self, on=None, tmean = True):
     if self.depths is not None:
         if type(self.depths) is not list:
             ds_depths = self.depths.copy()
-            obs_locs = self.points.loc[:,["lon", "lat"]]
+            obs_locs = points.loc[:,["lon", "lat"]]
             ds_depths.regrid(obs_locs, "bil")
             df_depths = (
                 ds_depths.to_dataframe()
@@ -140,7 +147,7 @@ def matchup(self, on=None, tmean = True):
             ds = open_data(self.data)
             if self.variables is not None:
                 ds.select(variables = self.variables)
-            ds.regrid(self.points.loc[:,["lon", "lat"]], "bil")
+            ds.regrid(points.loc[:,["lon", "lat"]], "bil")
             df_merged = [ds.to_dataframe().reset_index()]
             points_merged = True
 
@@ -153,9 +160,9 @@ def matchup(self, on=None, tmean = True):
                 ]
                 i_df = i_df.reset_index(drop = True)
                 if self.points_temporal:
-                    i_grid = self.points.merge(i_df).loc[:, ["lon", "lat"]]
+                    i_grid = points.merge(i_df).loc[:, ["lon", "lat"]]
                 else:
-                    i_grid = self.points.loc[:,["lon", "lat"]]
+                    i_grid = points.loc[:,["lon", "lat"]]
                 i_year = None
                 i_month = None
                 i_day = None
@@ -183,7 +190,7 @@ def matchup(self, on=None, tmean = True):
                 ds = open_data(set(self.data_times.merge(i_df).path), checks=False)
             else:
                 ds = open_data(self.data, checks=False)
-                i_grid = self.points.loc[:, ["lon", "lat"]].drop_duplicates()
+                i_grid = points.loc[:, ["lon", "lat"]].drop_duplicates()
 
 
             if self.variables is not None:
@@ -268,9 +275,9 @@ def matchup(self, on=None, tmean = True):
 
 
                 if self.points_temporal:
-                    i_obs_df = i_df.merge(self.points)
+                    i_obs_df = i_df.merge(points)
                 else:
-                    i_obs_df = self.points 
+                    i_obs_df = points 
 
                 i_obs_locs = i_obs_df.loc[:, ["lon", "lat"]].drop_duplicates()
 
@@ -363,3 +370,5 @@ def matchup(self, on=None, tmean = True):
             df_merged = orig_df
 
     self.values = df_merged
+
+
