@@ -113,15 +113,26 @@ def nc_variables(ff):
     cdo_result = subprocess.run(
         f"cdo showname {ff}", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
     )
-    return [
+
+    new = " ".join([
+    x
+    for x in [
         x
-        for x in [
-            x
-            for x in cdo_result.stdout.decode("utf-8").split("\n")
-            if "cdo" not in x and len(x) > 0
-        ][0].split(" ")
-        if len(x) > 0
+        for x in cdo_result.stdout.decode("utf-8").split("\n")
+        if "cdo" not in x and len(x) > 0
     ]
+        if len(x) > 0
+    ])
+    return [x for x in new.split(" ") if len(x) > 0]
+    #return [
+    #    x
+    #    for x in [
+    #        x
+    #        for x in cdo_result.stdout.decode("utf-8").split("\n")
+    #        if "cdo" not in x and len(x) > 0
+    #    ][0].split(" ")
+    #    if len(x) > 0
+    #]
 
 
 def nc_months(ff):
