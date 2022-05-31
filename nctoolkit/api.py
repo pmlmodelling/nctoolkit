@@ -1068,12 +1068,12 @@ class DataSet(object):
         max_size = convert_bytes(max_size)
 
         sum_size = convert_bytes(sum(all_sizes))
-        result = "Number of files in ensemble: " + str(len(self)) + "\n"
-        result = result + "Ensemble size: " + sum_size + "\n"
-        result = (
-            result + "Smallest file: " + smallest_file + " has size " + min_size + "\n"
-        )
-        result = result + "Largest file: " + largest_file + " has size " + max_size
+        result = dict()
+
+        result["Number of files in ensemble"] =  len(self)
+        result["Ensemble size"] =  sum_size 
+        result["Smallest file size"] =  min_size 
+        result["Largest file size"]  = max_size
         return result
 
     @property
