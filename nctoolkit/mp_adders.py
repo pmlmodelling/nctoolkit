@@ -70,9 +70,10 @@ def add_data(self, x=None, variables=None, depths = None, nan=None, top = False)
     ds_vars = open_data(self.data[0])
     ds_variables = ds_vars.variables
 
-    for x in variables:
-        if x not in ds_variables:
-            raise ValueError(f"{x} is not a valid variable")
+    if type(variables) is list:
+        for x in variables:
+            if x not in ds_variables:
+                raise ValueError(f"{x} is not a valid variable")
 
     if len(self.data) > 12:
         print("Checking file times. This could take a minute")
@@ -197,11 +198,11 @@ def add_points(self, df=None, map=None, **kwargs):
         if x not in map:
             missing.append(x)
     if len(missing) > 0:
-        print(f"Warning: You have not provided {missing} in map")
+        print(f"Warning: You have not provided {missing} in dimension mapping")
 
     for x in ["lon", "lat"]:
         if x not in map:
-            raise ValueError(f"Please provide {x} in map")
+            raise ValueError(f"Please provide {x} in dimension mapping")
 
     if (
         len(
