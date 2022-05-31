@@ -38,9 +38,13 @@ def matchup(self, on=None):
 
     self.points = self.points.merge(grid)
 
+    if len(self.points) == 0:
+        raise ValueError("None of the points are contained within the dataset grid")
+
     if len(self.points) < n_start:
         n_remove = n_start - len(self.points)
         print(f"{n_remove} points are outside the dataset grid, and were therefore removed.")
+
 
     n_levels = len(self.data.levels)
 
