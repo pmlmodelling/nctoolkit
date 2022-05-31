@@ -5,7 +5,7 @@ import numpy as np
 from nctoolkit.api import open_data
 
 
-def matchup(self, on=None):
+def matchup(self, on=None, tmean = True):
     """
     Matchup gridded model and point observational data
     Parameters
@@ -15,12 +15,20 @@ def matchup(self, on=None):
         Example, if you provide ['day', 'month', 'year'] model and observational data will be matched for each day of the year across all years.
         If you provide ['month', 'year'], the matches will occur by month, and days are ignored. In this case if the model resolution is daily,
         a monthly average will be calculated automatically.
+    tmean: bool
+        Set to True or False, depending on whether you want temporal averaging at the level given by on. Defaults to True.
+        This is equivalent to doing `ds.tmean(on)` to the dataset.
 
     """
 
     #  loop through all time steps in the observational df....
 
     # Figure out which points in the dataframe are actually in the dataframe...
+
+    if on is not None:
+        for x in ["day", "month", "year"]:
+            if x not in on and x in self.points.columns: 
+                self.points = self.points.drop(columns = x)
 
     ds = open_data(self.data[0], checks = False)
     ds.select(variables = ds.variables[0])
@@ -31,7 +39,8 @@ def matchup(self, on=None):
     ds.assign(target = lambda x: isnan(x.target))
     df = self.points.loc[:,["lon", "lat"]].drop_duplicates()
     ds.regrid(df)
-    grid = ds.to_dataframe().reset_index(drop = True).dropna().loc[:,["lon", "lat"]].drop_duplicates()
+    print(ds.to_dataframe())
+    grid = ds.to_dataframe().reset_index().dropna().loc[:,["lon", "lat"]].drop_duplicates()
 
     n_start = len(self.points)
 
@@ -69,35 +78,39 @@ def matchup(self, on=None):
         df_times = pd.concat(df_times)
         self.data_times = df_times
 
+
     if self.temporal:
+        if tmean is True:
 
-        if type(on) is str:
-            on = [on]
+            if type(on) is str:
+                on = [on]
 
-        if on == ["day"]:
-            on = ["day", "month"]
-            if "month" not in self.points.columns:
-                on.remove("month")
-        if type(on) is not list:
-            raise ValueError("on must be a list")
-        for x in on:
-            if x not in ["day", "month", "year", "all"]:
-                raise ValueError(f"{x} is not a valid")
+            if on == ["day"]:
+                on = ["day", "month"]
+                if "month" not in self.points.columns:
+                    on.remove("month")
+            if type(on) is not list:
+                raise ValueError("on must be a list")
+            for x in on:
+                if x not in ["day", "month", "year", "all"]:
+                    raise ValueError(f"{x} is not a valid")
 
-        for x in ["day", "month", "year"]:
-            if x not in on:
-                if x in self.points.columns:
-                    self.points = self.points.drop(columns=x)
+            for x in ["day", "month", "year"]:
+                if x not in on:
+                    if x in self.points.columns:
+                        self.points = self.points.drop(columns=x)
 
-        # This needs to work when there is no time
+            # This needs to work when there is no time
 
-        if self.points_temporal:
-            df_times = self.data_times.loc[:, on].merge(self.points.loc[:, on])
+            if self.points_temporal:
+                df_times = self.data_times.loc[:, on].merge(self.points.loc[:, on])
+            else:
+                df_times = self.data_times
+            df_times = df_times.drop_duplicates()
+            time_avail = [x for x in ["year", "month", "day"] if x in df_times.columns]
+            df_times = df_times.sort_values(by=time_avail).reset_index(drop=True)
         else:
-            df_times = self.data_times
-        df_times = df_times.drop_duplicates()
-        time_avail = [x for x in ["year", "month", "day"] if x in df_times.columns]
-        df_times = df_times.sort_values(by=time_avail).reset_index(drop=True)
+            df_times = self.data_times.drop(columns = "path")
 
     if self.temporal is False:
         df_times = self.data_times
@@ -131,8 +144,6 @@ def matchup(self, on=None):
             df_merged = [ds.to_dataframe().reset_index()]
             points_merged = True
 
-
-    print("Merging the data")
     if points_merged is False:
 
         for i in range(0, len(df_times)):
@@ -140,6 +151,7 @@ def matchup(self, on=None):
                 i_df = df_times.iloc[
                     i : (i + 1) :,
                 ]
+                i_df = i_df.reset_index(drop = True)
                 if self.points_temporal:
                     i_grid = self.points.merge(i_df).loc[:, ["lon", "lat"]]
                 else:
@@ -147,11 +159,11 @@ def matchup(self, on=None):
                 i_year = None
                 i_month = None
                 i_day = None
-                if "year" in on:
+                if "year" in on or tmean is False:
                     i_year = i_df.year.values[0]
-                if "month" in on:
+                if "month" in on or tmean is False:
                     i_month = i_df.month.values[0]
-                if "day" in on:
+                if "day" in on or tmean is False:
                     i_day = i_df.day.values[0]
 
                 if on == ["all"]:
@@ -191,13 +203,12 @@ def matchup(self, on=None):
                     if self.points_temporal:
                         if len(ds) > 1:
                             ds.merge("time")
-                        ds.tmean(on)
+                        #ds.tmean(on)
 
             if self.data_nan is not None:
                 ds.set_missing(self.data_nan)
 
             ds.regrid(i_grid, "bil")
-
 
             df_model = ds.to_dataframe().drop_duplicates().reset_index().drop_duplicates()
 
