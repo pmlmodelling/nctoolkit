@@ -55,6 +55,10 @@ def add_data(self, x=None, variables=None, depths = None, nan=None, top = False)
 
     self.top = top
 
+    if variables is not None:
+        if type(variables) is str:
+            variables = [variables]
+
     if self.data is not None:
         raise ValueError("You have already added data!")
 
@@ -188,9 +192,12 @@ def add_points(self, df=None, map=None, **kwargs):
     if type(map) is not dict:
         raise ValueError("You must provided a map")
 
+    missing = []
     for x in ["year", "month", "day", "depth"]:
         if x not in map:
-            print(f"Warning: You have not provided {x} in map")
+            missing.append(x)
+    if len(missing) > 0:
+        print(f"Warning: You have not provided {missing} in map")
 
     for x in ["lon", "lat"]:
         if x not in map:
