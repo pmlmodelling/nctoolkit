@@ -16,6 +16,7 @@ def add_data(self, x=None, variables=None, depths = None, nan=None, top = False)
     depths:  nctoolkit dataset or list giving depths
         If each cell has different vertical levels, this must be provided as a dataset.
         If each cell has the same vertical levels, provide it as a list.
+        If this is not supplied nctoolkit will try to figure out what they are.
         Only required if carrying out vertical matchups.
     nan: float or list
         Value or range of values to set to nan. Defaults to 0.
@@ -27,6 +28,25 @@ def add_data(self, x=None, variables=None, depths = None, nan=None, top = False)
 
     if depths is not None:
         self.add_depths(depths)
+
+     ##need to figure out what depths are if they are not provided.
+    if depths is None:
+        ds = open_data(x, checks = False)
+        ds = open_data(ds[0])
+        if len(ds.levels) > 1:
+            if "e3t" in ds.variables:
+                ds_depths = ds.copy()
+                ds_depths.select(time = 0)
+                ds_depths.select(variable = "e3t")
+                ds1 = ds_depths.copy()
+                ds_depths.vertical_cumsum()
+                ds1.run()
+                ds1.divide(2)
+                ds_depths.subtract(ds1)
+                self.depths = ds_depths.copy()
+                self.depths.rename({"e3t":"depth"})
+                print("Depths were derived from e3t variable.")
+
 
     if depths is None:
         if self.points is not None:
@@ -42,6 +62,13 @@ def add_data(self, x=None, variables=None, depths = None, nan=None, top = False)
         print("All variables will be used")
 
     self.data = open_data(x, checks = False) 
+
+    ds_vars = open_data(self.data[0])
+    ds_variables = ds_vars.variables
+
+    for x in variables:
+        if x not in ds_variables:
+            raise ValueError(f"{x} is not a valid variable")
 
     if len(self.data) > 12:
         print("Checking file times. This could take a minute")
