@@ -23,14 +23,13 @@ def matchup(self, on=None):
     # Figure out which points in the dataframe are actually in the dataframe...
 
     ds = open_data(self.data[0], checks = False)
-    ds.top()
     ds.select(variables = ds.variables[0])
     ds.select(time = 0)
     ds.rename({ds.variables[0]: "target"})
+    ds.top()
     ds.run()
     ds.assign(target = lambda x: isnan(x.target))
     df = self.points.loc[:,["lon", "lat"]].drop_duplicates()
-    print(df)
     ds.regrid(df)
     grid = ds.to_dataframe().reset_index(drop = True).dropna().loc[:,["lon", "lat"]].drop_duplicates()
 
@@ -132,10 +131,11 @@ def matchup(self, on=None):
             df_merged = [ds.to_dataframe().reset_index()]
             points_merged = True
 
+
+    print("Merging the data")
     if points_merged is False:
 
         for i in range(0, len(df_times)):
-            print(i / len(df_times) * 100)
             if self.temporal:
                 i_df = df_times.iloc[
                     i : (i + 1) :,
@@ -235,8 +235,6 @@ def matchup(self, on=None):
                     acceptable += [k for k in adict.keys() if adict[k]  == n_levels]
                     locs = list(set(locs))
 
-                print(locs)
-            
                 df_model = df_model.loc[
                     :,  locs
                 ].drop_duplicates()
