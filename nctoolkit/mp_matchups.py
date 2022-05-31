@@ -30,6 +30,7 @@ def matchup(self, on=None):
     ds.run()
     ds.assign(target = lambda x: isnan(x.target))
     df = self.points.loc[:,["lon", "lat"]].drop_duplicates()
+    print(df)
     ds.regrid(df)
     grid = ds.to_dataframe().reset_index(drop = True).dropna().loc[:,["lon", "lat"]].drop_duplicates()
 
