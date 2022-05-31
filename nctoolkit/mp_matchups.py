@@ -68,10 +68,8 @@ def matchup(self, on=None, tmean = False):
     if self.points_temporal is False:
         if self.temporal:
             if on is None:
-                on = "all"
+                on = ["all"]
                 print("Points will be matched for all time steps")
-            if on is not None and on is not "all":
-                raise ValueError("No temporal information in points dataframe, so this matchup cannot occur!")
 
     if on is None:
         if self.temporal is True:
@@ -89,9 +87,7 @@ def matchup(self, on=None, tmean = False):
 
 
     if self.temporal:
-        if tmean is True and on != "all":
-
-
+        if on != ["all"]:
             if on == ["day"]:
                 on = ["day", "month"]
                 if "month" not in points.columns:
@@ -121,6 +117,8 @@ def matchup(self, on=None, tmean = False):
 
     if self.temporal is False:
         df_times = self.data_times
+
+    print(df_times)
 
     df_merged = []
 
@@ -167,11 +165,20 @@ def matchup(self, on=None, tmean = False):
                 i_month = None
                 i_day = None
                 if "year" in on or tmean is False:
-                    i_year = i_df.year.values[0]
+                    try:
+                        i_year = i_df.year.values[0]
+                    except:
+                        i_year = None
                 if "month" in on or tmean is False:
-                    i_month = i_df.month.values[0]
+                    try:
+                        i_month = i_df.month.values[0]
+                    except:
+                        i_month = None
                 if "day" in on or tmean is False:
-                    i_day = i_df.day.values[0]
+                    try:
+                        i_day = i_df.day.values[0]
+                    except:
+                        i_day = None
 
                 if on == ["all"]:
                     try:
