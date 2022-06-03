@@ -1,16 +1,20 @@
 News
 ============
 
+
 Release of v0.4.6
 ---------------
 
-Version 0.4.6 will be released in June 2022.
+Version 0.4.6 was released on June 3rd 2022.
 
-This method will enhance existing methods.
+This release will enhance existing methods.
 
 The ``select`` method will be replaced by ``subset``. This behave in the way same way as ``select``, but will also allow users to subset data base on longitude and latitude using the ``lon`` and ``lat`` as args.
 
 The export methods ``to_nc``, ``to_xarray`` and ``to_dataframe`` now allow only a subset of the data to be exported. Additional arguments can be sent to the methods, which will then be sent to the ``subset`` method.
+
+The new matchpoint methods for matching netCDF and point data have been smoothed out with additional options.
+
 
 Minor bug fix:  The weighted in datasets with recycled regridding weights were not copied properly. This is now fixed.
 
