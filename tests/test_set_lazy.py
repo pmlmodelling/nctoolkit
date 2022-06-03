@@ -31,8 +31,8 @@ class TestSetters:
         # do not run this test with cdo version 1.9.3 as there is a bug
         if cdo_version() not in ["1.9.3"]:
             tracker = nc.open_data(ff)
-            tracker.select(years=list(range(1970, 1971)))
-            tracker.select(months=[1])
+            tracker.subset(years=list(range(1970, 1971)))
+            tracker.subset(months=[1])
             tracker.set_date(year=1990, month=1, day=1)
             tracker.run()
             x = tracker.years[0]
@@ -48,8 +48,8 @@ class TestSetters:
     def test_setdate2(self):
         if cdo_version() not in ["1.9.3"]:
             tracker = nc.open_data(ff)
-            tracker.select(years=list(range(1970, 1971)))
-            tracker.select(months=[1])
+            tracker.subset(years=list(range(1970, 1971)))
+            tracker.subset(months=[1])
             tracker.set_date(year=1990, month=1, day=1)
             tracker.run()
             x = tracker.years[0]
@@ -65,8 +65,8 @@ class TestSetters:
     def test_setdate3(self):
         if cdo_version() not in ["1.9.3"]:
             tracker = nc.open_data(ff)
-            tracker.select(years=list(range(1970, 1971)))
-            tracker.select(months=[1])
+            tracker.subset(years=list(range(1970, 1971)))
+            tracker.subset(months=[1])
             tracker.set_date(year=1990, month=3, day=1)
             tracker.run()
             x = tracker.years[0]
@@ -81,8 +81,8 @@ class TestSetters:
 
     def test_setmissing(self):
         tracker = nc.open_data(ff)
-        tracker.select(years=1990)
-        tracker.select(months=[1])
+        tracker.subset(years=1990)
+        tracker.subset(months=[1])
 
         tracker.set_missing([0, 1000])
         tracker.spatial_mean()
@@ -104,8 +104,8 @@ class TestSetters:
 
     def test_setunits(self):
         tracker = nc.open_data(ff)
-        tracker.select(years=1990)
-        tracker.select(months=[1])
+        tracker.subset(years=1990)
+        tracker.subset(months=[1])
 
         tracker.set_units({"sst": "C"})
         tracker.run()
@@ -184,8 +184,8 @@ class TestSetters:
 
     def test_setlongnames(self):
         tracker = nc.open_data(ff)
-        tracker.select(years=1990)
-        tracker.select(months=[1])
+        tracker.subset(years=1990)
+        tracker.subset(months=[1])
 
         tracker.set_longnames({"sst": "temp"})
         tracker.run()
@@ -197,7 +197,7 @@ class TestSetters:
 
     def test_setlongnames2(self):
         tracker = nc.open_data(ff)
-        tracker.select(years=1990)
+        tracker.subset(years=1990)
         tracker.split("yearmonth")
 
         tracker.set_longnames({"sst": "temp"})

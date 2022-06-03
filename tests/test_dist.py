@@ -17,13 +17,13 @@ class TestDist:
     def test_dist(self):
 
         tracker = nc.open_data(ff)
-        tracker.select(time = 0)
+        tracker.subset(time = 0)
         tracker.spatial_mean()
 
         x = tracker.to_dataframe().sst.values[0].astype("float")
 
         tracker = nc.open_data(ff)
-        tracker.select(time = 0)
+        tracker.subset(time = 0)
         tracker.distribute(4,4)
         tracker.collect()
         #tracker.run()

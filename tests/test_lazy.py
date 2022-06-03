@@ -22,11 +22,11 @@ class TestLazy:
         n = len(nc.session_files())
         assert n == 0
 
-    def test_select(self):
+    def test_subset(self):
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
-        tracker.select(years=list(range(1970, 1979)))
-        tracker.select(months=[1, 2, 3, 4, 5])
+        tracker.subset(years=list(range(1970, 1979)))
+        tracker.subset(months=[1, 2, 3, 4, 5])
         tracker.crop(lon=[0, 90])
         tracker.crop(lat=[0, 90])
         tracker.tmean("year")
@@ -41,8 +41,8 @@ class TestLazy:
     def test_lazy1(self):
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
-        tracker.select(years=list(range(1970, 1979)))
-        tracker.select(months=[1, 2, 3, 4, 5])
+        tracker.subset(years=list(range(1970, 1979)))
+        tracker.subset(months=[1, 2, 3, 4, 5])
         tracker.crop(lon=[0, 90])
         tracker.crop(lat=[0, 90])
         tracker.tmean("year")
@@ -65,8 +65,8 @@ class TestLazy:
         tracker.split(by="year")
         assert len(tracker.current) == 30
         tracker.merge("time")
-        tracker.select(years=list(range(1970, 1979)))
-        tracker.select(months=[1, 2, 3, 4, 5])
+        tracker.subset(years=list(range(1970, 1979)))
+        tracker.subset(months=[1, 2, 3, 4, 5])
         tracker.crop(lon=[0, 90])
         tracker.crop(lat=[0, 90])
         tracker.tmean("year")
@@ -85,8 +85,8 @@ class TestLazy:
         tracker.split(by="year")
         n_files = len(tracker.current)
         tracker.merge("time")
-        tracker.select(years=list(range(1970, 1979)))
-        tracker.select(months=[1, 2, 3, 4, 5])
+        tracker.subset(years=list(range(1970, 1979)))
+        tracker.subset(months=[1, 2, 3, 4, 5])
         tracker.crop(lon=[0, 90])
         tracker.crop(lat=[0, 90])
         tracker.tmean("year")
@@ -122,7 +122,7 @@ class TestLazy:
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
         tracker.tmean("season")
-        tracker.select(months=2)
+        tracker.subset(months=2)
         tracker.spatial_mean()
         tracker.run()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")

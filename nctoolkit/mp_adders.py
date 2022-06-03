@@ -36,8 +36,8 @@ def add_data(self, x=None, variables=None, depths = None, nan=None, top = False)
         if len(ds.levels) > 1:
             if "e3t" in ds.variables:
                 ds_depths = ds.copy()
-                ds_depths.select(time = 0)
-                ds_depths.select(variable = "e3t")
+                ds_depths.subset(time = 0)
+                ds_depths.subset(variable = "e3t")
                 ds1 = ds_depths.copy()
                 ds_depths.vertical_cumsum()
                 ds1.run()

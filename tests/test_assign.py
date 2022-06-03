@@ -362,7 +362,7 @@ class TestAssign:
         data.assign(new=lambda x: x.sst + k.t)
 
     data = nc.open_data("data/sst.mon.mean.nc")
-    # data.select(time = 0 )
+    # data.subset(time = 0 )
     data.assign(new=lambda x: (x.sst == x.sst) * timestep(x.sst + 1), old=lambda x: x.sst + timestep(x.sst))
 
     assert (
@@ -540,7 +540,7 @@ class TestAssign:
 
 
     ds1 = nc.open_data("data/woa18_decav_t01_01.nc")
-    ds1.select(variables = "t_an")
+    ds1.subset(variables = "t_an")
     ds1.vertical_mean()
 
     ds2 = nc.open_data("data/woa18_decav_t01_01.nc")
@@ -550,7 +550,7 @@ class TestAssign:
 
     ds3 = nc.open_data("data/woa18_decav_t01_01.nc")
     ds3.top()
-    ds3.select(variables = "t_an")
+    ds3.subset(variables = "t_an")
     ds3.divide(ds1)
     ds3.run()
 
@@ -571,12 +571,12 @@ class TestAssign:
 
 
     ds = nc.open_data("data/sst.mon.mean.nc")
-    ds.select(time = 0)
+    ds.subset(time = 0)
     ds.spatial_mean()
     x = ds.to_dataframe().sst.values[0]
 
     ds = nc.open_data("data/sst.mon.mean.nc")
-    ds.select(time = 0)
+    ds.subset(time = 0)
     ##ds.assign(sst = lambda x: x.sst + spatial_mean(x.sst)*(isnan(x.sst)<1))
     ds.assign(sst = lambda x: x.sst + spatial_mean(x.sst))
     ds.spatial_mean()

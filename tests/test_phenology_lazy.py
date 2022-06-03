@@ -16,7 +16,7 @@ class TestPhenol:
 
     def test_clim1(self):
         data = nc.open_data(ff)
-        data.select(timesteps=list(range(0, 12)))
+        data.subset(timesteps=list(range(0, 12)))
         data.phenology("sst", metric="peak")
         data.spatial_mean()
 
@@ -29,14 +29,14 @@ class TestPhenol:
 
     def test_start_mid(self):
         data = nc.open_data(ff)
-        data.select(timesteps=list(range(0, 12)))
+        data.subset(timesteps=list(range(0, 12)))
         data.phenology("sst", metric="middle")
         data.spatial_mean()
 
         x = data.to_dataframe().middle.values[0].astype("float")
 
         data = nc.open_data(ff)
-        data.select(timesteps=list(range(0, 12)))
+        data.subset(timesteps=list(range(0, 12)))
         data.phenology("sst", metric="start", p=50)
         data.spatial_mean()
 
@@ -46,14 +46,14 @@ class TestPhenol:
 
     def test_start_end(self):
         data = nc.open_data(ff)
-        data.select(timesteps=list(range(0, 12)))
+        data.subset(timesteps=list(range(0, 12)))
         data.phenology("sst", metric="end", p=50)
         data.spatial_mean()
 
         x = data.to_dataframe().end.values[0].astype("float")
 
         data = nc.open_data(ff)
-        data.select(timesteps=list(range(0, 12)))
+        data.subset(timesteps=list(range(0, 12)))
         data.phenology("sst", metric="start", p=50)
         data.spatial_mean()
 
@@ -100,14 +100,14 @@ class TestPhenol:
 
     def test_defaults(self):
         data = nc.open_data(ff)
-        data.select(timesteps=list(range(0, 12)))
+        data.subset(timesteps=list(range(0, 12)))
         data.phenology("sst", metric="end")
         data.spatial_mean()
 
         x = data.to_dataframe().end.values[0].astype("float")
 
         data = nc.open_data(ff)
-        data.select(timesteps=list(range(0, 12)))
+        data.subset(timesteps=list(range(0, 12)))
         data.phenology("sst", metric="start", p=75)
         data.spatial_mean()
 
@@ -116,14 +116,14 @@ class TestPhenol:
         assert x == y
 
         data = nc.open_data(ff)
-        data.select(timesteps=list(range(0, 12)))
+        data.subset(timesteps=list(range(0, 12)))
         data.phenology("sst", metric="start")
         data.spatial_mean()
 
         x = data.to_dataframe().start.values[0].astype("float")
 
         data = nc.open_data(ff)
-        data.select(timesteps=list(range(0, 12)))
+        data.subset(timesteps=list(range(0, 12)))
         data.phenology("sst", metric="start", p=25)
         data.spatial_mean()
 
@@ -132,14 +132,14 @@ class TestPhenol:
         assert x == y
 
         data = nc.open_data(ff)
-        data.select(timesteps=list(range(0, 12)))
+        data.subset(timesteps=list(range(0, 12)))
         data.phenology("sst", metric="middle")
         data.spatial_mean()
 
         x = data.to_dataframe().middle.values[0].astype("float")
 
         data = nc.open_data(ff)
-        data.select(timesteps=list(range(0, 12)))
+        data.subset(timesteps=list(range(0, 12)))
         data.phenology("sst", metric="start", p=50)
         data.spatial_mean()
 
@@ -155,12 +155,12 @@ class TestPhenol:
         data.run()
         print(data.years)
         data1 = data.copy()
-        data1.select(years = 2004)
+        data1.subset(years = 2004)
         x = data1.to_dataframe().peak.values[0].astype("float")
 
         data2 = data.copy()
         print(data.years)
-        data2.select(years = 2003)
+        data2.subset(years = 2003)
         z = data2.to_dataframe().peak.values[0].astype("float")
 
         data = nc.open_data("data/2004.nc")

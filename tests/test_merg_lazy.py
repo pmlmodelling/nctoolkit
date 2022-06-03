@@ -33,10 +33,10 @@ class TestMerge:
 
     def test_warning2(self):
         tracker = nc.open_data(ff)
-        tracker.select(timesteps=[0, 1, 2])
+        tracker.subset(timesteps=[0, 1, 2])
         tracker.run()
         new = nc.open_data(ff)
-        new.select(timesteps=[0])
+        new.subset(timesteps=[0])
         new.rename({"sst": "tos"})
         new.run()
         data = nc.open_data([tracker.current[0], new.current[0]])
@@ -102,12 +102,12 @@ class TestMerge:
 
     def test_merge_error(self):
         tracker = nc.open_data(ff)
-        tracker.select(timesteps=[0, 1, 2])
+        tracker.subset(timesteps=[0, 1, 2])
         tracker.run()
         new = tracker.copy()
 
         new = nc.open_data(ff)
-        new.select(timesteps=112)
+        new.subset(timesteps=112)
         new.run()
         new.rename({"sst": "tos"})
         new.run()
@@ -129,12 +129,12 @@ class TestMerge:
 
     def test_merge_error1(self):
         tracker = nc.open_data(ff)
-        tracker.select(timesteps=[0])
+        tracker.subset(timesteps=[0])
         tracker.run()
         new = tracker.copy()
 
         new = nc.open_data(ff)
-        new.select(timesteps=[0, 1, 2])
+        new.subset(timesteps=[0, 1, 2])
         new.run()
         new.rename({"sst": "tos"})
         new.run()
@@ -157,12 +157,12 @@ class TestMerge:
 
     def test_merge_error2(self):
         tracker = nc.open_data(ff)
-        tracker.select(timesteps=[0, 1, 2])
+        tracker.subset(timesteps=[0, 1, 2])
         tracker.run()
         new = tracker.copy()
 
         new = nc.open_data(ff)
-        new.select(timesteps=112)
+        new.subset(timesteps=112)
         new.run()
         new.rename({"sst": "tos"})
         new.crop(lon=[50, 80])
@@ -175,14 +175,14 @@ class TestMerge:
 
     def test_collect(self):
         tracker = nc.open_data(ff)
-        tracker.select(time =0)
+        tracker.subset(time =0)
         tracker.distribute(4,4)
         tracker.collect()
         tracker.spatial_sum()
         x = tracker.to_dataframe().sst.values[0]
 
         tracker = nc.open_data(ff)
-        tracker.select(time =0)
+        tracker.subset(time =0)
         tracker.distribute(4,4)
         tracker.collect()
         tracker.spatial_sum()
@@ -192,12 +192,12 @@ class TestMerge:
 
     def test_merge_error3(self):
         tracker = nc.open_data(ff)
-        tracker.select(timesteps=[0, 1])
+        tracker.subset(timesteps=[0, 1])
         tracker.run()
         new = tracker.copy()
 
         new = nc.open_data(ff)
-        new.select(timesteps=[3, 4])
+        new.subset(timesteps=[3, 4])
         new.run()
         new.rename({"sst": "tos"})
         new.crop(lon=[50, 80])
@@ -220,8 +220,8 @@ class TestMerge:
         tracker.run()
         new = tracker.copy()
         new.rename({"sst": "tos"})
-        new.select(timesteps=[1, 2, 3, 4])
-        tracker.select(timesteps=[0, 2, 3, 4])
+        new.subset(timesteps=[1, 2, 3, 4])
+        tracker.subset(timesteps=[0, 2, 3, 4])
         tracker.run()
         new.run()
 

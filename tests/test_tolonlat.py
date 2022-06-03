@@ -16,16 +16,16 @@ class TestTolonat:
 
     def test_latlon1(self):
         tracker = nc.open_data(ff)
-        tracker.select(years=1990)
-        tracker.select(months=1)
+        tracker.subset(years=1990)
+        tracker.subset(months=1)
         tracker.crop(lon=[0, 90])
         tracker.crop(lat=[0, 90])
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0].astype("float")
 
         tracker = nc.open_data(ff)
-        tracker.select(years=1990)
-        tracker.select(months=1)
+        tracker.subset(years=1990)
+        tracker.subset(months=1)
 
         with pytest.raises(ValueError):
             tracker.to_latlon(lon=[0.5, 89.5], lat=[0.5, 89.5], res=[1, 1], method="sdafkjasdf")
@@ -41,15 +41,15 @@ class TestTolonat:
 
 
         tracker = nc.open_data(ff)
-        tracker.select(years=1990)
-        tracker.select(months=1)
+        tracker.subset(years=1990)
+        tracker.subset(months=1)
         tracker.to_latlon(lon=[0.5, 89.5], lat=[0.5, 89.5], res=[1, 1], method="nn", recycle = True)
         tracker.spatial_mean()
         y = tracker.to_dataframe().sst.values[0].astype("float")
 
         tracker1 = nc.open_data(ff)
-        tracker1.select(years=1990)
-        tracker1.select(months=1)
+        tracker1.subset(years=1990)
+        tracker1.subset(months=1)
         tracker1.regrid(tracker)
         tracker1.spatial_mean()
         x = tracker1.to_dataframe().sst.values[0].astype("float")
@@ -136,16 +136,16 @@ class TestTolonat:
             tracker.to_latlon(lon=[1, 2], lat=[2, 1], res=1)
 
         tracker = nc.open_data(ff)
-        tracker.select(years=1990)
-        tracker.select(months=1)
+        tracker.subset(years=1990)
+        tracker.subset(months=1)
         tracker.crop(lon=[0, 90])
         tracker.crop(lat=[0, 90])
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0].astype("float")
 
         tracker = nc.open_data(ff)
-        tracker.select(years=1990)
-        tracker.select(months=1)
+        tracker.subset(years=1990)
+        tracker.subset(months=1)
         tracker.to_latlon(lon=[0.5, 89.5], lat=[0.5, 89.5], res=1, method="nn")
         tracker.spatial_mean()
         y = tracker.to_dataframe().sst.values[0].astype("float")

@@ -43,6 +43,12 @@ def crop(self, lon=[-180, 180], lat=[-90, 90], nco=False, nco_vars=None):
 
 
     """
+
+    if lon is None:
+        lon = [-180, 180]
+    if lat is None:
+        lat = [-90, 90]
+
     if nco:
         self.run()
 

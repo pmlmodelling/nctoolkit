@@ -1071,8 +1071,8 @@ class DataSet(object):
         result = dict()
 
         result["Number of files in ensemble"] =  len(self)
-        result["Ensemble size"] =  sum_size 
-        result["Smallest file size"] =  min_size 
+        result["Ensemble size"] =  sum_size
+        result["Smallest file size"] =  min_size
         result["Largest file size"]  = max_size
         return result
 
@@ -1763,6 +1763,7 @@ class DataSet(object):
     from nctoolkit.run import run
 
     from nctoolkit.select import select
+    from nctoolkit.select import subset
 
     from nctoolkit.setters import set_date
     from nctoolkit.setters import set_year

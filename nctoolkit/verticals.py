@@ -183,7 +183,7 @@ def vertical_mean(self, thickness=None, depth_range=None):
     if sorted is False:
         if thickness in self.variables:
             ds_thick = self.copy()
-            ds_thick.select(variable=thickness)
+            ds_thick.subset(variable=thickness)
             ds_thick.run()
         else:
             ds_thick = open_data(thickness)
@@ -207,7 +207,7 @@ def vertical_mean(self, thickness=None, depth_range=None):
         ds_thick.assign(thickness=lambda x: x.depth - x.z_min, drop=True)
         ds_thick.assign(thickness=lambda x: x.thickness * (x.thickness > 0), drop=True)
 
-    self.select(variables=self.contents.query("nlevels > 1").variable)
+    self.subset(variables=self.contents.query("nlevels > 1").variable)
 
     self.multiply(ds_thick)
     self.vertical_sum()
@@ -325,7 +325,7 @@ def vertical_integration(self, thickness=None, depth_range=None):
     if sorted is False:
         if thickness in self.variables:
             ds_thick = self.copy()
-            ds_thick.select(variable=thickness)
+            ds_thick.subset(variable=thickness)
             ds_thick.run()
         else:
             ds_thick = open_data(thickness)
@@ -349,7 +349,7 @@ def vertical_integration(self, thickness=None, depth_range=None):
         ds_thick.assign(thickness=lambda x: x.depth - x.z_min, drop=True)
         ds_thick.assign(thickness=lambda x: x.thickness * (x.thickness > 0), drop=True)
 
-    self.select(variables=self.contents.query("nlevels > 1").variable)
+    self.subset(variables=self.contents.query("nlevels > 1").variable)
 
     self.multiply(ds_thick)
     self.vertical_sum()
@@ -428,8 +428,8 @@ def bottom_mask(self):
         raise ValueError("There is only one vertical level in this file!")
 
     var_use = data.contents.query("nlevels>1").variable[0]
-    data.select(variables=var_use)
-    data.select(timesteps=0)
+    data.subset(variables=var_use)
+    data.subset(timesteps=0)
     data.set_missing([0, 0])
     data.cdo_command(f"expr,'Wet={var_use}=={var_use}'")
     data.invert_levels()

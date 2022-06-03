@@ -16,7 +16,7 @@ class TestShow:
 
     def test_times(self):
         tracker = nc.open_data(ff)
-        tracker.select(timesteps=range(0, 12))
+        tracker.subset(timesteps=range(0, 12))
         tracker.run()
         x = len(tracker.times)
         assert x == 12
@@ -30,7 +30,7 @@ class TestShow:
 
     def test_months(self):
         tracker = nc.open_data(ff)
-        tracker.select(months=[1, 2])
+        tracker.subset(months=[1, 2])
         tracker.run()
         x = tracker.months
 
@@ -38,8 +38,8 @@ class TestShow:
 
     def test_months1(self):
         tracker = nc.open_data(ff)
-        tracker.select(years=[1990, 1991])
-        tracker.select(months=[1, 2])
+        tracker.subset(years=[1990, 1991])
+        tracker.subset(months=[1, 2])
         tracker.split("year")
         tracker.run()
         x = tracker.months
@@ -48,7 +48,7 @@ class TestShow:
 
     def test_years(self):
         tracker = nc.open_data(ff)
-        tracker.select(years=[1990, 1999])
+        tracker.subset(years=[1990, 1999])
         tracker.run()
         x = tracker.years
 
@@ -56,7 +56,7 @@ class TestShow:
 
     def test_years1(self):
         tracker = nc.open_data(ff)
-        tracker.select(years=[1990, 1999])
+        tracker.subset(years=[1990, 1999])
         tracker.split("year")
         x = tracker.years
 

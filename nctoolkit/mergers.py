@@ -62,7 +62,7 @@ def merge(self, join="variables", match=["year", "month", "day"]):
                 if len(var_com) == len([x for x in var_com if var in x]):
                     new_list.append(var)
 
-            self.select(variables=new_list)
+            self.subset(variables=new_list)
             self.run()
 
             removed = ",".join([x for x in set(var_list) if x not in new_list])
@@ -70,7 +70,7 @@ def merge(self, join="variables", match=["year", "month", "day"]):
                 warnings.warn(
                     f"The following variables are not in all files, so were ignored when merging: {removed}"
                 )
-                self.select(variables=new_list)
+                self.subset(variables=new_list)
                 self.run()
 
         if len(self) == 1:

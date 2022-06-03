@@ -21,7 +21,7 @@ class TestFldsta:
     def test_mean(self):
         ff = "data/sst.mon.mean.nc"
         data = nc.open_data(ff)
-        data.select(timesteps=0)
+        data.subset(timesteps=0)
         data.spatial_mean()
         x = data.to_dataframe().sst.values[0].astype("float")
 
@@ -32,7 +32,7 @@ class TestFldsta:
     def test_max(self):
         ff = "data/sst.mon.mean.nc"
         data = nc.open_data(ff)
-        data.select(timesteps=0)
+        data.subset(timesteps=0)
         data.spatial_max()
 
         x = data.to_dataframe().sst.values[0].astype("float")
@@ -43,7 +43,7 @@ class TestFldsta:
     def test_min(self):
         ff = "data/sst.mon.mean.nc"
         data = nc.open_data(ff)
-        data.select(timesteps=0)
+        data.subset(timesteps=0)
         data.spatial_min()
 
         x = data.to_dataframe().sst.values[0].astype("float")
@@ -55,7 +55,7 @@ class TestFldsta:
     def test_box(self):
         ff = "data/sst.mon.mean.nc"
         data = nc.open_data(ff)
-        data.select(time = 0)
+        data.subset(time = 0)
         data.box_mean(2,2)
         data.spatial_mean()
 
@@ -76,7 +76,7 @@ class TestFldsta:
             data.spatial_percentile(p = 0.05)
 
         data = nc.open_data(ff)
-        data.select(time = 0)
+        data.subset(time = 0)
         data.box_sum(2,2)
         data.spatial_mean()
 
@@ -86,7 +86,7 @@ class TestFldsta:
 
 
         data = nc.open_data(ff)
-        data.select(time = 0)
+        data.subset(time = 0)
         data.box_max(2,2)
         data.spatial_mean()
 
@@ -96,7 +96,7 @@ class TestFldsta:
         assert x == 18.1085262298584
 
         data = nc.open_data(ff)
-        data.select(time = 0)
+        data.subset(time = 0)
         data.box_min(2,2)
         data.spatial_mean()
 
@@ -107,7 +107,7 @@ class TestFldsta:
 
 
         data = nc.open_data(ff)
-        data.select(time = 0)
+        data.subset(time = 0)
         data.box_range(2,2)
         data.spatial_mean()
 
@@ -122,7 +122,7 @@ class TestFldsta:
     def test_range(self):
         ff = "data/sst.mon.mean.nc"
         data = nc.open_data(ff)
-        data.select(timesteps=0)
+        data.subset(timesteps=0)
         data.spatial_range()
 
         x = data.to_dataframe().sst.values[0].astype("float")
@@ -133,7 +133,7 @@ class TestFldsta:
     def test_sum(self):
         ff = "data/sst.mon.mean.nc"
         data = nc.open_data(ff)
-        data.select(timesteps=0)
+        data.subset(timesteps=0)
         data.spatial_sum()
 
         x = data.to_dataframe().sst.values[0].astype("float")
@@ -144,7 +144,7 @@ class TestFldsta:
     def test_sum1(self):
         ff = "data/sst.mon.mean.nc"
         data = nc.open_data(ff)
-        data.select(timesteps=0)
+        data.subset(timesteps=0)
         data.spatial_sum(by_area=True)
 
         x = data.to_dataframe().sst.values[0].astype("float")
@@ -155,7 +155,7 @@ class TestFldsta:
     def test_percent(self):
         ff = "data/sst.mon.mean.nc"
         data = nc.open_data(ff)
-        data.select(timesteps=0)
+        data.subset(timesteps=0)
         data.spatial_percentile(p=60)
 
         x = data.to_dataframe().sst.values[0].astype("float")
@@ -187,7 +187,7 @@ class TestFldsta:
 
         ff = "data/sst.mon.mean.nc"
         data = nc.open_data(ff)
-        data.select(timesteps=range(0, 6))
+        data.subset(timesteps=range(0, 6))
         data.split("yearmonth")
         data.spatial_sum(by_area=True)
         data.merge("time")
@@ -196,7 +196,7 @@ class TestFldsta:
         x = data.to_dataframe().sst.values[0]
 
         data = nc.open_data(ff)
-        data.select(timesteps=range(0, 6))
+        data.subset(timesteps=range(0, 6))
         data.spatial_sum(by_area=True)
         data.tmean()
         data.run()

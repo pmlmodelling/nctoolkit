@@ -17,35 +17,35 @@ class TestSelect:
     def test_range(self):
         ds = nc.open_data("data/200*.nc")
         ds.merge("time")
-        ds.select(range = ["01/01/2003", "11/09/2004"])
+        ds.subset(range = ["01/01/2003", "11/09/2004"])
         ds.run()
         assert len(ds.times) == 619
 
         ds = nc.open_data(ff)
         with pytest.raises(TypeError):
-            ds.select(range = 1)
+            ds.subset(range = 1)
 
         ds = nc.open_data(ff)
         with pytest.raises(ValueError):
-            ds.select(range = ["01/01/2003", "01/01/2002"])
+            ds.subset(range = ["01/01/2003", "01/01/2002"])
 
         with pytest.raises(ValueError):
-            ds.select(range = ["01/01/2003", 1])
+            ds.subset(range = ["01/01/2003", 1])
 
         with pytest.raises(ValueError):
-            ds.select(range = ["01/01/2003", 1, 3])
+            ds.subset(range = ["01/01/2003", 1, 3])
 
     def test_strvar(self):
         tracker = nc.open_data(ff)
         tracker.assign(tos =  lambda x: x.sst+1)
-        tracker.select(variables="tos")
+        tracker.subset(variables="tos")
         tracker.run()
         x = tracker.variables
         assert x == ["tos"]
 
     def test_season(self):
         tracker = nc.open_data(ff)
-        tracker.select(seasons="DJF")
+        tracker.subset(seasons="DJF")
         tracker.run()
         x = tracker.months
         assert x == [1, 2, 12]
@@ -54,7 +54,7 @@ class TestSelect:
         assert n == 1
 
         tracker = nc.open_data(ff)
-        tracker.select(season = "DJF")
+        tracker.subset(season = "DJF")
         tracker.run()
         x = tracker.months
         assert x == [1, 2, 12]
@@ -64,7 +64,7 @@ class TestSelect:
 
     def test_months(self):
         tracker = nc.open_data(ff)
-        tracker.select(months=1)
+        tracker.subset(months=1)
         tracker.run()
         x = tracker.months
         assert x == [1]
@@ -72,7 +72,7 @@ class TestSelect:
         assert n == 1
 
         tracker = nc.open_data(ff)
-        tracker.select(month = 1)
+        tracker.subset(month = 1)
         tracker.run()
         x = tracker.months
         assert x == [1]
@@ -81,7 +81,7 @@ class TestSelect:
 
     def test_months2(self):
         tracker = nc.open_data(ff)
-        tracker.select(months=range(1, 3))
+        tracker.subset(months=range(1, 3))
         tracker.run()
         x = tracker.months
         assert x == [1, 2]
@@ -90,7 +90,7 @@ class TestSelect:
 
     def test_years(self):
         tracker = nc.open_data(ff)
-        tracker.select(years=1990)
+        tracker.subset(years=1990)
         tracker.run()
         x = tracker.years
         assert x == [1990]
@@ -101,7 +101,7 @@ class TestSelect:
     def test_years_list(self):
         tracker = nc.open_data(ff)
         tracker.split("year")
-        tracker.select(years=1990)
+        tracker.subset(years=1990)
         tracker.run()
         x = tracker.years
         assert x == [1990]
@@ -110,7 +110,7 @@ class TestSelect:
 
         tracker = nc.open_data(ff)
         tracker.split("year")
-        tracker.select(year = 1990)
+        tracker.subset(year = 1990)
         tracker.run()
         x = tracker.years
         assert x == [1990]
@@ -122,7 +122,7 @@ class TestSelect:
 
     def test_years1(self):
         tracker = nc.open_data(ff)
-        tracker.select(years=[1949, 1970])
+        tracker.subset(years=[1949, 1970])
         tracker.run()
         x = tracker.years
         assert x == [1970]
@@ -131,7 +131,7 @@ class TestSelect:
 
     def test_years2(self):
         tracker = nc.open_data(ff)
-        tracker.select(years=range(1990, 1993))
+        tracker.subset(years=range(1990, 1993))
         tracker.run()
         x = tracker.years
         assert x == [1990, 1991, 1992]
@@ -140,9 +140,9 @@ class TestSelect:
 
     def test_years3(self):
         tracker = nc.open_data(ff)
-        tracker.select(years=[1970, 1971])
+        tracker.subset(years=[1970, 1971])
         tracker.split("year")
-        tracker.select(years=[1970])
+        tracker.subset(years=[1970])
         tracker.run()
         x = tracker.years
         assert x == [1970]
@@ -151,7 +151,7 @@ class TestSelect:
 
     def test_timestep(self):
         tracker = nc.open_data(ff)
-        tracker.select(timesteps=0)
+        tracker.subset(timesteps=0)
         tracker.run()
         x = tracker.years
         assert x == [1970]
@@ -159,7 +159,7 @@ class TestSelect:
         assert n == 1
 
         tracker = nc.open_data(ff)
-        tracker.select(time = 0)
+        tracker.subset(time = 0)
         tracker.run()
         x = tracker.years
         assert x == [1970]
@@ -167,13 +167,13 @@ class TestSelect:
         assert n == 1
 
         tracker = nc.open_data(ff)
-        tracker.select(year = 1990, month = 1)
+        tracker.subset(year = 1990, month = 1)
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0].astype("float")
 
         tracker = nc.open_data(ff)
-        tracker.select(year = 1990)
-        tracker.select(month = 1)
+        tracker.subset(year = 1990)
+        tracker.subset(month = 1)
         tracker.spatial_mean()
         y = tracker.to_dataframe().sst.values[0].astype("float")
 
@@ -184,7 +184,7 @@ class TestSelect:
 
     def test_timestepx23(self):
         tracker = nc.open_data(ff)
-        tracker.select(timesteps=0)
+        tracker.subset(timesteps=0)
         tracker.run()
         x = tracker.years
         assert x == [1970]
@@ -193,7 +193,7 @@ class TestSelect:
 
     def test_timestep2(self):
         tracker = nc.open_data(ff)
-        tracker.select(timesteps=range(0, 13))
+        tracker.subset(timesteps=range(0, 13))
         tracker.run()
         x = tracker.years
         assert x == [1970, 1971]
@@ -203,7 +203,7 @@ class TestSelect:
 
     def test_timestep02(self):
         tracker = nc.open_data(ff)
-        tracker.select(timesteps=range(0, 13))
+        tracker.subset(timesteps=range(0, 13))
         tracker.run()
         x = tracker.years
         assert x == [1970, 1971]
@@ -214,55 +214,55 @@ class TestSelect:
     def test_montherror(self):
         tracker = nc.open_data(ff)
         with pytest.raises(ValueError):
-            tracker.select(months=0)
+            tracker.subset(months=0)
 
         with pytest.raises(ValueError):
-            tracker.select(season=None)
+            tracker.subset(season=None)
 
         with pytest.raises(ValueError):
-            tracker.select(years=None)
+            tracker.subset(years=None)
 
         with pytest.raises(ValueError):
-            tracker.select(months=None)
+            tracker.subset(months=None)
 
         with pytest.raises(ValueError):
-            tracker.select(variables=None)
+            tracker.subset(variables=None)
 
         with pytest.raises(ValueError):
-            tracker.select(times=None)
+            tracker.subset(times=None)
 
         with pytest.raises(AttributeError):
-            tracker.select(problem = 0)
+            tracker.subset(problem = 0)
 
         with pytest.raises(TypeError):
-            tracker.select(seasons=0)
+            tracker.subset(seasons=0)
 
         with pytest.raises(ValueError):
-            tracker.select(months=-1)
+            tracker.subset(months=-1)
 
         with pytest.raises(TypeError):
-            tracker.select(months=1.0)
+            tracker.subset(months=1.0)
 
         with pytest.raises(TypeError):
-            tracker.select(years=1.0)
+            tracker.subset(years=1.0)
 
         with pytest.raises(TypeError):
-            tracker.select(years=0.1)
+            tracker.subset(years=0.1)
 
         with pytest.raises(TypeError):
-            tracker.select(variables=0.1)
+            tracker.subset(variables=0.1)
 
         with pytest.raises(TypeError):
-            tracker.select(variables=[0.1])
+            tracker.subset(variables=[0.1])
 
         with pytest.raises(TypeError):
-            tracker.select(timesteps=0.1)
+            tracker.subset(timesteps=0.1)
 
         with pytest.raises(ValueError):
-            tracker.select(timesteps=-1)
+            tracker.subset(timesteps=-1)
 
         with pytest.raises(ValueError):
-            tracker.select(seasons="x")
+            tracker.subset(seasons="x")
 
         n = len(nc.session_files())
         assert n == 0
@@ -270,7 +270,7 @@ class TestSelect:
     def test_missing_year(self):
         tracker = nc.open_data(ff)
         with pytest.raises(ValueError):
-            tracker.select(years=1800)
+            tracker.subset(years=1800)
             n = len(nc.session_files())
             assert n == 0
 
@@ -278,7 +278,7 @@ class TestSelect:
         tracker = nc.open_data(ff)
         tracker.assign(tos =  lambda x: x.sst+1)
         tracker.assign(tos1 =  lambda x: x.sst+1)
-        tracker.select(variables=["tos", "sst"])
+        tracker.subset(variables=["tos", "sst"])
         tracker.run()
         x = tracker.variables
         assert x == ["sst", "tos"]
@@ -288,7 +288,7 @@ class TestSelect:
         tracker = nc.open_data(ff)
         tracker.assign(tos =  lambda x: x.sst+1)
         tracker.assign(tos1 =  lambda x: x.sst+1)
-        tracker.select(var = ["tos", "sst"])
+        tracker.subset(var = ["tos", "sst"])
         tracker.run()
         x = tracker.variables
         assert x == ["sst", "tos"]
@@ -301,7 +301,7 @@ class TestSelect:
         tracker = nc.open_data(ff)
         tracker.split("year")
         tracker.merge("time")
-        tracker.select(years=1990)
+        tracker.subset(years=1990)
         tracker.run()
         x = tracker.years
 

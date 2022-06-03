@@ -64,7 +64,7 @@ class TestAddetc:
 
             assert sst_max > 1
 
-            ds1.select(year = 2003)
+            ds1.subset(year = 2003)
 
             sst_max = ds1.to_dataframe().analysed_sst.max()
             sst_min = ds1.to_dataframe().analysed_sst.min()
@@ -102,8 +102,8 @@ class TestAddetc:
     def test_add_safe(self):
         nc.options(lazy = False)
         tracker = nc.open_data(ff)
-        tracker.select(years = list(range(1970, 1971)))
-        tracker.select(months=[1])
+        tracker.subset(years = list(range(1970, 1971)))
+        tracker.subset(months=[1])
         tracker.run()
         new = tracker.copy()
         tracker.multiply(2)
@@ -122,8 +122,8 @@ class TestAddetc:
 
     def test_add(self):
         tracker = nc.open_data(ff)
-        tracker.select(years=list(range(1970, 1971)))
-        tracker.select(months=[1])
+        tracker.subset(years=list(range(1970, 1971)))
+        tracker.subset(months=[1])
         tracker.run()
         new = tracker.copy()
         tracker.spatial_mean()
@@ -140,8 +140,8 @@ class TestAddetc:
 
     def test_add_multiple(self):
         tracker = nc.open_data(ff)
-        tracker.select(years=list(range(1970, 1971)))
-        tracker.select(months=[1])
+        tracker.subset(years=list(range(1970, 1971)))
+        tracker.subset(months=[1])
         tracker.run()
         new = tracker.copy()
         new.add(tracker)
@@ -158,8 +158,8 @@ class TestAddetc:
 
     def test_add2(self):
         tracker = nc.open_data(ff)
-        tracker.select(years=list(range(1970, 1971)))
-        tracker.select(months=[1])
+        tracker.subset(years=list(range(1970, 1971)))
+        tracker.subset(months=[1])
         tracker.run()
         new = tracker.copy()
         new.add(tracker)
@@ -176,8 +176,8 @@ class TestAddetc:
 
     def test_add21(self):
         tracker = nc.open_data(ff)
-        tracker.select(years=list(range(1970, 1971)))
-        tracker.select(months=[1])
+        tracker.subset(years=list(range(1970, 1971)))
+        tracker.subset(months=[1])
         tracker.run()
         new = tracker.copy()
         new.add(tracker, "sst")
@@ -194,8 +194,8 @@ class TestAddetc:
 
     def test_add_var(self):
         tracker = nc.open_data(ff)
-        tracker.select(years=list(range(1970, 1971)))
-        tracker.select(months=[1])
+        tracker.subset(years=list(range(1970, 1971)))
+        tracker.subset(months=[1])
         tracker.run()
         new = tracker.copy()
         tracker.assign(tos = lambda x: x.sst+1-1, drop = True)
@@ -213,8 +213,8 @@ class TestAddetc:
 
     def test_add3(self):
         tracker = nc.open_data(ff)
-        tracker.select(years=list(range(1970, 1971)))
-        tracker.select(months=[1])
+        tracker.subset(years=list(range(1970, 1971)))
+        tracker.subset(months=[1])
         tracker.run()
         new = tracker.copy()
         new.add(tracker.current[0])
@@ -232,8 +232,8 @@ class TestAddetc:
     def test_add4(self):
         nc.options(lazy=False)
         tracker = nc.open_data(ff)
-        tracker.select(years=list(range(1970, 1971)))
-        tracker.select(months=[1])
+        tracker.subset(years=list(range(1970, 1971)))
+        tracker.subset(months=[1])
         tracker.run()
         new = tracker.copy()
         new.add(tracker.current[0])
@@ -251,8 +251,8 @@ class TestAddetc:
 
     def test_subtract(self):
         tracker = nc.open_data(ff)
-        tracker.select(years=list(range(1970, 1971)))
-        tracker.select(months=[1])
+        tracker.subset(years=list(range(1970, 1971)))
+        tracker.subset(months=[1])
         tracker.run()
         new = tracker.copy()
         new.add(1)
@@ -269,8 +269,8 @@ class TestAddetc:
 
     def test_subtract1(self):
         tracker = nc.open_data(ff)
-        tracker.select(years=list(range(1970, 1971)))
-        tracker.select(months=[1])
+        tracker.subset(years=list(range(1970, 1971)))
+        tracker.subset(months=[1])
         tracker.run()
         new = tracker.copy()
         new.add(1)
@@ -288,13 +288,13 @@ class TestAddetc:
     def test_op_list(self):
         ff = "data/sst.mon.mean.nc"
         data = nc.open_data(ff)
-        data.select(timesteps=0)
+        data.subset(timesteps=0)
         new = nc.open_data(ff)
-        new.select(timesteps=[0, 1])
+        new.subset(timesteps=[0, 1])
         new.split("yearmonth")
         new.subtract(data)
         new.merge("time")
-        new.select(timesteps=0)
+        new.subset(timesteps=0)
         new.spatial_sum()
         x = new.to_dataframe().sst.values[0].astype("float")
 
@@ -304,8 +304,8 @@ class TestAddetc:
 
     def test_subtract2(self):
         tracker = nc.open_data(ff)
-        tracker.select(years=list(range(1970, 1971)))
-        tracker.select(months=[1])
+        tracker.subset(years=list(range(1970, 1971)))
+        tracker.subset(months=[1])
         tracker.run()
         new = tracker.copy()
         tracker.spatial_mean()
@@ -321,8 +321,8 @@ class TestAddetc:
 
     def test_multiply(self):
         tracker = nc.open_data(ff)
-        tracker.select(years=list(range(1970, 1971)))
-        tracker.select(months=[1])
+        tracker.subset(years=list(range(1970, 1971)))
+        tracker.subset(months=[1])
         tracker.run()
         new = tracker.copy()
         tracker.spatial_mean()
@@ -339,8 +339,8 @@ class TestAddetc:
 
     def test_multiply1(self):
         tracker = nc.open_data(ff)
-        tracker.select(years=list(range(1970, 1971)))
-        tracker.select(months=[1])
+        tracker.subset(years=list(range(1970, 1971)))
+        tracker.subset(months=[1])
         tracker.run()
         new = tracker.copy()
         new.add(2)
@@ -365,8 +365,8 @@ class TestAddetc:
 
     def test_multiply2(self):
         tracker = nc.open_data(ff)
-        tracker.select(years=list(range(1970, 1971)))
-        tracker.select(months=[1])
+        tracker.subset(years=list(range(1970, 1971)))
+        tracker.subset(months=[1])
         tracker.run()
         new = tracker.copy()
         new.add(2)
@@ -385,8 +385,8 @@ class TestAddetc:
 
     def test_divide(self):
         tracker = nc.open_data(ff)
-        tracker.select(years=list(range(1970, 1971)))
-        tracker.select(months=[1])
+        tracker.subset(years=list(range(1970, 1971)))
+        tracker.subset(months=[1])
         tracker.run()
         new = tracker.copy()
         tracker.spatial_mean()
@@ -402,8 +402,8 @@ class TestAddetc:
 
     def test_divide1(self):
         tracker = nc.open_data(ff)
-        tracker.select(years=list(range(1970, 1971)))
-        tracker.select(months=[1])
+        tracker.subset(years=list(range(1970, 1971)))
+        tracker.subset(months=[1])
         tracker.run()
         new = tracker.copy()
         new.add(2)
@@ -422,8 +422,8 @@ class TestAddetc:
 
     def test_divide2(self):
         tracker = nc.open_data(ff)
-        tracker.select(years=list(range(1970, 1971)))
-        tracker.select(months=[1])
+        tracker.subset(years=list(range(1970, 1971)))
+        tracker.subset(months=[1])
         tracker.run()
         new = tracker.copy()
         new.add(2)
@@ -442,8 +442,8 @@ class TestAddetc:
 
     def test_divide3(self):
         tracker = nc.open_data(ff)
-        tracker.select(years=list(range(1970, 1971)))
-        tracker.select(months=[1])
+        tracker.subset(years=list(range(1970, 1971)))
+        tracker.subset(months=[1])
         tracker.run()
         new = tracker.copy()
         new.add(2)
@@ -645,8 +645,8 @@ class TestAddetc:
 
     def test_lazy_add(self):
         tracker = nc.open_data(ff)
-        tracker.select(years=list(range(1970, 1971)))
-        tracker.select(months=[1])
+        tracker.subset(years=list(range(1970, 1971)))
+        tracker.subset(months=[1])
         tracker.run()
         new = tracker.copy()
         new.add(tracker, "sst")
@@ -670,7 +670,7 @@ class TestAddetc:
     def test_ariths(self):
 
         ds = nc.open_data(ff)
-        ds.select(time = 0)
+        ds.subset(time = 0)
         ds.power(2)
         ds.spatial_mean()
         x = ds.to_dataframe().sst.values[0]
@@ -678,7 +678,7 @@ class TestAddetc:
 
 
         ds = nc.open_data(ff)
-        ds.select(time = 0)
+        ds.subset(time = 0)
         ds.assign(sst = lambda x: x.sst ** 2)
         ds.spatial_mean()
         y = ds.to_dataframe().sst.values[0]
@@ -687,7 +687,7 @@ class TestAddetc:
 
 
         ds = nc.open_data(ff)
-        ds.select(time = 0)
+        ds.subset(time = 0)
         ds.power(2.1)
         ds.spatial_range()
         x = ds.to_dataframe().sst.values[0]
@@ -695,7 +695,7 @@ class TestAddetc:
 
 
         ds = nc.open_data(ff)
-        ds.select(time = 0)
+        ds.subset(time = 0)
         ds.assign(sst = lambda x: x.sst ** 2.1)
         ds.spatial_range()
         y = ds.to_dataframe().sst.values[0]
@@ -705,13 +705,13 @@ class TestAddetc:
 
 
         ds = nc.open_data(ff)
-        ds.select(time = 0)
+        ds.subset(time = 0)
         ds.abs()
         ds.spatial_mean()
         x = ds.to_dataframe().sst.values[0]
 
         ds = nc.open_data(ff)
-        ds.select(time = 0)
+        ds.subset(time = 0)
         ds.assign(sst = lambda x: abs(x.sst))
         ds.spatial_mean()
         y = ds.to_dataframe().sst.values[0]
@@ -720,13 +720,13 @@ class TestAddetc:
 
 
         ds = nc.open_data(ff)
-        ds.select(time = 0)
+        ds.subset(time = 0)
         ds.sqrt()
         ds.spatial_mean()
         x = ds.to_dataframe().sst.values[0]
 
         ds = nc.open_data(ff)
-        ds.select(time = 0)
+        ds.subset(time = 0)
         ds.assign(sst = lambda x: sqrt(x.sst))
         ds.spatial_mean()
         y = ds.to_dataframe().sst.values[0]
@@ -734,13 +734,13 @@ class TestAddetc:
         assert x == y
 
         ds = nc.open_data(ff)
-        ds.select(time = 0)
+        ds.subset(time = 0)
         ds.exp()
         ds.spatial_mean()
         x = ds.to_dataframe().sst.values[0]
 
         ds = nc.open_data(ff)
-        ds.select(time = 0)
+        ds.subset(time = 0)
         ds.assign(sst = lambda x: exp(x.sst))
         ds.spatial_mean()
         y = ds.to_dataframe().sst.values[0]
@@ -748,14 +748,14 @@ class TestAddetc:
         assert x == y
 
         ds = nc.open_data(ff)
-        ds.select(time = 0)
+        ds.subset(time = 0)
         ds.add(200)
         ds.log()
         ds.spatial_mean()
         x = ds.to_dataframe().sst.values[0]
 
         ds = nc.open_data(ff)
-        ds.select(time = 0)
+        ds.subset(time = 0)
         ds.add(200)
         ds.assign(sst = lambda x: log(x.sst))
         ds.spatial_mean()
@@ -764,14 +764,14 @@ class TestAddetc:
         assert x == y
 
         ds = nc.open_data(ff)
-        ds.select(time = 0)
+        ds.subset(time = 0)
         ds.add(200)
         ds.log10()
         ds.spatial_mean()
         x = ds.to_dataframe().sst.values[0]
 
         ds = nc.open_data(ff)
-        ds.select(time = 0)
+        ds.subset(time = 0)
         ds.add(200)
         ds.assign(sst = lambda x: log10(x.sst))
         ds.spatial_mean()
@@ -782,7 +782,7 @@ class TestAddetc:
 
 
         ds = nc.open_data(ff)
-        ds.select(time = 0)
+        ds.subset(time = 0)
         ds.power(2)
         ds.spatial_mean()
         x = ds.to_dataframe().sst.values[0]
@@ -790,7 +790,7 @@ class TestAddetc:
 
 
         ds = nc.open_data(ff)
-        ds.select(time = 0)
+        ds.subset(time = 0)
         ds.square()
         ds.spatial_mean()
         y = ds.to_dataframe().sst.values[0]

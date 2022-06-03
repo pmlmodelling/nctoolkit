@@ -17,7 +17,7 @@ class TestApi2:
         ff2 = "data/2004.nc"
 
         ds = nc.open_data([ff1, ff2])
-        ds.select(time = 0)
+        ds.subset(time = 0)
         ds.run()
 
         assert ds.calendar == 'gregorian'
@@ -60,9 +60,9 @@ class TestApi2:
         x = data.to_dataframe().cor.values[0].astype("float")
 
         data1.rename({"analysed_sst":"var1"})
-        data1.select(month =1)
+        data1.subset(month =1)
         data2.rename({"analysed_sst":"var2"})
-        data2.select(month =1)
+        data2.subset(month =1)
         data1.append(data2)
         data1.merge(match = "month")
 

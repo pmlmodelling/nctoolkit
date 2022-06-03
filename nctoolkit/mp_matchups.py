@@ -41,8 +41,8 @@ def matchup(self, on=None, tmean = False):
 
 
     ds = open_data(self.data[0], checks = False)
-    ds.select(variables = ds.variables[0])
-    ds.select(time = 0)
+    ds.subset(variables = ds.variables[0])
+    ds.subset(time = 0)
     ds.rename({ds.variables[0]: "target"})
     ds.top()
     ds.run()
@@ -144,7 +144,7 @@ def matchup(self, on=None, tmean = False):
         if len(self.data.levels) < 2:
             ds = open_data(self.data)
             if self.variables is not None:
-                ds.select(variables = self.variables)
+                ds.subset(variables = self.variables)
             ds.regrid(points.loc[:,["lon", "lat"]], "bil")
             df_merged = [ds.to_dataframe().reset_index()]
             points_merged = True
@@ -201,18 +201,18 @@ def matchup(self, on=None, tmean = False):
 
 
             if self.variables is not None:
-                ds.select(variables=self.variables)
+                ds.subset(variables=self.variables)
             if self.top:
                 ds.top()
 
             if self.temporal:
                 for opt in ["day", "year", "month"]:
                     if i_day is not None:
-                        ds.select(day=i_day)
+                        ds.subset(day=i_day)
                     if i_month  is not None:
-                        ds.select(month=i_month)
+                        ds.subset(month=i_month)
                     if i_year is not None:
-                        ds.select(year=i_year)
+                        ds.subset(year=i_year)
 
                     if self.points_temporal:
                         if len(ds) > 1:

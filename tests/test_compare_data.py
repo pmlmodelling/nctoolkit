@@ -17,7 +17,7 @@ class TestCompare:
 
     def test_gt(self):
         tracker = nc.open_data(ff)
-        tracker.select(time = 0)
+        tracker.subset(time = 0)
         tracker.gt(ff)
 
         x = tracker.to_dataframe().sst.values[0]
@@ -43,7 +43,7 @@ class TestCompare:
 
         tracker = nc.open_data(ff)
         data = nc.open_data(ff)
-        tracker.select(time = 0)
+        tracker.subset(time = 0)
         tracker.gt(data)
 
         x = tracker.to_dataframe().sst.values[0]
@@ -55,7 +55,7 @@ class TestCompare:
 
         tracker = nc.open_data(ff)
         data = nc.open_data(ff)
-        tracker.select(time = 0)
+        tracker.subset(time = 0)
         tracker.lt(data)
 
         x = tracker.to_dataframe().sst.values[0]

@@ -75,7 +75,7 @@ class TestVerts:
 
         ds = nc.open_data("data/vertical_tester.nc")
         ds1 = nc.open_data("data/vertical_tester.nc")
-        ds1.select(variables = "e3t")
+        ds1.subset(variables = "e3t")
         ds.vertical_mean(ds1, depth_range = [0,30])
         ds.spatial_sum()
         y = ds.to_dataframe().one.sum()
@@ -90,7 +90,7 @@ class TestVerts:
 
         ds = nc.open_data("data/vertical_tester.nc")
         ds1 = nc.open_data("data/vertical_tester.nc")
-        ds1.select(variables = "e3t")
+        ds1.subset(variables = "e3t")
         ds.vertical_mean(ds1)
         ds.spatial_sum()
         y = ds.to_dataframe().one.sum()
@@ -99,7 +99,7 @@ class TestVerts:
 
         ds = nc.open_data("data/vertical_tester.nc")
         ds1 = nc.open_data("data/vertical_tester.nc")
-        ds1.select(variables = "e3t")
+        ds1.subset(variables = "e3t")
         ds1.run()
         ds.vertical_mean(ds1[0])
         ds.spatial_sum()
@@ -111,11 +111,11 @@ class TestVerts:
         if nc.utils.version_below(version, "1.9.8") == False:
             ds = nc.open_data("data/vertical_tester.nc")
             ds.vertical_integration("e3t")
-            ds.select(variable = "one")
+            ds.subset(variable = "one")
             ds.run()
             ds1 = nc.open_data(ff)
             ds1.assign(e3t = lambda x: x.e3t * (isnan(x.one) is False ) )
-            ds1.select(variables = "e3t")
+            ds1.subset(variables = "e3t")
             ds1.set_missing(0)
             ds1.vertical_sum()
             ds1.run()
@@ -133,13 +133,13 @@ class TestVerts:
 
             ds = nc.open_data(ff)
             ds3 = nc.open_data(ff)
-            ds3.select(variable = "e3t")
+            ds3.subset(variable = "e3t")
             ds.vertical_integration(ds3)
-            ds.select(variable = "one")
+            ds.subset(variable = "one")
             ds.run()
             ds1 = nc.open_data(ff)
             ds1.assign(e3t = lambda x: x.e3t * (isnan(x.one) is False ) )
-            ds1.select(variables = "e3t")
+            ds1.subset(variables = "e3t")
             ds1.set_missing(0)
             ds1.vertical_sum()
             ds1.run()
@@ -151,14 +151,14 @@ class TestVerts:
 
             ds = nc.open_data(ff)
             ds3 = nc.open_data(ff)
-            ds3.select(variable = "e3t")
+            ds3.subset(variable = "e3t")
             ds3.run()
             ds.vertical_integration(ds3[0])
-            ds.select(variable = "one")
+            ds.subset(variable = "one")
             ds.run()
             ds1 = nc.open_data(ff)
             ds1.assign(e3t = lambda x: x.e3t * (isnan(x.one) is False ) )
-            ds1.select(variables = "e3t")
+            ds1.subset(variables = "e3t")
             ds1.set_missing(0)
             ds1.vertical_sum()
             ds1.run()
@@ -174,7 +174,7 @@ class TestVerts:
         ff = "data/woa18_decav_t01_01.nc"
 
         tracker = nc.open_data(ff)
-        tracker.select(variables="t_an")
+        tracker.subset(variables="t_an")
         tracker.vertical_mean()
         tracker.spatial_mean()
         x = tracker.to_xarray().t_an.values[0][0][0].astype("float")
@@ -186,7 +186,7 @@ class TestVerts:
         ff = "data/woa18_decav_t01_01.nc"
 
         tracker = nc.open_data(ff)
-        tracker.select(variables="t_an")
+        tracker.subset(variables="t_an")
         tracker.vertical_max()
         tracker.spatial_mean()
         x = tracker.to_xarray().t_an.values[0][0][0].astype("float")
@@ -198,7 +198,7 @@ class TestVerts:
         ff = "data/woa18_decav_t01_01.nc"
 
         tracker = nc.open_data(ff)
-        tracker.select(variables="t_an")
+        tracker.subset(variables="t_an")
         tracker.vertical_min()
         tracker.spatial_mean()
         x = tracker.to_xarray().t_an.values[0][0][0].astype("float")
@@ -210,7 +210,7 @@ class TestVerts:
         ff = "data/woa18_decav_t01_01.nc"
 
         tracker = nc.open_data(ff)
-        tracker.select(variables="t_an")
+        tracker.subset(variables="t_an")
         tracker.vertical_sum()
         tracker.spatial_mean()
         x = tracker.to_xarray().t_an.values[0][0][0].astype("float")
@@ -222,7 +222,7 @@ class TestVerts:
         ff = "data/woa18_decav_t01_01.nc"
 
         tracker = nc.open_data(ff)
-        tracker.select(variables="t_an")
+        tracker.subset(variables="t_an")
         tracker.vertical_range()
         tracker.spatial_mean()
         x = tracker.to_xarray().t_an.values[0][0][0].astype("float")
@@ -233,7 +233,7 @@ class TestVerts:
     def test_int(self):
         ff = "data/woa18_decav_t01_01.nc"
         tracker = nc.open_data(ff)
-        tracker.select(variables="t_an")
+        tracker.subset(variables="t_an")
         tracker.vertical_interp(10)
         x = tracker.to_dataframe().t_an.values[0].astype("float")
         n = len(nc.session_files())
@@ -243,7 +243,7 @@ class TestVerts:
         ff = "data/woa18_decav_t01_01.nc"
         tracker = nc.open_data(ff)
 
-        tracker.select(variables="t_an")
+        tracker.subset(variables="t_an")
         tracker.top()
         tracker.spatial_mean()
         x = tracker.to_dataframe().t_an.values[0].astype("float")
@@ -256,7 +256,7 @@ class TestVerts:
         ff = "data/woa18_decav_t01_01.nc"
         tracker = nc.open_data(ff)
 
-        tracker.select(variables="t_an")
+        tracker.subset(variables="t_an")
         tracker.bottom()
         tracker.spatial_mean()
         x = tracker.to_dataframe().t_an.values[0].astype("float")
@@ -270,7 +270,7 @@ class TestVerts:
         ff = "data/woa18_decav_t01_01.nc"
         tracker = nc.open_data(ff)
 
-        tracker.select(variables="t_an")
+        tracker.subset(variables="t_an")
         new = tracker.copy()
         new.rename({"t_an": "test"})
         new.run()
@@ -284,11 +284,11 @@ class TestVerts:
 
     def test_bottom_mask(self):
         data = nc.open_data("data/woa18_decav_t01_01.nc")
-        data.select(variables="t_an")
+        data.subset(variables="t_an")
         df1 = data.to_dataframe().reset_index()
 
         data = nc.open_data("data/woa18_decav_t01_01.nc")
-        data.select(variables="t_an")
+        data.subset(variables="t_an")
         bottom = data.copy()
         bottom.bottom_mask()
         data.multiply(bottom)

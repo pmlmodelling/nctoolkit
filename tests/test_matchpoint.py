@@ -22,9 +22,9 @@ class TestCrop:
         ds = nc.open_data("data/matchpoint/amm7_1d_20000101_20000131_ptrc_T.nc")
         levels = ds.levels
         levels += levels
-        ds.select(time = [0])
+        ds.subset(time = [0])
         depths = nc.open_data("data/matchpoint_depths.nc")
-        # ds.select(time = 0)
+        # ds.subset(time = 0)
         ds.append(depths)
         ds.merge()
         ds.regrid(pd.DataFrame({"lon":[1, 2], "lat":[54.5, 54.7]}), method = "bil")
@@ -36,7 +36,7 @@ class TestCrop:
         df["day"] = [x.day for x in df.time_counter]
         df = df.loc[:,["lon", "lat", "month", "day", "year", "N3_n", "depth"]].drop_duplicates()
         ds = nc.open_data("data/matchpoint/amm7_1d_20000101_20000131_ptrc_T.nc")
-        ds.select(time = [0])
+        ds.subset(time = [0])
         ds.run()
 
         matcher = nc.open_matchpoint()
@@ -78,9 +78,9 @@ class TestCrop:
         ds = nc.open_data("data/matchpoint/amm7_1d_20000101_20000131_ptrc_T.nc")
         levels = ds.levels
         levels += levels
-        ds.select(time = [0])
+        ds.subset(time = [0])
         depths = nc.open_data("data/matchpoint_depths.nc")
-        # ds.select(time = 0)
+        # ds.subset(time = 0)
         ds.append(depths)
         ds.merge()
         ds.regrid(pd.DataFrame({"lon":[1, 2], "lat":[54.5, 54.7]}), method = "bil")
@@ -92,7 +92,7 @@ class TestCrop:
         df["day"] = [x.day for x in df.time_counter]
         df = df.loc[:,["lon", "lat", "month", "day", "year", "N3_n", "depth"]].drop_duplicates()
         ds = nc.open_data("data/matchpoint/amm7_1d_20000101_20000131_ptrc_T.nc")
-        ds.select(time = [0])
+        ds.subset(time = [0])
         ds.run()
         matcher = nc.open_matchpoint()
         depths = ds.levels
@@ -116,7 +116,7 @@ class TestCrop:
         ds = nc.open_data(ensemble)
         ds.merge("time")
         depths = nc.open_data("data/matchpoint_depths.nc")
-        # ds.select(time = 0)
+        # ds.subset(time = 0)
         ds.append(depths)
         ds.merge()
         ds.regrid(pd.DataFrame({"lon":[1, 2], "lat":[54.5, 54.7]}), method = "bil")
@@ -156,9 +156,9 @@ class TestCrop:
 
 
         ds = nc.open_data(ensemble[0])
-        ds.select(time = 0)
+        ds.subset(time = 0)
         depths = nc.open_data("data/matchpoint_depths.nc")
-        # ds.select(time = 0)
+        # ds.subset(time = 0)
         ds.append(depths)
         ds.merge()
         ds.regrid(pd.DataFrame({"lon":[1, 2], "lat":[54.5, 54.7]}), method = "bil")
@@ -170,7 +170,7 @@ class TestCrop:
         df["day"] = [x.day for x in df.time_counter]
         df = df.loc[:,["lon", "lat", "month", "day", "year", "N3_n", "depth"]].drop_duplicates()
         ds = nc.open_data(ensemble[0])
-        ds.select(time = 0)
+        ds.subset(time = 0)
         matcher = nc.open_matchpoint()
         matcher.add_data(ds, depths = depths)
         matcher.add_points(df, map = {"lon":"lon", "lat":"lat", "year":"year",  "day":"day",  "depth":"depth"})

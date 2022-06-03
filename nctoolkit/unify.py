@@ -142,8 +142,8 @@ def unify(x=None, y=None, ignore = None, **kwargs):
                 f_years = ",".join([str(y) for y in years])
                 print(f"Selecting matching years {f_years}")
 
-                b.select(years=years)
-                a.select(years=years)
+                b.subset(years=years)
+                a.subset(years=years)
 
         # If the years do not match, we will need to get them to match...
         b_months = list(set(b_times_df["month"]))
@@ -162,9 +162,9 @@ def unify(x=None, y=None, ignore = None, **kwargs):
                 f_months = ",".join([str(y) for y in months])
                 print(f"Selecting matching months {f_months}")
                 if b_months != months:
-                    b.select(months=months)
+                    b.subset(months=months)
                 if a_months != months:
-                    a.select(months=months)
+                    a.subset(months=months)
 
 
     if unify_levels:
@@ -263,8 +263,8 @@ def unify(x=None, y=None, ignore = None, **kwargs):
                 mod_index = [int(x) for x in indices.a_index]
                 b_index = [int(x) for x in indices.b_index]
 
-                a.select(times=mod_index)
-                b.select(times=b_index)
+                a.subset(times=mod_index)
+                b.subset(times=b_index)
 
                 print("Only selecting matching years and months!")
 
@@ -286,8 +286,8 @@ def unify(x=None, y=None, ignore = None, **kwargs):
                 mod_index = [int(x) for x in indices.a_index]
                 b_index = [int(x) for x in indices.b_index]
 
-                a.select(times=mod_index)
-                b.select(times=b_index)
+                a.subset(times=mod_index)
+                b.subset(times=b_index)
 
                 print("Only selecting matching days!")
 
@@ -309,8 +309,8 @@ def unify(x=None, y=None, ignore = None, **kwargs):
                 mod_index = [int(x) for x in indices.a_index]
                 b_index = [int(x) for x in indices.b_index]
 
-                a.select(times=mod_index)
-                b.select(times=b_index)
+                a.subset(times=mod_index)
+                b.subset(times=b_index)
 
                 print("Only selecting matching days!")
 

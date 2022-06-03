@@ -17,8 +17,8 @@ class TestCell:
 
     def test_cell_areas(self):
         tracker = nc.open_data(ff)
-        tracker.select(years=list(range(1970, 1971)))
-        tracker.select(months=[1])
+        tracker.subset(years=list(range(1970, 1971)))
+        tracker.subset(months=[1])
         tracker.run()
 
         tracker.cell_area()
@@ -32,8 +32,8 @@ class TestCell:
 
     def test_cell_areas2(self):
         tracker = nc.open_data(ff)
-        tracker.select(years=list(range(1970, 1971)))
-        tracker.select(months=[1])
+        tracker.subset(years=list(range(1970, 1971)))
+        tracker.subset(months=[1])
         tracker.cell_area(join=False)
         tracker.run()
 
@@ -45,7 +45,7 @@ class TestCell:
 
     def test_cell_list(self):
         tracker = nc.open_data(ff)
-        tracker.select(timesteps=[0, 1])
+        tracker.subset(timesteps=[0, 1])
         tracker.split("yearmonth")
         tracker.cell_area(join=True)
         tracker.merge("time")

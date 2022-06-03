@@ -14,7 +14,7 @@ class TestAnomaly:
 
         tracker.annual_anomaly(baseline=[1970, 1979], metric="relative", window=10)
         tracker.spatial_mean()
-        tracker.select(years=1974)
+        tracker.subset(years=1974)
 
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         assert x == 1.0

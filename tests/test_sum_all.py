@@ -13,7 +13,7 @@ ff = "data/sst.mon.mean.nc"
 class TestClip:
     def test_centre(self):
         ds = nc.open_data(["data/2003.nc", "data/2004.nc"])
-        ds.select(time = 0)
+        ds.subset(time = 0)
         ds.assign(tos1 = lambda x: -x.analysed_sst)
         ds.sum_all()
         ds.merge("time")

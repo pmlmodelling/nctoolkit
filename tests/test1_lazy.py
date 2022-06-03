@@ -47,7 +47,7 @@ class TestOne:
 #
 #    def test_cdocommand(self):
 #        tracker = nc.open_data(ff)
-#        tracker.select(months = 1)
+#        tracker.subset(months = 1)
 #        tracker.spatial_mean()
 #        x = tracker.to_xarray().sst.values[0][0][0].astype("float")
 #        tracker = nc.open_data(ff)

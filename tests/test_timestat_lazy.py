@@ -39,16 +39,16 @@ class TestTimestat:
 
     def test_percentile(self):
         tracker = nc.open_data(ff)
-        tracker.select(years=1990)
+        tracker.subset(years=1990)
         tracker.tpercentile(60)
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0]
 
         tracker = nc.open_data(ff)
-        tracker.select(years=[1990, 1991])
+        tracker.subset(years=[1990, 1991])
         tracker.split("year")
         tracker.tpercentile(60)
-        tracker.select(years=1990)
+        tracker.subset(years=1990)
         tracker.spatial_mean()
         y = tracker.to_dataframe().sst.values[0]
 
@@ -69,13 +69,13 @@ class TestTimestat:
 
     def test_sum(self):
         tracker = nc.open_data(ff)
-        tracker.select(timesteps=0)
+        tracker.subset(timesteps=0)
 
         tracker1 = nc.open_data(ff)
-        tracker1.select(timesteps=1)
+        tracker1.subset(timesteps=1)
 
         tracker2 = nc.open_data(ff)
-        tracker2.select(timesteps=[0, 1])
+        tracker2.subset(timesteps=[0, 1])
         tracker2.tsum()
         tracker2.spatial_sum()
         x = tracker2.to_dataframe().sst.values[0]
@@ -87,7 +87,7 @@ class TestTimestat:
 
     def test_variance(self):
         tracker = nc.open_data(ff)
-        tracker.select(timesteps=range(0, 12))
+        tracker.subset(timesteps=range(0, 12))
 
         tracker.tvar()
         tracker.spatial_mean()
@@ -97,7 +97,7 @@ class TestTimestat:
 
     def test_cumsum(self):
         tracker = nc.open_data(ff)
-        tracker.select(timesteps=range(0, 12))
+        tracker.subset(timesteps=range(0, 12))
 
         tracker.tcumsum()
         tracker.spatial_mean()

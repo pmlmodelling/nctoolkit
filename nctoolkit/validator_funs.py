@@ -181,7 +181,7 @@ def matchup(self, levels = "top", na_match = False, **kwargs):
     for key, value in self.model_map.items():
         keep_these += re.findall(r"\w+", value)
 
-    self.model.select(variables=keep_these)
+    self.model.subset(variables=keep_these)
 
     # Only select the top level
 
@@ -217,7 +217,7 @@ def matchup(self, levels = "top", na_match = False, **kwargs):
     for key, value in self.obs_map.items():
         keep_these += re.findall(r"\w+", value)
 
-    self.obs.select(variables=keep_these)
+    self.obs.subset(variables=keep_these)
 
     for key, value in self.obs_map.items():
         if is_equation(value) is False:
@@ -227,8 +227,8 @@ def matchup(self, levels = "top", na_match = False, **kwargs):
             fixed_value = fixed_value.replace(")", "\)")
             self.obs.cdo_command(f"aexpr,'{key}={fixed_value}'")
 
-    self.model.select(variables=list(self.model_map.keys()))
-    self.obs.select(variables=list(self.obs_map.keys()))
+    self.model.subset(variables=list(self.model_map.keys()))
+    self.obs.subset(variables=list(self.obs_map.keys()))
 
 
     try:
@@ -475,7 +475,7 @@ def validate(self, region = None):
 
             for rr in regions.variables:
                 rr_ds = regions.copy()
-                rr_ds.select(variable=rr)
+                rr_ds.subset(variable=rr)
                 rr_model = ds_model.copy()
                 rr_model.multiply(rr_ds)
                 rr_model.tmean("month")
@@ -503,7 +503,7 @@ def validate(self, region = None):
 
             for rr in regions.variables:
                 rr_ds = regions.copy()
-                rr_ds.select(variable=rr)
+                rr_ds.subset(variable=rr)
                 rr_obs = ds_obs.copy()
                 rr_obs.multiply(rr_ds)
                 rr_obs.tmean("month")
@@ -599,7 +599,7 @@ def validate(self, region = None):
 
             for rr in regions.variables:
                 rr_ds = regions.copy()
-                rr_ds.select(variable=rr)
+                rr_ds.subset(variable=rr)
                 rr_model = ds_model.copy()
                 rr_model.multiply(rr_ds)
                 rr_model.tmean(["year", "month"])
@@ -628,7 +628,7 @@ def validate(self, region = None):
 
             for rr in regions.variables:
                 rr_ds = regions.copy()
-                rr_ds.select(variable=rr)
+                rr_ds.subset(variable=rr)
                 rr_obs = ds_obs.copy()
                 rr_obs.multiply(rr_ds)
                 rr_obs.tmean(["year", "month"])

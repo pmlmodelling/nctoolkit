@@ -18,8 +18,8 @@ class TestDelete:
 
     def test_drop(self):
         tracker = nc.open_data(ff)
-        tracker.select(years=list(range(1970, 1971)))
-        tracker.select(months=[1])
+        tracker.subset(years=list(range(1970, 1971)))
+        tracker.subset(months=[1])
         tracker.set_date(year=1990, month=1, day=1)
         tracker.assign(tos = lambda x: x.sst+273.15)
         tracker.drop(var = "sst")
