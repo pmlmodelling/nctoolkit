@@ -2,7 +2,7 @@ Subsetting data
 ===============
 
 nctoolkit has many built in methods for subsetting data. The main method
-is ``select``. This let’s you select specific variables, years, months,
+is ``subset``. This let’s you select specific variables, years, months,
 seasons and timesteps.
 
 Selecting variables
@@ -12,13 +12,13 @@ If you want to select specific variables, you would do the following:
 
 .. code:: ipython3
 
-    ds.select(variables = ["var1", "var2"])
+    ds.subset(variables = ["var1", "var2"])
 
 If you only want to select one variable, you can do this:
 
 .. code:: ipython3
 
-    ds.select(variables = "var1")
+    ds.subset(variables = "var1")
 
 Selecting years
 ---------------
@@ -28,26 +28,26 @@ If you want to select specific years, you can do the following:
 
 .. code:: ipython3
 
-    ds.select(years = [2000, 2001])
+    ds.subset(years = [2000, 2001])
 
 Again, if you want a single year the following will work:
 
 .. code:: ipython3
 
-    ds.select(years = 2000)
+    ds.subset(years = 2000)
 
 The ``select`` method allows partial matches for its arguments. So if we
 want to select the year 2000, the following will work:
 
 .. code:: ipython3
 
-    ds.select(year = 2000)
+    ds.subset(year = 2000)
 
 In this case we can also select a range. So the following will work:
 
 .. code:: ipython3
 
-    ds.select(years = range(2000, 2010))
+    ds.subset(years = range(2000, 2010))
 
 Selecting months
 ----------------
@@ -57,9 +57,9 @@ will all do the same thing:
 
 .. code:: ipython3
 
-    ds.select(months = [1,2,3,4])
-    ds.select(months = range(1,5))
-    ds.select(mon = [1,2,3,4])
+    ds.subset(months = [1,2,3,4])
+    ds.subset(months = range(1,5))
+    ds.subset(mon = [1,2,3,4])
 
 Selecting seasons
 -----------------
@@ -69,7 +69,7 @@ winter, you would do the following:
 
 .. code:: ipython3
 
-    ds.select(season = "DJF")
+    ds.subset(season = "DJF")
 
 Selecting timesteps
 -------------------
@@ -80,8 +80,8 @@ the following two methods will work:
 
 .. code:: ipython3
 
-    ds.select(time = [0,1])
-    ds.select(time = range(0,2))
+    ds.subset(time = [0,1])
+    ds.subset(time = range(0,2))
 
 Geographic subsetting
 ---------------------
@@ -95,3 +95,11 @@ longitudes between -80 and 90 and latitudes between 50 and 80:
 .. code:: ipython3
 
     ds.crop(lon = [-80, 90], lat = [50, 80])
+
+
+Alternatively, you can use the `subset` method:
+
+.. code:: ipython3
+
+    ds.subset(lon = [-80, 90], lat = [50, 80])
+
