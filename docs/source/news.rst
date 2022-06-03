@@ -1,6 +1,18 @@
 News
 ============
 
+Release of v0.4.5
+---------------
+
+Version 0.4.5 will be released in June 2022.
+
+This method will enhance existing methods.
+
+The ``select`` method will be replaced by ``subset``. This behave in the way same way as ``select``, but will also allow users to subset data base on longitude and latitude using the ``lon`` and ``lat`` as args.
+
+The export methods ``to_nc``, ``to_xarray`` and ``to_dataframe`` now allow only a subset of the data to be exported. Additional arguments can be sent to the methods, which will then be sent to the ``subset`` method.
+
+
 Release of v0.4.4
 ---------------
 

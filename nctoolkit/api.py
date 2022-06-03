@@ -1624,6 +1624,9 @@ class DataSet(object):
         new = copy.deepcopy(self)
         for ff in new:
             append_safe(ff)
+        if self._weights is not None:
+            append_safe(self._weights)
+            append_safe(self._grid)
         return new
 
     def __del__(self):
