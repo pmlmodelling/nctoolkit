@@ -12,6 +12,7 @@ The ``select`` method will be replaced by ``subset``. This behave in the way sam
 
 The export methods ``to_nc``, ``to_xarray`` and ``to_dataframe`` now allow only a subset of the data to be exported. Additional arguments can be sent to the methods, which will then be sent to the ``subset`` method.
 
+Minor bug fix:  The weighted in datasets with recycled regridding weights were not copied properly. This is now fixed.
 
 Release of v0.4.4
 ---------------
