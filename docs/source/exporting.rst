@@ -108,6 +108,20 @@ If you want to convert an xarray dataset to an nctoolkit dataset, you can just t
 .. code:: ipython3
     ds = nc.from_xarray(ds_xr)
 
+Exporting subsets of data
+================
+
+If you want to only export a subset of the data you can do this by providing additional args to the ``to_nc``, ``to_xarray`` and
+``to_dataframe`` methods. These args will then be sent to the ``subset`` method.
+
+For example, if you only wanted to export the year 2000 to xarray, you would do the following:
+
+    ds.to_xarray(year = 2000)
+
+Or if you wanted a spatial subset of the data you could do this:
+
+    ds.to_xarray(lon = [0, 90], lat = [0, 90])
+
 
 
 
