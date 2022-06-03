@@ -2,7 +2,7 @@ from datetime import datetime
 import xarray as xr
 
 
-def to_xarray(self, decode_times=True):
+def to_xarray(self, decode_times=True, **kwargs):
     """
     Open a dataset as an xarray object
 
@@ -11,6 +11,8 @@ def to_xarray(self, decode_times=True):
     decode_times: boolean
         Set to False if you do not want xarray to decode the times. Default is True.
         If xarray cannot decode times, CDO will be used.
+    **kwargs : kwargs
+        Optional arguments to be sent to subset.
 
     Returns
     ---------------
@@ -41,14 +43,22 @@ def to_xarray(self, decode_times=True):
     #   then use cdo to get the times
 
     # All commands need to be run before opening it xarray
-    self.run()
+    if len(kwargs) == 0:
+        self.run()
+
+
+    self1 = self.copy()
+
+    if len(kwargs) > 0:
+        self1.subset(**kwargs)
+        self1.run()
 
     # if you don't want to decode times, this is straight forward. Just open the data
     if decode_times is False:
-        if len(self) == 1:
-            data = xr.open_dataset(self.current[0], decode_times=decode_times)
+        if len(self1) == 1:
+            data = xr.open_dataset(self1.current[0], decode_times=decode_times)
         else:
-            data = xr.open_mfdataset(self.current, decode_times=decode_times)
+            data = xr.open_mfdataset(self1.current, decode_times=decode_times)
         return data
 
     # decoding times is trickier, because xarray may fail to do this
@@ -57,44 +67,44 @@ def to_xarray(self, decode_times=True):
 
     if cdo_times is False:
         try:
-            if len(self) == 1:
-                test = xr.open_dataset(self.current[0], decode_times=decode_times)
+            if len(self1) == 1:
+                test = xr.open_dataset(self1.current[0], decode_times=decode_times)
             else:
-                test = xr.open_mfdataset(self.current, decode_times=decode_times)
+                test = xr.open_mfdataset(self1.current, decode_times=decode_times)
         except Exception as e:
             cdo_times = True
 
     # if it does, then just open the data in xarray
 
-    if cdo_times is True and len(self) > 1:
+    if cdo_times is True and len(self1) > 1:
         raise ValueError("xarray cannot decode times. Set decode_times to False")
 
     if cdo_times is False:
-        if len(self) == 1:
-            data = xr.open_dataset(self.current[0], decode_times=decode_times)
+        if len(self1) == 1:
+            data = xr.open_dataset(self1.current[0], decode_times=decode_times)
         else:
-            data = xr.open_mfdataset(self.current[0], decode_times=decode_times)
+            data = xr.open_mfdataset(self1.current[0], decode_times=decode_times)
         return data
 
     # If it does not, then we use cdo to pull out the times,
     # then push those to the xarray object
 
-    if len(self) == 1:
+    if len(self1) == 1:
 
-        if isinstance(self.times[0], datetime):
-            times = self.times
+        if isinstance(self1.times[0], datetime):
+            times = self1.times
         else:
             times = [
                 datetime.strptime(ss.replace("T", " "), "%Y-%m-%d %H:%M:%S")
-                for ss in self.times
+                for ss in self1.times
             ]
 
-        data = xr.open_dataset(self.current[0], decode_times=False)
+        data = xr.open_dataset(self1.current[0], decode_times=False)
         data = data.assign_coords(time=times)
         return data
 
 
-def to_dataframe(self, decode_times=True):
+def to_dataframe(self, decode_times=True, **kwargs):
     """
     Open a dataset as a pandas data frame
 
@@ -103,6 +113,8 @@ def to_dataframe(self, decode_times=True):
     decode_times: boolean
         Set to False if you do not want xarray to decode the times prior to
         conversion to data frame. Default is True.
+    **kwargs : kwargs
+        Optional arguments to be sent to subset.
 
     Returns
     ---------------
@@ -110,5 +122,6 @@ def to_dataframe(self, decode_times=True):
 
     """
     # everything must be run first
-    self.run()
-    return self.to_xarray(decode_times=decode_times).to_dataframe()
+    #if len(kwargs) == 0:
+    #    self.run()
+    return self.to_xarray(decode_times=decode_times, **kwargs).to_dataframe()
