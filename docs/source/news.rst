@@ -1,10 +1,10 @@
 News
 ============
 
-Release of v0.4.5
+Release of v0.4.6
 ---------------
 
-Version 0.4.5 will be released in June 2022.
+Version 0.4.6 will be released in June 2022.
 
 This method will enhance existing methods.
 
@@ -13,6 +13,11 @@ The ``select`` method will be replaced by ``subset``. This behave in the way sam
 The export methods ``to_nc``, ``to_xarray`` and ``to_dataframe`` now allow only a subset of the data to be exported. Additional arguments can be sent to the methods, which will then be sent to the ``subset`` method.
 
 Minor bug fix:  The weighted in datasets with recycled regridding weights were not copied properly. This is now fixed.
+
+Release of v0.4.5
+---------------
+
+Version 0.4.5 was released in late May 2022. This was a minor release that fixed an issue with ``ds.variables`` when there were a) many variables and b) CDO version above 2.0.0.
 
 Release of v0.4.4
 ---------------
