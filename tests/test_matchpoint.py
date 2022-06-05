@@ -15,6 +15,7 @@ ff1 = "data/woa18_decav_t01_01.nc"
 class TestCrop:
     def test_matchpoint(self):
 
+        print("test 1")
         depths = nc.open_data("data/matchpoint_depths.nc")
 
         ensemble = nc.create_ensemble("data/matchpoint")[0:3]
@@ -51,6 +52,7 @@ class TestCrop:
         assert len(matcher.values) == len(df)
 
 
+        print("test 2")
         matcher = nc.open_matchpoint()
         depths = ds.levels
         df["depth"]  = levels
@@ -106,6 +108,7 @@ class TestCrop:
 
 
 
+        print("test 3")
 
         ds = nc.open_data(ensemble)
         ds.merge("time")
@@ -132,6 +135,7 @@ class TestCrop:
         assert len(matcher.values) == len(df)
 
 
+        print("test 4")
         ds = nc.open_data("data/emodnet_test.nc")
         ds.regrid(pd.DataFrame({"lon": [0.15, 0.175], "lat" : [54.1, 54.12]}) )
         df = ds.to_dataframe().reset_index()
@@ -148,6 +152,7 @@ class TestCrop:
 
 
 
+        print("test 5")
 
         ds = nc.open_data(ensemble[0])
         ds.subset(time = 0)
@@ -176,6 +181,8 @@ class TestCrop:
         assert matcher.values.rename(columns = {"N3_n":"nitrate"}).merge( df).assign(bias = lambda x: np.abs(x.N3_n - x.nitrate)).bias.max() < 0.0001
         assert len(matcher.values) == len(df)
 
+        print("test 6")
+
         ds = nc.open_data("data/sst.mon.mean.nc")
         df = pd.DataFrame({"lon":[-20], "lat":60})
 
@@ -193,6 +200,7 @@ class TestCrop:
         assert len(matcher.values) == 360
 
 
+        print("test 7")
         ds = nc.open_data("data/sst.mon.mean.nc")
         df = pd.DataFrame({"lon":[-20], "lat":60})
 
@@ -211,6 +219,7 @@ class TestCrop:
 
 
 
+        print("test 8")
         ds = nc.open_data("data/matchpoint/amm7_1d_20000101_20000131_ptrc_T.nc")
         df = pd.DataFrame({"lon":[1.5], "lat":[55], "depth":[2.117196798324585]})
         depths = nc.open_data("data/matchpoint_depths.nc")
@@ -232,13 +241,14 @@ class TestCrop:
         assert len(df_test) == 31
 
 
+        print("test 9")
         ds = nc.open_data("data/matchpoint/amm7_1d_20000101_20000131_ptrc_T.nc")
         df = pd.DataFrame({"lon":[1.5], "lat":[55], "depth":[2.117196798324585]})
         depths = nc.open_data("data/matchpoint_depths.nc")
         with pytest.raises(ValueError):
-            matcher = nc.matchpoints(ds, df.loc[:,["lon", "lat", "depth"]])
+            matcher = nc.match_points(ds, df.loc[:,["lon", "lat", "depth"]])
 
-        matcher = nc.matchpoints(ds, df.loc[:,["lon", "lat", "depth"]], depths = depths)
+        matcher = nc.match_points(ds, df.loc[:,["lon", "lat", "depth"]], depths = depths)
         ds = nc.open_data("data/matchpoint/amm7_1d_20000101_20000131_ptrc_T.nc")
         depths = nc.open_data("data/matchpoint_depths.nc")
         ds.append(depths)
@@ -251,4 +261,39 @@ class TestCrop:
         df_test = df_test.loc[:,["lon", "lat", "depth", "day", "month", "year", "N3_n"]].rename(columns = {"N3_n":"test"}).reset_index(drop = True)
         assert df_test.merge(matcher).assign(bias = lambda x: np.abs(x.test - x.N3_n)).bias.max() <  0.00001
         assert len(df_test) == 31
+
+
+        print("test 10")
+
+
+        ds = nc.open_data("data/matchpoint/amm7_1d_20000101_20000131_ptrc_T.nc")
+        df = pd.DataFrame({"lon":[1.5], "lat":[55], "depth":[2.117196798324585]})
+        depths = nc.open_data("data/matchpoint_depths.nc")
+        matcher = ds.match_points(df.loc[:,["lon", "lat", "depth"]], depths = depths)
+
+        ds = nc.open_data("data/matchpoint/amm7_1d_20000101_20000131_ptrc_T.nc")
+        depths = nc.open_data("data/matchpoint_depths.nc")
+        ds.append(depths)
+        ds.regrid(df)
+        ds.merge()
+        df_test = ds.to_dataframe().reset_index().loc[:,["lon", "lat", "depth", "N3_n", "time_counter"]].drop_duplicates().query("depth == 2.117196798324585")
+        df_test["day"] = [x.day for x in df_test.time_counter]
+        df_test["month"] = [x.month for x in df_test.time_counter]
+        df_test["year"] = [x.year for x in df_test.time_counter]
+        df_test = df_test.loc[:,["lon", "lat", "depth", "day", "month", "year", "N3_n"]].rename(columns = {"N3_n":"test"}).reset_index(drop = True)
+        assert df_test.merge(matcher).assign(bias = lambda x: np.abs(x.test - x.N3_n)).bias.max() <  0.00001
+        assert len(df_test) == 31
+
+
+        ds = nc.open_data("data/dare/amm7_1d_*.nc", checks = False)
+        depths = nc.open_data("data/ersem_depths.nc")
+        df = pd.DataFrame({"lon":[-13, -13.1], "lat":[54,54], "day": [2,2],  "month":[1, 2], "depth": 2})
+        df_res = ds.match_points(df, depths = depths)
+        assert  len(df_res.merge(df)) == 2
+
+        ds = nc.open_data("data/dare/amm7_1d_*.nc", checks = False)
+        depths = nc.open_data("data/ersem_depths.nc")
+        df = pd.DataFrame({"lon":[-13, -13.1], "lat":[54,54], "day": [2,2],  "month":[1, 2]})
+        df_res = ds.match_points(df, depths = depths)
+        assert len(df_res.merge(df))  == 2 * 51
 
