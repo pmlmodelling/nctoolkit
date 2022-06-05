@@ -1739,6 +1739,8 @@ class DataSet(object):
     from nctoolkit.meridonials import meridonial_max
     from nctoolkit.meridonials import meridonial_range
 
+    from nctoolkit.mp_matchers import match_points
+
     from nctoolkit.nco_command import nco_command
 
     from nctoolkit.phenology import phenology

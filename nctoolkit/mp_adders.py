@@ -1,13 +1,13 @@
 import pandas as pd
-from nctoolkit.api import open_data
+from nctoolkit.api import open_data, open_thredds
 import xarray as xr
 from nctoolkit.mp_utils import get_type
 from nctoolkit.matchpoint import open_matchpoint
 
 
-def matchpoints(ds=None, df = None, variables=None, depths = None, nan=None, top = False):
+def match_points(ds=None, df = None, variables=None, depths = None, nan=None, top = False, tmean = False):
     """
-    Add dataset for matching
+    Match netCDF data to a spatiotemporal points dataframe
     Parameters
     -------------
     ds: nctoolkit dataset or str/list of file paths
@@ -42,7 +42,7 @@ def matchpoints(ds=None, df = None, variables=None, depths = None, nan=None, top
 
     mp.add_data(x = ds, variables = variables, depths = depths, nan = nan, top = top)
     mp.add_points(df)
-    mp.matchup()
+    mp.matchup(tmean = tmean)
     return mp.values
 
 
@@ -67,14 +67,26 @@ def add_data(self, x=None, variables=None, depths = None, nan=None, top = False)
         Set to True if you want only the top/surface level of the dataset to be selected for matching.
 
     """
+    thredds = False
+    try:
+        if len(x.history) == 0:
+            thredds = x._thredds
+    except:
+        thredds = False
+    self.thredds = thredds
 
     if depths is not None:
         self.add_depths(depths)
 
      ##need to figure out what depths are if they are not provided.
     if depths is None:
-        ds = open_data(x, checks = False)
-        ds = open_data(ds[0])
+
+        if thredds:
+            ds = open_thredds(x, checks = False)
+            ds = open_thredds(ds[0], checks = False)
+        else:
+            ds = open_data(x, checks = False)
+            ds = open_data(ds[0])
         if len(ds.levels) > 1:
             if "e3t" in ds.variables:
                 ds_depths = ds.copy()
@@ -90,10 +102,10 @@ def add_data(self, x=None, variables=None, depths = None, nan=None, top = False)
                 print("Depths were derived from e3t variable.")
             else:
                 try:
-                    self.depths = ds.levels()
+                    self.depths = ds.levels
                     print(f"Depths assumed to be {self.depths}")
                 except:
-                    raise ValueError("Unable to derive depths from data!")
+                    raise ValueError("Unable to derive depths from the dataset! Please provide them.")
 
 
     if depths is None:
@@ -113,9 +125,14 @@ def add_data(self, x=None, variables=None, depths = None, nan=None, top = False)
     if variables is None:
         print("All variables will be used")
 
-    self.data = open_data(x, checks = False)
 
-    ds_vars = open_data(self.data[0])
+    if thredds:
+        self.data = open_thredds(x, checks = False)
+        ds_vars = open_thredds(self.data[0], checks = False)
+    else:
+        self.data = open_data(x, checks = False)
+        ds_vars = open_data(self.data[0])
+
     ds_variables = ds_vars.variables
 
     if type(variables) is list:
@@ -130,7 +147,10 @@ def add_data(self, x=None, variables=None, depths = None, nan=None, top = False)
 
     # figure out the time dim
 
-    ds1 = open_data(self.data[0])
+    if thredds:
+        ds1 = open_thredds(self.data[0], checks = False)
+    else:
+        ds1 = open_data(self.data[0])
     pos_times = [
         x
         for x in [
@@ -151,7 +171,10 @@ def add_data(self, x=None, variables=None, depths = None, nan=None, top = False)
         df_times = []
 
         for ff in self.data:
-            ds_ff = open_data(ff)
+            if thredds:
+                ds_ff = open_thredds(ff)
+            else:
+                ds_ff = open_data(ff)
             ds = ds_ff.to_xarray()
             times = ds[time_name]
             days = [int(x.dt.day) for x in times]
@@ -163,7 +186,10 @@ def add_data(self, x=None, variables=None, depths = None, nan=None, top = False)
         df_times = pd.concat(df_times)
 
         x = list(set(df_times.path))
-    self.data = open_data(x, checks = False)
+    if thredds:
+        self.data = open_thredds(x, checks = False)
+    else:
+        self.data = open_data(x, checks = False)
 
     self.variables = variables
 
@@ -226,13 +252,6 @@ def add_points(self, df=None):
     for x in ["year", "month", "day"]:
         if x in df.columns:
             self.points_temporal = True
-
-    missing = []
-    for x in ["year", "month", "day", "depth"]:
-        if x not in df.columns:
-            missing.append(x)
-    if len(missing) > 0:
-        print(f"Warning: You have not provided {missing} in dimension mapping")
 
     self.points = df
 

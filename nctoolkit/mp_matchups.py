@@ -2,7 +2,7 @@ import pandas as pd
 import re
 import scipy.interpolate as interpolate
 import numpy as np
-from nctoolkit.api import open_data
+from nctoolkit.api import open_data, open_thredds
 
 
 def matchup(self,  tmean = False):
@@ -20,6 +20,11 @@ def matchup(self,  tmean = False):
         This is equivalent to doing `ds.tmean(on)` to the dataset.
 
     """
+
+    if self.depths is not None:
+        if "depth" not in self.points.columns:
+            print("Depths were supplied, but are not in df")
+            self.depths = None
 
     on = None
 
@@ -47,7 +52,11 @@ def matchup(self,  tmean = False):
                     points = points.drop(columns = x)
 
 
-    ds = open_data(self.data[0], checks = False)
+    if self.thredds:
+        ds = open_thredds(self.data[0], checks = False)
+    else:
+        ds = open_data(self.data[0], checks = False)
+
     ds.subset(variables = ds.variables[0])
     ds.subset(time = 0)
     ds.rename({ds.variables[0]: "target"})
@@ -95,37 +104,41 @@ def matchup(self,  tmean = False):
 
     if self.temporal:
         if on != ["all"]:
-            if on == ["day"]:
-                on = ["day", "month"]
-                if "month" not in points.columns:
-                    on.remove("month")
-            if type(on) is not list:
-                raise ValueError("on must be a list")
-            for x in on:
-                if x not in ["day", "month", "year", "all"]:
-                    raise ValueError(f"{x} is not a valid")
-
-            for x in ["day", "month", "year"]:
-                if x not in on:
-                    if x in points.columns:
-                        points = points.drop(columns=x)
-
-            # This needs to work when there is no time
-
-            if self.points_temporal:
-                df_times = self.data_times.loc[:, on].merge(points.loc[:, on])
-            else:
+            if tmean is False:
                 df_times = self.data_times
-            df_times = df_times.drop_duplicates()
-            time_avail = [x for x in ["year", "month", "day"] if x in df_times.columns]
-            df_times = df_times.sort_values(by=time_avail).reset_index(drop=True)
+                point_col = [x for x in df_times.columns if x in self.points.columns]
+                df_times = self.data_times.merge(self.points.loc[:,point_col]).drop_duplicates()
+            else:
+
+                if on == ["day"]:
+                    on = ["day", "month"]
+                    if "month" not in points.columns:
+                        on.remove("month")
+                if type(on) is not list:
+                    raise ValueError("on must be a list")
+                for x in on:
+                    if x not in ["day", "month", "year", "all"]:
+                        raise ValueError(f"{x} is not a valid")
+
+                for x in ["day", "month", "year"]:
+                    if x not in on:
+                        if x in points.columns:
+                            points = points.drop(columns=x)
+
+                # This needs to work when there is no time
+
+                if self.points_temporal:
+                    df_times = self.data_times.loc[:, on].merge(points.loc[:, on])
+                else:
+                    df_times = self.data_times
+                df_times = df_times.drop_duplicates()
+                time_avail = [x for x in ["year", "month", "day"] if x in df_times.columns]
+                df_times = df_times.sort_values(by=time_avail).reset_index(drop=True)
         else:
             df_times = self.data_times.drop(columns = "path")
 
     if self.temporal is False:
         df_times = self.data_times
-
-    print(df_times)
 
     df_merged = []
 
@@ -149,7 +162,10 @@ def matchup(self,  tmean = False):
     points_merged = False
     if self.points_temporal is False:
         if len(self.data.levels) < 2:
-            ds = open_data(self.data)
+            if self.thredds:
+                ds = open_thredds(self.data, checks = False)
+            else:
+                ds = open_data(self.data, checks = False)
             if self.variables is not None:
                 ds.subset(variables = self.variables)
             ds.regrid(points.loc[:,["lon", "lat"]], "bil")
@@ -201,9 +217,15 @@ def matchup(self,  tmean = False):
                     except:
                         i_day = None
 
-                ds = open_data(set(self.data_times.merge(i_df).path), checks=False)
+                if self.thredds:
+                    ds = open_thredds(set(self.data_times.merge(i_df).path), checks=False)
+                else:
+                    ds = open_data(set(self.data_times.merge(i_df).path), checks=False)
             else:
-                ds = open_data(self.data, checks=False)
+                if self.thredds:
+                    ds = open_thredds(self.data, checks=False)
+                else:
+                    ds = open_data(self.data, checks=False)
                 i_grid = points.loc[:, ["lon", "lat"]].drop_duplicates()
 
 
@@ -224,7 +246,8 @@ def matchup(self,  tmean = False):
                     if self.points_temporal:
                         if len(ds) > 1:
                             ds.merge("time")
-                        #ds.tmean(on)
+            if on is not None and tmean is True:
+                ds.tmean(on)
 
             if self.data_nan is not None:
                 ds.set_missing(self.data_nan)
