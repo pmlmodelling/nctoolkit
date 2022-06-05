@@ -4,7 +4,7 @@ import xarray as xr
 from nctoolkit.mp_utils import get_type
 from nctoolkit.matchpoint import open_matchpoint
 
-def match_points(self, df = None, depths = None):
+def match_points(self, df = None, variables = None, depths = None):
     """
     Match dataset to a spatiotemporal points dataframe
     Parameters
@@ -29,7 +29,7 @@ def match_points(self, df = None, depths = None):
 
     mp = open_matchpoint()
 
-    mp.add_data(x = ds, depths = depths)
+    mp.add_data(x = ds, depths = depths, variables = variables)
     mp.add_points(df)
     mp.matchup()
     return mp.values
