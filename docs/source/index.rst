@@ -2,9 +2,26 @@
 nctoolkit: Fast and easy analysis of netCDF data in Python 
 =======================================================
 
-nctoolkit is a comprehensive and computationally efficient Python package for analyzing and post-processing netCDF data on Linux and macOS.
+nctoolkit is a comprehensive and computationally efficient Python package for analyzing and post-processing netCDF data.
 
-Core abilities include:
+Who is nctoolkit for?
+########
+
+Everyone from casual to regular users of netCDF data will find nctoolkit useful. Casual users will appreciate the easy ability to do such as things as matching up point observation data with gridded netCDF data. For expert users, nctoolkit provides the ability to carry out 80-100% of your day to day analysis and post-processing.
+
+
+What type of data is nctoolkit designed for?
+########
+
+nctoolkit is designed primarily with climate and oceanic data in mind. If you work with this type of data, nctoolkit can help you do it quickly and efficiently.
+
+What systems can nctoolkit work on? 
+########
+
+nctoolkit requires a Linux or macOS operating system.
+
+
+The core abilities of nctoolkit include:
 
    - Cropping to geographic regions
    - Interactive plotting of data
