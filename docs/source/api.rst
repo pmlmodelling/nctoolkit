@@ -214,7 +214,7 @@ Time-based methods
    DataSet.set_date
    DataSet.shift
 
-Interpolation and resampling methods
+Interpolation, matching and resampling methods
 ---------------------
 
 .. autosummary::
@@ -222,6 +222,7 @@ Interpolation and resampling methods
 
    DataSet.regrid
    DataSet.to_latlon
+   DataSet.match_points
    DataSet.resample_grid
    DataSet.time_interp
    DataSet.timestep_interp
