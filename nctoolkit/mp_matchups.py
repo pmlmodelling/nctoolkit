@@ -5,7 +5,7 @@ import numpy as np
 from nctoolkit.api import open_data
 
 
-def matchup(self, on=None, tmean = False):
+def matchup(self,  tmean = False):
     """
     Matchup gridded model and point observational data
     Parameters
@@ -20,6 +20,13 @@ def matchup(self, on=None, tmean = False):
         This is equivalent to doing `ds.tmean(on)` to the dataset.
 
     """
+
+    on = None
+
+    new_on = [x for x in self.points.columns if x in ["day", "month", "year"]]
+
+    if len(new_on) > 0:
+        on = new_on
 
     #  loop through all time steps in the observational df....
 
@@ -36,7 +43,7 @@ def matchup(self, on=None, tmean = False):
     if on is not None:
         if type(on) is list:
             for x in ["day", "month", "year"]:
-                if x not in on and x in points.columns: 
+                if x not in on and x in points.columns:
                     points = points.drop(columns = x)
 
 
@@ -252,7 +259,7 @@ def matchup(self, on=None, tmean = False):
                 else:
                     locs = [ "lon", "lat"]
 
-                locs += ds.variables 
+                locs += ds.variables
                 if len(ds.levels) > 1:
                     adict = dict(ds.to_xarray().dims)
 
@@ -273,18 +280,18 @@ def matchup(self, on=None, tmean = False):
                         locs = [time_name, "lon", "lat", "deptht"]
                     else:
                         locs = [ "lon", "lat", "deptht"]
-                    locs += ds.variables 
+                    locs += ds.variables
                     df_model = df_model.loc[:, locs].drop_duplicates()
                 else:
                     locs = [ "lon", "lat"]
-                    locs += ds.variables 
+                    locs += ds.variables
                     df_model = df_model.loc[ :, locs ].drop_duplicates()
 
 
                 if self.points_temporal:
                     i_obs_df = i_df.merge(points)
                 else:
-                    i_obs_df = points 
+                    i_obs_df = points
 
                 i_obs_locs = i_obs_df.loc[:, ["lon", "lat"]].drop_duplicates()
 
@@ -292,7 +299,7 @@ def matchup(self, on=None, tmean = False):
 
                     for j in range(0, len(i_obs_locs)):
                         if self.depths is not None:
-                            df_depths = df_depths 
+                            df_depths = df_depths
 
                         j_obs = i_obs_locs.iloc[j : (j + 1), :].merge(i_obs_df)
 

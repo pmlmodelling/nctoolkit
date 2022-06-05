@@ -24,6 +24,7 @@ from nctoolkit.show import nc_variables, nc_years, nc_months, nc_times
 
 from nctoolkit.utils import validate_version, cdo_version
 from nctoolkit.session import session_info
+from nctoolkit.mp_adders import matchpoints
 
 session_info["cdo"] = cdo_version()
 

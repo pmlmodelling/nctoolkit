@@ -2,6 +2,48 @@ import pandas as pd
 from nctoolkit.api import open_data
 import xarray as xr
 from nctoolkit.mp_utils import get_type
+from nctoolkit.matchpoint import open_matchpoint
+
+
+def matchpoints(ds=None, df = None, variables=None, depths = None, nan=None, top = False):
+    """
+    Add dataset for matching
+    Parameters
+    -------------
+    ds: nctoolkit dataset or str/list of file paths
+        Dataset or file(s) to match up with
+    df: pandas dataframe containing the spatiotemporal points to match with.
+        The column names must be made up of a subset of "lon", "lat", "year", "month", "day" and "depth"
+    variables: str or list
+        Str or list of variables. All variables are matched up if this is not supplied.
+    depths:  nctoolkit dataset or list giving depths
+        If each cell has different vertical levels, this must be provided as a dataset.
+        If each cell has the same vertical levels, provide it as a list.
+        If this is not supplied nctoolkit will try to figure out what they are.
+        Only required if carrying out vertical matchups.
+    tmean: bool
+        Set to True or False, depending on whether you want temporal averaging at the temporal resolution given by df.
+        For example, if you only had months in df, but had daily data in ds, you might want to calculate a daily average in the
+        monthly dataset.
+        This is equivalent to apply `ds.tmean(..)` to the dataset.
+    nan: float or list
+        Value or range of values to set to nan. Defaults to 0.
+        Only required if values in dataset need changed to missing
+    top: bool
+        Set to True if you want only the top/surface level of the dataset to be selected for matching.
+
+    Returns
+    ---------------
+    matchpoints : pandas.DataFrame
+
+    """
+
+    mp = open_matchpoint()
+
+    mp.add_data(x = ds, variables = variables, depths = depths, nan = nan, top = top)
+    mp.add_points(df)
+    mp.matchup()
+    return mp.values
 
 
 def add_data(self, x=None, variables=None, depths = None, nan=None, top = False):
@@ -10,7 +52,7 @@ def add_data(self, x=None, variables=None, depths = None, nan=None, top = False)
     Parameters
     -------------
     x: nctoolkit dataset or str/list of file paths
-        Dataset or file(s) to match up with 
+        Dataset or file(s) to match up with
     variables: str or list
         Str or list of variables. All variables are matched up if this is not supplied.
     depths:  nctoolkit dataset or list giving depths
@@ -21,7 +63,7 @@ def add_data(self, x=None, variables=None, depths = None, nan=None, top = False)
     nan: float or list
         Value or range of values to set to nan. Defaults to 0.
         Only required if values in dataset need changed to missing
-    top: bool 
+    top: bool
         Set to True if you want only the top/surface level of the dataset to be selected for matching.
 
     """
@@ -46,6 +88,12 @@ def add_data(self, x=None, variables=None, depths = None, nan=None, top = False)
                 self.depths = ds_depths.copy()
                 self.depths.rename({"e3t":"depth"})
                 print("Depths were derived from e3t variable.")
+            else:
+                try:
+                    self.depths = ds.levels()
+                    print(f"Depths assumed to be {self.depths}")
+                except:
+                    raise ValueError("Unable to derive depths from data!")
 
 
     if depths is None:
@@ -65,7 +113,7 @@ def add_data(self, x=None, variables=None, depths = None, nan=None, top = False)
     if variables is None:
         print("All variables will be used")
 
-    self.data = open_data(x, checks = False) 
+    self.data = open_data(x, checks = False)
 
     ds_vars = open_data(self.data[0])
     ds_variables = ds_vars.variables
@@ -104,7 +152,7 @@ def add_data(self, x=None, variables=None, depths = None, nan=None, top = False)
 
         for ff in self.data:
             ds_ff = open_data(ff)
-            ds = ds_ff.to_xarray() 
+            ds = ds_ff.to_xarray()
             times = ds[time_name]
             days = [int(x.dt.day) for x in times]
             months = [int(x.dt.month) for x in times]
@@ -115,14 +163,14 @@ def add_data(self, x=None, variables=None, depths = None, nan=None, top = False)
         df_times = pd.concat(df_times)
 
         x = list(set(df_times.path))
-    self.data = open_data(x, checks = False) 
+    self.data = open_data(x, checks = False)
 
     self.variables = variables
 
     if self.temporal:
         self.data_times = df_times
     else:
-        self.data_times = None 
+        self.data_times = None
 
     if self.temporal is False:
         if len(self.data) > 1:
@@ -132,7 +180,7 @@ def add_data(self, x=None, variables=None, depths = None, nan=None, top = False)
 
 def add_depths(self, x=None):
     """
-    Add depth 
+    Add depth
     Parameters
     -------------
     x:  nctoolkit dataset or list/iterable
@@ -156,76 +204,39 @@ def add_depths(self, x=None):
         self.depths.run()
 
 
-def add_points(self, df=None, map=None, **kwargs):
+def add_points(self, df=None):
     """
     Add point data
     Parameters
     -------------
     df: pandas dataframe containing the spatiotemporal points to match with.
-
-    map: dict
-        Dictionary mapping point location variables to required or optional dimensions.
-        This must contain "lon" and "lat" as keys. Optionals: "day", "month", "year", "depth".
-        As an alternative, these can be provided as kwargs, i.e. lon = .., lat = ..., etc.
+        The column names must be made up of a subset of "lon", "lat", "year", "month", "day" and "depth"
 
     """
 
     self.points_temporal = False
 
-    if len(kwargs) > 0 and map is None:
-        map = dict(kwargs)
-
-    if map is None:
-        raise ValueError("Please provide a map. Starting sugestion: {'lon':'lon', 'lat':'lat', 'depth':'depth','year':'year','month':'month','day':'day'}.")
-
-    for x in map.keys():
+    for x in df.columns:
         if x not in ["lon", "lat", "year", "month", "day", "depth"]:
-            raise ValueError(f"{x} is not a valid mapping")
+            raise ValueError(f"{x} is not a valid column name")
 
-    for x in map.values():
-        if x not in df.columns:
-            raise ValueError(f"{x} is not a column name")
+    if len([x for x in df.columns if x in ["lon", "lat"]]) < 2:
+        raise ValueError("You must provide lon and lat!")
 
     for x in ["year", "month", "day"]:
-        if x in map:
+        if x in df.columns:
             self.points_temporal = True
-
-    if type(map) is not dict:
-        raise ValueError("You must provided a map")
 
     missing = []
     for x in ["year", "month", "day", "depth"]:
-        if x not in map:
+        if x not in df.columns:
             missing.append(x)
     if len(missing) > 0:
         print(f"Warning: You have not provided {missing} in dimension mapping")
 
-    for x in ["lon", "lat"]:
-        if x not in map:
-            raise ValueError(f"Please provide {x} in dimension mapping")
-
-    if (
-        len(
-            [
-                x
-                for x in map.keys()
-                if x not in ["lon", "lat", "year", "month", "day", "depth"]
-            ]
-        )
-        > 1
-    ):
-        raise ValueError("You have provided an invalid map")
-
-    if self.points is not None:
-        raise ValueError("You have already added observation data!")
-
-    df = df.loc[:, map.values()]
-    map_switch = {y: x for x, y in map.items()}
-    df = df.rename(columns=map_switch)
-
     self.points = df
 
-    self.points = self.points.dropna().reset_index(drop=True)
+    self.points = self.points.dropna().drop_duplicates().reset_index(drop=True)
 
     if self.depths is None and self.data is not None:
         if self.points is not None:
