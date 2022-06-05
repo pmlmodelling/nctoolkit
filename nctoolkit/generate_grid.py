@@ -10,7 +10,7 @@ def generate_grid(coords):
 
     lon_unique = np.unique(coords.iloc[:, 0])
     lat_unique = np.unique(coords.iloc[:, 1])
-    if len(coords) > 1:
+    if len(coords) > 30:
         lon_step = (max(lon_unique) - min(lon_unique)) / (len(lon_unique) - 1)
         lat_step = (max(lat_unique) - min(lat_unique)) / (len(lat_unique) - 1)
 
@@ -41,6 +41,8 @@ def generate_grid(coords):
             is False
         ):
             grid_type = "unstructured"
+    else:
+        grid_type = "unstructured"
 
     if len(coords) == 1:
         grid_type = "unstructured"
