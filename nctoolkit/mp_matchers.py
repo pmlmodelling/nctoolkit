@@ -4,7 +4,7 @@ import xarray as xr
 from nctoolkit.mp_utils import get_type
 from nctoolkit.matchpoint import open_matchpoint
 
-def match_points(self, df = None, variables = None, depths = None):
+def match_points(self, df = None, variables = None, depths = None, nan = None):
     """
     Match dataset to a spatiotemporal points dataframe
     Parameters
@@ -18,6 +18,9 @@ def match_points(self, df = None, variables = None, depths = None):
         If each cell has the same vertical levels, provide it as a list.
         If this is not supplied nctoolkit will try to figure out what they are.
         Only required if carrying out vertical matchups.
+    nan: float or list
+        Value or range of values to set to nan. Defaults to 0.
+        Only required if values in dataset need changed to missing
 
     Returns
     ---------------
