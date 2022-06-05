@@ -406,6 +406,9 @@ def matchup(self,  tmean = False):
         except:
             df_merged = orig_df
 
+    if "path" in df_merged.columns:
+        df_merged = df_merged.drop(columns = "path")
+
     self.values = df_merged
 
 
