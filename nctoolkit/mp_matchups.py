@@ -5,7 +5,7 @@ import numpy as np
 from nctoolkit.api import open_data, open_thredds
 
 
-def matchup(self,  tmean = False):
+def matchup(self,  tmean = False, regrid = "bil"):
     """
     Matchup gridded model and point observational data
     Parameters
@@ -18,6 +18,9 @@ def matchup(self,  tmean = False):
     tmean: bool
         Set to True or False, depending on whether you want temporal averaging at the level given by on. Defaults to False.
         This is equivalent to doing `ds.tmean(on)` to the dataset.
+    regrid: str
+        Regridding method. Defaults to "bil". Options available are those in nctoolkit regrid method.
+        "nn" for nearest neighbour.
 
     """
 
@@ -64,7 +67,7 @@ def matchup(self,  tmean = False):
     ds.run()
     ds.assign(target = lambda x: isnan(x.target))
     df = points.loc[:,["lon", "lat"]].drop_duplicates()
-    ds.regrid(df)
+    ds.regrid(df, method = regrid)
     grid = ds.to_dataframe().reset_index().dropna().loc[:,["lon", "lat"]].drop_duplicates()
 
     n_start = len(points)
@@ -147,7 +150,7 @@ def matchup(self,  tmean = False):
         if type(self.depths) is not list:
             ds_depths = self.depths.copy()
             obs_locs = points.loc[:,["lon", "lat"]]
-            ds_depths.regrid(obs_locs, "bil")
+            ds_depths.regrid(obs_locs, method = regrid) 
             df_depths = (
                 ds_depths.to_dataframe()
                 .reset_index()
@@ -168,7 +171,7 @@ def matchup(self,  tmean = False):
                 ds = open_data(self.data, checks = False)
             if self.variables is not None:
                 ds.subset(variables = self.variables)
-            ds.regrid(points.loc[:,["lon", "lat"]], "bil")
+            ds.regrid(points.loc[:,["lon", "lat"]], method = regrid) 
             df_merged = [ds.to_dataframe().reset_index()]
             points_merged = True
 
@@ -252,7 +255,7 @@ def matchup(self,  tmean = False):
             if self.data_nan is not None:
                 ds.set_missing(self.data_nan)
 
-            ds.regrid(i_grid, "bil")
+            ds.regrid(i_grid, method = regrid) 
 
             df_model = ds.to_dataframe().drop_duplicates().reset_index().drop_duplicates()
 

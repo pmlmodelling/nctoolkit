@@ -4,7 +4,7 @@ import xarray as xr
 from nctoolkit.mp_utils import get_type
 from nctoolkit.matchpoint import open_matchpoint
 
-def match_points(self, df = None, variables = None, depths = None, tmean = False, top = False, nan = None):
+def match_points(self, df = None, variables = None, depths = None, tmean = False, top = False, nan = None, regrid = "bil"):
     """
     Match dataset to a spatiotemporal points dataframe
     Parameters
@@ -28,6 +28,9 @@ def match_points(self, df = None, variables = None, depths = None, tmean = False
     nan: float or list
         Value or range of values to set to nan. Defaults to 0.
         Only required if values in dataset need changed to missing
+    regrid: str
+        Regridding method. Defaults to "bil". Options available are those in nctoolkit regrid method.
+        "nn" for nearest neighbour.
 
     Returns
     ---------------
@@ -41,6 +44,6 @@ def match_points(self, df = None, variables = None, depths = None, tmean = False
 
     mp.add_data(x = ds, depths = depths, variables = variables, top = top, nan = nan)
     mp.add_points(df)
-    mp.matchup(tmean = tmean)
+    mp.matchup(tmean = tmean, regrid = regrid)
     return mp.values
 

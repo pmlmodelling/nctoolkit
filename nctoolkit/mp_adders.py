@@ -5,7 +5,7 @@ from nctoolkit.mp_utils import get_type
 from nctoolkit.matchpoint import open_matchpoint
 
 
-def match_points(ds=None, df = None, variables=None, depths = None, nan=None, top = False, tmean = False):
+def match_points(ds=None, df = None, variables=None, depths = None, nan=None, top = False, tmean = False, regrid = "bil"):
     """
     Match netCDF data to a spatiotemporal points dataframe
     Parameters
@@ -31,6 +31,9 @@ def match_points(ds=None, df = None, variables=None, depths = None, nan=None, to
         Only required if values in dataset need changed to missing
     top: bool
         Set to True if you want only the top/surface level of the dataset to be selected for matching.
+    regrid: str
+        Regridding method. Defaults to "bil". Options available are those in nctoolkit regrid method.
+        "nn" for nearest neighbour.
 
     Returns
     ---------------
@@ -42,7 +45,7 @@ def match_points(ds=None, df = None, variables=None, depths = None, nan=None, to
 
     mp.add_data(x = ds, variables = variables, depths = depths, nan = nan, top = top)
     mp.add_points(df)
-    mp.matchup(tmean = tmean)
+    mp.matchup(tmean = tmean, regrid = regrid)
     return mp.values
 
 
