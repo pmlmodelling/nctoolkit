@@ -22,6 +22,7 @@ def rollstat(self, window=None, stat="mean"):
 def rolling_mean(self, window=None):
     """
     Calculate a rolling mean based on a window
+    Time output is the middle time of the window.
 
     Parameters
     -------------
@@ -42,6 +43,7 @@ def rolling_mean(self, window=None):
 def rolling_min(self, window=None):
     """
     Calculate a rolling minimum based on a window
+    Time output is the middle time of the window.
 
     Parameters
     -------------
@@ -61,6 +63,7 @@ def rolling_min(self, window=None):
 def rolling_max(self, window=None):
     """
     Calculate a rolling maximum based on a window
+    Time output is the middle time of the window.
 
     Parameters
     -------------
@@ -79,6 +82,7 @@ def rolling_max(self, window=None):
 def rolling_range(self, window=None):
     """
     Calculate a rolling range based on a window
+    Time output is the middle time of the window.
 
     Parameters
     -------------
@@ -98,6 +102,7 @@ def rolling_range(self, window=None):
 def rolling_sum(self, window=None):
     """
     Calculate a rolling sum based on a window
+    Time output is the middle time of the window.
 
     Parameters
     -------------
