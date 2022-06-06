@@ -285,14 +285,14 @@ class TestCrop:
         assert len(df_test) == 31
 
 
-        ds = nc.open_data("data/dare/amm7_1d_*.nc", checks = False)
+        ds = nc.open_data("data/matchpoint/*.nc", checks = False)
         depths = nc.open_data("data/matchpoint_depths.nc")
         df = pd.DataFrame({"lon":[0.5, 0.7], "lat":[55,55], "day": [2,2],  "month":[1, 2], "depth": 2})
         df_res = ds.match_points(df, depths = depths)
         assert  len(df_res.merge(df)) == 2
 
-        ds = nc.open_data("data/dare/amm7_1d_*.nc", checks = False)
-        depths = nc.open_data("data/ersem_depths.nc")
+        ds = nc.open_data("data/matchpoint/*.nc", checks = False)
+        depths = nc.open_data("data/matchpoint_depths.nc")
         df = pd.DataFrame({"lon":[0.5, 0.7], "lat":[55,55], "day": [2,2],  "month":[1, 2]})
         df_res = ds.match_points(df, depths = depths)
         assert len(df_res.merge(df))  == 2 * 51
