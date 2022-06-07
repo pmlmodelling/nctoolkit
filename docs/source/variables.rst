@@ -1,4 +1,4 @@
-Manipulating variables
+Mathematical operations
 ==================
 
 Creating new variables
