@@ -1,6 +1,24 @@
 News
 ============
 
+Release of v0.4.8
+---------------
+
+This release improves temporal merging of large datasets. Previously on some systems this would fail on datasets made up of more than 1,000 files due to system limits. Under the hood, nctoolkit now deals with this.
+
+The merge method also now contains a check argument that can be used to speed up merging of large datasets when you know the files can be merged problem-free. Previously, merge always checked if files being merged had the same variables when doing a temporal merge. This can now be switched off if you are confident this does not need to happen.
+
+
+Release of v0.4.7
+---------------
+
+Version 0.4.7 was released on June 5th 2022.
+
+This release contained a new method called match_points that can do matchups with a spatiotemporal dataframe.
+
+
+
+
 
 Release of v0.4.6
 ---------------
