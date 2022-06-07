@@ -60,21 +60,20 @@ nctoolkit is developed as open source software by the Marine Systems Modelling g
    :caption: User Guide 
 
    datasets
-   visualization
    exporting 
-   interpolation
-   temporals 
-   matchpoint 
    subsetting 
+   interpolation
+   visualization
+   temporals 
+   ensembles 
+   matchpoint 
    variables
    adding
-   ensembles 
    parallel 
    examples
    hacks 
    globals 
    backends
-   cheat
 
 
 
@@ -85,6 +84,7 @@ nctoolkit is developed as open source software by the Marine Systems Modelling g
 
    api
    info
+   cheat
    
 
 
