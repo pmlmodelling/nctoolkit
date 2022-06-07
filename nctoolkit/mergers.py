@@ -6,6 +6,12 @@ from nctoolkit.runthis import run_this
 from nctoolkit.session import session_info
 from nctoolkit.show import nc_variables, nc_times
 from nctoolkit.utils import version_below
+from nctoolkit.api import open_data
+
+def chunks(l, n):
+    n = max(1, n)
+    return (l[i:i+n] for i in range(0, len(l), n))
+
 
 
 def below(x, y):
@@ -18,7 +24,7 @@ def below(x, y):
     return x < y
 
 
-def merge(self, join="variables", match=["year", "month", "day"]):
+def merge(self, join="variables", match=["year", "month", "day"], check = False):
     """
     Merge a multi-file ensemble into a single file
     2 methods are available. 1) merging files with different variables, but the same time steps.
@@ -38,7 +44,11 @@ def merge(self, join="variables", match=["year", "month", "day"]):
         year/month/day. An error will be thrown if the elements of time in match
         do not match across all netCDF files. The only exception is if there is a
         single date file in the ensemble.
+    check: bool
+        By default nctoolkit does not carry out checks in case files do not have the same variables etc. Keep check as False if you are confident merging will be problem free.
+        If you are unsure if files have the same variables, set check to True to find out.
     """
+
     if type(join) is not str:
         raise TypeError("join supplied is not a str")
 
@@ -81,17 +91,32 @@ def merge(self, join="variables", match=["year", "month", "day"]):
 
         # check variable names are consistent
 
-        var_list = set()
-        for ff in self:
-            var_list.add(",".join(nc_variables(ff)))
-        if len(var_list) > 1:
-            raise ValueError("You are trying to merge files with different variables!")
-
-
+        if check:
+            var_list = set()
+            for ff in self:
+                var_list.add(",".join(nc_variables(ff)))
+            if len(var_list) > 1:
+                raise ValueError("You are trying to merge files with different variables!")
 
         cdo_command = "cdo --sortname -mergetime"
 
-        run_this(cdo_command, self, output="one")
+        if len(self) < 400:
+            run_this(cdo_command, self, output="one")
+        else:
+            new_ds = open_data()
+            files = chunks(self, 365)
+            ii = 0
+            for ff in files:
+                ii += 1
+                ds = open_data(ff, checks = False)
+                ds.merge("time", check = check)
+                #run_this(cdo_command, ds, output="one")
+                ds.run()
+                new_ds.append(ds)
+
+            new_ds.merge("time", check = check)
+            new_ds.run()
+            self.current = new_ds.current
 
         if session_info["lazy"]:
             self._merged = True
@@ -204,7 +229,6 @@ def merge(self, join="variables", match=["year", "month", "day"]):
             raise ValueError("Dates of data sets do not satisfy matching criteria!")
 
     cdo_command = "cdo -merge"
-
     run_this(cdo_command, self, output="one")
 
     if session_info["lazy"]:
