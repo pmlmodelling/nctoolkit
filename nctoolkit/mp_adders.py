@@ -189,6 +189,10 @@ def add_data(self, x=None, variables=None, depths = None, nan=None, top = False)
         df_times = pd.concat(df_times)
 
         x = list(set(df_times.path))
+
+    if len(self.data) > 12:
+        print("Finished checking file times.")
+
     if thredds:
         self.data = open_thredds(x, checks = False)
     else:
