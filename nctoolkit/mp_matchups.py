@@ -3,6 +3,8 @@ import re
 import scipy.interpolate as interpolate
 import numpy as np
 from nctoolkit.api import open_data, open_thredds
+from tqdm import tqdm
+
 
 
 def matchup(self,  tmean = False, regrid = "bil"):
@@ -109,8 +111,8 @@ def matchup(self,  tmean = False, regrid = "bil"):
         if on != ["all"]:
             if tmean is False:
                 df_times = self.data_times
-                point_col = [x for x in df_times.columns if x in self.points.columns]
-                df_times = self.data_times.merge(self.points.loc[:,point_col]).drop_duplicates()
+                point_col = [x for x in df_times.columns if x in points.columns]
+                df_times = self.data_times.merge(points.loc[:,point_col]).drop_duplicates()
             else:
 
                 if on == ["day"]:
@@ -145,6 +147,7 @@ def matchup(self,  tmean = False, regrid = "bil"):
 
     df_merged = []
 
+
     # depths only need to be calculated once
     if self.depths is not None:
         if type(self.depths) is not list:
@@ -177,7 +180,10 @@ def matchup(self,  tmean = False, regrid = "bil"):
 
     if points_merged is False:
 
-        for i in range(0, len(df_times)):
+        df_times = df_times.sample(frac = 1)
+
+        print("Looping through times in ds and df to matchup")
+        for i in tqdm(range(0, len(df_times))):
             if self.temporal:
                 i_df = df_times.iloc[
                     i : (i + 1) :,
