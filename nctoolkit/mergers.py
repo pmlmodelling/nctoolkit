@@ -24,7 +24,21 @@ def below(x, y):
     return x < y
 
 
-def merge(self, join="variables", match=["year", "month", "day"], check = False):
+import inspect
+from functools import wraps
+
+def check_checker(f):
+    varnames = inspect.getfullargspec(f)[0]
+    @wraps(f)
+    def wrapper(*a, **kw):
+        explicit_params = set(list(varnames[:len(a)]) + list(kw.keys()))
+        if "check" not in explicit_params:
+            kw["check"] = "default"
+        return f(*a, **kw)
+    return wrapper
+
+@check_checker
+def merge(self, join="variables", match=["year", "month", "day"], check = True):
     """
     Merge a multi-file ensemble into a single file
     2 methods are available. 1) merging files with different variables, but the same time steps.
@@ -45,9 +59,17 @@ def merge(self, join="variables", match=["year", "month", "day"], check = False)
         do not match across all netCDF files. The only exception is if there is a
         single date file in the ensemble.
     check: bool
-        By default nctoolkit does not carry out checks in case files do not have the same variables etc. Keep check as False if you are confident merging will be problem free.
-        If you are unsure if files have the same variables, set check to True to find out.
+        By default nctoolkit out checks in case files do not have the same variables etc. Set check to False if you are confident merging will be problem free.
+        If you are unsure if files have the same variables, set check to True to find out. Note: if you do not explicitly provide check and there are more than 30 
+        files in a dataset, checks will be turned off.
     """
+
+    if check == "default":
+        if len(self) > 30:
+            check = False
+            warnings.warn(message = "Large ensemble, so no checks are being carried out prior to merging. Set check=True if you require files to be checked for variable compatability!")
+        else:
+            check = True
 
     if type(join) is not str:
         raise TypeError("join supplied is not a str")
