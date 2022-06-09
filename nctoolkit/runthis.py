@@ -302,6 +302,59 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
     if "(Abort)" in str(result):
         remove_safe(target)
         remove_safe(start_target)
+        error =   str(result).replace("b'", "").replace("\\n", "").replace("'", "")
+
+        text = re.compile(r"Level [0-9]* not found")
+        errors = text.findall(error)
+        print(len(errors))
+        if len(errors) > 0:
+            error = errors[0]
+            raise ValueError(f"CDO error: {error}. Please check levels supplied to nctoolkit methods!")
+
+        text = re.compile(r"Variable name .* not found")
+        errors = text.findall(error)
+        print(len(errors))
+        if len(errors) > 0:
+            error = errors[0]
+            raise ValueError(f"CDO error: {error}. Please check variables supplied to nctoolkit methods!")
+
+        text = re.compile(r"Season .* not found")
+        errors = text.findall(error)
+        print(len(errors))
+        if len(errors) > 0:
+            error = errors[0]
+            raise ValueError(f"CDO error: {error}. Please check season supplied to nctoolkit methods!")
+
+        text = re.compile(r"Month [0-9]* not found")
+        errors = text.findall(error)
+        print(len(errors))
+        if len(errors) > 0:
+            error = errors[0]
+            raise ValueError(f"CDO error: {error}. Please check months supplied to nctoolkit methods!")
+
+        text = re.compile(r"Year [0-9]* not found")
+        errors = text.findall(error)
+        print(len(errors))
+        if len(errors) > 0:
+            error = errors[0]
+            raise ValueError(f"CDO error: {error}. Please check years supplied to nctoolkit methods!")
+
+        text = re.compile(r"Day [0-9]* not found")
+        errors = text.findall(error)
+        print(len(errors))
+        if len(errors) > 0:
+            error = errors[0]
+            raise ValueError(f"CDO error: {error}. Please check days supplied to nctoolkit methods!")
+
+        text = re.compile(r"Timestep [0-9]* not found")
+        errors = text.findall(error)
+        print(len(errors))
+        if len(errors) > 0:
+            error = errors[0]
+            raise ValueError(f"CDO error: {error}. Please check time steps supplied to nctoolkit methods!")
+
+
+
         raise ValueError(
             str(result).replace("b'", "").replace("\\n", "").replace("'", "")
         )
