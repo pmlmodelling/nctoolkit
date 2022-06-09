@@ -34,7 +34,7 @@ def rename(self, newnames):
     if len(self.history) == len(self._hold_history):
         variables = nc_variables(self[0])
         for key in newnames:
-            if newnames[key] not in variables:
+            if key not in variables:
                 if len(self) > 1:
                     warnings.warn(message = f"{key} is not in the first file of the dataset")
                 else:

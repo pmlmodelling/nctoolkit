@@ -1,9 +1,11 @@
 import copy
+import warnings
 
 from nctoolkit.cleanup import cleanup
 from nctoolkit.runthis import run_this, run_nco
 from nctoolkit.temp_file import temp_file
 from nctoolkit.session import remove_safe
+from nctoolkit.show import nc_variables
 
 
 def set_year(self, x):
@@ -138,6 +140,15 @@ def set_units(self, unit_dict=None):
     if type(unit_dict) is not dict:
         TypeError("A dictionary has not been supplied!")
 
+    if len(self.history) == len(self._hold_history):
+        variables = nc_variables(self[0])
+        for key in unit_dict:
+            if key not in variables:
+                if len(self) > 1:
+                    warnings.warn(message = f"{key} is not in the first file of the dataset")
+                else:
+                    warnings.warn(message = f"{key} is not in the dataset")
+
     # change the units in turn. This doesn't seem to be something you can chain?
     for i in unit_dict:
         if type(i) is not str:
@@ -172,6 +183,15 @@ def set_longnames(self, name_dict=None):
 
     new_commands = []
     new_files = []
+
+    if len(self.history) == len(self._hold_history):
+        variables = nc_variables(self[0])
+        for key in name_dict:
+            if key not in variables:
+                if len(self) > 1:
+                    warnings.warn(message = f"{key} is not in the first file of the dataset")
+                else:
+                    warnings.warn(message = f"{key} is not in the dataset")
 
     for ff in self:
         nco_command = "ncatted "
