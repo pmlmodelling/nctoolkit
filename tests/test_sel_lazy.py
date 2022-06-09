@@ -16,7 +16,7 @@ class TestSelect:
 
     def test_levels(self):
         ds = nc.open_data("data/woa18_decav_t01_01.nc")
-        ds.select(levels = [0, 2])
+        ds.subset(levels = [0, 40])
         ds.run()
         assert ds.levels == [0.0, 5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0]
 
