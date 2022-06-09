@@ -457,7 +457,7 @@ def subset(self, **kwargs):
             select_days(self, kwargs[key])
             non_selected = False
 
-        if "lev" in key.lower():
+        if "lev" in key.lower() or "depth" in key.lower():
             select_levels(self, kwargs[key])
             non_selected = False
 
