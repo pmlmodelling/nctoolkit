@@ -311,6 +311,20 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
             error = errors[0]
             raise ValueError(f"CDO error: {error}. Please check levels supplied to nctoolkit methods!")
 
+        text = re.compile(r"Variable >.*< not found!")
+        errors = text.findall(error)
+        print(len(errors))
+        if len(errors) > 0:
+            error = errors[0]
+            raise ValueError(f"CDO error: {error}. Please check variables supplied to nctoolkit")
+
+        text = re.compile(r"File has less then [0-9]* timesteps!")
+        errors = text.findall(error)
+        print(len(errors))
+        if len(errors) > 0:
+            error = errors[0]
+            raise ValueError(f"CDO error: {error}. Please check time steps supplied to nctoolkit methods")
+
         text = re.compile(r"Grid size of the input parameter .* do not match!")
         errors = text.findall(error)
         print(len(errors))
