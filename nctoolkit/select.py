@@ -48,7 +48,6 @@ def select_levels(self, levels=None):
         levels = f"{levels[0]}/{levels[1]}" 
 
     cdo_command =  f"cdo -sellevel,{levels}"
-    print(cdo_command)
         
     run_this(cdo_command, self, "ensemble")
 
@@ -383,6 +382,9 @@ def subset(self, **kwargs):
         The latitude range to select. This must be two variables,
         between -90 and 90.
 
+    levels : list
+        List of the form [min_level, max_level]. Levels/depths between the two will be selected
+
     Examples
     ------------
     If you want to select a single variable do the following:
@@ -453,6 +455,10 @@ def subset(self, **kwargs):
 
         if "day" in key.lower():
             select_days(self, kwargs[key])
+            non_selected = False
+
+        if "lev" in key.lower():
+            select_levels(self, kwargs[key])
             non_selected = False
 
 
