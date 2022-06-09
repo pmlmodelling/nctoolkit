@@ -1,10 +1,12 @@
 import warnings
+import numpy as np
 from datetime import datetime, timedelta
 
 from nctoolkit.cleanup import cleanup
 from nctoolkit.flatten import str_flatten
 from nctoolkit.runthis import run_this
 from nctoolkit.show import nc_years
+
 
 
 def to_date(x):
@@ -18,6 +20,37 @@ def to_date(x):
     month = int(new[1])
     year = int(new[2])
     return datetime(year, month, day)
+
+def select_levels(self, levels=None):
+    """
+    Select season from a dataset
+
+    Parameters
+    -------------
+    levels : list
+        List of the form [min_level, max_level]. Levels/depth between the two will be selected
+    """
+    if type(levels) is not list:
+        type(levels)
+        try:
+            levels = float(levels)
+        except:
+            raise ValueError("levels provided are not valid!")
+
+    if type(levels) is list:
+        try:
+            levels[0] = int(np.floor(float(levels[0])))
+            levels[1] = int(np.ceil(float(levels[1])))
+        except:
+            raise ValueError("levels provided are not valid!")
+        if levels[0] > levels[1]:
+            raise ValueError("levels have the wrong order")
+        levels = f"{levels[0]}/{levels[1]}" 
+
+    cdo_command =  f"cdo -sellevel,{levels}"
+    print(cdo_command)
+        
+    run_this(cdo_command, self, "ensemble")
 
 
 def select_period(self, period=None):
@@ -466,6 +499,8 @@ def select(self, **kwargs):
     lat: list
         The latitude range to select. This must be two variables,
         between -90 and 90.
+    levels : list
+        List of the form [min_level, max_level]. Levels/depths between the two will be selected
 
     Examples
     ------------
@@ -541,6 +576,9 @@ def select(self, **kwargs):
             select_days(self, kwargs[key])
             non_selected = False
 
+        if "lev" in key.lower():
+            select_levels(self, kwargs[key])
+            non_selected = False
 
     if non_selected:
         raise AttributeError(f"{key} is not a valid select method")
