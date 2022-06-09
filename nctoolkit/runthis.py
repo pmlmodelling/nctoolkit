@@ -311,12 +311,19 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
             error = errors[0]
             raise ValueError(f"CDO error: {error}. Please check levels supplied to nctoolkit methods!")
 
-        text = re.compile(r"Variable name .* not found")
+        text = re.compile(r"Grid size of the input parameter .* do not match!")
         errors = text.findall(error)
         print(len(errors))
         if len(errors) > 0:
             error = errors[0]
-            raise ValueError(f"CDO error: {error}. Please check variables supplied to nctoolkit methods!")
+            raise ValueError(f"CDO error: {error}. Please check grids in datasets used in operation!")
+
+        text = re.compile(r"Season .* not found")
+        errors = text.findall(error)
+        print(len(errors))
+        if len(errors) > 0:
+            error = errors[0]
+            raise ValueError(f"CDO error: {error}. Please check season supplied to nctoolkit methods!")
 
         text = re.compile(r"Season .* not found")
         errors = text.findall(error)
