@@ -1,4 +1,13 @@
 from nctoolkit.runthis import run_this
+from nctoolkit.show import nc_variables
+import warnings
+
+# A custom format for warnings.
+def custom_formatwarning(msg, *args, **kwargs):
+    # ignore everything except the message
+    return str(msg) + "\n"
+
+warnings.formatwarning = custom_formatwarning
 
 
 def rename(self, newnames):
@@ -21,6 +30,15 @@ def rename(self, newnames):
     # check a dict was supplied
     if type(newnames) is not dict:
         raise TypeError("a dictionary was not supplied")
+
+    if len(self.history) == len(self._hold_history):
+        variables = nc_variables(self[0])
+        for key in newnames:
+            if newnames[key] not in variables:
+                if len(self) > 1:
+                    warnings.warn(message = f"{key} is not in the first file of the dataset")
+                else:
+                    warnings.warn(message = f"{key} is not in the dataset")
 
     # now, we need to loop through the renaming dictionary to get the cdo sub
     cdo_rename = ""
