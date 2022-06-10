@@ -5,7 +5,7 @@ from nctoolkit.mp_utils import get_type
 from nctoolkit.matchpoint import open_matchpoint
 
 
-def match_points(ds=None, df = None, variables=None, depths = None, nan=None, top = False, tmean = False, regrid = "bil"):
+def match_points(ds=None, df = None, variables=None, depths = None, nan=None, top = False, tmean = False, regrid = "bil", max_extrap = 5):
     """
     Match netCDF data to a spatiotemporal points dataframe
     Parameters
@@ -34,6 +34,8 @@ def match_points(ds=None, df = None, variables=None, depths = None, nan=None, to
     regrid: str
         Regridding method. Defaults to "bil". Options available are those in nctoolkit regrid method.
         "nn" for nearest neighbour.
+    max_extrap: float
+        Maximum distance for vertical extrapolation of values 
 
     Returns
     ---------------
@@ -45,7 +47,7 @@ def match_points(ds=None, df = None, variables=None, depths = None, nan=None, to
 
     mp.add_data(x = ds, variables = variables, depths = depths, nan = nan, top = top)
     mp.add_points(df)
-    mp.matchup(tmean = tmean, regrid = regrid)
+    mp.matchup(tmean = tmean, regrid = regrid, max_extrap = max_extrap)
     return mp.values
 
 

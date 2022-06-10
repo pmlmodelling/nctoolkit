@@ -6,8 +6,47 @@ from nctoolkit.api import open_data, open_thredds
 from tqdm import tqdm
 
 
+from scipy.interpolate import interp1d
 
-def matchup(self,  tmean = False, regrid = "bil"):
+def extrap1d(interpolator, max_extrap = 5):
+    xs = interpolator.x
+    ys = interpolator.y
+
+    def pointwise(x):
+        if x > xs[-1]  and x <= xs[-1] + max_extrap:
+            return ys[-1]
+        elif x > (xs[-1] + max_extrap):
+            return np.nan
+        elif x >= (xs[0] - max_extrap) and x < xs[0]:
+            return ys[0]
+        elif x < (xs[0] - max_extrap):
+            return np.nan
+        else:
+            return interpolator(x)
+
+    def ufunclike(xs):
+        return np.array(list(map(pointwise, np.array(xs))))
+
+    return ufunclike
+
+def interp(x,y, levels, max_extrap = 5):
+    try:
+        f_i = interp1d(x, y)
+        f_x = extrap1d(f_i, max_extrap = max_extrap)
+        #f = interpolate.interp1d(x, y, fill_value = "extrapolate")
+        return f_x(levels)
+    except:
+        df = pd.DataFrame({"x":x, "y":y}).dropna()
+        new = []
+        for x in levels:
+            if float(np.abs(df.x - x)) < max_extrap:
+                new.append(df.y)
+            else:
+                new.append(np.nan)
+        return new
+
+
+def matchup(self,  tmean = False, regrid = "bil", max_extrap = 5):
     """
     Matchup gridded model and point observational data
     Parameters
@@ -23,8 +62,12 @@ def matchup(self,  tmean = False, regrid = "bil"):
     regrid: str
         Regridding method. Defaults to "bil". Options available are those in nctoolkit regrid method.
         "nn" for nearest neighbour.
+    max_extrap: float
+        Maximum distance for vertical extrapolation of values 
 
     """
+
+    self.max_extrap = max_extrap
 
     if self.depths is not None:
         if "depth" not in self.points.columns:
@@ -177,6 +220,8 @@ def matchup(self,  tmean = False, regrid = "bil"):
             ds.regrid(points.loc[:,["lon", "lat"]], method = regrid) 
             df_merged = [ds.to_dataframe().reset_index()]
             points_merged = True
+
+    n_missing = 0
 
     if points_merged is False:
 
@@ -364,29 +409,27 @@ def matchup(self,  tmean = False, regrid = "bil"):
                             if self.depths is not None:
                                 max_depth = np.max(j_model.depth)
                                 min_depth = np.min(j_model.depth)
-                                j_obs = (
-                                    j_obs.query("depth <= @max_depth")
-                                    .query("depth >= @min_depth")
-                                    .reset_index(drop=True)
-                                )
+
                             if len(j_obs) > 0:
 
-                                if self.depths is not None:
-                                    i_var = 0
-                                    for var in ds.variables:
-                                        f = interpolate.interp1d(
-                                            j_model.depth, j_model[var]
-                                        )
-                                        j_obs[var] = f(j_obs.depth)
+                                try:
+                                    if self.depths is not None:
+                                        i_var = 0
+                                        for var in ds.variables:
+                                            j_obs[var] = interp(j_model.depth, j_model[var], j_obs.depth, max_extrap = self.max_extrap)
 
-                                        i_var +=1
-                                    for x in ["day", "month", "year"]:
-                                        if x in i_df.columns:
-                                            j_obs[x] = i_df[x].values[0]
+                                            i_var +=1
+                                        for x in ["day", "month", "year"]:
+                                            if x in i_df.columns:
+                                                j_obs[x] = i_df[x].values[0]
 
-                                    df_merged.append(j_obs)
-                                else:
-                                    df_merged.append(j_model)
+                                        df_merged.append(j_obs)
+                                    else:
+                                        df_merged.append(j_model)
+                                except:
+                                    n_missing += 1
+    if n_missing > 0:
+        warnings.warn(f"{n_missing} points did not have sufficient vertical points in ds for vertical interpolation")
 
     if len(df_merged) == 0:
         raise ValueError("No data matches were found")

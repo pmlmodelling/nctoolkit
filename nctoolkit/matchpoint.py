@@ -19,6 +19,7 @@ class Matchpoint(object):
         self.variables = None
         self.top = True
         self.values = None
+        self.max_extrap = 5
 
     # Import any methods
 
