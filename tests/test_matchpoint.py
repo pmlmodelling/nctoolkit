@@ -241,28 +241,6 @@ class TestCrop:
         assert len(df_test) == 31
 
 
-        print("test 9")
-        ds = nc.open_data("data/matchpoint/amm7_1d_20000101_20000131_ptrc_T.nc")
-        df = pd.DataFrame({"lon":[1.5], "lat":[55], "depth":[2.117196798324585]})
-        depths = nc.open_data("data/matchpoint_depths.nc")
-        with pytest.raises(ValueError):
-            matcher = nc.match_points(ds, df.loc[:,["lon", "lat", "depth"]])
-
-        matcher = nc.match_points(ds, df.loc[:,["lon", "lat", "depth"]], depths = depths)
-        ds = nc.open_data("data/matchpoint/amm7_1d_20000101_20000131_ptrc_T.nc")
-        depths = nc.open_data("data/matchpoint_depths.nc")
-        ds.append(depths)
-        ds.regrid(df)
-        ds.merge()
-        df_test = ds.to_dataframe().reset_index().loc[:,["lon", "lat", "depth", "N3_n", "time_counter"]].drop_duplicates().query("depth == 2.117196798324585")
-        df_test["day"] = [x.day for x in df_test.time_counter]
-        df_test["month"] = [x.month for x in df_test.time_counter]
-        df_test["year"] = [x.year for x in df_test.time_counter]
-        df_test = df_test.loc[:,["lon", "lat", "depth", "day", "month", "year", "N3_n"]].rename(columns = {"N3_n":"test"}).reset_index(drop = True)
-        assert df_test.merge(matcher).assign(bias = lambda x: np.abs(x.test - x.N3_n)).bias.max() <  0.00001
-        assert len(df_test) == 31
-
-
         print("test 10")
 
 
@@ -296,4 +274,10 @@ class TestCrop:
         df = pd.DataFrame({"lon":[0.5, 0.7], "lat":[55,55], "day": [2,2],  "month":[1, 2]})
         df_res = ds.match_points(df, depths = depths)
         assert len(df_res.merge(df))  == 2 * 51
+
+        ds = nc.open_data("data/woa18_decav_t01_01.nc")
+        df = pd.DataFrame({"lon":np.repeat(-20, 8), "lat":np.repeat(55, 8), "depth":np.arange(-7, 1)})
+        df_matched = ds.match_points(df, max_extrap=6)
+        assert np.isnan(df_matched.query("depth == -7").t_an[0])
+        assert df_matched.query("depth == -5").t_an.values[0] == df_matched.query("depth == 0").t_an.values[0]
 
