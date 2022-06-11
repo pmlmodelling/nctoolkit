@@ -39,6 +39,9 @@ def match_points(self, df = None, variables = None, depths = None, tmean = False
     matchpoints : pandas.DataFrame
 
     """
+    if max_extrap < 0:
+        raise ValueError("max_extrap must not be negative")
+
     self.run()
     ds = self.copy()
 

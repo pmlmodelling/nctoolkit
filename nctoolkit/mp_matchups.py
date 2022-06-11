@@ -67,6 +67,9 @@ def matchup(self,  tmean = False, regrid = "bil", max_extrap = 5):
 
     """
 
+    if max_extrap < 0:
+        raise ValueError("max_extrap must be positive")
+
     self.max_extrap = max_extrap
 
     if self.depths is not None:
