@@ -49,6 +49,7 @@ def interp(x,y, levels, max_extrap = 5):
 def matchup(self,  tmean = False, regrid = "bil", max_extrap = 5):
     """
     Matchup gridded model and point observational data
+    
     Parameters
     -------------
     on: list or string

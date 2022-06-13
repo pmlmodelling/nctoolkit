@@ -5,6 +5,7 @@ def format(self, ext=None):
     """
     Zip the dataset
     This will compress the files within the dataset. This works lazily.
+
     Parameters
     -------------
     ext: str

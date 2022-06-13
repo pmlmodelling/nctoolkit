@@ -4,6 +4,7 @@ from nctoolkit.runthis import run_this
 def fill_na(self, n=1):
     """
     Fill missing values with a distance-weighted average. This carries out infilling for each time step and vertical level.
+
     Parameters
     -------------
     n: int

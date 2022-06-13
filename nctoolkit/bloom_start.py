@@ -84,6 +84,7 @@ def bloom_start(self, drop=False, **kwargs):
     """
     Create new variables
     Existing columns that are re-assigned will be overwritten.
+
     Parameters
     ----------
     drop : bool

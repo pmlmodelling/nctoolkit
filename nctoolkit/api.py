@@ -377,6 +377,9 @@ def from_xarray(ds):
     Parameters
     ---------------
     ds : xarray dataset
+        xarray dataset you want to convert to nctoolkit DataSet.
+
+    Returns
     ---------------
     from_xarray : nctoolkit.DataSet
     """
@@ -1616,8 +1619,11 @@ class DataSet(object):
 
     def copy(self):
         """
-        Make a deep copy of an DataSet object
+        Make a deep copy of an DataSet object.
         Note: This will not make disk copies of the temporary files underlying datasets, so it will be disk-space efficient.
+        Returns
+        ---------------
+        copy: nctoolkit DataSet
         """
         self.run()
 

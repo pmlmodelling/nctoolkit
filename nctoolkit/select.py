@@ -197,6 +197,7 @@ def select_years(self, years=None):
     Select years from a dataset
     This method will subset the dataset to only contain years within the list given.
     A warning message will be provided when there are missing years.
+
     Parameters
     -------------
     years : list,range or int

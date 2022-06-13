@@ -7,6 +7,7 @@ from nctoolkit.matchpoint import open_matchpoint
 def match_points(self, df = None, variables = None, depths = None, tmean = False, top = False, nan = None, regrid = "bil", max_extrap = 5):
     """
     Match dataset to a spatiotemporal points dataframe
+
     Parameters
     -------------
     df: pandas DataFrame

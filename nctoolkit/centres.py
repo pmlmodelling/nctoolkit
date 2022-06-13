@@ -3,6 +3,9 @@ def centre(self, by="latitude", by_area=False):
     """
     Calculate the latitudinal or longitudinal centre for each year/month combination in files.
     This applies to each file in an ensemble.
+
+    Parameters
+    -------------
     by : str
         Set to 'latitude' if you want the latitiduinal centre calculated. 'longitude' for longitudinal.
     by_area : bool

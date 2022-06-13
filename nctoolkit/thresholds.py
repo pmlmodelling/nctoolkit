@@ -5,6 +5,7 @@ def first_above(self, x=None):
     """
     Identify the time step when a value is first above a threshold
     This will do the comparison with either a number, a Dataset or a netCDF file.
+
     Parameters
     ------------
     x: int, float, DataSet or netCDF file
@@ -68,6 +69,7 @@ def first_below(self, x=None):
     """
     Identify the time step when a value is first below a threshold
     This will do the comparison with either a number, a Dataset or a netCDF file.
+
     Parameters
     ------------
     x: int, float, DataSet or netCDF file
@@ -132,6 +134,7 @@ def last_above(self, x=None):
     """
     Identify the final time step when a value is above a threshold
     This will do the comparison with either a number, a Dataset or a netCDF file.
+
     Parameters
     ------------
     x: int, float, DataSet or netCDF file
@@ -201,6 +204,7 @@ def last_below(self, x=None):
     """
     Identify the last time step when a value is below a threshold
     This will do the comparison with either a number, a Dataset or a netCDF file.
+
     Parameters
     ------------
     x: int, float, DataSet or netCDF file

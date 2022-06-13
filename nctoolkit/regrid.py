@@ -30,6 +30,8 @@ def regrid(self, grid=None, method="bil", recycle=False):
         First order conservative remapping - "con"
         Second order conservative remapping - "con2"
         Large area fraction remapping - "laf"
+    recycle : bool 
+        Set to True if you want to re-use the remapping weights when you are regridding another dataset. 
     """
 
     if len(self) == 0:

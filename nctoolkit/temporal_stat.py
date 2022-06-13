@@ -290,6 +290,7 @@ def tmax(self, over="time"):
 def tmedian(self, over="time"):
     """
     Calculate the temporal median of all variables
+
     Parameters
     -------------
     over: str or list

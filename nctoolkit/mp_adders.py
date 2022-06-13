@@ -8,6 +8,7 @@ from nctoolkit.matchpoint import open_matchpoint
 def match_points(ds=None, df = None, variables=None, depths = None, nan=None, top = False, tmean = False, regrid = "bil", max_extrap = 5):
     """
     Match netCDF data to a spatiotemporal points dataframe
+
     Parameters
     -------------
     ds: nctoolkit dataset or str/list of file paths
@@ -54,6 +55,7 @@ def match_points(ds=None, df = None, variables=None, depths = None, nan=None, to
 def add_data(self, x=None, variables=None, depths = None, nan=None, top = False):
     """
     Add dataset for matching
+
     Parameters
     -------------
     x: nctoolkit dataset or str/list of file paths
@@ -216,6 +218,7 @@ def add_data(self, x=None, variables=None, depths = None, nan=None, top = False)
 def add_depths(self, x=None):
     """
     Add depth
+
     Parameters
     -------------
     x:  nctoolkit dataset or list/iterable
@@ -242,6 +245,7 @@ def add_depths(self, x=None):
 def add_points(self, df=None):
     """
     Add point data
+
     Parameters
     -------------
     df: pandas dataframe containing the spatiotemporal points to match with.

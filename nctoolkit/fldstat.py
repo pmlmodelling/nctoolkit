@@ -282,6 +282,7 @@ def spatial_percentile(self, p=None):
     """
     Calculate the spatial sum for all variables
     This is performed for each time step.
+
     Parameters
     -------------
     p: int or float

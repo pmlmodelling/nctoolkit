@@ -361,6 +361,7 @@ def multiply(self, x=None, var=None):
     """
     Multiply a dataset
     This will multiply a dataset by a constant, another dataset or a netCDF file.
+
     Parameters
     ------------
     x: int, float, DataSet or netCDF file
@@ -415,6 +416,7 @@ def subtract(self, x=None, var=None):
     """
     Subtract from a dataset
     This will subtract a constant, another dataset or a netCDF file from the dataset.
+
     Parameters
     ------------
     x: int, float, DataSet or netCDF file
@@ -471,7 +473,7 @@ def add(self, x=None, var=None):
     This will add a constant, another dataset or a netCDF file to the dataset.
     nctoolkit will automatically determine the appropriate comparison required.
 
-     Parameters
+    Parameters
     ------------
     x: int, float, DataSet or netCDF file
         An int, float, single file dataset or netCDF file to add to the dataset.
@@ -527,6 +529,7 @@ def divide(self, x=None, var=None):
     """
     Divide the data
     This will divide the dataset by a constant, another dataset or a netCDF file.
+
     Parameters
     ------------
     x: int, float, DataSet or netCDF file
@@ -597,6 +600,7 @@ def abs(self):
 def power(self, x=None):
     """
     Powers of variables in dataset
+
     Parameters
     ------------
     x: int, float

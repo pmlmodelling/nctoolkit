@@ -60,6 +60,7 @@ def get_type(ds):
 def add_model(self, ds = None, map = None, nan = None , precision = None, **kwargs):
     """
     Add model data
+
     Parameters
     -------------
     ds: Dataset
@@ -98,6 +99,7 @@ def add_model(self, ds = None, map = None, nan = None , precision = None, **kwar
 def add_observations(self, ds = None, map = None, nan = None , precision = None):
     """
     Add observational data
+
     Parameters
     -------------
     ds: Dataset
