@@ -201,8 +201,8 @@ Subsetting operations
 .. autosummary::
    :toctree: generated/
 
+   DataSet.subset
    DataSet.crop
-   DataSet.select
    DataSet.drop
 
 Time-based methods
