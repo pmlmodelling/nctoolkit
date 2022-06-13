@@ -211,7 +211,7 @@ def operation(self, method="mul", ff=None, var=None):
                 method = method
                 new = False
                 warnings.warn(
-                    f"{nc_str}t time series with the same number of time steps"
+                    f"{nc_str} time series with the same number of time steps"
                 )
 
     # figure out if a single year monthly will do
