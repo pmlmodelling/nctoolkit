@@ -212,6 +212,7 @@ Time-based methods
    :toctree: generated/
 
    DataSet.set_date
+   DataSet.set_year
    DataSet.shift
 
 Interpolation, matching and resampling methods
@@ -358,6 +359,7 @@ Miscellaneous methods
    DataSet.set_gridtype
    DataSet.surface_mask
    DataSet.strip_variables
+   DataSet.no_leaps
 
 
 
