@@ -1773,8 +1773,8 @@ class DataSet(object):
 
     from nctoolkit.run import run
 
-    from nctoolkit.select import select
-    from nctoolkit.select import subset
+    from nctoolkit.subset import select
+    from nctoolkit.subset import subset
 
     from nctoolkit.setters import set_date
     from nctoolkit.setters import set_year
