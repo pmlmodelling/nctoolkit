@@ -1,6 +1,21 @@
 News
 ============
 
+Release of v0.5.1
+---------------
+
+This will be a minor release in July 2022. The `subset` method will now allow negative time slicing.
+
+Release of v0.5.0
+---------------
+
+This relase was made on 13th June 2022. The `match_points` method now allows extrapolation to vertical depths. 
+
+Release of v0.4.9
+---------------
+
+This relase was made on 9th June 2022. The `subset` method now accepts levels.
+
 Release of v0.4.8
 ---------------
 
