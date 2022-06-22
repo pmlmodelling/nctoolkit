@@ -6,7 +6,7 @@ from nctoolkit.cleanup import cleanup
 from nctoolkit.flatten import str_flatten
 from nctoolkit.runthis import run_this
 from nctoolkit.show import nc_years
-from nctoolkit.utils import cdo_version, version_above
+from nctoolkit.utils import cdo_version, version_above, name_check
 
 
 
@@ -297,6 +297,10 @@ def select_variables(self, vars=None):
     for vv in vars_list:
         if type(vv) is not str:
             raise TypeError(f"{vv} is not a str")
+
+    for x in vars_list:
+        if name_check(x) is False:
+            raise ValueError(f"{x} is not a valid netCDF variable name")
 
     vars_list = str_flatten(vars_list, ",")
 

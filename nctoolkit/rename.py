@@ -1,5 +1,6 @@
 from nctoolkit.runthis import run_this
 from nctoolkit.show import nc_variables
+from nctoolkit.utils import name_check
 import warnings
 
 # A custom format for warnings.
@@ -42,6 +43,14 @@ def rename(self, newnames):
 
     # now, we need to loop through the renaming dictionary to get the cdo sub
     cdo_rename = ""
+
+    for key, value in newnames.items():
+        if name_check(key) is False:
+            raise ValueError(f"{key} is not a valid netCDF variable name")
+
+        if name_check(value) is False:
+            raise ValueError(f"{value} is not a valid netCDF variable name")
+
 
     for key, value in newnames.items():
         if type(key) is not str:

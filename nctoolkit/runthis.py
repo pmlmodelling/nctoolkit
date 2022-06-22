@@ -318,6 +318,13 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
             error = errors[0]
             raise ValueError(f"CDO error: {error}. Please check variables supplied to nctoolkit")
 
+        text = re.compile(r"Variable name .* not found!")
+        errors = text.findall(error)
+        print(len(errors))
+        if len(errors) > 0:
+            error = errors[0]
+            raise ValueError(f"CDO error: {error}. Please check variables supplied to nctoolkit")
+
         text = re.compile(r"File has less then [0-9]* timesteps!")
         errors = text.findall(error)
         print(len(errors))
@@ -426,6 +433,12 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
                 else:
                     remove_safe(target)
                     remove_safe(start_target)
+
+                    
+
+                    if  "Error (cdf_put_vara_double): NetCDF: Numeric conversion not representable" in str(result):
+                        raise ValueError("CDO error: Error (cdf_put_vara_double): NetCDF: Numeric conversion not representable. Tip: check if missing values are incorrectly set to large actual values!")
+
                     raise ValueError(
                         str(result1)
                         .replace("b'", "")

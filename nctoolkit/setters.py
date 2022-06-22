@@ -6,6 +6,7 @@ from nctoolkit.runthis import run_this, run_nco
 from nctoolkit.temp_file import temp_file
 from nctoolkit.session import remove_safe
 from nctoolkit.show import nc_variables
+from nctoolkit.utils import name_check
 
 
 def set_year(self, x):
@@ -140,6 +141,10 @@ def set_units(self, unit_dict=None):
     if type(unit_dict) is not dict:
         TypeError("A dictionary has not been supplied!")
 
+    for key, value in unit_dict.items():
+        if name_check(key) is False:
+            raise ValueError(f"{key} is not a valid netCDF variable name")
+
     if len(self.history) == len(self._hold_history):
         variables = nc_variables(self[0])
         for key in unit_dict:
@@ -192,6 +197,10 @@ def set_longnames(self, name_dict=None):
                     warnings.warn(message = f"{key} is not in the first file of the dataset")
                 else:
                     warnings.warn(message = f"{key} is not in the dataset")
+
+    for key, value in name_dict.items():
+        if name_check(key) is False:
+            raise ValueError(f"{key} is not a valid netCDF variable name")
 
     for ff in self:
         nco_command = "ncatted "

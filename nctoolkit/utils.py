@@ -1,6 +1,29 @@
 import re
 import subprocess
 
+def name_check(x):
+
+    if len(x) == 0:
+        return False
+
+    if " " in x:
+        return False
+
+    if len(x) == 1:
+        text = re.compile("[a-zA-Z]")
+        if text.match(x):
+            return True
+        else:
+            return False
+    text = re.compile("([a-zA-Z0-9_]|{MUTF8})([^\x00-\x1F/\x7F-\xFF]|{MUTF8})")
+    # regex taken from https://www.unidata.ucar.edu/support/help/MailArchives/netcdf/msg10684.html
+
+    if text.match(x):
+        return True
+    else:
+        return False
+
+
 
 def is_curvilinear(ff):
     """
