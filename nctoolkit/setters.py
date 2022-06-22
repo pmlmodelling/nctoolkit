@@ -139,7 +139,7 @@ def set_units(self, unit_dict=None):
 
     # Check that a dictionary has been supplied
     if type(unit_dict) is not dict:
-        TypeError("A dictionary has not been supplied!")
+        raise TypeError("A dictionary has not been supplied!")
 
     for key, value in unit_dict.items():
         if name_check(key) is False:
@@ -178,6 +178,9 @@ def set_longnames(self, name_dict=None):
     """
     if name_dict is None:
         raise ValueError("Please supply name_dict")
+
+    if type(name_dict) is not dict:
+        raise TypeError("Please supply a dictionary")
 
     self.run()
 
