@@ -20,6 +20,8 @@ What systems can nctoolkit work on?
 
 nctoolkit requires a Linux or macOS operating system.
 
+What can nctoolkit do? 
+########
 
 The core abilities of nctoolkit include:
 

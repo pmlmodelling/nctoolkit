@@ -39,6 +39,13 @@ There is a built in method in nctoolkit for checking if the format of a dataset 
 
 This will carry out a number of checks. First, it will check if there are any variables with integer data types. Second, it will check if the time dimension is stored as an integer data type, which can potentially cause problems. Third, it will check if files are CF-compliant. Lack of CF-compliance could point towards problems with CDO interpreting the contents of the dataset, and thus problems in nctoolkit. Finally, it will check if the variables in a datset have the same horizontal grids.
 
+How to check if a file is corrupt 
+---------------
+
+A common problem with netCDF files is that they can be corrupt. This typically means that parts of the data cannot be accessed. If you want to check if a dataset is corrupt just do the following:
+
+.. code:: ipython3
+   ds.is_corrupt()
 
 
 How to fix a dataset with coordinates as variables
