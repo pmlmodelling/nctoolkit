@@ -74,6 +74,7 @@ nctoolkit is developed as open source software by the Marine Systems Modelling g
    hacks 
    globals 
    backends
+   troubleshoot
 
 
 
