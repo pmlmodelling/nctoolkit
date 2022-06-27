@@ -10,8 +10,8 @@ Under-the-hood, nctoolkit uses Climate Data Operators (CDO) as its computational
 any problems. However, some times it will. For example, imagine you want to calculate the fraction of time temperature exceeds 30 degrees, but the data is stored as integer format. In nctoolkit, you could
 calculate this as follows:
 
-
 .. code:: ipython3
+
    ds.assign(temperature = lambda x: x.temperature > 30)
    ds.tmean()
 
@@ -19,6 +19,7 @@ In theory, this is fine. But, if the data is stored as integer format, you will 
 follows:
 
 .. code:: ipython3
+
    ds.set_precision("F64")
    ds.assign(temperature = lambda x: x.temperature > 30)
    ds.tmean()
@@ -26,6 +27,7 @@ follows:
 By default, nctoolkit will warn you if a dataset has integer data types when you open a dataset. But if you want to know what data types each variable has just do the following:
 
 .. code:: ipython3
+
    ds.contents
 
 How to carry out general checks on a dataset
@@ -34,6 +36,7 @@ How to carry out general checks on a dataset
 There is a built in method in nctoolkit for checking if the format of a dataset is problematic. Just do the following:
 
 .. code:: ipython3
+
    ds.check()
 
 
@@ -45,6 +48,7 @@ How to check if a file is corrupt
 A common problem with netCDF files is that they can be corrupt. This typically means that parts of the data cannot be accessed. If you want to check if a dataset is corrupt just do the following:
 
 .. code:: ipython3
+
    ds.is_corrupt()
 
 
@@ -56,6 +60,7 @@ You can fix this using the ``assign_coords`` method as follows:
 
 
 .. code:: ipython3
+
    ds.assign_coords(lon_name = "lon", lat_name = "lat")
 
 where `lon_name` and `lat_name` should be the name of the longitude and latitude variables.
