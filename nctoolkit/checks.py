@@ -1,8 +1,8 @@
 import xarray as xr
 from nctoolkit.temp_file import temp_file
 from nctoolkit.api import open_data
+from netCDF4 import Dataset
 import subprocess
-
 
 def is_corrupt(self):
     """
@@ -58,8 +58,29 @@ def check(self):
         print("Variable checks passed")
 
     print("*****************************************")
+    print("Checking time data type")
+    print("*****************************************")
+
+    the_warns = []
+    for ff in self:
+        dataset = Dataset(ff)
+        times = [x for x in dataset.variables.keys() if "time" in x]
+        if len(times) > 0:
+            for tt in times:
+                time_var = dataset.variables[tt][:]
+                if "int" in str(time_var.dtype):
+                    the_warns.append(f"{tt} has integer data type. Consider setting it to double using as_double")
+
+
+    if len(the_warns) > 0:
+        the_warns = list(set(the_warns))
+        for tt in the_warns:
+            print(tt)
+
+    print("*****************************************")
     print("Running CF-compliance checks")
     print("*****************************************")
+
 
     cf_checker = True
     try:

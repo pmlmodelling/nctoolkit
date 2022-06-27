@@ -360,6 +360,7 @@ Miscellaneous methods
    DataSet.surface_mask
    DataSet.strip_variables
    DataSet.no_leaps
+   DataSet.as_double
 
 
 
