@@ -248,3 +248,32 @@ def delete_attributes(self, atts):
     cleanup(keep=self.current)
 
     self.history.append(nco_command)
+
+
+
+def as_double(self, x):
+    """
+    Set a variable/dimension to double
+    This is mostly useful for cases when time is stored as an int, but you need a double
+
+    Parameters
+    -------------
+    x : list
+        A list of variable/dimensions you want to convert to floats
+
+    """
+
+    if type(x) is str:
+        x = [x]
+    if type(x) is not list:
+        raise ValueError("Please provide a list to as_double")
+
+    for xx in x:
+        if type(xx) is not str:
+            raise ValueError("Please provide a list of strings to as_double")
+
+    for xx in x:
+        self.nco_command(f"ncap2 -s 'time=double({xx})'")
+
+
+
