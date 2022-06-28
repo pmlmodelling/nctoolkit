@@ -19,7 +19,7 @@ jobs:
             conda create -n nctoolkit python=3.9 -y
             conda install -c conda-forge curl -y
             conda install -c conda-forge gnupg -y
-            sudo apt install libstdc++6
+            conda install -c conda-forge libgcc -y
 
 
       # Step 3: run linter and tests
