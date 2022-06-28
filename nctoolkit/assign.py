@@ -260,13 +260,13 @@ def assign(self, drop=False, **kwargs):
         raise ValueError("You cannot split assign calls using ;")
 
     if ".assign(" not in start:
-        raise ValueError("Please write assign methods as single line!")
+        raise ValueError(f"Decoded the start point for assign as {start}")
+        #raise ValueError("Please write assign methods as single line!")
 
     try:
         find_parens3(start)
     except:
-        raise ValueError(f"Decoded the start point for assign as {start}")
-        #raise ValueError("Please write assign methods as single line!")
+        raise ValueError("Please write assign methods as single line!")
 
     start = start.strip()
     start = start[start.find("(") + 1 : -1]
