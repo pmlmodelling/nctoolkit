@@ -17,9 +17,6 @@ jobs:
           name: install dependencies
           command: |
             conda create -n nctoolkit python=3.9 -y
-            conda install -c conda-forge curl -y
-            conda install -c conda-forge gnupg -y
-            conda install -c conda-forge libgcc -y
 
 
       # Step 3: run linter and tests
