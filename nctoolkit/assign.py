@@ -265,7 +265,8 @@ def assign(self, drop=False, **kwargs):
     try:
         find_parens3(start)
     except:
-        raise ValueError("Please write assign methods as single line!")
+        raise ValueError(f"Decoded the start point for assign as {start}")
+        #raise ValueError("Please write assign methods as single line!")
 
     start = start.strip()
     start = start[start.find("(") + 1 : -1]
