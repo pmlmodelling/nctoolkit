@@ -13,17 +13,6 @@ class TestVerts:
     def test_integration(self):
 
         ff = "data/vertical_tester.nc"
-        ds = nc.open_data(ff)
-        ds1 = nc.open_data(ff)
-        ds1.multiply(2)
-        ds.append(ds1)
-
-        with pytest.raises(ValueError):
-            ds.vertical_integration("e3t")
-
-        with pytest.raises(ValueError):
-            ds.vertical_mean("e3t")
-
 
         ff = "data/vertical_tester.nc"
 
