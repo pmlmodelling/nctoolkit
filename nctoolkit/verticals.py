@@ -167,8 +167,10 @@ def vertical_mean(self, thickness=None, depth_range=None):
 
     self.run()
 
+    self1 = self.copy()
+
     if len(self) > 1:
-        raise ValueError("This only works with single file datasets currently")
+        warnings.warn("Vertical structure will be assumed to be the same for all files in the dataset")
 
     # Set up the thickness
 
@@ -182,7 +184,7 @@ def vertical_mean(self, thickness=None, depth_range=None):
 
     if sorted is False:
         if thickness in self.variables:
-            ds_thick = self.copy()
+            ds_thick = open_data(self[0]) 
             ds_thick.subset(variable=thickness)
             ds_thick.run()
         else:
@@ -207,18 +209,24 @@ def vertical_mean(self, thickness=None, depth_range=None):
         ds_thick.assign(thickness=lambda x: x.depth - x.z_min, drop=True)
         ds_thick.assign(thickness=lambda x: x.thickness * (x.thickness > 0), drop=True)
 
-    self.subset(variables=self.contents.query("nlevels > 1").variable)
+    self1.subset(variables=self.contents.query("nlevels > 1").variable)
 
-    self.multiply(ds_thick)
-    self.vertical_sum()
-    self.run()
+    self1.multiply(ds_thick)
+    self1.vertical_sum()
+    self1.run()
 
     ds_thick.vertical_sum()
-    self.divide(ds_thick)
+    self1.divide(ds_thick)
+    self1.run()
 
     del ds_thick
     if type(depth_range) is list:
         del ds_depth
+
+
+    self.current = self1.current
+    self.history = self1.history
+    self._hold_history = self1._hold_history
 
 
 def vertical_min(self):
