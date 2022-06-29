@@ -182,11 +182,13 @@ def vertical_mean(self, thickness=None, depth_range=None):
             raise ValueError("Please provide a thickness dataset with 1 variable!")
         sorted = True
 
+    drop_this = None
     if sorted is False:
         if thickness in self.variables:
             ds_thick = open_data(self[0]) 
             ds_thick.subset(variable=thickness)
             ds_thick.run()
+            drop_this = thickness
         else:
             ds_thick = open_data(thickness)
             if len(ds_thick.variables) != 1:
@@ -210,6 +212,8 @@ def vertical_mean(self, thickness=None, depth_range=None):
         ds_thick.assign(thickness=lambda x: x.thickness * (x.thickness > 0), drop=True)
 
     self1.subset(variables=self.contents.query("nlevels > 1").variable)
+    if drop_this is not None:
+        self1.drop(variables = drop_this)
 
     self1.multiply(ds_thick)
     self1.vertical_sum()
@@ -307,6 +311,7 @@ def vertical_integration(self, thickness=None, depth_range=None):
         if depth_range[1] <= depth_range[0]:
             raise ValueError("Please provide a correctly ordered depth range")
 
+    drop_this = None
     if depth_range is not None:
         if type(depth_range) is not list:
             raise TypeError("Please provide a list for the depth range!")
@@ -337,6 +342,7 @@ def vertical_integration(self, thickness=None, depth_range=None):
             ds_thick = open_data(self1[0])
             ds_thick.subset(variable=thickness)
             ds_thick.run()
+            drop_this = thickness
         else:
             ds_thick = open_data(thickness)
             if len(ds_thick.variables) != 1:
@@ -360,6 +366,8 @@ def vertical_integration(self, thickness=None, depth_range=None):
         ds_thick.assign(thickness=lambda x: x.thickness * (x.thickness > 0), drop=True)
 
     self1.subset(variables=self1.contents.query("nlevels > 1").variable)
+    if drop_this is not None:
+        self1.drop(variables = drop_this)
 
     self1.multiply(ds_thick)
     self1.vertical_sum()
@@ -444,7 +452,7 @@ def bottom_mask(self):
     var_use = data.contents.query("nlevels>1").variable[0]
     data.subset(variables=var_use)
     data.subset(timesteps=0)
-    data.set_missing([0, 0])
+    data.as_missing([0, 0])
     data.cdo_command(f"expr,'Wet={var_use}=={var_use}'")
     data.invert_levels()
     data.run()
@@ -455,7 +463,7 @@ def bottom_mask(self):
     bottom.invert_levels()
     bottom.rename({"Wet": "bottom"})
     bottom.set_longnames({"bottom": "Identifier for cell nearest seabed"})
-    bottom.set_missing([0, 0])
+    bottom.as_missing([0, 0])
     bottom.run()
 
     self.current = copy.deepcopy(bottom.current)
