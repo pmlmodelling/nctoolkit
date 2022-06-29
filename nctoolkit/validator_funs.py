@@ -202,10 +202,10 @@ def matchup(self, levels = "top", na_match = False, **kwargs):
 
     if self.model_nan is not None:
         print("Fixing missing values in model data!")
-        self.model.set_missing(self.model_nan)
+        self.model.as_missing(self.model_nan)
     if self.obs_nan is not None:
         print("Fixing missing values in observation data!")
-        self.model.set_missing(self.obs_nan)
+        self.model.as_missing(self.obs_nan)
 
     for key, value in self.model_map.items():
         if is_equation(value) is False:
@@ -248,7 +248,7 @@ def matchup(self, levels = "top", na_match = False, **kwargs):
         mask = self.model.copy()
         mask.rename({list(self.model_map.keys())[0]: "variable"})
         mask.assign(variable = lambda x: isnan(x.variable) == False)
-        mask.set_missing(0)
+        mask.as_missing(0)
 
         self.model.multiply(mask)
         self.obs.multiply(mask)
@@ -256,7 +256,7 @@ def matchup(self, levels = "top", na_match = False, **kwargs):
         mask = self.obs.copy()
         mask.rename({list(self.model_map.keys())[0]: "variable"})
         mask.assign(variable = lambda x: isnan(x.variable) == False)
-        mask.set_missing(0)
+        mask.as_missing(0)
 
         self.model.multiply(mask)
         self.obs.multiply(mask)

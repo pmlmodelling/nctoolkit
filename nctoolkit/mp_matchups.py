@@ -308,7 +308,7 @@ def matchup(self,  tmean = False, regrid = "bil", max_extrap = 5):
                 ds.tmean(on)
 
             if self.data_nan is not None:
-                ds.set_missing(self.data_nan)
+                ds.as_missing(self.data_nan)
 
             ds.regrid(i_grid, method = regrid) 
 
