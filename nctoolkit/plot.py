@@ -51,6 +51,9 @@ def plot(self, vars=None, autoscale=True, out = None, **kwargs):
 
     """
 
+    if "title" not in kwargs.keys():
+        kwargs["title"] = ""
+
     # run any commands
     self.run()
 
@@ -80,6 +83,6 @@ def plot(self, vars=None, autoscale=True, out = None, **kwargs):
 
     if type(vars) is list and len(vars) > 1:
         with time_limit(20):
-            return view(self[0], vars=vars, autoscale=autoscale, **kwargs)
+            return view(self[0], vars=vars, autoscale=autoscale,  **kwargs)
 
-    return view(self[0], vars=vars, autoscale=autoscale, out = out, **kwargs)
+    return view(self[0], vars=vars, autoscale=autoscale, out = out,   **kwargs)
