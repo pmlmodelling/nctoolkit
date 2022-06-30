@@ -266,7 +266,7 @@ def as_type(self, x):
     self.run()
 
     if type(x) is not dict:
-        x = [x]
+        raise ValueError("Please provide a dictionary")
 
     ds = xr.open_dataset(self[0])
     the_vars = ds.variables
