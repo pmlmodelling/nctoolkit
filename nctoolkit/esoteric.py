@@ -1,6 +1,7 @@
 import copy
 import pandas as pd
 import numpy as np
+import xarray as xr
 
 from .temp_file import temp_file
 from .cleanup import cleanup
@@ -250,6 +251,47 @@ def delete_attributes(self, atts):
     self.history.append(nco_command)
 
 
+def as_type(self, x):
+    """
+    Set a variable/dimension to double
+    This is mostly useful for cases when time is stored as an int, but you need a double
+
+    Parameters
+    -------------
+    x : dict
+        A dictionary mapping variables to type. Values in dict must be one of 'int', 'float32' and 'float64'.
+
+    """
+
+    self.run()
+
+    if type(x) is not dict:
+        x = [x]
+
+    ds = xr.open_dataset(self[0])
+    the_vars = ds.variables
+
+    for xx in x.keys():
+        if xx not in the_vars:
+            raise ValueError(f"{xx} is not a variable in the dataset")
+
+    for xx in x.values():
+        if xx not in ["int", "float32", "float64"]:
+            raise ValueError(f"{xx} is not one of int, float32, float64")
+
+    for xx in x.keys():
+        if x[xx] == "float32":
+            x[xx] = "float"
+        if x[xx] == "float64":
+            x[xx] = "double"
+
+
+    the_command = ""
+    for xx in x:
+        the_command += f" -s '{xx}={x[xx]}({xx})'"
+
+    self.nco_command(f"ncap2 {the_command}")
+
 
 def as_double(self, x):
     """
@@ -263,6 +305,8 @@ def as_double(self, x):
 
     """
 
+    self.run()
+
     if type(x) is str:
         x = [x]
     if type(x) is not list:
@@ -273,7 +317,7 @@ def as_double(self, x):
             raise ValueError("Please provide a list of strings to as_double")
 
     for xx in x:
-        self.nco_command(f"ncap2 -s 'time=double({xx})'")
+        self.nco_command(f"ncap2 -s '{xx}=double({xx})'")
 
 
 

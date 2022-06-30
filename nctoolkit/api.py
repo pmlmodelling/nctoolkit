@@ -1713,6 +1713,7 @@ class DataSet(object):
     from nctoolkit.esoteric import set_gridtype
     from nctoolkit.esoteric import no_leaps
     from nctoolkit.esoteric import as_double
+    from nctoolkit.esoteric import as_type
 
     from nctoolkit.fill import fill_na
 

@@ -4,17 +4,19 @@ News
 Release of v0.5.1
 ---------------
 
-This will be a minor release in July 2022. It will include method enhancements.
+This was a minor release made on 30th June 2022. It includes method enhancements.
 
-The `subset` method will now allow negative time slicing.
+The `subset` method now allows negative time slicing.
 
-The `set_missing` method will be deprecated and replaced with a less ambiguously named `as_missing` method.
+The `set_missing` method is deprecated and replaced with a less ambiguously named `as_missing` method.
 
 The `plot` method will no longer show a plot title by default to make things cleaner.
 
 The `vertical_integration` method now works with multi-file datasets and will not calculate vertical integrations for the thickness variable.
 
 Some improvements have been made to improve error messages, and the `check` method now checks for data type of time.
+
+A new method ``as_type`` has been added for changing data type of individual variables and coordinates.
 
 
 
