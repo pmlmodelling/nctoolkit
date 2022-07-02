@@ -1684,6 +1684,8 @@ class DataSet(object):
 
     from nctoolkit.cleanup import disk_clean
 
+    from nctoolkit.clear import reset
+
     from nctoolkit.compare import compare
 
     from nctoolkit.compare_data import gt
