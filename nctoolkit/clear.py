@@ -23,6 +23,6 @@ def reset(self):
     self._grid =  None
     self._weights =  None
     self._ncommands =  0
-    warnings.warn("Dataset has been reset to the starting point!)
+    warnings.warn("The dataset has been reset to the starting point due to a run failure! Please change commands, where applicable, and re-run.")
 
 
