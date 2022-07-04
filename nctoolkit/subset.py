@@ -300,7 +300,8 @@ def select_variables(self, vars=None):
 
     for x in vars_list:
         if name_check(x) is False:
-            raise ValueError(f"{x} is not a valid netCDF variable name")
+            if "*" not in x:
+                raise ValueError(f"{x} is not a valid netCDF variable name")
 
     vars_list = str_flatten(vars_list, ",")
 
