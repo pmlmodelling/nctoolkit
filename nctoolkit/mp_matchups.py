@@ -1,6 +1,7 @@
 import pandas as pd
 import re
 import scipy.interpolate as interpolate
+import warnings
 import numpy as np
 from nctoolkit.api import open_data, open_thredds
 from tqdm import tqdm
