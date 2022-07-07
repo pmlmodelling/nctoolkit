@@ -48,6 +48,17 @@ def match_points(self, df = None, variables = None, depths = None, tmean = False
 
     mp = open_matchpoint()
 
+    for x in df.columns:
+        if x not in ["lon", "lat", "year", "month", "day", "depth"]:
+            raise ValueError(f"{x} is not a valid column name")
+
+    if len([x for x in df.columns if x in ["lon", "lat"]]) < 2:
+        raise ValueError("You must provide lon and lat!")
+
+    for x in ["year", "month", "day"]:
+        if x in df.columns:
+            self.points_temporal = True
+
     mp.add_data(x = ds, depths = depths, variables = variables, top = top, nan = nan)
     mp.add_points(df)
     mp.matchup(tmean = tmean, regrid = regrid, max_extrap = max_extrap)
