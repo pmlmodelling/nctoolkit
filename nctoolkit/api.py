@@ -1236,7 +1236,7 @@ class DataSet(object):
                 for ff in self:
                     remove_safe(ff)
                     remove_protected(ff)
-                raise ValueError("Unsupported file structure")
+                raise ValueError("Unsupported file structure. Check file using the check method.")
             if "expandWildCards" in out.stderr.decode("utf-8"):
                 for ff in self:
                     remove_safe(ff)
@@ -1419,7 +1419,7 @@ class DataSet(object):
                 for ff in self:
                     remove_safe(ff)
                     remove_protected(ff)
-                raise ValueError("Unsupported file structure")
+                raise ValueError("Unsupported file structure. Check file using the check method.")
             if "expandWildCards" in out.stderr.decode("utf-8"):
                 for ff in self:
                     remove_safe(ff)
