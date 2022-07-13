@@ -164,4 +164,4 @@ def check(self):
             if result.count("gridID") > 1:
                 print("Dataset file(s) contain variables with different grids.")
     except:
-        print("Unable to check grid. This dataset might not be CF-compliant!)
+        print("Unable to check grid. This dataset might not be CF-compliant!")
