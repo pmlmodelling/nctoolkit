@@ -38,44 +38,49 @@ def check(self):
     print("*****************************************")
     print("Checking data types")
     print("*****************************************")
-    self_contents = self.contents
-    list1 = self_contents.reset_index(drop=True).data_type
-    positions = [ind for ind, x in enumerate(list1) if x.startswith("I")]
-    if len(positions):
-        bad = list(self_contents.reset_index(drop=True).data_type[positions])
+    try:
+        self_contents = self.contents
+        list1 = self_contents.reset_index(drop=True).data_type
+        positions = [ind for ind, x in enumerate(list1) if x.startswith("I")]
+        if len(positions):
+            bad = list(self_contents.reset_index(drop=True).data_type[positions])
 
-    if len(positions) > 0:
-        check = ",".join(bad)
-        if "," in check:
-            print(
-                f"The variable(s) {check} have integer data type. Consider setting data type to float 'F64' or 'F32' using set_precision."
-            )
+        if len(positions) > 0:
+            check = ",".join(bad)
+            if "," in check:
+                print(
+                    f"The variable(s) {check} have integer data type. Consider setting data type to float 'F64' or 'F32' using set_precision."
+                )
+            else:
+                print(
+                    f"The variable {check} has integer data type. Consider setting data type to float 'F64' or 'F32' using set_precision."
+                )
         else:
-            print(
-                f"The variable {check} has integer data type. Consider setting data type to float 'F64' or 'F32' using set_precision."
-            )
-    else:
-        print("Variable checks passed")
+            print("Variable checks passed")
+    except:
+        print("Unable to check data types. This file is likely not CF-compliant")
 
     print("*****************************************")
     print("Checking time data type")
     print("*****************************************")
 
-    the_warns = []
-    for ff in self:
-        dataset = Dataset(ff)
-        times = [x for x in dataset.variables.keys() if "time" in x]
-        if len(times) > 0:
-            for tt in times:
-                time_var = dataset.variables[tt][:]
-                if "int" in str(time_var.dtype):
-                    the_warns.append(f"{tt} has integer data type. Consider setting it to double using as_double")
+    try:
+        the_warns = []
+        for ff in self:
+            dataset = Dataset(ff)
+            times = [x for x in dataset.variables.keys() if "time" in x]
+            if len(times) > 0:
+                for tt in times:
+                    time_var = dataset.variables[tt][:]
+                    if "int" in str(time_var.dtype):
+                        the_warns.append(f"{tt} has integer data type. Consider setting it to double using as_double")
 
 
-    if len(the_warns) > 0:
-        the_warns = list(set(the_warns))
-        for tt in the_warns:
-            print(tt)
+        if len(the_warns) > 0:
+            the_warns = list(set(the_warns))
+            for tt in the_warns:
+                print(tt)
+        print("Unable to check data types. This file is likely not CF-compliant")
 
     print("*****************************************")
     print("Running CF-compliance checks")
@@ -143,17 +148,20 @@ def check(self):
     print("Checking grid consistency")
     print("*****************************************")
 
-    for ff in self:
-        command = f"cdo griddes {ff}"
-        out = subprocess.Popen(
-            command,
-            shell=True,
-            stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-        )
-        result, ignore = out.communicate()
+    try:
+        for ff in self:
+            command = f"cdo griddes {ff}"
+            out = subprocess.Popen(
+                command,
+                shell=True,
+                stdin=subprocess.PIPE,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+            )
+            result, ignore = out.communicate()
 
-        result = result.decode("utf-8")
-        if result.count("gridID") > 1:
-            print("Dataset file(s) contain variables with different grids.")
+            result = result.decode("utf-8")
+            if result.count("gridID") > 1:
+                print("Dataset file(s) contain variables with different grids.")
+    except:
+        print("Unable to check grid. This dataset might not be CF-compliant!)
