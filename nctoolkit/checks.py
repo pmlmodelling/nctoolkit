@@ -80,6 +80,7 @@ def check(self):
             the_warns = list(set(the_warns))
             for tt in the_warns:
                 print(tt)
+    except:
         print("Unable to check data types. This file is likely not CF-compliant")
 
     print("*****************************************")
