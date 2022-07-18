@@ -66,6 +66,7 @@ def run_nco(command, target, out_file=None, overwrite=False):
         or command.startswith("ncap ")
         or command.startswith("ncap2 ")
         or command.startswith("ncks ")
+        or command.startswith("ncrename ")
         or command.startswith("ncatted")
     ) is False:
         raise ValueError("This is not a valid NCO command")
