@@ -9,6 +9,7 @@ from nctoolkit.session import session_info, append_safe, remove_safe
 from nctoolkit.show import nc_variables, nc_years, nc_times
 from nctoolkit.temp_file import temp_file
 from nctoolkit.utils import version_above
+from nctoolkit.api import open_data
 
 def day_stat(self, operation = None,  x=None):
     """
@@ -80,11 +81,26 @@ def operation(self, method="mul", ff=None, var=None):
         if var not in nc_variables(ff):
             raise ValueError("var supplied is not available in the dataset")
 
+
+   
+
     new = False
     # throw error if the file to operate with does not exist
     if ff is not None:
         if os.path.exists(ff) is False:
             raise ValueError(f"{ff} does not exist!")
+
+    # check compatibility
+
+    n_min  = self.contents.nlevels.min()
+
+    ds = open_data(ff, checks = False)
+    contents = ds.contents
+
+    n_max = contents.nlevels.max()
+
+    if n_max > n_min:
+        raise ValueError(f"Problem raised by incompatible number of vertical levels. {n_max} versus {n_min}. Please check dataset contents.")
 
     if version_above(session_info["cdo"], "1.9.8"):
         new = True
