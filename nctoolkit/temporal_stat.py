@@ -119,14 +119,21 @@ def time_stat(self, stat="mean", over="time"):
 
 
 
-def tsum(self, over="time"):
+def tsum(self, over="time", align = "right"):
     """
     Calculate the temporal sum of all variables
+
+    Parameters
+    -------------
+    align = str
+        This determines whether the output time is at the left, centre or right hand side of the time window.
+        Options are "left", "centre" and "right"
     """
+    self.align(align)
     time_stat(self, stat="sum", over=over)
 
 
-def na_count(self, over="time"):
+def na_count(self, over="time", align = "right"):
     """
     Calculate the number of missing values
 
@@ -135,7 +142,13 @@ def na_count(self, over="time"):
     over: str or list
         Time periods to to the count over over. Options are 'time', 'year', 'month', 'day'.
 
+    Parameters
+    -------------
+    align: str
+        This determines whether the output time is at the left, centre or right hand side of the time window.
+        Options are "left", "centre" and "right"
     """
+    self.align(align)
 
     self.run()
 
@@ -145,7 +158,7 @@ def na_count(self, over="time"):
     self.tsum(over=over)
 
 
-def na_frac(self, over="time"):
+def na_frac(self, over="time", align = "right"):
     """
     Calculate the number of missing values
 
@@ -154,7 +167,11 @@ def na_frac(self, over="time"):
     over: str or list
         Time periods to to the count over over. Options are 'time', 'year', 'month', 'day'.
 
+    align: str
+        This determines whether the output time is at the left, centre or right hand side of the time window.
+        Options are "left", "centre" and "right"
     """
+    self.align(align)
 
     self.run()
 
@@ -164,7 +181,7 @@ def na_frac(self, over="time"):
     self.tmean(over=over)
 
 
-def tmean(self, over="time"):
+def tmean(self, over="time", align = "right"):
     """
     Calculate the temporal mean of all variables
 
@@ -173,6 +190,9 @@ def tmean(self, over="time"):
     over: str or list
         Time periods to average over. Options are 'year', 'month', 'day'.
 
+    align: str
+        This determines whether the output time is at the left, centre or right hand side of the time window.
+        Options are "left", "centre" and "right"
 
     Examples
     ------------
@@ -203,10 +223,11 @@ def tmean(self, over="time"):
 
 
     """
+    self.align(align = align)
     time_stat(self, stat="mean", over=over)
 
 
-def tmin(self, over="time"):
+def tmin(self, over="time", align = "right"):
     """
     Calculate the temporal minimum of all variables
 
@@ -215,6 +236,9 @@ def tmin(self, over="time"):
     over: str or list
         Time periods to average over. Options are 'year', 'month', 'day'.
 
+    align: str
+        This determines whether the output time is at the left, centre or right hand side of the time window.
+        Options are "left", "centre" and "right"
 
     Examples
     ------------
@@ -244,10 +268,11 @@ def tmin(self, over="time"):
         >>> ds.tmin( "day")
 
     """
+    self.align(align = align)
     time_stat(self, stat="min", over=over)
 
 
-def tmax(self, over="time"):
+def tmax(self, over="time", align = "right"):
     """
     Calculate the temporal maximum of all variables
 
@@ -255,7 +280,9 @@ def tmax(self, over="time"):
     -------------
     over: str or list
         Time periods to average over. Options are 'year', 'month', 'day'.
-
+    align = str
+        This determines whether the output time is at the left, centre or right hand side of the time window.
+        Options are "left", "centre" and "right"
 
     Examples
     ------------
@@ -284,10 +311,11 @@ def tmax(self, over="time"):
 
         >>> ds.tmax( "day")
     """
+    self.align(align = align)
     time_stat(self, stat="max", over=over)
 
 
-def tmedian(self, over="time"):
+def tmedian(self, over="time", align = "right"):
     """
     Calculate the temporal median of all variables
 
@@ -295,7 +323,9 @@ def tmedian(self, over="time"):
     -------------
     over: str or list
         Time periods to average over. Options are 'year', 'month', 'day'.
-
+    align: str
+        This determines whether the output time is at the left, centre or right hand side of the time window.
+        Options are "left", "centre" and "right"
 
     Examples
     ------------
@@ -324,10 +354,11 @@ def tmedian(self, over="time"):
 
         >>> ds.tmedian( "day")
     """
+    self.align(align = align)
     self.tpercentile(p=50, over=over)
 
 
-def trange(self, over="time"):
+def trange(self, over="time", align = "right"):
     """
     Calculate the temporal range of all variables
 
@@ -335,7 +366,9 @@ def trange(self, over="time"):
     -------------
     over: str or list
         Time periods to average over. Options are 'year', 'month', 'day'.
-
+    align: str
+        This determines whether the output time is at the left, centre or right hand side of the time window.
+        Options are "left", "centre" and "right"
 
     Examples
     ------------
@@ -365,10 +398,11 @@ def trange(self, over="time"):
         >>> ds.trange( "day")
 
     """
+    self.align(align = align)
     time_stat(self, stat="range", over=over)
 
 
-def tvar(self, over="time"):
+def tvar(self, over="time", align = "right"):
     """
     Calculate the temporal variance of all variables
 
@@ -376,6 +410,9 @@ def tvar(self, over="time"):
     -------------
     over: str or list
         Time periods to average over. Options are 'year', 'month', 'day'.
+    align: str
+        This determines whether the output time is at the left, centre or right hand side of the time window.
+        Options are "left", "centre" and "right"
 
 
     Examples
@@ -405,10 +442,11 @@ def tvar(self, over="time"):
 
         >>> ds.tvar( "day")
     """
+    self.align(align = align)
     time_stat(self, stat="var", over=over)
 
 
-def tstdev(self, over="time"):
+def tstdev(self, over="time", align = "right"):
     """
     Calculate the temporal standard deviation of all variables
 
@@ -416,6 +454,9 @@ def tstdev(self, over="time"):
     -------------
     over: str or list
         Time periods to average over. Options are 'year', 'month', 'day'.
+    align: str
+        This determines whether the output time is at the left, centre or right hand side of the time window.
+        Options are "left", "centre" and "right"
 
 
     Examples
@@ -445,12 +486,19 @@ def tstdev(self, over="time"):
 
         >>> ds.tstdev("day")
     """
+    self.align(align = align)
     time_stat(self, stat="std", over=over)
 
 
-def tcumsum(self):
+def tcumsum(self, align = "right"):
     """
     Calculate the temporal cumulative sum of all variables
+
+    Parameters
+    -------------
+    align: str
+        This determines whether the output time is at the left, centre or right hand side of the time window.
+        Options are "left", "centre" and "right"
 
     Examples
     ------------
@@ -459,11 +507,12 @@ def tcumsum(self):
         >>> ds.tcumsum()
 
     """
+    self.align(align=align)
     # create cdo command and runit
     time_stat(self, stat="cumsum")
 
 
-def tpercentile(self, p=None, over="time"):
+def tpercentile(self, p=None, over="time", align = "right"):
     """
     Calculate the temporal percentile of all variables
 
@@ -471,6 +520,9 @@ def tpercentile(self, p=None, over="time"):
     -------------
     p: float or int
         Percentile to calculate
+    align: str
+        This determines whether the output time is at the left, centre or right hand side of the time window.
+        Options are "left", "centre" and "right"
 
     Examples
     ------------
@@ -483,6 +535,7 @@ def tpercentile(self, p=None, over="time"):
         >>> ds.tpercentile(20)
 
     """
+    self.align(align=align)
 
     if len(self) == 0:
         raise ValueError("Failure due to empty dataset!")
