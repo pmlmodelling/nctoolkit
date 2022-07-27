@@ -75,6 +75,19 @@ def set_date(self, year=None, month=None, day=None, base_year=1900):
     if day is None:
         raise ValueError("Please supply a day")
 
+    if type(year) is not int:
+        if "int" in str(type(year)):
+            year = int(year)
+
+    if type(month) is not int:
+        if "int" in str(type(month)):
+            month = int(month)
+
+    if type(day) is not int:
+        if "int" in str(type(day)):
+            day = int(day)
+
+
     # check that the values supplied are valid
     # This will convert things to ints, and if it can't be done, throw an error
     if type(year) is not int:
