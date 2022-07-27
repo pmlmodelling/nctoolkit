@@ -11,8 +11,6 @@ def align(self, align = "right"):
         Options are "left", "centre" and "right"
 
     """
-    if len(self._align) > 0:
-        raise ValueError("You have already aligned this dataset")
     
     if type(align) is not str:
         raise TypeError("Alignment must be str type")
@@ -35,10 +33,16 @@ def align(self, align = "right"):
     if "middle" in align:
         align = "middle"
 
+
     if align not in ["first","middle","last"]:
         raise ValueError(f"{align} is not a valid align argument")
 
-    self._align = f"--timestat_date {align}"
+    new_align = f"--timestat_date {align}"
+    if len(self._align) > 0:
+        if self._align != new_align:
+            self.run()
+
+    self._align = new_align 
 
 def rollstat(self, window=None, stat="mean"):
     """Method to calculate the monthly statistic from a netCDF file"""
@@ -68,9 +72,9 @@ def rolling_mean(self, window=None, align = "right"):
 
     Parameters
     -------------
-    window = int
+    window: int
         The size of the window for the calculation of the rolling mean
-    align = str
+    align: str
         This determines whether the output time is at the left, centre or right hand side of the time window.
         Options are "left", "centre" and "right"
 
@@ -95,8 +99,11 @@ def rolling_min(self, window=None, align = "right"):
 
     Parameters
     -------------
-    window = int
+    window: int
         The size of the window for the calculation of the rolling minimum
+    align: str
+        This determines whether the output time is at the left, centre or right hand side of the time window.
+        Options are "left", "centre" and "right"
 
     Examples
     ------------
@@ -116,8 +123,11 @@ def rolling_max(self, window=None, align = "right"):
 
     Parameters
     -------------
-    window = int
+    window: int
         The size of the window for the calculation of the rolling maximum
+    align: str
+        This determines whether the output time is at the left, centre or right hand side of the time window.
+        Options are "left", "centre" and "right"
     Examples
     ------------
 
@@ -136,8 +146,11 @@ def rolling_range(self, window=None, align = "right"):
 
     Parameters
     -------------
-    window = int
+    window: int
         The size of the window for the calculation of the rolling range
+    align: str
+        This determines whether the output time is at the left, centre or right hand side of the time window.
+        Options are "left", "centre" and "right"
 
     Examples
     ------------
@@ -157,8 +170,11 @@ def rolling_sum(self, window=None, align = "right"):
 
     Parameters
     -------------
-    window = int
+    window: int
         The size of the window for the calculation of the rolling sum
+    align: str
+        This determines whether the output time is at the left, centre or right hand side of the time window.
+        Options are "left", "centre" and "right"
 
     Examples
     ------------
