@@ -1,8 +1,50 @@
 from nctoolkit.runthis import run_this
 
+def align(self, align = "right"):
+    """
+    Method to align output time in temporal methods. 
+
+    Parameters
+    -------------
+    align = str
+        This determines whether the output time is at the left, centre or right hand side of the time window.
+        Options are "left", "centre" and "right"
+
+    """
+    if len(self._align) > 0:
+        raise ValueError("You have already aligned this dataset")
+    
+    if type(align) is not str:
+        raise TypeError("Alignment must be str type")
+
+    if "cen" in align:
+        align = "middle"
+
+    if "left" in align:
+        align = "first"
+
+    if "right" in align:
+        align = "last"
+
+    if "last" in align:
+        align = "last"
+
+    if "first" in align:
+        align = "first"
+
+    if "middle" in align:
+        align = "middle"
+
+    if align not in ["first","middle","last"]:
+        raise ValueError(f"{align} is not a valid align argument")
+
+    self._align = f"--timestat_date {align}"
 
 def rollstat(self, window=None, stat="mean"):
     """Method to calculate the monthly statistic from a netCDF file"""
+
+    # check alignment
+
     # check window supplied is valid
 
     if window is None:
@@ -19,7 +61,7 @@ def rollstat(self, window=None, stat="mean"):
     run_this(cdo_command, self, output="ensemble")
 
 
-def rolling_mean(self, window=None):
+def rolling_mean(self, window=None, align = "right"):
     """
     Calculate a rolling mean based on a window
     Time output is the middle time of the window.
@@ -28,6 +70,11 @@ def rolling_mean(self, window=None):
     -------------
     window = int
         The size of the window for the calculation of the rolling mean
+    align = str
+        This determines whether the output time is at the left, centre or right hand side of the time window.
+        Options are "left", "centre" and "right"
+
+         
 
     Examples
     ------------
@@ -37,10 +84,11 @@ def rolling_mean(self, window=None):
     >>> ds.rolling_mean(10)
 
     """
+    self.align(align)
     rollstat(self, window=window, stat="mean")
 
 
-def rolling_min(self, window=None):
+def rolling_min(self, window=None, align = "right"):
     """
     Calculate a rolling minimum based on a window
     Time output is the middle time of the window.
@@ -57,10 +105,11 @@ def rolling_min(self, window=None):
 
     >>> ds.rolling_min(10)
     """
+    self.align(align)
     rollstat(self, window=window, stat="min")
 
 
-def rolling_max(self, window=None):
+def rolling_max(self, window=None, align = "right"):
     """
     Calculate a rolling maximum based on a window
     Time output is the middle time of the window.
@@ -76,10 +125,11 @@ def rolling_max(self, window=None):
 
     >>> ds.rolling_max(10)
     """
+    self.align(align)
     rollstat(self, window=window, stat="max")
 
 
-def rolling_range(self, window=None):
+def rolling_range(self, window=None, align = "right"):
     """
     Calculate a rolling range based on a window
     Time output is the middle time of the window.
@@ -96,10 +146,11 @@ def rolling_range(self, window=None):
 
     >>> ds.rolling_range(10)
     """
+    self.align(align)
     rollstat(self, window=window, stat="range")
 
 
-def rolling_sum(self, window=None):
+def rolling_sum(self, window=None, align = "right"):
     """
     Calculate a rolling sum based on a window
     Time output is the middle time of the window.
@@ -116,4 +167,5 @@ def rolling_sum(self, window=None):
 
     >>> ds.rolling_sum(10)
     """
+    self.align(align)
     rollstat(self, window=window, stat="sum")

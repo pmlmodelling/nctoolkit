@@ -307,77 +307,66 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
 
         text = re.compile(r"Level [0-9]* not found")
         errors = text.findall(error)
-        print(len(errors))
         if len(errors) > 0:
             error = errors[0]
             raise ValueError(f"CDO error: {error}. Please check levels supplied to nctoolkit methods!")
 
         text = re.compile(r"Variable >.*< not found!")
         errors = text.findall(error)
-        print(len(errors))
         if len(errors) > 0:
             error = errors[0]
             raise ValueError(f"CDO error: {error}. Please check variables supplied to nctoolkit")
 
         text = re.compile(r"Variable name .* not found!")
         errors = text.findall(error)
-        print(len(errors))
         if len(errors) > 0:
             error = errors[0]
             raise ValueError(f"CDO error: {error}. Please check variables supplied to nctoolkit")
 
         text = re.compile(r"File has less then [0-9]* timesteps!")
         errors = text.findall(error)
-        print(len(errors))
         if len(errors) > 0:
             error = errors[0]
             raise ValueError(f"CDO error: {error}. Please check time steps supplied to nctoolkit methods")
 
         text = re.compile(r"Grid size of the input parameter .* do not match!")
         errors = text.findall(error)
-        print(len(errors))
         if len(errors) > 0:
             error = errors[0]
             raise ValueError(f"CDO error: {error}. Please check grids in datasets used in operation!")
 
         text = re.compile(r"Season .* not found")
         errors = text.findall(error)
-        print(len(errors))
         if len(errors) > 0:
             error = errors[0]
             raise ValueError(f"CDO error: {error}. Please check season supplied to nctoolkit methods!")
 
         text = re.compile(r"Season .* not found")
         errors = text.findall(error)
-        print(len(errors))
         if len(errors) > 0:
             error = errors[0]
             raise ValueError(f"CDO error: {error}. Please check season supplied to nctoolkit methods!")
 
         text = re.compile(r"Month [0-9]* not found")
         errors = text.findall(error)
-        print(len(errors))
         if len(errors) > 0:
             error = errors[0]
             raise ValueError(f"CDO error: {error}. Please check months supplied to nctoolkit methods!")
 
         text = re.compile(r"Year [0-9]* not found")
         errors = text.findall(error)
-        print(len(errors))
         if len(errors) > 0:
             error = errors[0]
             raise ValueError(f"CDO error: {error}. Please check years supplied to nctoolkit methods!")
 
         text = re.compile(r"Day [0-9]* not found")
         errors = text.findall(error)
-        print(len(errors))
         if len(errors) > 0:
             error = errors[0]
             raise ValueError(f"CDO error: {error}. Please check days supplied to nctoolkit methods!")
 
         text = re.compile(r"Timestep [0-9]* not found")
         errors = text.findall(error)
-        print(len(errors))
         if len(errors) > 0:
             error = errors[0]
             raise ValueError(f"CDO error: {error}. Please check time steps supplied to nctoolkit methods!")
@@ -640,6 +629,7 @@ def run_this(os_command, self, output="one", out_file=None):
                             ff_command = ff_command.replace(
                                 "cdo ", f"cdo -f {self._format} "
                             )
+                    ff_command = ff_command.replace("cdo ", f"cdo {self._align} ").replace("  ", " ")
 
                     if self._zip and zip_copy and format_it is False:
                         ff_command = ff_command.replace("cdo ", "cdo -z zip copy ")
@@ -745,6 +735,8 @@ def run_this(os_command, self, output="one", out_file=None):
                     os_command = os_command.replace("infile09178", ff)
 
                 os_command = tidy_command(os_command)
+
+                os_command = os_command.replace("cdo ", f"cdo {self._align} ").replace("  ", " ")
 
                 if "mergetime" in os_command:
                     try:

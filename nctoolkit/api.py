@@ -995,6 +995,7 @@ class DataSet(object):
         self._thredds = False
         self._zip = False
         self._format = None
+        self._align = ""
 
         self._precision = "default"
 
@@ -1770,6 +1771,7 @@ class DataSet(object):
     from nctoolkit.resample import resample_grid
 
     from nctoolkit.rollstat import rolling_mean
+    from nctoolkit.rollstat import align
     from nctoolkit.rollstat import rolling_min
     from nctoolkit.rollstat import rolling_max
     from nctoolkit.rollstat import rolling_range

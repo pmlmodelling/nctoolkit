@@ -47,4 +47,5 @@ def run(self):
         cleanup()
 
         self._ncommands = 0
+        self._align= ""
         self.disk_clean()

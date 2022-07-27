@@ -16,7 +16,7 @@ class TestRollstat:
 
     def test_mean(self):
         tracker = nc.open_data(ff)
-        tracker.rolling_mean(window=10)
+        tracker.rolling_mean(window=10, align = "centre")
         tracker.subset(years=1990)
         tracker.spatial_mean()
         tracker.run()
@@ -27,7 +27,7 @@ class TestRollstat:
 
     def test_max(self):
         tracker = nc.open_data(ff)
-        tracker.rolling_max(window=10)
+        tracker.rolling_max(window=10, align = "centre")
         tracker.subset(years=1990)
         tracker.spatial_mean()
         tracker.run()
@@ -38,7 +38,7 @@ class TestRollstat:
 
     def test_min(self):
         tracker = nc.open_data(ff)
-        tracker.rolling_min(window=10)
+        tracker.rolling_min(window=10, align = "centre")
         tracker.subset(years=1990)
         tracker.spatial_mean()
         tracker.run()
@@ -50,7 +50,7 @@ class TestRollstat:
 
     def test_range(self):
         tracker = nc.open_data(ff)
-        tracker.rolling_range(window=10)
+        tracker.rolling_range(window=10, align = "centre")
         tracker.subset(years=1990)
         tracker.spatial_mean()
         tracker.run()
@@ -61,7 +61,7 @@ class TestRollstat:
 
     def test_sum(self):
         tracker = nc.open_data(ff)
-        tracker.rolling_sum(window=10)
+        tracker.rolling_sum(window=10, align = "centre")
         tracker.subset(years=1990)
         tracker.spatial_mean()
         tracker.run()
@@ -72,14 +72,14 @@ class TestRollstat:
 
     def test_float(self):
         tracker = nc.open_data(ff)
-        tracker.rolling_sum(window=10)
+        tracker.rolling_sum(window=10, align = "centre")
         tracker.subset(years=1990)
         tracker.spatial_mean()
         tracker.run()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
 
         tracker = nc.open_data(ff)
-        tracker.rolling_sum(window=10)
+        tracker.rolling_sum(window=10, align = "centre")
         tracker.subset(years=1990)
         tracker.spatial_mean()
         tracker.run()
