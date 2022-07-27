@@ -1,6 +1,20 @@
 News
 ============
 
+Release of v0.6.0
+---------------
+
+This will be a major release, expected in August 2022. It will improve the abilities of temporal methods, giving users the ability to select how they
+want times in output to be aligned.
+
+For example, if you are calculating a rolling mean, you might want the output times to be the first, middle or final time in the temporal window. This release
+will add that ability to nctoolkit's temporal methods. Previously nctoolkit used CDO's default methods, and did not allow users to do anything else. 
+
+This will introduce some inconsistency with output from prior nctoolkit releases.
+
+
+
+
 Release of v0.5.1
 ---------------
 
