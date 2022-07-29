@@ -93,7 +93,7 @@ def add_data(self, x=None, variables=None, depths = None, nan=None, top = False)
             ds = open_thredds(ds[0], checks = False)
         else:
             ds = open_data(x, checks = False)
-            ds = open_data(ds[0])
+            ds = open_data(ds[0], checks = False)
         if len(ds.levels) > 1:
             if "e3t" in ds.variables:
                 ds_depths = ds.copy()
@@ -138,7 +138,7 @@ def add_data(self, x=None, variables=None, depths = None, nan=None, top = False)
         ds_vars = open_thredds(self.data[0], checks = False)
     else:
         self.data = open_data(x, checks = False)
-        ds_vars = open_data(self.data[0])
+        ds_vars = open_data(self.data[0], checks = False)
 
     ds_variables = ds_vars.variables
 
@@ -157,7 +157,7 @@ def add_data(self, x=None, variables=None, depths = None, nan=None, top = False)
     if thredds:
         ds1 = open_thredds(self.data[0], checks = False)
     else:
-        ds1 = open_data(self.data[0])
+        ds1 = open_data(self.data[0], checks = False)
     pos_times = [
         x
         for x in [
@@ -181,7 +181,7 @@ def add_data(self, x=None, variables=None, depths = None, nan=None, top = False)
             if thredds:
                 ds_ff = open_thredds(ff)
             else:
-                ds_ff = open_data(ff)
+                ds_ff = open_data(ff, checks = False)
             ds = ds_ff.to_xarray()
             times = ds[time_name]
             days = [int(x.dt.day) for x in times]
