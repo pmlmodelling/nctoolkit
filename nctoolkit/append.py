@@ -49,7 +49,7 @@ def append(self, x=None):
 
     for ff in x:
         if ff in check_list:
-            raise ValueError(
+            warnings.warn(
                 "You are trying to add a file that is already in the dataset"
             )
 
