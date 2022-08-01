@@ -22,8 +22,8 @@ class TestAppend:
 
         new = nc.open_data(ff)
 
-        with pytest.raises(ValueError):
-            new.append(ff)
+        #with pytest.raises(ValueError):
+        #    new.append(ff)
 
         with pytest.raises(ValueError):
             new.remove()
@@ -48,8 +48,8 @@ class TestAppend:
 
         new = nc.open_data([ff1, ff2])
 
-        with pytest.raises(ValueError):
-            new.append(ff1)
+        #with pytest.raises(ValueError):
+        #    new.append(ff1)
 
         new.append(ff)
 
