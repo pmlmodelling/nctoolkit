@@ -53,17 +53,6 @@ A recent update to ipykernel has broken some functionality in jupyter notebooks,
 
 
 
-
-
-CDO update issue
----------------------
-
-The latest version of CDO is incompatible with nctoolkit at present, due to the switch to C++14 in CDO. This will be rectified in an upcoming version of nctoolkit. For now, if you have version 2.0.0 of CDO installed, you should downgrade it. If you are using conda, just do this::
-
-    $ conda install -c conda-forge cdo=1.9.10
-
-
-
 Python dependencies
 ---------------------
 
