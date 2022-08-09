@@ -126,7 +126,7 @@ def regrid(self, grid=None, method="bil", recycle=False):
         # first we need to generate the weights for remapping
         # and add this to the files created list and self.weights
         tracker = open_data(
-            grid_split[key], suppress_messages=True, thredds=self._thredds
+            grid_split[key], suppress_messages=True, thredds=self._thredds, checks = False
         )
 
         if tracker._precision != "default":
