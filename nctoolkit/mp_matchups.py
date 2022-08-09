@@ -392,9 +392,10 @@ def matchup(self,  tmean = False, regrid = "bil", max_extrap = 5):
 
                         j_model = (
                             df_model.merge(j_obs.loc[:, ["lon", "lat"]])
-                            .drop_duplicates()
+                            #.drop_duplicates()
                             .reset_index(drop=True)
                         )
+                        #print(j_model)
 
                         if len(j_model) > 0:
                             if type(self.depths) is not list:
