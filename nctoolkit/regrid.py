@@ -11,8 +11,15 @@ from nctoolkit.runthis import run_this, run_cdo
 from nctoolkit.session import append_safe, remove_safe, get_safe
 from nctoolkit.temp_file import temp_file
 
+def is_iterable(x):
+    try:
+        iter(x)
+        return True
+    except:
+        return False
 
-def regrid(self, grid=None, method="bil", recycle=False):
+
+def regrid(self, grid=None, method="bil", recycle=False, **kwargs):
     """
     Regrid a dataset to a target grid
 
@@ -32,7 +39,26 @@ def regrid(self, grid=None, method="bil", recycle=False):
         Large area fraction remapping - "laf"
     recycle : bool 
         Set to True if you want to re-use the remapping weights when you are regridding another dataset. 
+    kwargs : optional method to generate grid 
+        Instead of supplying a grid using 'grid', you can supply `lon` and `lat`. These must be equally
+        lengthed lists or arrays that will be used to generate the grid. If you want to regrid to a single
+        location you can just supply a float to lon and lat.
+        
     """
+
+    if grid is None and len(kwargs) > 0:
+        if "lon" in kwargs and "lat" in kwargs:
+            lon = kwargs["lon"]
+            lat = kwargs["lat"]
+
+            if is_iterable(lon) is False:
+                lon = [lon]
+
+            if is_iterable(lat) is False:
+                lat = [lat]
+
+            if len(lon) == len(lat):
+                grid = pd.DataFrame({"lon":lon, "lat":lat})
 
     if len(self) == 0:
         raise ValueError("Failure due to empty dataset!")
