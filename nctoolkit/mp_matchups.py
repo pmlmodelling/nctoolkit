@@ -318,7 +318,7 @@ def matchup(self,  tmean = False, regrid = "bil", max_extrap = 5):
 
             ds.regrid(i_grid, method = regrid) 
 
-            df_model = ds.to_dataframe().drop_duplicates().reset_index().drop_duplicates()
+            df_model = ds.to_dataframe().reset_index().drop_duplicates()
 
             # figure out the time dim
 
@@ -369,10 +369,14 @@ def matchup(self,  tmean = False, regrid = "bil", max_extrap = 5):
                         locs = [ "lon", "lat", "deptht"]
                     locs += ds.variables
                     df_model = df_model.loc[:, locs].drop_duplicates()
+
                 else:
                     locs = [ "lon", "lat"]
                     locs += ds.variables
+                    drop = [x for x in df_model.columns if "depth" in x and "bnds" not in x]
+                    locs += drop
                     df_model = df_model.loc[ :, locs ].drop_duplicates()
+                    df_model = df_model.drop(columns = drop)
 
 
                 if self.points_temporal:
@@ -381,6 +385,7 @@ def matchup(self,  tmean = False, regrid = "bil", max_extrap = 5):
                     i_obs_df = points
 
                 i_obs_locs = i_obs_df.loc[:, ["lon", "lat"]].drop_duplicates()
+                
 
                 if True:
 
@@ -388,14 +393,13 @@ def matchup(self,  tmean = False, regrid = "bil", max_extrap = 5):
                         if self.depths is not None:
                             df_depths = df_depths
 
-                        j_obs = i_obs_locs.iloc[j : (j + 1), :].merge(i_obs_df)
+                        j_obs = i_obs_locs.iloc[j : (j + 1), :].merge(i_obs_df).drop_duplicates()
 
                         j_model = (
-                            df_model.merge(j_obs.loc[:, ["lon", "lat"]])
-                            #.drop_duplicates()
+                            df_model.merge(j_obs.loc[:, ["lon", "lat"]].drop_duplicates())
                             .reset_index(drop=True)
                         )
-                        #print(j_model)
+                        j_model = j_model.reset_index(drop = True)
 
                         if len(j_model) > 0:
                             if type(self.depths) is not list:
@@ -407,16 +411,19 @@ def matchup(self,  tmean = False, regrid = "bil", max_extrap = 5):
                                     )
                                     locs = ["lon_x", "lon_y", "depth"]
                                     locs += ds.variables
+
                                     j_model = j_model.merge(
                                         j_depths, left_index=True, right_index=True
                                     ).loc[:, locs]
                             else:
                                 if self.depths is not None:
-                                    locs = ["lon", "lon", "depth"]
+                                    locs = ["lon", "lat", "depth"]
                                     locs += ds.variables
                                     j_model = j_model.merge(
                                         df_depths, left_index=True, right_index=True
                                     ).loc[:, locs]
+                                    #j_model = j_model.drop_duplicates()
+
                             if self.depths is not None:
                                 max_depth = np.max(j_model.depth)
                                 min_depth = np.min(j_model.depth)
@@ -427,8 +434,8 @@ def matchup(self,  tmean = False, regrid = "bil", max_extrap = 5):
                                     if self.depths is not None:
                                         i_var = 0
                                         for var in ds.variables:
-                                            j_obs[var] = interp(j_model.depth, j_model[var], j_obs.depth, max_extrap = self.max_extrap)
-
+                                            j_obs[var] = interp(list(j_model.depth), j_model[var], list(j_obs.depth), max_extrap = self.max_extrap)
+        
                                             i_var +=1
                                         for x in ["day", "month", "year"]:
                                             if x in i_df.columns:
@@ -439,12 +446,14 @@ def matchup(self,  tmean = False, regrid = "bil", max_extrap = 5):
                                         df_merged.append(j_model)
                                 except:
                                     n_missing += 1
+
     if n_missing > 0:
         warnings.warn(f"{n_missing} points did not have sufficient vertical points in ds for vertical interpolation")
 
     if len(df_merged) == 0:
         raise ValueError("No data matches were found")
 
+    self.values = df_merged
     df_merged = pd.concat(df_merged).drop_duplicates().reset_index(drop=True)
 
     if self.temporal is False:
