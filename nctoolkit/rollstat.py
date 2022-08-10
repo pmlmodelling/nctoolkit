@@ -1,6 +1,6 @@
 from nctoolkit.runthis import run_this
 
-def align(self, align = "right"):
+def align(self, align = "centre"):
     """
     Method to align output time in temporal methods. 
 
@@ -65,7 +65,7 @@ def rollstat(self, window=None, stat="mean"):
     run_this(cdo_command, self, output="ensemble")
 
 
-def rolling_mean(self, window=None, align = "right"):
+def rolling_mean(self, window=None, align = "centre"):
     """
     Calculate a rolling mean based on a window
     Time output is the middle time of the window.
@@ -92,7 +92,7 @@ def rolling_mean(self, window=None, align = "right"):
     rollstat(self, window=window, stat="mean")
 
 
-def rolling_min(self, window=None, align = "right"):
+def rolling_min(self, window=None, align = "centre"):
     """
     Calculate a rolling minimum based on a window
     Time output is the middle time of the window.
@@ -116,7 +116,7 @@ def rolling_min(self, window=None, align = "right"):
     rollstat(self, window=window, stat="min")
 
 
-def rolling_max(self, window=None, align = "right"):
+def rolling_max(self, window=None, align = "centre"):
     """
     Calculate a rolling maximum based on a window
     Time output is the middle time of the window.
@@ -139,7 +139,7 @@ def rolling_max(self, window=None, align = "right"):
     rollstat(self, window=window, stat="max")
 
 
-def rolling_range(self, window=None, align = "right"):
+def rolling_range(self, window=None, align = "centre"):
     """
     Calculate a rolling range based on a window
     Time output is the middle time of the window.
@@ -163,7 +163,7 @@ def rolling_range(self, window=None, align = "right"):
     rollstat(self, window=window, stat="range")
 
 
-def rolling_sum(self, window=None, align = "right"):
+def rolling_sum(self, window=None, align = "centre"):
     """
     Calculate a rolling sum based on a window
     Time output is the middle time of the window.
