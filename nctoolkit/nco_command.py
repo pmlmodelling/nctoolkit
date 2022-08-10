@@ -4,7 +4,7 @@ import multiprocessing
 from nctoolkit.flatten import str_flatten
 from nctoolkit.runthis import run_nco
 from nctoolkit.temp_file import temp_file
-from nctoolkit.session import remove_safe, session_info
+from nctoolkit.session import remove_safe, session_info, append_safe
 
 
 def nco_command(self, command=None, ensemble=False):
@@ -49,6 +49,8 @@ def nco_command(self, command=None, ensemble=False):
 
                 target = temp_file(".nc")
 
+                append_safe(target)
+
                 the_command = f"{command} {ff} {target}"
 
                 temp = pool.apply_async(
@@ -61,6 +63,7 @@ def nco_command(self, command=None, ensemble=False):
             for ff in self:
 
                 target = temp_file(".nc")
+                append_safe(target)
 
                 the_command = f"{command} {ff} {target}"
 
@@ -71,6 +74,7 @@ def nco_command(self, command=None, ensemble=False):
 
     else:
         target = temp_file(".nc")
+        append_safe(target)
 
         files = str_flatten(self.current, " ")
 
@@ -85,6 +89,8 @@ def nco_command(self, command=None, ensemble=False):
 
         self.current = new_files
 
+        for ff in new_files:
+            remove_safe(ff)
         for ff in new_files:
             remove_safe(ff)
 
