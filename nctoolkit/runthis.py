@@ -311,11 +311,17 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
             error = errors[0]
             raise ValueError(f"CDO error: {error}. Please check levels supplied to nctoolkit methods!")
 
+        text = re.compile(r"Date between .* not found")
+        errors = text.findall(error)
+        if len(errors) > 0:
+            error = errors[0]
+            raise ValueError(f"CDO error: {error}. Please check dates supplied to nctoolkit".replace("  ", " "))
+
         text = re.compile(r"Variable >.*< not found!")
         errors = text.findall(error)
         if len(errors) > 0:
             error = errors[0]
-            raise ValueError(f"CDO error: {error}. Please check variables supplied to nctoolkit")
+            raise ValueError(f"CDO error: '{error}'. Please check variables supplied to nctoolkit")
 
         text = re.compile(r"Variable name .* not found!")
         errors = text.findall(error)
