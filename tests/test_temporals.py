@@ -10,6 +10,23 @@ ff = "data/sst.mon.mean.nc"
 
 
 class TestTemporals:
+    def test_temporals_align(self):
+        ds = nc.open_data("data/sst.mon.mean.nc")
+        ds.tmean(align = "left")
+        ds.run()
+        assert [x.year for x in ds.times][0] == 1970
+        
+        ds = nc.open_data("data/sst.mon.mean.nc")
+        ds.tmean(align = "right")
+        ds.run()
+        assert [x.year for x in ds.times][0] == 1999
+        
+        ds = nc.open_data("data/sst.mon.mean.nc")
+        ds.tmean("year", align = "right")
+        ds.run()
+        assert [x.month for x in ds.times][0] == 12
+
+
     def test_temporals_mean(self):
         version = nc.utils.cdo_version()
         n = len(nc.session_files())

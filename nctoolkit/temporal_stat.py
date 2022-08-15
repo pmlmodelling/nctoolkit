@@ -119,7 +119,7 @@ def time_stat(self, stat="mean", over="time"):
 
 
 
-def tsum(self, over="time", align = "centre"):
+def tsum(self, over="time", align = "right"):
     """
     Calculate the temporal sum of all variables
 
@@ -133,7 +133,7 @@ def tsum(self, over="time", align = "centre"):
     time_stat(self, stat="sum", over=over)
 
 
-def na_count(self, over="time", align = "centre"):
+def na_count(self, over="time", align = "right"):
     """
     Calculate the number of missing values
 
@@ -158,7 +158,7 @@ def na_count(self, over="time", align = "centre"):
     self.tsum(over=over)
 
 
-def na_frac(self, over="time", align = "centre"):
+def na_frac(self, over="time", align = "right"):
     """
     Calculate the number of missing values
 
@@ -181,7 +181,7 @@ def na_frac(self, over="time", align = "centre"):
     self.tmean(over=over)
 
 
-def tmean(self, over="time", align = "centre"):
+def tmean(self, over="time", align = "right"):
     """
     Calculate the temporal mean of all variables
 
@@ -227,7 +227,7 @@ def tmean(self, over="time", align = "centre"):
     time_stat(self, stat="mean", over=over)
 
 
-def tmin(self, over="time", align = "centre"):
+def tmin(self, over="time", align = "right"):
     """
     Calculate the temporal minimum of all variables
 
@@ -272,7 +272,7 @@ def tmin(self, over="time", align = "centre"):
     time_stat(self, stat="min", over=over)
 
 
-def tmax(self, over="time", align = "centre"):
+def tmax(self, over="time", align = "right"):
     """
     Calculate the temporal maximum of all variables
 
@@ -315,7 +315,7 @@ def tmax(self, over="time", align = "centre"):
     time_stat(self, stat="max", over=over)
 
 
-def tmedian(self, over="time", align = "centre"):
+def tmedian(self, over="time", align = "right"):
     """
     Calculate the temporal median of all variables
 
@@ -358,7 +358,7 @@ def tmedian(self, over="time", align = "centre"):
     self.tpercentile(p=50, over=over)
 
 
-def trange(self, over="time", align = "centre"):
+def trange(self, over="time", align = "right"):
     """
     Calculate the temporal range of all variables
 
@@ -402,7 +402,7 @@ def trange(self, over="time", align = "centre"):
     time_stat(self, stat="range", over=over)
 
 
-def tvar(self, over="time", align = "centre"):
+def tvar(self, over="time", align = "right"):
     """
     Calculate the temporal variance of all variables
 
@@ -446,7 +446,7 @@ def tvar(self, over="time", align = "centre"):
     time_stat(self, stat="var", over=over)
 
 
-def tstdev(self, over="time", align = "centre"):
+def tstdev(self, over="time", align = "right"):
     """
     Calculate the temporal standard deviation of all variables
 
@@ -490,7 +490,7 @@ def tstdev(self, over="time", align = "centre"):
     time_stat(self, stat="std", over=over)
 
 
-def tcumsum(self, align = "centre"):
+def tcumsum(self, align = "right"):
     """
     Calculate the temporal cumulative sum of all variables
 
@@ -512,7 +512,7 @@ def tcumsum(self, align = "centre"):
     time_stat(self, stat="cumsum")
 
 
-def tpercentile(self, p=None, over="time", align = "centre"):
+def tpercentile(self, p=None, over="time", align = "right"):
     """
     Calculate the temporal percentile of all variables
 

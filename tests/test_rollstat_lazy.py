@@ -14,6 +14,25 @@ class TestRollstat:
         n = len(nc.session_files())
         assert n == 0
 
+    def test_align(self):
+        ds = nc.open_data("data/2003.nc")
+        ds.subset(times = range(0, 20))
+        ds.rolling_mean(7, align = "first")
+        ds.run()
+        assert [x.day for x in ds.times][0] == 1
+        
+        ds = nc.open_data("data/2003.nc")
+        ds.subset(times = range(0, 20))
+        ds.rolling_mean(7, align = "last")
+        ds.run()
+        assert [x.day for x in ds.times][0] == 7
+        
+        ds = nc.open_data("data/2003.nc")
+        ds.subset(times = range(0, 20))
+        ds.rolling_mean(7, align = "centre")
+        ds.run()
+        assert [x.day for x in ds.times][0] == 4
+
     def test_mean(self):
         tracker = nc.open_data(ff)
         tracker.rolling_mean(window=10, align = "centre")
@@ -21,8 +40,22 @@ class TestRollstat:
         tracker.spatial_mean()
         tracker.run()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
-        assert x == 18.077280044555664
+
+        tracker = nc.open_data(ff)
+        tracker.rolling_mean(window=10, align = "centre")
+        tracker.subset(years=1990)
+        tracker.spatial_mean()
+        tracker.run()
+        y = tracker.to_xarray().sst.values[0][0][0].astype("float")
+
+        assert x == y 
+
+        assert x == 18.087982177734375
+
+
         n = len(nc.session_files())
+
+
         assert n == 1
 
     def test_max(self):
@@ -32,30 +65,30 @@ class TestRollstat:
         tracker.spatial_mean()
         tracker.run()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
-        assert x == 20.302736282348633
+        assert x == 20.407316207885742  
         n = len(nc.session_files())
         assert n == 1
 
     def test_min(self):
         tracker = nc.open_data(ff)
-        tracker.rolling_min(window=10, align = "centre")
+        tracker.rolling_min(window=10, align = "left")
         tracker.subset(years=1990)
         tracker.spatial_mean()
         tracker.run()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
-        assert x == 16.211519241333008
+        assert x == 16.158565521240234 
 
         n = len(nc.session_files())
         assert n == 1
 
     def test_range(self):
         tracker = nc.open_data(ff)
-        tracker.rolling_range(window=10, align = "centre")
+        tracker.rolling_range(window=10, align = "right")
         tracker.subset(years=1990)
         tracker.spatial_mean()
         tracker.run()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
-        assert x == 4.091217517852783
+        assert x == 3.8962974548339844 
         n = len(nc.session_files())
         assert n == 1
 
@@ -66,20 +99,20 @@ class TestRollstat:
         tracker.spatial_mean()
         tracker.run()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
-        assert x == 180.77279663085938
+        assert x == 180.8798065185547 
         n = len(nc.session_files())
         assert n == 1
 
     def test_float(self):
         tracker = nc.open_data(ff)
-        tracker.rolling_sum(window=10, align = "centre")
+        tracker.rolling_sum(window=10, align = "left")
         tracker.subset(years=1990)
         tracker.spatial_mean()
         tracker.run()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
 
         tracker = nc.open_data(ff)
-        tracker.rolling_sum(window=10, align = "centre")
+        tracker.rolling_sum(window=10, align = "left")
         tracker.subset(years=1990)
         tracker.spatial_mean()
         tracker.run()

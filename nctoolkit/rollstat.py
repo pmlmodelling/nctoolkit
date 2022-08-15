@@ -1,6 +1,6 @@
 from nctoolkit.runthis import run_this
 
-def align(self, align = "centre"):
+def align(self, align = "right"):
     """
     Method to align output time in temporal methods. 
 
@@ -31,10 +31,9 @@ def align(self, align = "centre"):
         align = "first"
 
     if "middle" in align:
-        align = "middle"
+        align = "midhigh"
 
-
-    if align not in ["first","middle","last"]:
+    if align not in ["first","middle","last", "midhigh"]:
         raise ValueError(f"{align} is not a valid align argument")
 
     new_align = f"--timestat_date {align}"
@@ -65,7 +64,7 @@ def rollstat(self, window=None, stat="mean"):
     run_this(cdo_command, self, output="ensemble")
 
 
-def rolling_mean(self, window=None, align = "centre"):
+def rolling_mean(self, window=None, align = "right"):
     """
     Calculate a rolling mean based on a window
     Time output is the middle time of the window.
@@ -92,7 +91,7 @@ def rolling_mean(self, window=None, align = "centre"):
     rollstat(self, window=window, stat="mean")
 
 
-def rolling_min(self, window=None, align = "centre"):
+def rolling_min(self, window=None, align = "right"):
     """
     Calculate a rolling minimum based on a window
     Time output is the middle time of the window.
@@ -116,7 +115,7 @@ def rolling_min(self, window=None, align = "centre"):
     rollstat(self, window=window, stat="min")
 
 
-def rolling_max(self, window=None, align = "centre"):
+def rolling_max(self, window=None, align = "right"):
     """
     Calculate a rolling maximum based on a window
     Time output is the middle time of the window.
@@ -139,7 +138,7 @@ def rolling_max(self, window=None, align = "centre"):
     rollstat(self, window=window, stat="max")
 
 
-def rolling_range(self, window=None, align = "centre"):
+def rolling_range(self, window=None, align = "right"):
     """
     Calculate a rolling range based on a window
     Time output is the middle time of the window.
@@ -163,7 +162,7 @@ def rolling_range(self, window=None, align = "centre"):
     rollstat(self, window=window, stat="range")
 
 
-def rolling_sum(self, window=None, align = "centre"):
+def rolling_sum(self, window=None, align = "right"):
     """
     Calculate a rolling sum based on a window
     Time output is the middle time of the window.
