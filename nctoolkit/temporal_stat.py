@@ -142,8 +142,6 @@ def na_count(self, over="time", align = "right"):
     over: str or list
         Time periods to to the count over over. Options are 'time', 'year', 'month', 'day'.
 
-    Parameters
-    -------------
     align: str
         This determines whether the output time is at the left, centre or right hand side of the time window.
         Options are "left", "centre" and "right"
