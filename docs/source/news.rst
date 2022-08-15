@@ -1,6 +1,16 @@
 News
 ============
 
+Release of v0.6.0
+---------------
+
+Release date: 15th August. 
+
+This is a major release that introduces some breaking changes. All methods that carry out temporal averaging of any sort will now align output times to the right. This applies to methods such as
+`tmean` and `rolling_mean`. The internals when `align = "left"` option have been modified, as the CDO call was sometimes giving incorrect results. 
+
+
+
 Release of v0.5.4
 ---------------
 
