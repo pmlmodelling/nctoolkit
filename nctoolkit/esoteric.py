@@ -71,7 +71,7 @@ def no_leaps(self):
 
     """
 
-    cdo_command = f"cdo -delfeb29"
+    cdo_command = f"cdo -del29feb"
 
     run_this(cdo_command, self, output="ensemble")
 
