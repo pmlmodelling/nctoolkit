@@ -67,7 +67,6 @@ def rollstat(self, window=None, stat="mean"):
 def rolling_mean(self, window=None, align = "right"):
     """
     Calculate a rolling mean based on a window
-    Time output is the middle time of the window.
 
     Parameters
     -------------
@@ -94,7 +93,6 @@ def rolling_mean(self, window=None, align = "right"):
 def rolling_min(self, window=None, align = "right"):
     """
     Calculate a rolling minimum based on a window
-    Time output is the middle time of the window.
 
     Parameters
     -------------
@@ -118,7 +116,6 @@ def rolling_min(self, window=None, align = "right"):
 def rolling_max(self, window=None, align = "right"):
     """
     Calculate a rolling maximum based on a window
-    Time output is the middle time of the window.
 
     Parameters
     -------------
@@ -141,7 +138,6 @@ def rolling_max(self, window=None, align = "right"):
 def rolling_range(self, window=None, align = "right"):
     """
     Calculate a rolling range based on a window
-    Time output is the middle time of the window.
 
     Parameters
     -------------
@@ -165,7 +161,6 @@ def rolling_range(self, window=None, align = "right"):
 def rolling_sum(self, window=None, align = "right"):
     """
     Calculate a rolling sum based on a window
-    Time output is the middle time of the window.
 
     Parameters
     -------------
@@ -184,3 +179,25 @@ def rolling_sum(self, window=None, align = "right"):
     """
     self.align(align)
     rollstat(self, window=window, stat="sum")
+
+def rolling_stdev(self, window=None, align = "right"):
+    """
+    Calculate a rolling standard deviation based on a window
+
+    Parameters
+    -------------
+    window: int
+        The size of the window for the calculation of the rolling sum
+    align: str
+        This determines whether the output time is at the left, centre or right hand side of the time window.
+        Options are "left", "centre" and "right"
+
+    Examples
+    ------------
+
+    If you wanted to calculate a rolling sum with the sum calculated over every 10 time steps, do the following:
+
+    >>> ds.rolling_sum(10)
+    """
+    self.align(align)
+    rollstat(self, window=window, stat="std")
