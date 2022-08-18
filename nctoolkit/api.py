@@ -1777,6 +1777,7 @@ class DataSet(object):
     from nctoolkit.rollstat import rolling_range
     from nctoolkit.rollstat import rolling_sum
     from nctoolkit.rollstat import rolling_stdev
+    from nctoolkit.rollstat import rolling_var
 
     from nctoolkit.run import run
 

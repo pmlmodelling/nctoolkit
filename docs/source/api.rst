@@ -127,6 +127,8 @@ Rolling methods
    DataSet.rolling_max
    DataSet.rolling_sum
    DataSet.rolling_range
+   DataSet.rolling_stdev
+   DataSet.rolling_var
 
 
 
