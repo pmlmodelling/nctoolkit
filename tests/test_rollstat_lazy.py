@@ -14,6 +14,14 @@ class TestRollstat:
         n = len(nc.session_files())
         assert n == 0
 
+    def test_var(self):
+        ds = nc.open_data("data/2003.nc")
+        ds.rolling_var(10)
+        assert "cdo -runvar,10" == ds.history[0]
+        ds = nc.open_data("data/2003.nc")
+        ds.rolling_stdev(10)
+        assert "cdo -runstd,10" == ds.history[0]
+
     def test_align(self):
         ds = nc.open_data("data/2003.nc")
         ds.subset(times = range(0, 20))
