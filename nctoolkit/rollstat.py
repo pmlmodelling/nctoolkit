@@ -200,7 +200,7 @@ def rolling_var(self, window=None, align = "right"):
     >>> ds.rolling_sum(10)
     """
     self.align(align)
-    rollstat(self, window=window, stat="std")
+    rollstat(self, window=window, stat="var")
 
 def rolling_stdev(self, window=None, align = "right"):
     """
