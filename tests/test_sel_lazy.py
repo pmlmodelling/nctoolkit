@@ -14,6 +14,12 @@ class TestSelect:
         n = len(nc.session_files())
         assert n == 0
 
+    def test_hours(self):
+        ds = nc.open_data("data/hourly/01/swr_1997_01_01.nc")
+        ds.subset(hours = 3)
+        ds.run()
+        assert ds.times[0].hour == 3
+
     def test_levels(self):
         ds = nc.open_data("data/woa18_decav_t01_01.nc")
         ds.subset(levels = [0, 40])

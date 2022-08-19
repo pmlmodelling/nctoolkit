@@ -112,6 +112,45 @@ def select_seasons(self, season=None):
     cdo_command = f"cdo -select,season={season}"
     run_this(cdo_command, self, output="ensemble")
 
+def select_hours(self, hours=None):
+    """
+    Select hours from a dataset
+    This method will subset the dataset to only contain hours within the list given.
+    A warning message will be provided when there are missing hours.
+
+    Parameters
+    -------------
+    hours : list, range or int
+        Month(s) to select.
+    """
+
+    if hours is None:
+        raise ValueError("Please supply hours")
+
+    # check validity of hours
+    if type(hours) is range:
+        hours = list(hours)
+
+    if type(hours) is not list:
+        hours = [hours]
+    # all of the variables in hours need to be converted to ints,
+    # just in case floats have been provided
+    # coerce to int if numpy float etc.
+
+    hours = [int(x) if "int" in str(type(x)) else x for x in hours]
+
+
+    for x in hours:
+        if type(x) is not int:
+            raise TypeError(f"{x} is not an int")
+        if x not in list(range(1, 32)):
+            raise ValueError(f"{x} is not a hour")
+
+    hours = str_flatten(hours, ",")
+
+    cdo_command = f"cdo -selhour,{hours}"
+    run_this(cdo_command, self, output="ensemble")
+
 
 def select_days(self, days=None):
     """
@@ -375,6 +414,8 @@ def subset(self, **kwargs):
         Month(s) to select.
     years : list,range or int
         Years(s) to select. These should be integers
+    hours : list, range or int
+        Hours(s) to select.
     range : list
         List of the form [date_min, date_max], where dates must be datetime objects or strings of the form "DD/MM/YYYY" or "DD-MM-YYYY".
         Times selected will be on or after date_min and before date_max.
@@ -463,6 +504,10 @@ def subset(self, **kwargs):
 
         if "day" in key.lower():
             select_days(self, kwargs[key])
+            non_selected = False
+
+        if "hour" in key.lower():
+            select_hours(self, kwargs[key])
             non_selected = False
 
         if "lev" in key.lower() or "depth" in key.lower():
