@@ -75,6 +75,11 @@ There are two main system dependencies: `Climate Data Operators <https://code.mp
 
 CDO is necessary for the package to work. NCO is an optional dependency and does not have to be installed.
 
+If you are working on an Ubuntu system, you should be able to install CDO as follows::
+
+    $ sudo apt install cdo 
+
+
 If you want to install CDO from source, you can use one of the bash scripts available `here. <https://github.com/r4ecology/nctoolkit/tree/master/cdo_installers>`__
 
 
