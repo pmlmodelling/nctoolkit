@@ -48,6 +48,11 @@ def match_points(self, df = None, variables = None, depths = None, tmean = False
 
     mp = open_matchpoint()
 
+    df.columns = [x.lower() for x in df.columns]
+
+    df = df.rename(columns = {"longitude":"lon"})
+    df = df.rename(columns = {"latitude":"lat"})
+
     for x in df.columns:
         if x not in ["lon", "lat", "year", "month", "day", "depth"]:
             raise ValueError(f"{x} is not a valid column name")

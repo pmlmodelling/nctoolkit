@@ -14,7 +14,8 @@ def match_points(ds=None, df = None, variables=None, depths = None, nan=None, to
     ds: nctoolkit dataset or str/list of file paths
         Dataset or file(s) to match up with
     df: pandas dataframe containing the spatiotemporal points to match with.
-        The column names must be made up of a subset of "lon", "lat", "year", "month", "day" and "depth"
+        The column names must be made up of a subset of "lon", "lat", "year", "month", "day" and "depth". 
+        "longitude" and "latitude" will also be accepted for lon/lat. Detection will not be case sensitive
     variables: str or list
         Str or list of variables. All variables are matched up if this is not supplied.
     depths:  nctoolkit dataset or list giving depths
@@ -254,6 +255,11 @@ def add_points(self, df=None):
     """
 
     self.points_temporal = False
+
+    df.columns = [x.lower() for x in df.columns]
+
+    df = df.rename(columns = {"longitude":"lon"})
+    df = df.rename(columns = {"latitude":"lat"})
 
     for x in df.columns:
         if x not in ["lon", "lat", "year", "month", "day", "depth"]:
