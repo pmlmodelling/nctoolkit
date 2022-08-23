@@ -427,6 +427,54 @@ def multiply(self, x=None, var=None):
 
     operation(self=self, method="mul", ff=ff, var=var)
 
+def rmse(self, x=None):
+    """
+    Calculate the root-mean-square-error of two datasets 
+
+    Parameters
+    ------------
+    x:  DataSet or netCDF file
+        This must have an identifical structure to your dataset
+
+    ------------
+    """
+
+    if "api.DataSet" in str(type(x)):
+        x.run()
+        if len(x) == 1:
+            ff = x.current[0]
+        else:
+            raise ValueError("This can only work with single file datasets")
+    else:
+        ff = x
+
+    ds2 = open_data(ff)
+
+    if len(self) > 1:
+        raise ValueError("This can only work with single file datasets")
+
+    self.run()
+    n_times = len(self.times)
+
+    ds1 = self.copy()
+    # subtract the data in one dataset from the other
+    ds1.subtract(ds2)
+    #square the differences
+    ds1.power(2)
+    # sum up over all time steps
+    ds1.tsum()
+    # divide by the number of time steps
+    ds1.divide(n_times)
+    #square the results
+    ds1.sqrt()
+    ds1.run()
+
+    self.current = ds1.current
+    self.history = ds1.history
+    self._hold_history = ds1._hold_history
+
+
+
 
 def subtract(self, x=None, var=None):
     """

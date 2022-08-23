@@ -1666,6 +1666,7 @@ class DataSet(object):
     from nctoolkit.add_etc import square
     from nctoolkit.add_etc import sqrt
     from nctoolkit.add_etc import day_stat
+    from nctoolkit.add_etc import rmse
 
     from nctoolkit.anomaly import annual_anomaly
     from nctoolkit.anomaly import monthly_anomaly
