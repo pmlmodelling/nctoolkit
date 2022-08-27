@@ -251,6 +251,8 @@ def add_points(self, df=None):
     -------------
     df: pandas dataframe containing the spatiotemporal points to match with.
         The column names must be made up of a subset of "lon", "lat", "year", "month", "day" and "depth"
+        Pressure, named "pressure" can also be used instead of "depth", which will require the optional
+        dependency seawater to be installed.
 
     """
 
@@ -262,8 +264,12 @@ def add_points(self, df=None):
     df = df.rename(columns = {"latitude":"lat"})
 
     for x in df.columns:
-        if x not in ["lon", "lat", "year", "month", "day", "depth"]:
+        if x not in ["lon", "lat", "year", "month", "day", "depth", "pressure"]:
             raise ValueError(f"{x} is not a valid column name")
+
+    if "depth" in df.columns and "pressure" in df.columns:
+        raise ValueError("You cannot supply depth and pressure")
+
 
     if len([x for x in df.columns if x in ["lon", "lat"]]) < 2:
         raise ValueError("You must provide lon and lat!")
@@ -276,8 +282,17 @@ def add_points(self, df=None):
 
     self.points = self.points.dropna().drop_duplicates().reset_index(drop=True)
 
+    if "pressure" in self.points:
+        try:
+            import seawater as sw
+        except:
+            raise ImportError("Please install seawater")
+        print("Converting pressure to depth")
+        self.points["depth"] = sw.dpth(self.points.pressure, self.points.lat)
+
     if self.depths is None and self.data is not None:
         if self.points is not None:
             if "depth" in self.points:
                 raise ValueError("You cannot match depths without supplying dataset depths")
+
 

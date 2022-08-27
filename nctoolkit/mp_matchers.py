@@ -12,6 +12,8 @@ def match_points(self, df = None, variables = None, depths = None, tmean = False
     -------------
     df: pandas DataFrame
         The column names must be made up of a subset of "lon", "lat", "year", "month", "day" and "depth"
+        Pressure (in dbars), named "pressure", can also be used instead of "depth", which will require the optional
+        dependency seawater to be installed.
     variables:  str or list
         Str or list of variables. All variables are matched up if this is not supplied.
     depths:  nctoolkit DataSet or list
@@ -54,8 +56,10 @@ def match_points(self, df = None, variables = None, depths = None, tmean = False
     df = df.rename(columns = {"latitude":"lat"})
 
     for x in df.columns:
-        if x not in ["lon", "lat", "year", "month", "day", "depth"]:
+        if x not in ["lon", "lat", "year", "month", "day", "depth", "pressure"]:
             raise ValueError(f"{x} is not a valid column name")
+    if "depth" in df.columns and "pressure" in df.columns:
+        raise ValueError("You cannot supply pressure and depth")
 
     if len([x for x in df.columns if x in ["lon", "lat"]]) < 2:
         raise ValueError("You must provide lon and lat!")
