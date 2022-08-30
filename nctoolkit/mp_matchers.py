@@ -55,9 +55,13 @@ def match_points(self, df = None, variables = None, depths = None, tmean = False
     df = df.rename(columns = {"longitude":"lon"})
     df = df.rename(columns = {"latitude":"lat"})
 
+    if len([x for x in df.columns if x in ["lon", "lat"]]) == 1:
+        raise ValueError("You must provide both lon and lat")
+
     for x in df.columns:
         if x not in ["lon", "lat", "year", "month", "day", "depth", "pressure"]:
             raise ValueError(f"{x} is not a valid column name")
+
     if "depth" in df.columns and "pressure" in df.columns:
         raise ValueError("You cannot supply pressure and depth")
 
