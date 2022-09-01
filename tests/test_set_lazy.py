@@ -25,6 +25,12 @@ class TestSetters:
     def test_empty(self):
         n = len(nc.session_files())
         assert n == 0
+    def test_empty(self):
+        ds = nc.open_data(ff)
+        ds.subset(time = 0)
+        ds.set_day(15)
+        ds.run()
+        assert [x.day for x in ds.times][0] == 15
 
     def test_setdate(self):
 

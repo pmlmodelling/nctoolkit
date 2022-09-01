@@ -23,7 +23,22 @@ def set_year(self, x):
         raise ValueError(f"{x} is not a int")
     cdo_command = f"cdo -setyear,{x}"
     run_this(cdo_command, self, output="ensemble")
-    #self.cdo_command(f"setyear,{x}")
+
+def set_day(self, x):
+    """
+    Set the day for each time step in a dataset
+
+    Parameters
+    -------------
+    x : int
+        Day to set dataset to 
+    """
+
+    if type(x) is not int:
+        raise ValueError(f"{x} is not a int")
+    cdo_command = f"cdo -setday,{x}"
+    run_this(cdo_command, self, output="ensemble")
+
 
 
 def set_precision(self, x):

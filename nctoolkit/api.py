@@ -1787,6 +1787,7 @@ class DataSet(object):
 
     from nctoolkit.setters import set_date
     from nctoolkit.setters import set_year
+    from nctoolkit.setters import set_day
     from nctoolkit.setters import as_missing
     from nctoolkit.setters import set_units
     from nctoolkit.setters import set_longnames
