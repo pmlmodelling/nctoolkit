@@ -7,5 +7,5 @@ ncplot>=0.0.5
 dill
 python-dateutil
 plotnine
-cartopy
+geoviews
 
