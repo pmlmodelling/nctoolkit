@@ -24,17 +24,3 @@ class TestCrop:
         for i in range(len(lines_1)):
             assert text.findall(lines_1[i]) == text.findall(lines_2[i]) 
         os.remove(out_file)
-        ds = nc.open_data(ff)
-        ds.spatial_mean()
-        out_file = nc.temp_file.temp_file(".html")
-        ds.plot(out= out_file)
-        file1 = open('data/test2.html', 'r')
-        lines_1 = file1.readlines()
-        
-        
-        file1 = open(out_file, 'r')
-        lines_2 = file1.readlines()
-        text = re.compile('"#.[0-9, a-z]*"')
-        for i in range(len(lines_1)):
-            assert text.findall(lines_1[i]) == text.findall(lines_2[i]) 
-        os.remove(out_file)
