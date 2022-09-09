@@ -235,7 +235,7 @@ def assign(self, drop=False, **kwargs):
             ]
             i = 0
             for ss in start:
-                if ".assign(" in ss:
+                if ".assign(" in ss or ".match_points(" in ss:
                     ind = i
                 i += 1
 
@@ -259,7 +259,7 @@ def assign(self, drop=False, **kwargs):
     if ";" in start:
         raise ValueError("You cannot split assign calls using ;")
 
-    if ".assign(" not in start:
+    if ".assign(" not in start and ".match_points(" not in start:
         raise ValueError("Please write assign methods as single line!")
 
     try:
@@ -321,6 +321,13 @@ def assign(self, drop=False, **kwargs):
 
     if starts.endswith(","):
         starts = starts[:-1]
+
+    if ".match_points(" in starts:
+        starts = starts.replace(".match_points(", ".assign(")
+
+    starts = starts.split(";")
+    starts = [x for x in starts if ("lambda" in x) or ("drop" in x)]
+    starts = ("; ").join(starts)
 
     for start in starts.split(";"):
 
