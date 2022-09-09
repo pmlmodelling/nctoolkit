@@ -72,6 +72,7 @@ def drop(self, **kwargs):
                 if type(vv) is not int:
                     raise TypeError(f"{vv} is not an int")
 
+            vars = [(x + 1) for x in vars]
             vars = str_flatten(vars, ",")
 
             # create the cdo command and run it
