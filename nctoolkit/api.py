@@ -1838,6 +1838,7 @@ class DataSet(object):
     from nctoolkit.verticals import bottom_mask
     from nctoolkit.verticals import surface_mask
     from nctoolkit.verticals import invert_levels
+    from nctoolkit.verticals import to_zlevels
 
     from nctoolkit.zip import zip
 
