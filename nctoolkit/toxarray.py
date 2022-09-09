@@ -83,7 +83,7 @@ def to_xarray(self, decode_times=True, **kwargs):
         if len(self1) == 1:
             data = xr.open_dataset(self1.current[0], decode_times=decode_times)
         else:
-            data = xr.open_mfdataset(self1.current[0], decode_times=decode_times)
+            data = xr.open_mfdataset(self1.current, decode_times=decode_times)
         return data
 
     # If it does not, then we use cdo to pull out the times,
@@ -121,7 +121,4 @@ def to_dataframe(self, decode_times=True, **kwargs):
     to_dataframe :  pandas.DataFrame
 
     """
-    # everything must be run first
-    #if len(kwargs) == 0:
-    #    self.run()
     return self.to_xarray(decode_times=decode_times, **kwargs).to_dataframe()
