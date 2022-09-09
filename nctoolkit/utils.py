@@ -67,6 +67,30 @@ def version_above(x, y):
 
 # check version of cdo installed
 
+def latest_version():
+    try:
+        import requests
+    
+        url = "https://anaconda.org/conda-forge/cdo"
+        r = requests.get(url)
+        import re
+        text = re.compile("v.*..*..[0-10]")
+    
+        text = re.compile("v[0-9].[0-9]?[0-9].[0-9]?[0-9]")
+        options = []
+        for x in [text.findall(x) for x in r.text.split(" ") if "2.0.5" in x]:
+            options += x
+    
+        versions = []
+        for x in options:
+            versions.append(x.replace("v", ""))
+        versions = list(set(versions))
+        if  len(versions) == 1:
+            return versions[0]
+        else:
+            return None
+    except:
+        return None
 
 def validate_version():
     """
@@ -97,7 +121,17 @@ def validate_version():
                 "Please install CDO version 1.9.7 or above: https://code.mpimet.mpg.de/projects/cdo/ or https://anaconda.org/conda-forge/cdo"
             )
         else:
-            print(f"nctoolkit is using Climate Data Operators version {actual_version}")
+            latest = latest_version()
+
+            if latest is None:
+                print(f"nctoolkit is using Climate Data Operators version {actual_version}")
+            else:
+                if version_below(actual_version, latest):
+                    print(f"nctoolkit is using Climate Data Operators version {actual_version}. v{latest} is available: https://anaconda.org/conda-forge/cdo!")
+                else:
+                    print(f"nctoolkit is using the latest version of Climate Data Operators version: {actual_version}")
+
+
     except:
         print(
             "Please install CDO version 1.9.7 or above: https://code.mpimet.mpg.de/projects/cdo/ or https://anaconda.org/conda-forge/cdo"
