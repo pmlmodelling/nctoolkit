@@ -53,14 +53,10 @@ def matchup(self,  tmean = False, regrid = "bil", max_extrap = 5):
     
     Parameters
     -------------
-    on: list or string
-        The temporal resolution for matching. This should be a list made up of 'day', 'month', 'year'.
-        Example, if you provide ['day', 'month', 'year'] model and observational data will be matched for each day of the year across all years.
-        If you provide ['month', 'year'], the matches will occur by month, and days are ignored. In this case if the model resolution is daily,
-        a monthly average will be calculated automatically.
     tmean: bool
-        Set to True or False, depending on whether you want temporal averaging at the level given by on. Defaults to False.
-        This is equivalent to doing `ds.tmean(on)` to the dataset.
+        Set to True or False. Defaults to False. This will calculate a temporal mean for the dataset at the
+        resolution given in the point dataset. So, for example, if the point data is monthly, but the dataset
+        is daily, it will calculate an appropritate monthly mean.
     regrid: str
         Regridding method. Defaults to "bil". Options available are those in nctoolkit regrid method.
         "nn" for nearest neighbour.

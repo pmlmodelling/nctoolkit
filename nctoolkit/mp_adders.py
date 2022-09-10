@@ -1,7 +1,6 @@
 import pandas as pd
 from nctoolkit.api import open_data, open_thredds
 import xarray as xr
-from nctoolkit.mp_utils import get_type
 from nctoolkit.matchpoint import open_matchpoint
 
 
