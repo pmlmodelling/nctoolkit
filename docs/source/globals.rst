@@ -28,7 +28,7 @@ used for saving temporary files as follows:
 
     nc.options(temp_dir = "/foo")
 
-Turning on or off progress bars
+Turning progress bars on or off
 ---------------
 
 By default, nctoolkit will display a progress bar when it thinks a process will take a long time for a multi-file
