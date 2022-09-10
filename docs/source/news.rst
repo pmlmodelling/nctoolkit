@@ -1,10 +1,25 @@
 News
 ============
 
+Release of v0.7.0
+---------------
+
+Release data: 10th September 2022.
+
+This is a major release with some breaking changes.
+
+The deprecated `select` method has now been removed. Users should now use the `subset` method.
+
+A progress bar will now display when processing large datasets. This will only show when nctoolkit thinks something will take a while. If you want to always show a progress
+bar for multi-file datasets, you can do this: `nc.options(progress = 'on')`.
+
+
+
+
 Release of v0.6.0
 ---------------
 
-Release date: 15th August. 
+Release date: 15th August 2022. 
 
 This is a major release that introduces some breaking changes. All methods that carry out temporal averaging of any sort will now align output times to the right. This applies to methods such as
 `tmean` and `rolling_mean`. The internals when `align = "left"` option have been modified, as the CDO call was sometimes giving incorrect results. 
