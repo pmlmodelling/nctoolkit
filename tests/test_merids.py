@@ -21,6 +21,9 @@ ff = "data/sst.mon.mean.nc"
 
 class TestClip:
     def test_merid1(self):
+        ds = nc.open_data("data/vertical_tester.nc")
+        with pytest.raises(TypeError):
+            ds.meridonial_mean()
         tracker = nc.open_data(ff)
         n = len(nc.session_files())
         assert n == 0

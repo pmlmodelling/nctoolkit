@@ -8,6 +8,19 @@ import os, pytest
 
 class TestTonnc:
     def test_empty(self):
+
+        ds = nc.open_data("data/sst.mon.mean.nc")
+        times = ds.times
+        out = nc.temp_file.temp_file("nc")
+        nc.session.append_safe(out)
+        ds.to_nc(out, time = 1)
+        ds = nc.open_data(out)
+        assert  len(ds.times) == 1
+        assert ds.times[0] == times[1]
+        nc.session.remove_safe(out)
+        del ds
+
+
         n = len(nc.session_files())
         assert n == 0
         ds = nc.open_data()

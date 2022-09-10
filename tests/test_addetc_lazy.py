@@ -12,6 +12,15 @@ ff = "data/sst.mon.mean.nc"
 
 class TestAddetc:
 
+    def test_rmse(self):
+        ds1 = nc.open_data("data/sst.mon.mean.nc")
+        ds2 = nc.open_data("data/sst.mon.mean.nc")
+        ds1.subtract(2)
+        ds1.rmse(ds2)
+        assert np.abs(ds1.to_dataframe().sst.max() - 2.0) < 0.000001
+        assert np.abs(ds1.to_dataframe().sst.min() - 2.0) < 0.000001
+
+
     def test_dailyts(self):
         ds = nc.open_data("data/hourly/01/*.nc")
         ds.set_precision("F64")

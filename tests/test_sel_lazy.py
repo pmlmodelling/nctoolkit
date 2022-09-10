@@ -26,6 +26,12 @@ class TestSelect:
         ds.run()
         assert ds.levels == [0.0, 5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0]
 
+        ds = nc.open_data("data/woa18_decav_t01_01.nc")
+        ds.subset(levels = 5)
+        
+        ds.run()
+        assert ds.levels == [5.0]
+
     def test_range(self):
         ds = nc.open_data("data/200*.nc")
         ds.merge("time")

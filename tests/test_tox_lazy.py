@@ -16,6 +16,18 @@ class TestToxar:
         tracker = nc.open_data(ff1)
         x = tracker.to_xarray(decode_times=True).time.dt.year.values[0]
         assert x == 1986
+        ds = nc.open_data("data/sst.mon.mean.nc")
+        assert len(ds.to_xarray(time = range(0, 3)).time.values) == 3
+
+        ds = nc.open_data("data/sst.mon.mean.nc")
+        ds.subset(time = range(0, 3))
+        ds.split("month")
+        assert len(ds.to_xarray().time.values) == 3
+
+        ds = nc.open_data("data/woa18_decav_t01_01.nc")
+        x = ds.to_xarray().time.values[0]
+        assert str(x) == '1986-01-16T12:00:00.000000000'
+
 
     def test_xarray3(self):
         tracker = nc.open_data(ff)
