@@ -48,9 +48,10 @@ def get_type(df):
 
 
 
-def unify(x=None, y=None, ignore = None, **kwargs):
+def unify(x=None, y=None, ignore = None, clim = False, **kwargs):
     """
     Unify datasets temporally and spatially 
+    Experimental feature: use at your own risk!
 
     Parameters
     -------------
@@ -60,6 +61,8 @@ def unify(x=None, y=None, ignore = None, **kwargs):
         Second dataset to use
     ignore: list
         List, made up of "time" and "grid", "levels" of dimensions to ignore.
+    clim: bool
+        Set to True if one of the variables is a climatology. Default is False.
         
     """
 
@@ -205,114 +208,122 @@ def unify(x=None, y=None, ignore = None, **kwargs):
         b.regrid(a)
 
     if unify_time:
-        mod_ag = get_type(a_times_df)
-        b_ag = get_type(b_times_df)
+        if True:
+            mod_ag = get_type(a_times_df)
+            b_ag = get_type(b_times_df)
 
-        if mod_ag != b_ag:
+            if mod_ag != b_ag:
 
-            ag = [x for x in mod_ag if x in b_ag]
+                ag = [x for x in mod_ag if x in b_ag]
 
-            if ag == []:
-                if "year" in mod_ag or "year" in b_ag:
-                    ag = ["year"]
+                if ag == []:
+                    if "year" in mod_ag or "year" in b_ag:
+                        ag = ["year"]
 
-            if ag == []:
-                if "month" in mod_ag or "month" in b_ag:
-                    ag = ["month"]
+                if ag == []:
+                    if "month" in mod_ag or "month" in b_ag:
+                        ag = ["month"]
 
-            if ag == []:
-                raise ValueError("not working")
+                if ag == []:
+                    raise ValueError("not working")
 
-            if ag == ["month"]:
-                print("Using a monthly climatology for matchups!")
+                if True:
+                    if ag == ["month"]:
+                        if clim:
+                            print("Using a monthly climatology for matchups!")
+                        else: ag = ["year", "month"]
 
-            if ag == ["yearly"]:
-                print("Using an annual climatology for matchups!")
+                    if ag == ["yearly"]:
+                        print("Using an annual climatology for matchups!")
 
-            if ag == ["daily"]:
-                print("Using a daily climatology for matchups!")
+                    if ag == ["daily"]:
+                        if clim:
+                            print("Using a daily climatology for matchups!")
+                        else:
+                            ag = ["year", "month", "day"]
 
-            a.tmean(ag)
+                    a.tmean(ag)
 
-            b.tmean(ag)
-        else:
-            ag = mod_ag
+                    b.tmean(ag)
+            else:
+                ag = mod_ag
 
-        aggregation = ag
+            aggregation = ag
 
-        a.run()
-        b.run()
+            a.run()
+            b.run()
 
         if len(a.times) != len(b.times):
 
-            if ag == ["year", "month"]:
-                mod_times = (
-                    get_timedf(a)
-                    .loc[:, ["month", "year"]]
-                    .reset_index()
-                    .rename(columns={"index": "a_index"})
-                )
-                b_times = (
-                    get_timedf(b)
-                    .loc[:, ["month", "year"]]
-                    .reset_index()
-                    .rename(columns={"index": "b_index"})
-                )
+            if True:
+                if ag == ["year", "month"]:
+                    mod_times = (
+                        get_timedf(a)
+                        .loc[:, ["month", "year"]]
+                        .reset_index()
+                        .rename(columns={"index": "a_index"})
+                    )
+                    b_times = (
+                        get_timedf(b)
+                        .loc[:, ["month", "year"]]
+                        .reset_index()
+                        .rename(columns={"index": "b_index"})
+                    )
 
-                indices = mod_times.merge(b_times)
-                mod_index = [int(x) for x in indices.a_index]
-                b_index = [int(x) for x in indices.b_index]
+                    indices = mod_times.merge(b_times)
+                    mod_index = [int(x) for x in indices.a_index]
+                    b_index = [int(x) for x in indices.b_index]
 
-                a.subset(times=mod_index)
-                b.subset(times=b_index)
+                    a.subset(times=mod_index)
+                    b.subset(times=b_index)
 
-                print("Only selecting matching years and months!")
+                    print("Only selecting matching years and months!")
 
-            if "day" in ag and len(a.years) == 1:
-                mod_times = (
-                    get_timedf(a)
-                    .loc[:, ["month", "day"]]
-                    .reset_index()
-                    .rename(columns={"index": "a_index"})
-                )
-                b_times = (
-                    get_timedf(b)
-                    .loc[:, ["month", "day"]]
-                    .reset_index()
-                    .rename(columns={"index": "b_index"})
-                )
+                if "day" in ag and len(a.years) == 1:
+                    mod_times = (
+                        get_timedf(a)
+                        .loc[:, ["month", "day"]]
+                        .reset_index()
+                        .rename(columns={"index": "a_index"})
+                    )
+                    b_times = (
+                        get_timedf(b)
+                        .loc[:, ["month", "day"]]
+                        .reset_index()
+                        .rename(columns={"index": "b_index"})
+                    )
 
-                indices = mod_times.merge(b_times)
-                mod_index = [int(x) for x in indices.a_index]
-                b_index = [int(x) for x in indices.b_index]
+                    indices = mod_times.merge(b_times)
+                    mod_index = [int(x) for x in indices.a_index]
+                    b_index = [int(x) for x in indices.b_index]
 
-                a.subset(times=mod_index)
-                b.subset(times=b_index)
+                    a.subset(times=mod_index)
+                    b.subset(times=b_index)
 
-                print("Only selecting matching days!")
+                    print("Only selecting matching days!")
 
-            if "day" in ag and len(a.years) > 1:
-                mod_times = (
-                    get_timedf(a)
-                    .loc[:, ["year", "month", "day"]]
-                    .reset_index()
-                    .rename(columns={"index": "a_index"})
-                )
-                b_times = (
-                    get_timedf(b)
-                    .loc[:, ["year", "month", "day"]]
-                    .reset_index()
-                    .rename(columns={"index": "b_index"})
-                )
+                if "day" in ag and len(a.years) > 1:
+                    mod_times = (
+                        get_timedf(a)
+                        .loc[:, ["year", "month", "day"]]
+                        .reset_index()
+                        .rename(columns={"index": "a_index"})
+                    )
+                    b_times = (
+                        get_timedf(b)
+                        .loc[:, ["year", "month", "day"]]
+                        .reset_index()
+                        .rename(columns={"index": "b_index"})
+                    )
 
-                indices = mod_times.merge(b_times)
-                mod_index = [int(x) for x in indices.a_index]
-                b_index = [int(x) for x in indices.b_index]
+                    indices = mod_times.merge(b_times)
+                    mod_index = [int(x) for x in indices.a_index]
+                    b_index = [int(x) for x in indices.b_index]
 
-                a.subset(times=mod_index)
-                b.subset(times=b_index)
+                    a.subset(times=mod_index)
+                    b.subset(times=b_index)
 
-                print("Only selecting matching days!")
+                    print("Only selecting matching days!")
 
 
         a.run()
@@ -326,9 +337,9 @@ def unify(x=None, y=None, ignore = None, **kwargs):
     x.current = a.current
     y.current = b.current
     x.history.append(a.history)
-    y.history.append(y.history)
+    y.history.append(b.history)
     x._hold_history.append(a._hold_history)
-    y._hold_history.append(y._hold_history)
+    y._hold_history.append(b._hold_history)
 
 
 
