@@ -19,11 +19,14 @@ def day_stat(self, operation = None,  x=None):
     if type(operation) is not str:
         raise ValueError("operation must be a str")
 
-    if operation != "subtract":
+    if operation not in  ["subtract", "divide"]:
         raise ValueError("only subtract")
 
     if operation == "subtract":
         stat = "sub"
+
+    if operation == "divide":
+        stat = "div"
 
     if type(x) is not str:
         x = x.current
