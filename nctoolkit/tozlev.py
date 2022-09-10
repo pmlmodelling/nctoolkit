@@ -14,6 +14,9 @@ from nctoolkit.session import remove_safe
 def to_zlevels(self, levels = None, thickness = None, depths = None):
     """
     Convert datasets with non z-level verticals to z-levels 
+    Experimental method: Use at your own risk.
+
+
     Parameters
     -------------
     levels: list
