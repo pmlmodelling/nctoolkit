@@ -1,4 +1,5 @@
 import copy
+from tqdm import tqdm
 import os
 import re
 import subprocess
@@ -537,10 +538,13 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
 
     session_info["latest_size"] = os.path.getsize(target)
 
+
     return target
 
 
 def run_this(os_command, self, output="one", out_file=None):
+
+
 
     if len(self) == 0:
         raise ValueError("Failure do to empty dataset!")
@@ -590,6 +594,18 @@ def run_this(os_command, self, output="one", out_file=None):
                     results = dict()
                 else:
                     target_list = []
+
+                progress_bar = False
+
+                if self.size['Number of files in ensemble'] >= 12:
+                    if self.size['Ensemble size'].split(" ")[1] == "GB":
+                        if float(self.size['Ensemble size'].split(" ")[0]) > 12:
+                            progress_bar = True
+
+                if cores == 1:
+                    if progress_bar:
+                        print("Processing large ensemble!")
+                        pbar = tqdm(total=len(file_list))
 
                 for ff in file_list:
                     ff_command = os_command
@@ -645,6 +661,7 @@ def run_this(os_command, self, output="one", out_file=None):
 
                     new_history.append(ff_command)
 
+
                     if cores > 1:
                         temp = pool.apply_async(
                             run_cdo, [ff_command, target, out_file, False, self._precision]
@@ -658,10 +675,14 @@ def run_this(os_command, self, output="one", out_file=None):
                         target_list.append(target)
 
                 if cores > 1:
-                    pool.close()
-                    pool.join()
+
+                    if progress_bar:
+                        print("Processing a large ensemble. In progress:")
+                        pbar = tqdm(total=len(file_list))
                     for k, v in results.items():
                         target_list.append(v.get())
+                        if progress_bar:
+                            pbar.update(1)
 
                 self.history = copy.deepcopy(new_history)
                 self.current = copy.deepcopy(target_list)

@@ -86,6 +86,7 @@ session_info["thread_safe"] = False
 session_info["lazy"] = True
 session_info["precision"] = None
 session_info["parallel"] = False
+session_info["checks"] = True
 
 session_info["interactive"] = sys.__stdin__.isatty()
 
@@ -138,13 +139,17 @@ def options(**kwargs):
 
     """
 
-    valid_keys = ["thread_safe", "lazy", "cores", "precision", "temp_dir", "parallel"]
+    valid_keys = ["thread_safe", "lazy", "cores", "precision", "temp_dir", "parallel", "checks"]
 
     for key in kwargs:
         if key not in valid_keys:
             raise AttributeError(key + " is not a valid option")
 
         if key == "parallel" or key == "lazy" or key == "thread_safe":
+            if type(kwargs[key]) is not bool:
+                raise TypeError(f"{key} should be boolean")
+
+        if key == "checks":
             if type(kwargs[key]) is not bool:
                 raise TypeError(f"{key} should be boolean")
 
@@ -468,6 +473,9 @@ def open_data(x=[], checks=True, **kwargs):
     >>> ds = nc.open_data("data/*.nc")
 
     """
+
+    if session_info["checks"] is False:
+        checks = False
 
     thredds = False
 
@@ -1782,7 +1790,6 @@ class DataSet(object):
 
     from nctoolkit.run import run
 
-    from nctoolkit.subset import select
     from nctoolkit.subset import subset
 
     from nctoolkit.setters import set_date
@@ -1825,6 +1832,8 @@ class DataSet(object):
     from nctoolkit.toxarray import to_xarray
     from nctoolkit.toxarray import to_dataframe
 
+    from nctoolkit.tozlev import to_zlevels
+
     from nctoolkit.verticals import vertical_mean
     from nctoolkit.verticals import vertical_min
     from nctoolkit.verticals import vertical_max
@@ -1838,7 +1847,6 @@ class DataSet(object):
     from nctoolkit.verticals import bottom_mask
     from nctoolkit.verticals import surface_mask
     from nctoolkit.verticals import invert_levels
-    from nctoolkit.verticals import to_zlevels
 
     from nctoolkit.zip import zip
 
