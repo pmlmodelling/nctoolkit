@@ -1,7 +1,7 @@
 News
 ============
 
-Release of v0.7.0
+Release of v0.7.1
 ---------------
 
 Release data: 10th September 2022.
