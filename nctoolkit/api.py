@@ -111,10 +111,13 @@ def options(**kwargs):
     Define session options.
     Set the options in the session. Available options are thread_safe and lazy.
     Set thread_safe = True if hdf5 was built to be thread safe.
-    Set lazy = True if you want methods to evaluate lazy by default.
+    Set lazy = False if you want methods to evaluate non-lazily
     Set cores = n, if you want nctoolkit to process the individual files in multi-file datasets in parallel. Note this
     only applies to multi-file datasets and will not improve performance with single files.
     Set temp_dir = "/foo" if you want to change the temporary directory used by nctoolkit to save temporary files.
+    Set  = "/foo" if you want to change the temporary directory used by nctoolkit to save temporary files.
+    Set progress to "on" or "off" if you always or never want a progress bar to show when multi-file datasets are processed. This defaults to "auto", i.e.
+    nctoolkit will automatically decide whether to show a progress bar based on the size of the ensemble.
 
     Parameters
     ---------------
@@ -139,7 +142,7 @@ def options(**kwargs):
 
     """
 
-    valid_keys = ["thread_safe", "lazy", "cores", "precision", "temp_dir", "parallel", "checks"]
+    valid_keys = ["thread_safe", "lazy", "cores", "precision", "temp_dir", "parallel", "checks", "progress"]
 
     for key in kwargs:
         if key not in valid_keys:
@@ -160,6 +163,15 @@ def options(**kwargs):
                         raise ValueError("The temp_dir specified does not exist!")
                     session_info[key] = os.path.abspath(kwargs[key])
                     session_info["user_dir"] = True
+                return None
+            if key == "progress":
+                if kwargs[key] not in ["on", "off", "auto", "of"]:
+                    raise ValueError("progress must be one of 'on', 'off', 'auto'")
+
+                if kwargs[key] == "of": 
+                    session_info[key] = "off" 
+                else:
+                    session_info[key] = kwargs[key]
                 return None
 
             if key == "cores":

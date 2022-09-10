@@ -602,6 +602,12 @@ def run_this(os_command, self, output="one", out_file=None):
                         if float(self.size['Ensemble size'].split(" ")[0]) > 12:
                             progress_bar = True
 
+                if session_info["progress"] == "off":
+                    progress_bar = False
+
+                if session_info["progress"] == "on":
+                    progress_bar = True
+
                 if cores == 1:
                     if progress_bar:
                         print("Processing large ensemble!")
