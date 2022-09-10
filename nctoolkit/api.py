@@ -86,6 +86,7 @@ session_info["thread_safe"] = False
 session_info["lazy"] = True
 session_info["precision"] = None
 session_info["parallel"] = False
+session_info["progress"] = "auto"
 session_info["checks"] = True
 
 session_info["interactive"] = sys.__stdin__.isatty()
