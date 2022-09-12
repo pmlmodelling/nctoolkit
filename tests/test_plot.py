@@ -14,6 +14,7 @@ class TestCrop:
     def test_plot(self):
         ds = nc.open_data(ff, checks = False)
         ds.subset(time = 0)
+        # ds.plot(out= "data/test1.html")
         out_file = nc.temp_file.temp_file(".html")
         ds.plot(out= out_file)
         file1 = open('data/test1.html', 'r')
@@ -21,6 +22,15 @@ class TestCrop:
         file1 = open(out_file, 'r')
         lines_2 = file1.readlines()
         text = re.compile('"#.[0-9, a-z]*"')
+        list1 = []
         for i in range(len(lines_1)):
-            assert text.findall(lines_1[i]) == text.findall(lines_2[i]) 
+            if len(text.findall(lines_1[i])) > 0:
+                list1 +=  text.findall(lines_1[i])
+        list2 = []
+        
+        for i in range(len(lines_2)):
+            if len(text.findall(lines_2[i])) > 0:
+                list2 +=  text.findall(lines_2[i])
+        assert = list1 ==  list2
+
         os.remove(out_file)
