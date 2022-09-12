@@ -31,6 +31,6 @@ class TestCrop:
         for i in range(len(lines_2)):
             if len(text.findall(lines_2[i])) > 0:
                 list2 +=  text.findall(lines_2[i])
-        assert = list1 ==  list2
+        assert list1 ==  list2
 
         os.remove(out_file)
