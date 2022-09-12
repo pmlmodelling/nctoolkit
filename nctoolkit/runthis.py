@@ -605,7 +605,7 @@ def run_this(os_command, self, output="one", out_file=None):
                 if session_info["progress"] == "off":
                     progress_bar = False
 
-                if session_info["progress"] == "on":
+                if session_info["progress"] == "on" and len(self) > 1:
                     progress_bar = True
 
                 if cores == 1:
