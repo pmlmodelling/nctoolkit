@@ -682,7 +682,8 @@ def run_this(os_command, self, output="one", out_file=None):
                             ff_command, target, out_file, precision=self._precision
                         )
                         target_list.append(target)
-                        pbar.update(1)
+                        if progress_bar:
+                            pbar.update(1)
 
                 if cores > 1:
 
