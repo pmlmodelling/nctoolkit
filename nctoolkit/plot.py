@@ -71,6 +71,8 @@ def plot(self, vars=None, autoscale=True, out = None, **kwargs):
 
     if type(vars) is not list and vars is not None:
         raise ValueError("vars must be a list")
+    if vars is None:
+        vars = self.variables
 
     if type(vars) is list:
         if len(set(self.contents.query("variable in @vars").nlevels)) > 1:
