@@ -66,7 +66,7 @@ jobs:
        run: |
          conda activate foo
          #pytest tests/test*.py
-         coverage run -m pytest tests/test_*.py
+         coverage run -m pytest tests/test_plot.py
          coverage report
          coverage xml
 
