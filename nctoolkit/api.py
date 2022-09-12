@@ -107,6 +107,95 @@ if platform.system() == "Linux":
     append_tempdirs("/var/tmp")
 
 
+def update_options(kwargs):
+    valid_keys = ["thread_safe", "lazy", "cores", "precision", "temp_dir", "parallel", "checks", "progress"]
+
+    for key in kwargs:
+        if key not in valid_keys:
+            raise AttributeError(key + " is not a valid option")
+
+        if key == "parallel" or key == "lazy" or key == "thread_safe":
+            if type(kwargs[key]) is not bool:
+                raise TypeError(f"{key} should be boolean")
+
+        if key == "checks":
+            if type(kwargs[key]) is not bool:
+                raise TypeError(f"{key} should be boolean")
+
+        if type(kwargs[key]) is not bool:
+            if key == "temp_dir":
+                if type(kwargs[key]) is str:
+                    if os.path.exists(kwargs[key]) is False:
+                        raise ValueError("The temp_dir specified does not exist!")
+                    session_info[key] = os.path.abspath(kwargs[key])
+                    session_info["user_dir"] = True
+                return None
+            if key == "progress":
+                if kwargs[key] not in ["on", "off", "auto", "of"]:
+                    raise ValueError("progress must be one of 'on', 'off', 'auto'")
+
+                if kwargs[key] == "of": 
+                    session_info[key] = "off" 
+                else:
+                    session_info[key] = kwargs[key]
+                return None
+
+            if key == "cores":
+                if type(kwargs[key]) is int:
+                    if kwargs[key] > mp.cpu_count():
+                        raise ValueError(
+                            str(kwargs[key])
+                            + " is greater than the number of system cores ("
+                            + str(mp.cpu_count())
+                            + ")"
+                        )
+                    session_info[key] = kwargs[key]
+                else:
+                    raise TypeError("cores must be an int")
+            else:
+                if key == "precision":
+                    if kwargs[key] not in ["I8", "I16", "I32", "F32", "F64"]:
+                        raise ValueError("precision supplied is not valid!")
+                    session_info[key] = kwargs[key]
+                else:
+                    raise ValueError(kwargs[key] + " is not valid session info!")
+        else:
+            session_info[key] = kwargs[key]
+
+            # update safe-lists etc. if running in parallel
+            if kwargs[key] and key == "parallel":
+
+                if len(temp_dirs) > 0:
+                    for ff in temp_dirs:
+                        append_tempdirs(ff)
+
+                if len(nc_safe) > 0:
+                    for ff in nc_safe:
+                        nc_safe_par.append(ff)
+
+                if len(nc_protected) > 0:
+                    for ff in nc_protected:
+                        nc_protected_par.append(ff)
+                        nc_protected.remove(ff)
+
+            if (kwargs[key] is False) and key == "parallel":
+
+                if len(temp_dirs_par) > 0:
+                    for ff in temp_dirs_par:
+                        append_tempdirs(ff)
+
+                if len(nc_safe_par) > 0:
+                    for ff in nc_safe_par:
+                        nc_safe.append(ff)
+                        nc_safe_par.remove(ff)
+
+                if len(nc_protected_par) > 0:
+                    for ff in nc_protected_par:
+                        nc_protected.append(ff)
+                        nc_protected_par.remove(ff)
+
+
+
 def options(**kwargs):
     """
     Define session options.
@@ -144,6 +233,9 @@ def options(**kwargs):
     """
 
     valid_keys = ["thread_safe", "lazy", "cores", "precision", "temp_dir", "parallel", "checks", "progress"]
+
+    update_options(kwargs)
+    return None
 
     for key in kwargs:
         if key not in valid_keys:
@@ -253,7 +345,7 @@ def find_config():
 config_file = find_config()
 
 if config_file is not None:
-    valid_keys = ["thread_safe", "lazy", "cores", "precision", "temp_dir"]
+    #valid_keys = ["thread_safe", "lazy", "cores", "precision", "temp_dir"]
 
     file1 = open(config_file, "r")
     Lines = file1.readlines()
@@ -263,87 +355,30 @@ if config_file is not None:
     for line in Lines:
         text = line.replace(" ", "").strip()
         if text.count(":") != 1:
-            raise ValueError(f"Line in {config_file} is invalid: {line}")
+            if len(text) > 0:
+                raise ValueError(f"Line in {config_file} is invalid: {line}")
 
     for line in Lines:
         text = line.replace(" ", "").strip()
+        if len(text) > 0:
+            terms = text.split(":")
+            key = terms[0]
+            value = None
 
-        terms = text.split(":")
+            if (terms[1].strip() == "True") and value is None:
+                value = True
 
-        # three options, all words, boolean or integers
+            if (terms[1] == "False") and (value is None):
+                value = False
 
-        # set the key
+            if (terms[1].isnumeric()) and (value is None):
+                value = int(terms[1])
 
-        key = terms[0]
-        value = None
-
-        if key not in valid_keys:
-            raise ValueError(f"{config_file} is trying to set invalid key: {terms[0]}")
-
-        if (terms[1].strip() == "True") and value is None:
-            value = True
-
-        if (terms[1] == "False") and (value is None):
-            value = False
-
-        if (terms[1].isnumeric()) and (value is None):
-            value = int(terms[1])
-
-        if value is None:
-            value = terms[1]
-            value = value.replace("'", "").replace('"', "")
-
-        valid_keys = [
-            "thread_safe",
-            "lazy",
-            "cores",
-            "precision",
-            "user",
-            "password",
-            "temp_dir",
-        ]
-
-        if key not in valid_keys:
-            raise ValueError(f"{config_file} is trying to set invalid key: {terms[0]}")
-
-        if key == "temp_dir":
-            if type(value) is str:
-                if os.path.exists(value) is False:
-                    raise ValueError(
-                        f"The temp_dir specified by {config_file} does not exist: {value}"
-                    )
-                session_info[key] = os.path.abspath(value)
-                session_info["user_dir"] = True
-
-        if key == "cores":
-            if type(value) is int:
-                if value > mp.cpu_count():
-                    raise ValueError(
-                        str(value)
-                        + " is greater than the number of system cores ("
-                        + str(mp.cpu_count())
-                        + ")"
-                    )
-                session_info[key] = value
-            else:
-                raise TypeError("cores must be an int")
-
-        if key == "precision":
-            if value not in ["I8", "I16", "I32", "F32", "F64"]:
-                raise ValueError("precision supplied is not valid!")
-            session_info[key] = value
-
-        if key in ["thread_safe", "lazy"]:
-            if type(value) == bool:
-                session_info[key] = value
-            else:
-                raise ValueError(f"{key} must be boolean!")
-
-        if key in ["user", "password"]:
-            if type(value) is not str:
-                raise ValueError(f"{key} must be str!")
-            else:
-                session_info[key] = value
+            if value is None:
+                value = terms[1]
+                value = value.replace("'", "").replace('"', "")
+            if len(key) > 0:
+                update_options({key:value})
 
 
 # register clean_all to clean temp files on exit

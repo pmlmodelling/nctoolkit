@@ -610,7 +610,10 @@ def run_this(os_command, self, output="one", out_file=None):
 
                 if cores == 1:
                     if progress_bar:
-                        print("Processing large ensemble!")
+                        if session_info["progress"] == "on":
+                            print("Processing ensemble! In progress:")
+                        else:
+                            print("Processing large ensemble! In progress")
                         pbar = tqdm(total=len(file_list))
 
                 for ff in file_list:
@@ -679,11 +682,15 @@ def run_this(os_command, self, output="one", out_file=None):
                             ff_command, target, out_file, precision=self._precision
                         )
                         target_list.append(target)
+                        pbar.update(1)
 
                 if cores > 1:
 
                     if progress_bar:
-                        print("Processing a large ensemble. In progress:")
+                        if session_info["progress"] == "on":
+                            print("Processing ensemble. In progress:")
+                        else:
+                            print("Processing a large ensemble. In progress:")
                         pbar = tqdm(total=len(file_list))
                     for k, v in results.items():
                         target_list.append(v.get())
