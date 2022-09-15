@@ -597,10 +597,11 @@ def run_this(os_command, self, output="one", out_file=None):
 
                 progress_bar = False
 
-                if self.size['Number of files in ensemble'] >= 12:
-                    if self.size['Ensemble size'].split(" ")[1] == "GB":
-                        if float(self.size['Ensemble size'].split(" ")[0]) > 12:
-                            progress_bar = True
+                if self._thredds is False:
+                    if self.size['Number of files in ensemble'] >= 12:
+                        if self.size['Ensemble size'].split(" ")[1] == "GB":
+                            if float(self.size['Ensemble size'].split(" ")[0]) > 12:
+                                progress_bar = True
 
                 if session_info["progress"] == "off":
                     progress_bar = False
