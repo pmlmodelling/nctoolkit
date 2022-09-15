@@ -26,22 +26,22 @@ def lt(self, x):
 
     new_files = []
 
+    if "api.DataSet" in str(type(x)):
+        x.run()
+        if len(x) != 1:
+            raise ValueError("This only works on single file datasets")
+        x_ff = x[0]
+
+    if type(x) is str:
+        x_ff = x
+
+    if x_ff is None:
+        raise ValueError("x needs to be a file path or nctoolkit dataset")
+
+    if os.path.exists(x_ff) is False:
+        raise ValueError(f"{x_ff} does not exist!")
+
     for ff in self:
-
-        if "api.DataSet" in str(type(x)):
-            x.run()
-            if len(x) != 1:
-                raise ValueError("This only works on single file datasets")
-            x_ff = x[0]
-
-        if type(x) is str:
-            x_ff = x
-
-        if x_ff is None:
-            raise ValueError("ff needs to be a file path or nctoolkit dataset")
-
-        if os.path.exists(x_ff) is False:
-            raise ValueError(f"{x_ff} does not exist!")
 
         temp = temp_file(".nc")
 
@@ -82,22 +82,23 @@ def gt(self, x):
 
     new_files = []
 
+    if "api.DataSet" in str(type(x)):
+        x.run()
+        if len(x) != 1:
+            raise ValueError("This only works on single file datasets")
+        x_ff = x[0]
+
+    if type(x) is str:
+        x_ff = x
+
+    if x_ff is None:
+        raise ValueError("ff needs to be a file path or nctoolkit dataset")
+
+    if os.path.exists(x_ff) is False:
+        raise ValueError(f"{x_ff} does not exist!")
+
+
     for ff in self:
-
-        if "api.DataSet" in str(type(x)):
-            x.run()
-            if len(x) != 1:
-                raise ValueError("This only works on single file datasets")
-            x_ff = x[0]
-
-        if type(x) is str:
-            x_ff = x
-
-        if os.path.exists(x_ff) is False:
-            raise ValueError(f"{x_ff} does not exist!")
-
-        if x_ff is None:
-            raise ValueError("ff needs to be a file path or nctoolkit dataset")
 
         temp = temp_file(".nc")
 
