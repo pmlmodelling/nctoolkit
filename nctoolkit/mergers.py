@@ -12,18 +12,6 @@ def chunks(l, n):
     n = max(1, n)
     return (l[i:i+n] for i in range(0, len(l), n))
 
-
-
-def below(x, y):
-    x = x.split(".")
-    x = int(x[0]) * 1000 + int(x[1]) * 100 + int(x[2])
-
-    y = y.split(".")
-    y = int(y[0]) * 1000 + int(y[1]) * 100 + int(y[2])
-
-    return x < y
-
-
 import inspect
 from functools import wraps
 
