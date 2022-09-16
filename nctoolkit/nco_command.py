@@ -21,6 +21,8 @@ def nco_command(self, command=None, ensemble=False):
         This is useful for ensemble methods.
     """
 
+
+
     self.run()
 
     cores = session_info["cores"]
@@ -32,6 +34,16 @@ def nco_command(self, command=None, ensemble=False):
     if type(command) is not str:
         raise TypeError("Command supplied is not a str")
 
+    if (
+     command.startswith("ncea ")
+     or command.startswith("ncra ")
+     or command.startswith("ncap ")
+     or command.startswith("ncap2 ")
+     or command.startswith("ncks ")
+     or command.startswith("ncrename ")
+     or command.startswith("ncatted")
+        ) is False:
+        raise ValueError("This is not a valid NCO command")
     new_files = []
     new_commands = []
 
