@@ -18,9 +18,22 @@ class TestMerge:
 
         with pytest.warns(UserWarning):
             tracker.merge()
+        with pytest.warns(UserWarning):
+            tracker.collect()
         tracker.run()
         n = len(nc.session_files())
         assert n == 0
+
+        ds1 = nc.open_data("data/200*.nc")
+        ds1.subset(lon = [-15, -13], lat = [50, 52])
+        ds1.split("month")
+        ds1.split("day")
+        assert len(ds1) == 731
+        ds1.merge("time")
+        ds1.run()
+        ds1.merge("time")
+        
+        assert len(ds1.times) == 731
 
     def test_warning1(self):
         tracker = nc.open_data(ff)

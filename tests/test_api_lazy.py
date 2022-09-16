@@ -16,6 +16,10 @@ class TestApi2:
         ff1 = "data/2003.nc"
         ff2 = "data/2004.nc"
 
+        ds = nc.open_geotiff("data/geotiff.tif")
+        ds.spatial_mean()
+        assert  ds.to_dataframe().Band1.values[0] == 215.0
+
         ds = nc.open_data([ff1, ff2])
         ds.subset(time = 0)
         ds.run()

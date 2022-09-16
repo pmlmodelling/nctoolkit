@@ -21,6 +21,8 @@ class TestAppend:
         assert len(new.current) == 2
 
         new = nc.open_data(ff)
+        with pytest.warns(UserWarning):
+            new.append(ff)
 
         #with pytest.raises(ValueError):
         #    new.append(ff)

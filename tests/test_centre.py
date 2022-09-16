@@ -21,6 +21,10 @@ class TestClip:
         with pytest.raises(TypeError):
             tracker.centre(by_area = 1)
 
+        with pytest.raises(TypeError):
+            tracker = nc.open_data("data/ensemble/*.nc")
+            tracker.centre(by_area = True)
+
         tracker = nc.open_data(ff)
         tracker.centre("longitude")
         x = tracker.to_dataframe().sst.values[0].astype("float")
