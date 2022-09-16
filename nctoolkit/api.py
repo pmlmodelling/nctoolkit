@@ -154,9 +154,12 @@ def update_options(kwargs):
                     raise TypeError("cores must be an int")
             else:
                 if key == "precision":
-                    if kwargs[key] not in ["I8", "I16", "I32", "F32", "F64"]:
+                    if kwargs[key] not in ["I8", "I16", "I32", "F32", "F64", "default"]:
                         raise ValueError("precision supplied is not valid!")
-                    session_info[key] = kwargs[key]
+                    if kwargs[key] == "default":
+                        session_info[key] = None 
+                    else:
+                        session_info[key] = kwargs[key]
                 else:
                     raise ValueError(kwargs[key] + " is not valid session info!")
         else:
