@@ -12,10 +12,11 @@ def sum_all(self, drop=True):
 
     contents = self.contents
 
-    easy = False
+    easy = True
     if len(self) > 1:
-        if len(set(self.contents.reset_index().loc[:,["file", "variable"]].groupby("variable").size())):
-            easy = True
+        for x in self.contents.reset_index().loc[:,["file", "variable"]].groupby("variable").size().values:
+            if x != len(self):
+                easy = False
 
     if (len(self) > 1 and easy is False) and (self._merged is False):
         raise TypeError("This currently only works for datasets with files with the same variables")
