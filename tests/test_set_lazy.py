@@ -25,7 +25,24 @@ class TestSetters:
     def test_empty(self):
         n = len(nc.session_files())
         assert n == 0
-    def test_empty(self):
+
+        ds = nc.open_data("data/2003.nc")
+        ds.subset(time = 0)
+        ds.set_year(2010)
+        ds.run()
+        assert ds.years[0] == 2010
+
+        with pytest.raises(ValueError):
+            ds.set_year("a")
+        with pytest.raises(ValueError):
+            ds.set_day("a")
+
+        with pytest.raises(ValueError):
+            ds.set_precision("a")
+        ds.set_precision("F64")
+        ds.run()
+        assert ds._precision == "F64"
+
         ds = nc.open_data(ff)
         ds.subset(time = 0)
         ds.set_day(15)
@@ -90,7 +107,7 @@ class TestSetters:
         tracker.subset(years=1990)
         tracker.subset(months=[1])
 
-        tracker.set_missing([0, 1000])
+        tracker.as_missing([0, 1000])
         tracker.spatial_mean()
         tracker.run()
         x = tracker.to_dataframe().sst.values[0]
@@ -101,11 +118,11 @@ class TestSetters:
 
     def test_setmissing2(self):
         tracker = nc.open_data(ff)
-        tracker.set_missing([100, 100])
+        tracker.as_missing([100, 100])
         x = tracker.history
 
         tracker = nc.open_data(ff)
-        tracker.set_missing(100)
+        tracker.as_missing(100)
         y = tracker.history
 
     def test_setunits(self):
@@ -124,7 +141,7 @@ class TestSetters:
     def test_setmissing3(self):
         tracker = nc.open_data(ff)
         with pytest.raises(TypeError):
-            tracker.set_missing("x")
+            tracker.as_missing("x")
 
         with pytest.raises(ValueError):
             tracker.set_date()
@@ -139,7 +156,7 @@ class TestSetters:
             tracker.set_date(year=1990, month=1)
 
         with pytest.raises(ValueError):
-            tracker.set_missing()
+            tracker.as_missing()
 
         with pytest.raises(ValueError):
             tracker.set_units()
@@ -169,7 +186,7 @@ class TestSetters:
             tracker.set_date(year=1, month=1, day="x")
 
         with pytest.raises(TypeError):
-            tracker.set_missing([1, "x"])
+            tracker.as_missing([1, "x"])
 
         n = len(nc.session_files())
         assert n == 0

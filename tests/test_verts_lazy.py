@@ -105,7 +105,7 @@ class TestVerts:
             ds1 = nc.open_data(ff)
             ds1.assign(e3t = lambda x: x.e3t * (isnan(x.one) is False ) )
             ds1.subset(variables = "e3t")
-            ds1.set_missing(0)
+            ds1.as_missing(0)
             ds1.vertical_sum()
             ds1.run()
 
@@ -129,7 +129,7 @@ class TestVerts:
             ds1 = nc.open_data(ff)
             ds1.assign(e3t = lambda x: x.e3t * (isnan(x.one) is False ) )
             ds1.subset(variables = "e3t")
-            ds1.set_missing(0)
+            ds1.as_missing(0)
             ds1.vertical_sum()
             ds1.run()
 
@@ -148,7 +148,7 @@ class TestVerts:
             ds1 = nc.open_data(ff)
             ds1.assign(e3t = lambda x: x.e3t * (isnan(x.one) is False ) )
             ds1.subset(variables = "e3t")
-            ds1.set_missing(0)
+            ds1.as_missing(0)
             ds1.vertical_sum()
             ds1.run()
 

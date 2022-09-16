@@ -205,3 +205,14 @@ class TestFldsta:
         assert x == y
         n = len(nc.session_files())
         assert n == 1
+
+        ds = nc.open_data("data/sst.mon.mean.nc")
+        ds.subset(time = 0)
+        ds.spatial_stdev()
+        assert float(ds.to_dataframe().sst.values[0]) == 10.148346900939941
+        
+        ds = nc.open_data("data/sst.mon.mean.nc")
+        ds.subset(time = 0)
+        ds.spatial_var()
+        assert float(ds.to_dataframe().sst.values[0]) == 102.98894500732422
+

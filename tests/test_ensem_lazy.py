@@ -200,6 +200,18 @@ class TestEnsemble:
         data = nc.open_data(nc.create_ensemble("data/ensemble")[0])
         with pytest.warns(UserWarning):
             data.ensemble_percentile(40)
+        with pytest.warns(UserWarning):
+            data = nc.open_data(nc.create_ensemble("data/ensemble")[0])
+            data.ensemble_stdev()
+
+        with pytest.warns(UserWarning):
+            data = nc.open_data(nc.create_ensemble("data/ensemble")[0])
+            data.ensemble_sum()
+
+        with pytest.warns(UserWarning):
+            data = nc.open_data(nc.create_ensemble("data/ensemble")[0])
+            data.ensemble_var()
+
 
         data = nc.open_data(nc.create_ensemble("data/ensemble")[0])
         with pytest.warns(UserWarning):

@@ -278,7 +278,7 @@ class TestCalls:
         assert data.history[0] == 'cdo -setattribute,sst@units="tos"'
 
         data = nc.open_data(ff)
-        data.set_missing([0, 0])
+        data.as_missing([0, 0])
         assert data.history[0] == "cdo -setrtomiss,0,0"
 
         data = nc.open_data(ff)

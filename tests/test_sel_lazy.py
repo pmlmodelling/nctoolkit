@@ -32,10 +32,69 @@ class TestSelect:
         ds.run()
         assert ds.levels == [5.0]
 
+
+        ds = nc.open_data("data/sst.mon.mean.nc")
+        ds.subset(time = 0)
+        ds.run()
+        for hour in range(3):
+            ds1 = ds.copy()
+            ds1.shift(hours = hour)
+            ds.append(ds1)
+        ds.merge("time")
+        
+        ds_test = ds.copy()
+        
+        ds_test = ds.copy()
+        ds_test.subset(hour = 2)
+        ds_test.run()
+        assert [x.hour for x in ds_test.times][0] == 2
+        
+        ds_test = ds.copy()
+        ds_test.subset(hour = range(1, 3))
+        ds_test.run()
+        assert [x.hour for x in ds_test.times] == [1,2]
+
+        with pytest.raises(TypeError):
+            ds_test.subset(hour = "a")
+
+        with pytest.raises(ValueError):
+            ds_test.subset(hour = 1000) 
+
+        ds = nc.open_data("data/2003.nc")
+        ds.subset(day = 10)
+        ds.run()
+        assert len(ds.times) == 12
+        
+        ds = nc.open_data("data/2004.nc")
+        ds.subset(day = 31)
+        ds.run()
+        assert len(ds.times)  == 7
+        
+        ds = nc.open_data("data/2004.nc")
+        ds.subset(day = range(1,3))
+        ds.run()
+        assert len(ds.times)  == 24
+
+        with pytest.raises(ValueError):
+            ds_test.subset(day = 1000) 
+        with pytest.raises(ValueError):
+            ds_test.subset(day = None) 
+
+        with pytest.raises(TypeError):
+            ds_test.subset(day = "a") 
+
+
+
     def test_range(self):
         ds = nc.open_data("data/200*.nc")
         ds.merge("time")
         ds.subset(range = ["01/01/2003", "11/09/2004"])
+        ds.run()
+        assert len(ds.times) == 619
+
+        ds = nc.open_data("data/200*.nc")
+        ds.merge("time")
+        ds.subset(range = ["01-01-2003", "11-09-2004"])
         ds.run()
         assert len(ds.times) == 619
 
@@ -46,6 +105,20 @@ class TestSelect:
         ds = nc.open_data(ff)
         with pytest.raises(ValueError):
             ds.subset(range = ["01/01/2003", "01/01/2002"])
+
+        with pytest.raises(ValueError):
+            ds.subset(range = ["01/01/2003/01", "01/01/2002"])
+        with pytest.raises(ValueError):
+            ds.subset(levels = "asdf")
+        with pytest.raises(ValueError):
+            ds.subset(levels = [1,"asdf"])
+        with pytest.raises(ValueError):
+            ds.subset(levels = [10,2])
+        with pytest.raises(ValueError):
+            ds.subset(range = None)
+
+        with pytest.raises(ValueError):
+            ds.subset(hours = None)
 
         with pytest.raises(ValueError):
             ds.subset(range = ["01/01/2003", 1])
