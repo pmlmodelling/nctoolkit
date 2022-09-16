@@ -288,9 +288,6 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
             remove_safe(target)
             remove_safe(start_target)
             raise ValueError("HDF error when running CDO. Check if files are corrupt using the is_corrupt method, and consider running the check method")
-            #raise ValueError(
-            #    str(result).replace("b'", "").replace("\\n", "").replace("'", "")
-            #)
         else:
             return out_file
 
@@ -378,8 +375,6 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
             error = errors[0]
             raise ValueError(f"CDO error: {error}. Please check time steps supplied to nctoolkit methods!")
 
-
-
         raise ValueError(
             str(result).replace("b'", "").replace("\\n", "").replace("'", "")
         )
@@ -430,8 +425,6 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
                 else:
                     remove_safe(target)
                     remove_safe(start_target)
-
-                    
 
                     if  "Error (cdf_put_vara_double): NetCDF: Numeric conversion not representable" in str(result):
                         raise ValueError("CDO error: Error (cdf_put_vara_double): NetCDF: Numeric conversion not representable. Tip: check if missing values are incorrectly set to large actual values!")
@@ -544,8 +537,6 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
 
 def run_this(os_command, self, output="one", out_file=None):
 
-
-
     if len(self) == 0:
         raise ValueError("Failure do to empty dataset!")
 
@@ -556,22 +547,12 @@ def run_this(os_command, self, output="one", out_file=None):
     if len(self) == 1:
         output = "ensemble"
 
-    if len(self._hold_history) != len(self.history):
-        if self._merged is False and len(self.history) > 0 and output == "one":
-
-            if session_info["cdo"] in ["9.9.9"]:
-                the_command = self.history[-1].replace("cdo", "") + " "
-                the_command = the_command.replace(" -L ", " ").strip()
-                if "apply," not in the_command:
-                    self.history[-1] = f'-apply,"{the_command}"'
-
     if self._execute is False:
         if len(self._hold_history) == len(self.history):
             self.history.append(os_command)
         else:
             self.history[-1] = os_command + " " + self.history[-1].replace("cdo ", " ")
             self.history[-1] = self.history[-1].replace("  ", " ")
-
     try:
         if self._execute:
 
