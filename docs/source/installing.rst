@@ -37,11 +37,20 @@ An update to a dependency of a dependency has broken plotting in nctoolkit, unle
         $ conda install jinja2=3.0.3 
         $ pip install jinja2==3.0.3
 
-
 Or install the latest version of ncplot::
 
         $ conda install ncplot=0.2.4 
         $ pip install ncplot==0.2.4
+
+Matplotlib update issue
+---------------------
+
+If you get a matplotlib related issue during your installation, either update to the latest version of nctoolkit or downgrade matplotlib::
+
+        $ conda install matplotlib=3.5.3 
+        $ pip install matplotlib==3.5.3
+
+
 
 Jupyter notebook issue
 ---------------------
