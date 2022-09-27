@@ -1385,48 +1385,64 @@ class DataSet(object):
                 npoints=lambda x: x.npoints.astype("int")
             )
 
-            times = []
+            try:
 
-            ds = xr.open_dataset(ff, decode_times=False)
-            time_name = [x for x in ds.variables if "time" in x]
+                times = []
 
-            # get time name
+                ds = xr.open_dataset(ff, decode_times=False)
+                time_name = [x for x in ds.variables if "time" in x]
 
-            if len(time_name) > 0:
-                time_name = time_name[0]
-            else:
-                time_name = "time"
+                # get time name
 
-            for vv in cdo_result:
-                done = False
-                try:
-                    ds_times = ds[vv][time_name].values
-                except:
-                    times.append(None)
-                    done = True
+                if len(time_name) > 0:
+                    time_name = time_name[0]
+                else:
+                    time_name = "time"
 
-                if done is False:
+                for vv in cdo_result:
+                    done = False
                     try:
-                        n_times = len(ds_times)
+                        ds_times = ds[vv][time_name].values
                     except:
-                        n_times = 1
-                    times.append(n_times)
+                        times.append(None)
+                        done = True
 
-            df["ntimes"] = times
+                    if done is False:
+                        try:
+                            n_times = len(ds_times)
+                        except:
+                            n_times = 1
+                        times.append(n_times)
 
-            df = df.loc[
-                :,
-                [
-                    "variable",
-                    "ntimes",
-                    "npoints",
-                    "nlevels",
-                    "long_name",
-                    "unit",
-                    "data_type",
-                ],
-            ]
-            list_contents.append(df.assign(file=ff))
+                df["ntimes"] = times
+
+                df = df.loc[
+                    :,
+                    [
+                        "variable",
+                        "ntimes",
+                        "npoints",
+                        "nlevels",
+                        "long_name",
+                        "unit",
+                        "data_type",
+                    ],
+                ]
+                list_contents.append(df.assign(file=ff))
+            except:
+                warnings.warn("Potential data format issues identified. Consider running check!")
+                df = df.loc[
+                    :,
+                    [
+                        "variable",
+                        "npoints",
+                        "nlevels",
+                        "long_name",
+                        "unit",
+                        "data_type",
+                    ],
+                ]
+                list_contents.append(df.assign(file=ff))
 
         if len(list_contents) == 1:
             return list_contents[0].drop(columns="file")
