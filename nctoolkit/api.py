@@ -111,6 +111,7 @@ def update_options(kwargs):
     valid_keys = ["thread_safe", "lazy", "cores", "precision", "temp_dir", "parallel", "checks", "progress"]
 
     for key in kwargs:
+        find = True
         if key not in valid_keys:
             raise AttributeError(key + " is not a valid option")
 
@@ -122,15 +123,15 @@ def update_options(kwargs):
             if type(kwargs[key]) is not bool:
                 raise TypeError(f"{key} should be boolean")
 
-        if type(kwargs[key]) is not bool:
+        if type(kwargs[key]) is not bool and find:
             if key == "temp_dir":
                 if type(kwargs[key]) is str:
                     if os.path.exists(kwargs[key]) is False:
                         raise ValueError("The temp_dir specified does not exist!")
                     session_info[key] = os.path.abspath(kwargs[key])
                     session_info["user_dir"] = True
-                return None
-            if key == "progress":
+                find = False
+            if key == "progress" and find:
                 if kwargs[key] not in ["on", "off", "auto", "of"]:
                     raise ValueError("progress must be one of 'on', 'off', 'auto'")
 
@@ -138,9 +139,9 @@ def update_options(kwargs):
                     session_info[key] = "off" 
                 else:
                     session_info[key] = kwargs[key]
-                return None
+                find = False
 
-            if key == "cores":
+            if key == "cores" and find:
                 if type(kwargs[key]) is int:
                     if kwargs[key] > mp.cpu_count():
                         raise ValueError(
@@ -150,23 +151,26 @@ def update_options(kwargs):
                             + ")"
                         )
                     session_info[key] = kwargs[key]
+                    find = False
                 else:
                     raise TypeError("cores must be an int")
             else:
-                if key == "precision":
-                    if kwargs[key] not in ["I8", "I16", "I32", "F32", "F64", "default"]:
-                        raise ValueError("precision supplied is not valid!")
-                    if kwargs[key] == "default":
-                        session_info[key] = None 
+                if find:
+                    if key == "precision":
+                        if kwargs[key] not in ["I8", "I16", "I32", "F32", "F64", "default"]:
+                            raise ValueError("precision supplied is not valid!")
+                        if kwargs[key] == "default":
+                            session_info[key] = None 
+                        else:
+                            session_info[key] = kwargs[key]
+                        find = False
                     else:
-                        session_info[key] = kwargs[key]
-                else:
-                    raise ValueError(kwargs[key] + " is not valid session info!")
+                        raise ValueError(kwargs[key] + " is not valid session info!")
         else:
             session_info[key] = kwargs[key]
 
             # update safe-lists etc. if running in parallel
-            if kwargs[key] and key == "parallel":
+            if kwargs[key] and key == "parallel" and find:
 
                 if len(temp_dirs) > 0:
                     for ff in temp_dirs:
@@ -181,7 +185,7 @@ def update_options(kwargs):
                         nc_protected_par.append(ff)
                         nc_protected.remove(ff)
 
-            if (kwargs[key] is False) and key == "parallel":
+            if (kwargs[key] is False) and key == "parallel" and find:
 
                 if len(temp_dirs_par) > 0:
                     for ff in temp_dirs_par:
