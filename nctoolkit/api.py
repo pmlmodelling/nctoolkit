@@ -1574,7 +1574,6 @@ class DataSet(object):
     from nctoolkit.add_etc import day_stat
     from nctoolkit.add_etc import rmse
     from nctoolkit.add_etc import __add__
-    from nctoolkit.add_etc import __floordiv__
     from nctoolkit.add_etc import __truediv__
     from nctoolkit.add_etc import __sub__
     from nctoolkit.add_etc import __mul__
