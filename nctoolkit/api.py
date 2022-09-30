@@ -1573,6 +1573,12 @@ class DataSet(object):
     from nctoolkit.add_etc import sqrt
     from nctoolkit.add_etc import day_stat
     from nctoolkit.add_etc import rmse
+    from nctoolkit.add_etc import __add__
+    from nctoolkit.add_etc import __floordiv__
+    from nctoolkit.add_etc import __truediv__
+    from nctoolkit.add_etc import __sub__
+    from nctoolkit.add_etc import __mul__
+    from nctoolkit.add_etc import __pow__
 
     from nctoolkit.anomaly import annual_anomaly
     from nctoolkit.anomaly import monthly_anomaly

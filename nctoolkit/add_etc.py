@@ -430,6 +430,8 @@ def multiply(self, x=None, var=None):
 
     operation(self=self, method="mul", ff=ff, var=var)
 
+__mul__ = multiply
+
 def rmse(self, x=None):
     """
     Calculate the root-mean-square-error of two datasets 
@@ -533,6 +535,67 @@ def subtract(self, x=None, var=None):
 
     operation(self=self, method="sub", ff=ff, var=var)
 
+__sub__ = subtract
+
+
+#def __add__(self, x=None, var=None):
+#    """
+#    Add to a dataset
+#    This will add a constant, another dataset or a netCDF file to the dataset.
+#    nctoolkit will automatically determine the appropriate comparison required.
+#
+#    Parameters
+#    ------------
+#    x: int, float, DataSet or netCDF file
+#        An int, float, single file dataset or netCDF file to add to the dataset.
+#        If a dataset or netCDF file is supplied, this must have only one variable,
+#        unless var is provided. The grids must be the same.
+#    var: str
+#        A variable in the x to use for the operation
+#
+#      Examples
+#    ------------
+#
+#    If you wanted to add 10 to all variables in a dataset, you would do the following:
+#
+#    >>> ds.add(10)
+#
+#    To add the values in a dataset ds2 from a dataset ds1, you would do the following:
+#
+#    >>> ds1.add(ds2)
+#
+#    Grids in the datasets must match. Addition will occur in matching timesteps in ds1 and ds2. If there is only 1 timestep in ds2, then
+#    the data from that timestep will be added to the data in all ds1 time steps.
+#
+#    Adding the data from another netCDF file will work in the same way:
+#
+#    >>> ds1.add("example.nc")
+#
+#
+#    """
+#
+#    # 1: int, float addition
+#    if isinstance(x, (int, float)):
+#        arithall(self, stat="addc", x=x)
+#        return None
+#
+#    # 2: dataset or netCDF file addition
+#    # get the netCDF file(s)
+#    if "api.DataSet" in str(type(x)):
+#        x.run()
+#        if len(x) == 1:
+#            ff = x.current[0]
+#        else:
+#            raise ValueError("This can only work with single variable datasets")
+#    else:
+#        ff = x
+#
+#    if type(ff) is not str:
+#        raise TypeError("You have not provided an int, float, dataset or file path!")
+#
+#    operation(self=self, method="add", ff=ff, var=var)
+
+
 
 def add(self, x=None, var=None):
     """
@@ -591,6 +654,8 @@ def add(self, x=None, var=None):
 
     operation(self=self, method="add", ff=ff, var=var)
 
+__add__ = add
+
 
 def divide(self, x=None, var=None):
     """
@@ -646,6 +711,9 @@ def divide(self, x=None, var=None):
 
     operation(self=self, method="div", ff=ff, var=var)
 
+__floordiv__ = divide
+__truediv__ = divide
+
 
 def abs(self):
     """
@@ -688,6 +756,8 @@ def power(self, x=None):
     cdo_command = f"cdo -pow,{x}"
 
     run_this(cdo_command, self, output="ensemble")
+
+__pow__ = power
 
 
 def exp(self):
