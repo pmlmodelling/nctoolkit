@@ -1601,9 +1601,19 @@ class DataSet(object):
     from nctoolkit.clear import reset
 
     from nctoolkit.compare import compare
+    from nctoolkit.compare import __eq__
+    from nctoolkit.compare import __gt__
+    from nctoolkit.compare import __lt__
+    from nctoolkit.compare import __le__
+    from nctoolkit.compare import __ge__
+    from nctoolkit.compare import __ne__
 
     from nctoolkit.compare_data import gt
     from nctoolkit.compare_data import lt
+    from nctoolkit.compare_data import le
+    from nctoolkit.compare_data import ge
+    from nctoolkit.compare_data import ne
+    from nctoolkit.compare_data import eq
 
     from nctoolkit.corr import cor_space
     from nctoolkit.corr import cor_time

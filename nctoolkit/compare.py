@@ -136,3 +136,68 @@ def compare(self, expression=None):
     expression = fix_expr(expression)
     cdo_command = f"cdo -{expression}"
     run_this(cdo_command, self, output="ensemble")
+
+
+def __eq__(self, x):
+
+    if type(x) is not str:
+        if str(x).isnumeric():
+            self.compare(f"=={x}")
+        else:
+            self.eq(x)
+    else:
+        self.eq(x)
+
+
+def __gt__(self, x):
+
+    if type(x) is not str:
+        if str(x).isnumeric():
+            self.compare(f">{x}")
+        else:
+            self.gt(x)
+    else:
+        self.gt(x)
+
+def __lt__(self, x):
+
+    if type(x) is not str:
+        if str(x).isnumeric():
+            self.compare(f"<{x}")
+        else:
+            self.lt(x)
+    else:
+        self.lt(x)
+
+def __le__(self, x):
+
+    if type(x) is not str:
+        if str(x).isnumeric():
+            self.compare(f"<={x}")
+        else:
+            self.le(x)
+    else:
+        self.le(x)
+
+
+def __ge__(self, x):
+
+    if type(x) is not str:
+        if str(x).isnumeric():
+            self.compare(f">={x}")
+        else:
+            self.ge(x)
+    else:
+        self.ge(x)
+
+def __ne__(self, x):
+
+    if type(x) is not str:
+        if str(x).isnumeric():
+            self.compare(f"!={x}")
+        else:
+            self.ne(x)
+    else:
+        self.ne(x)
+
+
