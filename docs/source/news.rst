@@ -1,6 +1,41 @@
 News
 ============
 
+Release of v0.7.6
+---------------
+
+
+Release data: 30th September 2022.
+
+This is a minor release that significantly simplifies basic arithmetic and logical operations.
+
+Simple methods such as +, - etc. can now use standard python syntax.
+
+For example, if you wanted to add 2 to a dataset you can now do the following:
+
+`ds.add(2)`
+
+as this instead
+
+`ds+2`
+
+The same goes for logical operators. You can do the following to identify if the values in a datset are below 2:
+
+`ds<2`
+
+whereas you previously had to do this:
+
+`ds.compare("<2")`
+
+Note: because nctoolkit methods only modify datasets and do not return datasets, the following will not work:
+
+`ds1+ds2+2`
+
+Instead, you would need to do:
+
+`ds1+ds2`
+`ds1+2`
+
 Release of v0.7.1
 ---------------
 
