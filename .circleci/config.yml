@@ -24,9 +24,10 @@ jobs:
       - run:
           name: run tests
           command: |
-            conda init bash
+            #conda init bash
 
-            source activate nctoolkit
+            eval "$(conda shell.bash hook)"
+            conda activate nctoolkit
             conda install -c conda-forge cdo=1.9.10 nco -y
             pip install pytest
             pip install coverage
