@@ -27,7 +27,7 @@ jobs:
             conda init bash
 
             source activate nctoolkit
-            conda install -c conda-forge cdo=1.9.10 nco cartopy -y
+            conda install -c conda-forge cdo=1.9.10 nco -y
             pip install pytest
             pip install coverage
             pip install --user codecov
