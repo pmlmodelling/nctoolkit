@@ -308,6 +308,17 @@ def vertical_integration(self, thickness=None, depth_range=None):
 
     """
 
+    if thickness is None:
+        if "e3t" not in self.variables:
+            warnings.warn("Extracting vertical thickness from dataset level data")
+            var = list(self.contents.query("nlevels > 1").variable)[0]
+            thickness = self.copy()
+            thickness.subset(time = 0, variable = var)
+            thickness.rename({var:"thickness"})
+            thickness.assign(thickness = lambda x: (isnan(x.thickness) == False) * level(x.thickness), drop = True)
+            thickness.assign(thickness = lambda x: deltaz(x.thickness) + (x.thickness < x.thickness), drop = True)
+            thickness.run()
+
     if type(depth_range) is list:
 
         if len(depth_range) != 2:
@@ -356,17 +367,19 @@ def vertical_integration(self, thickness=None, depth_range=None):
     # modify the depth if it is a list
     if type(depth_range) is list:
 
-        ds_thick.rename({thick_var: "thickness"})
-        ds_thick.run()
+        if thick_var is not "thickness":
+            ds_thick.rename({thick_var: "thickness"})
+            ds_thick.run()
         ds_depth = ds_thick.copy()
         ds_depth.vertical_cumsum()
-        ds_depth.rename({"thickness": "depth"})
+        ds_depth.rename({"thickness": "depths"})
         ds_thick.append(ds_depth)
         ds_thick.merge()
-        ds_thick.assign(z_min=lambda x: x.depth - x.thickness)
+
+        ds_thick.assign(z_min=lambda x: x.depths - x.thickness)
         ds_thick.assign( z_min=lambda x: x.z_min * (x.z_min >= depth_range[0]) + depth_range[0] * (x.z_min < depth_range[0]))
-        ds_thick.assign( depth=lambda x: x.depth * (x.depth <= depth_range[1]) + depth_range[1] * (x.depth > depth_range[1]))
-        ds_thick.assign(thickness=lambda x: x.depth - x.z_min, drop=True)
+        ds_thick.assign( depths=lambda x: x.depths * (x.depths <= depth_range[1]) + depth_range[1] * (x.depths > depth_range[1]))
+        ds_thick.assign(thickness=lambda x: x.depths - x.z_min, drop=True)
         ds_thick.assign(thickness=lambda x: x.thickness * (x.thickness > 0), drop=True)
 
     self1.subset(variables=self1.contents.query("nlevels > 1").variable)
