@@ -97,6 +97,7 @@ funs = [
     "int",
     "float",
     "log10",
+    "deltaz"
 ]
 
 translation = dict()
@@ -105,6 +106,7 @@ for ff in funs:
         translation[ff] = ff
 
 translation["int"] = "int"
+translation["deltaz"] = "cdeltaz"
 translation["float"] = "float"
 
 translation["arcsin"] = "asin"
