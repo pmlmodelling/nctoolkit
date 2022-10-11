@@ -711,7 +711,6 @@ def divide(self, x=None, var=None):
 
     operation(self=self, method="div", ff=ff, var=var)
 
-__floordiv__ = divide
 __truediv__ = divide
 
 
@@ -843,3 +842,5 @@ def sqrt(self):
     cdo_command = f"cdo -sqrt"
 
     run_this(cdo_command, self, output="ensemble")
+
+
