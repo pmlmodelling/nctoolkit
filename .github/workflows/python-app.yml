@@ -39,7 +39,7 @@ jobs:
        shell: bash -l {0}
        run: |
          conda activate foo
-         conda install cdo=1.9.10
+         conda install cdo
          conda install pip
          conda install nco
          conda install pytest
