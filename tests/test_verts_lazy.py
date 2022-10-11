@@ -12,6 +12,16 @@ class TestVerts:
 
     def test_integration(self):
 
+        ds1 = nc.open_data("data/woa18_decav_t01_01.nc")
+        ds1.subset(variable = "t_an")
+        ds1.vertical_integration(depth_range = [0, 2.0])
+        ds2 = nc.open_data("data/woa18_decav_t01_01.nc")
+        ds2.subset(variable = "t_an")
+        ds2.top()
+        ds1.divide(ds2)
+        ds1.spatial_mean()
+        assert ds1.to_dataframe().t_an.values[0] == 2.0
+
         ff = "data/vertical_tester.nc"
 
         ff = "data/vertical_tester.nc"
