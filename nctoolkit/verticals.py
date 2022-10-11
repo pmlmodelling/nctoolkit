@@ -10,6 +10,7 @@ from nctoolkit.runthis import run_this, run_cdo
 from nctoolkit.temp_file import temp_file
 from nctoolkit.session import append_safe
 from nctoolkit.session import remove_safe
+from nctoolkit.utils import version_above, cdo_version
 
 
 def bottom(self):
@@ -310,6 +311,8 @@ def vertical_integration(self, thickness=None, depth_range=None):
 
     if thickness is None:
         if "e3t" not in self.variables:
+            if version_above(cdo_version(), "2.0.0") is False:
+                raise ValueError("Please install CDO>2.0.0")
             warnings.warn("Extracting vertical thickness from dataset level data")
             var = list(self.contents.query("nlevels > 1").variable)[0]
             thickness = self.copy()
