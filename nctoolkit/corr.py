@@ -29,7 +29,7 @@ def cor(self, var1=None, var2=None, method="fld"):
     df = contents.query("variable in [@var1, @var2]").loc[:,["variable", "data_type"]]
     # if
     if len([x for x in df.index if "file" in str(x)]) == 0:
-        df.index = ["file" for x in range(len(contents))]
+        df.index = ["file" for x in range(len(df.index))]
     df = (
         df
         .pivot(values = "data_type", columns = "variable")
