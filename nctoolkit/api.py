@@ -934,6 +934,13 @@ def cor_time(x=None, y=None):
     x.run()
     y.run()
 
+    df = (x.contents.loc[:,["variable", "data_type"]].rename(columns = {"data_type":"type1"})
+        .merge(y.contents.loc[:,["variable", "data_type"]].rename(columns = {"data_type":"type2"}))
+        .query("type1 != type2")
+        )
+    if len(df) > 0:
+        raise ValueError("Datasets have different data types. Please unify them using set_precision")
+
     if len(x) > 1 or len(y) > 1:
         raise TypeError("cor_time only accepts single file datasets!")
 
@@ -994,6 +1001,13 @@ def cor_space(x=None, y=None):
 
     x.run()
     y.run()
+
+    df = (x.contents.loc[:,["variable", "data_type"]].rename(columns = {"data_type":"type1"})
+        .merge(y.contents.loc[:,["variable", "data_type"]].rename(columns = {"data_type":"type2"}))
+        .query("type1 != type2")
+        )
+    if len(df) > 0:
+        raise ValueError("Datasets have different data types. Please unify them using set_precision")
 
     if len(x) > 1 or len(y) > 1:
         raise TypeError("cor_time only accepts single file datasets!")

@@ -25,21 +25,6 @@ def cor(self, var1=None, var2=None, method="fld"):
     # this cannot be chained. So release
     self.run()
 
-    contents = self.contents
-    df = contents.query("variable in [@var1, @var2]").loc[:,["variable", "data_type"]]
-    # if
-    if len([x for x in df.index if "file" in str(x)]) == 0:
-        df.index = ["file" for x in range(len(df.index))]
-    df = (
-        df
-        .pivot(values = "data_type", columns = "variable")
-        .rename(columns = {var1:"var1"})
-        .rename(columns = {var2:"var2"})
-    )
-    if len(df.query("var1 != var2")) > 0:
-        raise ValueError(f"{var1} and {var2} have different data types. Please select data type with set_precision. Suggestion: F32.")
-
-
     # Check variables are in the dataset
 
     for ff in self:
@@ -48,6 +33,23 @@ def cor(self, var1=None, var2=None, method="fld"):
 
         if var2 not in nc_variables(ff):
             raise ValueError(f"{var2} is not in the dataset")
+
+    if var1 != var2:
+        contents = self.contents
+        df = contents.query("variable in [@var1, @var2]").loc[:,["variable", "data_type"]]
+        # if
+        if len([x for x in df.index if "file" in str(x)]) == 0:
+            df.index = ["file" for x in range(len(df.index))]
+        df = (
+            df
+            .pivot(values = "data_type", columns = "variable")
+            .rename(columns = {var1:"var1"})
+            .rename(columns = {var2:"var2"})
+        )
+        if len(df.query("var1 != var2")) > 0:
+            raise ValueError(f"{var1} and {var2} have different data types. Please select data type with set_precision. Suggestion: F32.")
+
+
 
     # Calculate the correlations in each file
     new_files = []
