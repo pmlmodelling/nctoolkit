@@ -20,11 +20,15 @@ def run(self):
     if (self._execute is False) and (
         len(self.history) > len(self._hold_history)
         or self._zip
-        or self._format is not None
+        or self._format is not None 
+        or self._precision != "default"
     ):
         self._execute = True
 
         cdo_command = "cdo "
+        if self._precision is not "default":
+            if len(self.history) == len(self._hold_history):
+                cdo_command = "cdo copy "
 
         output_method = "ensemble"
 
@@ -49,3 +53,5 @@ def run(self):
         self._ncommands = 0
         self._align= ""
         self.disk_clean()
+
+        self._precision = "default"
