@@ -41,7 +41,8 @@ class TestSetters:
             ds.set_precision("a")
         ds.set_precision("F64")
         ds.run()
-        assert ds._precision == "F64"
+        assert ds.contents.data_type[0] == "F64"
+        assert ds._precision == "default"
 
         ds = nc.open_data(ff)
         ds.subset(time = 0)
