@@ -143,7 +143,7 @@ def vertstat(self, stat="mean"):
     run_this(cdo_command, self, output="ensemble")
 
 
-def vertical_mean(self, thickness=None, depth_range=None):
+def vertical_mean(self, thickness=None, depth_range=None, fixed = None):
     """
     Calculate the depth-averaged mean for each variable
     This is calculated for each time step and grid cell
@@ -158,6 +158,10 @@ def vertical_mean(self, thickness=None, depth_range=None):
     depth_range: list
         Only use when vertical levels vary in space
         Set a depth range if desired. Should be of the form [min_depth, max_depth].
+    fixed : bool 
+        Define whether the vertical levels are the same in all spatial locations.
+        Set to True if they are, e.g. you have z-levels. If you have the likes of sigma-coordinates,
+        set this to True. 
 
     Examples
     ------------
@@ -172,6 +176,10 @@ def vertical_mean(self, thickness=None, depth_range=None):
 
 
     """
+
+    if fixed is None and thickness is None:
+        raise ValueError("Please state if levels are fixed or provide thickness")
+
     if thickness is None and depth_range is None:
         vertstat(self, stat="mean")
         return None
@@ -307,7 +315,7 @@ def vertical_range(self):
     vertstat(self, stat="range")
 
 
-def vertical_integration(self, thickness=None, depth_range=None):
+def vertical_integration(self, thickness=None, depth_range=None, fixed = None):
     """
     Calculate the vertically integrated sum over the water column
     This calculates the sum of the variable multiplied by the cell thickness
@@ -320,6 +328,10 @@ def vertical_integration(self, thickness=None, depth_range=None):
         one variable.
     depth_range: list
         Set a depth range if desired. Should be of the form [min_depth, max_depth].
+    fixed : bool 
+        Define whether the vertical levels are the same in all spatial locations.
+        Set to True if they are, e.g. you have z-levels. If you have the likes of sigma-coordinates,
+        set this to True. 
 
     Examples
     ------------
@@ -329,6 +341,8 @@ def vertical_integration(self, thickness=None, depth_range=None):
     >>> ds.vertical_sum()
 
     """
+    if fixed is None and thickness is None:
+        raise ValueError("Please state if levels are fixed or provide thickness")
 
     if thickness is None:
         if "e3t" not in self.variables:
