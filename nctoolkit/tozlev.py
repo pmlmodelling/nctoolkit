@@ -10,6 +10,7 @@ from nctoolkit.runthis import run_this, run_cdo
 from nctoolkit.temp_file import temp_file
 from nctoolkit.session import append_safe
 from nctoolkit.session import remove_safe
+from nctoolkit.session import get_safe
 
 def to_zlevels(self, levels = None, thickness = None):
     """
@@ -48,7 +49,6 @@ def to_zlevels(self, levels = None, thickness = None):
 
     # Set up the thickness
 
-    self1 = self.copy()
     ds = self.copy()
 
     ds.subset(variables=ds.contents.query("nlevels > 1").variable)
@@ -66,7 +66,7 @@ def to_zlevels(self, levels = None, thickness = None):
 
     if sorted is False:
         if thickness in self.variables:
-            ds_depths = open_data(self1[0])
+            ds_depths = open_data(self[0])
             ds_depths.subset(variable=thickness)
             ds_depths.run()
             drop_this = thickness
@@ -74,6 +74,7 @@ def to_zlevels(self, levels = None, thickness = None):
             ds_depths = open_data(thickness)
             if len(ds_depths.variables) != 1:
                 raise ValueError("Please provide a thickness file with 1 variable!")
+
 
     thick_var = ds_depths.variables[0]
 
@@ -88,7 +89,6 @@ def to_zlevels(self, levels = None, thickness = None):
     ds_depths.subset(times = 0)
     ds_depths.cdo_command("setmisstoc,-9999999")
     ds_depths.run()
-
 
     zaxis = temp_file().replace(".", "")
     append_safe(zaxis)
@@ -107,12 +107,10 @@ def to_zlevels(self, levels = None, thickness = None):
         x = the_file.write(f'size = {len(levels)} \n')
         x = the_file.write(line3)
 
-
     target = ds_depths.copy()
     target.assign(depth = lambda x: level(x.depth) + 0 * (x.depth == x.depth), drop = True)
     target.rename({"depth_2":"depth"})
     target.run()
-
 
     target.vertical_interp(levels = levels, fixed = True)
     target.assign(depth = lambda x: level(x.depth) + 0 * (x.depth == x.depth), drop = True)
@@ -123,7 +121,6 @@ def to_zlevels(self, levels = None, thickness = None):
 
     command = f"cdo intlevel3d,{target[0]} {ds[0]}  {ds_depths[0]} {out}"
 
-
     run_cdo(command, target = out, precision = self._precision)
 
     test = open_data(out)
@@ -132,6 +129,7 @@ def to_zlevels(self, levels = None, thickness = None):
     test.run()
     self.current = test.current
 
+    remove_safe(out)
     remove_safe(out)
     remove_safe(zaxis)
 
