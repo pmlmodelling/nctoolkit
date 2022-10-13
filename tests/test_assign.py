@@ -541,7 +541,7 @@ class TestAssign:
 
     ds1 = nc.open_data("data/woa18_decav_t01_01.nc")
     ds1.subset(variables = "t_an")
-    ds1.vertical_mean()
+    ds1.vertical_mean(fixed = True)
 
     ds2 = nc.open_data("data/woa18_decav_t01_01.nc")
     ds2.assign(t_an = lambda x: x.t_an/vertical_mean(x.t_an))

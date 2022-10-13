@@ -567,7 +567,7 @@ class TestCalls:
         ff1 = "data/woa18_decav_t01_01.nc"
 
         data = nc.open_data(ff1)
-        data.vertical_mean()
+        data.vertical_mean(fixed = True)
         assert data.history[0] == "cdo -vertmean"
 
         data = nc.open_data(ff1)

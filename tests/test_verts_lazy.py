@@ -14,7 +14,7 @@ class TestVerts:
 
         ds1 = nc.open_data("data/woa18_decav_t01_01.nc")
         ds1.subset(variable = "t_an")
-        ds1.vertical_integration(depth_range = [0, 2.0])
+        ds1.vertical_integration(depth_range = [0, 2.0], fixed = True)
         ds2 = nc.open_data("data/woa18_decav_t01_01.nc")
         ds2.subset(variable = "t_an")
         ds2.top()
@@ -30,13 +30,13 @@ class TestVerts:
 
 
         with pytest.raises(TypeError):
-            ds.vertical_integration("e3t", depth_range = 1)
+            ds.vertical_integration("e3t", depth_range = 1, fixed = True)
 
         with pytest.raises(ValueError):
-            ds.vertical_integration("e3t", depth_range = [1,2,3])
+            ds.vertical_integration("e3t", depth_range = [1,2,3], fixed = True)
 
         with pytest.raises(ValueError):
-            ds.vertical_integration("e3t", depth_range = [30,20])
+            ds.vertical_integration("e3t", depth_range = [30,20], fixed = True)
 
         with pytest.raises(TypeError):
             ds.vertical_mean("e3t", depth_range = 1)
@@ -48,24 +48,24 @@ class TestVerts:
             ds.vertical_mean("e3t", depth_range = [30,20])
 
         with pytest.raises(ValueError):
-            ds.vertical_mean(thickness = 1)
+            ds.vertical_mean(thickness = 1, fixed = False)
 
         with pytest.raises(ValueError):
-            ds.vertical_integration(thickness = 1)
+            ds.vertical_integration(thickness = 1, fixed = False)
 
         with pytest.raises(ValueError):
-            ds.vertical_integration(thickness = ff)
+            ds.vertical_integration(thickness = ff, fixed = False)
 
         with pytest.raises(ValueError):
-            ds.vertical_mean(thickness = ff)
-
-        with pytest.raises(ValueError):
-            ds1 = nc.open_data(ff)
-            ds.vertical_mean(thickness = ds1)
+            ds.vertical_mean(thickness = ff, fixed = False)
 
         with pytest.raises(ValueError):
             ds1 = nc.open_data(ff)
-            ds.vertical_integration(thickness = ds1)
+            ds.vertical_mean(thickness = ds1, fixed = False)
+
+        with pytest.raises(ValueError):
+            ds1 = nc.open_data(ff)
+            ds.vertical_integration(thickness = ds1, fixed = False)
 
         ds = nc.open_data("data/vertical_tester.nc")
         ds.vertical_mean("e3t", depth_range = [0, 30])
@@ -174,7 +174,7 @@ class TestVerts:
 
         tracker = nc.open_data(ff)
         tracker.subset(variables="t_an")
-        tracker.vertical_mean()
+        tracker.vertical_mean(fixed = True)
         tracker.spatial_mean()
         x = tracker.to_xarray().t_an.values[0][0][0].astype("float")
         assert x == 6.885317325592041
