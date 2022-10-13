@@ -1,6 +1,20 @@
 News
 ============
 
+Release of v0.8.0
+---------------
+
+Version 0.8.0 will be released in early November 2022. This will be a major release that will introduce some breaking changes.
+
+The major improvement in this release will be to vertical methods. All vertical methods should now work with files with vertical axes
+that are either consistent or vary spatially. Before some methods only worked with z-levels, i.e. files with fixed vertical levels. This
+change will result in a requirement that `vertical_mean`, `vertical_interp` and `vertical_integration` need users to specify whether the vertical
+levels are fixed spatially, using the fixed arg.
+
+
+
+
+
 Release of v0.7.6
 ---------------
 
