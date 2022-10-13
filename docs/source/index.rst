@@ -70,6 +70,7 @@ nctoolkit is developed as open source software by the Marine Systems Modelling g
    ensembles 
    matchpoint 
    variables
+   verticals
    adding
    parallel 
    examples
