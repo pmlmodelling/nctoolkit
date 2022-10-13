@@ -100,9 +100,9 @@ def vertical_interp(self, levels=None, fixed = None, thickness = None):
     Examples
     ------------
 
-    If you wanted to vertically interpolate a dataset to 5 and 10 metres, you would do the following:
+    If you wanted to vertically interpolate a dataset with spatially consistent vertical levels to 5 and 10 metres, you would do the following:
 
-    >>> ds.vertical_interp([5,10])
+    >>> ds.vertical_interp(levels = [5,10], fixed = True)
 
     This method is most useful for things like oceanic data, where you need to interpolate to certain depth levels.
     It will require that vertical levels are the same in every grid cell.
@@ -166,9 +166,9 @@ def vertical_mean(self, thickness=None, depth_range=None, fixed = None):
     Examples
     ------------
 
-    If you wanted to vertical mean of every variable in a dataset, you would do this:
+    If you wanted to vertical mean of every variable in a dataset with consistent vertical levels, you would do this:
 
-    >>> ds.vertical_mean()
+    >>> ds.vertical_mean(fixed = True)
 
 
     This method will calculate the vertical mean weighted by the thickness of each cell. Note that
@@ -336,9 +336,9 @@ def vertical_integration(self, thickness=None, depth_range=None, fixed = None):
     Examples
     ------------
 
-    If you wanted to sum of values across all vertical levels of every variable in a dataset, you would do this:
+    If you wanted to sum of values across all vertical levels of every variable in a dataset that has spatially fixed vertical levels, you would do this:
 
-    >>> ds.vertical_sum()
+    >>> ds.vertical_sum(fixed = True)
 
     """
     if fixed is None and thickness is None:

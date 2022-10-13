@@ -293,6 +293,7 @@ Statistical methods
    DataSet.zonal_min
    DataSet.zonal_max
    DataSet.zonal_range
+   DataSet.zonal_sum
 
    DataSet.meridonial_mean
    DataSet.meridonial_min
