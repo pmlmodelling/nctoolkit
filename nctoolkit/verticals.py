@@ -92,6 +92,7 @@ def vertical_interp(self, levels=None, fixed = None, thickness = None):
         Set to True if they are, e.g. you have z-levels. If you have the likes of sigma-coordinates,
         set this to True. 
     thickness: str or Dataset
+        This must be supplied if fixed is False, otherwise vertical thickness cannot be known.
         Option argument when vertical levels vary in space.
         One of: a variable, in the dataset, which contains the variable thicknesses; a .nc file which contains
         the thicknesses; or a Dataset that contains the thicknesses. Note: the .nc file or Dataset must only contain
@@ -110,10 +111,19 @@ def vertical_interp(self, levels=None, fixed = None, thickness = None):
     """
 
     if fixed is None:
-        raise ValueError("You must provide the fixed arg")
+        if thickness is None:
+            raise ValueError("You must provide the fixed arg")
+
+    if fixed is False:
+        if thickness is None:
+            raise ValueError("Please provide thickness")
 
     if type(fixed) is not bool:
-        raise TypeError("fixed must be a bool")
+        if thickness is None:
+            raise TypeError("fixed must be a bool")
+
+    if thickness is not None:
+        fixed = False
 
     if fixed is False:
         self.to_zlevels(levels = levels, thickness = thickness)
@@ -151,7 +161,7 @@ def vertical_mean(self, thickness=None, depth_range=None, fixed = None):
     Optional parameters
     -------------
     thickness: str or Dataset
-        Only use when vertical levels vary in space
+        This mube be supplied when vertical levels vary in space, i.e. fixed=False.
         One of: a variable, in the dataset, which contains the variable thicknesses; a .nc file which contains
         the thicknesses; or a Dataset that contains the thicknesses. Note: the .nc file or Dataset must only contain
         one variable.
@@ -179,6 +189,10 @@ def vertical_mean(self, thickness=None, depth_range=None, fixed = None):
 
     if fixed is None and thickness is None:
         raise ValueError("Please state if levels are fixed or provide thickness")
+
+    if fixed is False:
+        if thickness is None:
+            raise ValueError("Please provide thickness")
 
     if thickness is None and depth_range is None:
         vertstat(self, stat="mean")
@@ -323,6 +337,7 @@ def vertical_integration(self, thickness=None, depth_range=None, fixed = None):
     Parameters
     -------------
     thickness: str or Dataset
+        This must be supplied when vertical levels vary spatially.
         One of: a variable, in the dataset, which contains the variable thicknesses; a .nc file which contains
         the thicknesses; or a Dataset that contains the thicknesses. Note: the .nc file or Dataset must only contain
         one variable.
@@ -344,18 +359,20 @@ def vertical_integration(self, thickness=None, depth_range=None, fixed = None):
     if fixed is None and thickness is None:
         raise ValueError("Please state if levels are fixed or provide thickness")
 
+    if fixed:
+        if version_above(cdo_version(), "2.0.0") is False:
+            raise ValueError("Please install CDO>2.0.0")
+        warnings.warn("Extracting vertical thickness from dataset level data")
+        var = list(self.contents.query("nlevels > 1").variable)[0]
+        thickness = self.copy()
+        thickness.subset(time = 0, variable = var)
+        thickness.rename({var:"thickness"})
+        thickness.assign(thickness = lambda x: (isnan(x.thickness) == False) * level(x.thickness), drop = True)
+        thickness.assign(thickness = lambda x: deltaz(x.thickness) + (x.thickness < x.thickness), drop = True)
+        thickness.run()
+    
     if thickness is None:
-        if "e3t" not in self.variables:
-            if version_above(cdo_version(), "2.0.0") is False:
-                raise ValueError("Please install CDO>2.0.0")
-            warnings.warn("Extracting vertical thickness from dataset level data")
-            var = list(self.contents.query("nlevels > 1").variable)[0]
-            thickness = self.copy()
-            thickness.subset(time = 0, variable = var)
-            thickness.rename({var:"thickness"})
-            thickness.assign(thickness = lambda x: (isnan(x.thickness) == False) * level(x.thickness), drop = True)
-            thickness.assign(thickness = lambda x: deltaz(x.thickness) + (x.thickness < x.thickness), drop = True)
-            thickness.run()
+        raise ValueError("Please specify thickness")
 
     if type(depth_range) is list:
 
