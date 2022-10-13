@@ -75,7 +75,7 @@ def top(self):
     run_this(cdo_command, self, output="ensemble")
 
 
-def vertical_interp(self, levels=None):
+def vertical_interp(self, levels=None, fixed = None, thickness = None):
     """
     Verticaly interpolate a dataset based on given vertical levels
     This is calculated for each time step and grid cell
@@ -87,6 +87,15 @@ def vertical_interp(self, levels=None):
     levels : list, int or str
         list of vertical levels, for example depths for an ocean model, to vertically
         interpolate to. These must be floats or ints.
+    fixed : bool 
+        Define whether the vertical levels are the same in all spatial locations.
+        Set to True if they are, e.g. you have z-levels. If you have the likes of sigma-coordinates,
+        set this to True. 
+    thickness: str or Dataset
+        Option argument when vertical levels vary in space.
+        One of: a variable, in the dataset, which contains the variable thicknesses; a .nc file which contains
+        the thicknesses; or a Dataset that contains the thicknesses. Note: the .nc file or Dataset must only contain
+        one variable. Thickness should be in metres. Vertical interpolation will take the value from the mid-point of the level.
 
     Examples
     ------------
@@ -99,6 +108,16 @@ def vertical_interp(self, levels=None):
     It will require that vertical levels are the same in every grid cell.
 
     """
+
+    if fixed is None:
+        raise ValueError("You must provide the fixed arg")
+
+    if type(fixed) is not bool:
+        raise TypeError("fixed must be a bool")
+
+    if fixed is False:
+        self.to_zlevels(levels = levels, thickness = thickness)
+        return None
 
     if levels is None:
         raise ValueError("Please supply vertical depths")
@@ -372,7 +391,7 @@ def vertical_integration(self, thickness=None, depth_range=None):
     # modify the depth if it is a list
     if type(depth_range) is list:
 
-        if thick_var is not "thickness":
+        if thick_var != "thickness":
             ds_thick.rename({thick_var: "thickness"})
             ds_thick.run()
         ds_depth = ds_thick.copy()

@@ -114,7 +114,7 @@ def to_zlevels(self, levels = None, thickness = None):
     target.run()
 
 
-    target.vertical_interp(levels = levels)
+    target.vertical_interp(levels = levels, fixed = True)
     target.assign(depth = lambda x: level(x.depth) + 0 * (x.depth == x.depth), drop = True)
     target.run()
 
