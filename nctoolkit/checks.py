@@ -99,60 +99,63 @@ def check(self):
         )
 
     if cf_checker:
-        for ff in self:
-            version = ""
-            try:
-                ds = xr.open_dataset(ff, decode_times=False)
-                if "Conventions" not in list(ds.attrs.keys()):
-                    print(f"No CF-conventions in {ff}")
+        try:
+            for ff in self:
+                version = ""
+                try:
+                    ds = xr.open_dataset(ff, decode_times=False)
+                    if "Conventions" not in list(ds.attrs.keys()):
+                        print(f"No CF-conventions in {ff}")
+                    else:
+                        version = ds.attrs["Conventions"].split("-")[1]
+                except:
+                    warnings.warn("Note: there are issues opening this file using xarray. You may want to look closely to see if there are formatting issues that will have negative downstream impacts!")
+
+                if len(version) > 0:
+                    command = f"cfchecks -v {version} {ff}"
                 else:
-                    version = ds.attrs["Conventions"].split("-")[1]
-            except:
-                warnings.warn("Note: there are issues opening this file using xarray. You may want to look closely to see if there are formatting issues that will have negative downstream impacts!")
+                    command = f"cfchecks {ff}"
 
-            if len(version) > 0:
-                command = f"cfchecks -v {version} {ff}"
-            else:
-                command = f"cfchecks {ff}"
+                out = subprocess.Popen(
+                    command,
+                    shell=True,
+                    stdin=subprocess.PIPE,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT,
+                )
+                result, ignore = out.communicate()
 
-            out = subprocess.Popen(
-                command,
-                shell=True,
-                stdin=subprocess.PIPE,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-            )
-            result, ignore = out.communicate()
+                result_split = result.decode("utf-8").split("\n")
+                splits = [
+                    index
+                    for index, value in enumerate(result_split)
+                    if "Checking variable" in value
+                ]
+                end = [
+                    index
+                    for index, value in enumerate(result_split)
+                    if "ERRORS dete" in value
+                ][0]
+                for i in range(0, len(splits)):
+                    if i < (len(splits) - 1):
 
-            result_split = result.decode("utf-8").split("\n")
-            splits = [
-                index
-                for index, value in enumerate(result_split)
-                if "Checking variable" in value
-            ]
-            end = [
-                index
-                for index, value in enumerate(result_split)
-                if "ERRORS dete" in value
-            ][0]
-            for i in range(0, len(splits)):
-                if i < (len(splits) - 1):
-
-                    i_result = result_split[splits[i] : splits[i + 1]]
-                    i_result = "\n".join(i_result)
-                    if "ERROR: " in i_result:
-                        i_result = i_result.replace(
-                            "Checking variable:", "Issue with variable:"
-                        )
-                        print(i_result)
-                else:
-                    i_result = result_split[splits[i] : end]
-                    i_result = "\n".join(i_result)
-                    if "ERROR: " in i_result:
-                        i_result = i_result.replace(
-                            "Checking variable:", "Issue with variable:"
-                        )
-                        print(i_result)
+                        i_result = result_split[splits[i] : splits[i + 1]]
+                        i_result = "\n".join(i_result)
+                        if "ERROR: " in i_result:
+                            i_result = i_result.replace(
+                                "Checking variable:", "Issue with variable:"
+                            )
+                            print(i_result)
+                    else:
+                        i_result = result_split[splits[i] : end]
+                        i_result = "\n".join(i_result)
+                        if "ERROR: " in i_result:
+                            i_result = i_result.replace(
+                                "Checking variable:", "Issue with variable:"
+                            )
+                            print(i_result)
+        except:
+            warnings.warn("Problem running CF-compliance checks. Have a look at the cfchecker installation")
 
     print("*****************************************")
     print("Checking grid consistency")
