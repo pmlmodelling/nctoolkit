@@ -79,6 +79,8 @@ def vertical_interp(self, levels=None):
     """
     Verticaly interpolate a dataset based on given vertical levels
     This is calculated for each time step and grid cell
+    Note: This requires consistent vertical levels in space. For the likes of sigma-coordinates,
+    please use to_zlevels.
 
     Parameters
     -------------
