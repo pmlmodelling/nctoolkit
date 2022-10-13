@@ -1781,6 +1781,7 @@ class DataSet(object):
     from nctoolkit.zonals import zonal_min
     from nctoolkit.zonals import zonal_max
     from nctoolkit.zonals import zonal_range
+    from nctoolkit.zonals import zonal_sum
 
     # Deprecated methods
     from nctoolkit.deprecated import set_missing

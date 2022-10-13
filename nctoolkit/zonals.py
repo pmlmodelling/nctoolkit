@@ -1,5 +1,6 @@
 from nctoolkit.runthis import run_this
 from nctoolkit.utils import is_curvilinear
+from nctoolkit.api import open_data
 
 
 def zonstat(self, stat="mean"):
@@ -13,6 +14,32 @@ def zonstat(self, stat="mean"):
 
     run_this(cdo_command, self, output="ensemble")
 
+def zonal_sum(self, by_area = False):
+    """
+    Calculate the zonal sum for each year/month combination in files.
+    This applies to each file in an ensemble.
+
+    Parameters
+    -------------
+    by_area : bool 
+        Set to True if you want the cell value to be multiplied by the cell area prior to summing 
+
+    Examples
+    ------------
+    If you want to calculate the zonal sum for a dataset, do the following:
+
+    >>> ds.zonal_sum()
+
+    """
+    if by_area is True:
+        if len(self) > 1:
+            print("Using first file in the dataset for areas")
+        ds_area = open_data(self[0])
+        ds_area.subset(time = 0)
+        ds_area.cell_area(join = False)
+        self.multiply(ds_area)
+
+    zonstat(self, stat="sum")
 
 def zonal_mean(self):
     """
