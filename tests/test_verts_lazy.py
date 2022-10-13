@@ -233,7 +233,7 @@ class TestVerts:
         ff = "data/woa18_decav_t01_01.nc"
         tracker = nc.open_data(ff)
         tracker.subset(variables="t_an")
-        tracker.vertical_interp(10)
+        tracker.vertical_interp(10, fixed = True)
         x = tracker.to_dataframe().t_an.values[0].astype("float")
         n = len(nc.session_files())
         assert n == 1
@@ -324,10 +324,10 @@ class TestVerts:
             data.bottom_mask()
 
         with pytest.raises(ValueError):
-            data.vertical_interp()
+            data.vertical_interp(fixed = True)
 
         with pytest.raises(TypeError):
-            data.vertical_interp(["x"])
+            data.vertical_interp(["x"], fixed = True)
 
     def test_bottom_mask_error2(self):
         data = nc.open_data(nc.create_ensemble("data/ensemble"))

@@ -599,7 +599,7 @@ class TestCalls:
         assert data.history[0] == "cdo -sellevidx,57"
 
         data = nc.open_data(ff1)
-        data.vertical_interp([1, 19])
+        data.vertical_interp([1, 19], fixed = True)
         assert data.history[0] == "cdo -intlevel,1,19"
 
         data = nc.open_data(ff1)
