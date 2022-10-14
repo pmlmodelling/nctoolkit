@@ -5,6 +5,7 @@ import pandas as pd
 import xarray as xr
 import os, pytest
 import warnings
+import numpy as np
 
 
 class TestVerts:
@@ -228,6 +229,36 @@ class TestVerts:
         assert x == 6.35545015335083
         n = len(nc.session_files())
         assert n == 1
+
+    def test_intez(self):
+        def foo(x):
+            return np.max(x) - np.min(x)
+        ds = nc.open_data("data/woa18_decav_t01_01.nc")
+        ds.subset(variable = "t_an")
+        ds.run()
+        df = ds.to_dataframe()
+        depths = df.reset_index().loc[:,["depth", "bnds", "depth_bnds"]].drop_duplicates().drop(columns = "bnds").groupby(["depth"]).apply(foo).drop(columns = "depth").reset_index()
+        df_check = (
+        df
+            .reset_index()
+            .loc[:,["lon", "lat", "depth", "t_an"]]
+            .drop_duplicates()
+            .dropna()
+            .merge(depths)
+            .assign(t_an = lambda x: x.t_an * x.depth_bnds)
+            .groupby(["lon", "lat"])
+            .sum()
+            .reset_index()
+            .loc[:,["lon", "lat", "t_an"]]
+        )
+        ds.vertical_integration(fixed = True)
+        df2 = (
+        ds.to_dataframe().reset_index().dropna().loc[:,["lon", "lat", "t_an"]].rename(columns = {"t_an":"t_nc"}).merge(df_check)
+        )
+        assert df2.assign(check = lambda x: x.t_nc - x.t_an).check.abs().max() < 0.002
+        assert float(np.corrcoef(df2.t_nc, df2.t_an)[0,1]) > 0.99
+
+        del ds
 
 
     def test_int(self):
