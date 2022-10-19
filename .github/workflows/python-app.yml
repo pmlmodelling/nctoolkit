@@ -43,7 +43,7 @@ jobs:
          conda install pip
          conda install nco
          conda install pytest
-         conda install numpy -y
+         conda install numpy=1.23.3 -y
          #conda install cartopy -y
          conda install dask -y
          #    conda install flake8
