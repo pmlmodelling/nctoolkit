@@ -21,7 +21,7 @@ jobs:
         ACTIONS_ALLOW_UNSECURE_COMMANDS: true
        with:
          activate-environment: foo
-         python-version: 3.10
+         python-version: '3.10'
          channels: conda-forge
          allow-softlinks: true
          channel-priority: flexible
