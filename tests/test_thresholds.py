@@ -80,7 +80,10 @@ class TestClip:
         tracker = nc.open_data(ff)
 
         tracker = nc.open_data(ff)
-        tracker.assign(analysed_sst = lambda x: (x.analysed_sst == x.analysed_sst) * timestep(x.analysed_sst) + 0.01)
+        if nc.utils.version_below(nc.session.session_info["cdo"], "2.1.0"):
+            tracker.assign(analysed_sst = lambda x: (x.analysed_sst == x.analysed_sst) * timestep(x.analysed_sst) + 0.01)
+        else:
+            tracker.assign(analysed_sst = lambda x: (x.analysed_sst == x.analysed_sst) * timestep() + 0.01)
         tracker.last_below(350)
         tracker.as_missing(0)
         tracker.spatial_mean()
@@ -112,7 +115,10 @@ class TestClip:
         tracker = nc.open_data(ff)
 
         tracker = nc.open_data(ff)
-        tracker.assign(analysed_sst = lambda x: (x.analysed_sst == x.analysed_sst) * timestep(x.analysed_sst) + 0.01)
+        if nc.utils.version_below(nc.session.session_info["cdo"], "2.1.0"):
+            tracker.assign(analysed_sst = lambda x: (x.analysed_sst == x.analysed_sst) * timestep(x.analysed_sst) + 0.01)
+        else:
+            tracker.assign(analysed_sst = lambda x: (x.analysed_sst == x.analysed_sst) * timestep() + 0.01)
         data = tracker.copy()
         data.subset(time = 350)
         data.run()
@@ -126,7 +132,10 @@ class TestClip:
         assert x == 349
 
         tracker = nc.open_data(ff)
-        tracker.assign(analysed_sst = lambda x: (x.analysed_sst == x.analysed_sst) * timestep(x.analysed_sst) + 0.01)
+        if nc.utils.version_below(nc.session.session_info["cdo"], "2.1.0"):
+            tracker.assign(analysed_sst = lambda x: (x.analysed_sst == x.analysed_sst) * timestep(x.analysed_sst) + 0.01)
+        else:
+            tracker.assign(analysed_sst = lambda x: (x.analysed_sst == x.analysed_sst) * timestep() + 0.01)
         tracker.first_above(350)
         tracker.as_missing(0)
         tracker.spatial_mean()
@@ -136,7 +145,10 @@ class TestClip:
         assert x == 350.0
 
         tracker = nc.open_data(ff)
-        tracker.assign(analysed_sst = lambda x: (x.analysed_sst == x.analysed_sst) * timestep(x.analysed_sst) + 0.01)
+        if nc.utils.version_below(nc.session.session_info["cdo"], "2.1.0"):
+            tracker.assign(analysed_sst = lambda x: (x.analysed_sst == x.analysed_sst) * timestep(x.analysed_sst) + 0.01)
+        else:
+            tracker.assign(analysed_sst = lambda x: (x.analysed_sst == x.analysed_sst) * timestep() + 0.01)
         data = tracker.copy()
         data.subset(time = 349)
         tracker.first_above(data)
@@ -150,7 +162,10 @@ class TestClip:
 
 
         tracker = nc.open_data(ff)
-        tracker.assign(analysed_sst = lambda x: (x.analysed_sst == x.analysed_sst) * timestep(x.analysed_sst) + 0.01)
+        if nc.utils.version_below(nc.session.session_info["cdo"], "2.1.0"):
+            tracker.assign(analysed_sst = lambda x: (x.analysed_sst == x.analysed_sst) * timestep(x.analysed_sst) + 0.01)
+        else:
+            tracker.assign(analysed_sst = lambda x: (x.analysed_sst == x.analysed_sst) * timestep() + 0.01)
         tracker.assign(analysed_sst = lambda x: -x.analysed_sst)
         tracker.run()
         print(tracker.variables)
@@ -163,7 +178,10 @@ class TestClip:
         assert x == 350.0
 
         tracker = nc.open_data(ff)
-        tracker.assign(analysed_sst = lambda x: (x.analysed_sst == x.analysed_sst) * timestep(x.analysed_sst) + 0.01)
+        if nc.utils.version_below(nc.session.session_info["cdo"], "2.1.0"):
+            tracker.assign(analysed_sst = lambda x: (x.analysed_sst == x.analysed_sst) * timestep(x.analysed_sst) + 0.01)
+        else:
+            tracker.assign(analysed_sst = lambda x: (x.analysed_sst == x.analysed_sst) * timestep() + 0.01)
         tracker.assign(analysed_sst = lambda x: -x.analysed_sst)
         data = tracker.copy()
         data.subset(time = 351)
@@ -178,7 +196,10 @@ class TestClip:
 
 
         tracker = nc.open_data(ff)
-        tracker.assign(analysed_sst = lambda x: (x.analysed_sst == x.analysed_sst) * timestep(x.analysed_sst) + 0.01)
+        if nc.utils.version_below(nc.session.session_info["cdo"], "2.1.0"):
+            tracker.assign(analysed_sst = lambda x: (x.analysed_sst == x.analysed_sst) * timestep(x.analysed_sst) + 0.01)
+        else:
+            tracker.assign(analysed_sst = lambda x: (x.analysed_sst == x.analysed_sst) * timestep() + 0.01)
         tracker.assign(analysed_sst = lambda x: -x.analysed_sst)
         tracker.first_below(-351)
         tracker.as_missing(0)
@@ -192,7 +213,10 @@ class TestClip:
 
 
         tracker = nc.open_data(ff)
-        tracker.assign(analysed_sst = lambda x: (x.analysed_sst == x.analysed_sst) * timestep(x.analysed_sst) + 0.01)
+        if nc.utils.version_below(nc.session.session_info["cdo"], "2.1.0"):
+            tracker.assign(analysed_sst = lambda x: (x.analysed_sst == x.analysed_sst) * timestep(x.analysed_sst) + 0.01)
+        else:
+            tracker.assign(analysed_sst = lambda x: (x.analysed_sst == x.analysed_sst) * timestep() + 0.01)
         tracker.assign(analysed_sst = lambda x: -x.analysed_sst)
         data = tracker.copy()
         data.subset(time = 351)

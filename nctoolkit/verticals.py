@@ -368,7 +368,7 @@ def vertical_integration(self, thickness=None, depth_range=None, fixed = None):
         thickness.subset(time = 0, variable = var)
         thickness.rename({var:"thickness"})
         thickness.assign(thickness = lambda x: (isnan(x.thickness) == False) * level(x.thickness), drop = True)
-        thickness.assign(thickness = lambda x: deltaz(x.thickness) + (x.thickness < x.thickness), drop = True)
+        thickness.assign(thickness = lambda x: thickness(x.thickness) + (x.thickness < x.thickness), drop = True)
         thickness.run()
     
     if thickness is None:

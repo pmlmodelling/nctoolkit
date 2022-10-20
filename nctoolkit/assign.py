@@ -7,6 +7,8 @@ from nctoolkit.runthis import run_this
 from nctoolkit.session import session_info
 from nctoolkit.utils import version_below
 
+print(session_info)
+
 
 def split_equation(mystr):
     return re.split("[-+^!=*/(&|)\[\]]", mystr)
@@ -97,7 +99,7 @@ funs = [
     "int",
     "float",
     "log10",
-    "deltaz"
+    "thickness"
 ]
 
 translation = dict()
@@ -106,7 +108,7 @@ for ff in funs:
         translation[ff] = ff
 
 translation["int"] = "int"
-translation["deltaz"] = "cdeltaz"
+#translation["deltaz"] = "cdeltaz"
 translation["float"] = "float"
 
 translation["arcsin"] = "asin"
@@ -503,9 +505,10 @@ def assign(self, drop=False, **kwargs):
                         if x_fun in translation.keys():
                             x_term = between_brackets(x)
                             if (f"{lambda_value}." in x_term) is False:
-                                raise ValueError(
-                                    f"Error for {x}: nctoolkit functions must take dataset variables as args!"
-                                )
+                                if x_fun not in ["timestep"]:
+                                    raise ValueError(
+                                        f"Error for {x}: nctoolkit functions must take dataset variables as args!"
+                                    )
                             if x_fun == "timestep":
                                 start = start.replace(x, "(" + x + "-1)")
                             if x_fun in ["cell_area", "longitude", "latitude"]:
@@ -697,6 +700,10 @@ def assign(self, drop=False, **kwargs):
                 raise ValueError(
                     "Please install version >=1.9.8 of CDO to access isnan"
                 )
+        if version_below(version, "2.1.0"):
+            translation["thickness"] = "cdeltaz"
+        else:
+            translation["thickness"] = "cthickness"
         # We need to fix pow functions potentially. Though, it might be better to stick with ^
 
         # translate numpy style functions to cdo functions
