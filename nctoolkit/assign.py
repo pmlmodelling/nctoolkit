@@ -7,8 +7,6 @@ from nctoolkit.runthis import run_this
 from nctoolkit.session import session_info
 from nctoolkit.utils import version_below
 
-print(session_info)
-
 
 def split_equation(mystr):
     return re.split("[-+^!=*/(&|)\[\]]", mystr)
