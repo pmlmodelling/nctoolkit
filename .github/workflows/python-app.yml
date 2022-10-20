@@ -38,18 +38,18 @@ jobs:
      - name: Install dependencies
        shell: bash -l {0}
        run: |
-         conda create -n foo python=3.10 -y
+         #conda create -n foo python=3.10 -y
          conda activate foo
          conda install cdo
          conda install pip
          conda install nco
          conda install pytest
-         conda install numpy=1.23.3 -y
+         #conda install numpy=1.23.3 -y
          #conda install cartopy -y
          conda install dask -y
          #    conda install flake8
          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-         pip install numpy==1.23.3
+         #pip install numpy==1.23.3
          pip install .
          pip install pandas==1.3.3
          pip install rioxarray
