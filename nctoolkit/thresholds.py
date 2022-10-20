@@ -1,4 +1,6 @@
 import os
+from nctoolkit.session import session_info
+from nctoolkit.utils import version_below
 
 
 def first_above(self, x=None):
@@ -27,6 +29,8 @@ def first_above(self, x=None):
     >>> ds.first_above(ds1)
 
     """
+    version = session_info["cdo"]
+    old = version_below(version, "2.1.0")
 
     self.run()
 
@@ -54,7 +58,10 @@ def first_above(self, x=None):
     if run_code:
         self.rename({self.variables[0]: "target"})
         self.as_missing([-1, 0.1])
-        self.assign( new=lambda x: (x.target == x.target) * (timestep(x.target) + 1), drop=True)
+        if old:
+            self.assign( new=lambda x: (x.target == x.target) * (timestep(x.target) + 1), drop=True)
+        else:
+            self.assign( new=lambda x: (x.target == x.target) * (timestep() + 1), drop=True)
         self.as_missing([0, 0.01])
         self.tmin()
         self.assign(first=lambda x: int(x.new) - 1, drop=True)
@@ -100,6 +107,9 @@ def first_below(self, x=None):
 
     self.run()
 
+    version = session_info["cdo"]
+    old = version_below(version, "2.1.0")
+
     variable = self.variables[0]
 
     run_code = False
@@ -119,7 +129,10 @@ def first_below(self, x=None):
     if run_code:
         self.rename({self.variables[0]: "target"})
         self.as_missing([-1, 0.1])
-        self.assign( new=lambda x: (x.target == x.target) * (timestep(x.target) + 1), drop=True)
+        if old:
+            self.assign( new=lambda x: (x.target == x.target) * (timestep(x.target) + 1), drop=True)
+        else:
+            self.assign( new=lambda x: (x.target == x.target) * (timestep() + 1), drop=True)
         self.as_missing([0, 0.01])
         self.tmin()
         self.assign(first=lambda x: int(x.new) - 1, drop=True)
@@ -164,6 +177,9 @@ def last_above(self, x=None):
 
     self.run()
 
+    version = session_info["cdo"]
+    old = version_below(version, "2.1.0")
+
     variable = self.variables[0]
 
     # if len(self.variables) > 1:
@@ -187,7 +203,10 @@ def last_above(self, x=None):
     if run_code:
         self.rename({self.variables[0]: "target"})
         self.as_missing([-1, 0.1])
-        self.assign( new=lambda x: (x.target == x.target) * (timestep(x.target) + 1), drop=True)
+        if old:
+            self.assign( new=lambda x: (x.target == x.target) * (timestep(x.target) + 1), drop=True)
+        else:
+            self.assign( new=lambda x: (x.target == x.target) * (timestep() + 1), drop=True)
         self.as_missing([0, 0.01])
         self.multiply(-1)
         self.tmin()
@@ -234,6 +253,9 @@ def last_below(self, x=None):
 
     self.run()
 
+    version = session_info["cdo"]
+    old = version_below(version, "2.1.0")
+
     variable = self.variables[0]
 
     # if len(self.variables) > 1:
@@ -257,7 +279,10 @@ def last_below(self, x=None):
     if run_code:
         self.rename({self.variables[0]: "target"})
         self.as_missing([-1, 0.1])
-        self.assign( new=lambda x: (x.target == x.target) * -1 * (timestep(x.target) + 1), drop=True)
+        if old:
+            self.assign( new=lambda x: (x.target == x.target) * -1 * (timestep(x.target) + 1), drop=True)
+        else:
+            self.assign( new=lambda x: (x.target == x.target) * -1 * (timestep() + 1), drop=True)
         self.as_missing([0, 0.01])
         self.assign(new=lambda x: int(x.new))
         self.tmin()
