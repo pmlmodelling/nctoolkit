@@ -1,5 +1,4 @@
 import copy
-from tqdm import tqdm
 import os
 import re
 import subprocess
@@ -536,6 +535,7 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
 
 
 def run_this(os_command, self, output="one", out_file=None):
+    from tqdm import tqdm
 
     if len(self) == 0:
         raise ValueError("Failure do to empty dataset!")
@@ -596,7 +596,8 @@ def run_this(os_command, self, output="one", out_file=None):
                             print("Processing ensemble! In progress:")
                         else:
                             print("Processing large ensemble! In progress")
-                        pbar = tqdm(total=len(file_list))
+                        pbar = tqdm(total=len(file_list), position = 0, leave = True)
+                       # pbar = tqdm(total=len(file_list))
 
                 for ff in file_list:
                     ff_command = os_command
@@ -674,7 +675,8 @@ def run_this(os_command, self, output="one", out_file=None):
                             print("Processing ensemble. In progress:")
                         else:
                             print("Processing a large ensemble. In progress:")
-                        pbar = tqdm(total=len(file_list))
+                        pbar = tqdm(total=len(file_list), position = 0, leave = True)
+                        #pbar = tqdm(total=len(file_list))
                     for k, v in results.items():
                         target_list.append(v.get())
                         if progress_bar:
