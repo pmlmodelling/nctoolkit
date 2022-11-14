@@ -108,10 +108,8 @@ def matchup(self,  tmean = False, regrid = "bil", max_extrap = 5):
 
     ds.subset(variables = ds.variables[0])
     ds.subset(time = 0)
-    ds.rename({ds.variables[0]: "target"})
     ds.top()
-    ds.run()
-    ds.assign(target = lambda x: isnan(x.target))
+    ds.cdo_command("setmisstoc,1")
     df = points.loc[:,["lon", "lat"]].drop_duplicates()
     ds.regrid(df, method = regrid)
     grid = ds.to_dataframe().reset_index().dropna().loc[:,["lon", "lat"]].drop_duplicates()
