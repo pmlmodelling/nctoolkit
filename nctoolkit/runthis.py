@@ -534,7 +534,7 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
     return target
 
 
-def run_this(os_command, self, output="one", out_file=None):
+def run_this(os_command, self, output="one", out_file=None, suppress = False):
     from tqdm import tqdm
 
     if len(self) == 0:
@@ -593,11 +593,13 @@ def run_this(os_command, self, output="one", out_file=None):
                 if cores == 1:
                     if progress_bar:
                         if session_info["progress"] == "on":
-                            print("Processing ensemble! In progress:")
+                            if not suppress:
+                                print("Processing ensemble! In progress:")
                         else:
-                            print("Processing large ensemble! In progress")
-                        pbar = tqdm(total=len(file_list), position = 0, leave = True)
-                       # pbar = tqdm(total=len(file_list))
+                            if not suppress:
+                                print("Processing large ensemble! In progress")
+                        if not suppress:
+                            pbar = tqdm(total=len(file_list), position = 0, leave = True)
 
                 for ff in file_list:
                     ff_command = os_command
@@ -666,21 +668,25 @@ def run_this(os_command, self, output="one", out_file=None):
                         )
                         target_list.append(target)
                         if progress_bar:
-                            pbar.update(1)
+                            if not suppress:
+                                pbar.update(1)
 
                 if cores > 1:
 
                     if progress_bar:
                         if session_info["progress"] == "on":
-                            print("Processing ensemble. In progress:")
+                            if not suppress:
+                                print("Processing ensemble. In progress:")
                         else:
-                            print("Processing a large ensemble. In progress:")
-                        pbar = tqdm(total=len(file_list), position = 0, leave = True)
-                        #pbar = tqdm(total=len(file_list))
+                            if not suppress:
+                                print("Processing a large ensemble. In progress:")
+                        if not suppress:
+                            pbar = tqdm(total=len(file_list), position = 0, leave = True)
                     for k, v in results.items():
                         target_list.append(v.get())
                         if progress_bar:
-                            pbar.update(1)
+                            if not suppress:
+                                pbar.update(1)
 
                 self.history = copy.deepcopy(new_history)
                 self.current = copy.deepcopy(target_list)

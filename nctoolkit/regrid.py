@@ -148,6 +148,11 @@ def regrid(self, grid=None, method="bil", recycle=False, **kwargs):
     if recycle:
         append_safe(target_grid)
 
+    if len(grid_split) > 1:
+        suppress = True
+    else:
+        suppress = False
+
     for key in grid_split:
         # first we need to generate the weights for remapping
         # and add this to the files created list and self.weights
@@ -178,7 +183,7 @@ def regrid(self, grid=None, method="bil", recycle=False, **kwargs):
 
         tracker._execute = True
 
-        run_this(cdo_command, tracker, output="ensemble")
+        run_this(cdo_command, tracker, output="ensemble", suppress = suppress)
 
         if recycle is False:
             remove_safe(weights_nc)
