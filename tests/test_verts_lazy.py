@@ -375,6 +375,15 @@ class TestVerts:
         df = df.assign(N3_n = lambda x: x.N3_n * x.e3t).groupby(["nav_lon", "nav_lat"]).sum().reset_index().assign(ind = lambda x: x.N3_n / x.e3t).drop(columns = ["N3_n", "e3t"])
         df2 = ds.to_dataframe().reset_index().dropna().loc[:,["nav_lon", "nav_lat", "N3_n"]].drop_duplicates().merge(df)
         assert df2.assign(check = lambda x: x.N3_n - x.ind).check.abs().max() < 0.02
+        ds = nc.open_data("data/pml_ersem_nitrate_example.nc")
+        df = ds.to_dataframe()
+        df = df.reset_index().loc[:,["nav_lon", "nav_lat", "N3_n", "e3t", "deptht"]].dropna().drop_duplicates()
+        df = df.assign(N3_n = lambda x: x.N3_n * x.e3t).groupby(["nav_lon", "nav_lat"]).sum()
+        df = df.reset_index().drop(columns = "e3t").rename(columns = {"N3_n":"ind"})
+        ds = nc.open_data("data/pml_ersem_nitrate_example.nc")
+        ds.vertical_integration( thickness = "e3t" )
+        df_match = ds.to_dataframe().reset_index().loc[:,["nav_lon", "nav_lat", "N3_n"]].dropna().drop_duplicates().merge(df)
+        assert df_match.assign(check123 = lambda x: x.ind- x.N3_n).check123.abs().max() < 0.1
 
         del ds
 
