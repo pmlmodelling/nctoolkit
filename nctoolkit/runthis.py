@@ -530,6 +530,11 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
 
     session_info["latest_size"] = os.path.getsize(target)
 
+    x = result.decode("utf-8").lower().split("\n")[0]
+    
+    if "warning" in x and "vertmean" in x:
+        if "layer bounds not available, using constant vertical weights" in x:
+            warnings.warn("Layer bounds not available in netCDF file, using constant vertical weights for vertical mean")
 
     return target
 
