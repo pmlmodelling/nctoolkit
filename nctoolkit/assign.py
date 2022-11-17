@@ -474,6 +474,12 @@ def assign(self, drop=False, **kwargs):
         if " = = False" in start:
             start = start.replace(" = = False", " < 1")
 
+        version = session_info["cdo"]
+        if version_below(version, "2.1.0"):
+            translation["thickness"] = "cdeltaz"
+        else:
+            translation["thickness"] = "cthickness"
+
         for x in start.split(" "):
             if "(" in x:
                 x_fun = x.split("(")[0]
@@ -698,10 +704,6 @@ def assign(self, drop=False, **kwargs):
                 raise ValueError(
                     "Please install version >=1.9.8 of CDO to access isnan"
                 )
-        if version_below(version, "2.1.0"):
-            translation["thickness"] = "cdeltaz"
-        else:
-            translation["thickness"] = "cthickness"
         # We need to fix pow functions potentially. Though, it might be better to stick with ^
 
         # translate numpy style functions to cdo functions
