@@ -556,7 +556,8 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
             warned = True
 
     if not warned:
-        warnings.warn(f"CDO warning: {x}")
+        if "arning" in x:
+            warnings.warn(f"CDO warning: {x}")
 
     return target
 
