@@ -151,6 +151,8 @@ def run_nco(command, target, out_file=None, overwrite=False):
 
 def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision=None):
 
+    warned = False
+
     if type(precision) is not str:
         raise ValueError("Precision must be str")
 
@@ -465,6 +467,7 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
                             message="CDO warning:"
                             + x.replace("b'Warning:", "").replace("Warning:", "")
                         )
+                        warned = True
 
             if len(missing_years) > 0:
                 warnings.warn(
@@ -472,12 +475,14 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
                     "are missing",
                     stacklevel=2,
                 )
+                warned = True
             if len(missing_months) > 0:
                 warnings.warn(
                     message=f'CDO warning: Months {str_flatten(missing_months, ",")} '
                     "are missing",
                     stacklevel=2,
                 )
+                warned = True
     else:
         messages = str(result).split("\\n")
 
@@ -509,6 +514,7 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
                         message="CDO warning:"
                         + x.replace("b'Warning:", "").replace("Warning:", "")
                     )
+                    warned = True
 
         if len(missing_years) > 0:
             warnings.warn(
@@ -516,12 +522,14 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
                 "are missing!",
                 category=Warning,
             )
+            warned = True
         if len(missing_months) > 0:
             warnings.warn(
                 message=f'CDO warning: Months {str_flatten(missing_months, ",")} '
                 "are missing",
                 category=Warning,
             )
+            warned = True
 
     if os.path.exists(target) is False:
         remove_safe(target)
@@ -535,6 +543,20 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
     if "warning" in x and "vertmean" in x:
         if "layer bounds not available, using constant vertical weights" in x:
             warnings.warn("Layer bounds not available in netCDF file, using constant vertical weights for vertical mean")
+            warned = True
+
+    if "warning" in x:
+        if "Grid cell bounds not available, using constant grid cell area weights" in x:
+            warnings.warn("CDO warning: Grid cell bounds not available, using constant grid cell area weights for operation")
+            warned = True
+
+    if "warning" in x:
+        if "Computation of grid cell area weights failed, grid cell center and bounds coordinates missing" in x:
+            warnings.warn("CDO warning: Computation of grid cell area weights failed, grid cell center and bounds coordinates missing from netCDF")
+            warned = True
+
+    if not warned:
+        warnings.warn(f"CDO warning: {x}")
 
     return target
 
