@@ -368,6 +368,17 @@ class TestVerts:
             data.merge("time")
             data.bottom_mask()
 
+        ds = nc.open_data("data/pml_ersem_nitrate_example.nc")
+        ds.vertical_mean(thickness="e3t")
+        ds1 = nc.open_data("data/pml_ersem_nitrate_example.nc")
+        df = ds1.to_dataframe().reset_index().loc[:,["nav_lon", "nav_lat", "N3_n", "e3t"]].drop_duplicates().dropna()
+        df = df.assign(N3_n = lambda x: x.N3_n * x.e3t).groupby(["nav_lon", "nav_lat"]).sum().reset_index().assign(ind = lambda x: x.N3_n / x.e3t).drop(columns = ["N3_n", "e3t"])
+        df2 = ds.to_dataframe().reset_index().dropna().loc[:,["nav_lon", "nav_lat", "N3_n"]].drop_duplicates().merge(df)
+        assert df2.assign(check = lambda x: x.N3_n - x.ind).check.abs().max() < 0.02
+
+        del ds
+
     def test_empty(self):
         n = len(nc.session_files())
         assert n == 0
+
