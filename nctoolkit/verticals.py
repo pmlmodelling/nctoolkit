@@ -135,7 +135,9 @@ def vertical_interp(self, levels=None, fixed = None, thickness = None):
     # first a quick fix for the case when there is only one vertical depth
 
     if (type(levels) == int) or (type(levels) == float):
-        levels = {levels}
+        levels = [levels]
+
+    #levels = [float(x) for x in levels]
 
     for vv in levels:
         if (type(vv) is not float) and (type(vv) is not int):
@@ -364,6 +366,21 @@ def vertical_integration(self, thickness=None, depth_range=None, fixed = None):
             raise ValueError("Please install CDO>2.0.0")
         warnings.warn("Extracting vertical thickness from dataset level data")
         var = list(self.contents.query("nlevels > 1").variable)[0]
+
+        ff = self[0]
+        command = f"cdo zaxisdes {ff}"
+        out = subprocess.Popen(
+                 command,
+                 shell=True,
+                 stdin=subprocess.PIPE,
+                 stdout=subprocess.PIPE,
+                 stderr=subprocess.STDOUT,
+             )
+        result, ignore = out.communicate()
+
+        if "bounds" not in result.decode("utf-8").lower():
+            raise ValueError("Vertical bounds info does not appear to be in the netCDF files, so thicknesses cannot be calculated for vertical integration!")
+
         thickness = self.copy()
         thickness.subset(time = 0, variable = var)
         thickness.rename({var:"thickness"})
