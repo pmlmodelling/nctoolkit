@@ -26,7 +26,7 @@ def run(self):
         self._execute = True
 
         cdo_command = "cdo "
-        if self._precision is not "default":
+        if self._precision != "default":
             if len(self.history) == len(self._hold_history):
                 cdo_command = "cdo copy "
 
