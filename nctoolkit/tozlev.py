@@ -79,13 +79,14 @@ def to_zlevels(self, levels = None, thickness = None):
     thick_var = ds_depths.variables[0]
 
     ds_depths.rename({thick_var: "thickness"})
+    ds_depths.cdo_command("setmisstoc,1.0")
     ds_depths.run()
     ds_thick = ds_depths.copy()
     ds_thick.divide(2)
     ds_depths.vertical_cumsum()
     ds_depths.rename({"thickness": "depth"})
     ds_depths.subtract(ds_thick)
-    ds_depths.assign(depth = lambda x: x.depth * (vertical_min(x.depth) < x.depth) * (isnan(x.depth) == False))
+    ds_depths.assign(depth = lambda x: x.depth * (vertical_min(x.depth) < x.depth) * (isnan(x.depth) == False), drop = True)
     ds_depths.subset(times = 0)
     ds_depths.cdo_command("setmisstoc,-9999999")
     ds_depths.run()
@@ -109,7 +110,6 @@ def to_zlevels(self, levels = None, thickness = None):
 
     target = ds_depths.copy()
     target.assign(depth = lambda x: level(x.depth) + 0 * (x.depth == x.depth), drop = True)
-    target.rename({"depth_2":"depth"})
     target.run()
 
     target.vertical_interp(levels = levels, fixed = True)

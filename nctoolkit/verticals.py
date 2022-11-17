@@ -462,7 +462,10 @@ def vertical_integration(self, thickness=None, depth_range=None, fixed = None):
     if drop_this is not None:
         self1.drop(variables = drop_this)
 
+    ds_thick.run()
+    self1.run()
     self1.multiply(ds_thick)
+    self1.run()
     self1.vertical_sum()
     self1.run()
     del ds_thick
