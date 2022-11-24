@@ -1,4 +1,5 @@
 from setuptools import Command, find_packages, setup
+import sys
 
 DESCRIPTION = "Fast and easy analysis of netCDF data in Python"
 LONG_DESCRIPTION = """
@@ -40,9 +41,8 @@ PROJECT_URLS = {
 
 REQUIREMENTS = [i.strip() for i in open("requirements.txt").readlines()]
 
-
 setup(name='nctoolkit',
-      version='0.8.0',
+      version='0.8.1',
       description=DESCRIPTION,
       long_description=LONG_DESCRIPTION,
       python_requires='>=3.6.1',
