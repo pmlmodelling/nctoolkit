@@ -1,5 +1,4 @@
 import pandas as pd
-from plotnine import *
 
 from nctoolkit.unify import unify
 from nctoolkit.api import open_data
@@ -274,6 +273,11 @@ def matchup(self, levels = "top", na_match = False, **kwargs):
 
 
 def validate(self, region = None):
+
+    try:
+        from plotnine import ggplot
+    except:
+        raise ValueError("Please install plotnine")
 
     if self.matched is False:
         raise ValueError("Data has not been matched")
