@@ -6,6 +6,6 @@ pandas
 ncplot>=0.0.5
 dill
 python-dateutil
-plotnine
-matplotlib<3.6.0
+matplotlib
+ipykernel<=6.18.0
 
