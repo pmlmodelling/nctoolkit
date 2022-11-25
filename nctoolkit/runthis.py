@@ -538,26 +538,35 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
 
     session_info["latest_size"] = os.path.getsize(target)
 
-    x = result.decode("utf-8").lower().split("\n")[0]
+        
+    for x in  result.decode("utf-8").lower().split("\n"):
+        warned = False
     
-    if "warning" in x and "vertmean" in x:
-        if "layer bounds not available, using constant vertical weights" in x:
-            warnings.warn("Layer bounds not available in netCDF file, using constant vertical weights for vertical mean")
-            warned = True
+        if "warning" in x and "vertmean" in x:
+            if "layer bounds not available, using constant vertical weights" in x:
+                warnings.warn("Layer bounds not available in netCDF file, using constant vertical weights for vertical mean")
+                warned = True
 
-    if "warning" in x:
-        if "Grid cell bounds not available, using constant grid cell area weights" in x:
-            warnings.warn("CDO warning: Grid cell bounds not available, using constant grid cell area weights for operation")
-            warned = True
+        if "warning" in x:
+            if "Grid cell bounds not available, using constant grid cell area weights" in x:
+                warnings.warn("CDO warning: Grid cell bounds not available, using constant grid cell area weights for operation")
+                warned = True
 
-    if "warning" in x:
-        if "Computation of grid cell area weights failed, grid cell center and bounds coordinates missing" in x:
-            warnings.warn("CDO warning: Computation of grid cell area weights failed, grid cell center and bounds coordinates missing from netCDF")
-            warned = True
+        if "warning" in x:
+            if "Computation of grid cell area weights failed, grid cell center and bounds coordinates missing" in x:
+                warnings.warn("CDO warning: Computation of grid cell area weights failed, grid cell center and bounds coordinates missing from netCDF")
+                warned = True
 
-    if not warned:
-        if "arning" in x:
-            warnings.warn(f"CDO warning: {x}")
+        if "warning" in x:
+            text = re.compile("variable name .* not found")
+            if len(text.findall(x)) > 0:
+                for y in text.findall(x):
+                    warnings.warn(f"Warning: {y}")
+                warned = True
+
+        if not warned:
+            if "arning" in x:
+                warnings.warn(f"CDO warning: {x}")
 
     return target
 
