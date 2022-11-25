@@ -45,7 +45,7 @@ jobs:
          #conda install pip
          pip install pytest
          #conda install numpy=1.23.3 -y
-         #conda install cartopy -y
+         conda install geos -y
          pip install dask 
          #    conda install flake8
          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
