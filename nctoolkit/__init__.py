@@ -29,3 +29,13 @@ from nctoolkit.mp_adders import match_points
 session_info["cdo"] = cdo_version()
 
 validate_version()
+
+try:
+    from importlib.metadata import version as _version
+except ImportError:
+    from importlib_metadata import version as _version  
+
+try:
+    __version__ = _version("nctoolkit")
+except Exception:
+    __version__ = "999"
