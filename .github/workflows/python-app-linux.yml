@@ -39,18 +39,19 @@ jobs:
        shell: bash -l {0}
        run: |
          conda activate foo
-         conda install cdo
-         conda install pip
-         conda install nco
-         conda install pytest
-         conda install numpy -y
+         conda install cdo pip nco geos -y
+         pip install numpy 
+         pip install cartopy
+         pip install dask
+         #conda install numpy -y
          #conda install cartopy -y
-         conda install dask -y
+         #conda install dask -y
          #    conda install flake8
          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
          pip install .
          pip install pandas==1.3.3
          pip install rioxarray
+         pip intall pytest
          pip install pytest-cov
          pip install coverage 
 
