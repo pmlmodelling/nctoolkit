@@ -12,6 +12,7 @@ from nctoolkit.api import (
 )
 
 from nctoolkit.unify import unify
+from nctoolkit.shape import open_shape
 
 from nctoolkit.validator import validator
 from nctoolkit.matchpoint import open_matchpoint
