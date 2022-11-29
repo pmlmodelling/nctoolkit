@@ -1,6 +1,19 @@
 News
 ============
 
+Release of v0.8.2
+---------------
+
+Version 0.8.2 was released on 25h November 2022. This release changed plotting so that it does not show coastlines by default.
+
+Plotting with coastlines was causing plotting to crash on some systems due to issues with how nctoolkit's Python dependencies work with non-Python dependencies. Essentially plotting could crash if cartopy and pyproj were importable, but not fully functional. These were not a problem with nctoolkit installations from conda, which will install non-Python dependencies, but some non-conda insttallations would no longer plot maps as a Python dependency could be incompatible with the non-Python dependencies on user systems.
+
+If you want to plot the coastline, do the following:
+
+`ds.plot(coast=True)`
+
+This is not an ideal fix, but it was necessary as a high proportion of users have a semi-functional cartopy installation, and there is no way for them to know that this is causing the plotting problem. A future release will hopefully provide automatic coastlines when cartopy and pyproj are fully functional on people's systems.
+
 Release of v0.8.0
 ---------------
 
