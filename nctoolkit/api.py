@@ -116,16 +116,16 @@ def update_options(kwargs):
             raise AttributeError(key + " is not a valid option")
 
         if key == "parallel" or key == "lazy" or key == "thread_safe":
-            if type(kwargs[key]) is not bool:
+            if not isinstance(kwargs[key], bool):
                 raise TypeError(f"{key} should be boolean")
 
         if key == "checks":
-            if type(kwargs[key]) is not bool:
+            if not isinstance(kwargs[key], bool):
                 raise TypeError(f"{key} should be boolean")
 
-        if type(kwargs[key]) is not bool and find:
+        if not isinstance(kwargs[key], bool) and find:
             if key == "temp_dir":
-                if type(kwargs[key]) is str:
+                if isinstance(kwargs[key], str):
                     if os.path.exists(kwargs[key]) is False:
                         raise ValueError("The temp_dir specified does not exist!")
                     session_info[key] = os.path.abspath(kwargs[key])
@@ -142,7 +142,7 @@ def update_options(kwargs):
                 find = False
 
             if key == "cores" and find:
-                if type(kwargs[key]) is int:
+                if isinstance(kwargs[key], int):
                     if kwargs[key] > mp.cpu_count():
                         raise ValueError(
                             str(kwargs[key])
@@ -249,16 +249,16 @@ def options(**kwargs):
             raise AttributeError(key + " is not a valid option")
 
         if key == "parallel" or key == "lazy" or key == "thread_safe":
-            if type(kwargs[key]) is not bool:
+            if isinstance(kwargs[key], bool):
                 raise TypeError(f"{key} should be boolean")
 
         if key == "checks":
-            if type(kwargs[key]) is not bool:
+            if isinstance(kwargs[key], bool):
                 raise TypeError(f"{key} should be boolean")
 
-        if type(kwargs[key]) is not bool:
+        if isinstance(kwargs[key], bool):
             if key == "temp_dir":
-                if type(kwargs[key]) is str:
+                if isinstance(kwargs[key], str):
                     if os.path.exists(kwargs[key]) is False:
                         raise ValueError("The temp_dir specified does not exist!")
                     session_info[key] = os.path.abspath(kwargs[key])
@@ -275,7 +275,7 @@ def options(**kwargs):
                 return None
 
             if key == "cores":
-                if type(kwargs[key]) is int:
+                if isinstance(kwargs[key], int):
                     if kwargs[key] > mp.cpu_count():
                         raise ValueError(
                             str(kwargs[key])
@@ -466,10 +466,10 @@ def open_geotiff(x = []):
     open_data : nctoolkit.DataSet
     """
 
-    if type(x) is str:
+    if isinstance(x, str):
         x = [x]
 
-    if type(x) is not list:
+    if not isinstance(x, list):
         raise ValueError("List of str was not supplied!")
 
     try:
@@ -552,7 +552,7 @@ def open_data(x=[], checks=True, **kwargs):
         if key == "source":
             source = kwargs[key]
 
-    if type(x) is str and thredds is False:
+    if isinstance(x, str) and thredds is False:
         if is_url(x) is False:
             x = glob.glob(x)
             if len(x) == 0:
@@ -564,13 +564,13 @@ def open_data(x=[], checks=True, **kwargs):
         raise ValueError("No data was supplied!")
 
     # coerce an iterable to a list
-    if type(x) is not str:
+    if not isinstance(x, str):
         x = [y for y in x]
         for ff in x:
-            if type(ff) is not str:
+            if not isinstance(ff, str):
                 raise TypeError("You have not supplied an iterable made of file paths!")
 
-    if type(x) is list:
+    if isinstance(x, list):
         if len(x) == 1:
             x = x[0]
 
@@ -581,7 +581,7 @@ def open_data(x=[], checks=True, **kwargs):
     if file_stop is not None:
         stop_time = min(file_stop, stop_time)
 
-    if type(x) is str:
+    if isinstance(x, str):
         if source != "file" or os.path.exists(x) is False:
 
             if is_url(x):
@@ -670,13 +670,13 @@ def open_data(x=[], checks=True, **kwargs):
     # Get rid of them..
     # Note: This will also ensure the original list is deep copied
 
-    if type(x) is list:
+    if isinstance(x, list):
         orig_size = len(x)
         x = list(dict.fromkeys(x))
         if len(x) < orig_size:
             warnings.warn(message="Duplicates in data set have been removed!")
 
-    if type(x) is list:
+    if isinstance(x, list):
         if source == "url":
 
             for ff in x:
@@ -730,7 +730,7 @@ def open_data(x=[], checks=True, **kwargs):
                         new_files.append(new_x)
                 x = new_files
 
-    if type(x) is list and source != "url":
+    if isinstance(x, list) and source != "url":
         if thredds is False:
 
             for ff in x:
@@ -747,7 +747,7 @@ def open_data(x=[], checks=True, **kwargs):
                         raise FileNotFoundError("Data set " + ff + " does not exist!")
 
     # if there is only one file in the list, change it to a single file
-    if type(x) is list:
+    if isinstance(x, list):
         if len(x) == 1:
             x = x[0]
 
@@ -804,11 +804,11 @@ def open_thredds(x=None, wait=None, checks=False):
 
     """
 
-    if type(checks) is not bool:
+    if not isinstance(checks, bool):
         raise TypeError("Please provide boolean for checks")
 
     if wait is not None:
-        if type(wait) is not int and float:
+        if not instance(wait, (int, float)):
             raise TypeError("Please provide an integer for wait!")
         if wait <= 0:
             raise ValueError("Please provide a positive value for wait!")
@@ -855,14 +855,14 @@ def open_url(x=None, ftp_details=None, wait=None, file_stop=None):
     """
 
     if wait is not None:
-        if type(wait) is not int:
+        if not isinstance(wait, int):
             raise TypeError("Please provide a valid wait!")
 
         if wait <= 0:
             raise TypeError("Please provide a valid wait!")
 
     if file_stop is not None:
-        if type(file_stop) is not int:
+        if not isinstance(file_stop, int):
             raise TypeError("Please provide a valid file_stop!")
 
         if file_stop <= 0:
@@ -899,7 +899,7 @@ def merge(*datasets, match=["day", "year", "month"]):
     """
     all_files = []
     for dataset in datasets:
-        if ("DataSet" in str(type(dataset))) is False:
+        if not isinstance(dataset, DataSet):
             raise TypeError("Please check everything is a DataSet object!")
         # make sure everything has been evaluated
         dataset.run()
@@ -924,10 +924,10 @@ def cor_time(x=None, y=None):
         Second dataset to use
     """
 
-    if ("DataSet" in str(type(x))) is False:
+    if not isinstance(x, DataSet):
         raise TypeError("Please check x is a dataset")
 
-    if ("DataSet" in str(type(y))) is False:
+    if not isinstance(y, DataSet):
         raise TypeError("Please check y is a dataset")
         # make sure everything has been evaluated
 
@@ -992,10 +992,10 @@ def cor_space(x=None, y=None):
         Second dataset to use
     """
 
-    if ("DataSet" in str(type(x))) is False:
+    if not isinstance(x, DataSet):
         raise TypeError("Please check x is a dataset")
 
-    if ("DataSet" in str(type(y))) is False:
+    if not isinstance(y, DataSet):
         raise TypeError("Please check y is a dataset")
         # make sure everything has been evaluated
 
@@ -1055,7 +1055,7 @@ class DataSet(object):
         # Attribuates of interest to users
         self.history = []
         self.start = start
-        if type(start) is str:
+        if isinstance(start, str):
             self._current = [start]
         else:
             self._current = start
@@ -1501,7 +1501,7 @@ class DataSet(object):
 
     @start.setter
     def start(self, value):
-        if type(value) is str:
+        if isinstance(value, str):
             self._start = [value]
         if isinstance(value, list):
             self._start = value
@@ -1518,7 +1518,7 @@ class DataSet(object):
         for ff in self:
             remove_safe(ff)
 
-        if type(value) is str:
+        if isinstance(value, str):
             append_safe(value)
             self._current = [value]
         if isinstance(value, list):

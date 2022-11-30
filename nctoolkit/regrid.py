@@ -10,6 +10,7 @@ from nctoolkit.generate_grid import generate_grid
 from nctoolkit.runthis import run_this, run_cdo
 from nctoolkit.session import append_safe, remove_safe, get_safe
 from nctoolkit.temp_file import temp_file
+import nctoolkit.api as api
 
 def is_iterable(x):
     try:
@@ -63,7 +64,7 @@ def regrid(self, grid=None, method="bil", recycle=False, **kwargs):
     if len(self) == 0:
         raise ValueError("Failure due to empty dataset!")
 
-    if type(method) is str:
+    if isinstance(method, str):
         if "nearest" in method:
             method = "nn"
         if "neighbour" in method:
@@ -71,7 +72,7 @@ def regrid(self, grid=None, method="bil", recycle=False, **kwargs):
 
     valid_methods = ["bil", "nn", "bic", "dis", "con", "con2", "laf"]
 
-    if "DataSet" in str(type(grid)):
+    if isinstance(grid, api.DataSet):
         if grid._weights is not None and grid._grid is not None:
             target_grid = grid._grid
             weights_nc = grid._weights
@@ -92,12 +93,12 @@ def regrid(self, grid=None, method="bil", recycle=False, **kwargs):
         if len(grid) == 0:
             raise ValueError("You have supplied an empty data frame as a grid!")
 
-    if type(grid) is str:
+    if isinstance(grid, str):
         if os.path.exists(grid) is False:
             raise ValueError("grid file supplied does not exist")
         grid_type = "nc"
 
-    if "DataSet" in str(type(grid)):
+    if isinstance(grid, api.DataSet):
         grid.run()
         if len(grid) > 1:
             warnings.warn(message="The first file in dataset used for regridding!")

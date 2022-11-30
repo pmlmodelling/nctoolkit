@@ -11,6 +11,7 @@ from nctoolkit.temp_file import temp_file
 from nctoolkit.session import append_safe
 from nctoolkit.session import remove_safe
 from nctoolkit.utils import version_above, cdo_version
+import nctoolkit.api as api
 
 
 def bottom(self):
@@ -118,7 +119,7 @@ def vertical_interp(self, levels=None, fixed = None, thickness = None):
         if thickness is None:
             raise ValueError("Please provide thickness")
 
-    if type(fixed) is not bool:
+    if not isinstance(fixed, bool):
         if thickness is None:
             raise TypeError("fixed must be a bool")
 
@@ -134,13 +135,13 @@ def vertical_interp(self, levels=None, fixed = None, thickness = None):
 
     # first a quick fix for the case when there is only one vertical depth
 
-    if (type(levels) == int) or (type(levels) == float):
+    if isinstance(levels, (int, float)):
         levels = [levels]
 
     #levels = [float(x) for x in levels]
 
     for vv in levels:
-        if (type(vv) is not float) and (type(vv) is not int):
+        if not isinstance(vv, (int, float)):
             raise TypeError(f"{vv} is not a valid depth")
 
     levels = str_flatten(levels, ",")
@@ -200,7 +201,7 @@ def vertical_mean(self, thickness=None, depth_range=None, fixed = None):
         vertstat(self, stat="mean")
         return None
 
-    if type(depth_range) is list:
+    if isinstance(depth_range, list):
 
         if len(depth_range) != 2:
             raise ValueError("Please provide a 2 variable list for depth range")
@@ -208,11 +209,11 @@ def vertical_mean(self, thickness=None, depth_range=None, fixed = None):
             raise ValueError("Please provide a correctly ordered depth range")
 
     if depth_range is not None:
-        if type(depth_range) is not list:
+        if not isinstance(depth_range, list):
             raise TypeError("Please provide a list for the depth range!")
 
-    if "api.DataSet" not in str(type(thickness)):
-        if thickness is None or type(thickness) is not str:
+    if not isinstance(thickness, api.DataSet):
+        if thickness is None or isinstance(thickness, str) is False:
             raise ValueError("Please provide a thickness variable")
 
     self.run()
@@ -226,7 +227,7 @@ def vertical_mean(self, thickness=None, depth_range=None, fixed = None):
 
     sorted = False
 
-    if "api.DataSet" in str(type(thickness)):
+    if isinstance(thickness, api.DataSet):
         ds_thick = thickness.copy()
         if len(ds_thick.variables) != 1:
             raise ValueError("Please provide a thickness dataset with 1 variable!")
@@ -246,7 +247,7 @@ def vertical_mean(self, thickness=None, depth_range=None, fixed = None):
 
     thick_var = ds_thick.variables[0]
     # modify the depth if it is a list
-    if type(depth_range) is list:
+    if isinstance(depth_range, list):
 
         ds_thick.rename({thick_var: "thickness"})
         ds_thick.run()
@@ -278,7 +279,7 @@ def vertical_mean(self, thickness=None, depth_range=None, fixed = None):
     self1.run()
 
     del ds_thick
-    if type(depth_range) is list:
+    if isinstance(depth_range, list):
         del ds_depth
 
 
@@ -395,7 +396,7 @@ def vertical_integration(self, thickness=None, depth_range=None, fixed = None):
     if thickness is None:
         raise ValueError("Please specify thickness")
 
-    if type(depth_range) is list:
+    if isinstance(depth_range, list):
 
         if len(depth_range) != 2:
             raise ValueError("Please provide a 2 variable list for depth range")
@@ -404,11 +405,11 @@ def vertical_integration(self, thickness=None, depth_range=None, fixed = None):
 
     drop_this = None
     if depth_range is not None:
-        if type(depth_range) is not list:
+        if not isinstance(depth_range, list):
             raise TypeError("Please provide a list for the depth range!")
 
-    if "api.DataSet" not in str(type(thickness)):
-        if thickness is None or type(thickness) is not str:
+    if not isinstance(thickness, api.DataSet):
+        if thickness is None or isinstance(thickness, str) is False:
             raise ValueError("Please provide a thickness variable")
 
     self.run()
@@ -422,7 +423,7 @@ def vertical_integration(self, thickness=None, depth_range=None, fixed = None):
 
     sorted = False
 
-    if "api.DataSet" in str(type(thickness)):
+    if isinstance(thickness, api.DataSet):
         ds_thick = thickness.copy()
         if len(ds_thick.variables) != 1:
             raise ValueError("Please provide a thickness dataset with 1 variable!")
@@ -441,7 +442,7 @@ def vertical_integration(self, thickness=None, depth_range=None, fixed = None):
 
     thick_var = ds_thick.variables[0]
     # modify the depth if it is a list
-    if type(depth_range) is list:
+    if isinstance(depth_range, list):
 
         if thick_var != "thickness":
             ds_thick.rename({thick_var: "thickness"})
@@ -469,7 +470,7 @@ def vertical_integration(self, thickness=None, depth_range=None, fixed = None):
     self1.vertical_sum()
     self1.run()
     del ds_thick
-    if type(depth_range) is list:
+    if isinstance(depth_range, list):
         del ds_depth
 
     self.current = self1.current

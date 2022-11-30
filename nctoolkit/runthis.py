@@ -153,7 +153,7 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
 
     warned = False
 
-    if type(precision) is not str:
+    if not isinstance(precision, str):
         raise ValueError("Precision must be str")
 
     if precision not in ["I8", "I16", "I32", "F32", "F64", "default"]:

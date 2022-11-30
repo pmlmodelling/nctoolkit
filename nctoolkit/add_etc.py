@@ -10,13 +10,14 @@ from nctoolkit.show import nc_variables, nc_years, nc_times
 from nctoolkit.temp_file import temp_file
 from nctoolkit.utils import version_above
 from nctoolkit.api import open_data
+import nctoolkit.api as api
 
 def day_stat(self, operation = None,  x=None):
     """
     Do not use
     """
 
-    if type(operation) is not str:
+    if not isinstance(operation, str):
         raise ValueError("operation must be a str")
 
     if operation not in  ["subtract", "divide"]:
@@ -28,7 +29,7 @@ def day_stat(self, operation = None,  x=None):
     if operation == "divide":
         stat = "div"
 
-    if type(x) is not str:
+    if not isinstance(x, str):
         x = x.current
         if len(x) > 1:
             raise ValueError("requires single file")
@@ -79,7 +80,7 @@ def operation(self, method="mul", ff=None, var=None):
 
     # throw error if there is a problem with var
     if var is not None:
-        if type(var) is not str:
+        if not isinstance(var, str):
             raise TypeError("var supplied is not a string")
         if var not in nc_variables(ff):
             raise ValueError("var supplied is not available in the dataset")
@@ -148,7 +149,7 @@ def operation(self, method="mul", ff=None, var=None):
             new = False
             method = method
         else:
-            if type(ff_times[0]) == str:
+            if isinstance(ff_times[0], str):
                 years = [int(x.split("T")[0].split("-")[0]) for x in ff_times]
                 months = [int(x.split("T")[0].split("-")[1]) for x in ff_times]
                 days = [int(x.split("T")[0].split("-")[2]) for x in ff_times]
@@ -181,7 +182,7 @@ def operation(self, method="mul", ff=None, var=None):
         for x in self1:
             x_times = nc_times(x)
             if x_times != []:
-                if type(x_times[0]) == str:
+                if isinstance(x_times[0], str):
                     years = [int(x.split("T")[0].split("-")[0]) for x in x_times]
                     months = [int(x.split("T")[0].split("-")[1]) for x in x_times]
                     days = [int(x.split("T")[0].split("-")[2]) for x in x_times]
@@ -416,7 +417,7 @@ def multiply(self, x=None, var=None):
 
     # 2: dataset or netCDF file multiplication
     # get the netCDF file(s)
-    if "api.DataSet" in str(type(x)):
+    if isinstance(x, api.DataSet):
         x.run()
         if len(x) == 1:
             ff = x.current[0]
@@ -425,7 +426,7 @@ def multiply(self, x=None, var=None):
     else:
         ff = x
 
-    if type(ff) is not str:
+    if not isinstance(ff, str):
         raise TypeError("You have not provided an int, float, dataset or file path!")
 
     operation(self=self, method="mul", ff=ff, var=var)
@@ -444,7 +445,7 @@ def rmse(self, x=None):
     ------------
     """
 
-    if "api.DataSet" in str(type(x)):
+    if isinstance(x, api.DataSet):
         x.run()
         if len(x) == 1:
             ff = x.current[0]
@@ -521,7 +522,7 @@ def subtract(self, x=None, var=None):
 
     # 2: dataset or netCDF file subtraction
     # get the netCDF file(s)
-    if "api.DataSet" in str(type(x)):
+    if isinstance(x, api.DataSet):
         x.run()
         if len(x) == 1:
             ff = x.current[0]
@@ -530,71 +531,12 @@ def subtract(self, x=None, var=None):
     else:
         ff = x
 
-    if type(ff) is not str:
+    if not isinstance(ff, str):
         raise TypeError("You have not provided an int, float, dataset or file path!")
 
     operation(self=self, method="sub", ff=ff, var=var)
 
 __sub__ = subtract
-
-
-#def __add__(self, x=None, var=None):
-#    """
-#    Add to a dataset
-#    This will add a constant, another dataset or a netCDF file to the dataset.
-#    nctoolkit will automatically determine the appropriate comparison required.
-#
-#    Parameters
-#    ------------
-#    x: int, float, DataSet or netCDF file
-#        An int, float, single file dataset or netCDF file to add to the dataset.
-#        If a dataset or netCDF file is supplied, this must have only one variable,
-#        unless var is provided. The grids must be the same.
-#    var: str
-#        A variable in the x to use for the operation
-#
-#      Examples
-#    ------------
-#
-#    If you wanted to add 10 to all variables in a dataset, you would do the following:
-#
-#    >>> ds.add(10)
-#
-#    To add the values in a dataset ds2 from a dataset ds1, you would do the following:
-#
-#    >>> ds1.add(ds2)
-#
-#    Grids in the datasets must match. Addition will occur in matching timesteps in ds1 and ds2. If there is only 1 timestep in ds2, then
-#    the data from that timestep will be added to the data in all ds1 time steps.
-#
-#    Adding the data from another netCDF file will work in the same way:
-#
-#    >>> ds1.add("example.nc")
-#
-#
-#    """
-#
-#    # 1: int, float addition
-#    if isinstance(x, (int, float)):
-#        arithall(self, stat="addc", x=x)
-#        return None
-#
-#    # 2: dataset or netCDF file addition
-#    # get the netCDF file(s)
-#    if "api.DataSet" in str(type(x)):
-#        x.run()
-#        if len(x) == 1:
-#            ff = x.current[0]
-#        else:
-#            raise ValueError("This can only work with single variable datasets")
-#    else:
-#        ff = x
-#
-#    if type(ff) is not str:
-#        raise TypeError("You have not provided an int, float, dataset or file path!")
-#
-#    operation(self=self, method="add", ff=ff, var=var)
-
 
 
 def add(self, x=None, var=None):
@@ -640,7 +582,7 @@ def add(self, x=None, var=None):
 
     # 2: dataset or netCDF file addition
     # get the netCDF file(s)
-    if "api.DataSet" in str(type(x)):
+    if isinstance(x, api.DataSet):
         x.run()
         if len(x) == 1:
             ff = x.current[0]
@@ -649,7 +591,7 @@ def add(self, x=None, var=None):
     else:
         ff = x
 
-    if type(ff) is not str:
+    if not isinstance(ff, str):
         raise TypeError("You have not provided an int, float, dataset or file path!")
 
     operation(self=self, method="add", ff=ff, var=var)
@@ -697,7 +639,7 @@ def divide(self, x=None, var=None):
 
     # 2: dataset or netCDF file division
     # get the netCDF file(s)
-    if "api.DataSet" in str(type(x)):
+    if isinstance(x, api.DataSet):
         x.run()
         if len(x) == 1:
             ff = x.current[0]
@@ -706,7 +648,7 @@ def divide(self, x=None, var=None):
     else:
         ff = x
 
-    if type(ff) is not str:
+    if not isinstance(ff, str):
         raise TypeError("You have not provided an int, float, dataset or file path!")
 
     operation(self=self, method="div", ff=ff, var=var)
@@ -749,7 +691,7 @@ def power(self, x=None):
 
     """
 
-    if type(x) is not float and type(x) is not int:
+    if not isinstance(x, (int, float)):
         raise TypeError("x is not a float or int")
 
     cdo_command = f"cdo -pow,{x}"

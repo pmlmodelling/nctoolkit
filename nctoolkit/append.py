@@ -1,6 +1,7 @@
 import os
 import warnings
 from nctoolkit.session import append_safe, remove_safe
+import nctoolkit.api as api
 
 
 def append(self, x=None):
@@ -28,13 +29,13 @@ def append(self, x=None):
 
     # run, as it makes no sense to add files while commands are waiting to run
     self.run()
-    if "api.DataSet" in str(type(x)):
+    if isinstance(x, api.DataSet):
         x.run()
 
     if x is None:
         raise TypeError("Please supply files")
 
-    if type(x) is str:
+    if isinstance(x, str):
         x = [x]
     len_x = len(x)
 
@@ -82,7 +83,7 @@ def remove(self, x=None):
     if x is None:
         raise ValueError("Please provide files to remove!")
 
-    if type(x) is str:
+    if isinstance(x, str):
         x = [x]
 
     for ff in x:

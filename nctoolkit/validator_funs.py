@@ -77,7 +77,7 @@ def add_model(self, ds = None, map = None, nan = None , precision = None, **kwar
     if self.model is not None:
         raise ValueError("You have already added model data!")
 
-    if type(map) is not dict:
+    if not isinstance(map, dict):
         raise ValueError("You must provided a map")
 
     if len(map) != 1:
@@ -112,7 +112,7 @@ def add_observations(self, ds = None, map = None, nan = None , precision = None)
 
     """
 
-    if type(map) is not dict:
+    if not isinstance(map, dict):
         raise ValueError("You must provided a map")
 
     if len(map) != 1:

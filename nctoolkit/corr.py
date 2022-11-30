@@ -16,10 +16,10 @@ def cor(self, var1=None, var2=None, method="fld"):
     if (var1 is None) or (var2 is None):
         raise ValueError("Both variables are not given")
 
-    if type(var1) is not str:
+    if not isinstance(var1, str):
         raise TypeError("var1 is not a str")
 
-    if type(var2) is not str:
+    if not isinstance(var2, str):
         raise TypeError("var2 is not a str")
 
     # this cannot be chained. So release

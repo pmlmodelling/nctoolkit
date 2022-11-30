@@ -2,6 +2,7 @@ import os
 
 from nctoolkit.api import open_data
 from nctoolkit.runthis import run_this
+import nctoolkit.api as api
 
 
 def reduce_grid(self, mask=None):
@@ -18,12 +19,12 @@ def reduce_grid(self, mask=None):
     target = None
 
     # pull out the mask file
-    if type(mask) is str:
+    if isinstance(mask, str):
         if os.path.exists(mask) is False:
             raise ValueError(f"{mask} does not exist")
         target = mask
 
-    if "api.DataSet" in str(type(mask)):
+    if isinstance(mask, api.DataSet):
         target = mask.current[0]
 
     if target is None:

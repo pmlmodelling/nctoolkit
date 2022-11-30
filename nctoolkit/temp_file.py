@@ -36,7 +36,7 @@ def temp_file(ext=""):
         target = target.replace("tmp/", "tmp/" + session_info["stamp"])
 
         target = actual_temp + os.path.basename(target)
-        if type(ext) is not str:
+        if not isinstance(ext, str):
             raise TypeError("Extension supplied is not a str")
         if ext.startswith("."):
             target = target + ext
@@ -52,7 +52,7 @@ def temp_file(ext=""):
 
         target = tempfile.NamedTemporaryFile().name
 
-        if type(ext) is not str:
+        if not isinstance(ext, str):
             raise TypeError("Extension supplied is not a str")
         if ext.startswith("."):
             target = target + ext

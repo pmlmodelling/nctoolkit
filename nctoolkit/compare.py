@@ -130,7 +130,7 @@ def compare(self, expression=None):
     if expression is None:
         raise ValueError("No expression supplied")
 
-    if type(expression) is not str:
+    if not isinstance(expression, str):
         raise TypeError("Expression supplied is not str")
 
     expression = fix_expr(expression)
@@ -140,7 +140,7 @@ def compare(self, expression=None):
 
 def __eq__(self, x):
 
-    if type(x) is not str:
+    if not isinstance(x, str):
         if str(x).isnumeric():
             self.compare(f"=={x}")
         else:
@@ -151,7 +151,7 @@ def __eq__(self, x):
 
 def __gt__(self, x):
 
-    if type(x) is not str:
+    if not isinstance(x, str):
         if str(x).isnumeric():
             self.compare(f">{x}")
         else:
@@ -161,7 +161,7 @@ def __gt__(self, x):
 
 def __lt__(self, x):
 
-    if type(x) is not str:
+    if not isinstance(x, str):
         if str(x).isnumeric():
             self.compare(f"<{x}")
         else:
@@ -171,7 +171,7 @@ def __lt__(self, x):
 
 def __le__(self, x):
 
-    if type(x) is not str:
+    if not isinstance(x, str):
         if str(x).isnumeric():
             self.compare(f"<={x}")
         else:
@@ -182,7 +182,7 @@ def __le__(self, x):
 
 def __ge__(self, x):
 
-    if type(x) is not str:
+    if not isinstance(x, str):
         if str(x).isnumeric():
             self.compare(f">={x}")
         else:
@@ -192,7 +192,7 @@ def __ge__(self, x):
 
 def __ne__(self, x):
 
-    if type(x) is not str:
+    if not isinstance(x, str):
         if str(x).isnumeric():
             self.compare(f"!={x}")
         else:

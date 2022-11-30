@@ -66,10 +66,10 @@ def unify(x=None, y=None, ignore = None, clim = False, **kwargs):
         
     """
 
-    if ("DataSet" in str(type(x))) is False:
+    if not isinstance(x, api.DataSet):
         raise TypeError("Please check x is a dataset")
 
-    if ("DataSet" in str(type(y))) is False:
+    if not isinstance(y, api.DataSet):
         raise TypeError("Please check y is a dataset")
         # make sure everything has been evaluated
 
@@ -88,7 +88,7 @@ def unify(x=None, y=None, ignore = None, clim = False, **kwargs):
 
 
     if ignore is not None:
-        if type(ignore) is str:
+        if isinstance(ignore, str):
             ignore = [ignore]
 
         if len(ignore) == 0:

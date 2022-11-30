@@ -65,11 +65,11 @@ def drop(self, **kwargs):
         if "time" in key:
             vars = kwargs[key]
 
-            if type(vars) is not list:
+            if not isinstance(vars, list):
                 vars = [vars]
 
             for vv in vars:
-                if type(vv) is not int:
+                if not isinstance(vv, int):
                     raise TypeError(f"{vv} is not an int")
 
             vars = [(x + 1) for x in vars]
@@ -82,11 +82,11 @@ def drop(self, **kwargs):
         if "var" in key:
             vars = kwargs[key]
 
-            if type(vars) is not list:
+            if not isinstance(vars, list):
                 vars = [vars]
 
             for vv in vars:
-                if type(vv) is not str:
+                if not isinstance(vv, str):
                     raise TypeError(f"{vv} is not a str")
 
             vars = str_flatten(vars, ",")
@@ -98,14 +98,14 @@ def drop(self, **kwargs):
         if ("mon" in key) or ("day" in key) or ("year" in key):
             vars = kwargs[key]
 
-            if type(vars) is range:
+            if isinstance(vars, range):
                 vars = list(vars)
 
-            if type(vars) is not list:
+            if not isinstance(vars, list):
                 vars = [vars]
 
             for vv in vars:
-                if type(vv) is not int:
+                if not isinstance(vv, int):
                     raise TypeError(f"{vv} is not a int")
 
             vars = str_flatten(vars, ",")

@@ -59,7 +59,7 @@ def merge(self, join="variables", match=["year", "month", "day"], check = True):
         else:
             check = True
 
-    if type(join) is not str:
+    if not isinstance(join, str):
         raise TypeError("join supplied is not a str")
 
     join_valid = False
@@ -136,17 +136,17 @@ def merge(self, join="variables", match=["year", "month", "day"], check = True):
         raise ValueError("join supplied is not valid")
 
     # basic checks on match criteria
-    if type(match) is str:
+    if isinstance(match, str):
         match = [match]
 
-    if type(match) is not list:
+    if not isinstance(match, list):
         raise TypeError("match supplied is not a list")
 
     for mm in match:
-        if type(mm) is not str:
+        if not isinstance(mm, str):
             raise TypeError(f"{mm} from match is not a list")
 
-    if type(match) is list:
+    if isinstance(match, list):
         match = [y.lower() for y in match]
 
     if len([x for x in match if x not in ["year", "month", "day"]]) > 0:

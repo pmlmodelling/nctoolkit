@@ -11,6 +11,7 @@ from nctoolkit.temp_file import temp_file
 from nctoolkit.session import append_safe
 from nctoolkit.session import remove_safe
 from nctoolkit.session import get_safe
+import nctoolkit.api as api
 
 def to_zlevels(self, levels = None, thickness = None):
     """
@@ -38,13 +39,13 @@ def to_zlevels(self, levels = None, thickness = None):
 
     drop_this = None
 
-    if "api.DataSet" not in str(type(thickness)):
-        if thickness is None or type(thickness) is not str:
+    if not isinstance(thickness, api.DataSet):
+        if thickness is None or not isinstance(thickness, str):
             raise ValueError("Please provide a valid thickness or depths variable")
 
     if thickness is None:
-        if "api.DataSet" not in str(type(depths)):
-            if depths is None or type(depths) is not str:
+        if not isinstance(depths, api.DataSet):
+            if depths is None or not isinstance(depths, str):
                 raise ValueError("Please provide a valid thickness or depths variable")
 
     # Set up the thickness
@@ -57,7 +58,7 @@ def to_zlevels(self, levels = None, thickness = None):
 
     sorted = False
 
-    if "api.DataSet" in str(type(thickness)):
+    if isinstance(thickness, api.DataSet):
         ds_depths = thickness.copy()
         ds_depths.run()
         if len(ds_depths.variables) != 1:
@@ -94,7 +95,7 @@ def to_zlevels(self, levels = None, thickness = None):
     zaxis = temp_file().replace(".", "")
     append_safe(zaxis)
 
-    if type(levels) is not list:
+    if not isinstance(levels, list):
         raise TypeError("levels must be a list")
 
     for ll in levels:

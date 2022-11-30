@@ -105,7 +105,7 @@ def set_gridtype(self, grid):
     run_this(cdo_command, self, output="ensemble")
 
 
-def assign_coords(self, lon_name=None, lat_name=None):
+def assign_coords(self, lon_name=None, lat_name=None, time_name = None):
     """
     Assign coordinates to variables
 
@@ -127,34 +127,60 @@ def assign_coords(self, lon_name=None, lat_name=None):
     if (lon_name is None) or (lat_name is None):
         TypeError("Please provide lon and lat names!")
 
-    if type(lon_name) is not str:
+    if not isinstance(lat_name, str):
         TypeError("Method does not yet work with ensembles")
 
-    if type(lat_name) is not str:
+    if not isinstance(lat_name, str):
+        TypeError("Method does not yet work with ensembles")
+
+    if not isinstance(time_name, str):
         TypeError("Method does not yet work with ensembles")
 
     # change the units in turn. This doesn't seem to be something you can chain?
 
-    nco_command = "ncatted "
+    if lon_name is not None:
+        nco_command = "ncatted "
 
-    for vv in self.variables:
-        nco_command += (
-            "-a coordinates," + vv + ",c,c,'" + lon_name + " " + lat_name + "' "
-        )
+        for vv in self.variables:
+            nco_command += (
+                "-a coordinates," + vv + ",c,c,'" + lon_name + " " + lat_name + "' "
+            )
 
-    target = temp_file("nc")
+        target = temp_file("nc")
 
-    nco_command += self[0] + " " + target
+        nco_command += self[0] + " " + target
 
-    target = run_nco(nco_command, target)
+        target = run_nco(nco_command, target)
 
-    self.current = target
+        self.current = target
 
-    # clean up the directory
-    cleanup()
+        # clean up the directory
+        cleanup()
 
-    self.history.append(nco_command)
-    self._hold_history = copy.deepcopy(self.history)
+        self.history.append(nco_command)
+        self._hold_history = copy.deepcopy(self.history)
+
+    if time_name is not None:
+        nco_command = "ncatted "
+
+        for vv in self.variables:
+            nco_command += (
+                "-a coordinates," + vv + ",c,c,'" + time_name + " ' "
+            )
+
+        target = temp_file("nc")
+
+        nco_command += self[0] + " " + target
+
+        target = run_nco(nco_command, target)
+
+        self.current = target
+
+        # clean up the directory
+        cleanup()
+
+        self.history.append(nco_command)
+        self._hold_history = copy.deepcopy(self.history)
 
 
 def set_attributes(self, att_dict):
@@ -170,10 +196,10 @@ def set_attributes(self, att_dict):
 
     self.run()
 
-    if type(self.current) is not str:
+    if not isinstance(self.current, str):
         TypeError("Method does not yet work with ensembles")
 
-    if type(att_dict) is not dict:
+    if not isinstance(att_dict, dict):
         TypeError("A dictionary has not been supplied!")
 
     # change the units in turn. This doesn't seem to be something you can chain?
@@ -183,7 +209,7 @@ def set_attributes(self, att_dict):
         nco_command += "-a " + i + ",global,o,c,'" + att_dict[i] + "' "
 
     target = ""
-    if type(self.start) is list:
+    if isinstance(self.start, list):
         target = ""
     else:
         if self.start == self.current:
@@ -214,17 +240,17 @@ def delete_attributes(self, atts):
 
     self.run()
 
-    if type(self.current) is not str:
+    if not isinstance(self.current, str):
         TypeError("Method does not yet work with ensembles")
 
-    if type(atts) not in [str, list]:
+    if not isinstance(atts, [str, list]):
         TypeError("A dictionary has not been supplied!")
 
     # change the units in turn. This doesn't seem to be something you can chain?
 
     nco_command = "ncatted "
 
-    if type(atts) is str:
+    if isinstance(atts, str):
         atts = [atts]
 
     for i in atts:
@@ -232,7 +258,7 @@ def delete_attributes(self, atts):
         nco_command += "-a " + i + ",global,d,, "
 
     target = ""
-    if type(self.start) is list:
+    if isinstance(self.start, list):
         target = ""
     else:
         if self.start == self.current:
@@ -265,7 +291,7 @@ def as_type(self, x):
 
     self.run()
 
-    if type(x) is not dict:
+    if not isinstance(x, dict):
         raise ValueError("Please provide a dictionary")
 
     ds = xr.open_dataset(self[0])
@@ -307,13 +333,13 @@ def as_double(self, x):
 
     self.run()
 
-    if type(x) is str:
+    if isinstance(x, str):
         x = [x]
-    if type(x) is not list:
+    if not isinstance(x, list):
         raise ValueError("Please provide a list to as_double")
 
     for xx in x:
-        if type(xx) is not str:
+        if not isinstance(xx, str):
             raise ValueError("Please provide a list of strings to as_double")
 
     for xx in x:

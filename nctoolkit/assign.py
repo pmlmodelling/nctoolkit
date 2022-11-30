@@ -193,7 +193,7 @@ def assign(self, drop=False, **kwargs):
     """
     frame = inspect.currentframe()
 
-    if type(drop) is not bool:
+    if not isinstance(drop, bool):
         raise ValueError("drop is not boolean!")
 
     if len(kwargs) == 0:
@@ -409,7 +409,7 @@ def assign(self, drop=False, **kwargs):
                         )
                         try:
                             new_x = eval(x_term, globals(), frame.f_back.f_locals)
-                            if type(new_x) is not str:
+                            if not isinstance(new_x, str):
                                 if is_number(str(new_x)):
                                     start = start.replace(
                                         x_term, str(new_x).replace(" ", "")
@@ -488,7 +488,7 @@ def assign(self, drop=False, **kwargs):
                     try:
                         # need to tweak this so that it captures the output and returns an appropriate error
                         new_x = eval(x, globals(), frame.f_back.f_locals)
-                        if type(new_x) is str:
+                        if isinstance(new_x, str):
                             error_message = f"{x} evaluates to a string!"
                             raise ValueError(f"{x} evaluates to a string")
                         if is_number(str(new_x)) is False:
@@ -568,9 +568,7 @@ def assign(self, drop=False, **kwargs):
                     new_term = eval(x, globals(), frame.f_back.f_locals)
                 except:
                     raise ValueError(f"{x} is not available!")
-                if "float" not in str(type(new_term)) and "int" not in str(
-                    type(new_term)
-                ):
+                if not isinstance(new_term, (int, float)):
                     raise ValueError(f"{x} does not evaluate to numeric!")
 
                 new_start = ""
@@ -591,9 +589,7 @@ def assign(self, drop=False, **kwargs):
                     new_term = eval(x, globals(), frame.f_back.f_locals)
                 except:
                     raise ValueError(f"{x} is not available!")
-                if "float" not in str(type(new_term)) and "int" not in str(
-                    type(new_term)
-                ):
+                if not isinstance(new_term, (int, float)):
                     raise ValueError(f"{x} does not evaluate to numeric!")
 
                 new_start = ""
@@ -640,12 +636,12 @@ def assign(self, drop=False, **kwargs):
                 if term in frame.f_back.f_locals:
                     try:
                         new_term = eval(term, globals(), frame.f_back.f_locals)
-                        if type(new_term) is str:
+                        if isinstance(new_term, str):
                             error_message = f"{term} does not evaluate to a numeric!"
                             raise ValueError(f"{term} does not evaluate to a numeric!")
 
                         if is_number(str(new_term)) is False:
-                            if type(new_term) is bool:
+                            if isinstance(new_term, bool):
                                 new_term = float(new_term)
                             else:
                                 error_message = (
@@ -741,7 +737,7 @@ def assign(self, drop=False, **kwargs):
                 if term.split(".")[0] in frame.f_back.f_locals:
                     try:
                         new_term = eval(term, globals(), frame.f_back.f_locals)
-                        if type(new_term) is str:
+                        if isinstance(new_term, str):
                             raise ValueError(f"{new_term} is not numeric!")
                         if is_number(str(new_term)) is False:
                             raise ValueError(f"{new_term} is not numeric!")

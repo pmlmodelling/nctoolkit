@@ -19,7 +19,7 @@ def set_year(self, x):
         Year to set dataset to 
     """
 
-    if type(x) is not int:
+    if not isinstance(x, int):
         raise ValueError(f"{x} is not a int")
     cdo_command = f"cdo -setyear,{x}"
     run_this(cdo_command, self, output="ensemble")
@@ -34,7 +34,7 @@ def set_day(self, x):
         Day to set dataset to 
     """
 
-    if type(x) is not int:
+    if not isinstance(x, int):
         raise ValueError(f"{x} is not a int")
     cdo_command = f"cdo -setday,{x}"
     run_this(cdo_command, self, output="ensemble")
@@ -90,26 +90,31 @@ def set_date(self, year=None, month=None, day=None, base_year=1900):
     if day is None:
         raise ValueError("Please supply a day")
 
-    if type(year) is not int:
-        if "int" in str(type(year)):
+    if not isinstance(year, int):
+        try:
             year = int(year)
+        except:
+            raise TypeError("Unable to coerce year to int")
 
-    if type(month) is not int:
-        if "int" in str(type(month)):
+    if not isinstance(month, int):
+        try:
             month = int(month)
+        except:
+            raise TypeError("Unable to coerce month to int")
 
-    if type(day) is not int:
-        if "int" in str(type(day)):
+    if not isinstance(day, int):
+        try:
             day = int(day)
-
+        except:
+            raise TypeError("Unable to coerce day to int")
 
     # check that the values supplied are valid
     # This will convert things to ints, and if it can't be done, throw an error
-    if type(year) is not int:
+    if not isinstance(year, int):
         raise TypeError("year supplied is not an int")
-    if type(month) is not int:
+    if not isinstance(month, int):
         raise TypeError("month supplied is not an int")
-    if type(day) is not int:
+    if not isinstance(day, int):
         raise TypeError("day supplied is not an int")
 
     cdo_command = (
@@ -135,17 +140,17 @@ def as_missing(self, value=None):
     if value is None:
         raise ValueError("Please supply missing value")
 
-    if (type(value) is float) or (type(value) is int):
+    if isinstance(value, (int, float)):
         value = [value, value]
 
-    if type(value) is not list:
+    if not isinstance(value, list):
         raise TypeError("Please supply a list, int or float!")
 
     for vv in value:
-        if (type(vv) is not float) and (type(vv) is not int):
+        if not isinstance(vv, (int, float)):
             raise TypeError(f"{vv} is not an int or float")
 
-    if type(value) is list:
+    if isinstance(value, list):
         cdo_command = f"cdo -setrtomiss,{str(value[0])},{str(value[1])}"
 
     run_this(cdo_command, self, output="ensemble")
@@ -166,7 +171,7 @@ def set_units(self, unit_dict=None):
         raise ValueError("Please supply unit_dict")
 
     # Check that a dictionary has been supplied
-    if type(unit_dict) is not dict:
+    if not isinstance(unit_dict, dict):
         raise TypeError("A dictionary has not been supplied!")
 
     for key, value in unit_dict.items():
@@ -184,9 +189,9 @@ def set_units(self, unit_dict=None):
 
     # change the units in turn. This doesn't seem to be something you can chain?
     for i in unit_dict:
-        if type(i) is not str:
+        if not isinstance(i, str):
             raise TypeError("key,values in unit_dict are not strings")
-        if type(unit_dict[i]) is not str:
+        if not isinstance(unit_dict[i], str):
             raise TypeError("key,values in unit_dict are not strings")
 
         cdo_command = f'cdo -setattribute,{i}@units="{unit_dict[i]}"'
@@ -207,12 +212,12 @@ def set_longnames(self, name_dict=None):
     if name_dict is None:
         raise ValueError("Please supply name_dict")
 
-    if type(name_dict) is not dict:
+    if not isinstance(name_dict, dict):
         raise TypeError("Please supply a dictionary")
 
     self.run()
 
-    if type(name_dict) is not dict:
+    if not isinstance(name_dict, dict):
         TypeError("A dictionary has not been supplied!")
 
     # change the units in turn. This doesn't seem to be something you can chain?
@@ -236,9 +241,9 @@ def set_longnames(self, name_dict=None):
     for ff in self:
         nco_command = "ncatted "
         for i in name_dict:
-            if type(i) is not str:
+            if not isinstance(i, str):
                 raise TypeError("key,values in name_dict are not strings")
-            if type(name_dict[i]) is not str:
+            if not isinstance(name_dict[i], str):
                 raise TypeError("key,values in name_dict are not strings")
             i_dict = name_dict[i]
             i_dict = i_dict.replace('"', "'")

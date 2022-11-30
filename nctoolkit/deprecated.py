@@ -24,17 +24,17 @@ def set_missing(self, value=None):
     if value is None:
         raise ValueError("Please supply missing value")
 
-    if (type(value) is float) or (type(value) is int):
+    if isinstance(value, (int, float)):
         value = [value, value]
 
-    if type(value) is not list:
+    if not isinstance(value, list):
         raise TypeError("Please supply a list, int or float!")
 
     for vv in value:
-        if (type(vv) is not float) and (type(vv) is not int):
+        if not isinstance(vv, int, float):
             raise TypeError(f"{vv} is not an int or float")
 
-    if type(value) is list:
+    if isinstance(value, list):
         cdo_command = f"cdo -setrtomiss,{str(value[0])},{str(value[1])}"
 
     run_this(cdo_command, self, output="ensemble")

@@ -91,7 +91,7 @@ def distribute(self, m=1, n=1):
 
     """
 
-    if type(m) is not int or type(n) is not int:
+    if not isinstance(m, int) or not isinstance(n, int):
         raise ValueError("Please provide integers")
 
     if m < 1:

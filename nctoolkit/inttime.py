@@ -63,7 +63,7 @@ def timestep_interp(self, steps=None):
         if you wanted to go from daily to hourly data you would set steps=24.
     """
 
-    if type(steps) is not int:
+    if not isinstance(steps, int):
         raise TypeError(f"{steps} is not an int!")
 
     if steps < 2:

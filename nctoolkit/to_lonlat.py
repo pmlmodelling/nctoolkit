@@ -44,7 +44,7 @@ def to_latlon(self, lon=None, lat=None, res=None, method="bil", recycle=False):
     if res is None:
         raise ValueError("Please supply res")
 
-    if (type(lon) is not list) and (type(lat) is not list):
+    if not isinstance(lon, list) and not isinstance(lat, list):
         raise TypeError("Check that lon/lat ranges are lists")
 
     if len(lon) != 2:
@@ -54,11 +54,11 @@ def to_latlon(self, lon=None, lat=None, res=None, method="bil", recycle=False):
         raise ValueError("lat is a list of more than 2 variables")
 
     for ll in lon:
-        if (type(ll) is not int) and (type(ll) is not float):
+        if not isinstance(ll, (int, float)):
             raise TypeError(f"{ll} from lon is not an int or float")
 
     for ll in lat:
-        if (type(ll) is not int) and (type(ll) is not float):
+        if not isinstance(ll, (int, float)):
             raise TypeError(f"{ll} from lat is not an int or float")
 
     # now, clip to the lonlat box we need
@@ -68,22 +68,22 @@ def to_latlon(self, lon=None, lat=None, res=None, method="bil", recycle=False):
     if lon[1] < lon[0]:
         raise ValueError("Check lon order")
 
-    if type(res) is int:
+    if isinstance(res, int):
         res = float(res)
 
-    if (type(res) is not float) and (type(res) is not list):
+    if not isinstance(res, (float, list)):
         raise TypeError("res supplied is not valid")
 
-    if type(res) is float:
+    if isinstance(res, float):
         res = [res, res]
 
-    if type(res) is list:
-        if type(res[0]) is int:
+    if isinstance(res, list):
+        if isinstance(res[0], int):
             res[0] = float(res[0])
-        if type(res[1]) is int:
+        if isinstance(res[1], int):
             res[1] = float(res[1])
 
-        if (type(res[0]) is not float) or (type(res[1]) is not float):
+        if not isinstance(res[0], float) or not isinstance(res[1], float):
             raise TypeError("res supplied is not valid")
         if (res[0] <= 0) or (res[1] <= 0):
             raise ValueError("Check res supplied are positive values")

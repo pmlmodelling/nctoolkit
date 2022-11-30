@@ -20,7 +20,7 @@ def cdo_command(self, command=None, ensemble=False):
     if command is None:
         raise ValueError("Please supply a command")
 
-    if type(command) is not str:
+    if not isinstance(command, str):
         raise TypeError("Command supplied is not a str")
 
     if command.startswith("cdo "):

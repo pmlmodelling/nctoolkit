@@ -301,7 +301,7 @@ def spatial_percentile(self, p=None):
     if p is None:
         raise ValueError("Please supply a percentile")
 
-    if type(p) not in (int, float):
+    if not isinstance(p, (int, float)):
         raise ValueError(f"{str(p)} is not a valid percentile")
     if (p < 0) or (p > 100):
         raise ValueError(f"p: {str(p)} is not between 0 and 100!")

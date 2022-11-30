@@ -24,7 +24,7 @@ def time_stat(self, stat="mean", over="time"):
         raise ValueError(f"{stat} is not a valid CDO stat!")
 
     # some tidying of over
-    if type(over) is str:
+    if isinstance(over, str):
         over = [over]
 
     over = [x.lower() for x in over]
@@ -542,7 +542,7 @@ def tpercentile(self, p=None, over="time", align = "right"):
     if p is None:
         raise ValueError("Please supply p")
 
-    if type(p) not in [int, float]:
+    if not isinstance(p, (int, float)):
         raise TypeError("p is a " + str(type(p)) + ", not int or float")
 
     if (p < 0) or (p > 100):
@@ -552,7 +552,7 @@ def tpercentile(self, p=None, over="time", align = "right"):
 
     # create cdo command and run it
 
-    if type(over) is str:
+    if isinstance(over, str):
         over = [over]
 
     for x in over:

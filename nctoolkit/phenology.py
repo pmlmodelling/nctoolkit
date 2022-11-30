@@ -39,7 +39,7 @@ def phenology(self, var=None, metric=None, p=None):
 
     if var is None:
         raise ValueError("No var was supplied")
-    if type(var) is not str:
+    if not isinstance(var, str):
         raise TypeError("var is not a str")
 
     self.run()
@@ -99,10 +99,10 @@ def phenology(self, var=None, metric=None, p=None):
         if (metric == "end") and (p is None):
             p = 75.0
 
-        if type(p) is int:
+        if isinstance(p, int):
             p = float(p)
 
-        if type(p) is not float:
+        if not isinstance(p, float):
             raise TypeError("p is not float")
 
         start = (p) / 100

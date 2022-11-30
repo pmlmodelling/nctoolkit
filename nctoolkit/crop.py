@@ -52,11 +52,11 @@ def crop(self, lon=[-180, 180], lat=[-90, 90], nco=False, nco_vars=None):
     if nco:
         self.run()
 
-    if type(nco_vars) is str:
+    if isinstance(nco_vars, str):
         nco_vars = [nco_vars]
 
     # check validity of lon/lat supplied
-    if (type(lon) is not list) or (type(lat) is not list):
+    if not isinstance(lon, list) or  not isinstance(lat, list):
         raise TypeError("Check that lon/lat ranges are tuples")
 
     if len(lon) != 2:

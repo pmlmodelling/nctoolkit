@@ -21,7 +21,7 @@ def strip_variables(self, vars=None):
 
     if vars is not None:
 
-        if type(vars) is str:
+        if isinstance(vars, str):
             vars = [vars]
 
         for vv in vars:

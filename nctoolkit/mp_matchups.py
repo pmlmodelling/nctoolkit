@@ -91,11 +91,11 @@ def matchup(self,  tmean = False, regrid = "bil", max_extrap = 5):
 
     points = self.points
 
-    if type(on) is str:
+    if isinstance(on, str):
         on = [on]
 
     if on is not None:
-        if type(on) is list:
+        if isinstance(on, list):
             for x in ["day", "month", "year"]:
                 if x not in on and x in points.columns:
                     points = points.drop(columns = x)
@@ -161,7 +161,7 @@ def matchup(self,  tmean = False, regrid = "bil", max_extrap = 5):
                     on = ["day", "month"]
                     if "month" not in points.columns:
                         on.remove("month")
-                if type(on) is not list:
+                if not isinstance(on, list):
                     raise ValueError("on must be a list")
                 for x in on:
                     if x not in ["day", "month", "year", "all"]:
@@ -192,7 +192,7 @@ def matchup(self,  tmean = False, regrid = "bil", max_extrap = 5):
 
     # depths only need to be calculated once
     if self.depths is not None:
-        if type(self.depths) is not list:
+        if not isinstance(self.depths, list):
             ds_depths = self.depths.copy()
             obs_locs = points.loc[:,["lon", "lat"]]
             ds_depths.regrid(obs_locs, method = regrid) 
@@ -396,7 +396,7 @@ def matchup(self,  tmean = False, regrid = "bil", max_extrap = 5):
                         j_model = j_model.reset_index(drop = True)
 
                         if len(j_model) > 0:
-                            if type(self.depths) is not list:
+                            if not isinstance(self.depths, list):
                                 if self.depths is not None:
                                     j_depths = (
                                         df_depths.merge(j_obs.loc[:, ["lon", "lat"]])

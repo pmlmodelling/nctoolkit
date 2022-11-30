@@ -15,7 +15,7 @@ def centre(self, by="latitude", by_area=False):
     if by not in ["longitude", "latitude"]:
         raise ValueError("by is not valid. Please check!")
 
-    if type(by_area) is not bool:
+    if not isinstance(by_area, bool):
         raise TypeError("by_area is not boolean. Please check!")
 
     self.run()

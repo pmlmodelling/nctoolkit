@@ -12,7 +12,7 @@ def align(self, align = "right"):
 
     """
     
-    if type(align) is not str:
+    if not isinstance(align, str):
         raise TypeError("Alignment must be str type")
 
     if "cen" in align:
@@ -53,7 +53,7 @@ def rollstat(self, window=None, stat="mean"):
     if window is None:
         raise ValueError("No window was supplied")
 
-    if type(window) is not int:
+    if not isinstance(window, int):
         raise TypeError("The window supplied is not numeric!")
 
     if window < 1:

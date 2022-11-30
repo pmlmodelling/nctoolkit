@@ -2,6 +2,7 @@ from nctoolkit.temp_file import temp_file
 from nctoolkit.runthis import run_cdo
 from nctoolkit.session import remove_safe
 from nctoolkit.cleanup import cleanup
+import nctoolkit.api as api 
 import os
 
 def ne(self, x):
@@ -25,13 +26,13 @@ def ne(self, x):
 
     new_files = []
 
-    if "api.DataSet" in str(type(x)):
+    if isinstance(x, api.DataSet):
         x.run()
         if len(x) != 1:
             raise ValueError("This only works on single file datasets")
         x_ff = x[0]
 
-    if type(x) is str:
+    if isinstance(x, str):
         x_ff = x
 
     if x_ff is None:
@@ -80,13 +81,13 @@ def ge(self, x):
 
     new_files = []
 
-    if "api.DataSet" in str(type(x)):
+    if isinstance(x, api.DataSet):
         x.run()
         if len(x) != 1:
             raise ValueError("This only works on single file datasets")
         x_ff = x[0]
 
-    if type(x) is str:
+    if isinstance(x, str):
         x_ff = x
 
     if x_ff is None:
@@ -135,13 +136,13 @@ def le(self, x):
 
     new_files = []
 
-    if "api.DataSet" in str(type(x)):
+    if isinstance(x, api.DataSet):
         x.run()
         if len(x) != 1:
             raise ValueError("This only works on single file datasets")
         x_ff = x[0]
 
-    if type(x) is str:
+    if isinstance(x, str):
         x_ff = x
 
     if x_ff is None:
@@ -191,13 +192,13 @@ def lt(self, x):
 
     new_files = []
 
-    if "api.DataSet" in str(type(x)):
+    if isinstance(x, api.DataSet):
         x.run()
         if len(x) != 1:
             raise ValueError("This only works on single file datasets")
         x_ff = x[0]
 
-    if type(x) is str:
+    if isinstance(x, str):
         x_ff = x
 
     if x_ff is None:
@@ -247,13 +248,13 @@ def gt(self, x):
 
     new_files = []
 
-    if "api.DataSet" in str(type(x)):
+    if isinstance(x, api.DataSet):
         x.run()
         if len(x) != 1:
             raise ValueError("This only works on single file datasets")
         x_ff = x[0]
 
-    if type(x) is str:
+    if isinstance(x, str):
         x_ff = x
 
     if x_ff is None:
@@ -303,13 +304,13 @@ def eq(self, x):
 
     new_files = []
 
-    if "api.DataSet" in str(type(x)):
+    if isinstance(x, api.DataSet):
         x.run()
         if len(x) != 1:
             raise ValueError("This only works on single file datasets")
         x_ff = x[0]
 
-    if type(x) is str:
+    if isinstance(x, str):
         x_ff = x
 
     if x_ff is None:

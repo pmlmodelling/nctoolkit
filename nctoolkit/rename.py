@@ -29,7 +29,7 @@ def rename(self, newnames):
     """
 
     # check a dict was supplied
-    if type(newnames) is not dict:
+    if not isinstance(newnames, dict):
         raise TypeError("a dictionary was not supplied")
 
     if len(self.history) == len(self._hold_history):
@@ -53,9 +53,9 @@ def rename(self, newnames):
 
 
     for key, value in newnames.items():
-        if type(key) is not str:
+        if not isinstance(key, str):
             raise TypeError(f"{key} is not a str")
-        if type(value) is not str:
+        if not isinstance(value, str):
             raise TypeError(f"{value} is not a str")
         cdo_rename += "," + key
         cdo_rename += "," + value

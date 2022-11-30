@@ -14,7 +14,7 @@ def mask_box(self, lon=[-180, 180], lat=[-90, 90]):
         Latitude range to mask. Must be of the form: [lat_min, lat_max]
     """
 
-    if (type(lon) is not list) or (type(lat) is not list):
+    if not isinstance(lon, list) or  not isinstance(lat, list):
         raise TypeError("Check that lon/lat ranges are tuples")
 
     if len(lon) != 2:
@@ -23,16 +23,16 @@ def mask_box(self, lon=[-180, 180], lat=[-90, 90]):
     if len(lat) != 2:
         raise ValueError("lat is a list of more than 2 variables")
 
-    if ((type(lon[0]) is float) or (type(lon[0]) is int)) is False:
+    if not isinstance(lon[0], (int, float)):
         raise TypeError("Check lon")
 
-    if ((type(lon[1]) is float) or (type(lon[1]) is int)) is False:
+    if not isinstance(lon[1], (int, float)):
         raise TypeError("Check lon")
 
-    if ((type(lat[0]) is float) or (type(lat[0]) is int)) is False:
+    if not isinstance(lat[0], (int, float)):
         raise TypeError("Check lat")
 
-    if ((type(lat[1]) is float) or (type(lat[1]) is int)) is False:
+    if not isinstance(lat[1], (int, float)):
         raise TypeError("Check lat")
 
     # now, clip to the lonlat box we need

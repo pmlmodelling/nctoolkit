@@ -31,14 +31,14 @@ def select_levels(self, levels=None):
     levels : list
         List of the form [min_level, max_level]. Levels/depth between the two will be selected
     """
-    if type(levels) is not list:
+    if not isinstance(levels, list):
         type(levels)
         try:
             levels = float(levels)
         except:
             raise ValueError("levels provided are not valid!")
 
-    if type(levels) is list:
+    if isinstance(levels, list):
         try:
             levels[0] = int(np.floor(float(levels[0])))
             levels[1] = int(np.ceil(float(levels[1])))
@@ -66,13 +66,13 @@ def select_period(self, period=None):
     if period is None:
         raise ValueError("No range supplied")
 
-    if type(period) is not list:
+    if not isinstance(period, list):
         raise TypeError("Invalid range supplied")
 
     if len(period) != 2:
         raise ValueError("range must be a 2 variable list!")
 
-    if type(period[0]) is str and type(period[1]) is str:
+    if isinstance(period[0], str) and isinstance(period[1], str):
         period = [to_date(x) for x in period]
 
     for x in period:
@@ -103,7 +103,7 @@ def select_seasons(self, season=None):
     if season is None:
         raise ValueError("No season supplied")
 
-    if type(season) is not str:
+    if not isinstance(season, str):
         raise TypeError("Invalid season supplied")
 
     if season not in ["DJF", "MAM", "JJA", "SON"]:
@@ -128,10 +128,10 @@ def select_hours(self, hours=None):
         raise ValueError("Please supply hours")
 
     # check validity of hours
-    if type(hours) is range:
+    if isinstance(hours, range):
         hours = list(hours)
 
-    if type(hours) is not list:
+    if not isinstance(hours, list):
         hours = [hours]
     # all of the variables in hours need to be converted to ints,
     # just in case floats have been provided
@@ -141,7 +141,7 @@ def select_hours(self, hours=None):
 
 
     for x in hours:
-        if type(x) is not int:
+        if not isinstance(x, int):
             raise TypeError(f"{x} is not an int")
         if x not in list(range(1, 32)):
             raise ValueError(f"{x} is not a hour")
@@ -168,10 +168,10 @@ def select_days(self, days=None):
         raise ValueError("Please supply days")
 
     # check validity of days
-    if type(days) is range:
+    if isinstance(days, range):
         days = list(days)
 
-    if type(days) is not list:
+    if not isinstance(days, list):
         days = [days]
     # all of the variables in days need to be converted to ints,
     # just in case floats have been provided
@@ -181,7 +181,7 @@ def select_days(self, days=None):
 
 
     for x in days:
-        if type(x) is not int:
+        if not isinstance(x, int):
             raise TypeError(f"{x} is not an int")
         if x not in list(range(1, 32)):
             raise ValueError(f"{x} is not a day")
@@ -208,10 +208,10 @@ def select_months(self, months=None):
         raise ValueError("Please supply months")
 
     # check validity of months
-    if type(months) is range:
+    if isinstance(months, range):
         months = list(months)
 
-    if type(months) is not list:
+    if not isinstance(months, list):
         months = [months]
     # all of the variables in months need to be converted to ints,
     # just in case floats have been provided
@@ -221,7 +221,7 @@ def select_months(self, months=None):
 
 
     for x in months:
-        if type(x) is not int:
+        if not isinstance(x, int):
             raise TypeError(f"{x} is not an int")
         if x not in list(range(1, 13)):
             raise ValueError(f"{x} is not a month")
@@ -247,17 +247,17 @@ def select_years(self, years=None):
     if years is None:
         raise ValueError("Please supply years")
 
-    if type(years) is range:
+    if isinstance(years, range):
         years = list(years)
 
-    if type(years) is not list:
+    if not isinstance(years, list):
         years = [years]
 
     # convert years to int
     years = [int(x) if "int" in str(type(x)) else x for x in years]
 
     for yy in years:
-        if type(yy) is not int:
+        if not isinstance(yy, int):
             raise TypeError(f"{yy} is not an int")
 
     if self._merged is False:
@@ -328,13 +328,13 @@ def select_variables(self, vars=None):
     if vars is None:
         raise ValueError("vars was not supplied")
 
-    if type(vars) is str:
+    if isinstance(vars, str):
         vars_list = [vars]
     else:
         vars_list = vars
 
     for vv in vars_list:
-        if type(vv) is not str:
+        if not isinstance(vv, str):
             raise TypeError(f"{vv} is not a str")
 
     for x in vars_list:
@@ -363,14 +363,14 @@ def select_timesteps(self, times=None):
     if times is None:
         raise ValueError("Please supply times")
 
-    if type(times) is range:
+    if isinstance(times, range):
         times = list(times)
 
-    if type(times) is not list:
+    if not isinstance(times, list):
         times = [times]
 
     for tt in times:
-        if type(tt) is not int:
+        if not isinstance(tt, int):
             raise TypeError(f"{tt} is not an int")
         if tt < 0:
             if version_above(cdo_version(), "2.0.0") is False:

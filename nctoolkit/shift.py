@@ -14,10 +14,10 @@ def shift_hours(self, shift=None):
     if shift is None:
         raise ValueError("Please supply a shift value")
 
-    if type(shift) is float:
+    if isinstance(shift, float):
         shift = int(shift)
 
-    if type(shift) is not int:
+    if not isinstance(shift, int):
         raise TypeError("Please supply an int for shift")
 
     cdo_command = f"cdo -shifttime,{shift}hour"
@@ -38,10 +38,10 @@ def shift_days(self, shift=None):
     if shift is None:
         raise ValueError("Please supply a shift value")
 
-    if type(shift) is float:
+    if isinstance(shift, float):
         shift = int(shift)
 
-    if type(shift) is not int:
+    if not isinstance(shift, int):
         raise TypeError("Please supply an int for shift")
 
     cdo_command = f"cdo -shifttime,{shift}days"
@@ -62,10 +62,10 @@ def shift_months(self, shift=None):
     if shift is None:
         raise ValueError("Please supply a shift value")
 
-    if type(shift) is float:
+    if isinstance(shift, float):
         shift = int(shift)
 
-    if type(shift) is not int:
+    if not isinstance(shift, int):
         raise TypeError("Please supply an int for shift")
 
     cdo_command = f"cdo -shifttime,{shift}months"
@@ -86,10 +86,10 @@ def shift_years(self, shift=None):
     if shift is None:
         raise ValueError("Please supply a shift value")
 
-    if type(shift) is float:
+    if isinstance(shift, float):
         shift = int(shift)
 
-    if type(shift) is not int:
+    if not isinstance(shift, int):
         raise TypeError("Please supply an int for shift")
 
     cdo_command = f"cdo -shifttime,{shift}years"

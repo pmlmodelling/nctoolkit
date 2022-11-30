@@ -1,6 +1,7 @@
 import os
 from nctoolkit.session import session_info
 from nctoolkit.utils import version_below
+import nctoolkit.api as api
 
 
 def first_above(self, x=None):
@@ -34,7 +35,7 @@ def first_above(self, x=None):
 
     self.run()
 
-    if type(x) is str:
+    if isinstance(x, str):
         if os.path.exists(x) is False:
             raise ValueError(f"{x} does not exist on disk!")
 
@@ -49,8 +50,8 @@ def first_above(self, x=None):
 
     # 2: dataset or netCDF file multiplication
     # get the netCDF file(s)
-    if ("api.DataSet" in str(type(x))) or (type(x) is str):
-        if "api.DataSet" in str(type(x)):
+    if isinstance(x, (api.DataSet, str)):
+        if isinstance(x, api.DataSet):
             x.run()
         self.gt(x)
         run_code = True
@@ -101,7 +102,7 @@ def first_below(self, x=None):
 
     """
 
-    if type(x) is str:
+    if isinstance(x, str):
         if os.path.exists(x) is False:
             raise ValueError(f"{x} does not exist on disk!")
 
@@ -121,8 +122,8 @@ def first_below(self, x=None):
 
     # 2: dataset or netCDF file multiplication
     # get the netCDF file(s)
-    if ("api.DataSet" in str(type(x))) or (type(x) is str):
-        if "api.DataSet" in str(type(x)):
+    if isinstance(x, (api.DataSet, str)):
+        if isinstance(x, api.DataSet):
             x.run()
         self.lt(x)
         run_code = True
@@ -171,7 +172,7 @@ def last_above(self, x=None):
 
 
     """
-    if type(x) is str:
+    if isinstance(x, str):
         if os.path.exists(x) is False:
             raise ValueError(f"{x} does not exist on disk!")
 
@@ -194,8 +195,8 @@ def last_above(self, x=None):
 
     # 2: dataset or netCDF file multiplication
     # get the netCDF file(s)
-    if ("api.DataSet" in str(type(x))) or (type(x) is str):
-        if "api.DataSet" in str(type(x)):
+    if isinstance(x, (api.DataSet, str)):
+        if isinstance(x, api.DataSet):
             x.run()
         self.gt(x)
         run_code = True
@@ -247,7 +248,7 @@ def last_below(self, x=None):
 
 
     """
-    if type(x) is str:
+    if isinstance(x, str):
         if os.path.exists(x) is False:
             raise ValueError(f"{x} does not exist on disk!")
 
@@ -270,8 +271,8 @@ def last_below(self, x=None):
 
     # 2: dataset or netCDF file multiplication
     # get the netCDF file(s)
-    if ("api.DataSet" in str(type(x))) or (type(x) is str):
-        if "api.DataSet" in str(type(x)):
+    if isinstance(x, (api.DataSet, str)):
+        if isinstance(x, api.DataSet):
             x.run()
         self.lt(x)
         run_code = True

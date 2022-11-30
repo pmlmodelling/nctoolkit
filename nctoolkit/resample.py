@@ -20,7 +20,7 @@ def resample_grid(self, factor=None):
     if factor is None:
         raise ValueError("Please provide a resampling factor")
 
-    if type(factor) is not int:
+    if not isinstance(factor, int):
         raise TypeError(f"{factor} is not an integer")
 
     if factor < 1:

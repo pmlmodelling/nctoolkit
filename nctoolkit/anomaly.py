@@ -56,20 +56,20 @@ def annual_anomaly(self, baseline=None, metric="absolute", window=1):
     if len(self) == 0:
         raise ValueError("Failure due to empty dataset!")
 
-    if type(window) is not int:
+    if not isinstance(window, int):
         raise TypeError("window is not an int")
 
     if window <= 0:
         raise TypeError("window is not valid")
 
     # check baseline is a list, etc.
-    if type(baseline) is not list:
+    if not isinstance(baseline, list):
         raise TypeError("baseline years supplied is not a list")
     if len(baseline) != 2:
         raise ValueError("Supply a 2 year baseline")
-    if type(baseline[0]) is not int:
+    if not isinstance(baseline[0], int):
         raise TypeError("Provide a valid baseline")
-    if type(baseline[1]) is not int:
+    if not isinstance(baseline[1], int):
         raise TypeError("Provide a vaid baseline")
     if baseline[1] < baseline[0]:
         raise ValueError("Second baseline year is before the first!")
@@ -160,13 +160,13 @@ def monthly_anomaly(self, baseline=None):
         raise ValueError("Failure due to empty dataset!")
 
     # check baseline is a list, etc.
-    if type(baseline) is not list:
+    if not isinstance(baseline, list):
         raise TypeError("baseline years supplied is not a list")
     if len(baseline) != 2:
         raise ValueError("More than 2 years in baseline. Please check.")
-    if type(baseline[0]) is not int:
+    if not isinstance(baseline[0], int):
         raise TypeError("Provide a valid baseline")
-    if type(baseline[1]) is not int:
+    if not isinstance(baseline[1], int):
         raise TypeError("Provide a vaid baseline")
     if baseline[1] < baseline[0]:
         raise ValueError("Second baseline year is before the first!")

@@ -2,6 +2,7 @@ import pandas as pd
 from nctoolkit.api import open_data, open_thredds
 import xarray as xr
 from nctoolkit.matchpoint import open_matchpoint
+import nctoolkit.api as api
 
 
 def match_points(ds=None, df = None, variables=None, depths = None, nan=None, top = False, tmean = False, regrid = "bil", max_extrap = 5, **kwargs):
@@ -127,7 +128,7 @@ def add_data(self, x=None, variables=None, depths = None, nan=None, top = False,
     self.top = top
 
     if variables is not None:
-        if type(variables) is str:
+        if isinstance(variables, str):
             variables = [variables]
 
     if self.data is not None:
@@ -208,7 +209,7 @@ def add_data(self, x=None, variables=None, depths = None, nan=None, top = False,
 
     ds_variables = self.data.variables
 
-    if type(variables) is list:
+    if isinstance(variables, list):
         for x in variables:
             if x not in ds_variables:
                 raise ValueError(f"{x} is not a valid variable")
@@ -238,10 +239,10 @@ def add_depths(self, x=None):
     if self.depths is not None:
         raise ValueError("You have already provided depths")
 
-    if "api.DataSet" not in str(type(x)):
+    if not isinstance(x, api.DataSet):
         self.depths = [y for y in x]
 
-    if type(x) != list:
+    if not isinstance(x, list):
         if len(x.variables) > 1:
             raise ValueError("Depths file should only have one variable")
 
