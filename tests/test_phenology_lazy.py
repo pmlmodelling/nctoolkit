@@ -17,7 +17,9 @@ class TestPhenol:
     def test_clim1(self):
         data = nc.open_data(ff)
         data.subset(timesteps=list(range(0, 12)))
+        
         data.phenology("sst", metric="peak")
+        #data.phenology("sst", metric="peak")
         data.spatial_mean()
 
         x = data.to_dataframe().peak.values[0].astype("float")

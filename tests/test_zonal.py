@@ -96,3 +96,14 @@ class TestClip:
                 == 7.345167636871338
             )
 
+        ds = nc.open_data(ff, checks = False)
+        ds.subset(time = 0)
+        ds.zonal_sum()
+        assert ( data.to_dataframe().sst[0].astype("float") == 7.356204986572266)
+
+        ds = nc.open_data(ff, checks = False)
+        ds.subset(time = 0)
+        ds.zonal_sum(by_area = True)
+        assert ( data.to_dataframe().sst[0].astype("float") == 7.356204986572266)
+
+
