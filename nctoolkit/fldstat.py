@@ -9,6 +9,17 @@ from nctoolkit.session import remove_safe
 def boxstat(self, stat="mean", x=1, y=1):
     """Method to calculate the spatial stat from a dataset"""
 
+
+    if not isinstance(x, int):
+        raise ValueError("x should be int")
+    if not isinstance(y, int):
+        raise ValueError("y should be int")
+
+    if x <= 0:
+        raise ValueError("x should be positive")
+    if y <= 0:
+        raise ValueError("y should be positive")
+
     if len(self) == 0:
         raise ValueError("Failure due to empty dataset!")
 
