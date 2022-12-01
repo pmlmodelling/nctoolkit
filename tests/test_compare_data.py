@@ -64,6 +64,15 @@ class TestCompare:
         with pytest.raises(ValueError):
             tracker.lt(2)
 
+        tracker = nc.open_data(ff)
+        data = nc.open_data(ff)
+        tracker.subset(time = 0)
+        tracker > data
+
+        x = tracker.to_dataframe().sst.values[0]
+
+        assert x == 0
+
 
         tracker = nc.open_data(ff)
         data = nc.open_data(ff)
@@ -88,9 +97,11 @@ class TestCompare:
         tracker = nc.open_data(ff)
         data = nc.open_data(ff)
         tracker.subset(time = 0)
-        tracker.lt(data)
+        tracker>data
 
         x = tracker.to_dataframe().sst.values[0]
+
+        assert x == 0
 
         tracker = nc.open_data(ff)
         data = nc.open_data(ff)
