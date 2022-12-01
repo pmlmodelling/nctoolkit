@@ -141,9 +141,10 @@ def compare(self, expression=None):
 def __eq__(self, x):
 
     if not isinstance(x, str):
-        if str(x).strip("-").isnumeric():
+        try:
+            test = float(x)
             self.compare(f"=={x}")
-        else:
+        except:
             self.eq(x)
     else:
         self.eq(x)
@@ -152,9 +153,10 @@ def __eq__(self, x):
 def __gt__(self, x):
 
     if not isinstance(x, str):
-        if str(x).strip("-").isnumeric():
+        try:
+            test = float(x)
             self.compare(f">{x}")
-        else:
+        except:
             self.gt(x)
     else:
         self.gt(x)
@@ -162,9 +164,10 @@ def __gt__(self, x):
 def __lt__(self, x):
 
     if not isinstance(x, str):
-        if str(x).strip("-").isnumeric():
+        try:
+            test = float(x)
             self.compare(f"<{x}")
-        else:
+        except:
             self.lt(x)
     else:
         self.lt(x)
@@ -172,9 +175,10 @@ def __lt__(self, x):
 def __le__(self, x):
 
     if not isinstance(x, str):
-        if str(x).strip("-").isnumeric():
+        try:
+            test = float(x)
             self.compare(f"<={x}")
-        else:
+        except:
             self.le(x)
     else:
         self.le(x)
@@ -183,9 +187,10 @@ def __le__(self, x):
 def __ge__(self, x):
 
     if not isinstance(x, str):
-        if str(x).strip("-").isnumeric():
+        try:
+            test = float(x)
             self.compare(f">={x}")
-        else:
+        except:
             self.ge(x)
     else:
         self.ge(x)
@@ -193,9 +198,10 @@ def __ge__(self, x):
 def __ne__(self, x):
 
     if not isinstance(x, str):
-        if str(x).strip("-").isnumeric():
+        try:
+            test = float(x)
             self.compare(f"!={x}")
-        else:
+        except:
             self.ne(x)
     else:
         self.ne(x)
