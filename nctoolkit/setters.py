@@ -124,6 +124,26 @@ def set_date(self, year=None, month=None, day=None, base_year=1900):
 
     run_this(cdo_command, self, output="ensemble")
 
+def missing_as_constant(self, value=None):
+    """
+    Convert missing values to a constant
+
+    Parameters
+    -------------
+    value : Number to convert the missing values to 
+        If int/float is provided, the missing value will be converted to that.
+    """
+
+    try:
+        test = float(value)
+    except:
+        raise TypeError("value must be coercible to float")
+
+    cdo_command = f"cdo -setmisstoc,{value}"
+
+    run_this(cdo_command, self, output="ensemble")
+
+
 
 def as_missing(self, value=None):
     """
