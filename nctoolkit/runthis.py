@@ -622,6 +622,22 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
                 for tt in all_text:
                     sel_level.append(int(re.findall(r"\d+", all_text[0])[0]))
                 ignore = True
+        if "grid latitudes differ" in x:
+            warnings.warn(message = "Grid latitudes differ in operation. Check if this is acceptable!")
+            ignore = True
+
+        if "grid longitudes differ" in x:
+            warnings.warn(message = "Grid longitudes differ in operation. Check if this is acceptable!")
+            ignore = True
+
+        if "found more than one time variable, skipped variable" in x:
+            message = x.split( "found more than one time variable, skipped variable ")[1].replace("!", "")
+            warnings.warn(message = f"CDO found more than one time variable. Only one is allowed. {message} was skipped")
+            ignore = True
+
+        if "Using constant grid cell area weights!" in x:
+            warnings.warn(message = "Using constant grid cell area weights! If you need weighted cell areas, please fix the dataset grid!")
+            ignore = True
 
         if "selmonth" in x:
             text = re.compile("selmonth \\(warning\\): month [0-9]* not found")
