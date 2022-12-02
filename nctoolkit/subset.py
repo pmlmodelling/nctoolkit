@@ -292,7 +292,7 @@ def select_years(self, years=None):
                     missing_files += 1
 
         if len(new_current) == 0:
-            raise ValueError("Data for none of the years is available!")
+            raise ValueError("Data is not available for the years selected!")
 
         if n_removed > 0:
             warnings.warn(
