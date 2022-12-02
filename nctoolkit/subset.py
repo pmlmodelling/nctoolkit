@@ -269,10 +269,14 @@ def select_years(self, years=None):
         # loop through all of the files and remove any that do not have valid years
         new_current = []
 
+
+        all_check = []
+
         for ff in self:
 
             all_years = nc_years(ff)
             all_years = list(set(all_years))
+            all_check+=all_years
             all_years = [int(v) for v in all_years]
             inter = [element for element in all_years if element in years]
 
@@ -296,6 +300,24 @@ def select_years(self, years=None):
                 + str(n_removed)
                 + " files did not have valid years, so were removed from the dataset!"
             )
+
+        missing_years = [str(x) for x in years if x not in all_years]
+        if len(missing_years) > 0:
+            len_missing = len(missing_years)
+            missing_years = [int(x) for x in missing_years]
+            if set(range(min(missing_years), max(missing_years) + 1)) == set(missing_years):
+                if len(missing_years) > 1:
+                    missing_years = str(min(missing_years)) + "-" + str(max(missing_years))
+                else:
+                    missing_years = str(missing_years[0])
+            else:
+                missing_years = [str(x) for x in missing_years]
+                missing_years = str_flatten(missing_years, ",")
+            if missing_files == 0:
+                if len_missing == 1:
+                    warnings.warn(f"The following year was not available in the dataset: {missing_years}")
+                else:
+                    warnings.warn(f"{len_missing} years were not available in the dataset: {missing_years}")
 
         self.current = new_current
 

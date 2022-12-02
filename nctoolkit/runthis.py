@@ -288,7 +288,9 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
         ):
             remove_safe(target)
             remove_safe(start_target)
-            raise ValueError("HDF error when running CDO. Check if files are corrupt using the is_corrupt method, and consider running the check method")
+            raise ValueError(
+                "HDF error when running CDO. Check if files are corrupt using the is_corrupt method, and consider running the check method"
+            )
         else:
             return out_file
 
@@ -302,79 +304,96 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
     if "(Abort)" in str(result):
         remove_safe(target)
         remove_safe(start_target)
-        error =   str(result).replace("b'", "").replace("\\n", "").replace("'", "")
+        error = str(result).replace("b'", "").replace("\\n", "").replace("'", "")
 
         text = re.compile(r"Level [0-9]* not found")
         errors = text.findall(error)
         if len(errors) > 0:
             error = errors[0]
-            raise ValueError(f"CDO error: {error}. Please check levels supplied to nctoolkit methods!")
+            error = [str(int(x) + 1) for x in re.findall(r"\d+", error)]
+            raise ValueError(f"None of the vertical levels supplied are available!")
 
         text = re.compile(r"Date between .* not found")
         errors = text.findall(error)
         if len(errors) > 0:
             error = errors[0]
-            raise ValueError(f"CDO error: {error}. Please check dates supplied to nctoolkit".replace("  ", " "))
+            raise ValueError(
+                f"Please check dates supplied to nctoolkit".replace("  ", " ")
+            )
 
         text = re.compile(r"Variable >.*< not found!")
         errors = text.findall(error)
         if len(errors) > 0:
             error = errors[0]
-            raise ValueError(f"CDO error: '{error}'. Please check variables supplied to nctoolkit")
+            raise ValueError(
+                f"None of the variables were found. Please check variables supplied to nctoolkit"
+            )
 
-        text = re.compile(r"Variable name .* not found!")
+        text = re.compile(r" Variable name .* not found!")
         errors = text.findall(error)
         if len(errors) > 0:
-            error = errors[0]
-            raise ValueError(f"CDO error: {error}. Please check variables supplied to nctoolkit")
+            error = errors[0].strip()
+            raise ValueError(f"{error}! Please check variables supplied to nctoolkit")
 
         text = re.compile(r"File has less then [0-9]* timesteps!")
         errors = text.findall(error)
         if len(errors) > 0:
             error = errors[0]
-            raise ValueError(f"CDO error: {error}. Please check time steps supplied to nctoolkit methods")
+            raise ValueError(
+                f"{error}! Please check time steps supplied to nctoolkit methods"
+            )
 
         text = re.compile(r"Grid size of the input parameter .* do not match!")
         errors = text.findall(error)
         if len(errors) > 0:
             error = errors[0]
-            raise ValueError(f"CDO error: {error}. Please check grids in datasets used in operation!")
+            raise ValueError(
+                f"Grid sizes are not consistent. Please check grids in datasets used in operation!"
+            )
 
         text = re.compile(r"Season .* not found")
         errors = text.findall(error)
         if len(errors) > 0:
             error = errors[0]
-            raise ValueError(f"CDO error: {error}. Please check season supplied to nctoolkit methods!")
-
-        text = re.compile(r"Season .* not found")
-        errors = text.findall(error)
-        if len(errors) > 0:
-            error = errors[0]
-            raise ValueError(f"CDO error: {error}. Please check season supplied to nctoolkit methods!")
+            error = error.split(">")[1].split("<")[0]
+            raise ValueError(
+                f"The following seasons were not available: {error}. Please check season supplied to nctoolkit methods!"
+            )
 
         text = re.compile(r"Month [0-9]* not found")
         errors = text.findall(error)
         if len(errors) > 0:
             error = errors[0]
-            raise ValueError(f"CDO error: {error}. Please check months supplied to nctoolkit methods!")
+            raise ValueError(
+                f"None of the months supplied are in the dataset. Please check months supplied to nctoolkit methods!"
+            )
 
         text = re.compile(r"Year [0-9]* not found")
         errors = text.findall(error)
         if len(errors) > 0:
             error = errors[0]
-            raise ValueError(f"CDO error: {error}. Please check years supplied to nctoolkit methods!")
+            raise ValueError(
+                f"None of the years are available. Please check years supplied to nctoolkit methods!"
+            )
 
         text = re.compile(r"Day [0-9]* not found")
         errors = text.findall(error)
         if len(errors) > 0:
             error = errors[0]
-            raise ValueError(f"CDO error: {error}. Please check days supplied to nctoolkit methods!")
+            raise ValueError(
+                f"None of the days supplied are available. Please check days supplied to nctoolkit methods!"
+            )
 
         text = re.compile(r"Timestep [0-9]* not found")
         errors = text.findall(error)
         if len(errors) > 0:
             error = errors[0]
-            raise ValueError(f"CDO error: {error}. Please check time steps supplied to nctoolkit methods!")
+            error = [str(int(x) - 1) for x in re.findall(r"\d+", error)]
+            error = ",".join(error)
+            error = "The following timesteps do not exist: " + error
+            raise ValueError(
+                f"{error}! Please check time steps supplied to nctoolkit methods"
+            )
 
         raise ValueError(
             str(result).replace("b'", "").replace("\\n", "").replace("'", "")
@@ -399,7 +418,9 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
             append_safe(target)
 
             if "HDF error" in str(result):
-                raise ValueError("HDF error when running CDO. Check if files are corrupt using the is_corrupt method, and consider running the check method")
+                raise ValueError(
+                    "HDF error when running CDO. Check if files are corrupt using the is_corrupt method, and consider running the check method"
+                )
 
             out = subprocess.Popen(
                 command,
@@ -427,8 +448,13 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
                     remove_safe(target)
                     remove_safe(start_target)
 
-                    if  "Error (cdf_put_vara_double): NetCDF: Numeric conversion not representable" in str(result):
-                        raise ValueError("CDO error: Error (cdf_put_vara_double): NetCDF: Numeric conversion not representable. Tip: check if missing values are incorrectly set to large actual values!")
+                    if (
+                        "Error (cdf_put_vara_double): NetCDF: Numeric conversion not representable"
+                        in str(result)
+                    ):
+                        raise ValueError(
+                            "CDO error: Error (cdf_put_vara_double): NetCDF: Numeric conversion not representable. Tip: check if missing values are incorrectly set to large actual values!"
+                        )
 
                     raise ValueError(
                         str(result1)
@@ -538,40 +564,219 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
 
     session_info["latest_size"] = os.path.getsize(target)
 
-        
-    for x in  result.decode("utf-8").lower().split("\n"):
+    sel_year = []
+    sel_day = []
+    sel_month = []
+    sel_level = []
+    sel_timestep = []
+    sel_hour = []
+    sel_var = []
+
+    for x in result.decode("utf-8").lower().split("\n"):
         warned = False
-    
-        if "warning" in x and "vertmean" in x:
-            if "layer bounds not available, using constant vertical weights" in x:
-                warnings.warn("Layer bounds not available in netCDF file, using constant vertical weights for vertical mean")
-                warned = True
+        ignore = False
 
-        if "warning" in x:
-            if "Grid cell bounds not available, using constant grid cell area weights" in x:
-                warnings.warn("CDO warning: Grid cell bounds not available, using constant grid cell area weights for operation")
-                warned = True
+        if "selyear" in x:
+            text = re.compile("selyear \\(warning\\): year [0-9]* not found")
+            all_text = text.findall(x)
+            if len(all_text) > 0:
+                for tt in all_text:
+                    sel_year.append(int(re.findall(r"\d+", all_text[0])[0]))
+                ignore = True
 
-        if "warning" in x:
-            if "Computation of grid cell area weights failed, grid cell center and bounds coordinates missing" in x:
-                warnings.warn("CDO warning: Computation of grid cell area weights failed, grid cell center and bounds coordinates missing from netCDF")
-                warned = True
+        if "selhour" in x:
+            text = re.compile("selhour \\(warning\\): hour [0-9]* not found")
+            all_text = text.findall(x)
+            if len(all_text) > 0:
+                for tt in all_text:
+                    sel_hour.append(int(re.findall(r"\d+", all_text[0])[0]))
+                ignore = True
 
+        if "selday" in x:
+            text = re.compile("selday \\(warning\\): day [0-9]* not found")
+            all_text = text.findall(x)
+            if len(all_text) > 0:
+                for tt in all_text:
+                    sel_day.append(int(re.findall(r"\d+", all_text[0])[0]))
+                ignore = True
+
+        if "seltimestep" in x:
+            text = re.compile(
+                "seltimestep \\(warning\\): timesteps [0-9]*-[0-9]* not found"
+            )
+            all_text = text.findall(x.replace("  ", " "))
+            if len(all_text) > 0:
+                for tt in all_text:
+                    tt_range = range(
+                        int(re.findall(r"\d+", all_text[0])[0]) - 1,
+                        int(re.findall(r"\d+", all_text[0])[1]),
+                    )
+                    tt_range = list(tt_range)
+                    sel_timestep += tt_range
+                ignore = True
+
+        if "sellevel" in x:
+            text = re.compile("sellevel \\(warning\\): level [0-9]* not found")
+            all_text = text.findall(x)
+            if len(all_text) > 0:
+                for tt in all_text:
+                    sel_level.append(int(re.findall(r"\d+", all_text[0])[0]))
+                ignore = True
+
+        if "selmonth" in x:
+            text = re.compile("selmonth \\(warning\\): month [0-9]* not found")
+            all_text = text.findall(x)
+            if len(all_text) > 0:
+                for tt in all_text:
+                    sel_month.append(int(re.findall(r"\d+", all_text[0])[0]))
+                ignore = True
         if "warning" in x:
             text = re.compile("variable name .* not found")
             if len(text.findall(x)) > 0:
                 for y in text.findall(x):
-                    warnings.warn(f"Warning: {y}")
-                warned = True
+                    sel_var.append(y.split("variable name ")[1].split(" ")[0])
+                ignore = True
 
-        if not warned:
-            if "arning" in x:
-                warnings.warn(f"CDO warning: {x}")
+        if not ignore:
+            if "warning" in x and "vertmean" in x:
+                if "layer bounds not available, using constant vertical weights" in x:
+                    warnings.warn(
+                        "Layer bounds not available in netCDF file, using constant vertical weights for vertical mean"
+                    )
+                    warned = True
+
+            if "warning" in x:
+                if (
+                    "Grid cell bounds not available, using constant grid cell area weights"
+                    in x
+                ):
+                    warnings.warn(
+                        "CDO warning: Grid cell bounds not available, using constant grid cell area weights for operation"
+                    )
+                    warned = True
+
+            if "warning" in x:
+                if (
+                    "Computation of grid cell area weights failed, grid cell center and bounds coordinates missing"
+                    in x
+                ):
+                    warnings.warn(
+                        "CDO warning: Computation of grid cell area weights failed, grid cell center and bounds coordinates missing from netCDF"
+                    )
+                    warned = True
+
+
+            if not warned:
+                if "arning" in x:
+                    warnings.warn(f"CDO warning: {x}")
+
+    if len(sel_timestep) > 0:
+        len_sel = len(sel_timestep)
+        # first, figure out if this is a timestep range
+        if set(range(min(sel_timestep), max(sel_timestep) + 1)) == set(sel_timestep):
+            sel_timestep = [x for x in sel_timestep]
+            if len(sel_timestep) > 1:
+                sel_timestep = str(min(sel_timestep)) + "-" + str(max(sel_timestep))
+            else:
+                sel_timestep = str(sel_timestep[0])
+        else:
+            sel_timestep = ",".join([str(x) for x in sel_timestep])
+        if len_sel > 1:
+            message = f"{len_sel} timesteps were missing in the dataset: {sel_timestep}"
+        else:
+            message = (
+                f"The following timestep was missing in the dataset: {sel_timestep}"
+            )
+        warnings.warn(message=message)
+
+    if len(sel_level) > 0:
+        len_sel = len(sel_level)
+        # first, figure out if this is a level range
+        if set(range(min(sel_level), max(sel_level) + 1)) == set(sel_level):
+            if len(sel_level) > 1:
+                sel_level = str(min(sel_level)) + "-" + str(max(sel_level))
+            else:
+                sel_level = str(sel_level[0])
+        else:
+            sel_level = ",".join([str(x) for x in sel_level])
+        if len_sel > 1:
+            message = f"{len_sel} levels were missing in the dataset: {sel_level}"
+        else:
+            message = f"The following level was missing in the dataset: {sel_level}"
+        warnings.warn(message=message)
+
+    if len(sel_day) > 0:
+        len_sel = len(sel_day)
+        # first, figure out if this is a day range
+        if set(range(min(sel_day), max(sel_day) + 1)) == set(sel_day):
+            if len(sel_day) > 1:
+                sel_day = str(min(sel_day)) + "-" + str(max(sel_day))
+            else:
+                sel_day = str(sel_day[0])
+        else:
+            sel_day = ",".join([str(x) for x in sel_day])
+        if len_sel > 1:
+            message = f"{len_sel} days were missing in the dataset: {sel_day}"
+        else:
+            message = f"The following day was missing in the dataset: {sel_day}"
+        warnings.warn(message=message)
+
+    if len(sel_hour) > 0:
+        len_sel = len(sel_hour)
+        # first, figure out if this is a hour range
+        if set(range(min(sel_hour), max(sel_hour) + 1)) == set(sel_hour):
+            if len(sel_hour) > 1:
+                sel_hour = str(min(sel_hour)) + "-" + str(max(sel_hour))
+            else:
+                sel_hour = str(sel_hour[0])
+        else:
+            sel_hour = ",".join([str(x) for x in sel_hour])
+        if len_sel > 1:
+            message = f"{len_sel} hours were missing in the dataset: {sel_hour}"
+        else:
+            message = f"The following hour was missing in the dataset: {sel_hour}"
+        warnings.warn(message=message)
+    if len(sel_var) > 0:
+        sel_var = ",".join(sel_var)
+        message = f"The following variables were missing in the dataset: {sel_var}"
+        warnings.warn(message)
+
+    if len(sel_year) > 0:
+        len_sel = len(sel_year)
+        # first, figure out if this is a year range
+        if set(range(min(sel_year), max(sel_year) + 1)) == set(sel_year):
+            if len(sel_year) > 1:
+                sel_year = str(min(sel_year)) + "-" + str(max(sel_year))
+            else:
+                sel_year = str(sel_year[0])
+        else:
+            sel_year = ",".join([str(x) for x in sel_year])
+        if len_sel > 1:
+            message = f"{len_sel} years were missing in the dataset: {sel_year}"
+        else:
+            message = f"The following year was missing in the dataset: {sel_year}"
+        warnings.warn(message=message)
+
+    if len(sel_month) > 0:
+        len_sel = len(sel_month)
+        # first, figure out if this is a month range
+        if set(range(min(sel_month), max(sel_month) + 1)) == set(sel_month):
+            if len(sel_month) > 1:
+                sel_month = str(min(sel_month)) + "-" + str(max(sel_month))
+            else:
+                sel_month = str(sel_month[0])
+        else:
+            sel_month = ",".join([str(x) for x in sel_month])
+        if len_sel > 1:
+            message = f"{len_sel} months were missing in the dataset: {sel_month}"
+        else:
+            message = f"The following month was missing in the dataset: {sel_month}"
+        warnings.warn(message=message)
 
     return target
 
 
-def run_this(os_command, self, output="one", out_file=None, suppress = False):
+def run_this(os_command, self, output="one", out_file=None, suppress=False):
     from tqdm import tqdm
 
     if len(self) == 0:
@@ -616,9 +821,9 @@ def run_this(os_command, self, output="one", out_file=None, suppress = False):
                 progress_bar = False
 
                 if self._thredds is False:
-                    if self.size['Number of files in ensemble'] >= 12:
-                        if self.size['Ensemble size'].split(" ")[1] == "GB":
-                            if float(self.size['Ensemble size'].split(" ")[0]) > 12:
+                    if self.size["Number of files in ensemble"] >= 12:
+                        if self.size["Ensemble size"].split(" ")[1] == "GB":
+                            if float(self.size["Ensemble size"].split(" ")[0]) > 12:
                                 progress_bar = True
 
                 if session_info["progress"] == "off":
@@ -636,7 +841,7 @@ def run_this(os_command, self, output="one", out_file=None, suppress = False):
                             if not suppress:
                                 print("Processing large ensemble! In progress")
                         if not suppress:
-                            pbar = tqdm(total=len(file_list), position = 0, leave = True)
+                            pbar = tqdm(total=len(file_list), position=0, leave=True)
 
                 for ff in file_list:
                     ff_command = os_command
@@ -682,7 +887,9 @@ def run_this(os_command, self, output="one", out_file=None, suppress = False):
                             ff_command = ff_command.replace(
                                 "cdo ", f"cdo -f {self._format} "
                             )
-                    ff_command = ff_command.replace("cdo ", f"cdo {self._align} ").replace("  ", " ")
+                    ff_command = ff_command.replace(
+                        "cdo ", f"cdo {self._align} "
+                    ).replace("  ", " ")
 
                     if self._zip and zip_copy and format_it is False:
                         ff_command = ff_command.replace("cdo ", "cdo -z zip copy ")
@@ -692,10 +899,10 @@ def run_this(os_command, self, output="one", out_file=None, suppress = False):
 
                     new_history.append(ff_command)
 
-
                     if cores > 1:
                         temp = pool.apply_async(
-                            run_cdo, [ff_command, target, out_file, False, self._precision]
+                            run_cdo,
+                            [ff_command, target, out_file, False, self._precision],
                         )
                         results[ff] = temp
                     else:
@@ -718,7 +925,7 @@ def run_this(os_command, self, output="one", out_file=None, suppress = False):
                             if not suppress:
                                 print("Processing a large ensemble. In progress:")
                         if not suppress:
-                            pbar = tqdm(total=len(file_list), position = 0, leave = True)
+                            pbar = tqdm(total=len(file_list), position=0, leave=True)
                     for k, v in results.items():
                         target_list.append(v.get())
                         if progress_bar:
@@ -790,7 +997,9 @@ def run_this(os_command, self, output="one", out_file=None, suppress = False):
                             "cdo ", f"cdo -f {self._format} copy "
                         )
                     else:
-                        os_command = os_command.replace("cdo ", f"cdo -f {self._format} ")
+                        os_command = os_command.replace(
+                            "cdo ", f"cdo -f {self._format} "
+                        )
 
                 if self._zip and zip_copy and format_it is False:
                     os_command = os_command.replace("cdo ", "cdo -z zip copy ")
@@ -804,7 +1013,9 @@ def run_this(os_command, self, output="one", out_file=None, suppress = False):
 
                 os_command = tidy_command(os_command)
 
-                os_command = os_command.replace("cdo ", f"cdo {self._align} ").replace("  ", " ")
+                os_command = os_command.replace("cdo ", f"cdo {self._align} ").replace(
+                    "  ", " "
+                )
 
                 if "mergetime" in os_command:
                     try:
