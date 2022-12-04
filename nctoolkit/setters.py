@@ -16,7 +16,7 @@ def set_year(self, x):
     Parameters
     -------------
     x : int
-        Year to set dataset to 
+        Year to set dataset to
     """
 
     if not isinstance(x, int):
@@ -31,7 +31,7 @@ def set_day(self, x):
     Parameters
     -------------
     x : int
-        Day to set dataset to 
+        Day to set dataset to
     """
 
     if not isinstance(x, int):
@@ -124,13 +124,13 @@ def set_date(self, year=None, month=None, day=None, base_year=1900):
 
     run_this(cdo_command, self, output="ensemble")
 
-def missing_as_constant(self, value=None):
+def missing_as(self, value=None):
     """
     Convert missing values to a constant
 
     Parameters
     -------------
-    value : Number to convert the missing values to 
+    value : Number to convert the missing values to
         If int/float is provided, the missing value will be converted to that.
     """
 

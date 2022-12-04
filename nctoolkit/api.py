@@ -1727,7 +1727,7 @@ class DataSet(object):
     from nctoolkit.setters import set_units
     from nctoolkit.setters import set_longnames
     from nctoolkit.setters import set_precision
-    from nctoolkit.setters import missing_as_constant
+    from nctoolkit.setters import missing_as
 
     from nctoolkit.shift import shift
 
