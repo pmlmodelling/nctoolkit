@@ -1,5 +1,6 @@
 import signal
 from contextlib import contextmanager
+from nctoolkit.session import session_info
 
 
 class TimeoutException(Exception):
@@ -34,10 +35,10 @@ def plot(self, vars=None, autoscale=True, out = None, coast= False, **kwargs):
     out: str
         Name of output file if you want to save as html. Defaults to None.
     coast: bool
-        Set to True if you want a coastline to show up on spatial map. Default is False 
+        Set to True if you want a coastline to show up on spatial map. Default is False
 
     **kwargs: Optional args to be sent to hvplot
-         
+
 
     Examples
     ------------
@@ -58,6 +59,9 @@ def plot(self, vars=None, autoscale=True, out = None, coast= False, **kwargs):
 
     # run any commands
     self.run()
+
+    if session_info["coast"]:
+        coast = True
 
     if len(self) > 1:
         raise TypeError("You cannot view multiple files!")

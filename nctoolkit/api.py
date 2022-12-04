@@ -88,6 +88,7 @@ session_info["precision"] = None
 session_info["parallel"] = False
 session_info["progress"] = "on"
 session_info["checks"] = True
+session_info["coast"] = False
 
 session_info["interactive"] = sys.__stdin__.isatty()
 
@@ -108,7 +109,7 @@ if platform.system() == "Linux":
 
 
 def update_options(kwargs):
-    valid_keys = ["thread_safe", "lazy", "cores", "precision", "temp_dir", "parallel", "checks", "progress"]
+    valid_keys = ["thread_safe", "lazy", "cores", "precision", "temp_dir", "parallel", "checks", "progress", "coast"]
 
     for key in kwargs:
         find = True
@@ -135,8 +136,8 @@ def update_options(kwargs):
                 if kwargs[key] not in ["on", "off", "auto", "of"]:
                     raise ValueError("progress must be one of 'on', 'off', 'auto'")
 
-                if kwargs[key] == "of": 
-                    session_info[key] = "off" 
+                if kwargs[key] == "of":
+                    session_info[key] = "off"
                 else:
                     session_info[key] = kwargs[key]
                 find = False
@@ -160,7 +161,7 @@ def update_options(kwargs):
                         if kwargs[key] not in ["I8", "I16", "I32", "F32", "F64", "default"]:
                             raise ValueError("precision supplied is not valid!")
                         if kwargs[key] == "default":
-                            session_info[key] = None 
+                            session_info[key] = None
                         else:
                             session_info[key] = kwargs[key]
                         find = False
@@ -268,8 +269,8 @@ def options(**kwargs):
                 if kwargs[key] not in ["on", "off", "auto", "of"]:
                     raise ValueError("progress must be one of 'on', 'off', 'auto'")
 
-                if kwargs[key] == "of": 
-                    session_info[key] = "off" 
+                if kwargs[key] == "of":
+                    session_info[key] = "off"
                 else:
                     session_info[key] = kwargs[key]
                 return None
