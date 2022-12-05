@@ -1724,6 +1724,7 @@ class DataSet(object):
     from nctoolkit.setters import set_year
     from nctoolkit.setters import set_day
     from nctoolkit.setters import as_missing
+    from nctoolkit.setters import set_missing
     from nctoolkit.setters import set_units
     from nctoolkit.setters import set_longnames
     from nctoolkit.setters import set_precision
@@ -1786,4 +1787,4 @@ class DataSet(object):
     from nctoolkit.zonals import zonal_sum
 
     # Deprecated methods
-    from nctoolkit.deprecated import set_missing
+    #from nctoolkit.deprecated import set_missing

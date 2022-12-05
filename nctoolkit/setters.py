@@ -143,11 +143,35 @@ def missing_as(self, value=None):
 
     run_this(cdo_command, self, output="ensemble")
 
+def set_missing(self, value=None):
+    """
+    Set the missing value for a single number or a range
+
+    Parameters
+    -------------
+    value : 2 variable list or int/float
+        If int/float is provided, the missing value will be set to that.
+        If a list is provided, values between the two values (inclusive)
+        of the list are set to missing.
+    """
+
+    if value is None:
+        raise ValueError("Please supply missing value")
+
+    try:
+        test = float(value)
+    except:
+        raise TypeError("value cannot evaluate to a float")
+    warnings.warn(message = f"Changing missing value to {value}")
+
+    cdo_command = f"cdo -setmissval,{value} -setmissval,nan" 
+
+    run_this(cdo_command, self, output="ensemble")
 
 
 def as_missing(self, value=None):
     """
-    Set the missing value for a single number or a range
+    Change a range or individual value to missing.
 
     Parameters
     -------------
