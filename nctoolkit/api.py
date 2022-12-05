@@ -756,8 +756,17 @@ def open_data(x=[], checks=True, **kwargs):
     d._thredds = thredds
 
     if (len(d) == 1) and checks and (thredds is False):
+        d_contents = d.contents.reset_index(drop = True)
+        try:
+            d_sub = d_contents.query("fill_value == 0.0").reset_index(drop = True)
+            if len(d_sub) > 0:
+                file_out = ",".join(list(d_sub.variable))
+                warnings.warn(f"These variables have 0 as the fill value: {file_out}. Set to a different fill value if you are using sensitive methods.")
+        except:
+            # warning will be trigger, so no need to do anything
+            blah = "blah"
 
-        list1 = d.contents.reset_index(drop=True).data_type
+        list1 = d_contents.data_type
         positions = [ind for ind, x in enumerate(list1) if x.startswith("I")]
         if len(positions):
             bad = list(d.contents.reset_index(drop=True).variable[positions])
@@ -1447,6 +1456,14 @@ class DataSet(object):
                         "data_type",
                     ],
                 ]
+                try:
+                    fills = []
+                    for vv in df.variable:
+                        fills.append(dataset.variables[vv]._FillValue)
+                    df["fill_value"] = fills
+                except:
+                    warnings.warn("Unable to identify fill values")
+
                 list_contents.append(df.assign(file=ff))
             except:
                 warnings.warn("Potential data format issues identified. Consider running check!")
