@@ -10,6 +10,8 @@ This update will improve the ability to handle missing values. A method will be 
 
 Another method `missing_as` is introduced. This will be the opposite of `as_missing`. Instead of setting a range of values to missing values, it will set missing values to a constant value.
 
+Dataset contents will now show the fill value for variables. Furthermore, `open_data` will now check if the fill value is zero, which can cause problems for logical comparisons etc.
+
 
 Release of v0.8.2
 ---------------
