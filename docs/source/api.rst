@@ -216,7 +216,7 @@ Time-based methods
    :toctree: generated/
 
    DataSet.set_date
-   DataSet.set_year
+   DataSet.set_day
    DataSet.shift
 
 Interpolation, matching and resampling methods
@@ -366,6 +366,8 @@ Miscellaneous methods
    DataSet.strip_variables
    DataSet.no_leaps
    DataSet.as_double
+   DataSet.as_type
+   DataSet.reset
 
 
 
@@ -376,7 +378,6 @@ Ecological methods
    :toctree: generated/
 
    DataSet.phenology
-   DataSet.initiation
 
 
 
