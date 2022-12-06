@@ -3,6 +3,40 @@ Random Data Hacks
 
 nctoolkit features a number of useful methods to tweak data.
 
+Handling missing values
+================
+
+If you need to set or change missing values, you can use nctoolkit's built-in methods: ``as_missing``, ``missing_as`` and ``set_fill``.
+
+Changing an individual value or values within a range to missing values, is easy using ``as_missing``. If you wanted to set zeroes to missing values, you would do the following:
+
+
+.. code:: ipython3
+
+    ds.as_missing(0)
+
+In some cases, you might want to set values within a range to missing. In that case, just supply a list to ``as_missing``. The following would set all values from -100 to 0 to missing:
+
+.. code:: ipython3
+
+    ds.as_missing([-1000, 0])
+
+
+If you need to change missing values to a constant value, use ``missing_as``. The following would change missing values to a constant value of -9999.99:
+
+.. code:: ipython3
+
+    ds.missing_as(-9999.99)
+
+Sometimes you might want to change the fill value used in the netCDF file. This can be particularly useful if you are working with muiltiple files with different fill values. You can do this using using ``set_fill``:
+
+.. code:: ipython3
+
+    ds.set_fill(-9e38)
+
+
+
+
 
 Shifting time
 ================

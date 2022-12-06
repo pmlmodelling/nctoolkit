@@ -84,6 +84,8 @@ Variable modification
    DataSet.assign
    DataSet.rename
    DataSet.as_missing
+   DataSet.missing_as
+   DataSet.set_fill
    DataSet.sum_all
 
 netCDF file attribute modification 
