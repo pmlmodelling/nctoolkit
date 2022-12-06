@@ -6,7 +6,7 @@ Release of v0.8.4
 
 Version 0.8.4 will be released in December 2022.
 
-This update will improve the ability to handle missing values. A method will be introduced for changing missing values, `set_missing`. This method has the same name as the prior `as_missing` method, so initially it will provide a warning to say what it is doing to avoid possible confusion.
+This update will improve the ability to handle missing values. A method will be introduced for changing the fill value missing values, `set_fill`.
 
 Another method `missing_as` is introduced. This will be the opposite of `as_missing`. Instead of setting a range of values to missing values, it will set missing values to a constant value.
 

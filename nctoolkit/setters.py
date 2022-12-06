@@ -143,9 +143,9 @@ def missing_as(self, value=None):
 
     run_this(cdo_command, self, output="ensemble")
 
-def set_missing(self, value=None):
+def set_fill(self, value=None):
     """
-    Set the missing value for a single number or a range
+    Set the fill value 
 
     Parameters
     -------------
@@ -162,7 +162,6 @@ def set_missing(self, value=None):
         test = float(value)
     except:
         raise TypeError("value cannot evaluate to a float")
-    warnings.warn(message = f"Changing missing value to {value}")
 
     cdo_command = f"cdo -setmissval,{value} -setmissval,nan" 
 
