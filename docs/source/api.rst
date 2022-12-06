@@ -44,8 +44,8 @@ Adding and removing files to a dataset
 .. autosummary::
    :toctree: generated/
 
-    append
-    remove
+    DataSet.append
+    DataSet.remove
 
 Accessing attributes
 ------------------
