@@ -9,6 +9,10 @@ def name_check(x):
     if " " in x:
         return False
 
+    text = re.compile(".*[+,/,-,*]")
+    if len(text.findall(x)) > 0:
+        raise ValueError("Do not include mathematical operators in variable names")
+
     if len(x) == 1:
         text = re.compile("[a-zA-Z]")
         if text.match(x):
