@@ -681,6 +681,16 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
                     )
                     warned = True
 
+            if "warning" in x:
+                if (
+                    "day 29feb not found"
+                    in x
+                ):
+                    warnings.warn(
+                        "No leap years found in data!"
+                    )
+                    warned = True
+
 
             if not warned:
                 if "arning" in x:
