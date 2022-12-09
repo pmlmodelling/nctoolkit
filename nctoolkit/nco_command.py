@@ -123,6 +123,10 @@ def nco_command(self, command=None, ensemble=False):
             self.history.append(cc)
         self._hold_history = copy.deepcopy(self.history)
 
+        for ff in target_list:
+            remove_safe(ff)
+        for ff in new_files:
+            remove_safe(ff)
 
 
 
