@@ -680,6 +680,15 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
                         "CDO warning: Computation of grid cell area weights failed, grid cell center and bounds coordinates missing from netCDF"
                     )
                     warned = True
+            if "warning" in x:
+                if (
+                    "fldmean (warning): grid cell bounds not available, using constant grid cell area weights"
+                    in x
+                ):
+                    warnings.warn(
+                        "Grid cell bounds are not available. Constant grid cell weights are used for spatial mean!"
+                    )
+                    warned = True
 
             if "warning" in x:
                 if (
