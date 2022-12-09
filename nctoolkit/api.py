@@ -70,7 +70,7 @@ def time_limit(seconds):
 # A custom format for warnings.
 def custom_formatwarning(msg, *args, **kwargs):
     # ignore everything except the message
-    return str(msg) + "\n"
+    return "Warning: " + str(msg) + "\n"
 
 
 warnings.formatwarning = custom_formatwarning
@@ -1462,7 +1462,7 @@ class DataSet(object):
                         fills.append(dataset.variables[vv]._FillValue)
                     df["fill_value"] = fills
                 except:
-                    warnings.warn("Unable to identify fill values")
+                    df = df
 
                 list_contents.append(df.assign(file=ff))
             except:
