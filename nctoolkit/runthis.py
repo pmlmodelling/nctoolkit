@@ -502,6 +502,7 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
                     stacklevel=2,
                 )
                 warned = True
+
             if len(missing_months) > 0:
                 warnings.warn(
                     message=f'CDO warning: Months {str_flatten(missing_months, ",")} '
@@ -509,6 +510,11 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
                     stacklevel=2,
                 )
                 warned = True
+
+
+
+
+
     else:
         messages = str(result).split("\\n")
 
@@ -700,6 +706,22 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
                     )
                     warned = True
 
+            text = re.compile("grids have different types! first grid: .*; second grid: .*")
+            checks = text.findall(x)
+            if len(checks) > 0:
+                i_out = checks[0].replace("grids have", "Grids have")
+                warnings.warn(i_out)
+                warned = True
+
+            if "warning" in x:
+                if (
+                    "input parameters have different levels!"
+                    in x
+                ):
+                    warnings.warn(
+                        "Input parameters have different levels!"
+                    )
+                    warned = True
 
             if not warned:
                 if "arning" in x:

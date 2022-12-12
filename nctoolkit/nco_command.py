@@ -125,7 +125,7 @@ def nco_command(self, command=None, ensemble=False):
 
         for ff in target_list:
             remove_safe(ff)
-        for ff in new_files:
+        for ff in target_list:
             remove_safe(ff)
 
 
