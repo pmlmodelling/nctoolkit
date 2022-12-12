@@ -419,7 +419,7 @@ class TestCalls:
         data = nc.open_data(ff)
         data.annual_anomaly(baseline=[1970, 1979], window=10)
         assert (
-            "cdo -L -sub -runmean,10 -yearmean data/sst.mon.mean.nc -timmean -selyear,1970/1979 data/sst.mon.mean.nc"
+                "cdo --timestat_date last -L -sub -runmean,10 -yearmean data/sst.mon.mean.nc -timmean -selyear,1970/1979 data/sst.mon.mean.nc"
             in data.history[0]
         )
 

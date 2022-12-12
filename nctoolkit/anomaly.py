@@ -9,7 +9,7 @@ from nctoolkit.session import remove_safe, session_info
 from nctoolkit.utils import version_below
 
 
-def annual_anomaly(self, baseline=None, metric="absolute", window=1):
+def annual_anomaly(self, baseline=None, metric="absolute", window=1, align = "right"):
     """
     Calculate annual anomalies for each variable based on a baseline period
     The anomaly is derived by first calculating the climatological annual mean for the
@@ -52,6 +52,24 @@ def annual_anomaly(self, baseline=None, metric="absolute", window=1):
 
 
     """
+
+    if "cen" in align:
+        align = "middle"
+
+    if "left" in align:
+        align = "first"
+
+    if "right" in align:
+        align = "last"
+
+    if "last" in align:
+        align = "last"
+
+    if "first" in align:
+        align = "first"
+
+    if "middle" in align:
+        align = "midhigh"
 
     if len(self) == 0:
         raise ValueError("Failure due to empty dataset!")
@@ -111,6 +129,10 @@ def annual_anomaly(self, baseline=None, metric="absolute", window=1):
         # run the command and save the temp file
 
         cdo_command = tidy_command(cdo_command)
+        cdo_command = cdo_command.replace("cdo ", f"cdo --timestat_date {align} ").replace(
+                    "  ", " "
+                )
+
         target = run_cdo(cdo_command, target, precision=self._precision)
 
         # updae the new files and commands
