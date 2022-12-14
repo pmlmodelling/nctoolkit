@@ -1,4 +1,3 @@
-import atexit
 import glob
 import sys
 import copy
@@ -388,9 +387,6 @@ if config_file is not None:
             if len(key) > 0:
                 update_options({key:value})
 
-
-# register clean_all to clean temp files on exit
-atexit.register(clean_all)
 
 # run temp_check to see if any files are held over from previous sessions
 temp_check()
@@ -1575,16 +1571,28 @@ class DataSet(object):
         return new
 
     def __del__(self):
-        for ff in self:
-            remove_safe(ff)
-        for ff in self._safe:
-            remove_safe(ff)
-        if self._weights is not None:
-            remove_safe(self._weights)
-        if self._weights is not None:
-            remove_safe(self._grid)
+        if self is not None:
+            for ff in self:
+                if ff is not None:
+                    try:
+                        remove_safe(ff)
+                    except:
+                        blah = "blah"
+            for ff in self._safe:
+                if ff is not None:
+                    try:
+                        remove_safe(ff)
+                    except:
+                        blah = "blah"
+            if self._weights is not None:
+                remove_safe(self._weights)
+            if self._weights is not None:
+                remove_safe(self._grid)
 
-        cleanup()
+        try:
+            cleanup()
+        except:
+            blah = "blah"
 
     @start.deleter
     def start(self):
