@@ -301,6 +301,12 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
             "Is the horizontal grid very large? Consider setting cdo=False in crop!"
         )
 
+    if "cdf_put" in str(result):
+        error = str(result).replace("b'", "").replace("\\n", "").replace("'", "")
+        if "Numeric conversion not representable" in error:
+            error = f"Processing error in CDO. Please check your dataset data types and run check on the dataset: {error}."
+            raise ValueError(error)
+
     if "(Abort)" in str(result):
         remove_safe(target)
         remove_safe(start_target)
@@ -360,6 +366,7 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
                 f"The following seasons were not available: {error}. Please check season supplied to nctoolkit methods!"
             )
 
+
         text = re.compile(r"Month [0-9]* not found")
         errors = text.findall(error)
         if len(errors) > 0:
@@ -367,6 +374,7 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
             raise ValueError(
                 f"None of the months supplied are in the dataset. Please check months supplied to nctoolkit methods!"
             )
+
 
         text = re.compile(r"Year [0-9]* not found")
         errors = text.findall(error)
