@@ -1,14 +1,26 @@
 News
 ============
 
+Release of v0.8.5
+---------------
+
+Version 0.8.5 was released on 14th December 2022. This is a minor release that deals with clean up issues on Jupyter notebooks. A change in a recent version of ipykernel was causing nctoolkit to not automatically remove
+temporary files on exit, though only in jupyter notebooks. This should now be fixed.
+
+The `annual_anomaly` method now lets users temporally align the output, in the same way as other temporal methods such as `roll_mean`.
+
+Some improvements have been made to internals for better warnings and errors.
+
+
+
 Release of v0.8.4
 ---------------
 
-Version 0.8.4 will be released in December 2022.
+Version 0.8.4 was released on 6th  December 2022.
 
-This update will improve the ability to handle missing values. A method will be introduced for changing the fill value missing values, `set_fill`.
+This update improves the ability to handle missing values. A method iss introduced for changing the fill value missing values, `set_fill`.
 
-Another method `missing_as` is introduced. This will be the opposite of `as_missing`. Instead of setting a range of values to missing values, it will set missing values to a constant value.
+Another method `missing_as` is introduced. This will do the opposite of `as_missing`. Instead of setting a range of values to missing values, it will set missing values to a constant value.
 
 Dataset contents will now show the fill value for variables. Furthermore, `open_data` will now check if the fill value is zero, which can cause problems for logical comparisons etc.
 
