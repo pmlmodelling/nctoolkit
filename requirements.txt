@@ -7,5 +7,4 @@ ncplot>=0.2.8
 dill
 python-dateutil
 matplotlib
-ipykernel<6.18.0
 
