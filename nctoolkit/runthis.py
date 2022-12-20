@@ -327,6 +327,23 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
                 f"Please check dates supplied to nctoolkit".replace("  ", " ")
             )
 
+
+        if "gridcell_areas" in error:
+            if "Cell corner coordinates missing!" in error:
+                raise ValueError("CDO was uanable to calculate cell areas because cell corner coordinates are missing")
+
+        if "genbil" in error:
+            if "support unstructured source grids" in error:
+                raise ValueError("Unable to regrid an unstructured grid. Considering using nearest neighbour!")
+
+        if "Unsupported grid" in error:
+            if "unstructured" in error.lower():
+                raise ValueError("This method does not supported unstructured grids!")
+            
+        if "Too many different grids" in error:
+            raise ValueError("Error in internal CDO processing. Too many different grids for method. Consider subsetting to specific variables!")
+        
+
         text = re.compile(r"Variable >.*< not found!")
         errors = text.findall(error)
         if len(errors) > 0:
@@ -703,6 +720,25 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
                         "Grid cell bounds are not available. Constant grid cell weights are used for spatial mean!"
                     )
                     warned = True
+            if "warning" in x:
+                text = re.compile("unknown units \[.*\] supplied for grid cell corner .*; proceeding assuming .*!")
+                text_find = text.findall("CDO warning: cdo(1) gridarea (warning): unknown units [degrees] supplied for grid cell corner longitudes; proceeding assuming radians!")
+                if len(text_find) > 0:
+                    message = text_find[0]
+                    message = "Warning for grid area calculations: " + message
+                    warnings.warn(message)
+                    warned = True
+
+
+
+            ## Unsupported array structure message
+            if "unsupported" in x and "skipped variable" in x:
+                text = re.compile("skipped variable .*!")
+                bad_var = text.findall("CDO warning: warning (cdfscanvarattr): time must be the first dimension! unsupported array structure, skipped variable fgco2_reg!")[0].split(" ")[2].replace("!", "")
+                message = f"This variable's structure is not supported by CDO: {bad_var}. Full CDO warning: {x}"
+                warnings.warn(message)
+                warned = True
+
 
             if "warning" in x:
                 if (
@@ -734,6 +770,10 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
             if not warned:
                 if "arning" in x:
                     warnings.warn(f"CDO warning: {x}")
+
+
+
+
 
     if len(sel_timestep) > 0:
         len_sel = len(sel_timestep)
