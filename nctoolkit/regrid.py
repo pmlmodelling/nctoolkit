@@ -20,7 +20,7 @@ def is_iterable(x):
         return False
 
 
-def regrid(self, grid=None, method="bil", recycle=False, **kwargs):
+def regrid(self, grid=None, method="bil", recycle=False, one_grid = False, **kwargs):
     """
     Regrid a dataset to a target grid
 
@@ -40,6 +40,8 @@ def regrid(self, grid=None, method="bil", recycle=False, **kwargs):
         Large area fraction remapping - "laf"
     recycle : bool 
         Set to True if you want to re-use the remapping weights when you are regridding another dataset. 
+    one_grid : bool 
+        Set to True if all files in multi-file dataset have the same grid, to speed things up. 
     kwargs : optional method to generate grid 
         Instead of supplying a grid using 'grid', you can supply `lon` and `lat`. These must be equally
         lengthed lists or arrays that will be used to generate the grid. If you want to regrid to a single
@@ -123,18 +125,25 @@ def regrid(self, grid=None, method="bil", recycle=False, **kwargs):
     if len(self) > 1 and recycle:
         raise ValueError("You cannot recycle multi-file datasets")
 
+    i = 0
     for ff in self:
-        cdo_result = subprocess.run(
-            f"cdo griddes {ff}",
-            shell=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        ).stdout
-        cdo_result = str(cdo_result)
-        if cdo_result in grid_split:
-            grid_split[cdo_result].append(ff)
+        if i == 0:
+            cdo_result = subprocess.run(
+                f"cdo griddes {ff}",
+                shell=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+            ).stdout
+            cdo_result = str(cdo_result)
+            if cdo_result in grid_split:
+                grid_split[cdo_result].append(ff)
+            else:
+                grid_split[cdo_result] = [ff]
         else:
-            grid_split[cdo_result] = [ff]
+            grid_split[cdo_result].append(ff)
+        if one_grid:
+            i+=1
+
 
     if grid is not None:
         # first generate the grid
