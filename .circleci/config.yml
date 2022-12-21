@@ -18,8 +18,7 @@ jobs:
           command: |
             eval "$(conda shell.bash hook)"
             #conda activate nctoolkit-dev
-            conda create -n nctoolkit python=3.9 -y
-            conda install -c conda-forge cdo nco geos -y
+            conda create -n nctoolkity -y python=3.9 cdo nco geos gcc
             #conda install -c conda-forge gcc=12.1.0
 
 
