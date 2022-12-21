@@ -16,7 +16,7 @@ jobs:
       - run:
           name: install dependencies
           command: |
-            bash setup_env.sh
+            bash .circleci/setup_env.sh
             eval "$(conda shell.bash hook)"
             conda activate nctoolkit-dev
             #conda create -n nctoolkit python=3.9 -y
