@@ -35,7 +35,7 @@ Core abilities include:
    - Calculating ensemble statistics
    - Calculating phenological metrics
 
-![PML logo](https://pml.ac.uk/)(docs/source/pml-logo.gif)
+![PML logo](docs/source/pml-logo.gif)(https://pml.ac.uk/)
 
 
 ## Installation
