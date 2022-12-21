@@ -12,11 +12,11 @@ jobs:
     steps:
       # Step 1: obtain repo from GitHub
       - checkout
-      - run: setup_env.sh
       # Step 2: create virtual env and install dependencies
       - run:
           name: install dependencies
           command: |
+            bash setup_env.sh
             eval "$(conda shell.bash hook)"
             conda activate nctoolkit-dev
             #conda create -n nctoolkit python=3.9 -y
