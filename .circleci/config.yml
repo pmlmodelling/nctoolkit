@@ -17,7 +17,7 @@ jobs:
           name: install dependencies
           command: |
             apt update
-            apt apt install build-essential 
+            apt install build-essential  -y
             eval "$(conda shell.bash hook)"
             #conda activate nctoolkit-dev
             conda config --add channels conda-forge
