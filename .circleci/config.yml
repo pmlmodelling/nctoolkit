@@ -12,11 +12,14 @@ jobs:
     steps:
       # Step 1: obtain repo from GitHub
       - checkout
+      - run: .circleci/setup_env.sh
       # Step 2: create virtual env and install dependencies
       - run:
           name: install dependencies
           command: |
-            conda create -n nctoolkit python=3.9 -y
+            eval "$(conda shell.bash hook)"
+            conda activate nctoolkit-dev
+            #conda create -n nctoolkit python=3.9 -y
             #conda install -c conda-forge gcc=12.1.0
 
 
@@ -27,8 +30,7 @@ jobs:
             #conda init bash
 
             eval "$(conda shell.bash hook)"
-            conda activate nctoolkit
-            conda install -c conda-forge cdo nco cartopy -y
+            conda activate nctoolkit-dev
             pip install pytest
             pip install coverage
             pip install numpy 
