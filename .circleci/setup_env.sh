@@ -1,5 +1,6 @@
 #!/bin/bash -e
-# modified from https://raw.githubusercontent.com/nctoolkit-dev/pandas/main/.circleci/setup_env.sh
+# modified from https://raw.githubusercontent.com/nctoolkit-dev/nctoolkit/main/.circleci/setup_env.sh
+
 
 echo "Install Mambaforge"
 MAMBA_URL="https://github.com/conda-forge/miniforge/releases/download/4.14.0-0/Mambaforge-4.14.0-0-Linux-aarch64.sh"
@@ -37,7 +38,29 @@ echo "mamba env update --file=${ENV_FILE}"
 mamba create -q -n nctoolkit-dev
 time mamba env update -n nctoolkit-dev --file="${ENV_FILE}"
 
+echo "conda list -n nctoolkit-dev"
+conda list -n nctoolkit-dev
+
 echo "activate nctoolkit-dev"
 source activate nctoolkit-dev
 
-mamba install cdo nco cartopy -y
+# Explicitly set an environment variable indicating that this is nctoolkit' CI environment.
+#
+# This allows us to enable things like -Werror that shouldn't be activated in
+# downstream CI jobs that may also build nctoolkit from source.
+export PANDAS_CI=1
+
+if pip list | grep -q ^nctoolkit; then
+    echo
+    echo "remove any installed nctoolkit package w/o removing anything else"
+    pip uninstall -y nctoolkit || true
+fi
+
+echo "Build extensions"
+# GH 47305: Parallel build can causes flaky ImportError from nctoolkit/_libs/tslibs
+python setup.py build_ext -q -j1
+
+echo "Install nctoolkit"
+python -m pip install --no-build-isolation --no-use-pep517 -e .
+
+echo "done"
