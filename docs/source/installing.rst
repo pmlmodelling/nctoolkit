@@ -8,36 +8,31 @@ How to install nctoolkit
 
 You will need a Linux or Mac operating system for nctoolkit to work. It will not work on Windows due to system requirements. 
 
-nctoolkit is available from the `Python Packaging Index. <https://pypi.org/project/nctoolkit/>`__   To install nctoolkit using pip::
-
-   $ pip install numpy 
-   $ pip install nctoolkit 
-
-If you already have numpy installed, ignore the first line. This is only included as it will make installing some dependencies smoother. nctoolkit partly relies on cartopy for plotting. This has some additional dependencies, so you may need to follow their guide `here <https://pypi.org/project/nctoolkit/>`__ to ensure cartopy is installed fully. If you install nctoolkit using conda, you will not need to worry about that.
-
-If you install nctoolkit from pypi, you will need to install the system dependencies listed below.
-
-nctoolkit can also be installed using conda, as follows::
+The best and easiest way to install nctoolkit is to use conda. This will install all system dependencies, and nctoolkit will just work out of the box. This can be done as follows::
 
    $ conda install -c conda-forge nctoolkit
 
-Note that recent releases are not available for Python 3.8 on macOS on conda. This issue is being investigated at the minute, and will hopefully be resolved shortly. In the meantime, if you are using macOS and Python 3.8, it is best to install using pip.
+Mamba is a smoother way to manage conda environments. If you don't use it, you should try. Install it from  `here  <https://github.com/conda-forge/miniforge/>`__.
 
-At present this can be slow due to the time taken to resolve dependency versions. If you run into problems just use pip. 
+Once mambaforge is installed you can install nctoolkit as follows::
+
+   $ mamba install -c conda-forge nctoolkit
+
+This will be much faster to install than using conda, because mamba resolves environments much faster.
+
+Note that recent releases are not available on macOS on conda. This issue is being investigated at the minute, and will hopefully be resolved shortly. In the meantime, if you are using macOS, it is best to install using pip.
+
+If you do not use conda, you can install nctoolkit using pip. The package is available from the `Python Packaging Index. <https://pypi.org/project/nctoolkit/>`__   To install nctoolkit using pip::
+
+   $ pip install nctoolkit 
+
+nctoolkit partly relies on cartopy for plotting. This has some additional dependencies, so you may need to follow their guide `here <https://pypi.org/project/nctoolkit/>`__ to ensure cartopy is installed fully. If you install nctoolkit using conda, you will not need to worry about that.
+
+Once you have installed nctoolkit using pip, you will need to install the system dependencies listed below.
 
 To install the development version from GitHub::
 
    $ pip install git+https://github.com/r4ecology/nctoolkit.git
-
-
-Jupyter notebook issue
----------------------
-
-A recent update to ipykernel has broken some functionality in jupyter notebooks. This appears to impacting plotting in nctoolkit. To fix this just downgrade ipykernel::
-
-        $ conda install ipykernel=6.17.1
-        $ mamba install ipykernel=6.17.1
-        $ pip install ipykernel==6.17.1
 
 
 
@@ -60,6 +55,11 @@ There are two main system dependencies: `Climate Data Operators <https://code.mp
 
     $ conda install -c conda-forge nco
 
+or mamba::
+
+    $ mamba install -c conda-forge cdo
+
+    $ mamba install -c conda-forge nco
 
 CDO is necessary for the package to work. NCO is an optional dependency and does not have to be installed.
 
