@@ -16,7 +16,7 @@ jobs:
       - run:
           name: install dependencies
           command: |
-            sudo apt get install -y g++
+            apt get install -y g++
             eval "$(conda shell.bash hook)"
             #conda activate nctoolkit-dev
             conda config --add channels conda-forge
