@@ -20,7 +20,7 @@ jobs:
             #conda activate nctoolkit-dev
             conda config --add channels conda-forge
 
-            conda create -n nctoolkity -y python=3.9 cdo nco geos gcc
+            conda create -n nctoolkit -y python=3.9 cdo nco geos gcc
             #conda install -c conda-forge gcc=12.1.0
 
 
