@@ -35,6 +35,9 @@ Core abilities include:
    - Calculating ensemble statistics
    - Calculating phenological metrics
 
+![PML logo](docs/source/pml-log.gif)
+
+
 ## Installation
 
 The easiest way to install the package is using conda. This will install nctoolkit and all system dependencies.
