@@ -12,7 +12,7 @@ jobs:
     steps:
       # Step 1: obtain repo from GitHub
       - checkout
-      - run: .circleci/setup_env.sh
+      - run: setup_env.sh
       # Step 2: create virtual env and install dependencies
       - run:
           name: install dependencies
