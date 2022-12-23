@@ -3,7 +3,9 @@ from nctoolkit.session import append_safe, remove_safe
 from nctoolkit.temp_file import temp_file
 
 
-def to_latlon(self, lon=None, lat=None, res=None, method="bil", recycle=False):
+def to_latlon(
+    self, lon=None, lat=None, res=None, method="bil", recycle=False, one_grid=False
+):
     """
     Regrid a dataset to a regular latlon grid
 
@@ -29,6 +31,8 @@ def to_latlon(self, lon=None, lat=None, res=None, method="bil", recycle=False):
     recycle : bool
         Do you want the grid and weights to be available for recycling and use in regrid?
         Defaults to False
+    one_grid : bool
+        Set to True if all files in multi-file dataset have the same grid, to speed things up.
 
     """
 
@@ -116,7 +120,7 @@ def to_latlon(self, lon=None, lat=None, res=None, method="bil", recycle=False):
     append_safe(grid_file)
 
     # call regrid
-    self.regrid(grid=grid_file, method=method, recycle=recycle)
+    self.regrid(grid=grid_file, method=method, recycle=recycle, one_grid=one_grid)
 
     remove_safe(grid_file)
 
