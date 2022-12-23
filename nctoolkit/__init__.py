@@ -21,11 +21,11 @@ from nctoolkit.matchpoint import open_matchpoint
 from nctoolkit.cleanup import cleanup, clean_all, deep_clean, temp_check
 
 import atexit
-atexit.register(clean_all)
 import signal
 
+atexit.register(clean_all)
+
 signal.signal(signal.SIGTERM, clean_all)
-signal.signal(signal.SIGINT, clean_all)
 
 from nctoolkit.create_ensemble import create_ensemble
 from nctoolkit.session import session_files
@@ -42,7 +42,7 @@ validate_version()
 try:
     from importlib.metadata import version as _version
 except ImportError:
-    from importlib_metadata import version as _version  
+    from importlib_metadata import version as _version
 
 try:
     __version__ = _version("nctoolkit")

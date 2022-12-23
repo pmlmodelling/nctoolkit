@@ -1,6 +1,18 @@
 News
 ============
 
+Release of v0.8.6
+---------------
+
+Version 0.8.6 was released on 23rd December 2022. This is a minor releases that tidies up some issues and has some method enhancements.
+
+The `regrid` and `to_latlon` methods can now be more efficient for multi-file datasets where all files have the same grid. Previously, the methods identified the grids for all methods. You 
+can now set the `one_grid` argument to `True`, which will result in the methods assuming all files have the same grid, and only the first file being checked.
+
+There was an issue with multi-file datasets in parallel in Python 3.8 and 3.9. A confusing TypeError was being thrown due to signalling issues by multiprocessing. This gave the impression there was
+a problem with processing when there wasn't one. This problem is now fixed.
+
+
 Release of v0.8.5
 ---------------
 

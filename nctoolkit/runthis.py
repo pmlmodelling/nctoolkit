@@ -5,6 +5,7 @@ import subprocess
 import platform
 import warnings
 import multiprocessing
+import signal
 
 from nctoolkit.cleanup import cleanup
 from nctoolkit.flatten import str_flatten
@@ -327,22 +328,26 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
                 f"Please check dates supplied to nctoolkit".replace("  ", " ")
             )
 
-
         if "gridcell_areas" in error:
             if "Cell corner coordinates missing!" in error:
-                raise ValueError("CDO was uanable to calculate cell areas because cell corner coordinates are missing")
+                raise ValueError(
+                    "CDO was uanable to calculate cell areas because cell corner coordinates are missing"
+                )
 
         if "genbil" in error:
             if "support unstructured source grids" in error:
-                raise ValueError("Unable to regrid an unstructured grid. Considering using nearest neighbour!")
+                raise ValueError(
+                    "Unable to regrid an unstructured grid. Considering using nearest neighbour!"
+                )
 
         if "Unsupported grid" in error:
             if "unstructured" in error.lower():
                 raise ValueError("This method does not supported unstructured grids!")
-            
+
         if "Too many different grids" in error:
-            raise ValueError("Error in internal CDO processing. Too many different grids for method. Consider subsetting to specific variables!")
-        
+            raise ValueError(
+                "Error in internal CDO processing. Too many different grids for method. Consider subsetting to specific variables!"
+            )
 
         text = re.compile(r"Variable >.*< not found!")
         errors = text.findall(error)
@@ -383,7 +388,6 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
                 f"The following seasons were not available: {error}. Please check season supplied to nctoolkit methods!"
             )
 
-
         text = re.compile(r"Month [0-9]* not found")
         errors = text.findall(error)
         if len(errors) > 0:
@@ -391,7 +395,6 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
             raise ValueError(
                 f"None of the months supplied are in the dataset. Please check months supplied to nctoolkit methods!"
             )
-
 
         text = re.compile(r"Year [0-9]* not found")
         errors = text.findall(error)
@@ -536,10 +539,6 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
                 )
                 warned = True
 
-
-
-
-
     else:
         messages = str(result).split("\\n")
 
@@ -654,20 +653,30 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
                     sel_level.append(int(re.findall(r"\d+", all_text[0])[0]))
                 ignore = True
         if "grid latitudes differ" in x:
-            warnings.warn(message = "Grid latitudes differ in operation. Check if this is acceptable!")
+            warnings.warn(
+                message="Grid latitudes differ in operation. Check if this is acceptable!"
+            )
             ignore = True
 
         if "grid longitudes differ" in x:
-            warnings.warn(message = "Grid longitudes differ in operation. Check if this is acceptable!")
+            warnings.warn(
+                message="Grid longitudes differ in operation. Check if this is acceptable!"
+            )
             ignore = True
 
         if "found more than one time variable, skipped variable" in x:
-            message = x.split( "found more than one time variable, skipped variable ")[1].replace("!", "")
-            warnings.warn(message = f"CDO found more than one time variable. Only one is allowed. {message} was skipped")
+            message = x.split("found more than one time variable, skipped variable ")[
+                1
+            ].replace("!", "")
+            warnings.warn(
+                message=f"CDO found more than one time variable. Only one is allowed. {message} was skipped"
+            )
             ignore = True
 
         if "Using constant grid cell area weights!" in x:
-            warnings.warn(message = "Using constant grid cell area weights! If you need weighted cell areas, please fix the dataset grid!")
+            warnings.warn(
+                message="Using constant grid cell area weights! If you need weighted cell areas, please fix the dataset grid!"
+            )
             ignore = True
 
         if "selmonth" in x:
@@ -721,36 +730,40 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
                     )
                     warned = True
             if "warning" in x:
-                text = re.compile("unknown units \[.*\] supplied for grid cell corner .*; proceeding assuming .*!")
-                text_find = text.findall("CDO warning: cdo(1) gridarea (warning): unknown units [degrees] supplied for grid cell corner longitudes; proceeding assuming radians!")
+                text = re.compile(
+                    "unknown units \[.*\] supplied for grid cell corner .*; proceeding assuming .*!"
+                )
+                text_find = text.findall(
+                    "CDO warning: cdo(1) gridarea (warning): unknown units [degrees] supplied for grid cell corner longitudes; proceeding assuming radians!"
+                )
                 if len(text_find) > 0:
                     message = text_find[0]
                     message = "Warning for grid area calculations: " + message
                     warnings.warn(message)
                     warned = True
 
-
-
             ## Unsupported array structure message
             if "unsupported" in x and "skipped variable" in x:
                 text = re.compile("skipped variable .*!")
-                bad_var = text.findall("CDO warning: warning (cdfscanvarattr): time must be the first dimension! unsupported array structure, skipped variable fgco2_reg!")[0].split(" ")[2].replace("!", "")
+                bad_var = (
+                    text.findall(
+                        "CDO warning: warning (cdfscanvarattr): time must be the first dimension! unsupported array structure, skipped variable fgco2_reg!"
+                    )[0]
+                    .split(" ")[2]
+                    .replace("!", "")
+                )
                 message = f"This variable's structure is not supported by CDO: {bad_var}. Full CDO warning: {x}"
                 warnings.warn(message)
                 warned = True
 
-
             if "warning" in x:
-                if (
-                    "day 29feb not found"
-                    in x
-                ):
-                    warnings.warn(
-                        "No leap years found in data!"
-                    )
+                if "day 29feb not found" in x:
+                    warnings.warn("No leap years found in data!")
                     warned = True
 
-            text = re.compile("grids have different types! first grid: .*; second grid: .*")
+            text = re.compile(
+                "grids have different types! first grid: .*; second grid: .*"
+            )
             checks = text.findall(x)
             if len(checks) > 0:
                 i_out = checks[0].replace("grids have", "Grids have")
@@ -758,22 +771,13 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
                 warned = True
 
             if "warning" in x:
-                if (
-                    "input parameters have different levels!"
-                    in x
-                ):
-                    warnings.warn(
-                        "Input parameters have different levels!"
-                    )
+                if "input parameters have different levels!" in x:
+                    warnings.warn("Input parameters have different levels!")
                     warned = True
 
             if not warned:
                 if "arning" in x:
                     warnings.warn(f"CDO warning: {x}")
-
-
-
-
 
     if len(sel_timestep) > 0:
         len_sel = len(sel_timestep)
@@ -917,7 +921,12 @@ def run_this(os_command, self, output="one", out_file=None, suppress=False):
                     os_command = os_command.replace("  ", " ")
 
                 if cores > 1:
+                    original_sigint_handler = signal.signal(
+                        signal.SIGTERM, signal.SIG_IGN
+                    )
                     pool = multiprocessing.Pool(cores)
+                    signal.signal(signal.SIGTERM, original_sigint_handler)
+
                     target_list = []
                     results = dict()
                 else:
