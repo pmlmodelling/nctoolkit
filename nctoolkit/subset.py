@@ -9,6 +9,12 @@ from nctoolkit.show import nc_years
 from nctoolkit.utils import cdo_version, version_above, name_check
 
 
+def fix_ind(x):
+    if int(x) < 0:
+        return int(x)
+    else:
+        return int(x) + 1
+
 
 def to_date(x):
     if "-" in x:
@@ -401,7 +407,7 @@ def select_timesteps(self, times=None):
     # all of the variables in months need to be converted to ints,
     # just in case floats have been provided
 
-    times = [int(x) + 1 for x in times]
+    times = [fix_ind(x) for x in times]
     times = [str(x) for x in times]
     times = str_flatten(times)
 

@@ -733,12 +733,20 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
                 text = re.compile(
                     "unknown units \[.*\] supplied for grid cell corner .*; proceeding assuming .*!"
                 )
-                text_find = text.findall(
-                    "CDO warning: cdo(1) gridarea (warning): unknown units [degrees] supplied for grid cell corner longitudes; proceeding assuming radians!"
-                )
+                text_find = text.findall(x)
                 if len(text_find) > 0:
                     message = text_find[0]
                     message = "Warning for grid area calculations: " + message
+                    warnings.warn(message)
+                    warned = True
+
+                text = re.compile(
+                    "delete \(warning\): timestep .* not found"
+                )
+                text_find = text.findall(x)
+                if len(text_find) > 0:
+                    message = text_find[0]
+                    message = "Warning: attempting to drop non-existent timesteps!" 
                     warnings.warn(message)
                     warned = True
 
@@ -746,9 +754,7 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
             if "unsupported" in x and "skipped variable" in x:
                 text = re.compile("skipped variable .*!")
                 bad_var = (
-                    text.findall(
-                        "CDO warning: warning (cdfscanvarattr): time must be the first dimension! unsupported array structure, skipped variable fgco2_reg!"
-                    )[0]
+                    text.findall(x)[0]
                     .split(" ")[2]
                     .replace("!", "")
                 )
