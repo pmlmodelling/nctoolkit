@@ -23,6 +23,7 @@ jobs:
             conda config --add channels conda-forge
 
             conda create -n nctoolkit -y python=3.9 cdo nco geos
+            conda create -n nctoolkit31 -y python=3.10 cdo nco geos
 
             #conda install -c conda-forge gcc=12.1.0
 
@@ -46,3 +47,14 @@ jobs:
             coverage report
             coverage xml
       
+            conda activate nctoolkit31
+            pip install pytest
+            pip install coverage
+            pip install numpy 
+            pip install cartopy
+            pip install rioxarray
+            pip install --user codecov
+            pip install .
+            coverage run -m pytest tests/test_*.py
+            coverage report
+            coverage xml
