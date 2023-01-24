@@ -396,6 +396,14 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
                 f"None of the months supplied are in the dataset. Please check months supplied to nctoolkit methods!"
             )
 
+        text = re.compile(r"month [0-9]* not found")
+        errors = text.findall(error)
+        if len(errors) > 0:
+            error = errors[0]
+            raise ValueError(
+                f"None of the months supplied are in the dataset. Please check months supplied to nctoolkit methods!"
+            )
+
         text = re.compile(r"Year [0-9]* not found")
         errors = text.findall(error)
         if len(errors) > 0:
@@ -411,6 +419,7 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
             raise ValueError(
                 f"None of the days supplied are available. Please check days supplied to nctoolkit methods!"
             )
+
 
         text = re.compile(r"Timestep [0-9]* not found")
         errors = text.findall(error)
@@ -602,9 +611,23 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
     sel_hour = []
     sel_var = []
 
+
+    drop_warnings = []
+
     for x in result.decode("utf-8").lower().split("\n"):
         warned = False
         ignore = False
+
+        text = re.compile("delete \(warning\): month >[0-9]*< not found!")
+        errors = text.findall(x)
+        if len(errors) > 0:
+            for y in errors:
+                for z in re.findall(r'\d+', y):
+                    drop_warnings.append(z)
+                    #message= f"Warning: Unable to find month {z}"
+                    #warnings.warn(message)
+                    ignore = True
+
 
         if "selyear" in x:
             text = re.compile("selyear \\(warning\\): year [0-9]* not found")
@@ -746,7 +769,7 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
                 text_find = text.findall(x)
                 if len(text_find) > 0:
                     message = text_find[0]
-                    message = "Warning: attempting to drop non-existent timesteps!" 
+                    message = "Warning: attempting to drop non-existent timesteps!"
                     warnings.warn(message)
                     warned = True
 
@@ -784,6 +807,10 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
             if not warned:
                 if "arning" in x:
                     warnings.warn(f"CDO warning: {x}")
+    if len(drop_warnings) > 0:
+        message = ",".join(drop_warnings)
+        message = f"The following months do not exist in the dataset: {message}"
+        warnings.warn(message)
 
     if len(sel_timestep) > 0:
         len_sel = len(sel_timestep)
