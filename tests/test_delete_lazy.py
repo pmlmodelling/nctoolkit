@@ -28,6 +28,14 @@ class TestDelete:
         assert x == ["tos"]
 
         tracker = nc.open_data(ff)
+        tracker.subset(year = 1970)
+        tracker.run()
+        tracker.drop(time = -1)
+        tracker.run()
+        assert 12 not in tracker.months
+
+
+        tracker = nc.open_data(ff)
         tracker.subset(time = [0,1, 2,3])
         tracker.drop(time = 0)
         tracker.run()
