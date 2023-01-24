@@ -1,6 +1,7 @@
 [run]
 omit = 
     *tests*
+    tests/*
     # exclude anything that is not officially documented on the website
     nctoolkit/deprecated.py 
     nctoolkit/esoteric.py 
