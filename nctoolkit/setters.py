@@ -49,12 +49,6 @@ def set_precision(self, x):
     -------------
     x : str
         The precision. One of 'I8', 'I16', 'I32', 'F32', 'F64'.
-    month : int
-        The month
-    day : int
-        The day
-    base_year : int
-        The base year for time creation in the netCDF. Defaults to 1900.
     """
 
     if x not in ["I8", "I16", "I32", "F32", "F64"]:
