@@ -490,7 +490,7 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
                         in str(result)
                     ):
                         raise ValueError(
-                            "CDO error: Error (cdf_put_vara_double): NetCDF: Numeric conversion not representable. Tip: check if missing values are incorrectly set to large actual values!"
+                            "CDO error: Error (cdf_put_vara_double): NetCDF: Numeric conversion not representable. Tip: Consider changing numerical precision using set_precision or check if missing values are incorrectly set to large actual values!"
                         )
 
                     raise ValueError(
