@@ -22,6 +22,7 @@ from nctoolkit.session import (
     nc_protected_par,
     session_info,
     nc_safe,
+    session_files,
     append_safe,
     remove_safe,
     append_protected,
@@ -88,6 +89,7 @@ session_info["parallel"] = False
 session_info["progress"] = "on"
 session_info["checks"] = True
 session_info["coast"] = False
+session_info["user"] = ""
 
 session_info["interactive"] = sys.__stdin__.isatty()
 
@@ -108,7 +110,7 @@ if platform.system() == "Linux":
 
 
 def update_options(kwargs):
-    valid_keys = ["thread_safe", "lazy", "cores", "precision", "temp_dir", "parallel", "checks", "progress", "coast"]
+    valid_keys = ["thread_safe", "lazy", "cores", "precision", "temp_dir", "parallel", "checks", "progress", "coast", "user"]
 
     for key in kwargs:
         find = True
@@ -165,7 +167,17 @@ def update_options(kwargs):
                             session_info[key] = kwargs[key]
                         find = False
                     else:
-                        raise ValueError(kwargs[key] + " is not valid session info!")
+                        if key == "user":
+                            if not isinstance(kwargs[key], str):
+                                raise ValueError("user supplied must be str")
+                            if len(session_files())> 0:
+                                raise ValueError("You can only define user at the start of a session")
+                            session_info[key] = kwargs[key]
+                            session_info["stamp"] =  session_info["stamp"] + "_"+ kwargs[key] + "_"
+
+                            find = False
+                        else:
+                            raise ValueError(kwargs[key] + " is not valid session info!")
         else:
             session_info[key] = kwargs[key]
 
@@ -1295,206 +1307,210 @@ class DataSet(object):
         This will only display the variables in the first file of an ensemble.
         """
 
-        if n is None:
-            n = len(self)
+        try:
 
-        list_contents = []
+            if n is None:
+                n = len(self)
 
-        use_names = True
+            list_contents = []
 
-        for ff in self:
-            if "nctoolkit" in ff:
-                use_names = False
+            use_names = True
 
-        for ff in self[0:n]:
+            for ff in self:
+                if "nctoolkit" in ff:
+                    use_names = False
 
-            dataset = Dataset(ff)
+            for ff in self[0:n]:
 
-            out = subprocess.run(
-                "cdo sinfon " + ff,
-                shell=True,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-            )
-            if "Unsupported file structure" in str(out.stderr):
-                for ff in self:
-                    remove_safe(ff)
-                    remove_protected(ff)
-                raise ValueError("Unsupported file structure. Check file using the check method.")
-            if "expandWildCards" in out.stderr.decode("utf-8"):
-                for ff in self:
-                    remove_safe(ff)
-                    remove_protected(ff)
-                raise ValueError(out.stderr.decode("utf-8"))
-            out = out.stdout.decode("utf-8")
-            out = out.split("\n")
-            out_inc = ["Grid coordinates :" in ff for ff in out]
-            var_det = []
-            i = 1
-            while True:
-                if out_inc[i]:
-                    break
-                i += 1
-                var_det.append(out[i - 1])
+                dataset = Dataset(ff)
 
-            def split_var(x):
-                x = x.replace(":", "").split(" ")
-                x = [x for x in x if len(x) > 0]
-                new_x = []
-                include = False
-                for y in x[1:]:
-                    if y.isnumeric():
-                        include = True
-
-                    if include:
-                        new_x.append(y)
-                return new_x
-
-            def fix_head(x):
-                x = (
-                    x.replace(":", "")
-                    .replace("  ", " ")
-                    .replace("Parameter name", "variable")
+                out = subprocess.run(
+                    "cdo sinfon " + ff,
+                    shell=True,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
                 )
-                x = x[x.find("Level") :].replace("  ", " ")
-                return x.split(" ")
+                if "Unsupported file structure" in str(out.stderr):
+                    for ff in self:
+                        remove_safe(ff)
+                        remove_protected(ff)
+                    raise ValueError("Unsupported file structure. Check file using the check method.")
+                if "expandWildCards" in out.stderr.decode("utf-8"):
+                    for ff in self:
+                        remove_safe(ff)
+                        remove_protected(ff)
+                    raise ValueError(out.stderr.decode("utf-8"))
+                out = out.stdout.decode("utf-8")
+                out = out.split("\n")
+                out_inc = ["Grid coordinates :" in ff for ff in out]
+                var_det = []
+                i = 1
+                while True:
+                    if out_inc[i]:
+                        break
+                    i += 1
+                    var_det.append(out[i - 1])
 
-            def fix_type(x):
-                position = [m.start() for m in re.finditer(":", x)][-1]
+                def split_var(x):
+                    x = x.replace(":", "").split(" ")
+                    x = [x for x in x if len(x) > 0]
+                    new_x = []
+                    include = False
+                    for y in x[1:]:
+                        if y.isnumeric():
+                            include = True
 
-                return (
-                    x[: (position - 4)]
-                    + x[(position - 4) : position].replace(" ", "")
-                    + " "
-                    + x[(position):]
+                        if include:
+                            new_x.append(y)
+                    return new_x
+
+                def fix_head(x):
+                    x = (
+                        x.replace(":", "")
+                        .replace("  ", " ")
+                        .replace("Parameter name", "variable")
+                    )
+                    x = x[x.find("Level") :].replace("  ", " ")
+                    return x.split(" ")
+
+                def fix_type(x):
+                    position = [m.start() for m in re.finditer(":", x)][-1]
+
+                    return (
+                        x[: (position - 4)]
+                        + x[(position - 4) : position].replace(" ", "")
+                        + " "
+                        + x[(position):]
+                    )
+
+                var_det[0] = fix_head(var_det[0])
+                for ii in range(1, len(var_det)):
+                    var_det[ii] = fix_type(var_det[ii])
+                    var_det[ii] = split_var(var_det[ii])
+
+                df = pd.DataFrame.from_records(var_det[1:], columns=var_det[0])
+                df = df.loc[:, ["Levels", "Points", "variable", "Dtype"]]
+                df = df.rename(
+                    columns={"Levels": "nlevels", "Points": "npoints", "Dtype": "data_type"}
                 )
 
-            var_det[0] = fix_head(var_det[0])
-            for ii in range(1, len(var_det)):
-                var_det[ii] = fix_type(var_det[ii])
-                var_det[ii] = split_var(var_det[ii])
+                longs = None
+                units = None
+                longs = []
 
-            df = pd.DataFrame.from_records(var_det[1:], columns=var_det[0])
-            df = df.loc[:, ["Levels", "Points", "variable", "Dtype"]]
-            df = df.rename(
-                columns={"Levels": "nlevels", "Points": "npoints", "Dtype": "data_type"}
-            )
+                cdo_result = list(df.variable)
 
-            longs = None
-            units = None
-            longs = []
-
-            cdo_result = list(df.variable)
-
-            for x in cdo_result:
-                try:
-                    longs.append(dataset.variables[x].long_name)
-                except:
-                    longs.append(None)
-            units = []
-            for x in cdo_result:
-                try:
-                    units.append(dataset.variables[x].units)
-                except:
-                    units.append(None)
-
-            df = pd.DataFrame({"variable": cdo_result}).merge(df)
-
-            if longs is not None:
-                df["long_name"] = longs
-            if units is not None:
-                df["unit"] = units
-
-            df = df.assign(nlevels=lambda x: x.nlevels.astype("int")).assign(
-                npoints=lambda x: x.npoints.astype("int")
-            )
-
-            try:
-
-                times = []
-
-                ds = xr.open_dataset(ff, decode_times=False)
-                time_name = [x for x in ds.variables if "time" in x]
-
-                # get time name
-
-                if len(time_name) > 0:
-                    time_name = time_name[0]
-                else:
-                    time_name = "time"
-
-                for vv in cdo_result:
-                    done = False
+                for x in cdo_result:
                     try:
-                        ds_times = ds[vv][time_name].values
+                        longs.append(dataset.variables[x].long_name)
                     except:
-                        times.append(None)
-                        done = True
+                        longs.append(None)
+                units = []
+                for x in cdo_result:
+                    try:
+                        units.append(dataset.variables[x].units)
+                    except:
+                        units.append(None)
 
-                    if done is False:
-                        try:
-                            n_times = len(ds_times)
-                        except:
-                            n_times = 1
-                        times.append(n_times)
+                df = pd.DataFrame({"variable": cdo_result}).merge(df)
 
-                df["ntimes"] = times
+                if longs is not None:
+                    df["long_name"] = longs
+                if units is not None:
+                    df["unit"] = units
 
-                df = df.loc[
-                    :,
-                    [
-                        "variable",
-                        "ntimes",
-                        "npoints",
-                        "nlevels",
-                        "long_name",
-                        "unit",
-                        "data_type",
-                    ],
-                ]
+                df = df.assign(nlevels=lambda x: x.nlevels.astype("int")).assign(
+                    npoints=lambda x: x.npoints.astype("int")
+                )
+
                 try:
-                    fills = []
-                    for vv in df.variable:
-                        fills.append(dataset.variables[vv]._FillValue)
-                    df["fill_value"] = fills
+
+                    times = []
+
+                    ds = xr.open_dataset(ff, decode_times=False)
+                    time_name = [x for x in ds.variables if "time" in x]
+
+                    # get time name
+
+                    if len(time_name) > 0:
+                        time_name = time_name[0]
+                    else:
+                        time_name = "time"
+
+                    for vv in cdo_result:
+                        done = False
+                        try:
+                            ds_times = ds[vv][time_name].values
+                        except:
+                            times.append(None)
+                            done = True
+
+                        if done is False:
+                            try:
+                                n_times = len(ds_times)
+                            except:
+                                n_times = 1
+                            times.append(n_times)
+
+                    df["ntimes"] = times
+
+                    df = df.loc[
+                        :,
+                        [
+                            "variable",
+                            "ntimes",
+                            "npoints",
+                            "nlevels",
+                            "long_name",
+                            "unit",
+                            "data_type",
+                        ],
+                    ]
+                    try:
+                        fills = []
+                        for vv in df.variable:
+                            fills.append(dataset.variables[vv]._FillValue)
+                        df["fill_value"] = fills
+                    except:
+                        df = df
+
+                    list_contents.append(df.assign(file=ff))
                 except:
-                    df = df
+                    warnings.warn("Potential data format issues identified. Consider running check!")
+                    df = df.loc[
+                        :,
+                        [
+                            "variable",
+                            "npoints",
+                            "nlevels",
+                            "long_name",
+                            "unit",
+                            "data_type",
+                        ],
+                    ]
+                    list_contents.append(df.assign(file=ff))
 
-                list_contents.append(df.assign(file=ff))
-            except:
-                warnings.warn("Potential data format issues identified. Consider running check!")
-                df = df.loc[
-                    :,
-                    [
-                        "variable",
-                        "npoints",
-                        "nlevels",
-                        "long_name",
-                        "unit",
-                        "data_type",
-                    ],
-                ]
-                list_contents.append(df.assign(file=ff))
+            if len(list_contents) == 1:
+                return list_contents[0].drop(columns="file")
 
-        if len(list_contents) == 1:
-            return list_contents[0].drop(columns="file")
+            if use_names is False:
+                new_df = []
+                i = 1
+                for x in list_contents:
+                    new_df.append(x.assign(file=f"file {i}"))
+                    i += 1
 
-        if use_names is False:
-            new_df = []
-            i = 1
-            for x in list_contents:
-                new_df.append(x.assign(file=f"file {i}"))
-                i += 1
+                new_df = pd.concat(new_df)
 
-            new_df = pd.concat(new_df)
-
-            if len(set(new_df.file)) == 1:
-                return new_df.drop(columns="file")
+                if len(set(new_df.file)) == 1:
+                    return new_df.drop(columns="file")
+                else:
+                    new_df = new_df.set_index("file")
+                    return new_df
             else:
-                new_df = new_df.set_index("file")
-                return new_df
-        else:
-            return pd.concat(list_contents).set_index("file")
+                return pd.concat(list_contents).set_index("file")
+        except:
+            raise ValueError("Unable to parse dataset contents. Consider running checks on dataset")
 
     @property
     def contents(self):
