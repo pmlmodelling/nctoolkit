@@ -142,7 +142,7 @@ def validate_version():
         )
     if bad:
         raise ValueError(
-            "This version of nctoolkit is not compatible with CDO versions 2.0.0 and above"
+            "This version of nctoolkit is not compatible with CDO versions 2.0.0, 2.0.1, 2.0.2 and 2.0.3 and 2.0.4. Please upgrade."
         )
 
 
