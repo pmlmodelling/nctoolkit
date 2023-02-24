@@ -5,7 +5,7 @@ from nctoolkit.cleanup import cleanup
 from nctoolkit.flatten import str_flatten
 from nctoolkit.runthis import run_nco
 from nctoolkit.temp_file import temp_file
-from nctoolkit.session import remove_safe, session_info, append_safe
+from nctoolkit.session import remove_safe, session_info, append_safe, get_safe
 
 
 def nco_command(self, command=None, ensemble=False):
@@ -98,8 +98,14 @@ def nco_command(self, command=None, ensemble=False):
 
         self.current = new_files
 
-        for ff in new_files:
-            remove_safe(ff)
+        while True:
+            removed = 0
+            for ff in new_files:
+                if len([x for x in get_safe() if x == ff]) > 1:
+                    remove_safe(ff)
+                    removed +=1
+            if removed == 0:
+                break
 
         self.history.append(command)
         self._hold_history = copy.deepcopy(self.history)
@@ -115,8 +121,14 @@ def nco_command(self, command=None, ensemble=False):
             self.history.append(cc)
         self._hold_history = copy.deepcopy(self.history)
 
-        for ff in target_list:
-            remove_safe(ff)
+        while True:
+            removed = 0
+            for ff in new_files:
+                if len([x for x in get_safe() if x == ff]) > 1:
+                    remove_safe(ff)
+                    removed +=1
+            if removed == 0:
+                break
 
     self.disk_clean()
     cleanup()
