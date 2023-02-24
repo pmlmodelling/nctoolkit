@@ -1,6 +1,7 @@
 import copy
 import multiprocessing
 
+from nctoolkit.cleanup import cleanup
 from nctoolkit.flatten import str_flatten
 from nctoolkit.runthis import run_nco
 from nctoolkit.temp_file import temp_file
@@ -21,8 +22,6 @@ def nco_command(self, command=None, ensemble=False):
         This is useful for ensemble methods.
     """
 
-
-
     self.run()
 
     cores = session_info["cores"]
@@ -35,14 +34,14 @@ def nco_command(self, command=None, ensemble=False):
         raise TypeError("Command supplied is not a str")
 
     if (
-     command.startswith("ncea ")
-     or command.startswith("ncra ")
-     or command.startswith("ncap ")
-     or command.startswith("ncap2 ")
-     or command.startswith("ncks ")
-     or command.startswith("ncrename ")
-     or command.startswith("ncatted")
-        ) is False:
+        command.startswith("ncea ")
+        or command.startswith("ncra ")
+        or command.startswith("ncap ")
+        or command.startswith("ncap2 ")
+        or command.startswith("ncks ")
+        or command.startswith("ncrename ")
+        or command.startswith("ncatted")
+    ) is False:
         raise ValueError("This is not a valid NCO command")
     new_files = []
     new_commands = []
@@ -65,9 +64,7 @@ def nco_command(self, command=None, ensemble=False):
 
                 the_command = f"{command} {ff} {target}"
 
-                temp = pool.apply_async(
-                        run_nco, [the_command, target]
-                    )
+                temp = pool.apply_async(run_nco, [the_command, target])
                 results[ff] = temp
                 new_commands.append(the_command)
 
@@ -103,14 +100,9 @@ def nco_command(self, command=None, ensemble=False):
 
         for ff in new_files:
             remove_safe(ff)
-        for ff in new_files:
-            remove_safe(ff)
 
         self.history.append(command)
         self._hold_history = copy.deepcopy(self.history)
-
-
-
 
     if cores > 1:
         pool.close()
@@ -125,9 +117,6 @@ def nco_command(self, command=None, ensemble=False):
 
         for ff in target_list:
             remove_safe(ff)
-        for ff in target_list:
-            remove_safe(ff)
-
-
 
     self.disk_clean()
+    cleanup()
