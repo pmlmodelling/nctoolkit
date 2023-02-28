@@ -48,6 +48,31 @@ from contextlib import contextmanager
 import xarray as xr
 
 
+def fix_files(paths):
+    """
+    A simple function that switches to symlinks when a file path has a space in it
+
+    """
+    change = 0
+    new_files = []
+    for ff in paths:
+        if " " in ff:
+            change += 1
+
+    if change == 0:
+        return paths
+
+    for ff in paths:
+        if " " in ff:
+            out = temp_file("nc")
+            ff_full = os.path.abspath(ff)
+            os.symlink(ff_full, out)
+            new_files.append(out)
+        else:
+            new_files.append(ff)
+    return new_files
+
+
 class TimeoutException(Exception):
     pass
 
@@ -110,7 +135,18 @@ if platform.system() == "Linux":
 
 
 def update_options(kwargs):
-    valid_keys = ["thread_safe", "lazy", "cores", "precision", "temp_dir", "parallel", "checks", "progress", "coast", "user"]
+    valid_keys = [
+        "thread_safe",
+        "lazy",
+        "cores",
+        "precision",
+        "temp_dir",
+        "parallel",
+        "checks",
+        "progress",
+        "coast",
+        "user",
+    ]
 
     for key in kwargs:
         find = True
@@ -159,7 +195,14 @@ def update_options(kwargs):
             else:
                 if find:
                     if key == "precision":
-                        if kwargs[key] not in ["I8", "I16", "I32", "F32", "F64", "default"]:
+                        if kwargs[key] not in [
+                            "I8",
+                            "I16",
+                            "I32",
+                            "F32",
+                            "F64",
+                            "default",
+                        ]:
                             raise ValueError("precision supplied is not valid!")
                         if kwargs[key] == "default":
                             session_info[key] = None
@@ -170,14 +213,20 @@ def update_options(kwargs):
                         if key == "user":
                             if not isinstance(kwargs[key], str):
                                 raise ValueError("user supplied must be str")
-                            if len(session_files())> 0:
-                                raise ValueError("You can only define user at the start of a session")
+                            if len(session_files()) > 0:
+                                raise ValueError(
+                                    "You can only define user at the start of a session"
+                                )
                             session_info[key] = kwargs[key]
-                            session_info["stamp"] =  session_info["stamp"] + "_"+ kwargs[key] + "_"
+                            session_info["stamp"] = (
+                                session_info["stamp"] + "_" + kwargs[key] + "_"
+                            )
 
                             find = False
                         else:
-                            raise ValueError(kwargs[key] + " is not valid session info!")
+                            raise ValueError(
+                                kwargs[key] + " is not valid session info!"
+                            )
         else:
             session_info[key] = kwargs[key]
 
@@ -212,7 +261,6 @@ def update_options(kwargs):
                     for ff in nc_protected_par:
                         nc_protected.append(ff)
                         nc_protected_par.remove(ff)
-
 
 
 def options(**kwargs):
@@ -251,7 +299,16 @@ def options(**kwargs):
 
     """
 
-    valid_keys = ["thread_safe", "lazy", "cores", "precision", "temp_dir", "parallel", "checks", "progress"]
+    valid_keys = [
+        "thread_safe",
+        "lazy",
+        "cores",
+        "precision",
+        "temp_dir",
+        "parallel",
+        "checks",
+        "progress",
+    ]
 
     update_options(kwargs)
     return None
@@ -364,7 +421,7 @@ def find_config():
 config_file = find_config()
 
 if config_file is not None:
-    #valid_keys = ["thread_safe", "lazy", "cores", "precision", "temp_dir"]
+    # valid_keys = ["thread_safe", "lazy", "cores", "precision", "temp_dir"]
 
     file1 = open(config_file, "r")
     Lines = file1.readlines()
@@ -397,7 +454,7 @@ if config_file is not None:
                 value = terms[1]
                 value = value.replace("'", "").replace('"', "")
             if len(key) > 0:
-                update_options({key:value})
+                update_options({key: value})
 
 
 # run temp_check to see if any files are held over from previous sessions
@@ -460,7 +517,8 @@ def from_xarray(ds):
     d = DataSet(ff)
     return d
 
-def open_geotiff(x = []):
+
+def open_geotiff(x=[]):
     """
     Read geotiff and convert to nctoolkit dataset
 
@@ -567,7 +625,6 @@ def open_data(x=[], checks=True, **kwargs):
             if len(x) == 0:
                 raise FileNotFoundError("Please provide files that exist")
 
-
     # make sure data has been supplied
     if x is None:
         raise ValueError("No data was supplied!")
@@ -578,6 +635,12 @@ def open_data(x=[], checks=True, **kwargs):
         for ff in x:
             if not isinstance(ff, str):
                 raise TypeError("You have not supplied an iterable made of file paths!")
+
+    if isinstance(x, str):
+        x = [x]
+
+    if isinstance(x, list):
+        x = fix_files(x)
 
     if isinstance(x, list):
         if len(x) == 1:
@@ -764,12 +827,14 @@ def open_data(x=[], checks=True, **kwargs):
     d._thredds = thredds
 
     if (len(d) == 1) and checks and (thredds is False):
-        d_contents = d.contents.reset_index(drop = True)
+        d_contents = d.contents.reset_index(drop=True)
         try:
-            d_sub = d_contents.query("fill_value == 0.0").reset_index(drop = True)
+            d_sub = d_contents.query("fill_value == 0.0").reset_index(drop=True)
             if len(d_sub) > 0:
                 file_out = ",".join(list(d_sub.variable))
-                warnings.warn(f"These variables have 0 as the fill value: {file_out}. Set to a different fill value if you are using sensitive methods.")
+                warnings.warn(
+                    f"These variables have 0 as the fill value: {file_out}. Set to a different fill value if you are using sensitive methods."
+                )
         except:
             # warning will be trigger, so no need to do anything
             blah = "blah"
@@ -952,12 +1017,20 @@ def cor_time(x=None, y=None):
     x.run()
     y.run()
 
-    df = (x.contents.loc[:,["variable", "data_type"]].rename(columns = {"data_type":"type1"})
-        .merge(y.contents.loc[:,["variable", "data_type"]].rename(columns = {"data_type":"type2"}))
-        .query("type1 != type2")
+    df = (
+        x.contents.loc[:, ["variable", "data_type"]]
+        .rename(columns={"data_type": "type1"})
+        .merge(
+            y.contents.loc[:, ["variable", "data_type"]].rename(
+                columns={"data_type": "type2"}
+            )
         )
+        .query("type1 != type2")
+    )
     if len(df) > 0:
-        raise ValueError("Datasets have different data types. Please unify them using set_precision")
+        raise ValueError(
+            "Datasets have different data types. Please unify them using set_precision"
+        )
 
     if len(x) > 1 or len(y) > 1:
         raise TypeError("cor_time only accepts single file datasets!")
@@ -1020,12 +1093,20 @@ def cor_space(x=None, y=None):
     x.run()
     y.run()
 
-    df = (x.contents.loc[:,["variable", "data_type"]].rename(columns = {"data_type":"type1"})
-        .merge(y.contents.loc[:,["variable", "data_type"]].rename(columns = {"data_type":"type2"}))
-        .query("type1 != type2")
+    df = (
+        x.contents.loc[:, ["variable", "data_type"]]
+        .rename(columns={"data_type": "type1"})
+        .merge(
+            y.contents.loc[:, ["variable", "data_type"]].rename(
+                columns={"data_type": "type2"}
+            )
         )
+        .query("type1 != type2")
+    )
     if len(df) > 0:
-        raise ValueError("Datasets have different data types. Please unify them using set_precision")
+        raise ValueError(
+            "Datasets have different data types. Please unify them using set_precision"
+        )
 
     if len(x) > 1 or len(y) > 1:
         raise TypeError("cor_time only accepts single file datasets!")
@@ -1111,32 +1192,29 @@ class DataSet(object):
             yield ff
         return
 
-
     def __repr__(self):
         current = str(len(self))
 
-        output =  (
-            "<nctoolkit.DataSet>:\nNumber of files: "
-            + current)
+        output = "<nctoolkit.DataSet>:\nNumber of files: " + current
         output = output + "\n" + "File contents:"
-        #repr_params = fmt.get_dataframe_repr_params()
+        # repr_params = fmt.get_dataframe_repr_params()
         output += "\n"
-        output +=  self.show_contents(min(12, len(self))).to_string()
+        output += self.show_contents(min(12, len(self))).to_string()
         output += "\n"
         if len(self) > 12:
             output += "......"
         return output
 
-        #return(self.show_contents(min(12, len(self))))
+        # return(self.show_contents(min(12, len(self))))
         #''    print(".......")
 
-        #return (
+        # return (
         #    "<nctoolkit.DataSet>:\nFiles: "
         #    + current
         #    + "\n"
         #    + "Variables: "
         #    + str_flatten(variables)
-        #)
+        # )
 
     @property
     def size(self):
@@ -1169,10 +1247,10 @@ class DataSet(object):
         sum_size = convert_bytes(sum(all_sizes))
         result = dict()
 
-        result["Number of files in ensemble"] =  len(self)
-        result["Ensemble size"] =  sum_size
-        result["Smallest file size"] =  min_size
-        result["Largest file size"]  = max_size
+        result["Number of files in ensemble"] = len(self)
+        result["Ensemble size"] = sum_size
+        result["Smallest file size"] = min_size
+        result["Largest file size"] = max_size
         return result
 
     @property
@@ -1301,7 +1379,7 @@ class DataSet(object):
 
         return all_years
 
-    def show_contents(self, n = None):
+    def show_contents(self, n=None):
         """
         Detailed list of variables contained in a dataset.
         This will only display the variables in the first file of an ensemble.
@@ -1334,7 +1412,9 @@ class DataSet(object):
                     for ff in self:
                         remove_safe(ff)
                         remove_protected(ff)
-                    raise ValueError("Unsupported file structure. Check file using the check method.")
+                    raise ValueError(
+                        "Unsupported file structure. Check file using the check method."
+                    )
                 if "expandWildCards" in out.stderr.decode("utf-8"):
                     for ff in self:
                         remove_safe(ff)
@@ -1391,7 +1471,11 @@ class DataSet(object):
                 df = pd.DataFrame.from_records(var_det[1:], columns=var_det[0])
                 df = df.loc[:, ["Levels", "Points", "variable", "Dtype"]]
                 df = df.rename(
-                    columns={"Levels": "nlevels", "Points": "npoints", "Dtype": "data_type"}
+                    columns={
+                        "Levels": "nlevels",
+                        "Points": "npoints",
+                        "Dtype": "data_type",
+                    }
                 )
 
                 longs = None
@@ -1476,7 +1560,9 @@ class DataSet(object):
 
                     list_contents.append(df.assign(file=ff))
                 except:
-                    warnings.warn("Potential data format issues identified. Consider running check!")
+                    warnings.warn(
+                        "Potential data format issues identified. Consider running check!"
+                    )
                     df = df.loc[
                         :,
                         [
@@ -1510,7 +1596,9 @@ class DataSet(object):
             else:
                 return pd.concat(list_contents).set_index("file")
         except:
-            raise ValueError("Unable to parse dataset contents. Consider running checks on dataset")
+            raise ValueError(
+                "Unable to parse dataset contents. Consider running checks on dataset"
+            )
 
     @property
     def contents(self):
@@ -1520,7 +1608,6 @@ class DataSet(object):
         """
 
         return self.show_contents()
-
 
     @property
     def start(self):
@@ -1828,4 +1915,4 @@ class DataSet(object):
     from nctoolkit.zonals import zonal_sum
 
     # Deprecated methods
-    #from nctoolkit.deprecated import set_missing
+    # from nctoolkit.deprecated import set_missing
