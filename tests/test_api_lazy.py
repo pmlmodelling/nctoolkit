@@ -52,7 +52,8 @@ class TestApi2:
 
         data = nc.open_data("data/*.nc")
 
-        assert data.current == glob.glob("data/*.nc")
+        print([x for x in data if "" in x])
+        assert [x for x in data if "data" in x] == [x for x in glob.glob("data/*.nc") if " " not in x]
         ff1 = "data/2003.nc"
         ff2 = "data/2004.nc"
 
@@ -95,6 +96,12 @@ class TestApi2:
 
         ds = nc.open_data(ff1)
         assert ds.current[0] == ds.start[0]
+
+        ds1 = nc.open_data("data/ukesm_tas space.nc")
+        ds2 = nc.open_data("data/ukesm_tas.nc")
+        ds1-ds2
+        ds1.spatial_sum()
+        assert ds1.to_dataframe().tas.abs().sum() == 0.0
 
 
 
