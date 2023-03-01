@@ -39,6 +39,11 @@ PROJECT_URLS = {
     "Source Code": "https://github.com/pmlmodelling/nctoolkit",
 }
 
+extras_require: dict() = dict()
+
+
+extras_require["complete"] = ["geoviews", "rioxarray", "cfchecker", "geocube", "geopandas"]
+
 REQUIREMENTS = [i.strip() for i in open("requirements.txt").readlines()]
 
 setup(name='nctoolkit',
@@ -69,6 +74,7 @@ setup(name='nctoolkit',
         'wheel',
     ],
       install_requires = REQUIREMENTS,
+      extras_require = extras_require,
       zip_safe=False)
 
 
