@@ -1,6 +1,25 @@
 News
 ============
 
+Release of v0.9.0
+---------------
+
+Version 0.9.0 was released on 2nd March 2022. This is a major(ish) release with some breaking changes related to plotting.
+
+On pypi, cartopy has been switched to an optional dependency because it was causing installation difficulties for some users. You can now do a "complete" installation using pip to get all optional dependencies::
+
+    $ pip install nctoolkit[complete]
+
+This does not impact the conda version, which will behave as before.
+
+Support is now available for Python 3.11.
+
+File paths with spaces are now supported. 
+
+
+
+
+
 Release of v0.8.6
 ---------------
 
