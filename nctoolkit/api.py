@@ -113,8 +113,22 @@ session_info["precision"] = None
 session_info["parallel"] = False
 session_info["progress"] = "on"
 session_info["checks"] = True
-session_info["coast"] = False
 session_info["user"] = ""
+
+
+def coast_check():
+    try:
+        import geoviews
+        import cartopy
+        from cartopy import crs
+        import cartopy.crs as ccrs
+        projection = ccrs.PlateCarree()
+        return True
+    except:
+        return False
+
+session_info["coast"] = coast_check()
+
 
 session_info["interactive"] = sys.__stdin__.isatty()
 
@@ -1824,6 +1838,7 @@ class DataSet(object):
     # from nctoolkit.phenology import initiation
 
     from nctoolkit.plot import plot
+    ##from nctoolkit.plot import static_plot
 
     from nctoolkit.reduce import reduce_dims
 

@@ -2,10 +2,8 @@ import signal
 from contextlib import contextmanager
 from nctoolkit.session import session_info
 
-
 class TimeoutException(Exception):
     pass
-
 
 @contextmanager
 def time_limit(seconds):
@@ -20,7 +18,7 @@ def time_limit(seconds):
         signal.alarm(0)
 
 
-def plot(self, vars=None, autoscale=True, out = None, coast= False, **kwargs):
+def plot(self, vars=None, autoscale=True, out = None, coast= True, **kwargs):
     from ncplot import view
 
     """
@@ -54,14 +52,15 @@ def plot(self, vars=None, autoscale=True, out = None, coast= False, **kwargs):
 
     """
 
+
     if "title" not in kwargs.keys():
         kwargs["title"] = ""
 
     # run any commands
     self.run()
 
-    if session_info["coast"]:
-        coast = True
+    if not session_info["coast"]:
+        coast = False
 
     if len(self) > 1:
         raise TypeError("You cannot view multiple files!")
@@ -94,3 +93,6 @@ def plot(self, vars=None, autoscale=True, out = None, coast= False, **kwargs):
             return view(self[0], vars=vars, autoscale=autoscale, out = out, coast = coast,  **kwargs)
 
     return view(self[0], vars=vars, autoscale=autoscale, out = out, coast= coast,   **kwargs)
+
+
+
