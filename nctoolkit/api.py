@@ -1838,7 +1838,7 @@ class DataSet(object):
     # from nctoolkit.phenology import initiation
 
     from nctoolkit.plot import plot
-    ##from nctoolkit.plot import static_plot
+    from nctoolkit.static_plot import static_plot
 
     from nctoolkit.reduce import reduce_dims
 
