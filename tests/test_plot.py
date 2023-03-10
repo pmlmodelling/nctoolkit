@@ -5,19 +5,24 @@ import xarray as xr
 import os, pytest
 import re
 
-nc.options(lazy=True)
 
-
+ff = "data/sst.mon.mean.nc"
 
 class TestCrop:
     def test_plot(self):
-        ff = "data/sst.mon.mean.nc"
+
+
         ds = nc.open_data(ff, checks = False)
         ds.subset(time = 0)
+        ds.run()
         out_file = nc.temp_file.temp_file(".html")
+
+        #print(nc.session_files())
+
         ds.plot(out= out_file)
         assert os.path.exists(out_file)
         os.remove(out_file)
+
 
         ds = nc.open_data(ff, checks = False)
         ds.subset(time = [0,1,2])
@@ -36,6 +41,7 @@ class TestCrop:
         assert os.path.exists(out_file)
         os.remove(out_file)
 
+
         ds = nc.open_data(ff, checks = False)
         ds.subset(time = [0,1,2])
         ds.zonal_mean()
@@ -52,5 +58,8 @@ class TestCrop:
         ds.plot(out= out_file)
         assert os.path.exists(out_file)
         os.remove(out_file)
+        print(nc.session.get_protected())
+
+        print(nc.session_files())
 
 

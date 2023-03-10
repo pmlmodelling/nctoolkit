@@ -50,6 +50,27 @@ class TestClip:
 
         tracker = nc.open_data(ff)
         data = nc.open_data("data/sst.mon.mean.nc")
+        data.split("year")
+        data.zonal_mean()
+        data.merge("time")
+        data.tmean()
+        data.spatial_mean()
+        if cdo_version() not in  ["1.9.3", "1.9.4"]:
+            assert (
+                data.to_dataframe().sst[0].astype("float")
+                == 17.550573348999023
+            )
+        else:
+            assert (
+                data.to_dataframe().sst[0].astype("float")
+                == 17.550796508789062
+            )
+
+
+
+
+        tracker = nc.open_data(ff)
+        data = nc.open_data("data/sst.mon.mean.nc")
         data.tmean()
         data.zonal_min()
         data.spatial_mean()
@@ -63,6 +84,8 @@ class TestClip:
                 data.to_dataframe().sst[0].astype("float")
                 == 13.19469928741455
             )
+
+
 
         tracker = nc.open_data(ff)
         data = nc.open_data("data/sst.mon.mean.nc")

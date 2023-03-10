@@ -48,8 +48,12 @@ class TestNCO:
             tracker.nco_command()
         with pytest.raises(TypeError):
             tracker.nco_command(1)
-        #with pytest.raises(ValueError):
-        #    tracker = nc.open_data("data/2003.nc")
-        #    tracker.nco_command("nckd this")
-        #del tracker
+
+
+        nc.options(cores = 2)
+        ds = nc.open_data("data/woa*.nc")
+        ds.nco_command("ncks -v t_an")
+        assert ds.variables == ["t_an"]
+
+        nc.options(cores = 1)
 
