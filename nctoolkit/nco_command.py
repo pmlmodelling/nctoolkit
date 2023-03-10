@@ -123,7 +123,7 @@ def nco_command(self, command=None, ensemble=False):
 
         while True:
             removed = 0
-            for ff in new_files:
+            for ff in target_list:
                 if len([x for x in get_safe() if x == ff]) > 1:
                     remove_safe(ff)
                     removed +=1
