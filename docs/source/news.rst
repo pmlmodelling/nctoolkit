@@ -6,6 +6,10 @@ Release of v0.9.1
 
 Version 0.9.1 will be released in April 2023. This release will contain a new method for producing high quality static plots.
 
+A new method, `set`, will be introduced that will make it easier to rename variables, and change units and long names etc.
+
+Some improvements will be made to internals.
+
 Release of v0.9.0
 ---------------
 
