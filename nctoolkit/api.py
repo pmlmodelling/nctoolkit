@@ -1863,6 +1863,8 @@ class DataSet(object):
 
     from nctoolkit.subset import subset
 
+    from nctoolkit.set import set
+
     from nctoolkit.setters import set_date
     from nctoolkit.setters import set_year
     from nctoolkit.setters import set_day
