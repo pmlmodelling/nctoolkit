@@ -24,6 +24,7 @@ def set_year(self, x):
     cdo_command = f"cdo -setyear,{x}"
     run_this(cdo_command, self, output="ensemble")
 
+
 def set_day(self, x):
     """
     Set the day for each time step in a dataset
@@ -38,7 +39,6 @@ def set_day(self, x):
         raise ValueError(f"{x} is not a int")
     cdo_command = f"cdo -setday,{x}"
     run_this(cdo_command, self, output="ensemble")
-
 
 
 def set_precision(self, x):
@@ -118,6 +118,7 @@ def set_date(self, year=None, month=None, day=None, base_year=1900):
 
     run_this(cdo_command, self, output="ensemble")
 
+
 def missing_as(self, value=None):
     """
     Convert missing values to a constant
@@ -137,9 +138,10 @@ def missing_as(self, value=None):
 
     run_this(cdo_command, self, output="ensemble")
 
+
 def set_fill(self, value=None):
     """
-    Set the fill value 
+    Set the fill value
 
     Parameters
     -------------
@@ -157,7 +159,7 @@ def set_fill(self, value=None):
     except:
         raise TypeError("value cannot evaluate to a float")
 
-    cdo_command = f"cdo -setmissval,{value} -setmissval,nan" 
+    cdo_command = f"cdo -setmissval,{value} -setmissval,nan"
 
     run_this(cdo_command, self, output="ensemble")
 
@@ -193,7 +195,7 @@ def as_missing(self, value=None):
     run_this(cdo_command, self, output="ensemble")
 
 
-def set_units(self, unit_dict=None):
+def set_units(self, unit_dict=None, **kwargs):
     """
     Set the units for variables
 
@@ -202,7 +204,14 @@ def set_units(self, unit_dict=None):
     unit_dict : dict
         A dictionary where the key-value pairs are the variables and
         new units respectively.
+    * kwargs
+        Alternative method for setting units
     """
+
+    if unit_dict is None and len(kwargs) > 0:
+        unit_dict = dict()
+        for kk in kwargs:
+            unit_dict[kk] = kwargs[kk]
 
     if unit_dict is None:
         raise ValueError("Please supply unit_dict")
@@ -220,9 +229,11 @@ def set_units(self, unit_dict=None):
         for key in unit_dict:
             if key not in variables:
                 if len(self) > 1:
-                    warnings.warn(message = f"{key} is not in the first file of the dataset")
+                    warnings.warn(
+                        message=f"{key} is not in the first file of the dataset"
+                    )
                 else:
-                    warnings.warn(message = f"{key} is not in the dataset")
+                    warnings.warn(message=f"{key} is not in the dataset")
 
     # change the units in turn. This doesn't seem to be something you can chain?
     for i in unit_dict:
@@ -235,7 +246,7 @@ def set_units(self, unit_dict=None):
         run_this(cdo_command, self, output="ensemble")
 
 
-def set_longnames(self, name_dict=None):
+def set_longnames(self, name_dict=None, **kwargs):
     """
     Set the long names of variables
 
@@ -244,8 +255,16 @@ def set_longnames(self, name_dict=None):
     name_dict : dict
         Dictionary with key, value pairs representing the variable names and
         their long names
+    * kwargs
+        Alternative method for setting units
 
     """
+
+    if name_dict is None and len(kwargs) > 0:
+        name_dict = dict()
+        for kk in kwargs:
+            name_dict[kk] = kwargs[kk]
+
     if name_dict is None:
         raise ValueError("Please supply name_dict")
 
@@ -257,7 +276,7 @@ def set_longnames(self, name_dict=None):
     if not isinstance(name_dict, dict):
         TypeError("A dictionary has not been supplied!")
 
-    # change the units in turn. This doesn't seem to be something you can chain?
+    # change the longnames in turn. This doesn't seem to be something you can chain?
 
     new_commands = []
     new_files = []
@@ -267,9 +286,11 @@ def set_longnames(self, name_dict=None):
         for key in name_dict:
             if key not in variables:
                 if len(self) > 1:
-                    warnings.warn(message = f"{key} is not in the first file of the dataset")
+                    warnings.warn(
+                        message=f"{key} is not in the first file of the dataset"
+                    )
                 else:
-                    warnings.warn(message = f"{key} is not in the dataset")
+                    warnings.warn(message=f"{key} is not in the dataset")
 
     for key, value in name_dict.items():
         if name_check(key) is False:
