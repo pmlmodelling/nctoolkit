@@ -58,7 +58,7 @@ def haversine(lon1, lat1, lon2, lat2):
     a = sin(dlat / 2) ** 2 + cos(lat1) * cos(lat2) * sin(dlon / 2) ** 2
     return 2 * 6371 * asin(sqrt(a))
 
-def static_plot(ds, extent = None, title = None, legend = None, size = "auto", land = "grey", colours = "auto", norm = None, limits = None, projection = "auto", mid_point = None, coast = "auto", scale = "medium", **kwargs):
+def static_plot(ds, extent = None, title = None, legend = None, size = "auto", land = "grey", colours = "auto", norm = None, limits = None, projection = "auto", mid_point = None, coast = "auto", scale = "medium", globe = False, **kwargs):
     """
     Static plotting. This requires datasets to have regular latlon grids.
     Plots a static map, and requires only one variable, time step and vertical level
@@ -107,7 +107,6 @@ def static_plot(ds, extent = None, title = None, legend = None, size = "auto", l
             "limits",
             "projection"]
 
-
     for kk in kwargs:
         fixed = False
         if kk.lower().startswith("col") and kk.lower().endswith("rs"):
@@ -148,9 +147,6 @@ def static_plot(ds, extent = None, title = None, legend = None, size = "auto", l
             else:
                 raise ValueError(f"{kk} is not a valid argument")
 
-
-
-
     ds.run()
 
     if len(ds.variables) > 1:
@@ -186,6 +182,12 @@ def static_plot(ds, extent = None, title = None, legend = None, size = "auto", l
     lat=input_file.variables[lat_name][:]
     lon=input_file.variables[lon_name][:]
 
+    # set globe to True if lon lat spread is big enough
+
+    if np.max(lon) - np.min(lon) > 358:
+        if np.max(lat) - np.min(lat) > 176:
+            globe = True
+
     #proj=ccrs.LambertConformal(central_longitude=np.mean(lon), central_latitude=np.mean(lat), false_easting=0.0, false_northing=0.0,  cutoff=38)
 
     # check coord type
@@ -203,18 +205,20 @@ def static_plot(ds, extent = None, title = None, legend = None, size = "auto", l
         proj = projection
     data_crs=ccrs.PlateCarree()
 
+    if globe:
+        proj=ccrs.Robinson()
+
     if projection == None:
         proj=ccrs.PlateCarree()
     if size == "auto":
         size = [10, 10]
-        if proj == ccrs.PlateCarree():
+        if proj == ccrs.PlateCarree() or globe:
             size[1] = size[0] * float((np.max(lat)  - np.min(lat)))/float(( np.max(lon) - np.min(lon)    )) / 1.1
         else:
             size[1] = size[0] * haversine(min(lon), min(lat), min(lon), max(lat))/ haversine(min(lon), 0.4* (min(lat) + max(lat)), max(lon), 0.4 * (min(lat) + max(lat)))/ 1.1 
-    # rescale to 10
-
-    max_size = max(size)
-    size = [10 * size[0]/ max_size, 10 * size[1]/max_size]
+        # rescale to vertical height of 5
+        max_size = max(size)
+        size = [5 * size[0]/size[1], 5]
 
     #check how many dimensions the coordinate variables have. if they have 1 dimension only, then the grid need to be created
     if (len(lat.shape)==1) and (len(lon.shape)==1):
@@ -247,9 +251,9 @@ def static_plot(ds, extent = None, title = None, legend = None, size = "auto", l
     else:
         fig=plt.figure(figsize=(10,10))
     #plt.ioff()
-
     ax=fig.add_subplot(projection=proj)
-    #return ax
+    if globe:
+        ax.set_global()
 
     # set the extension of the actual domain (i.e. the lat lon limits)
     # notice how the range is larger than the actual domain. this is due because with the chosen projection a larger canvas is needed to encompass the whole domain
@@ -314,6 +318,7 @@ def static_plot(ds, extent = None, title = None, legend = None, size = "auto", l
     # add colorbar
 
     fraction = 0.046* size[1]/size[0]
+    
 
     cb=plt.colorbar(im, fraction = fraction, pad = 0.04) 
     cbax=cb.ax
@@ -344,7 +349,7 @@ def static_plot(ds, extent = None, title = None, legend = None, size = "auto", l
             print("Unable to parse legend from dataset contents. Check long names and units")
             label = ""
 
-        label = "\n".join(wrap(label, 30))
+        label = "\n".join(wrap(label, 50))
 
         cbax.set_ylabel(label)
 
