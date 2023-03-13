@@ -4,7 +4,7 @@ try:
     from contextlib import contextmanager
     from nctoolkit.session import session_info
     from mpl_toolkits.axes_grid1 import make_axes_locatable
-    import matplotlib
+    import matplotlib as mpl
     
     from mpl_toolkits import axes_grid1
     
@@ -12,7 +12,6 @@ try:
     import numpy as np
     
     import matplotlib.pyplot as plt
-    plt.ioff()
     import matplotlib.ticker as mticker
     import nctoolkit as nc
     
@@ -26,6 +25,9 @@ try:
     from cartopy.mpl.geoaxes import GeoAxes
 except: 
     session_info["static_plot"] = False
+
+from textwrap import wrap
+
 
 
 class TimeoutException(Exception):
@@ -56,7 +58,7 @@ def haversine(lon1, lat1, lon2, lat2):
     a = sin(dlat / 2) ** 2 + cos(lat1) * cos(lat2) * sin(dlon / 2) ** 2
     return 2 * 6371 * asin(sqrt(a))
 
-def static_plot(ds, extent = None, title = None, legend = None, size = "auto", land = "grey", colours = "viridis", norm = None, limits = None, projection = "auto", mid_point = None, coast = "auto", scale = "medium", **kwargs):
+def static_plot(ds, extent = None, title = None, legend = None, size = "auto", land = "grey", colours = "auto", norm = None, limits = None, projection = "auto", mid_point = None, coast = "auto", scale = "medium", **kwargs):
     """
     Static plotting. This requires datasets to have regular latlon grids.
     Plots a static map, and requires only one variable, time step and vertical level
@@ -93,7 +95,6 @@ def static_plot(ds, extent = None, title = None, legend = None, size = "auto", l
     if coast not in ["auto", "coarse", "low", "intermediate", "high", "full"]:
         the_options = ",".join(["auto", "coarse", "low", "intermediate", "high", "full"])
         raise ValueError(f"coast must be one of {the_options}")
-
 
 
     options = ["extent",
@@ -149,7 +150,6 @@ def static_plot(ds, extent = None, title = None, legend = None, size = "auto", l
 
 
 
-    plt.ioff()
 
     ds.run()
 
@@ -195,7 +195,7 @@ def static_plot(ds, extent = None, title = None, legend = None, size = "auto", l
         if lat.min() < 0 and lat.max() > 0:
             proj=ccrs.PlateCarree()
         else:
-            if (lon.max() - lon.min()) < 90:
+            if (lon.max() - lon.min()) < 160:
                 proj=ccrs.LambertConformal(central_longitude=np.mean(lon), central_latitude=np.mean(lat))
             else:
                 proj=ccrs.PlateCarree()
@@ -210,7 +210,7 @@ def static_plot(ds, extent = None, title = None, legend = None, size = "auto", l
         if proj == ccrs.PlateCarree():
             size[1] = size[0] * float((np.max(lat)  - np.min(lat)))/float(( np.max(lon) - np.min(lon)    )) / 1.1
         else:
-            size[1] = size[0] * haversine(min(lon), min(lat), min(lon), max(lat))/ haversine(min(lon), 1/2 *(min(lat) + max(lat)), max(lon), 1/2 * min(lat) + max(lat))/ 1.1 
+            size[1] = size[0] * haversine(min(lon), min(lat), min(lon), max(lat))/ haversine(min(lon), 0.4* (min(lat) + max(lat)), max(lon), 0.4 * (min(lat) + max(lat)))/ 1.1 
     # rescale to 10
 
     max_size = max(size)
@@ -230,13 +230,23 @@ def static_plot(ds, extent = None, title = None, legend = None, size = "auto", l
     # mask where the values is 0 == land points
     values=np.ma.masked_where(values==0,values)
 
+    if mid_point is None and limits is None:
+        min_value = np.min(values)
+        max_value = np.max(values)
+        if min_value < 0 and max_value > 0:
+            mid_point = 0 
+            colours = "coolwarm"
+
+    if colours == "auto":
+        colours = "viridis"
+
     # generate the figure and the axes where to plot the map. When the axes are generated (either with add_subplot or add_axes, or any other way), the projection to be used need to be specified
     # the axes generated show the entire globe up to the cutoff latitude
     if size is not None:
         fig=plt.figure(figsize=size)
     else:
         fig=plt.figure(figsize=(10,10))
-    plt.ioff()
+    #plt.ioff()
 
     ax=fig.add_subplot(projection=proj)
     #return ax
@@ -248,9 +258,6 @@ def static_plot(ds, extent = None, title = None, legend = None, size = "auto", l
 
     # plot the map. the critical bit is the "transform" option, where the projection of the data is specified. In this case spherical coordinates
     # the shading option is to let pcolormesh understand that the coordinates passed are the cell centre, see https://matplotlib.org/stable/gallery/images_contours_and_fields/pcolormesh_grids.html
-    #im=ax.pcolormesh(lon,lat,values,cmap=cmocean.cm.deep,transform=data_crs,shading='nearest')
-
-
 
     if limits is None:
         vmin = None 
@@ -336,6 +343,8 @@ def static_plot(ds, extent = None, title = None, legend = None, size = "auto", l
         except:
             print("Unable to parse legend from dataset contents. Check long names and units")
             label = ""
+
+        label = "\n".join(wrap(label, 30))
+
         cbax.set_ylabel(label)
 
-    return fig
