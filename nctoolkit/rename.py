@@ -11,7 +11,7 @@ def custom_formatwarning(msg, *args, **kwargs):
 warnings.formatwarning = custom_formatwarning
 
 
-def rename(self, newnames):
+def rename(self, newnames = None, **kwargs):
     """
     Rename variables in a dataset
 
@@ -19,6 +19,8 @@ def rename(self, newnames):
     -------------
     newnames : dict
         Dictionary with key-value pairs being original and new variable names
+    * kwargs
+        Alternative method for renaming 
 
     Examples
     ------------
@@ -27,6 +29,11 @@ def rename(self, newnames):
         >>> ds.rename({"x":"y"})
 
     """
+
+    if newnames is None and len(kwargs) > 0:
+        newnames = dict()
+        for kk in kwargs:
+            newnames[kwargs[kk]] = kk
 
     # check a dict was supplied
     if not isinstance(newnames, dict):
