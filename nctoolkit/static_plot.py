@@ -1,42 +1,45 @@
 from nctoolkit.session import session_info
+
 try:
     import signal
     from contextlib import contextmanager
     from nctoolkit.session import session_info
     from mpl_toolkits.axes_grid1 import make_axes_locatable
     import matplotlib as mpl
-    
+
     from mpl_toolkits import axes_grid1
-    
+
     from netCDF4 import Dataset
     import numpy as np
-    
+
     import matplotlib.pyplot as plt
     import matplotlib.ticker as mticker
     import nctoolkit as nc
-    
+
     import cartopy.crs as ccrs
     import cartopy.feature as cfeature
-    
+
     import sys
-    
+
     ## this is to fix some bug in themodules that should be solved with the right version of modules loaded
     from matplotlib.axes import Axes
     from cartopy.mpl.geoaxes import GeoAxes
-except: 
+except:
     session_info["static_plot"] = False
 
 from textwrap import wrap
 
 
-
 class TimeoutException(Exception):
     pass
 
+
 from difflib import SequenceMatcher
+
 
 def similar(a, b):
     return SequenceMatcher(None, a, b).ratio()
+
 
 @contextmanager
 def time_limit(seconds):
@@ -50,7 +53,10 @@ def time_limit(seconds):
     finally:
         signal.alarm(0)
 
+
 from math import radians, sin, cos, asin, sqrt
+
+
 def haversine(lon1, lat1, lon2, lat2):
     lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
     dlon = lon2 - lon1
@@ -58,54 +64,112 @@ def haversine(lon1, lat1, lon2, lat2):
     a = sin(dlat / 2) ** 2 + cos(lat1) * cos(lat2) * sin(dlon / 2) ** 2
     return 2 * 6371 * asin(sqrt(a))
 
-def static_plot(ds, extent = None, title = None, legend = None, size = "auto", land = "grey", colours = "auto", norm = None, limits = None, projection = "auto", mid_point = None, coast = "auto", scale = "medium", globe = False, **kwargs):
+
+def fix_long(x):
+    if "$" in x:
+        return x
+    new_x = x
+    new_x = new_x.replace("N2O", "N$_2$O")
+    new_x = new_x.capitalize()
+    return new_x
+
+
+def fix_label(x):
+    if "$" in x:
+        return x
+    new_x = "(" + x + ")"
+    new_x = new_x.replace("/m^3", "m$^{-3}$")
+    new_x = new_x.replace("/m^2", "m$^{-2}$")
+    new_x = new_x.replace("/m2", "m$^{-2}$")
+    new_x = new_x.replace("/d)", "d$^{-1}$)")
+    new_x = new_x.replace("/s)", "s$^{-1}$)")
+    new_x = new_x.replace("/kg)", "kg$^{-1}$)")
+    new_x = new_x.replace("O_2", "O$_2$")
+    new_x = new_x.replace("N2O", "N$_2$O")
+    new_x = new_x.replace("mmol", "mmol ")
+    new_x = new_x.replace("  ", " ")
+    new_x = new_x.replace("(m2s", "(m$^2$s")
+    if new_x == "(1/m)":
+        new_x = "(m$^{-1}$)"
+    if new_x == "(degC)":
+        new_x = "(°C)"
+    return new_x[1:-1]
+
+
+def static_plot(
+    ds,
+    extent=None,
+    title=None,
+    legend=None,
+    size="auto",
+    land=None,
+    colours="auto",
+    norm=None,
+    limits=None,
+    projection="auto",
+    mid_point=None,
+    coast="auto",
+    scale="auto",
+    **kwargs,
+):
     """
     Static plotting. This requires datasets to have regular latlon grids.
     Plots a static map, and requires only one variable, time step and vertical level
 
     Parameters
     -------------
-    extent: list 
-        List with [lon_min, lon_max, lat_min, lat_max] to limit the map extent 
-    title: str 
-        Character string with plot title 
-    legend: str 
-        Character string with legend title 
-    size: list 
-        List with [xsize, ysize] for plotting size 
-    land: str 
+    extent: list
+        List with [lon_min, lon_max, lat_min, lat_max] to limit the map extent
+    title: str
+        Character string with plot title
+    legend: str
+        Character string with legend title
+    size: list
+        List with [xsize, ysize] for plotting size
+    land: str
         Character string with colour required for land. Set to None if you do not want land to show.
     norm: str or matplotlib.colors norm
-         Norm to use for colour bar 
-    mid_point: float 
-        Mid-point to use for colour bar 
-    projection: cartopy projection 
-        Cartopy projection to use.  
-    coast: str 
-        Set to "coarse", "low", "intermediate", "high" or "full" if you want to use GSHHS coastlines 
-    scale: str 
-        "low", "medium" or "high" 
+         Norm to use for colour bar
+    mid_point: float
+        Mid-point to use for colour bar
+    projection: cartopy projection
+        Cartopy projection to use.
+    coast: str
+        Set to "coarse", "low", "intermediate", "high" or "full" if you want to use GSHHS coastlines
+    scale: str
+        "low", "medium" or "high"
+    *kwargs:
+        kwargs to allow slight misspelling of arguments
 
     -------------
     """
+
+    if scale not in ["auto", "low", "medium", "high"]:
+        text = ",".join(["low", "medium", "high", "auto"])
+        raise ValueError(f"scale is '{scale}'. It should be one of {text}!")
+
+    globe = False
 
     if "static_plot" in session_info.keys():
         raise ValueError("Unable to import cartopy properly")
 
     if coast not in ["auto", "coarse", "low", "intermediate", "high", "full"]:
-        the_options = ",".join(["auto", "coarse", "low", "intermediate", "high", "full"])
+        the_options = ",".join(
+            ["auto", "coarse", "low", "intermediate", "high", "full"]
+        )
         raise ValueError(f"coast must be one of {the_options}")
 
-
-    options = ["extent",
-            "title",
-            "legend",
-            "size",
-            "land",
-            "colours",
-            "norm",
-            "limits",
-            "projection"]
+    options = [
+        "extent",
+        "title",
+        "legend",
+        "size",
+        "land",
+        "colours",
+        "norm",
+        "limits",
+        "projection",
+    ]
 
     for kk in kwargs:
         fixed = False
@@ -143,18 +207,21 @@ def static_plot(ds, extent = None, title = None, legend = None, size = "auto", l
 
             if len(possible) > 0:
                 part2 = ",".join(possible)
-                raise ValueError(f"{kk} is not a valid argument. Did you mean one of these? {part2}")
+                raise ValueError(
+                    f"{kk} is not a valid argument. Did you mean one of these? {part2}"
+                )
             else:
                 raise ValueError(f"{kk} is not a valid argument")
 
-    ds.run()
+    ds1 = ds.copy()
+    ds1.run()
 
-    if len(ds.variables) > 1:
+    if len(ds1.variables) > 1:
         raise ValueError("Only one variable wanted")
-    if len(ds.times) > 1:
+    if len(ds1.times) > 1:
         raise ValueError("Only one timestep wanted")
 
-    ds_xr = ds.to_xarray(decode_times = False)
+    ds_xr = ds1.to_xarray(decode_times=False)
     failed = False
     try:
         lon_name = [x for x in ds_xr.dims if "lon" in x][0]
@@ -164,8 +231,8 @@ def static_plot(ds, extent = None, title = None, legend = None, size = "auto", l
     if failed:
         if "nav_lon" in ds_xr.coords and "nav_lat" in ds_xr.coords:
             try:
-                ds.fix_nemo_ersem_grid()
-                ds_xr = ds.to_xarray(decode_times = False)
+                ds1.fix_nemo_ersem_grid()
+                ds_xr = ds1.to_xarray(decode_times=False)
                 lon_name = [x for x in ds_xr.dims if "lon" in x][0]
                 lat_name = [x for x in ds_xr.dims if "lat" in x][0]
             except:
@@ -173,14 +240,14 @@ def static_plot(ds, extent = None, title = None, legend = None, size = "auto", l
 
     GeoAxes._pcolormesh_patched = Axes.pcolormesh
 
-        # set data projection
-        # here a Lambert conformal is used, more projections can be found here https://scitools.org.uk/cartopy/docs/v0.15/crs/projections.html
+    # set data projection
+    # here a Lambert conformal is used, more projections can be found here https://scitools.org.uk/cartopy/docs/v0.15/crs/projections.html
 
-    input_file=Dataset(ds[0])
+    input_file = Dataset(ds1[0])
 
-    #read the coordinates
-    lat=input_file.variables[lat_name][:]
-    lon=input_file.variables[lon_name][:]
+    # read the coordinates
+    lat = input_file.variables[lat_name][:]
+    lon = input_file.variables[lon_name][:]
 
     # set globe to True if lon lat spread is big enough
 
@@ -188,58 +255,80 @@ def static_plot(ds, extent = None, title = None, legend = None, size = "auto", l
         if np.max(lat) - np.min(lat) > 176:
             globe = True
 
-    #proj=ccrs.LambertConformal(central_longitude=np.mean(lon), central_latitude=np.mean(lat), false_easting=0.0, false_northing=0.0,  cutoff=38)
+    # proj=ccrs.LambertConformal(central_longitude=np.mean(lon), central_latitude=np.mean(lat), false_easting=0.0, false_northing=0.0,  cutoff=38)
 
     # check coord type
     lambert = False
 
     if projection == "auto":
         if lat.min() < 0 and lat.max() > 0:
-            proj=ccrs.PlateCarree()
+            proj = ccrs.PlateCarree()
         else:
-            if (lon.max() - lon.min()) < 160:
-                proj=ccrs.LambertConformal(central_longitude=np.mean(lon), central_latitude=np.mean(lat))
+            if (lon.max() - lon.min()) < 200:
+                proj = ccrs.LambertConformal(
+                    central_longitude=np.mean(lon), central_latitude=np.mean(lat)
+                )
             else:
-                proj=ccrs.PlateCarree()
+                proj = ccrs.PlateCarree()
     else:
         proj = projection
-    data_crs=ccrs.PlateCarree()
+    data_crs = ccrs.PlateCarree()
 
     if globe:
-        proj=ccrs.Robinson()
+        proj = ccrs.Robinson()
 
     if projection == None:
-        proj=ccrs.PlateCarree()
+        proj = ccrs.PlateCarree()
     if size == "auto":
         size = [10, 10]
         if proj == ccrs.PlateCarree() or globe:
-            size[1] = size[0] * float((np.max(lat)  - np.min(lat)))/float(( np.max(lon) - np.min(lon)    )) / 1.1
+            size[1] = (
+                size[0]
+                * float((np.max(lat) - np.min(lat)))
+                / float((np.max(lon) - np.min(lon)))
+                / 1.1
+            )
         else:
-            size[1] = size[0] * haversine(min(lon), min(lat), min(lon), max(lat))/ haversine(min(lon), 0.4* (min(lat) + max(lat)), max(lon), 0.4 * (min(lat) + max(lat)))/ 1.1 
+            size[1] = (
+                size[0]
+                * haversine(float(min(lon)), min(lat), min(lon), max(lat))
+                / haversine(
+                    min(lon),
+                    0.4 * (min(lat) + max(lat)),
+                    max(lon),
+                    0.4 * (min(lat) + max(lat)),
+                )
+                / 1.1
+            )
         # rescale to vertical height of 5
         max_size = max(size)
-        size = [5 * size[0]/size[1], 5]
+        size = [5 * size[0] / size[1], 5]
 
-    #check how many dimensions the coordinate variables have. if they have 1 dimension only, then the grid need to be created
-    if (len(lat.shape)==1) and (len(lon.shape)==1):
-        lon,lat=np.meshgrid(lon,lat)
-    elif (len(lat.shape)==1) or (len(lon.shape)==1):  # if the variable have different dimensions print an error
-        sys.exit ('something is wrong in the input file. the coordiantes variables have different dimensions')
+    # check how many dimensions the coordinate variables have. if they have 1 dimension only, then the grid need to be created
+    if (len(lat.shape) == 1) and (len(lon.shape) == 1):
+        lon, lat = np.meshgrid(lon, lat)
+    elif (len(lat.shape) == 1) or (
+        len(lon.shape) == 1
+    ):  # if the variable have different dimensions print an error
+        sys.exit(
+            "something is wrong in the input file. the coordiantes variables have different dimensions"
+        )
     else:
         pass
 
     # read the values. the array is squeezed to remove the temporal dimension that has length 1
-    values=input_file.variables[ds.variables[0]][:].squeeze()
+    values = input_file.variables[ds1.variables[0]][:].squeeze()
 
     # mask where the values is 0 == land points
-    values=np.ma.masked_where(values==0,values)
+    values = np.ma.masked_where(values == 0, values)
 
     if mid_point is None and limits is None:
         min_value = np.min(values)
         max_value = np.max(values)
         if min_value < 0 and max_value > 0:
-            mid_point = 0 
-            colours = "coolwarm"
+            mid_point = 0
+            if colours == "auto":
+                colours = "coolwarm"
 
     if colours == "auto":
         colours = "viridis"
@@ -247,11 +336,11 @@ def static_plot(ds, extent = None, title = None, legend = None, size = "auto", l
     # generate the figure and the axes where to plot the map. When the axes are generated (either with add_subplot or add_axes, or any other way), the projection to be used need to be specified
     # the axes generated show the entire globe up to the cutoff latitude
     if size is not None:
-        fig=plt.figure(figsize=size)
+        fig = plt.figure(figsize=size)
     else:
-        fig=plt.figure(figsize=(10,10))
-    #plt.ioff()
-    ax=fig.add_subplot(projection=proj)
+        fig = plt.figure(figsize=(10, 10))
+    # plt.ioff()
+    ax = fig.add_subplot(projection=proj)
     if globe:
         ax.set_global()
 
@@ -264,8 +353,8 @@ def static_plot(ds, extent = None, title = None, legend = None, size = "auto", l
     # the shading option is to let pcolormesh understand that the coordinates passed are the cell centre, see https://matplotlib.org/stable/gallery/images_contours_and_fields/pcolormesh_grids.html
 
     if limits is None:
-        vmin = None 
-        vmax = None 
+        vmin = None
+        vmax = None
     else:
         vmin = limits[0]
         vmax = limits[1]
@@ -281,14 +370,22 @@ def static_plot(ds, extent = None, title = None, legend = None, size = "auto", l
         vmin = mid_point - adjustment
         vmax = mid_point + adjustment
 
-
-
-    if norm == "log":
-        norm = matplotlib.colors.LogNorm(vmin =vmin, vmax = vmax)
+    if norm in ["log", "log10"]:
+        norm = mpl.colors.LogNorm(vmin=vmin, vmax=vmax)
     if norm is not None:
         vmin = None
         vmax = None
-    im=ax.pcolormesh(lon,lat,values,cmap= colours,transform=data_crs,shading='nearest', norm=norm, vmin = vmin, vmax = vmax)
+    im = ax.pcolormesh(
+        lon,
+        lat,
+        values,
+        cmap=colours,
+        transform=data_crs,
+        shading="nearest",
+        norm=norm,
+        vmin=vmin,
+        vmax=vmax,
+    )
 
     # add coastline and land colour. More options, including about resolution of coastline, colour and so on can be found here
     # https://scitools.org.uk/cartopy/docs/v0.14/matplotlib/feature_interface.html
@@ -300,14 +397,21 @@ def static_plot(ds, extent = None, title = None, legend = None, size = "auto", l
     # https://scitools.org.uk/cartopy/docs/v0.13/matplotlib/gridliner.html
     # note that if x_inline and y_inline are not set to False, the labels of the axis could be written inside the map
 
-    gl = ax.gridlines(crs=ccrs.PlateCarree(), draw_labels=True,
-                  color='k', alpha=0.5, linestyle='--',x_inline=False, y_inline=False,)
+    gl = ax.gridlines(
+        crs=ccrs.PlateCarree(),
+        draw_labels=True,
+        color="k",
+        alpha=0.5,
+        linestyle="--",
+        x_inline=False,
+        y_inline=False,
+    )
 
-    #gl.xlocator = mticker.FixedLocator([-20,-10,0,10])
-    #gl.ylocator = mticker.FixedLocator([40,50,60])
+    # gl.xlocator = mticker.FixedLocator([-20,-10,0,10])
+    # gl.ylocator = mticker.FixedLocator([40,50,60])
     # here you can select on which side to write the labels for the grid
     gl.top_labels = True
-    gl.bottom_labels= False
+    gl.bottom_labels = False
     gl.right_labels = False
     gl.left_labels = True
 
@@ -317,39 +421,56 @@ def static_plot(ds, extent = None, title = None, legend = None, size = "auto", l
 
     # add colorbar
 
-    fraction = 0.046* size[1]/size[0]
-    
+    fraction = 0.046 * size[1] / size[0]
 
-    cb=plt.colorbar(im, fraction = fraction, pad = 0.04) 
-    cbax=cb.ax
+    cb = plt.colorbar(im, fraction=fraction, pad=0.04)
+    cbax = cb.ax
     if land is not None:
-        #ax.add_feature(cfeature.LAND, facecolor = land, zorder=10)
+        # ax.add_feature(cfeature.LAND, facecolor = land, zorder=10)
         if scale == "low":
-            scale = "110m"
+            l_scale = "110m"
         if scale == "medium":
-            scale = "50m"
+            l_scale = "50m"
+        if scale == "auto":
+            l_scale = "50m"
         if scale == "high":
-            scale = "10m"
+            l_scale = "10m"
 
-        ax.add_feature(cfeature.NaturalEarthFeature(category = "physical", scale = scale,name = "land", facecolor = land, zorder=10))
+        ax.add_feature(
+            cfeature.NaturalEarthFeature(
+                category="physical", scale=l_scale, name="land", facecolor=land
+            )
+        )
     if coast is not None:
-        if coast == "auto":
-            ax.add_feature(cfeature.COASTLINE)
+        if coast == "auto" and scale == "auto":
+            ax.add_feature(cfeature.COASTLINE, linewidth = 0.5)
         else:
-            ax.add_feature(cfeature.GSHHSFeature(scale = coast))
-
+            if scale == "high":
+                g_scale = "high"
+            if scale == "medium":
+                g_scale = "intermediate"
+            if scale == "low":
+                g_scale = "low"
+            g_scale = "auto"
+            ax.add_feature(cfeature.GSHHSFeature(scale=g_scale), linewidth=0.5)
 
     if legend is not None:
         cbax.set_ylabel(legend)
     else:
-        ds_contents = ds.contents
+        ds_contents = ds1.contents
         try:
-            label = ds_contents.long_name.values[0] + " (" +  ds_contents.unit.values[0] + ")"
+            label = (
+                fix_long(ds_contents.long_name.values[0])
+                + " ("
+                + fix_label(ds_contents.unit.values[0])
+                + ")"
+            )
         except:
-            print("Unable to parse legend from dataset contents. Check long names and units")
+            print(
+                "Unable to parse legend from dataset contents. Check long names and units"
+            )
             label = ""
 
         label = "\n".join(wrap(label, 50))
 
         cbax.set_ylabel(label)
-
