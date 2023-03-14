@@ -114,6 +114,7 @@ def static_plot(
     scale="auto",
     grid = True,
     grid_colour = "auto",
+     legend_position= "auto",
     **kwargs,
 ):
     """
@@ -144,11 +145,16 @@ def static_plot(
         "low", "medium" or "high"
     grid: bool
         Set to False if you do not want grid lines. 
+    legend_position = "auto"
     *kwargs:
         kwargs to allow slight misspelling of arguments
 
     -------------
     """
+
+    if legend_position not in ["auto", "right", "bottom"]:
+        raise ValueError("legend_position must be one of right/bottom")
+
 
     land_auto = land == "auto"
 
@@ -184,7 +190,8 @@ def static_plot(
         "limits",
         "projection",
         "grid",
-        "grid_colour"
+        "grid_colour",
+        "legend_position"
     ]
 
     for kk in kwargs:
@@ -360,6 +367,12 @@ def static_plot(
     # mask where the values is 0 == land points
     values = np.ma.masked_where(values == 0, values)
 
+    if limits != None:
+        if limits[0] is None:
+            limits[0] = np.min(values)
+        if limits[1] is None:
+            limits[1] = np.max(values)
+
     if grid_colour == "auto":
         value_10 = values.min() + (values.max() -values.min())*0.3
         if np.mean(values.data < value_10) < 0.7:
@@ -496,10 +509,21 @@ def static_plot(
         ax.set_title(title)
 
     # add colorbar
+    if legend_position == "auto":
+        l_location = "right"
+    else:
+        l_location = legend_position
 
-    fraction = 0.046 * size[1] / size[0]
+    if l_location == "bottom":
+        fraction = 0.046 * size[0] / size[1] * 0.8
+    else:
+        fraction = 0.046 * size[1] / size[0]
 
-    cb = plt.colorbar(im, fraction=fraction, pad=0.04)
+
+    if l_location == "bottom":
+        cb = plt.colorbar(im, fraction=fraction, pad=0.04, location = l_location)
+    else:
+        cb = plt.colorbar(im, fraction=fraction, pad=0.04)
     cbax = cb.ax
     if land is not None:
         # ax.add_feature(cfeature.LAND, facecolor = land, zorder=10)
@@ -547,6 +571,15 @@ def static_plot(
             )
             label = ""
 
-        label = "\n".join(wrap(label, 50))
+        if l_location == "bottom":
+            label = "\n".join(wrap(label, 120))
+        else:
+            label = "\n".join(wrap(label, 50))
 
-        cbax.set_ylabel(label)
+        if l_location == "bottom":
+            cbax.set_xlabel(label)
+        else:
+            cbax.set_ylabel(label)
+
+
+
