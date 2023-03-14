@@ -248,8 +248,14 @@ def static_plot(
                 except:
                     raise ValueError("Unable to parse coordinates")
 
+
+    mesh = False
     if "lon_name" not in locals():
-        raise ValueError("Unable to parse coordinates. Please check if dataset has a lonlat grid!")
+        if "nav_lon" in ds_xr.coords:
+            mesh = True
+        else:
+            raise ValueError("Unable to parse coordinates. Please check if dataset has a lonlat grid!")
+
 
     GeoAxes._pcolormesh_patched = Axes.pcolormesh
 
@@ -259,8 +265,12 @@ def static_plot(
     input_file = Dataset(ds1[0])
 
     # read the coordinates
-    lat = input_file.variables[lat_name][:]
-    lon = input_file.variables[lon_name][:]
+    if not mesh:
+        lat = input_file.variables[lat_name][:]
+        lon = input_file.variables[lon_name][:]
+    else:
+        lon = ds_xr["nav_lon"].values
+        lat = ds_xr["nav_lat"].values
 
     # set globe to True if lon lat spread is big enough
 
@@ -319,7 +329,8 @@ def static_plot(
 
     # check how many dimensions the coordinate variables have. if they have 1 dimension only, then the grid need to be created
     if (len(lat.shape) == 1) and (len(lon.shape) == 1):
-        lon, lat = np.meshgrid(lon, lat)
+        if not mesh:
+            lon, lat = np.meshgrid(lon, lat)
     elif (len(lat.shape) == 1) or (
         len(lon.shape) == 1
     ):  # if the variable have different dimensions print an error
