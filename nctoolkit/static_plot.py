@@ -112,6 +112,7 @@ def static_plot(
     mid_point=None,
     coast="auto",
     scale="auto",
+    grid = True,
     **kwargs,
 ):
     """
@@ -140,6 +141,8 @@ def static_plot(
         Set to "coarse", "low", "intermediate", "high" or "full" if you want to use GSHHS coastlines
     scale: str
         "low", "medium" or "high"
+    grid: bool
+        Set to False if you do not want grid lines. 
     *kwargs:
         kwargs to allow slight misspelling of arguments
 
@@ -425,23 +428,31 @@ def static_plot(
     # https://scitools.org.uk/cartopy/docs/v0.13/matplotlib/gridliner.html
     # note that if x_inline and y_inline are not set to False, the labels of the axis could be written inside the map
 
-    gl = ax.gridlines(
-        crs=ccrs.PlateCarree(),
-        draw_labels=True,
-        color="k",
-        alpha=0.5,
-        linestyle="--",
-        x_inline=False,
-        y_inline=False,
-    )
+    if grid:
+        g_colours = "k"
+        g_alpha = 0.5
+    else:
+        g_colours = None
+        g_alpha = 0
 
-    # gl.xlocator = mticker.FixedLocator([-20,-10,0,10])
-    # gl.ylocator = mticker.FixedLocator([40,50,60])
-    # here you can select on which side to write the labels for the grid
-    gl.top_labels = True
-    gl.bottom_labels = False
-    gl.right_labels = False
-    gl.left_labels = True
+    if True:
+        gl = ax.gridlines(
+            crs=ccrs.PlateCarree(),
+            draw_labels=True,
+            color=g_colours,
+            alpha=g_alpha,
+            linestyle="--",
+            x_inline=False,
+            y_inline=False,
+        )
+
+        # gl.xlocator = mticker.FixedLocator([-20,-10,0,10])
+        # gl.ylocator = mticker.FixedLocator([40,50,60])
+        # here you can select on which side to write the labels for the grid
+        gl.top_labels = True
+        gl.bottom_labels = False
+        gl.right_labels = False
+        gl.left_labels = True
 
     # add title
     if title is not None:
