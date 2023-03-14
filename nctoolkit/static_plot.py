@@ -113,6 +113,7 @@ def static_plot(
     coast="auto",
     scale="auto",
     grid = True,
+    grid_colour = "auto",
     **kwargs,
 ):
     """
@@ -149,6 +150,10 @@ def static_plot(
     -------------
     """
 
+    land_auto = land == "auto"
+
+
+
     if land is not None:
         if not isinstance(land, str):
             raise TypeError("land must be str")
@@ -178,6 +183,8 @@ def static_plot(
         "norm",
         "limits",
         "projection",
+        "grid",
+        "grid_colour"
     ]
 
     for kk in kwargs:
@@ -353,6 +360,11 @@ def static_plot(
     # mask where the values is 0 == land points
     values = np.ma.masked_where(values == 0, values)
 
+    if grid_colour == "auto":
+        value_10 = values.min() + (values.max() -values.min())*0.3
+        if np.mean(values.data < value_10) < 0.7:
+            grid_colour = "black"
+
     if mid_point is None and limits is None:
         min_value = np.min(values)
         max_value = np.max(values)
@@ -360,6 +372,9 @@ def static_plot(
             mid_point = 0
             if colours == "auto":
                 colours = "coolwarm"
+                if land_auto:
+                    if land != "auto":
+                        land = "grey"
 
     if colours == "auto":
         colours = "viridis"
@@ -401,8 +416,10 @@ def static_plot(
         vmin = mid_point - adjustment
         vmax = mid_point + adjustment
 
+    norm_plot = False
     if norm in ["log", "log10"]:
         norm = mpl.colors.LogNorm(vmin=vmin, vmax=vmax)
+        norm_plot = True
     if norm is not None:
         vmin = None
         vmax = None
@@ -428,8 +445,14 @@ def static_plot(
     # https://scitools.org.uk/cartopy/docs/v0.13/matplotlib/gridliner.html
     # note that if x_inline and y_inline are not set to False, the labels of the axis could be written inside the map
 
+    if grid_colour == "auto" and norm_plot:
+        grid_colour = "black"
+
     if grid:
-        g_colours = "k"
+        if grid_colour == "auto":
+            g_colours = "black" 
+        else:
+            g_colours = grid_colour 
         g_alpha = 0.5
     else:
         g_colours = None
@@ -442,17 +465,31 @@ def static_plot(
             color=g_colours,
             alpha=g_alpha,
             linestyle="--",
+            linewidth = 0.5,
             x_inline=False,
             y_inline=False,
         )
 
-        # gl.xlocator = mticker.FixedLocator([-20,-10,0,10])
-        # gl.ylocator = mticker.FixedLocator([40,50,60])
-        # here you can select on which side to write the labels for the grid
         gl.top_labels = True
         gl.bottom_labels = False
         gl.right_labels = False
         gl.left_labels = True
+
+        if grid_colour == "auto":
+            gl = ax.gridlines(
+                crs=ccrs.PlateCarree(),
+                draw_labels=False,
+                color="white",
+                alpha=g_alpha,
+                linestyle="--",
+                linewidth = 0.5,
+                x_inline=False,
+                y_inline=False,
+            )
+
+        # gl.xlocator = mticker.FixedLocator([-20,-10,0,10])
+        # gl.ylocator = mticker.FixedLocator([40,50,60])
+        # here you can select on which side to write the labels for the grid
 
     # add title
     if title is not None:
