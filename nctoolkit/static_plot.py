@@ -115,6 +115,7 @@ def static_plot(
     grid = True,
     grid_colour = "auto",
      legend_position= "auto",
+    robust = False,
     **kwargs,
 ):
     """
@@ -381,6 +382,9 @@ def static_plot(
     if mid_point is None and limits is None:
         min_value = np.min(values)
         max_value = np.max(values)
+        if robust:
+            min_value = np.nanpercentile(np.ma.filled(values, np.nan), 2)
+            max_value = np.nanpercentile(np.ma.filled(values, np.nan), 98)
         if min_value < 0 and max_value > 0:
             mid_point = 0
             if colours == "auto":
@@ -418,9 +422,16 @@ def static_plot(
         vmin = limits[0]
         vmax = limits[1]
 
+    if robust and limits is None:
+        vmin = np.nanpercentile(np.ma.filled(values, np.nan), 2)
+        vmax = np.nanpercentile(np.ma.filled(values, np.nan), 98)
+
     if mid_point is not None:
         val_min = values.min()
         val_max = values.max()
+        if robust and limits is None:
+            val_min = np.nanpercentile(np.ma.filled(values, np.nan), 2)
+            val_max = np.nanpercentile(np.ma.filled(values, np.nan), 98)
         if mid_point < val_min:
             raise ValueError("mid_point is outside value range")
         if mid_point > val_max:
@@ -428,6 +439,7 @@ def static_plot(
         adjustment = max(val_max - mid_point, mid_point - val_min)
         vmin = mid_point - adjustment
         vmax = mid_point + adjustment
+
 
     norm_plot = False
     if norm in ["log", "log10"]:
