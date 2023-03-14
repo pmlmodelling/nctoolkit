@@ -104,7 +104,7 @@ def static_plot(
     title=None,
     legend=None,
     size="auto",
-    land=None,
+    land="auto",
     colours="auto",
     norm=None,
     limits=None,
@@ -240,7 +240,7 @@ def static_plot(
             if np.min(ds_xr["nav_lon"]) > -23.5 and np.max(ds_xr["nav_lon"]) < 24.0:
                 try:
                     ds1.fix_nemo_ersem_grid()
-                    if land is None:
+                    if land == "auto":
                         land = "lightgrey"
                     ds_xr = ds1.to_xarray(decode_times=False)
                     lon_name = [x for x in ds_xr.dims if "lon" in x][0]
@@ -252,10 +252,14 @@ def static_plot(
     mesh = False
     if "lon_name" not in locals():
         if "nav_lon" in ds_xr.coords:
+            if land == "auto":
+                land = "lightgrey"
             mesh = True
         else:
             raise ValueError("Unable to parse coordinates. Please check if dataset has a lonlat grid!")
 
+    if land == "auto":
+        land = None
 
     GeoAxes._pcolormesh_patched = Axes.pcolormesh
 
