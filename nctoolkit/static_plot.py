@@ -146,8 +146,9 @@ def static_plot(
     -------------
     """
 
-    if not isinstance(land, str):
-        raise TypeError("land must be str")
+    if land is not None:
+        if not isinstance(land, str):
+            raise TypeError("land must be str")
 
     if scale not in ["auto", "low", "medium", "high"]:
         text = ",".join(["low", "medium", "high", "auto"])
@@ -239,6 +240,8 @@ def static_plot(
             if np.min(ds_xr["nav_lon"]) > -23.5 and np.max(ds_xr["nav_lon"]) < 24.0:
                 try:
                     ds1.fix_nemo_ersem_grid()
+                    if land is None:
+                        land = "lightgrey"
                     ds_xr = ds1.to_xarray(decode_times=False)
                     lon_name = [x for x in ds_xr.dims if "lon" in x][0]
                     lat_name = [x for x in ds_xr.dims if "lat" in x][0]
