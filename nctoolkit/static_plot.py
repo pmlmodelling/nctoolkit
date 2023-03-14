@@ -70,6 +70,7 @@ def fix_long(x):
         return x
     new_x = x
     new_x = new_x.replace("N2O", "N$_2$O")
+    new_x = new_x.replace("hlorophyll a", "hlorophyll $a$")
     new_x = new_x.capitalize()
     return new_x
 
@@ -87,6 +88,7 @@ def fix_label(x):
     new_x = new_x.replace("O_2", "O$_2$")
     new_x = new_x.replace("N2O", "N$_2$O")
     new_x = new_x.replace("mmol", "mmol ")
+    new_x = new_x.replace("umol", "$\mu$mol ")
     new_x = new_x.replace("  ", " ")
     new_x = new_x.replace("(m2s", "(m$^2$s")
     if new_x == "(1/m)":
@@ -143,6 +145,9 @@ def static_plot(
 
     -------------
     """
+
+    if not isinstance(land, str):
+        raise TypeError("land must be str")
 
     if scale not in ["auto", "low", "medium", "high"]:
         text = ",".join(["low", "medium", "high", "auto"])
@@ -223,6 +228,7 @@ def static_plot(
 
     ds_xr = ds1.to_xarray(decode_times=False)
     failed = False
+
     try:
         lon_name = [x for x in ds_xr.dims if "lon" in x][0]
         lat_name = [x for x in ds_xr.dims if "lat" in x][0]
@@ -230,13 +236,17 @@ def static_plot(
         failed = True
     if failed:
         if "nav_lon" in ds_xr.coords and "nav_lat" in ds_xr.coords:
-            try:
-                ds1.fix_nemo_ersem_grid()
-                ds_xr = ds1.to_xarray(decode_times=False)
-                lon_name = [x for x in ds_xr.dims if "lon" in x][0]
-                lat_name = [x for x in ds_xr.dims if "lat" in x][0]
-            except:
-                raise ValueError("Unable to parse coordinates")
+            if np.min(ds_xr["nav_lon"]) > -23.5 and np.max(ds_xr["nav_lon"]) < 24.0:
+                try:
+                    ds1.fix_nemo_ersem_grid()
+                    ds_xr = ds1.to_xarray(decode_times=False)
+                    lon_name = [x for x in ds_xr.dims if "lon" in x][0]
+                    lat_name = [x for x in ds_xr.dims if "lat" in x][0]
+                except:
+                    raise ValueError("Unable to parse coordinates")
+
+    if "lon_name" not in locals():
+        raise ValueError("Unable to parse coordinates. Please check if dataset has a lonlat grid!")
 
     GeoAxes._pcolormesh_patched = Axes.pcolormesh
 
