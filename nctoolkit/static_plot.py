@@ -112,10 +112,10 @@ def static_plot(
     mid_point=None,
     coast="auto",
     scale="auto",
-    grid = True,
-    grid_colour = "auto",
-     legend_position= "auto",
-    robust = False,
+    grid=True,
+    grid_colour="auto",
+    legend_position="auto",
+    robust=False,
     **kwargs,
 ):
     """
@@ -145,7 +145,7 @@ def static_plot(
     scale: str
         "low", "medium" or "high"
     grid: bool
-        Set to False if you do not want grid lines. 
+        Set to False if you do not want grid lines.
     legend_position = "auto"
     *kwargs:
         kwargs to allow slight misspelling of arguments
@@ -156,10 +156,7 @@ def static_plot(
     if legend_position not in ["auto", "right", "bottom"]:
         raise ValueError("legend_position must be one of right/bottom")
 
-
     land_auto = land == "auto"
-
-
 
     if land is not None:
         if not isinstance(land, str):
@@ -192,7 +189,7 @@ def static_plot(
         "projection",
         "grid",
         "grid_colour",
-        "legend_position"
+        "legend_position",
     ]
 
     for kk in kwargs:
@@ -266,7 +263,6 @@ def static_plot(
                 except:
                     raise ValueError("Unable to parse coordinates")
 
-
     mesh = False
     if "lon_name" not in locals():
         if "nav_lon" in ds_xr.coords:
@@ -274,7 +270,9 @@ def static_plot(
                 land = "lightgrey"
             mesh = True
         else:
-            raise ValueError("Unable to parse coordinates. Please check if dataset has a lonlat grid!")
+            raise ValueError(
+                "Unable to parse coordinates. Please check if dataset has a lonlat grid!"
+            )
 
     if land == "auto":
         land = None
@@ -375,9 +373,20 @@ def static_plot(
             limits[1] = np.max(values)
 
     if grid_colour == "auto":
-        value_10 = values.min() + (values.max() -values.min())*0.3
+        value_10 = values.min() + (values.max() - values.min()) * 0.3
         if np.mean(values.data < value_10) < 0.7:
             grid_colour = "black"
+
+    r_min = None
+    r_max = None
+
+    if limits is not None:
+        if isinstance(limits[0], str):
+            if "%" in limits[0]:
+                r_min = float(limits[0].split("%")[0])
+        if isinstance(limits[1], str):
+            if "%" in limits[1]:
+                r_max = float(limits[1].split("%")[0])
 
     if mid_point is None and limits is None:
         min_value = np.min(values)
@@ -385,6 +394,11 @@ def static_plot(
         if robust:
             min_value = np.nanpercentile(np.ma.filled(values, np.nan), 2)
             max_value = np.nanpercentile(np.ma.filled(values, np.nan), 98)
+        if r_min is not None:
+            min_value = np.nanpercentile(np.ma.filled(values, np.nan), r_min)
+        if r_max is not None:
+            max_value = np.nanpercentile(np.ma.filled(values, np.nan), r_max)
+
         if min_value < 0 and max_value > 0:
             mid_point = 0
             if colours == "auto":
@@ -421,10 +435,19 @@ def static_plot(
     else:
         vmin = limits[0]
         vmax = limits[1]
+        if r_min is not None:
+            vmin = np.nanpercentile(np.ma.filled(values, np.nan), r_min)
+        if r_max is not None:
+            vmax = np.nanpercentile(np.ma.filled(values, np.nan), r_max)
 
     if robust and limits is None:
         vmin = np.nanpercentile(np.ma.filled(values, np.nan), 2)
         vmax = np.nanpercentile(np.ma.filled(values, np.nan), 98)
+    if limits is None:
+        if r_min is not None:
+            vmin = np.nanpercentile(np.ma.filled(values, np.nan), r_min)
+        if r_max is not None:
+            vmax = np.nanpercentile(np.ma.filled(values, np.nan), r_max)
 
     if mid_point is not None:
         val_min = values.min()
@@ -440,7 +463,6 @@ def static_plot(
         vmin = mid_point - adjustment
         vmax = mid_point + adjustment
 
-
     norm_plot = False
     if norm in ["log", "log10"]:
         norm = mpl.colors.LogNorm(vmin=vmin, vmax=vmax)
@@ -448,6 +470,7 @@ def static_plot(
     if norm is not None:
         vmin = None
         vmax = None
+
     im = ax.pcolormesh(
         lon,
         lat,
@@ -475,9 +498,9 @@ def static_plot(
 
     if grid:
         if grid_colour == "auto":
-            g_colours = "black" 
+            g_colours = "black"
         else:
-            g_colours = grid_colour 
+            g_colours = grid_colour
         g_alpha = 0.5
     else:
         g_colours = None
@@ -490,7 +513,7 @@ def static_plot(
             color=g_colours,
             alpha=g_alpha,
             linestyle="--",
-            linewidth = 0.5,
+            linewidth=0.5,
             x_inline=False,
             y_inline=False,
         )
@@ -507,7 +530,7 @@ def static_plot(
                 color="white",
                 alpha=g_alpha,
                 linestyle="--",
-                linewidth = 0.5,
+                linewidth=0.5,
                 x_inline=False,
                 y_inline=False,
             )
@@ -531,9 +554,8 @@ def static_plot(
     else:
         fraction = 0.046 * size[1] / size[0]
 
-
     if l_location == "bottom":
-        cb = plt.colorbar(im, fraction=fraction, pad=0.04, location = l_location)
+        cb = plt.colorbar(im, fraction=fraction, pad=0.04, location=l_location)
     else:
         cb = plt.colorbar(im, fraction=fraction, pad=0.04)
     cbax = cb.ax
@@ -555,7 +577,7 @@ def static_plot(
         )
     if coast is not None:
         if coast == "auto" and scale == "auto":
-            ax.add_feature(cfeature.COASTLINE, linewidth = 0.5)
+            ax.add_feature(cfeature.COASTLINE, linewidth=0.5)
         else:
             if scale == "high":
                 g_scale = "high"
@@ -592,6 +614,3 @@ def static_plot(
             cbax.set_xlabel(label)
         else:
             cbax.set_ylabel(label)
-
-
-
