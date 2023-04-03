@@ -8,6 +8,7 @@ omit =
     nctoolkit/toz*.py
     nctoolkit/val*.py
     nctoolkit/unify.py
+    nctoolkit/static_plot.py
     nctoolkit/bloom.py 
 [report]
 show_missing = True
