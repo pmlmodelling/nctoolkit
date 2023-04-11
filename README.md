@@ -40,10 +40,13 @@ Core abilities include:
 
 ## Installation
 
-The easiest way to install the package is using conda. This will install nctoolkit and all system dependencies.
+The easiest way to install the package is using conda or mamba. This will install nctoolkit and all system dependencies.
 ```sh
 conda install -c conda-forge nctoolkit
+mamba install -c conda-forge nctoolkit
 ```
+
+If you install using conda, please be aware that conda can install a very old version of nctoolkit. Consider setting it to a more recent version.
 
 Install through [PyPI](https://pypi.org/project/nctoolkit/) using pip:
 ```sh
