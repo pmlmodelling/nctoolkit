@@ -401,8 +401,6 @@ def select_timesteps(self, times=None):
     if isinstance(times, range):
         times = list(times)
 
-    if is_iterable(times):
-        times = [int(x) for x in times]
 
     if not isinstance(times, list):
         times = [times]
@@ -500,6 +498,9 @@ def subset(self, **kwargs):
 
 
     """
+    for kk in kwargs:
+        if is_iterable(kwargs[kk]):
+            kwargs[kk] = [int(x) for x in kwargs[kk]]
 
     non_selected = True
 
