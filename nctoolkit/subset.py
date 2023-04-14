@@ -15,6 +15,13 @@ def fix_ind(x):
     else:
         return int(x) + 1
 
+def is_iterable(x):
+    try: 
+        y = iter(x)
+        return True
+    except:
+        return False
+
 
 def to_date(x):
     if "-" in x:
@@ -393,6 +400,9 @@ def select_timesteps(self, times=None):
 
     if isinstance(times, range):
         times = list(times)
+
+    if is_iterable(times):
+        times = [int(x) for x in times]
 
     if not isinstance(times, list):
         times = [times]
