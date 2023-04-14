@@ -1207,6 +1207,8 @@ class DataSet(object):
         return
 
     def __repr__(self):
+        if len(self) == 0:
+            return "Empty dataset"
         current = str(len(self))
 
         output = "<nctoolkit.DataSet>:\nNumber of files: " + current
