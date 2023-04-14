@@ -500,7 +500,15 @@ def subset(self, **kwargs):
     """
     for kk in kwargs:
         if is_iterable(kwargs[kk]):
-            kwargs[kk] = [int(x) for x in kwargs[kk]]
+            ints = True
+            for x in kwargs[kk]:
+                try:
+                    y = int(x)
+                except:
+                    ints = False
+                
+                if ints:
+                    kwargs[kk] = kwargs[kk]
 
     non_selected = True
 
