@@ -1,5 +1,11 @@
 from nctoolkit.runthis import run_this
 
+def is_integer(x):
+    try:
+        y = int(str(x))
+        return True
+    except:
+        return False
 
 def fix_expr(expression):
     """
@@ -143,7 +149,10 @@ def __eq__(self, x):
     if not isinstance(x, str):
         try:
             test = float(x)
-            self.compare(f"=={x}")
+            x_new = x
+            if not is_integer(x):
+                x_new = str(float(x)).replace("+", "")
+            self.compare(f"=={x_new}")
         except:
             self.eq(x)
     else:
@@ -155,7 +164,9 @@ def __gt__(self, x):
     if not isinstance(x, str):
         try:
             test = float(x)
-            x_new = str(float(x)).replace("+", "")
+            x_new = x
+            if not is_integer(x):
+                x_new = str(float(x)).replace("+", "")
             self.compare(f">{x_new}")
         except:
             self.gt(x)
@@ -167,7 +178,10 @@ def __lt__(self, x):
     if not isinstance(x, str):
         try:
             test = float(x)
-            self.compare(f"<{x}")
+            x_new = x
+            if not is_integer(x):
+                x_new = str(float(x)).replace("+", "")
+            self.compare(f"<{x_new}")
         except:
             self.lt(x)
     else:
@@ -178,7 +192,10 @@ def __le__(self, x):
     if not isinstance(x, str):
         try:
             test = float(x)
-            self.compare(f"<={x}")
+            x_new = x
+            if not is_integer(x):
+                x_new = str(float(x)).replace("+", "")
+            self.compare(f"<={x_new}")
         except:
             self.le(x)
     else:
@@ -190,7 +207,10 @@ def __ge__(self, x):
     if not isinstance(x, str):
         try:
             test = float(x)
-            self.compare(f">={x}")
+            x_new = x
+            if not is_integer(x):
+                x_new = str(float(x)).replace("+", "")
+            self.compare(f">={x_new}")
         except:
             self.ge(x)
     else:
@@ -201,7 +221,10 @@ def __ne__(self, x):
     if not isinstance(x, str):
         try:
             test = float(x)
-            self.compare(f"!={x}")
+            x_new = x
+            if not is_integer(x):
+                x_new = str(float(x)).replace("+", "")
+            self.compare(f"!={x_new}")
         except:
             self.ne(x)
     else:
