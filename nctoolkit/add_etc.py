@@ -3,6 +3,7 @@ import os
 import warnings
 import pandas as pd
 
+
 from nctoolkit.cleanup import cleanup
 from nctoolkit.runthis import run_this, run_cdo, tidy_command
 from nctoolkit.session import session_info, append_safe, remove_safe
@@ -167,6 +168,8 @@ def operation(self, method="mul", ff=None, var=None):
                     .drop(columns="time")
                 )
 
+            ff_times_df = ff_times_df.astype("int")
+
     if new:
 
         self1 = self.copy()
@@ -186,7 +189,7 @@ def operation(self, method="mul", ff=None, var=None):
                     years = [int(x.split("T")[0].split("-")[0]) for x in x_times]
                     months = [int(x.split("T")[0].split("-")[1]) for x in x_times]
                     days = [int(x.split("T")[0].split("-")[2]) for x in x_times]
-                    df = pd.DataFrame({"year": years, "month": months, "day": months})
+                    df = pd.DataFrame({"year": years, "month": months, "day": months}).astype("int")
                     self_times.append(df)
 
                 else:
@@ -196,11 +199,12 @@ def operation(self, method="mul", ff=None, var=None):
                     hours = [x.hour for x in x_times]
                     df = pd.DataFrame(
                         {"year": years, "month": months, "day": days, "hour": hours}
-                    )
+                    ).astype("int")
                     df["path"] = x
                     self_times.append(df)
             else:
                 self_times.append(None)
+
 
         possible_switch = True
         for x in self_times:
@@ -275,6 +279,9 @@ def operation(self, method="mul", ff=None, var=None):
     if new:
         if ff_times_df.groupby(["month", "year", "day"]).size().max() == 1:
             for ss in self_times:
+                x11=  ss.loc[:, ["month", "year", "day"]].drop_duplicates().reset_index(drop=True)
+                x12 = ff_times_df.loc[:, ["month", "year", "day"]].drop_duplicates().reset_index(drop=True)
+
                 if (
                     ss.loc[:, ["month", "year", "day"]]
                     .drop_duplicates()
