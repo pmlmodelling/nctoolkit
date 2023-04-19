@@ -238,6 +238,7 @@ class TestVerts:
         ds.run()
         df = ds.to_dataframe()
         depths = df.reset_index().loc[:,["depth", "bnds", "depth_bnds"]].drop_duplicates().drop(columns = "bnds").groupby(["depth"]).apply(foo).drop(columns = "depth").reset_index()
+        depths.columns = ["depth", "depth_bnds"]
         df_check = (
         df
             .reset_index()
