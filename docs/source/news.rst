@@ -1,7 +1,7 @@
 News
 ============
 
-Release of v0.9.1
+Release of v0.9.2
 ---------------
 
 Version 0.9.1 will be released in April 2023. This release will contain a new method for producing high quality static plots.
@@ -9,6 +9,11 @@ Version 0.9.1 will be released in April 2023. This release will contain a new me
 A new method, `set`, will be introduced that will make it easier to rename variables, and change units and long names etc.
 
 Some improvements will be made to internals.
+
+Release of v0.9.1
+---------------
+
+Version 0.9.1 was released on the 19th of April 2023. This was a quick release to deal with some breaking changes to add/subtract etc. methods due to the release of pandas 2.0.0.
 
 Release of v0.9.0
 ---------------
