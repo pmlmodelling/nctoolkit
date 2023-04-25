@@ -98,7 +98,7 @@ def fix_label(x):
     return new_x[1:-1]
 
 
-def static_plot(
+def pub_plot(
     ds,
     extent=None,
     title=None,
