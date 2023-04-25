@@ -4,7 +4,9 @@ News
 Release of v0.9.2
 ---------------
 
-Version 0.9.1 will be released in April 2023. This release will contain a new method for producing high quality static plots.
+Version 0.9.1 will be released in April 2023. 
+
+This release will contain a new method for producing high quality static plots. Yuri Artioli of Plymouth Marine Laboratory contributed the core code to this new `pub_plot` method.
 
 A new method, `set`, will be introduced that will make it easier to rename variables, and change units and long names etc.
 
