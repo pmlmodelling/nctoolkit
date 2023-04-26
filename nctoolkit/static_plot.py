@@ -100,6 +100,7 @@ def fix_label(x):
 
 def pub_plot(
     ds,
+    var = None,
     extent=None,
     title=None,
     legend=None,
@@ -124,8 +125,12 @@ def pub_plot(
 
     Parameters
     -------------
+    ds: nctoolkit dataset
+        Dataset to plot
+    var: str
+        Variable to plot
     extent: list
-        List with [lon_min, lon_max, lat_min, lat_max] to limit the map extent
+        List with [lon_min, lon_max, lat_min, lat_max] for plotting extent
     title: str
         Character string with plot title
     legend: str
@@ -136,10 +141,10 @@ def pub_plot(
         Character string with colour required for land. Set to None if you do not want land to show.
     norm: str or matplotlib.colors norm
          Norm to use for colour bar
-    mid_point: float
-        Mid-point to use for colour bar
     projection: cartopy projection
         Cartopy projection to use.
+    mid_point: float
+        Mid-point to use for colour bar
     coast: str
         Set to "coarse", "low", "intermediate", "high" or "full" if you want to use GSHHS coastlines
     scale: str
@@ -147,6 +152,8 @@ def pub_plot(
     grid: bool
         Set to False if you do not want grid lines.
     legend_position = "auto"
+    robust :    bool   
+        Whether to use robust statistics for the colour scale or not
     *kwargs:
         kwargs to allow slight misspelling of arguments
 
@@ -194,6 +201,11 @@ def pub_plot(
 
     for kk in kwargs:
         fixed = False
+
+        if var is None:
+            if kk.lower().startswith("var"):
+                var = kwargs[kk]
+                fixed = True
         if kk.lower().startswith("col") and kk.lower().endswith("rs"):
             if colours == "viridis":
                 colours = kwargs[kk]
@@ -235,7 +247,11 @@ def pub_plot(
                 raise ValueError(f"{kk} is not a valid argument")
 
     ds1 = ds.copy()
+
+    if var is not None:
+        ds1.subset(variables=var)
     ds1.run()
+
 
     if len(ds1.variables) > 1:
         raise ValueError("Only one variable wanted")
