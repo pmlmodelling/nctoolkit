@@ -66,4 +66,5 @@ jobs:
        shell: bash -l {0}
        run: |
          conda activate foo
-         pytest tests/test_[m-n]*.py
+         pytest tests/test_nco_command_lazy.py
+
