@@ -1,5 +1,7 @@
 import copy
 import multiprocessing
+import platform
+import warnings
 
 from nctoolkit.cleanup import cleanup
 from nctoolkit.flatten import str_flatten
@@ -25,6 +27,11 @@ def nco_command(self, command=None, ensemble=False):
     self.run()
 
     cores = session_info["cores"]
+
+    if platform.system() != "Linux":
+        if cores > 1:
+            warnings.warn("This cannot run in parallel on macOS")
+            cores = 1
 
     # First, check that the command is valid
     if command is None:
