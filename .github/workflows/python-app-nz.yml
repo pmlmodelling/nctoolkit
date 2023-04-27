@@ -38,7 +38,7 @@ jobs:
      - name: Install dependencies
        shell: bash -l {0}
        run: |
-         conda create -n foo python=3.10 nco cdo -y 
+         conda create -n foo python=3.10 nco=5.14 cdo -y 
          conda activate foo
          #conda install cdo nco
          #conda install pip
