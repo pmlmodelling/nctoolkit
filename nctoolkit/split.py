@@ -22,7 +22,6 @@ def split_cdo(self, method="year"):
     bases = []
 
     for ff in self:
-
         # We need to split the file by name
         # But, first we need to check if there is space in the output folder
         # If there isn't, we need to switch to the /var/tmp

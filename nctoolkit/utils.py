@@ -1,8 +1,8 @@
 import re
 import subprocess
 
-def name_check(x):
 
+def name_check(x):
     if len(x) == 0:
         return False
 
@@ -26,7 +26,6 @@ def name_check(x):
         return True
     else:
         return False
-
 
 
 def is_curvilinear(ff):
@@ -71,30 +70,33 @@ def version_above(x, y):
 
 # check version of cdo installed
 
+
 def latest_version():
     try:
         import requests
-    
+
         url = "https://anaconda.org/conda-forge/cdo"
         r = requests.get(url)
         import re
+
         text = re.compile("v.*..*..[0-10]")
-    
+
         text = re.compile("v[0-9].[0-9]?[0-9].[0-9]?[0-9]")
         options = []
         for x in [text.findall(x) for x in r.text.split(" ") if "2.0.5" in x]:
             options += x
-    
+
         versions = []
         for x in options:
             versions.append(x.replace("v", ""))
         versions = list(set(versions))
-        if  len(versions) == 1:
+        if len(versions) == 1:
             return versions[0]
         else:
             return None
     except:
         return None
+
 
 def validate_version():
     """
@@ -104,7 +106,9 @@ def validate_version():
 
     try:
         version = cdo_version()
-        bad = version_above(cdo_version(), "2.0.0") and version_below(cdo_version(), "2.0.5")
+        bad = version_above(cdo_version(), "2.0.0") and version_below(
+            cdo_version(), "2.0.5"
+        )
         actual_version = version
         if version is None:
             print(
@@ -126,17 +130,22 @@ def validate_version():
             )
         else:
             ## Ignore check for CDO version
-            #latest = latest_version()
-            latest = None 
+            # latest = latest_version()
+            latest = None
 
             if latest is None:
-                print(f"nctoolkit is using Climate Data Operators version {actual_version}")
+                print(
+                    f"nctoolkit is using Climate Data Operators version {actual_version}"
+                )
             else:
                 if version_below(actual_version, latest):
-                    print(f"nctoolkit is using Climate Data Operators version {actual_version}. v{latest} is available: https://anaconda.org/conda-forge/cdo!")
+                    print(
+                        f"nctoolkit is using Climate Data Operators version {actual_version}. v{latest} is available: https://anaconda.org/conda-forge/cdo!"
+                    )
                 else:
-                    print(f"nctoolkit is using the latest version of Climate Data Operators version: {actual_version}")
-
+                    print(
+                        f"nctoolkit is using the latest version of Climate Data Operators version: {actual_version}"
+                    )
 
     except:
         print(

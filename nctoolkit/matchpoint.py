@@ -1,7 +1,4 @@
-
-
 def open_matchpoint():
-
     return Matchpoint()
 
 

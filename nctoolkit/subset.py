@@ -15,8 +15,9 @@ def fix_ind(x):
     else:
         return int(x) + 1
 
+
 def is_iterable(x):
-    try: 
+    try:
         y = iter(x)
         return True
     except:
@@ -34,6 +35,7 @@ def to_date(x):
     month = int(new[1])
     year = int(new[2])
     return datetime(year, month, day)
+
 
 def select_levels(self, levels=None):
     """
@@ -59,10 +61,10 @@ def select_levels(self, levels=None):
             raise ValueError("levels provided are not valid!")
         if levels[0] > levels[1]:
             raise ValueError("levels have the wrong order")
-        levels = f"{levels[0]}/{levels[1]}" 
+        levels = f"{levels[0]}/{levels[1]}"
 
-    cdo_command =  f"cdo -sellevel,{levels}"
-        
+    cdo_command = f"cdo -sellevel,{levels}"
+
     run_this(cdo_command, self, "ensemble")
 
 
@@ -125,6 +127,7 @@ def select_seasons(self, season=None):
     cdo_command = f"cdo -select,season={season}"
     run_this(cdo_command, self, output="ensemble")
 
+
 def select_hours(self, hours=None):
     """
     Select hours from a dataset
@@ -151,7 +154,6 @@ def select_hours(self, hours=None):
     # coerce to int if numpy float etc.
 
     hours = [int(x) if "int" in str(type(x)) else x for x in hours]
-
 
     for x in hours:
         if not isinstance(x, int):
@@ -192,7 +194,6 @@ def select_days(self, days=None):
 
     days = [int(x) if "int" in str(type(x)) else x for x in days]
 
-
     for x in days:
         if not isinstance(x, int):
             raise TypeError(f"{x} is not an int")
@@ -231,7 +232,6 @@ def select_months(self, months=None):
     # coerce to int if numpy float etc.
 
     months = [int(x) if "int" in str(type(x)) else x for x in months]
-
 
     for x in months:
         if not isinstance(x, int):
@@ -274,7 +274,6 @@ def select_years(self, years=None):
             raise TypeError(f"{yy} is not an int")
 
     if self._merged is False:
-
         missing_files = 0
 
         n_removed = 0
@@ -282,14 +281,12 @@ def select_years(self, years=None):
         # loop through all of the files and remove any that do not have valid years
         new_current = []
 
-
         all_check = []
 
         for ff in self:
-
             all_years = nc_years(ff)
             all_years = list(set(all_years))
-            all_check+=all_years
+            all_check += all_years
             all_years = [int(v) for v in all_years]
             inter = [element for element in all_years if element in years]
 
@@ -318,9 +315,13 @@ def select_years(self, years=None):
         if len(missing_years) > 0:
             len_missing = len(missing_years)
             missing_years = [int(x) for x in missing_years]
-            if set(range(min(missing_years), max(missing_years) + 1)) == set(missing_years):
+            if set(range(min(missing_years), max(missing_years) + 1)) == set(
+                missing_years
+            ):
                 if len(missing_years) > 1:
-                    missing_years = str(min(missing_years)) + "-" + str(max(missing_years))
+                    missing_years = (
+                        str(min(missing_years)) + "-" + str(max(missing_years))
+                    )
                 else:
                     missing_years = str(missing_years[0])
             else:
@@ -328,9 +329,13 @@ def select_years(self, years=None):
                 missing_years = str_flatten(missing_years, ",")
             if missing_files == 0:
                 if len_missing == 1:
-                    warnings.warn(f"The following year was not available in the dataset: {missing_years}")
+                    warnings.warn(
+                        f"The following year was not available in the dataset: {missing_years}"
+                    )
                 else:
-                    warnings.warn(f"{len_missing} years were not available in the dataset: {missing_years}")
+                    warnings.warn(
+                        f"{len_missing} years were not available in the dataset: {missing_years}"
+                    )
 
         self.current = new_current
 
@@ -401,7 +406,6 @@ def select_timesteps(self, times=None):
     if isinstance(times, range):
         times = list(times)
 
-
     if not isinstance(times, list):
         times = [times]
 
@@ -410,7 +414,9 @@ def select_timesteps(self, times=None):
             raise TypeError(f"{tt} is not an int")
         if tt < 0:
             if version_above(cdo_version(), "2.0.0") is False:
-                raise ValueError(f"Please install CDO version 2.0.5 or above for negative timestep selections")
+                raise ValueError(
+                    f"Please install CDO version 2.0.5 or above for negative timestep selections"
+                )
 
     # all of the variables in months need to be converted to ints,
     # just in case floats have been provided
@@ -506,7 +512,7 @@ def subset(self, **kwargs):
                     y = int(x)
                 except:
                     ints = False
-                
+
                 if ints:
                     kwargs[kk] = kwargs[kk]
 
@@ -520,11 +526,10 @@ def subset(self, **kwargs):
         if "lat" in key.lower():
             lat = kwargs[key]
     if lon is not None or lat is not None:
-        self.crop(lon = lon, lat = lat)
+        self.crop(lon=lon, lat=lat)
         non_selected = False
 
     for key in kwargs:
-
         if "ran" in key.lower():
             select_period(self, kwargs[key])
             non_selected = False
@@ -560,7 +565,6 @@ def subset(self, **kwargs):
         if "lev" in key.lower() or "depth" in key.lower():
             select_levels(self, kwargs[key])
             non_selected = False
-
 
     if non_selected:
         raise AttributeError(f"{key} is not a valid select method")

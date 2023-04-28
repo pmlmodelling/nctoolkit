@@ -48,7 +48,6 @@ def cdo_command(self, command=None, ensemble=False):
         self._merged = True
 
     for mm in cdo_methods:
-
         if " " + mm + "," in cdo_command:
             cdo_command = cdo_command.replace(" " + mm + ",", " -" + mm + ",")
 

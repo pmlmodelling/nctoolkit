@@ -213,7 +213,6 @@ def ensemble_mean(self, nco=False, ignore_time=False):
     """
 
     if nco is False:
-
         self.run()
 
         if len(self) == 1:

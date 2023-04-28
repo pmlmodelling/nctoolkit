@@ -14,7 +14,7 @@ def mask_box(self, lon=[-180, 180], lat=[-90, 90]):
         Latitude range to mask. Must be of the form: [lat_min, lat_max]
     """
 
-    if not isinstance(lon, list) or  not isinstance(lat, list):
+    if not isinstance(lon, list) or not isinstance(lat, list):
         raise TypeError("Check that lon/lat ranges are tuples")
 
     if len(lon) != 2:
@@ -45,7 +45,6 @@ def mask_box(self, lon=[-180, 180], lat=[-90, 90]):
     # now, clip to the lonlat box we need
 
     if (lon[0] >= -180) and (lon[1] <= 180) and (lat[0] >= -90) and (lat[1] <= 90):
-
         lat_box = str_flatten(lon + lat)
         cdo_command = f"cdo -masklonlatbox,{lat_box}"
         run_this(cdo_command, self, output="ensemble")

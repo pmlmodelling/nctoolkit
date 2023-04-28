@@ -1,16 +1,12 @@
-import copy
 import subprocess
 import warnings
-import os
-
-from nctoolkit.api import open_data
+import copy
 from nctoolkit.cleanup import cleanup
-from nctoolkit.flatten import str_flatten
-from nctoolkit.runthis import run_this, run_cdo
+from nctoolkit.api import open_data
 from nctoolkit.temp_file import temp_file
-from nctoolkit.session import append_safe
-from nctoolkit.session import remove_safe
 from nctoolkit.utils import version_above, cdo_version
+from nctoolkit.flatten import str_flatten
+from nctoolkit.runthis import run_this 
 import nctoolkit.api as api
 
 
@@ -76,7 +72,7 @@ def top(self):
     run_this(cdo_command, self, output="ensemble")
 
 
-def vertical_interp(self, levels=None, fixed = None, thickness = None):
+def vertical_interp(self, levels=None, fixed=None, thickness=None):
     """
     Verticaly interpolate a dataset based on given vertical levels
     This is calculated for each time step and grid cell
@@ -88,10 +84,10 @@ def vertical_interp(self, levels=None, fixed = None, thickness = None):
     levels : list, int or str
         list of vertical levels, for example depths for an ocean model, to vertically
         interpolate to. These must be floats or ints.
-    fixed : bool 
+    fixed : bool
         Define whether the vertical levels are the same in all spatial locations.
         Set to True if they are, e.g. you have z-levels. If you have the likes of sigma-coordinates,
-        set this to True. 
+        set this to True.
     thickness: str or Dataset
         This must be supplied if fixed is False, otherwise vertical thickness cannot be known.
         Option argument when vertical levels vary in space.
@@ -127,7 +123,7 @@ def vertical_interp(self, levels=None, fixed = None, thickness = None):
         fixed = False
 
     if fixed is False:
-        self.to_zlevels(levels = levels, thickness = thickness)
+        self.to_zlevels(levels=levels, thickness=thickness)
         return None
 
     if levels is None:
@@ -138,7 +134,7 @@ def vertical_interp(self, levels=None, fixed = None, thickness = None):
     if isinstance(levels, (int, float)):
         levels = [levels]
 
-    #levels = [float(x) for x in levels]
+    # levels = [float(x) for x in levels]
 
     for vv in levels:
         if not isinstance(vv, (int, float)):
@@ -156,7 +152,7 @@ def vertstat(self, stat="mean"):
     run_this(cdo_command, self, output="ensemble")
 
 
-def vertical_mean(self, thickness=None, depth_range=None, fixed = None):
+def vertical_mean(self, thickness=None, depth_range=None, fixed=None):
     """
     Calculate the depth-averaged mean for each variable
     This is calculated for each time step and grid cell
@@ -171,10 +167,10 @@ def vertical_mean(self, thickness=None, depth_range=None, fixed = None):
     depth_range: list
         Only use when vertical levels vary in space
         Set a depth range if desired. Should be of the form [min_depth, max_depth].
-    fixed : bool 
+    fixed : bool
         Define whether the vertical levels are the same in all spatial locations.
         Set to True if they are, e.g. you have z-levels. If you have the likes of sigma-coordinates,
-        set this to True. 
+        set this to True.
 
     Examples
     ------------
@@ -202,7 +198,6 @@ def vertical_mean(self, thickness=None, depth_range=None, fixed = None):
         return None
 
     if isinstance(depth_range, list):
-
         if len(depth_range) != 2:
             raise ValueError("Please provide a 2 variable list for depth range")
         if depth_range[1] <= depth_range[0]:
@@ -221,7 +216,9 @@ def vertical_mean(self, thickness=None, depth_range=None, fixed = None):
     self1 = self.copy()
 
     if len(self) > 1:
-        warnings.warn("Vertical structure will be assumed to be the same for all files in the dataset")
+        warnings.warn(
+            "Vertical structure will be assumed to be the same for all files in the dataset"
+        )
 
     # Set up the thickness
 
@@ -236,7 +233,7 @@ def vertical_mean(self, thickness=None, depth_range=None, fixed = None):
     drop_this = None
     if sorted is False:
         if thickness in self.variables:
-            ds_thick = open_data(self[0]) 
+            ds_thick = open_data(self[0])
             ds_thick.subset(variable=thickness)
             ds_thick.run()
             drop_this = thickness
@@ -248,7 +245,6 @@ def vertical_mean(self, thickness=None, depth_range=None, fixed = None):
     thick_var = ds_thick.variables[0]
     # modify the depth if it is a list
     if isinstance(depth_range, list):
-
         ds_thick.rename({thick_var: "thickness"})
         ds_thick.run()
         ds_depth = ds_thick.copy()
@@ -264,12 +260,14 @@ def vertical_mean(self, thickness=None, depth_range=None, fixed = None):
 
     self1.subset(variables=self.contents.query("nlevels > 1").variable)
     if drop_this is not None:
-        self1.drop(variables = drop_this)
+        self1.drop(variables=drop_this)
 
     ds_thick.run()
     self1.run()
     self1.multiply(ds_thick)
-    warnings.warn(message = "Assuming missing values are in the same grid cells in thickness and variable data. Modify thickness and re-run if they are not.")
+    warnings.warn(
+        message="Assuming missing values are in the same grid cells in thickness and variable data. Modify thickness and re-run if they are not."
+    )
     self1.run()
     self1.vertical_sum()
     self1.run()
@@ -281,7 +279,6 @@ def vertical_mean(self, thickness=None, depth_range=None, fixed = None):
     del ds_thick
     if isinstance(depth_range, list):
         del ds_depth
-
 
     self.current = self1.current
     self.history = self1.history
@@ -336,7 +333,7 @@ def vertical_range(self):
     vertstat(self, stat="range")
 
 
-def vertical_integration(self, thickness=None, depth_range=None, fixed = None):
+def vertical_integration(self, thickness=None, depth_range=None, fixed=None):
     """
     Calculate the vertically integrated sum over the water column
     This calculates the sum of the variable multiplied by the cell thickness
@@ -350,10 +347,10 @@ def vertical_integration(self, thickness=None, depth_range=None, fixed = None):
         one variable.
     depth_range: list
         Set a depth range if desired. Should be of the form [min_depth, max_depth].
-    fixed : bool 
+    fixed : bool
         Define whether the vertical levels are the same in all spatial locations.
         Set to True if they are, e.g. you have z-levels. If you have the likes of sigma-coordinates,
-        set this to True. 
+        set this to True.
 
     Examples
     ------------
@@ -375,29 +372,30 @@ def vertical_integration(self, thickness=None, depth_range=None, fixed = None):
         ff = self[0]
         command = f"cdo zaxisdes {ff}"
         out = subprocess.Popen(
-                 command,
-                 shell=True,
-                 stdin=subprocess.PIPE,
-                 stdout=subprocess.PIPE,
-                 stderr=subprocess.STDOUT,
-             )
+            command,
+            shell=True,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+        )
         result, ignore = out.communicate()
 
         if "bounds" not in result.decode("utf-8").lower():
-            raise ValueError("Vertical bounds info does not appear to be in the netCDF files, so thicknesses cannot be calculated for vertical integration!")
+            raise ValueError(
+                "Vertical bounds info does not appear to be in the netCDF files, so thicknesses cannot be calculated for vertical integration!"
+            )
 
         thickness = self.copy()
-        thickness.subset(time = 0, variable = var)
-        thickness.rename({var:"thickness"})
-        thickness.assign(thickness = lambda x: (isnan(x.thickness) == False) * level(x.thickness), drop = True)
-        thickness.assign(thickness = lambda x: thickness(x.thickness) + (x.thickness < x.thickness), drop = True)
+        thickness.subset(time=0, variable=var)
+        thickness.rename({var: "thickness"})
+        thickness.assign( thickness=lambda x: (isnan(x.thickness) is False) * level(x.thickness), drop=True,)
+        thickness.assign( thickness=lambda x: thickness(x.thickness) + (x.thickness < x.thickness), drop=True,)
         thickness.run()
-    
+
     if thickness is None:
         raise ValueError("Please specify thickness")
 
     if isinstance(depth_range, list):
-
         if len(depth_range) != 2:
             raise ValueError("Please provide a 2 variable list for depth range")
         if depth_range[1] <= depth_range[0]:
@@ -415,7 +413,9 @@ def vertical_integration(self, thickness=None, depth_range=None, fixed = None):
     self.run()
 
     if len(self) > 1:
-        warnings.warn("Vertical integration will assume all files have the same structure")
+        warnings.warn(
+            "Vertical integration will assume all files have the same structure"
+        )
 
     # Set up the thickness
 
@@ -443,7 +443,6 @@ def vertical_integration(self, thickness=None, depth_range=None, fixed = None):
     thick_var = ds_thick.variables[0]
     # modify the depth if it is a list
     if isinstance(depth_range, list):
-
         if thick_var != "thickness":
             ds_thick.rename({thick_var: "thickness"})
             ds_thick.run()
@@ -461,7 +460,7 @@ def vertical_integration(self, thickness=None, depth_range=None, fixed = None):
 
     self1.subset(variables=self1.contents.query("nlevels > 1").variable)
     if drop_this is not None:
-        self1.drop(variables = drop_this)
+        self1.drop(variables=drop_this)
 
     ds_thick.run()
     self1.run()
@@ -570,6 +569,7 @@ def bottom_mask(self):
 
     cleanup()
 
+
 def surface_mask(self):
     """
     Create a mask identifying the shallowest cell without missing values.
@@ -582,10 +582,3 @@ def surface_mask(self):
     self.invert_levels()
     self.bottom_mask()
     self.invert_levels()
-
-
-
-
-
-
-

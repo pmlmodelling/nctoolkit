@@ -56,7 +56,7 @@ def crop(self, lon=[-180, 180], lat=[-90, 90], nco=False, nco_vars=None):
         nco_vars = [nco_vars]
 
     # check validity of lon/lat supplied
-    if not isinstance(lon, list) or  not isinstance(lat, list):
+    if not isinstance(lon, list) or not isinstance(lat, list):
         raise TypeError("Check that lon/lat ranges are tuples")
 
     if len(lon) != 2:
@@ -97,11 +97,9 @@ def crop(self, lon=[-180, 180], lat=[-90, 90], nco=False, nco_vars=None):
     new_commands = []
 
     for ff in self:
-
         # find the names of lonlat
 
         if nco_vars is not None:
-
             var_str = f" -v {str_flatten(nco_vars)}"
         else:
             var_str = " "

@@ -58,12 +58,10 @@ def phenology(self, var=None, metric=None, p=None):
         self.split("year")
 
     if metric == "peak":
-
         new_files = []
         new_commands = []
 
         for ff in self:
-
             target = temp_file(".nc")
             command = (
                 f"cdo -timmin -setrtomiss,-10000,0 -expr,'peak=var*ctimestep()' "
@@ -89,7 +87,6 @@ def phenology(self, var=None, metric=None, p=None):
         return None
 
     if (metric == "start") or (metric == "end") or (metric == "middle"):
-
         if metric == "middle":
             p = 50.0
 
@@ -110,7 +107,6 @@ def phenology(self, var=None, metric=None, p=None):
         new_commands = []
 
         for ff in self:
-
             target = temp_file(".nc")
             command = (
                 f"cdo -timmin -setrtomiss,-10000,0 -expr,"

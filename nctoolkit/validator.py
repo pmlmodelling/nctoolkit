@@ -1,13 +1,6 @@
-
-
-
 def validator():
-
     val = Validator()
     return val
-
-
-
 
 
 class Validator(object):
@@ -21,7 +14,6 @@ class Validator(object):
         self.model = None
         self.obs = None
         self.plots = []
-
 
     # Import any methods
 

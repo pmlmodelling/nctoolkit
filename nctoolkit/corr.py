@@ -8,7 +8,6 @@ from nctoolkit.session import remove_safe, get_safe
 
 
 def cor(self, var1=None, var2=None, method="fld"):
-
     if len(self) == 0:
         raise ValueError("Failure due to empty dataset!")
 
@@ -36,27 +35,27 @@ def cor(self, var1=None, var2=None, method="fld"):
 
     if var1 != var2:
         contents = self.contents
-        df = contents.query("variable in [@var1, @var2]").loc[:,["variable", "data_type"]]
+        df = contents.query("variable in [@var1, @var2]").loc[
+            :, ["variable", "data_type"]
+        ]
         # if
         if len([x for x in df.index if "file" in str(x)]) == 0:
             df.index = ["file" for x in range(len(df.index))]
         df = (
-            df
-            .pivot(values = "data_type", columns = "variable")
-            .rename(columns = {var1:"var1"})
-            .rename(columns = {var2:"var2"})
+            df.pivot(values="data_type", columns="variable")
+            .rename(columns={var1: "var1"})
+            .rename(columns={var2: "var2"})
         )
         if len(df.query("var1 != var2")) > 0:
-            raise ValueError(f"{var1} and {var2} have different data types. Please select data type with set_precision. Suggestion: F32.")
-
-
+            raise ValueError(
+                f"{var1} and {var2} have different data types. Please select data type with set_precision. Suggestion: F32."
+            )
 
     # Calculate the correlations in each file
     new_files = []
     new_commands = []
 
     for ff in self:
-
         # create the temp file for targeting
         target = temp_file(".nc")
 

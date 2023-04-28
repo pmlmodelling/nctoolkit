@@ -61,10 +61,8 @@ def nco_command(self, command=None, ensemble=False):
         target_list = []
 
     if (ensemble is False) or (len(self) == 1):
-
         if cores > 1:
             for ff in self:
-
                 target = temp_file(".nc")
 
                 append_safe(target)
@@ -77,7 +75,6 @@ def nco_command(self, command=None, ensemble=False):
 
         else:
             for ff in self:
-
                 target = temp_file(".nc")
                 append_safe(target)
 
@@ -102,7 +99,6 @@ def nco_command(self, command=None, ensemble=False):
         new_commands.append(the_command)
 
     if cores == 1 or ensemble:
-
         self.current = new_files
 
         while True:
@@ -110,7 +106,7 @@ def nco_command(self, command=None, ensemble=False):
             for ff in new_files:
                 if len([x for x in get_safe() if x == ff]) > 1:
                     remove_safe(ff)
-                    removed +=1
+                    removed += 1
             if removed == 0:
                 break
 
@@ -133,7 +129,7 @@ def nco_command(self, command=None, ensemble=False):
             for ff in target_list:
                 if len([x for x in get_safe() if x == ff]) > 1:
                     remove_safe(ff)
-                    removed +=1
+                    removed += 1
             if removed == 0:
                 break
 

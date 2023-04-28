@@ -9,7 +9,6 @@ from nctoolkit.session import remove_safe
 def boxstat(self, stat="mean", x=1, y=1):
     """Method to calculate the spatial stat from a dataset"""
 
-
     if not isinstance(x, int):
         raise ValueError("x should be int")
     if not isinstance(y, int):
@@ -253,7 +252,6 @@ def spatial_sum(self, by_area=False):
         raise TypeError("by_area is not boolean")
 
     if len(self) == 1 or (by_area is False):
-
         if by_area:
             self.run()
 
@@ -268,7 +266,6 @@ def spatial_sum(self, by_area=False):
     new_files = []
     new_commands = []
     for ff in self:
-
         target = temp_file("nc")
 
         cdo_command = f"cdo -fldsum -mul {ff} -gridarea {ff} {target}"

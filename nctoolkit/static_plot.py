@@ -3,7 +3,6 @@ from nctoolkit.session import session_info
 try:
     import signal
     from contextlib import contextmanager
-    from nctoolkit.session import session_info
     from mpl_toolkits.axes_grid1 import make_axes_locatable
     import matplotlib as mpl
 
@@ -100,7 +99,7 @@ def fix_label(x):
 
 def pub_plot(
     ds,
-    var = None,
+    var=None,
     extent=None,
     title=None,
     legend=None,
@@ -152,7 +151,7 @@ def pub_plot(
     grid: bool
         Set to False if you do not want grid lines.
     legend_position = "auto"
-    robust :    bool   
+    robust :    bool
         Whether to use robust statistics for the colour scale or not
     *kwargs:
         kwargs to allow slight misspelling of arguments
@@ -251,7 +250,6 @@ def pub_plot(
     if var is not None:
         ds1.subset(variables=var)
     ds1.run()
-
 
     if len(ds1.variables) > 1:
         raise ValueError("Only one variable wanted")

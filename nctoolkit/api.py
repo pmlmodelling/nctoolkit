@@ -122,10 +122,12 @@ def coast_check():
         import cartopy
         from cartopy import crs
         import cartopy.crs as ccrs
+
         projection = ccrs.PlateCarree()
         return True
     except:
         return False
+
 
 session_info["coast"] = coast_check()
 
@@ -246,7 +248,6 @@ def update_options(kwargs):
 
             # update safe-lists etc. if running in parallel
             if kwargs[key] and key == "parallel" and find:
-
                 if len(temp_dirs) > 0:
                     for ff in temp_dirs:
                         append_tempdirs(ff)
@@ -261,7 +262,6 @@ def update_options(kwargs):
                         nc_protected.remove(ff)
 
             if (kwargs[key] is False) and key == "parallel" and find:
-
                 if len(temp_dirs_par) > 0:
                     for ff in temp_dirs_par:
                         append_tempdirs(ff)
@@ -381,7 +381,6 @@ def options(**kwargs):
 
             # update safe-lists etc. if running in parallel
             if kwargs[key] and key == "parallel":
-
                 if len(temp_dirs) > 0:
                     for ff in temp_dirs:
                         append_tempdirs(ff)
@@ -396,7 +395,6 @@ def options(**kwargs):
                         nc_protected.remove(ff)
 
             if (kwargs[key] is False) and key == "parallel":
-
                 if len(temp_dirs_par) > 0:
                     for ff in temp_dirs_par:
                         append_tempdirs(ff)
@@ -509,7 +507,6 @@ def file_size(file_path):
 
 
 def from_xarray(ds):
-
     """
     Convert an xarray dataset to an nctoolkit dataset
     This will first save the xarray dataset as a temporary netCDF file.
@@ -669,9 +666,7 @@ def open_data(x=[], checks=True, **kwargs):
 
     if isinstance(x, str):
         if source != "file" or os.path.exists(x) is False:
-
             if is_url(x):
-
                 if thredds is False:
                     new_x = temp_file(".nc")
                     print(f"Downloading {x}")
@@ -712,7 +707,6 @@ def open_data(x=[], checks=True, **kwargs):
 
                     x = new_x
                 else:
-
                     if checks:
                         if wait is not None:
                             with time_limit(stop_time):
@@ -764,17 +758,13 @@ def open_data(x=[], checks=True, **kwargs):
 
     if isinstance(x, list):
         if source == "url":
-
             for ff in x:
-
                 if is_url(ff) is False:
                     raise ValueError(f"{x} is not a url")
 
             new_files = []
             for ff in x:
-
                 if is_url(ff):
-
                     if thredds is False:
                         new_x = temp_file(".nc")
                         print(f"Downloading {ff}")
@@ -818,7 +808,6 @@ def open_data(x=[], checks=True, **kwargs):
 
     if isinstance(x, list) and source != "url":
         if thredds is False:
-
             for ff in x:
                 if os.path.exists(ff) is False:
                     raise FileNotFoundError(f"{ff} does not exist!")
@@ -828,7 +817,6 @@ def open_data(x=[], checks=True, **kwargs):
 
             if len(x) > 1:
                 for ff in x:
-
                     if os.path.exists(ff) is False:
                         raise FileNotFoundError("Data set " + ff + " does not exist!")
 
@@ -1195,7 +1183,6 @@ class DataSet(object):
         self._ncommands = 0
 
     def __getitem__(self, index):
-
         return self.current[index]
 
     def __len__(self):
@@ -1246,7 +1233,6 @@ class DataSet(object):
         max_size = -1
 
         for ff in self:
-
             all_sizes.append(file_size(ff))
 
             if file_size(ff) > max_size:
@@ -1402,7 +1388,6 @@ class DataSet(object):
         """
 
         try:
-
             if n is None:
                 n = len(self)
 
@@ -1415,7 +1400,6 @@ class DataSet(object):
                     use_names = False
 
             for ff in self[0:n]:
-
                 dataset = Dataset(ff)
 
                 out = subprocess.run(
@@ -1524,7 +1508,6 @@ class DataSet(object):
                 )
 
                 try:
-
                     times = []
 
                     ds = xr.open_dataset(ff, decode_times=False)
@@ -1932,6 +1915,3 @@ class DataSet(object):
     from nctoolkit.zonals import zonal_max
     from nctoolkit.zonals import zonal_range
     from nctoolkit.zonals import zonal_sum
-
-    # Deprecated methods
-    # from nctoolkit.deprecated import set_missing

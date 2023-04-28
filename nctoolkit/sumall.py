@@ -14,12 +14,20 @@ def sum_all(self, drop=True):
 
     easy = True
     if len(self) > 1:
-        for x in self.contents.reset_index().loc[:,["file", "variable"]].groupby("variable").size().values:
+        for x in (
+            self.contents.reset_index()
+            .loc[:, ["file", "variable"]]
+            .groupby("variable")
+            .size()
+            .values
+        ):
             if x != len(self):
                 easy = False
 
     if (len(self) > 1 and easy is False) and (self._merged is False):
-        raise TypeError("This currently only works for datasets with files with the same variables")
+        raise TypeError(
+            "This currently only works for datasets with files with the same variables"
+        )
 
     if drop is True:
         self.cdo_command("expr,total=" + "+".join(self.variables))

@@ -14,15 +14,16 @@ def zonstat(self, stat="mean"):
 
     run_this(cdo_command, self, output="ensemble")
 
-def zonal_sum(self, by_area = False):
+
+def zonal_sum(self, by_area=False):
     """
     Calculate the zonal sum for each year/month combination in files.
     This applies to each file in an ensemble.
 
     Parameters
     -------------
-    by_area : bool 
-        Set to True if you want the cell value to be multiplied by the cell area prior to summing 
+    by_area : bool
+        Set to True if you want the cell value to be multiplied by the cell area prior to summing
 
     Examples
     ------------
@@ -35,11 +36,12 @@ def zonal_sum(self, by_area = False):
         if len(self) > 1:
             print("Using first file in the dataset for areas")
         ds_area = open_data(self[0])
-        ds_area.subset(time = 0)
-        ds_area.cell_area(join = False)
+        ds_area.subset(time=0)
+        ds_area.cell_area(join=False)
         self.multiply(ds_area)
 
     zonstat(self, stat="sum")
+
 
 def zonal_mean(self):
     """

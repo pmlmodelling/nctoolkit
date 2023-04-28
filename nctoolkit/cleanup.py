@@ -162,7 +162,6 @@ def temp_check():
                 )
 
     else:
-
         temp_folder = tempfile.gettempdir()
 
         mylist = [f for f in glob.glob(f"{temp_folder}/*")]
@@ -191,7 +190,6 @@ def disk_clean(self):
 
     # only use this on linux
     if platform.system() == "Linux":
-
         # get files as a list
 
         ff_list = self.current

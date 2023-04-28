@@ -1,11 +1,21 @@
 import pandas as pd
 from nctoolkit.api import open_data, open_thredds
-import xarray as xr
 from nctoolkit.matchpoint import open_matchpoint
 import nctoolkit.api as api
 
 
-def match_points(ds=None, df = None, variables=None, depths = None, nan=None, top = False, tmean = False, regrid = "bil", max_extrap = 5, **kwargs):
+def match_points(
+    ds=None,
+    df=None,
+    variables=None,
+    depths=None,
+    nan=None,
+    top=False,
+    tmean=False,
+    regrid="bil",
+    max_extrap=5,
+    **kwargs,
+):
     """
     Match netCDF data to a spatiotemporal points dataframe
 
@@ -14,7 +24,7 @@ def match_points(ds=None, df = None, variables=None, depths = None, nan=None, to
     ds: nctoolkit dataset or str/list of file paths
         Dataset or file(s) to match up with
     df: pandas dataframe containing the spatiotemporal points to match with.
-        The column names must be made up of a subset of "lon", "lat", "year", "month", "day" and "depth". 
+        The column names must be made up of a subset of "lon", "lat", "year", "month", "day" and "depth".
         "longitude" and "latitude" will also be accepted for lon/lat. Detection will not be case sensitive
     variables: str or list
         Str or list of variables. All variables are matched up if this is not supplied.
@@ -38,9 +48,9 @@ def match_points(ds=None, df = None, variables=None, depths = None, nan=None, to
         Regridding method. Defaults to "bil". Options available are those in nctoolkit regrid method.
         "nn" for nearest neighbour.
     max_extrap: float
-        Maximum distance for vertical extrapolation of values 
+        Maximum distance for vertical extrapolation of values
     kwargs: kwargs
-        Additional arguments to send to assign 
+        Additional arguments to send to assign
 
     Returns
     ---------------
@@ -50,13 +60,13 @@ def match_points(ds=None, df = None, variables=None, depths = None, nan=None, to
 
     mp = open_matchpoint()
 
-    mp.add_data(x = ds, variables = variables, depths = depths, nan = nan, top = top,  **kwargs)
+    mp.add_data(x=ds, variables=variables, depths=depths, nan=nan, top=top, **kwargs)
     mp.add_points(df)
-    mp.matchup(tmean = tmean, regrid = regrid, max_extrap = max_extrap)
+    mp.matchup(tmean=tmean, regrid=regrid, max_extrap=max_extrap)
     return mp.values
 
 
-def add_data(self, x=None, variables=None, depths = None, nan=None, top = False, **kwargs):
+def add_data(self, x=None, variables=None, depths=None, nan=None, top=False, **kwargs):
     """
     Add dataset for matching
 
@@ -89,41 +99,42 @@ def add_data(self, x=None, variables=None, depths = None, nan=None, top = False,
     if depths is not None:
         self.add_depths(depths)
 
-     ##need to figure out what depths are if they are not provided.
+    ##need to figure out what depths are if they are not provided.
     if depths is None:
-
         if thredds:
-            ds = open_thredds(x, checks = False)
-            ds = open_thredds(ds[0], checks = False)
+            ds = open_thredds(x, checks=False)
+            ds = open_thredds(ds[0], checks=False)
         else:
-            ds = open_data(x, checks = False)
-            ds = open_data(ds[0], checks = False)
+            ds = open_data(x, checks=False)
+            ds = open_data(ds[0], checks=False)
         if len(ds.levels) > 1:
             if "e3t" in ds.variables:
                 ds_depths = ds.copy()
-                ds_depths.subset(time = 0)
-                ds_depths.subset(variable = "e3t")
+                ds_depths.subset(time=0)
+                ds_depths.subset(variable="e3t")
                 ds1 = ds_depths.copy()
                 ds_depths.vertical_cumsum()
                 ds1.run()
                 ds1.divide(2)
                 ds_depths.subtract(ds1)
                 self.depths = ds_depths.copy()
-                self.depths.rename({"e3t":"depth"})
+                self.depths.rename({"e3t": "depth"})
                 print("Depths were derived from e3t variable.")
             else:
                 try:
                     self.depths = ds.levels
                     print(f"Depths assumed to be {self.depths}")
                 except:
-                    raise ValueError("Unable to derive depths from the dataset! Please provide them.")
-
+                    raise ValueError(
+                        "Unable to derive depths from the dataset! Please provide them."
+                    )
 
     if depths is None:
         if self.points is not None:
             if "depth" in self.points:
-                raise ValueError("You cannot match depths without supplying dataset depths")
-
+                raise ValueError(
+                    "You cannot match depths without supplying dataset depths"
+                )
 
     self.top = top
 
@@ -135,16 +146,14 @@ def add_data(self, x=None, variables=None, depths = None, nan=None, top = False,
         raise ValueError("You have already added data!")
 
     if thredds:
-        self.data = open_thredds(x, checks = False)
-        #ds_vars = open_thredds(self.data[0], checks = False)
+        self.data = open_thredds(x, checks=False)
+        # ds_vars = open_thredds(self.data[0], checks = False)
     else:
-        self.data = open_data(x, checks = False)
-        #ds_vars = open_data(self.data[0], checks = False)
+        self.data = open_data(x, checks=False)
+        # ds_vars = open_data(self.data[0], checks = False)
 
     if variables is None:
         print("All variables will be used")
-
-
 
     if len(self.data) > 12:
         print("Checking file times. This could take a minute")
@@ -154,9 +163,9 @@ def add_data(self, x=None, variables=None, depths = None, nan=None, top = False,
     # figure out the time dim
 
     if thredds:
-        ds1 = open_thredds(self.data[0], checks = False)
+        ds1 = open_thredds(self.data[0], checks=False)
     else:
-        ds1 = open_data(self.data[0], checks = False)
+        ds1 = open_data(self.data[0], checks=False)
     pos_times = [
         x
         for x in [
@@ -166,11 +175,12 @@ def add_data(self, x=None, variables=None, depths = None, nan=None, top = False,
     ]
 
     if len(pos_times) != 1:
-        print("Unable to work out the name of time. Assuming no temporal matchups can occur.")
+        print(
+            "Unable to work out the name of time. Assuming no temporal matchups can occur."
+        )
         self.temporal = False
 
     if self.temporal:
-
         if len(pos_times) == 1:
             time_name = pos_times[0]
 
@@ -180,14 +190,16 @@ def add_data(self, x=None, variables=None, depths = None, nan=None, top = False,
             if thredds:
                 ds_ff = open_thredds(ff)
             else:
-                ds_ff = open_data(ff, checks = False)
+                ds_ff = open_data(ff, checks=False)
             ds = ds_ff.to_xarray()
             times = ds[time_name]
             days = [int(x.dt.day) for x in times]
             months = [int(x.dt.month) for x in times]
             years = [int(x.dt.year) for x in times]
             df_times.append(
-                pd.DataFrame({"day": days, "month": months, "year": years}).assign(path=ff)
+                pd.DataFrame({"day": days, "month": months, "year": years}).assign(
+                    path=ff
+                )
             )
         df_times = pd.concat(df_times)
 
@@ -197,9 +209,9 @@ def add_data(self, x=None, variables=None, depths = None, nan=None, top = False,
         print("Finished checking file times.")
 
     if thredds:
-        self.data = open_thredds(x, checks = False)
+        self.data = open_thredds(x, checks=False)
     else:
-        self.data = open_data(x, checks = False)
+        self.data = open_data(x, checks=False)
 
     self.variables = variables
 
@@ -220,8 +232,9 @@ def add_data(self, x=None, variables=None, depths = None, nan=None, top = False,
 
     if self.temporal is False:
         if len(self.data) > 1:
-            raise ValueError("You cannot provide more than one dataset without temporal information")
-
+            raise ValueError(
+                "You cannot provide more than one dataset without temporal information"
+            )
 
 
 def add_depths(self, x=None):
@@ -268,8 +281,8 @@ def add_points(self, df=None):
 
     df.columns = [x.lower() for x in df.columns]
 
-    df = df.rename(columns = {"longitude":"lon"})
-    df = df.rename(columns = {"latitude":"lat"})
+    df = df.rename(columns={"longitude": "lon"})
+    df = df.rename(columns={"latitude": "lat"})
 
     for x in df.columns:
         if x not in ["lon", "lat", "year", "month", "day", "depth", "pressure"]:
@@ -277,7 +290,6 @@ def add_points(self, df=None):
 
     if "depth" in df.columns and "pressure" in df.columns:
         raise ValueError("You cannot supply depth and pressure")
-
 
     if len([x for x in df.columns if x in ["lon", "lat"]]) < 2:
         raise ValueError("You must provide lon and lat!")
@@ -301,6 +313,6 @@ def add_points(self, df=None):
     if self.depths is None and self.data is not None:
         if self.points is not None:
             if "depth" in self.points:
-                raise ValueError("You cannot match depths without supplying dataset depths")
-
-
+                raise ValueError(
+                    "You cannot match depths without supplying dataset depths"
+                )

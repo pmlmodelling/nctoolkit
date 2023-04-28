@@ -1,9 +1,18 @@
-import pandas as pd
-from nctoolkit.api import open_data
-import xarray as xr
 from nctoolkit.matchpoint import open_matchpoint
 
-def match_points(self, df = None, variables = None, depths = None, tmean = False, top = False, nan = None, regrid = "bil", max_extrap = 5, **kwargs):
+
+def match_points(
+    self,
+    df=None,
+    variables=None,
+    depths=None,
+    tmean=False,
+    top=False,
+    nan=None,
+    regrid="bil",
+    max_extrap=5,
+    **kwargs,
+):
     """
     Match dataset to a spatiotemporal points dataframe
 
@@ -35,9 +44,9 @@ def match_points(self, df = None, variables = None, depths = None, tmean = False
         Regridding method. Defaults to "bil". Options available are those in nctoolkit regrid method.
         "nn" for nearest neighbour.
     max_extrap: float
-        Maximum distance for extrapolation. Defaults to 5. 
+        Maximum distance for extrapolation. Defaults to 5.
     kwargs: kwargs
-        Additional arguments to send to assign 
+        Additional arguments to send to assign
 
     Returns
     ---------------
@@ -54,8 +63,8 @@ def match_points(self, df = None, variables = None, depths = None, tmean = False
 
     df.columns = [x.lower() for x in df.columns]
 
-    df = df.rename(columns = {"longitude":"lon"})
-    df = df.rename(columns = {"latitude":"lat"})
+    df = df.rename(columns={"longitude": "lon"})
+    df = df.rename(columns={"latitude": "lat"})
 
     if len([x for x in df.columns if x in ["lon", "lat"]]) == 1:
         raise ValueError("You must provide both lon and lat")
@@ -74,8 +83,7 @@ def match_points(self, df = None, variables = None, depths = None, tmean = False
         if x in df.columns:
             self.points_temporal = True
 
-    mp.add_data(x = ds, depths = depths, variables = variables, top = top, nan = nan,  **kwargs)
+    mp.add_data(x=ds, depths=depths, variables=variables, top=top, nan=nan, **kwargs)
     mp.add_points(df)
-    mp.matchup(tmean = tmean, regrid = regrid, max_extrap = max_extrap)
+    mp.matchup(tmean=tmean, regrid=regrid, max_extrap=max_extrap)
     return mp.values
-

@@ -8,25 +8,31 @@ from nctoolkit.show import nc_variables, nc_times
 from nctoolkit.utils import version_below
 from nctoolkit.api import open_data
 
+
 def chunks(l, n):
     n = max(1, n)
-    return (l[i:i+n] for i in range(0, len(l), n))
+    return (l[i : i + n] for i in range(0, len(l), n))
+
 
 import inspect
 from functools import wraps
 
+
 def check_checker(f):
     varnames = inspect.getfullargspec(f)[0]
+
     @wraps(f)
     def wrapper(*a, **kw):
-        explicit_params = set(list(varnames[:len(a)]) + list(kw.keys()))
+        explicit_params = set(list(varnames[: len(a)]) + list(kw.keys()))
         if "check" not in explicit_params:
             kw["check"] = "default"
         return f(*a, **kw)
+
     return wrapper
 
+
 @check_checker
-def merge(self, join="variables", match=["year", "month", "day"], check = True):
+def merge(self, join="variables", match=["year", "month", "day"], check=True):
     """
     Merge a multi-file ensemble into a single file
     2 methods are available. 1) merging files with different variables, but the same time steps.
@@ -48,14 +54,16 @@ def merge(self, join="variables", match=["year", "month", "day"], check = True):
         single date file in the ensemble.
     check: bool
         By default nctoolkit out checks in case files do not have the same variables etc. Set check to False if you are confident merging will be problem free.
-        If you are unsure if files have the same variables, set check to True to find out. Note: if you do not explicitly provide check and there are more than 30 
+        If you are unsure if files have the same variables, set check to True to find out. Note: if you do not explicitly provide check and there are more than 30
         files in a dataset, checks will be turned off.
     """
 
     if check == "default":
         if len(self) > 30:
             check = False
-            warnings.warn(message = "Large ensemble, so no checks are being carried out prior to merging. Set check=True if you require files to be checked for variable compatability!")
+            warnings.warn(
+                message="Large ensemble, so no checks are being carried out prior to merging. Set check=True if you require files to be checked for variable compatability!"
+            )
         else:
             check = True
 
@@ -106,7 +114,9 @@ def merge(self, join="variables", match=["year", "month", "day"], check = True):
             for ff in self:
                 var_list.add(",".join(nc_variables(ff)))
             if len(var_list) > 1:
-                raise ValueError("You are trying to merge files with different variables!")
+                raise ValueError(
+                    "You are trying to merge files with different variables!"
+                )
 
         cdo_command = "cdo --sortname -mergetime"
 
@@ -118,13 +128,13 @@ def merge(self, join="variables", match=["year", "month", "day"], check = True):
             ii = 0
             for ff in files:
                 ii += 1
-                ds = open_data(ff, checks = False)
-                ds.merge("time", check = check)
-                #run_this(cdo_command, ds, output="one")
+                ds = open_data(ff, checks=False)
+                ds.merge("time", check=check)
+                # run_this(cdo_command, ds, output="one")
                 ds.run()
                 new_ds.append(ds)
 
-            new_ds.merge("time", check = check)
+            new_ds.merge("time", check=check)
             new_ds.run()
             self.current = new_ds.current
 

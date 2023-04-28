@@ -49,7 +49,6 @@ def temp_file(ext=""):
 
     # osx approach
     else:
-
         target = tempfile.NamedTemporaryFile().name
 
         if not isinstance(ext, str):

@@ -1,11 +1,13 @@
 from nctoolkit.flatten import str_flatten
 from nctoolkit.runthis import run_this
 
+
 def fix_ind(x):
     if x < 0:
         return x
     else:
         return x + 1
+
 
 def drop(self, **kwargs):
     """
@@ -76,7 +78,6 @@ def drop(self, **kwargs):
             for vv in vars:
                 if not isinstance(vv, int):
                     raise TypeError(f"{vv} is not an int")
-
 
             vars = [fix_ind(x) for x in vars]
             vars = str_flatten(vars, ",")

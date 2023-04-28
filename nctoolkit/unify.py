@@ -1,4 +1,3 @@
-
 import pandas as pd
 import re
 import warnings
@@ -47,10 +46,9 @@ def get_type(df):
         return ["year", "month"]
 
 
-
-def unify(x=None, y=None, ignore = None, clim = False, **kwargs):
+def unify(x=None, y=None, ignore=None, clim=False, **kwargs):
     """
-    Unify datasets temporally and spatially 
+    Unify datasets temporally and spatially
     Experimental feature: use at your own risk!
 
     Parameters
@@ -63,7 +61,7 @@ def unify(x=None, y=None, ignore = None, clim = False, **kwargs):
         List, made up of "time" and "grid", "levels" of dimensions to ignore.
     clim: bool
         Set to True if one of the variables is a climatology. Default is False.
-        
+
     """
 
     if not isinstance(x, api.DataSet):
@@ -76,7 +74,7 @@ def unify(x=None, y=None, ignore = None, clim = False, **kwargs):
     x.run()
     y.run()
 
-    #if len(x) > 1 or len(y) > 1:
+    # if len(x) > 1 or len(y) > 1:
     #    raise TypeError("cor_time only accepts single file datasets!")
 
     a = x.copy()
@@ -85,7 +83,6 @@ def unify(x=None, y=None, ignore = None, clim = False, **kwargs):
     unify_time = True
     unify_grid = True
     unify_levels = True
-
 
     if ignore is not None:
         if isinstance(ignore, str):
@@ -109,10 +106,8 @@ def unify(x=None, y=None, ignore = None, clim = False, **kwargs):
                 unify_levels = False
                 checked = True
 
-
             if checked is False:
                 raise ValueError(f"ignore is not valid: {ignore}")
-
 
     if unify_time:
         a_times = a.times
@@ -139,7 +134,6 @@ def unify(x=None, y=None, ignore = None, clim = False, **kwargs):
         b_years = list(set(b_times_df["year"]))
         a_years = list(set(a_times_df["year"]))
         if a_years != b_years:
-
             if len(b_years) > 1 and len(b_years) > 1:
                 years = [x for x in b_years if x in a_years]
                 f_years = ",".join([str(y) for y in years])
@@ -157,9 +151,7 @@ def unify(x=None, y=None, ignore = None, clim = False, **kwargs):
         if len(b) > 1:
             b.merge("time")
 
-
         if a_months != b_months:
-
             if len(b_months) > 1 and len(b_months) > 1:
                 months = [x for x in b_months if x in a_months]
                 f_months = ",".join([str(y) for y in months])
@@ -169,20 +161,22 @@ def unify(x=None, y=None, ignore = None, clim = False, **kwargs):
                 if a_months != months:
                     a.subset(months=months)
 
-
     if unify_levels:
         if len(a.levels) >= 1 and len(b.levels) > 1:
             run = False
             try:
-                b.vertical_interp(levels= a.levels)
+                b.vertical_interp(levels=a.levels)
                 run = True
             except:
-                warnings.warn("Unable to interpolate vertically. Original vertical levels are maintained!")
+                warnings.warn(
+                    "Unable to interpolate vertically. Original vertical levels are maintained!"
+                )
             if run:
-                print("Vertically interpolating the second dataset to the first dataset's levels!")
+                print(
+                    "Vertically interpolating the second dataset to the first dataset's levels!"
+                )
         if len(a.levels) > 1 and len(b.levels) == 1:
             print("Only one level in second dataset. Unable to vertically interpolate!")
-
 
     a.run()
 
@@ -194,13 +188,12 @@ def unify(x=None, y=None, ignore = None, clim = False, **kwargs):
             if kwargs[kk]:
                 fix_nemo = True
 
-
     if fix_nemo:
         a.fix_nemo_ersem_grid()
 
-    #try:
+    # try:
     #    b.fix_nemo_ersem_grid()
-    #except:
+    # except:
     #    whatever = "Not the dev version of nctoolkit"
 
     if unify_grid:
@@ -213,7 +206,6 @@ def unify(x=None, y=None, ignore = None, clim = False, **kwargs):
             b_ag = get_type(b_times_df)
 
             if mod_ag != b_ag:
-
                 ag = [x for x in mod_ag if x in b_ag]
 
                 if ag == []:
@@ -231,7 +223,8 @@ def unify(x=None, y=None, ignore = None, clim = False, **kwargs):
                     if ag == ["month"]:
                         if clim:
                             print("Using a monthly climatology for matchups!")
-                        else: ag = ["year", "month"]
+                        else:
+                            ag = ["year", "month"]
 
                     if ag == ["yearly"]:
                         print("Using an annual climatology for matchups!")
@@ -254,7 +247,6 @@ def unify(x=None, y=None, ignore = None, clim = False, **kwargs):
             b.run()
 
         if len(a.times) != len(b.times):
-
             if True:
                 if ag == ["year", "month"]:
                     mod_times = (
@@ -325,14 +317,11 @@ def unify(x=None, y=None, ignore = None, clim = False, **kwargs):
 
                     print("Only selecting matching days!")
 
-
         a.run()
         b.run()
 
-
         if len(a.times) != len(b.times):
             raise ValueError("Problems matching times")
-
 
     x.current = a.current
     y.current = b.current
@@ -340,6 +329,3 @@ def unify(x=None, y=None, ignore = None, clim = False, **kwargs):
     y.history.append(b.history)
     x._hold_history.append(a._hold_history)
     y._hold_history.append(b._hold_history)
-
-
-

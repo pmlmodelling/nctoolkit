@@ -1,11 +1,13 @@
 from nctoolkit.runthis import run_this
 
+
 def is_integer(x):
     try:
         y = int(str(x))
         return True
     except:
         return False
+
 
 def fix_expr(expression):
     """
@@ -16,14 +18,20 @@ def fix_expr(expression):
 
     # equal constant case
     if expression.startswith("==-"):
-        if expression.replace("==-", "").replace(".", "", 1).replace("e", "").isdigit() is False:
+        if (
+            expression.replace("==-", "").replace(".", "", 1).replace("e", "").isdigit()
+            is False
+        ):
             raise ValueError(expression + " is not valid!")
         expression = expression.replace("==", "eqc")
         expression = expression.replace("eqc", "eqc,")
         return expression
     # equal constant case
     if expression.startswith("=="):
-        if expression.replace("==", "").replace(".", "", 1).replace("e", "").isdigit() is False:
+        if (
+            expression.replace("==", "").replace(".", "", 1).replace("e", "").isdigit()
+            is False
+        ):
             raise ValueError(expression + " is not valid!")
         expression = expression.replace("==", "eqc")
         expression = expression.replace("eqc", "eqc,")
@@ -31,14 +39,20 @@ def fix_expr(expression):
 
     # not equal constant case
     if expression.startswith("!=-"):
-        if expression.replace("!=-", "").replace(".", "", 1).replace("e", "").isdigit() is False:
+        if (
+            expression.replace("!=-", "").replace(".", "", 1).replace("e", "").isdigit()
+            is False
+        ):
             raise ValueError(expression + " is not valid!")
         expression = expression.replace("!=", "nec")
         expression = expression.replace("nec", "nec,")
         return expression
     # not equal constant case
     if expression.startswith("!="):
-        if expression.replace("!=", "").replace(".", "", 1).replace("e", "").isdigit() is False:
+        if (
+            expression.replace("!=", "").replace(".", "", 1).replace("e", "").isdigit()
+            is False
+        ):
             raise ValueError(expression + " is not valid!")
         expression = expression.replace("!=", "nec")
         expression = expression.replace("nec", "nec,")
@@ -46,7 +60,10 @@ def fix_expr(expression):
 
     # less than or equal to constant case
     if expression.startswith("<=-"):
-        if expression.replace("<=-", "").replace(".", "", 1).replace("e", "").isdigit() is False:
+        if (
+            expression.replace("<=-", "").replace(".", "", 1).replace("e", "").isdigit()
+            is False
+        ):
             raise ValueError(expression + " is not valid!")
         expression = expression.replace("<=", "lec")
         expression = expression.replace("lec", "lec,")
@@ -54,7 +71,10 @@ def fix_expr(expression):
 
     # less than or equal to constant case
     if expression.startswith("<="):
-        if expression.replace("<=", "").replace(".", "", 1).replace("e", "").isdigit() is False:
+        if (
+            expression.replace("<=", "").replace(".", "", 1).replace("e", "").isdigit()
+            is False
+        ):
             raise ValueError(expression + " is not valid!")
         expression = expression.replace("<=", "lec")
         expression = expression.replace("lec", "lec,")
@@ -62,14 +82,20 @@ def fix_expr(expression):
 
     # less than or equal to constant case
     if expression.startswith("<-"):
-        if expression.replace("<-", "").replace(".", "", 1).replace("e", "").isdigit() is False:
+        if (
+            expression.replace("<-", "").replace(".", "", 1).replace("e", "").isdigit()
+            is False
+        ):
             raise ValueError(expression + " is not valid!")
         expression = expression.replace("<", "ltc")
         expression = expression.replace("ltc", "ltc,")
         return expression
     # less than or equal to constant case
     if expression.startswith("<"):
-        if expression.replace("<", "").replace(".", "", 1).replace("e", "").isdigit() is False:
+        if (
+            expression.replace("<", "").replace(".", "", 1).replace("e", "").isdigit()
+            is False
+        ):
             raise ValueError(expression + " is not valid!")
         expression = expression.replace("<", "ltc")
         expression = expression.replace("ltc", "ltc,")
@@ -77,14 +103,20 @@ def fix_expr(expression):
 
     # greater than or equal to constant case
     if expression.startswith(">=-"):
-        if expression.replace(">=-", "").replace(".", "", 1).replace("e", "").isdigit() is False:
+        if (
+            expression.replace(">=-", "").replace(".", "", 1).replace("e", "").isdigit()
+            is False
+        ):
             raise ValueError(expression + " is not valid!")
         expression = expression.replace(">=", "gec")
         expression = expression.replace("gec", "gec,")
         return expression
 
     if expression.startswith(">="):
-        if expression.replace(">=", "").replace(".", "", 1).replace("e", "").isdigit() is False:
+        if (
+            expression.replace(">=", "").replace(".", "", 1).replace("e", "").isdigit()
+            is False
+        ):
             raise ValueError(expression + " is not valid!")
         expression = expression.replace(">=", "gec")
         expression = expression.replace("gec", "gec,")
@@ -92,14 +124,20 @@ def fix_expr(expression):
 
     # greater than or equal to constant case
     if expression.startswith(">-"):
-        if expression.replace(">-", "").replace(".", "", 1).replace("e", "").isdigit() is False:
+        if (
+            expression.replace(">-", "").replace(".", "", 1).replace("e", "").isdigit()
+            is False
+        ):
             raise ValueError(expression + " is not valid!")
         expression = expression.replace(">", "gtc")
         expression = expression.replace("gtc", "gtc,")
         return expression
 
     if expression.startswith(">"):
-        if expression.replace(">", "").replace(".", "", 1).replace("e", "").isdigit() is False:
+        if (
+            expression.replace(">", "").replace(".", "", 1).replace("e", "").isdigit()
+            is False
+        ):
             raise ValueError(expression + " is not valid!")
         expression = expression.replace(">", "gtc")
         expression = expression.replace("gtc", "gtc,")
@@ -145,7 +183,6 @@ def compare(self, expression=None):
 
 
 def __eq__(self, x):
-
     if not isinstance(x, str):
         try:
             test = float(x)
@@ -160,7 +197,6 @@ def __eq__(self, x):
 
 
 def __gt__(self, x):
-
     if not isinstance(x, str):
         try:
             test = float(x)
@@ -173,8 +209,8 @@ def __gt__(self, x):
     else:
         self.gt(x)
 
-def __lt__(self, x):
 
+def __lt__(self, x):
     if not isinstance(x, str):
         try:
             test = float(x)
@@ -187,8 +223,8 @@ def __lt__(self, x):
     else:
         self.lt(x)
 
-def __le__(self, x):
 
+def __le__(self, x):
     if not isinstance(x, str):
         try:
             test = float(x)
@@ -203,7 +239,6 @@ def __le__(self, x):
 
 
 def __ge__(self, x):
-
     if not isinstance(x, str):
         try:
             test = float(x)
@@ -216,8 +251,8 @@ def __ge__(self, x):
     else:
         self.ge(x)
 
-def __ne__(self, x):
 
+def __ne__(self, x):
     if not isinstance(x, str):
         try:
             test = float(x)
@@ -229,5 +264,3 @@ def __ne__(self, x):
             self.ne(x)
     else:
         self.ne(x)
-
-

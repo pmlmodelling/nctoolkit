@@ -2,8 +2,9 @@ from nctoolkit.temp_file import temp_file
 from nctoolkit.runthis import run_cdo
 from nctoolkit.session import remove_safe
 from nctoolkit.cleanup import cleanup
-import nctoolkit.api as api 
+import nctoolkit.api as api
 import os
+
 
 def ne(self, x):
     """
@@ -42,7 +43,6 @@ def ne(self, x):
         raise ValueError(f"{x_ff} does not exist!")
 
     for ff in self:
-
         temp = temp_file(".nc")
 
         cdo_command = f"cdo -ne {ff} {x_ff} {temp}"
@@ -59,6 +59,7 @@ def ne(self, x):
         remove_safe(ff)
 
     cleanup()
+
 
 def ge(self, x):
     """
@@ -97,7 +98,6 @@ def ge(self, x):
         raise ValueError(f"{x_ff} does not exist!")
 
     for ff in self:
-
         temp = temp_file(".nc")
 
         cdo_command = f"cdo -ge {ff} {x_ff} {temp}"
@@ -114,6 +114,7 @@ def ge(self, x):
         remove_safe(ff)
 
     cleanup()
+
 
 def le(self, x):
     """
@@ -152,7 +153,6 @@ def le(self, x):
         raise ValueError(f"{x_ff} does not exist!")
 
     for ff in self:
-
         temp = temp_file(".nc")
 
         cdo_command = f"cdo -le {ff} {x_ff} {temp}"
@@ -208,7 +208,6 @@ def lt(self, x):
         raise ValueError(f"{x_ff} does not exist!")
 
     for ff in self:
-
         temp = temp_file(".nc")
 
         cdo_command = f"cdo -lt {ff} {x_ff} {temp}"
@@ -263,9 +262,7 @@ def gt(self, x):
     if os.path.exists(x_ff) is False:
         raise ValueError(f"{x_ff} does not exist!")
 
-
     for ff in self:
-
         temp = temp_file(".nc")
 
         cdo_command = f"cdo -gt {ff} {x_ff} {temp}"
@@ -282,6 +279,7 @@ def gt(self, x):
         remove_safe(ff)
 
     cleanup()
+
 
 def eq(self, x):
     """
@@ -320,7 +318,6 @@ def eq(self, x):
         raise ValueError(f"{x_ff} does not exist!")
 
     for ff in self:
-
         temp = temp_file(".nc")
 
         cdo_command = f"cdo -eq {ff} {x_ff} {temp}"
@@ -337,4 +334,3 @@ def eq(self, x):
         remove_safe(ff)
 
     cleanup()
-

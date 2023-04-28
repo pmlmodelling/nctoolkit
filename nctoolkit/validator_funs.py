@@ -15,18 +15,20 @@ class Validation(object):
         """Initialize the starting file name etc"""
         # Attribuates of interest to users
         self.data = None
-        #self.plot = None
+        # self.plot = None
         self.plot_type = None
         self.info = None
+
     def __repr__(self):
         return f"Validation object: {self.info}"
 
     @property
     def plot(self):
         if self.plot_type == "nctoolkit":
-            return self.data.plot(title = self.info)
+            return self.data.plot(title=self.info)
         else:
             return self._ggplot
+
 
 def get_type(ds):
     times = ds.times
@@ -54,9 +56,7 @@ def get_type(ds):
         return ["year", "month"]
 
 
-
-
-def add_model(self, ds = None, map = None, nan = None , precision = None, **kwargs):
+def add_model(self, ds=None, map=None, nan=None, precision=None, **kwargs):
     """
     Add model data
 
@@ -83,7 +83,6 @@ def add_model(self, ds = None, map = None, nan = None , precision = None, **kwar
     if len(map) != 1:
         raise ValueError("There should only be one variable in the map!")
 
-
     self.model = ds.copy()
     self.model_map = map
     self.model_nan = nan
@@ -95,7 +94,7 @@ def add_model(self, ds = None, map = None, nan = None , precision = None, **kwar
                 self.model.amm7 = True
 
 
-def add_observations(self, ds = None, map = None, nan = None , precision = None):
+def add_observations(self, ds=None, map=None, nan=None, precision=None):
     """
     Add observational data
 
@@ -127,7 +126,6 @@ def add_observations(self, ds = None, map = None, nan = None , precision = None)
     self.obs_precision = precision
 
 
-
 import re
 
 
@@ -143,8 +141,8 @@ def is_equation(x):
     regexp = re.compile(r"[+,\-,/, \* ]")
     return len(regexp.findall(x)) > 0
 
-def matchup(self, levels = "top", na_match = False, **kwargs):
 
+def matchup(self, levels="top", na_match=False, **kwargs):
     expected_model_vars = []
     for key, value in self.model_map.items():
         expected_model_vars += re.findall(r"\w+", value)
@@ -159,13 +157,16 @@ def matchup(self, levels = "top", na_match = False, **kwargs):
     for vv in expected_model_vars:
         if is_number(vv) is False:
             if vv not in model_vars:
-                raise ValueError(f"{vv} does not exist in model data!. Available vars: {model_vars}")
+                raise ValueError(
+                    f"{vv} does not exist in model data!. Available vars: {model_vars}"
+                )
 
     for vv in expected_obs_vars:
         if is_number(vv) is False:
             if vv not in obs_vars:
-                raise ValueError(f"{vv} does not exist in observational data! Available vars: {obs_vars}")
-
+                raise ValueError(
+                    f"{vv} does not exist in observational data! Available vars: {obs_vars}"
+                )
 
     if self.model_map is None or self.model_map is None:
         raise ValueError("You must provide maps for model and observational data!")
@@ -175,8 +176,7 @@ def matchup(self, levels = "top", na_match = False, **kwargs):
 
     # Step 1. Figure out the levels
 
-
-   # extract some variables....
+    # extract some variables....
 
     keep_these = []
     for key, value in self.model_map.items():
@@ -195,7 +195,6 @@ def matchup(self, levels = "top", na_match = False, **kwargs):
 
     if len(self.obs) > 1:
         self.obs.merge("time")
-
 
     self.model.run()
 
@@ -231,22 +230,20 @@ def matchup(self, levels = "top", na_match = False, **kwargs):
     self.model.subset(variables=list(self.model_map.keys()))
     self.obs.subset(variables=list(self.obs_map.keys()))
 
-
     try:
         self.model.amm7
-        unify(self.model, self.obs, amm7 = True)
+        unify(self.model, self.obs, amm7=True)
     except:
         unify(self.model, self.obs)
 
     self.aggregation = get_type(self.model)
-
 
     if na_match:
         print("Matching missing values in model and observation datasets")
 
         mask = self.model.copy()
         mask.rename({list(self.model_map.keys())[0]: "variable"})
-        mask.assign(variable = lambda x: isnan(x.variable) == False)
+        mask.assign(variable=lambda x: isnan(x.variable) == False)
         mask.as_missing(0)
 
         self.model.multiply(mask)
@@ -254,7 +251,7 @@ def matchup(self, levels = "top", na_match = False, **kwargs):
 
         mask = self.obs.copy()
         mask.rename({list(self.model_map.keys())[0]: "variable"})
-        mask.assign(variable = lambda x: isnan(x.variable) == False)
+        mask.assign(variable=lambda x: isnan(x.variable) == False)
         mask.as_missing(0)
 
         self.model.multiply(mask)
@@ -263,17 +260,10 @@ def matchup(self, levels = "top", na_match = False, **kwargs):
         self.model.run()
         self.obs.run()
 
-
     self.matched = True
 
 
-
-
-
-
-
-def validate(self, region = None):
-
+def validate(self, region=None):
     try:
         from plotnine import ggplot
     except:
@@ -282,7 +272,7 @@ def validate(self, region = None):
     if self.matched is False:
         raise ValueError("Data has not been matched")
 
-    self.results  = []
+    self.results = []
 
     if "month" in self.aggregation or "day" in self.aggregation:
         val = Validation()
@@ -306,7 +296,6 @@ def validate(self, region = None):
     ## Annual bias
 
     if len(self.model.months) == 12:
-
         val = Validation()
 
         ds_val = open_data()
@@ -321,7 +310,6 @@ def validate(self, region = None):
         ds_model.rename({self.model.variables[0]: "absolute"})
         ds_val.append(ds_model)
 
-
         ds_model = self.model.copy()
         ds_obs = self.obs.copy()
         ds_model.tmean(["year", "month"])
@@ -333,21 +321,19 @@ def validate(self, region = None):
         ds_model.subtract(1)
         ds_model.multiply(100)
         ds_model.rename({self.model.variables[0]: "relative"})
-        ds_model.set_longnames({ "relative":"Percentage difference"})
-        ds_model.set_units({ "relative":"%"})
+        ds_model.set_longnames({"relative": "Percentage difference"})
+        ds_model.set_units({"relative": "%"})
         ds_val.append(ds_model)
         ds_val.merge("variable")
 
-        val.info= "Annual climatological bias (model -/ observation)"
+        val.info = "Annual climatological bias (model -/ observation)"
         val.plot_type = "nctoolkit"
         val.data = ds_val.copy()
         self.results.append(val)
 
-
     if "month" in self.aggregation or "day" in self.aggregation:
         # Try to find the units
         if region is None:
-
             ds_model = self.model.copy()
 
             model_vars = ds_model.variables
@@ -428,7 +414,9 @@ def validate(self, region = None):
 
             val = Validation()
 
-            val.info = f"Monthly climatologies of model and observational data for {ylab}"
+            val.info = (
+                f"Monthly climatologies of model and observational data for {ylab}"
+            )
 
             if ylab in model_units.keys():
                 ylab = ylab + "(" + model_units[ylab] + ")"
@@ -444,9 +432,7 @@ def validate(self, region = None):
             val.data = all_df
             self.results.append(val)
 
-
         if region is not None:
-
             regions = region.copy()
 
             ds_model = self.model.copy()
@@ -535,7 +521,9 @@ def validate(self, region = None):
             ylab = model_vars[0]
             val = Validation()
 
-            val.info =  f"Monthly climatologies of model and observational data for {ylab}"
+            val.info = (
+                f"Monthly climatologies of model and observational data for {ylab}"
+            )
 
             if ylab in model_units.keys():
                 ylab = ylab + "(" + model_units[ylab] + ")"
@@ -563,7 +551,7 @@ def validate(self, region = None):
 
         val.data = ds_bias.copy()
 
-        val.plot_type  = "nctoolkit"
+        val.plot_type = "nctoolkit"
         self.results.append(val)
 
     # Plot the annual time series...
@@ -661,7 +649,7 @@ def validate(self, region = None):
             ylab = model_vars[0]
 
             val = Validation()
-            val.info =  f"Annual means of model and observational data for {ylab}"
+            val.info = f"Annual means of model and observational data for {ylab}"
 
             if ylab in model_units.keys():
                 ylab = ylab + "(" + model_units[ylab] + ")"
@@ -679,7 +667,6 @@ def validate(self, region = None):
             self.results.append(val)
 
         if region is None:
-
             ds_model = self.model.copy()
 
             model_vars = ds_model.variables
@@ -773,6 +760,3 @@ def validate(self, region = None):
             val._ggplot = plot
             val.data = all_df
             self.results.append(val)
-
-
-

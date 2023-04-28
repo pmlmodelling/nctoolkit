@@ -2,8 +2,10 @@ import signal
 from contextlib import contextmanager
 from nctoolkit.session import session_info
 
+
 class TimeoutException(Exception):
     pass
+
 
 @contextmanager
 def time_limit(seconds):
@@ -18,7 +20,7 @@ def time_limit(seconds):
         signal.alarm(0)
 
 
-def plot(self, vars=None, autoscale=True, out = None, coast= True, **kwargs):
+def plot(self, vars=None, autoscale=True, out=None, coast=True, **kwargs):
     from ncplot import view
 
     """
@@ -51,7 +53,6 @@ def plot(self, vars=None, autoscale=True, out = None, coast= True, **kwargs):
     >>> ds.plot("var_of_choice")
 
     """
-
 
     if "title" not in kwargs.keys():
         kwargs["title"] = ""
@@ -86,13 +87,12 @@ def plot(self, vars=None, autoscale=True, out = None, coast= True, **kwargs):
             )
     if vars is None and len(self.variables) > 1:
         with time_limit(20):
-            return view(self[0], autoscale=autoscale, coast= coast, **kwargs)
+            return view(self[0], autoscale=autoscale, coast=coast, **kwargs)
 
     if isinstance(vars, list) and len(vars) > 1:
         with time_limit(20):
-            return view(self[0], vars=vars, autoscale=autoscale, out = out, coast = coast,  **kwargs)
+            return view(
+                self[0], vars=vars, autoscale=autoscale, out=out, coast=coast, **kwargs
+            )
 
-    return view(self[0], vars=vars, autoscale=autoscale, out = out, coast= coast,   **kwargs)
-
-
-
+    return view(self[0], vars=vars, autoscale=autoscale, out=out, coast=coast, **kwargs)

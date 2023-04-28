@@ -12,6 +12,7 @@ from nctoolkit.session import append_safe, remove_safe, get_safe
 from nctoolkit.temp_file import temp_file
 import nctoolkit.api as api
 
+
 def is_iterable(x):
     try:
         iter(x)
@@ -20,7 +21,7 @@ def is_iterable(x):
         return False
 
 
-def regrid(self, grid=None, method="bil", recycle=False, one_grid = False, **kwargs):
+def regrid(self, grid=None, method="bil", recycle=False, one_grid=False, **kwargs):
     """
     Regrid a dataset to a target grid
 
@@ -38,15 +39,15 @@ def regrid(self, grid=None, method="bil", recycle=False, one_grid = False, **kwa
         First order conservative remapping - "con"
         Second order conservative remapping - "con2"
         Large area fraction remapping - "laf"
-    recycle : bool 
-        Set to True if you want to re-use the remapping weights when you are regridding another dataset. 
-    one_grid : bool 
-        Set to True if all files in multi-file dataset have the same grid, to speed things up. 
-    kwargs : optional method to generate grid 
+    recycle : bool
+        Set to True if you want to re-use the remapping weights when you are regridding another dataset.
+    one_grid : bool
+        Set to True if all files in multi-file dataset have the same grid, to speed things up.
+    kwargs : optional method to generate grid
         Instead of supplying a grid using 'grid', you can supply `lon` and `lat`. These must be equally
         lengthed lists or arrays that will be used to generate the grid. If you want to regrid to a single
         location you can just supply a float to lon and lat.
-        
+
     """
 
     if grid is None and len(kwargs) > 0:
@@ -61,7 +62,7 @@ def regrid(self, grid=None, method="bil", recycle=False, one_grid = False, **kwa
                 lat = [lat]
 
             if len(lon) == len(lat):
-                grid = pd.DataFrame({"lon":lon, "lat":lat})
+                grid = pd.DataFrame({"lon": lon, "lat": lat})
 
     if len(self) == 0:
         raise ValueError("Failure due to empty dataset!")
@@ -142,8 +143,7 @@ def regrid(self, grid=None, method="bil", recycle=False, one_grid = False, **kwa
         else:
             grid_split[cdo_result].append(ff)
         if one_grid:
-            i+=1
-
+            i += 1
 
     if grid is not None:
         # first generate the grid
@@ -167,7 +167,7 @@ def regrid(self, grid=None, method="bil", recycle=False, one_grid = False, **kwa
         # first we need to generate the weights for remapping
         # and add this to the files created list and self.weights
         tracker = open_data(
-            grid_split[key], suppress_messages=True, thredds=self._thredds, checks = False
+            grid_split[key], suppress_messages=True, thredds=self._thredds, checks=False
         )
 
         weights_nc = temp_file("nc")
@@ -193,7 +193,7 @@ def regrid(self, grid=None, method="bil", recycle=False, one_grid = False, **kwa
 
         tracker._execute = True
 
-        run_this(cdo_command, tracker, output="ensemble", suppress = suppress)
+        run_this(cdo_command, tracker, output="ensemble", suppress=suppress)
 
         if recycle is False:
             remove_safe(weights_nc)

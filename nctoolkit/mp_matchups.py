@@ -1,6 +1,4 @@
 import pandas as pd
-import re
-import scipy.interpolate as interpolate
 import warnings
 import numpy as np
 from nctoolkit.api import open_data, open_thredds
@@ -9,12 +7,13 @@ from tqdm import tqdm
 
 from scipy.interpolate import interp1d
 
-def extrap1d(interpolator, max_extrap = 5):
+
+def extrap1d(interpolator, max_extrap=5):
     xs = interpolator.x
     ys = interpolator.y
 
     def pointwise(x):
-        if x > xs[-1]  and x <= xs[-1] + max_extrap:
+        if x > xs[-1] and x <= xs[-1] + max_extrap:
             return ys[-1]
         elif x > (xs[-1] + max_extrap):
             return np.nan
@@ -30,14 +29,14 @@ def extrap1d(interpolator, max_extrap = 5):
 
     return ufunclike
 
-def interp(x,y, levels, max_extrap = 5):
+
+def interp(x, y, levels, max_extrap=5):
     try:
         f_i = interp1d(x, y)
-        f_x = extrap1d(f_i, max_extrap = max_extrap)
-        #f = interpolate.interp1d(x, y, fill_value = "extrapolate")
+        f_x = extrap1d(f_i, max_extrap=max_extrap)
         return f_x(levels)
     except:
-        df = pd.DataFrame({"x":x, "y":y}).dropna()
+        df = pd.DataFrame({"x": x, "y": y}).dropna()
         new = []
         for x in levels:
             if float(np.abs(df.x - x)) < max_extrap:
@@ -47,10 +46,10 @@ def interp(x,y, levels, max_extrap = 5):
         return new
 
 
-def matchup(self,  tmean = False, regrid = "bil", max_extrap = 5):
+def matchup(self, tmean=False, regrid="bil", max_extrap=5):
     """
     Matchup gridded model and point observational data
-    
+
     Parameters
     -------------
     tmean: bool
@@ -61,7 +60,7 @@ def matchup(self,  tmean = False, regrid = "bil", max_extrap = 5):
         Regridding method. Defaults to "bil". Options available are those in nctoolkit regrid method.
         "nn" for nearest neighbour.
     max_extrap: float
-        Maximum distance for vertical extrapolation of values 
+        Maximum distance for vertical extrapolation of values
 
     """
 
@@ -98,21 +97,26 @@ def matchup(self,  tmean = False, regrid = "bil", max_extrap = 5):
         if isinstance(on, list):
             for x in ["day", "month", "year"]:
                 if x not in on and x in points.columns:
-                    points = points.drop(columns = x)
-
+                    points = points.drop(columns=x)
 
     if self.thredds:
-        ds = open_thredds(self.data[0], checks = False)
+        ds = open_thredds(self.data[0], checks=False)
     else:
-        ds = open_data(self.data[0], checks = False)
+        ds = open_data(self.data[0], checks=False)
 
-    ds.subset(variables = ds.variables[0])
-    ds.subset(time = 0)
+    ds.subset(variables=ds.variables[0])
+    ds.subset(time=0)
     ds.top()
     ds.cdo_command("setmisstoc,1")
-    df = points.loc[:,["lon", "lat"]].drop_duplicates()
-    ds.regrid(df, method = regrid)
-    grid = ds.to_dataframe().reset_index().dropna().loc[:,["lon", "lat"]].drop_duplicates()
+    df = points.loc[:, ["lon", "lat"]].drop_duplicates()
+    ds.regrid(df, method=regrid)
+    grid = (
+        ds.to_dataframe()
+        .reset_index()
+        .dropna()
+        .loc[:, ["lon", "lat"]]
+        .drop_duplicates()
+    )
 
     n_start = len(points)
 
@@ -123,8 +127,9 @@ def matchup(self,  tmean = False, regrid = "bil", max_extrap = 5):
 
     if len(points) < n_start:
         n_remove = n_start - len(points)
-        print(f"{n_remove} points are outside the dataset grid, and were therefore removed.")
-
+        print(
+            f"{n_remove} points are outside the dataset grid, and were therefore removed."
+        )
 
     n_levels = len(self.data.levels)
 
@@ -144,19 +149,19 @@ def matchup(self,  tmean = False, regrid = "bil", max_extrap = 5):
         # We need a quick hack
         df_times = []
         for ff in self.data:
-            df_times.append(pd.DataFrame({"year":[None]}))
+            df_times.append(pd.DataFrame({"year": [None]}))
         df_times = pd.concat(df_times)
         self.data_times = df_times
-
 
     if self.temporal:
         if on != ["all"]:
             if tmean is False:
                 df_times = self.data_times
                 point_col = [x for x in df_times.columns if x in points.columns]
-                df_times = self.data_times.merge(points.loc[:,point_col]).drop_duplicates()
+                df_times = self.data_times.merge(
+                    points.loc[:, point_col]
+                ).drop_duplicates()
             else:
-
                 if on == ["day"]:
                     on = ["day", "month"]
                     if "month" not in points.columns:
@@ -179,23 +184,24 @@ def matchup(self,  tmean = False, regrid = "bil", max_extrap = 5):
                 else:
                     df_times = self.data_times
                 df_times = df_times.drop_duplicates()
-                time_avail = [x for x in ["year", "month", "day"] if x in df_times.columns]
+                time_avail = [
+                    x for x in ["year", "month", "day"] if x in df_times.columns
+                ]
                 df_times = df_times.sort_values(by=time_avail).reset_index(drop=True)
         else:
-            df_times = self.data_times.drop(columns = "path")
+            df_times = self.data_times.drop(columns="path")
 
     if self.temporal is False:
         df_times = self.data_times
 
     df_merged = []
 
-
     # depths only need to be calculated once
     if self.depths is not None:
         if not isinstance(self.depths, list):
             ds_depths = self.depths.copy()
-            obs_locs = points.loc[:,["lon", "lat"]]
-            ds_depths.regrid(obs_locs, method = regrid) 
+            obs_locs = points.loc[:, ["lon", "lat"]]
+            ds_depths.regrid(obs_locs, method=regrid)
             df_depths = (
                 ds_depths.to_dataframe()
                 .reset_index()
@@ -205,43 +211,36 @@ def matchup(self,  tmean = False, regrid = "bil", max_extrap = 5):
         else:
             df_depths = pd.DataFrame({"depth": self.depths})
 
-        all_depths = df_depths
-
     points_merged = False
     if self.points_temporal is False:
         if len(self.data.levels) < 2:
             if self.thredds:
-                ds = open_thredds(self.data, checks = False)
+                ds = open_thredds(self.data, checks=False)
             else:
-                ds = open_data(self.data, checks = False)
+                ds = open_data(self.data, checks=False)
             if self.variables is not None:
-                ds.subset(variables = self.variables)
-            ds.regrid(points.loc[:,["lon", "lat"]], method = regrid) 
+                ds.subset(variables=self.variables)
+            ds.regrid(points.loc[:, ["lon", "lat"]], method=regrid)
             df_merged = [ds.to_dataframe().reset_index()]
             points_merged = True
 
     n_missing = 0
 
-
     if (len(df_times)) == 0:
         raise ValueError("There are no matching times")
 
-
     if points_merged is False:
-
-        df_times = df_times.sample(frac = 1)
+        df_times = df_times.sample(frac=1)
 
         print("Looping through times in ds and df to matchup")
         for i in tqdm(range(0, len(df_times))):
             if self.temporal:
-                i_df = df_times.iloc[
-                    i : (i + 1) :,
-                ]
-                i_df = i_df.reset_index(drop = True)
+                i_df = df_times.iloc[i : (i + 1) :,]
+                i_df = i_df.reset_index(drop=True)
                 if self.points_temporal:
                     i_grid = points.merge(i_df).loc[:, ["lon", "lat"]]
                 else:
-                    i_grid = points.loc[:,["lon", "lat"]]
+                    i_grid = points.loc[:, ["lon", "lat"]]
                 i_year = None
                 i_month = None
                 i_day = None
@@ -276,7 +275,9 @@ def matchup(self,  tmean = False, regrid = "bil", max_extrap = 5):
                         i_day = None
 
                 if self.thredds:
-                    ds = open_thredds(set(self.data_times.merge(i_df).path), checks=False)
+                    ds = open_thredds(
+                        set(self.data_times.merge(i_df).path), checks=False
+                    )
                 else:
                     ds = open_data(set(self.data_times.merge(i_df).path), checks=False)
             else:
@@ -285,7 +286,6 @@ def matchup(self,  tmean = False, regrid = "bil", max_extrap = 5):
                 else:
                     ds = open_data(self.data, checks=False)
                 i_grid = points.loc[:, ["lon", "lat"]].drop_duplicates()
-
 
             if self.variables is not None:
                 ds.subset(variables=self.variables)
@@ -296,7 +296,7 @@ def matchup(self,  tmean = False, regrid = "bil", max_extrap = 5):
                 for opt in ["day", "year", "month"]:
                     if i_day is not None:
                         ds.subset(day=i_day)
-                    if i_month  is not None:
+                    if i_month is not None:
                         ds.subset(month=i_month)
                     if i_year is not None:
                         ds.subset(year=i_year)
@@ -310,7 +310,7 @@ def matchup(self,  tmean = False, regrid = "bil", max_extrap = 5):
             if self.data_nan is not None:
                 ds.as_missing(self.data_nan)
 
-            ds.regrid(i_grid, method = regrid) 
+            ds.regrid(i_grid, method=regrid)
 
             df_model = ds.to_dataframe().reset_index().drop_duplicates()
 
@@ -333,45 +333,41 @@ def matchup(self,  tmean = False, regrid = "bil", max_extrap = 5):
                 if len(pos_times) == 1:
                     time_name = pos_times[0]
 
-            if self.depths is  None:
-
+            if self.depths is None:
                 if self.temporal:
                     locs = [time_name, "lon", "lat"]
                 else:
-                    locs = [ "lon", "lat"]
+                    locs = ["lon", "lat"]
 
                 locs += ds.variables
                 if len(ds.levels) > 1:
                     adict = dict(ds.to_xarray().dims)
 
-                    locs += [k for k in adict.keys() if adict[k]  == n_levels]
-                    acceptable += [k for k in adict.keys() if adict[k]  == n_levels]
+                    locs += [k for k in adict.keys() if adict[k] == n_levels]
+                    acceptable += [k for k in adict.keys() if adict[k] == n_levels]
                     locs = list(set(locs))
 
-                df_model = df_model.loc[
-                    :,  locs
-                ].drop_duplicates()
+                df_model = df_model.loc[:, locs].drop_duplicates()
                 df_merged.append(df_model)
 
             else:
-
                 if "deptht" in df_model.columns:
-
                     if self.temporal:
                         locs = [time_name, "lon", "lat", "deptht"]
                     else:
-                        locs = [ "lon", "lat", "deptht"]
+                        locs = ["lon", "lat", "deptht"]
                     locs += ds.variables
                     df_model = df_model.loc[:, locs].drop_duplicates()
 
                 else:
-                    locs = [ "lon", "lat"]
+                    locs = ["lon", "lat"]
                     locs += ds.variables
-                    drop = [x for x in df_model.columns if "depth" in x and "bnds" not in x]
+                    drop = [
+                        x for x in df_model.columns if "depth" in x and "bnds" not in x
+                    ]
                     locs += drop
-                    df_model = df_model.loc[ :, locs ].drop_duplicates()
-                    df_model = df_model.drop(columns = drop)
-
+                    df_model = df_model.loc[:, locs].drop_duplicates()
+                    df_model = df_model.drop(columns=drop)
 
                 if self.points_temporal:
                     i_obs_df = i_df.merge(points)
@@ -379,21 +375,22 @@ def matchup(self,  tmean = False, regrid = "bil", max_extrap = 5):
                     i_obs_df = points
 
                 i_obs_locs = i_obs_df.loc[:, ["lon", "lat"]].drop_duplicates()
-                
 
                 if True:
-
                     for j in range(0, len(i_obs_locs)):
                         if self.depths is not None:
                             df_depths = df_depths
 
-                        j_obs = i_obs_locs.iloc[j : (j + 1), :].merge(i_obs_df).drop_duplicates()
-
-                        j_model = (
-                            df_model.merge(j_obs.loc[:, ["lon", "lat"]].drop_duplicates())
-                            .reset_index(drop=True)
+                        j_obs = (
+                            i_obs_locs.iloc[j : (j + 1), :]
+                            .merge(i_obs_df)
+                            .drop_duplicates()
                         )
-                        j_model = j_model.reset_index(drop = True)
+
+                        j_model = df_model.merge(
+                            j_obs.loc[:, ["lon", "lat"]].drop_duplicates()
+                        ).reset_index(drop=True)
+                        j_model = j_model.reset_index(drop=True)
 
                         if len(j_model) > 0:
                             if not isinstance(self.depths, list):
@@ -416,21 +413,20 @@ def matchup(self,  tmean = False, regrid = "bil", max_extrap = 5):
                                     j_model = j_model.merge(
                                         df_depths, left_index=True, right_index=True
                                     ).loc[:, locs]
-                                    #j_model = j_model.drop_duplicates()
-
-                            if self.depths is not None:
-                                max_depth = np.max(j_model.depth)
-                                min_depth = np.min(j_model.depth)
 
                             if len(j_obs) > 0:
-
                                 try:
                                     if self.depths is not None:
                                         i_var = 0
                                         for var in ds.variables:
-                                            j_obs[var] = interp(list(j_model.depth), j_model[var], list(j_obs.depth), max_extrap = self.max_extrap)
-        
-                                            i_var +=1
+                                            j_obs[var] = interp(
+                                                list(j_model.depth),
+                                                j_model[var],
+                                                list(j_obs.depth),
+                                                max_extrap=self.max_extrap,
+                                            )
+
+                                            i_var += 1
                                         for x in ["day", "month", "year"]:
                                             if x in i_df.columns:
                                                 j_obs[x] = i_df[x].values[0]
@@ -442,7 +438,9 @@ def matchup(self,  tmean = False, regrid = "bil", max_extrap = 5):
                                     n_missing += 1
 
     if n_missing > 0:
-        warnings.warn(f"{n_missing} points did not have sufficient vertical points in ds for vertical interpolation")
+        warnings.warn(
+            f"{n_missing} points did not have sufficient vertical points in ds for vertical interpolation"
+        )
 
     if len(df_merged) == 0:
         raise ValueError("No data matches were found")
@@ -453,7 +451,7 @@ def matchup(self,  tmean = False, regrid = "bil", max_extrap = 5):
     if self.temporal is False:
         acceptable += ds.variables
         acceptable = [x for x in df_merged.columns if x in acceptable]
-        df_merged = df_merged.loc[:,acceptable]
+        df_merged = df_merged.loc[:, acceptable]
 
     if len([x for x in df_merged.columns if x.startswith("time")]) == 1:
         orig_df = df_merged
@@ -463,18 +461,16 @@ def matchup(self,  tmean = False, regrid = "bil", max_extrap = 5):
             df_merged["year"] = [x.year for x in times]
             df_merged["month"] = [x.month for x in times]
             df_merged["day"] = [x.day for x in times]
-            df_merged = df_merged.drop(columns = time_name)
+            df_merged = df_merged.drop(columns=time_name)
             # get acceptable variables....
             acceptable += ds.variables
             acceptable = [x for x in df_merged.columns if x in acceptable]
-            df_merged = df_merged.loc[:,acceptable]
+            df_merged = df_merged.loc[:, acceptable]
 
         except:
             df_merged = orig_df
 
     if "path" in df_merged.columns:
-        df_merged = df_merged.drop(columns = "path")
+        df_merged = df_merged.drop(columns="path")
 
     self.values = df_merged
-
-

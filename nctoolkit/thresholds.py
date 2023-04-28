@@ -60,7 +60,7 @@ def first_above(self, x=None):
         self.rename({self.variables[0]: "target"})
         self.as_missing([-1, 0.1])
         if old:
-            self.assign( new=lambda x: (x.target == x.target) * (timestep(x.target) + 1), drop=True)
+            self.assign( new=lambda x: (x.target == x.target) * (timestep(x.target) + 1), drop=True,)
         else:
             self.assign( new=lambda x: (x.target == x.target) * (timestep() + 1), drop=True)
         self.as_missing([0, 0.01])
@@ -131,7 +131,7 @@ def first_below(self, x=None):
         self.rename({self.variables[0]: "target"})
         self.as_missing([-1, 0.1])
         if old:
-            self.assign( new=lambda x: (x.target == x.target) * (timestep(x.target) + 1), drop=True)
+            self.assign( new=lambda x: (x.target == x.target) * (timestep(x.target) + 1), drop=True,)
         else:
             self.assign( new=lambda x: (x.target == x.target) * (timestep() + 1), drop=True)
         self.as_missing([0, 0.01])
@@ -205,7 +205,7 @@ def last_above(self, x=None):
         self.rename({self.variables[0]: "target"})
         self.as_missing([-1, 0.1])
         if old:
-            self.assign( new=lambda x: (x.target == x.target) * (timestep(x.target) + 1), drop=True)
+            self.assign( new=lambda x: (x.target == x.target) * (timestep(x.target) + 1), drop=True,)
         else:
             self.assign( new=lambda x: (x.target == x.target) * (timestep() + 1), drop=True)
         self.as_missing([0, 0.01])
@@ -281,7 +281,7 @@ def last_below(self, x=None):
         self.rename({self.variables[0]: "target"})
         self.as_missing([-1, 0.1])
         if old:
-            self.assign( new=lambda x: (x.target == x.target) * -1 * (timestep(x.target) + 1), drop=True)
+            self.assign( new=lambda x: (x.target == x.target) * -1 * (timestep(x.target) + 1), drop=True,)
         else:
             self.assign( new=lambda x: (x.target == x.target) * -1 * (timestep() + 1), drop=True)
         self.as_missing([0, 0.01])

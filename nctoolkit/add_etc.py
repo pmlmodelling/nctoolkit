@@ -7,13 +7,14 @@ import pandas as pd
 from nctoolkit.cleanup import cleanup
 from nctoolkit.runthis import run_this, run_cdo, tidy_command
 from nctoolkit.session import session_info, append_safe, remove_safe
-from nctoolkit.show import nc_variables, nc_years, nc_times
+from nctoolkit.show import nc_variables, nc_times
 from nctoolkit.temp_file import temp_file
 from nctoolkit.utils import version_above
 from nctoolkit.api import open_data
 import nctoolkit.api as api
 
-def day_stat(self, operation = None,  x=None):
+
+def day_stat(self, operation=None, x=None):
     """
     Do not use
     """
@@ -21,7 +22,7 @@ def day_stat(self, operation = None,  x=None):
     if not isinstance(operation, str):
         raise ValueError("operation must be a str")
 
-    if operation not in  ["subtract", "divide"]:
+    if operation not in ["subtract", "divide"]:
         raise ValueError("only subtract")
 
     if operation == "subtract":
@@ -56,8 +57,6 @@ def day_stat(self, operation = None,  x=None):
     cleanup()
 
 
-
-
 def arithall(self, stat="divc", x=None):
     """
     Method to add, subtract etc. a constant from a dataset
@@ -86,9 +85,6 @@ def operation(self, method="mul", ff=None, var=None):
         if var not in nc_variables(ff):
             raise ValueError("var supplied is not available in the dataset")
 
-
-   
-
     new = False
     # throw error if the file to operate with does not exist
     if ff is not None:
@@ -97,15 +93,17 @@ def operation(self, method="mul", ff=None, var=None):
 
     # check compatibility
 
-    n_min  = self.contents.nlevels.min()
+    n_min = self.contents.nlevels.min()
 
-    ds = open_data(ff, checks = False)
+    ds = open_data(ff, checks=False)
     contents = ds.contents
 
     n_max = contents.nlevels.max()
 
     if n_max > n_min:
-        raise ValueError(f"Problem raised by incompatible number of vertical levels. {n_max} versus {n_min}. Please check dataset contents.")
+        raise ValueError(
+            f"Problem raised by incompatible number of vertical levels. {n_max} versus {n_min}. Please check dataset contents."
+        )
 
     if version_above(session_info["cdo"], "1.9.8"):
         new = True
@@ -120,14 +118,12 @@ def operation(self, method="mul", ff=None, var=None):
             n_vars = len(nc_variables(ff))
             x_vars = len(nc_variables(x))
 
-            #if n_vars > x_vars:
-                #raise ValueError("Incompatible number of variables in datasets!")
+            # if n_vars > x_vars:
+            # raise ValueError("Incompatible number of variables in datasets!")
 
             if n_vars != x_vars:
                 if n_vars > 1:
-                    raise ValueError(
-                        "Incompatible number of variables in datasets!"
-                    )
+                    raise ValueError("Incompatible number of variables in datasets!")
 
     # grab the method string
     if new:
@@ -171,7 +167,6 @@ def operation(self, method="mul", ff=None, var=None):
             ff_times_df = ff_times_df.astype("int")
 
     if new:
-
         self1 = self.copy()
 
         if len(self1) == 0:
@@ -189,7 +184,9 @@ def operation(self, method="mul", ff=None, var=None):
                     years = [int(x.split("T")[0].split("-")[0]) for x in x_times]
                     months = [int(x.split("T")[0].split("-")[1]) for x in x_times]
                     days = [int(x.split("T")[0].split("-")[2]) for x in x_times]
-                    df = pd.DataFrame({"year": years, "month": months, "day": months}).astype("int")
+                    df = pd.DataFrame(
+                        {"year": years, "month": months, "day": months}
+                    ).astype("int")
                     self_times.append(df)
 
                 else:
@@ -204,7 +201,6 @@ def operation(self, method="mul", ff=None, var=None):
                     self_times.append(df)
             else:
                 self_times.append(None)
-
 
         possible_switch = True
         for x in self_times:
@@ -279,8 +275,16 @@ def operation(self, method="mul", ff=None, var=None):
     if new:
         if ff_times_df.groupby(["month", "year", "day"]).size().max() == 1:
             for ss in self_times:
-                x11=  ss.loc[:, ["month", "year", "day"]].drop_duplicates().reset_index(drop=True)
-                x12 = ff_times_df.loc[:, ["month", "year", "day"]].drop_duplicates().reset_index(drop=True)
+                x11 = (
+                    ss.loc[:, ["month", "year", "day"]]
+                    .drop_duplicates()
+                    .reset_index(drop=True)
+                )
+                x12 = (
+                    ff_times_df.loc[:, ["month", "year", "day"]]
+                    .drop_duplicates()
+                    .reset_index(drop=True)
+                )
 
                 if (
                     ss.loc[:, ["month", "year", "day"]]
@@ -304,7 +308,6 @@ def operation(self, method="mul", ff=None, var=None):
         raise ValueError("Unable to carry out operation given times in datasets!")
 
     if new is False:
-
         # make sure the ff file is not removed from safe list in subsequent
         # actions prior to running
         if (ff is not None) and (session_info["lazy"]):
@@ -312,9 +315,7 @@ def operation(self, method="mul", ff=None, var=None):
             self._safe.append(ff)
 
         if len(self.history) == len(self._hold_history):
-
             for x in self:
-
                 # check that the datasets can actually be worked with
                 if var is None:
                     if (len(nc_variables(ff)) != len(nc_variables(x))) and (
@@ -327,7 +328,6 @@ def operation(self, method="mul", ff=None, var=None):
             prior_command = ""
 
         else:
-
             prior_command = self.history[-1].replace("cdo ", " ").replace("  ", " ")
 
         # we need to make sure you can chain multiple adds etc.#
@@ -349,12 +349,10 @@ def operation(self, method="mul", ff=None, var=None):
         # run the command if not lazy
 
         if session_info["lazy"] is False:
-
             new_files = []
             new_commands = []
 
             for FF in self:
-
                 target = temp_file(".nc")
                 the_command = cdo_command.replace("infile09178", FF) + " " + target
                 the_command = tidy_command(the_command)
@@ -438,11 +436,13 @@ def multiply(self, x=None, var=None):
 
     operation(self=self, method="mul", ff=ff, var=var)
 
+
 __mul__ = multiply
+
 
 def rmse(self, x=None):
     """
-    Calculate the root-mean-square-error of two datasets 
+    Calculate the root-mean-square-error of two datasets
 
     Parameters
     ------------
@@ -472,21 +472,19 @@ def rmse(self, x=None):
     ds1 = self.copy()
     # subtract the data in one dataset from the other
     ds1.subtract(ds2)
-    #square the differences
+    # square the differences
     ds1.power(2)
     # sum up over all time steps
     ds1.tsum()
     # divide by the number of time steps
     ds1.divide(n_times)
-    #square the results
+    # square the results
     ds1.sqrt()
     ds1.run()
 
     self.current = ds1.current
     self.history = ds1.history
     self._hold_history = ds1._hold_history
-
-
 
 
 def subtract(self, x=None, var=None):
@@ -542,6 +540,7 @@ def subtract(self, x=None, var=None):
         raise TypeError("You have not provided an int, float, dataset or file path!")
 
     operation(self=self, method="sub", ff=ff, var=var)
+
 
 __sub__ = subtract
 
@@ -603,6 +602,7 @@ def add(self, x=None, var=None):
 
     operation(self=self, method="add", ff=ff, var=var)
 
+
 __add__ = add
 
 
@@ -660,6 +660,7 @@ def divide(self, x=None, var=None):
 
     operation(self=self, method="div", ff=ff, var=var)
 
+
 __truediv__ = divide
 
 
@@ -704,6 +705,7 @@ def power(self, x=None):
     cdo_command = f"cdo -pow,{x}"
 
     run_this(cdo_command, self, output="ensemble")
+
 
 __pow__ = power
 
@@ -791,5 +793,3 @@ def sqrt(self):
     cdo_command = f"cdo -sqrt"
 
     run_this(cdo_command, self, output="ensemble")
-
-

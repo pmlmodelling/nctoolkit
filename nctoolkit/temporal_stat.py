@@ -5,7 +5,6 @@ from nctoolkit.runthis import run_this, run_cdo, tidy_command
 from nctoolkit.temporals import *
 from nctoolkit.temp_file import temp_file
 from nctoolkit.session import remove_safe
-import warnings
 
 
 def time_stat(self, stat="mean", over="time"):
@@ -67,7 +66,7 @@ def time_stat(self, stat="mean", over="time"):
         yhourstat(self, stat=stat)
         return None
 
-    if over == ["day", "hour",  "year"]:
+    if over == ["day", "hour", "year"]:
         run = True
         hourstat(self, stat=stat)
         return None
@@ -118,8 +117,7 @@ def time_stat(self, stat="mean", over="time"):
         raise ValueError(f"Grouping {over} is currently not supported!")
 
 
-
-def tsum(self, over="time", align = "right"):
+def tsum(self, over="time", align="right"):
     """
     Calculate the temporal sum of all variables
 
@@ -133,7 +131,7 @@ def tsum(self, over="time", align = "right"):
     time_stat(self, stat="sum", over=over)
 
 
-def na_count(self, over="time", align = "right"):
+def na_count(self, over="time", align="right"):
     """
     Calculate the number of missing values
 
@@ -156,7 +154,7 @@ def na_count(self, over="time", align = "right"):
     self.tsum(over=over)
 
 
-def na_frac(self, over="time", align = "right"):
+def na_frac(self, over="time", align="right"):
     """
     Calculate the number of missing values
 
@@ -179,7 +177,7 @@ def na_frac(self, over="time", align = "right"):
     self.tmean(over=over)
 
 
-def tmean(self, over="time", align = "right"):
+def tmean(self, over="time", align="right"):
     """
     Calculate the temporal mean of all variables
 
@@ -221,11 +219,11 @@ def tmean(self, over="time", align = "right"):
 
 
     """
-    self.align(align = align)
+    self.align(align=align)
     time_stat(self, stat="mean", over=over)
 
 
-def tmin(self, over="time", align = "right"):
+def tmin(self, over="time", align="right"):
     """
     Calculate the temporal minimum of all variables
 
@@ -266,11 +264,11 @@ def tmin(self, over="time", align = "right"):
         >>> ds.tmin( "day")
 
     """
-    self.align(align = align)
+    self.align(align=align)
     time_stat(self, stat="min", over=over)
 
 
-def tmax(self, over="time", align = "right"):
+def tmax(self, over="time", align="right"):
     """
     Calculate the temporal maximum of all variables
 
@@ -309,11 +307,11 @@ def tmax(self, over="time", align = "right"):
 
         >>> ds.tmax( "day")
     """
-    self.align(align = align)
+    self.align(align=align)
     time_stat(self, stat="max", over=over)
 
 
-def tmedian(self, over="time", align = "right"):
+def tmedian(self, over="time", align="right"):
     """
     Calculate the temporal median of all variables
 
@@ -352,11 +350,11 @@ def tmedian(self, over="time", align = "right"):
 
         >>> ds.tmedian( "day")
     """
-    self.align(align = align)
+    self.align(align=align)
     self.tpercentile(p=50, over=over)
 
 
-def trange(self, over="time", align = "right"):
+def trange(self, over="time", align="right"):
     """
     Calculate the temporal range of all variables
 
@@ -396,11 +394,11 @@ def trange(self, over="time", align = "right"):
         >>> ds.trange( "day")
 
     """
-    self.align(align = align)
+    self.align(align=align)
     time_stat(self, stat="range", over=over)
 
 
-def tvar(self, over="time", align = "right"):
+def tvar(self, over="time", align="right"):
     """
     Calculate the temporal variance of all variables
 
@@ -440,11 +438,11 @@ def tvar(self, over="time", align = "right"):
 
         >>> ds.tvar( "day")
     """
-    self.align(align = align)
+    self.align(align=align)
     time_stat(self, stat="var", over=over)
 
 
-def tstdev(self, over="time", align = "right"):
+def tstdev(self, over="time", align="right"):
     """
     Calculate the temporal standard deviation of all variables
 
@@ -484,11 +482,11 @@ def tstdev(self, over="time", align = "right"):
 
         >>> ds.tstdev("day")
     """
-    self.align(align = align)
+    self.align(align=align)
     time_stat(self, stat="std", over=over)
 
 
-def tcumsum(self, align = "right"):
+def tcumsum(self, align="right"):
     """
     Calculate the temporal cumulative sum of all variables
 
@@ -510,7 +508,7 @@ def tcumsum(self, align = "right"):
     time_stat(self, stat="cumsum")
 
 
-def tpercentile(self, p=None, over="time", align = "right"):
+def tpercentile(self, p=None, over="time", align="right"):
     """
     Calculate the temporal percentile of all variables
 
@@ -625,8 +623,8 @@ def tpercentile(self, p=None, over="time", align = "right"):
         target = temp_file("nc")
 
         cdo_command = (
-                perc_term
-            #"cdo -timpctl,"
+            perc_term
+            # "cdo -timpctl,"
             + str(p)
             + " "
             + ff

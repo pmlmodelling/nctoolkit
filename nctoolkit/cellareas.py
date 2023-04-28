@@ -1,7 +1,7 @@
 import copy
 
 from nctoolkit.cleanup import cleanup
-from nctoolkit.session import remove_safe, session_info
+from nctoolkit.session import remove_safe
 from nctoolkit.runthis import run_this, tidy_command, run_cdo
 from nctoolkit.show import nc_variables
 from nctoolkit.temp_file import temp_file
@@ -42,12 +42,10 @@ def cell_area(self, join=True):
 
     # first run the join case
     if join:
-
         new_files = []
         new_commands = []
 
         for ff in self:
-
             if "cell_area" in nc_variables(ff):
                 raise ValueError("cell_area is already a variable")
 
@@ -74,7 +72,6 @@ def cell_area(self, join=True):
         cleanup()
 
     else:
-
         cdo_command = "cdo -gridarea"
         run_this(cdo_command, self, output="ensemble")
 

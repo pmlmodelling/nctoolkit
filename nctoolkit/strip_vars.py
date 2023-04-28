@@ -20,7 +20,6 @@ def strip_variables(self, vars=None):
     self.run()
 
     if vars is not None:
-
         if isinstance(vars, str):
             vars = [vars]
 
@@ -31,14 +30,12 @@ def strip_variables(self, vars=None):
         command = f"ncks -C -v {str_flatten(vars)}"
 
     else:
-
         command = f"ncks -C -v {str_flatten(self.variables)}"
 
     new_files = []
     new_commands = []
 
     for ff in self:
-
         target = temp_file(".nc")
 
         the_command = f"{command} {ff} {target}"

@@ -1,8 +1,9 @@
 from nctoolkit.runthis import run_this
 
-def align(self, align = "right"):
+
+def align(self, align="right"):
     """
-    Method to align output time in temporal methods. 
+    Method to align output time in temporal methods.
 
     Parameters
     -------------
@@ -11,7 +12,7 @@ def align(self, align = "right"):
         Options are "left", "centre" and "right"
 
     """
-    
+
     if not isinstance(align, str):
         raise TypeError("Alignment must be str type")
 
@@ -33,7 +34,7 @@ def align(self, align = "right"):
     if "middle" in align:
         align = "midhigh"
 
-    if align not in ["first","middle","last", "midhigh"]:
+    if align not in ["first", "middle", "last", "midhigh"]:
         raise ValueError(f"{align} is not a valid align argument")
 
     new_align = f"--timestat_date {align}"
@@ -41,7 +42,8 @@ def align(self, align = "right"):
         if self._align != new_align:
             self.run()
 
-    self._align = new_align 
+    self._align = new_align
+
 
 def rollstat(self, window=None, stat="mean"):
     """Method to calculate the monthly statistic from a netCDF file"""
@@ -64,7 +66,7 @@ def rollstat(self, window=None, stat="mean"):
     run_this(cdo_command, self, output="ensemble")
 
 
-def rolling_mean(self, window=None, align = "right"):
+def rolling_mean(self, window=None, align="right"):
     """
     Calculate a rolling mean based on a window
 
@@ -76,7 +78,7 @@ def rolling_mean(self, window=None, align = "right"):
         This determines whether the output time is at the left, centre or right hand side of the time window.
         Options are "left", "centre" and "right"
 
-         
+
 
     Examples
     ------------
@@ -90,7 +92,7 @@ def rolling_mean(self, window=None, align = "right"):
     rollstat(self, window=window, stat="mean")
 
 
-def rolling_min(self, window=None, align = "right"):
+def rolling_min(self, window=None, align="right"):
     """
     Calculate a rolling minimum based on a window
 
@@ -113,7 +115,7 @@ def rolling_min(self, window=None, align = "right"):
     rollstat(self, window=window, stat="min")
 
 
-def rolling_max(self, window=None, align = "right"):
+def rolling_max(self, window=None, align="right"):
     """
     Calculate a rolling maximum based on a window
 
@@ -135,7 +137,7 @@ def rolling_max(self, window=None, align = "right"):
     rollstat(self, window=window, stat="max")
 
 
-def rolling_range(self, window=None, align = "right"):
+def rolling_range(self, window=None, align="right"):
     """
     Calculate a rolling range based on a window
 
@@ -158,7 +160,7 @@ def rolling_range(self, window=None, align = "right"):
     rollstat(self, window=window, stat="range")
 
 
-def rolling_sum(self, window=None, align = "right"):
+def rolling_sum(self, window=None, align="right"):
     """
     Calculate a rolling sum based on a window
 
@@ -180,7 +182,8 @@ def rolling_sum(self, window=None, align = "right"):
     self.align(align)
     rollstat(self, window=window, stat="sum")
 
-def rolling_var(self, window=None, align = "right"):
+
+def rolling_var(self, window=None, align="right"):
     """
     Calculate a rolling variance based on a window
 
@@ -202,7 +205,8 @@ def rolling_var(self, window=None, align = "right"):
     self.align(align)
     rollstat(self, window=window, stat="var")
 
-def rolling_stdev(self, window=None, align = "right"):
+
+def rolling_stdev(self, window=None, align="right"):
     """
     Calculate a rolling standard deviation based on a window
 

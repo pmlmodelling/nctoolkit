@@ -32,7 +32,6 @@ def file_size(file_path):
 
 
 def tidy_command(command):
-
     if session_info["precision"] is not None:
         command = command.replace("cdo ", "cdo -b " + session_info["precision"] + " ")
 
@@ -151,7 +150,6 @@ def run_nco(command, target, out_file=None, overwrite=False):
 
 
 def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision=None):
-
     warned = False
 
     if not isinstance(precision, str):
@@ -420,7 +418,6 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
                 f"None of the days supplied are available. Please check days supplied to nctoolkit methods!"
             )
 
-
         text = re.compile(r"Timestep [0-9]* not found")
         errors = text.findall(error)
         if len(errors) > 0:
@@ -611,7 +608,6 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
     sel_hour = []
     sel_var = []
 
-
     drop_warnings = []
 
     for x in result.decode("utf-8").lower().split("\n"):
@@ -622,12 +618,11 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
         errors = text.findall(x)
         if len(errors) > 0:
             for y in errors:
-                for z in re.findall(r'\d+', y):
+                for z in re.findall(r"\d+", y):
                     drop_warnings.append(z)
-                    #message= f"Warning: Unable to find month {z}"
-                    #warnings.warn(message)
+                    # message= f"Warning: Unable to find month {z}"
+                    # warnings.warn(message)
                     ignore = True
-
 
         if "selyear" in x:
             text = re.compile("selyear \\(warning\\): year [0-9]* not found")
@@ -763,9 +758,7 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
                     warnings.warn(message)
                     warned = True
 
-                text = re.compile(
-                    "delete \(warning\): timestep .* not found"
-                )
+                text = re.compile("delete \(warning\): timestep .* not found")
                 text_find = text.findall(x)
                 if len(text_find) > 0:
                     message = text_find[0]
@@ -776,11 +769,7 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
             ## Unsupported array structure message
             if "unsupported" in x and "skipped variable" in x:
                 text = re.compile("skipped variable .*!")
-                bad_var = (
-                    text.findall(x)[0]
-                    .split(" ")[2]
-                    .replace("!", "")
-                )
+                bad_var = text.findall(x)[0].split(" ")[2].replace("!", "")
                 message = f"This variable's structure is not supported by CDO: {bad_var}. Full CDO warning: {x}"
                 warnings.warn(message)
                 warned = True
@@ -939,7 +928,6 @@ def run_this(os_command, self, output="one", out_file=None, suppress=False):
             self.history[-1] = self.history[-1].replace("  ", " ")
     try:
         if self._execute:
-
             if ((output == "ensemble") and (len(self) > 1)) or (
                 (output == "ensemble") and (len(self) == 1)
             ):
@@ -1053,7 +1041,6 @@ def run_this(os_command, self, output="one", out_file=None, suppress=False):
                         )
                         results[ff] = temp
                     else:
-
                         target = run_cdo(
                             ff_command, target, out_file, precision=self._precision
                         )
@@ -1063,7 +1050,6 @@ def run_this(os_command, self, output="one", out_file=None, suppress=False):
                                 pbar.update(1)
 
                 if cores > 1:
-
                     if progress_bar:
                         if session_info["progress"] == "on":
                             if not suppress:
@@ -1101,7 +1087,6 @@ def run_this(os_command, self, output="one", out_file=None, suppress=False):
                 return None
 
             if ((output == "one") and (len(self) > 1)) or self._zip is False:
-
                 new_history = copy.deepcopy(self._hold_history)
 
                 if len(self.history) > len(self._hold_history):
@@ -1170,7 +1155,6 @@ def run_this(os_command, self, output="one", out_file=None, suppress=False):
                             os_command, target, out_file, precision=self._precision
                         )
                     except:
-
                         var_list = []
                         var_com = []
 
@@ -1183,7 +1167,6 @@ def run_this(os_command, self, output="one", out_file=None, suppress=False):
                             if len(var_com) == len([x for x in var_com if var in x]):
                                 new_list.append(var)
                         if version_below(session_info["cdo"], "1.9.9"):
-
                             target = run_cdo(
                                 os_command, target, out_file, precision=self._precision
                             )

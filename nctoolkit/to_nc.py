@@ -52,7 +52,6 @@ def to_nc(self, out, zip=True, overwrite=False, **kwargs):
         if os.path.exists(out_dir) is False:
             raise ValueError(f"{out_dir} does not exist!")
 
-
     # Figure out if it is possible to write the file, i.e. if a dataset is still an
     # ensemble, you cannot write.
     ff = copy.deepcopy(self.current)
@@ -71,15 +70,12 @@ def to_nc(self, out, zip=True, overwrite=False, **kwargs):
         if len(self) > 1:
             self.run()
 
-
     # Check if outfile exists and overwrite is set to False
     # This should maybe be a warning, not an error
     if (os.path.exists(out)) and (overwrite is False):
         raise ValueError("The out file exists and overwrite is set to false")
 
-
     if len(kwargs) > 0:
-
         self1 = self.copy()
 
         self1.subset(**kwargs)
@@ -87,12 +83,14 @@ def to_nc(self, out, zip=True, overwrite=False, **kwargs):
         self1.run()
         ff = copy.deepcopy(self1.current)
 
-
         if len(self1.history) == len(self1._hold_history):
             if zip:
                 cdo_command = f"cdo -z zip_9 copy {ff[0]} {out}"
                 run_cdo(
-                    cdo_command, target=out, overwrite=overwrite, precision=self._precision
+                    cdo_command,
+                    target=out,
+                    overwrite=overwrite,
+                    precision=self._precision,
                 )
 
                 self1.history.append(cdo_command)
@@ -103,7 +101,10 @@ def to_nc(self, out, zip=True, overwrite=False, **kwargs):
             else:
                 cdo_command = f"cdo copy {ff[0]} {out}"
                 run_cdo(
-                    cdo_command, target=out, overwrite=overwrite, precision=self1._precision
+                    cdo_command,
+                    target=out,
+                    overwrite=overwrite,
+                    precision=self1._precision,
                 )
                 self1.history.append(cdo_command)
                 self1._hold_history = copy.deepcopy(self1.history)
@@ -125,25 +126,29 @@ def to_nc(self, out, zip=True, overwrite=False, **kwargs):
         if os.path.exists(out) is False:
             raise ValueError("File zipping was not successful")
     else:
-
         ff = copy.deepcopy(self.current)
 
         if len(self.history) == len(self._hold_history):
             if zip:
                 cdo_command = f"cdo -z zip_9 copy {ff[0]} {out}"
                 run_cdo(
-                    cdo_command, target=out, overwrite=overwrite, precision=self._precision
+                    cdo_command,
+                    target=out,
+                    overwrite=overwrite,
+                    precision=self._precision,
                 )
                 self.history.append(cdo_command)
                 self._hold_history = copy.deepcopy(self.history)
                 self.current = out
                 remove_safe(out)
 
-
             else:
                 cdo_command = f"cdo copy {ff[0]} {out}"
                 run_cdo(
-                    cdo_command, target=out, overwrite=overwrite, precision=self._precision
+                    cdo_command,
+                    target=out,
+                    overwrite=overwrite,
+                    precision=self._precision,
                 )
                 self.history.append(cdo_command)
                 self._hold_history = copy.deepcopy(self.history)
@@ -164,6 +169,5 @@ def to_nc(self, out, zip=True, overwrite=False, **kwargs):
 
         if os.path.exists(out) is False:
             raise ValueError("File zipping was not successful")
-
 
     cleanup()

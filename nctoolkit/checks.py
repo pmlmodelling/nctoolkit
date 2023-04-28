@@ -1,17 +1,16 @@
 import xarray as xr
 from nctoolkit.temp_file import temp_file
-from nctoolkit.api import open_data
 from netCDF4 import Dataset
 import subprocess
 import warnings
 
+
 def is_corrupt(self):
     """
-    Check if files are corrupt 
+    Check if files are corrupt
     """
 
     for ff in self:
-
         the_temp = temp_file() + "nc"
         command = f"cdo -copy {ff}  {the_temp}"
         out = subprocess.Popen(
@@ -28,7 +27,6 @@ def is_corrupt(self):
         else:
             blash = None
     return False
-
 
 
 def check(self):
@@ -74,8 +72,9 @@ def check(self):
                 for tt in times:
                     time_var = dataset.variables[tt][:]
                     if "int" in str(time_var.dtype):
-                        the_warns.append(f"{tt} has integer data type. Consider setting it to double using as_double")
-
+                        the_warns.append(
+                            f"{tt} has integer data type. Consider setting it to double using as_double"
+                        )
 
         if len(the_warns) > 0:
             the_warns = list(set(the_warns))
@@ -87,7 +86,6 @@ def check(self):
     print("*****************************************")
     print("Running CF-compliance checks")
     print("*****************************************")
-
 
     cf_checker = True
     try:
@@ -109,7 +107,9 @@ def check(self):
                     else:
                         version = ds.attrs["Conventions"].split("-")[1]
                 except:
-                    warnings.warn("Note: there are issues opening this file using xarray. You may want to look closely to see if there are formatting issues that will have negative downstream impacts!")
+                    warnings.warn(
+                        "Note: there are issues opening this file using xarray. You may want to look closely to see if there are formatting issues that will have negative downstream impacts!"
+                    )
 
                 if len(version) > 0:
                     command = f"cfchecks -v {version} {ff}"
@@ -138,7 +138,6 @@ def check(self):
                 ][0]
                 for i in range(0, len(splits)):
                     if i < (len(splits) - 1):
-
                         i_result = result_split[splits[i] : splits[i + 1]]
                         i_result = "\n".join(i_result)
                         if "ERROR: " in i_result:
@@ -155,7 +154,9 @@ def check(self):
                             )
                             print(i_result)
         except:
-            warnings.warn("Problem running CF-compliance checks. Have a look at the cfchecker installation")
+            warnings.warn(
+                "Problem running CF-compliance checks. Have a look at the cfchecker installation"
+            )
 
     print("*****************************************")
     print("Checking grid consistency")

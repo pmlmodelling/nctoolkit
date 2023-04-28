@@ -3,15 +3,17 @@ from nctoolkit.show import nc_variables
 from nctoolkit.utils import name_check
 import warnings
 
+
 # A custom format for warnings.
 def custom_formatwarning(msg, *args, **kwargs):
     # ignore everything except the message
     return str(msg) + "\n"
 
+
 warnings.formatwarning = custom_formatwarning
 
 
-def rename(self, newnames = None, **kwargs):
+def rename(self, newnames=None, **kwargs):
     """
     Rename variables in a dataset
 
@@ -20,7 +22,7 @@ def rename(self, newnames = None, **kwargs):
     newnames : dict
         Dictionary with key-value pairs being original and new variable names
     * kwargs
-        Alternative method for renaming 
+        Alternative method for renaming
 
     Examples
     ------------
@@ -44,9 +46,11 @@ def rename(self, newnames = None, **kwargs):
         for key in newnames:
             if key not in variables:
                 if len(self) > 1:
-                    warnings.warn(message = f"{key} is not in the first file of the dataset")
+                    warnings.warn(
+                        message=f"{key} is not in the first file of the dataset"
+                    )
                 else:
-                    warnings.warn(message = f"{key} is not in the dataset")
+                    warnings.warn(message=f"{key} is not in the dataset")
 
     # now, we need to loop through the renaming dictionary to get the cdo sub
     cdo_rename = ""
@@ -57,7 +61,6 @@ def rename(self, newnames = None, **kwargs):
 
         if name_check(value) is False:
             raise ValueError(f"{value} is not a valid netCDF variable name")
-
 
     for key, value in newnames.items():
         if not isinstance(key, str):

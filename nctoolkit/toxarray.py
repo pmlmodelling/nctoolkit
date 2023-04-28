@@ -46,7 +46,6 @@ def to_xarray(self, decode_times=True, **kwargs):
     if len(kwargs) == 0:
         self.run()
 
-
     self1 = self.copy()
 
     if len(kwargs) > 0:
@@ -90,7 +89,6 @@ def to_xarray(self, decode_times=True, **kwargs):
     # then push those to the xarray object
 
     if len(self1) == 1:
-
         if isinstance(self1.times[0], datetime):
             times = self1.times
         else:

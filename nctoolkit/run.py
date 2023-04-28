@@ -20,7 +20,7 @@ def run(self):
     if (self._execute is False) and (
         len(self.history) > len(self._hold_history)
         or self._zip
-        or self._format is not None 
+        or self._format is not None
         or self._precision != "default"
     ):
         self._execute = True
@@ -51,7 +51,7 @@ def run(self):
         cleanup()
 
         self._ncommands = 0
-        self._align= ""
+        self._align = ""
         self.disk_clean()
 
         self._precision = "default"

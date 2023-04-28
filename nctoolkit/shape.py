@@ -1,14 +1,8 @@
-import copy
 
-from nctoolkit.cleanup import cleanup
-from nctoolkit.runthis import run_cdo, tidy_command
-from nctoolkit.show import nc_variables
-from nctoolkit.temp_file import temp_file
-from nctoolkit.session import remove_safe, get_safe
 from nctoolkit.api import from_xarray
 
 
-def open_shape(ff = None, res = None):
+def open_shape(ff=None, res=None):
     """
     Calculate the correlation correct in time between two variables
     The correlation is calculated for each grid cell, ignoring missing values.
@@ -18,7 +12,7 @@ def open_shape(ff = None, res = None):
     ff: str
         File path to shape file
     res: list
-        x and y horizontal resolution 
+        x and y horizontal resolution
 
     """
     if not isinstance(ff, str):
@@ -31,6 +25,7 @@ def open_shape(ff = None, res = None):
 
     from geocube.api.core import make_geocube
     import geopandas
+
     print("Attempting to convert shape file to netCDF using geocube!")
     shp = geopandas.read_file(ff)
     cube = make_geocube(

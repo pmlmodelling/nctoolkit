@@ -97,7 +97,7 @@ funs = [
     "int",
     "float",
     "log10",
-    "thickness"
+    "thickness",
 ]
 
 translation = dict()
@@ -106,7 +106,7 @@ for ff in funs:
         translation[ff] = ff
 
 translation["int"] = "int"
-#translation["deltaz"] = "cdeltaz"
+# translation["deltaz"] = "cdeltaz"
 translation["float"] = "float"
 
 translation["arcsin"] = "asin"
@@ -153,6 +153,7 @@ translation["lat"] = "clat"
 
 translation["longitude"] = "clon"
 translation["latitude"] = "clat"
+
 
 # split using all possible mathematical operators
 def split1(mystr):
@@ -227,7 +228,6 @@ def assign(self, drop=False, **kwargs):
         except:
             start = dill.source.getsource(start).replace("\n", "").strip()
     except:
-
         if interactive:
             import readline
 
@@ -332,7 +332,6 @@ def assign(self, drop=False, **kwargs):
     starts = ("; ").join(starts)
 
     for start in starts.split(";"):
-
         patternl = re.compile("lambda \w*:")
         lambda_value = patternl.findall(start)[0][-2]
 
@@ -387,7 +386,6 @@ def assign(self, drop=False, **kwargs):
         fun_pattern = re.compile("[a-zA-Z\_][a-zA-Z\_z.0-9]*\(")
 
         for x in fun_pattern.findall(start):
-
             check = True
             while check:
                 x_terms = re.finditer(x.replace("(", "\\(").replace("[", "\\["), start)
@@ -435,7 +433,6 @@ def assign(self, drop=False, **kwargs):
         for x in terms:
             if ("[" in x and f"{lambda_value}." in x) is False:
                 if fun_pattern.search(x) is not None:
-
                     fix = True
                     n = 0
                     n_limit = start.count("x")
@@ -505,7 +502,6 @@ def assign(self, drop=False, **kwargs):
                         error_message = None
 
                     except:
-
                         if x_fun in translation.keys():
                             x_term = between_brackets(x)
                             if (f"{lambda_value}." in x_term) is False:
@@ -671,7 +667,6 @@ def assign(self, drop=False, **kwargs):
             return re.split("([+-/*()&|<>=!^])", mystr)
 
         for tt in start.split(";"):
-
             tt_frag = []
             l_pattern = re.compile("lambda (\w*):")
             l_string = l_pattern.findall(tt)[0]
@@ -730,7 +725,6 @@ def assign(self, drop=False, **kwargs):
     command = " ".join(split_this(command)).replace(" . ", ".").replace(";", " ; ")
 
     for term in command.split(" "):
-
         if "." in term:
             pattern1 = re.compile(r"[a-zA-Z]")
             if len(pattern1.findall(term)) > 0 and "^" not in term:

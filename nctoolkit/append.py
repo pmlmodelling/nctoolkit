@@ -50,9 +50,7 @@ def append(self, x=None):
 
     for ff in x:
         if ff in check_list:
-            warnings.warn(
-                "You are trying to add a file that is already in the dataset"
-            )
+            warnings.warn("You are trying to add a file that is already in the dataset")
 
     for ff in x:
         if os.path.exists(ff) is False:
