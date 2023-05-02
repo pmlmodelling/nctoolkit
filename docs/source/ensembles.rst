@@ -62,7 +62,7 @@ number of cores to be used. In the following case, we set it to 6:
 
 .. code:: ipython3
 
-    nc.options(6)
+    nc.options(cores = 6)
 
 This results in files being processed simultaneously with 6 cores.
 
