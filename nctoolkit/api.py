@@ -102,7 +102,10 @@ warnings.formatwarning = custom_formatwarning
 
 # set up the session info
 letters = string.ascii_lowercase
-login = os.getlogin()
+try:
+    login = os.getlogin()
+except:
+    login = os.environ.get("USERNAME")
 session_info["stamp"] = (
     "nctoolkit_" + login + "_" +   "".join(random.choice(letters) for i in range(8)) + "nctoolkit"
 )
