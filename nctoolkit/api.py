@@ -102,8 +102,9 @@ warnings.formatwarning = custom_formatwarning
 
 # set up the session info
 letters = string.ascii_lowercase
+login = os.getlogin()
 session_info["stamp"] = (
-    "nctoolkit" + "".join(random.choice(letters) for i in range(8)) + "nctoolkit"
+    "nctoolkit_" + login + "_" +   "".join(random.choice(letters) for i in range(8)) + "nctoolkit"
 )
 session_info["temp_dir"] = "/tmp/"
 session_info["user_dir"] = False
