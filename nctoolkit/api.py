@@ -105,7 +105,7 @@ letters = string.ascii_lowercase
 try:
     login = os.getlogin()
 except:
-    login = os.environ.get("USERNAME")
+    login = "" 
 session_info["stamp"] = (
     "nctoolkit_" + login + "_" +   "".join(random.choice(letters) for i in range(8)) + "nctoolkit"
 )
