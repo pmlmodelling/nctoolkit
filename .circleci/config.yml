@@ -6,10 +6,10 @@ orbs:
 jobs:
   build:
     docker:
-      macos:
-        xcode: 14.2.0 # indicate your selected version of Xcode
-      resource_class: macos.m1.large.gen1
       - image: continuumio/miniconda3
+        macos:
+          xcode: 14.2.0 # indicate your selected version of Xcode
+        resource_class: macos.m1.large.gen1
 
     working_directory: ~/repo
 
