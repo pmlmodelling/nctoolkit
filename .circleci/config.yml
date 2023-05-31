@@ -3,13 +3,14 @@ version: 2.1
 orbs:
   codecov: codecov/codecov@3.1.1
 
+macos:
+  xcode: 14.2.0 # indicate your selected version of Xcode
+resource_class: macos.m1.large.gen1
+
 jobs:
   build:
-    docker:
-      - image: continuumio/miniconda3
-        macos:
-          xcode: 14.2.0 # indicate your selected version of Xcode
-        resource_class: macos.m1.large.gen1
+    #docker:
+    #  - image: continuumio/miniconda3
 
     working_directory: ~/repo
 
