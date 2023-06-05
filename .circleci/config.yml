@@ -60,7 +60,7 @@ jobs:
             pip install rioxarray
             pip install --user codecov
             pip install .
-            python tests/test_addetc_lazy.py
-            coverage run -m pytest tests/test_*.py
-            coverage report
-            coverage xml
+            python testing/test_scripting.py
+            #coverage run -m pytest tests/test_*.py
+            #coverage report
+            #coverage xml

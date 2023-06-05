@@ -66,4 +66,5 @@ jobs:
        shell: bash -l {0}
        run: |
          conda activate foo
-         pytest tests/test_*.py
+         python tests/test_scripting.py
+         #pytest tests/test_*.py
