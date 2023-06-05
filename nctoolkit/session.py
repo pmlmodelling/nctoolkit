@@ -1,12 +1,15 @@
 import glob
 import os
-from multiprocessing import Manager
+#from multiprocessing import Manager
+import multiprocessing
 
 
 session_info = dict()
-mgr = Manager()
+with multiprocessing.Manager() as manager:
+        nc_safe_par = manager.list()
+#mgr = Manager()
 nc_safe = list()
-nc_safe_par = Manager().list()
+#nc_safe_par = Manager().list()
 
 
 def append_safe(ff):
