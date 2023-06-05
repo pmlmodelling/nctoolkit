@@ -20,6 +20,14 @@ def cdo_version():
 
 ff = "data/sst.mon.mean.nc"
 
+import time
+import os
+def process_chain(ff):
+    ds = nc.open_data(ff)
+    ds.spatial_mean()
+    ds.run()
+    time.sleep(0.1)
+    return os.path.exists(ds[0])
 
 class TestPar:
     def test_parallel(self):
@@ -54,6 +62,27 @@ class TestPar:
         data.spatial_sum(by_area = True)
         data.run()
 
+        import multiprocessing
+        nc.options(parallel = True)
+        n_cores = multiprocessing.cpu_count()
+        ensemble = nc.open_data("data/ensemble/*.nc")
+
+        ensemble = nc.create_ensemble("data/ensemble")
+        import multiprocessing
+        target_list = []
+        results = dict()
+        pool = multiprocessing.Pool(n_cores)
+        for ff in ensemble:
+            temp = pool.apply_async(process_chain, [ff])
+            results[ff] = temp
+        pool.close()
+        pool.join()
+        for k, v in results.items():
+            target_list.append(v.get())
+        assert len([x for x in target_list if x == False]) == 0
+
+
+        #nc.options(parallel = False)
 
 
         nc.options(cores = 1)
