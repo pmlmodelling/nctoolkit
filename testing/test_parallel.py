@@ -4,7 +4,6 @@ import subprocess
 import pandas as pd
 import xarray as xr
 import os, pytest
-import multiprocessing
 
 nc.options(lazy=True)
 
@@ -68,15 +67,18 @@ if True:
         data.spatial_sum(by_area = True)
         data.run()
 
-        import multiprocessing
+        if platform.system() == "Linux":
+            import multiprocessing as mp
+        else:
+            import multiprocess as mp
         nc.options(parallel = True)
-        n_cores = multiprocessing.cpu_count()
+        n_cores = mp.cpu_count()
         ensemble = nc.open_data("data/ensemble/*.nc")
 
         ensemble = nc.create_ensemble("data/ensemble")
         target_list = []
         results = dict()
-        pool = multiprocessing.Pool(n_cores)
+        pool = mp.Pool(n_cores)
         for ff in ensemble:
             temp = pool.apply_async(process_chain, [ff])
             results[ff] = temp
