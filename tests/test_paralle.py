@@ -1,6 +1,7 @@
 import nctoolkit as nc
 import platform
 import subprocess
+import platform
 import pandas as pd
 import xarray as xr
 import os, pytest
@@ -68,17 +69,19 @@ class TestPar:
         data = nc.open_data("data/ensemble/*.nc")
         data.spatial_sum(by_area = True)
         data.run()
-
-        import multiprocessing
         nc.options(parallel = True)
-        n_cores = multiprocessing.cpu_count()
-        ensemble = nc.open_data("data/ensemble/*.nc")
+
+        if platform.system() == "Linux":
+            import multiprocessing as mp
+        else:
+            import multiprocess as mp
+
+        n_cores = mp.cpu_count()
 
         ensemble = nc.create_ensemble("data/ensemble")
-        import multiprocess
         target_list = []
         results = dict()
-        pool = multiprocess.Pool(2)
+        pool = mp.Pool(2)
         for ff in ensemble:
             temp = pool.apply_async(process_chain, [ff])
             results[ff] = temp
