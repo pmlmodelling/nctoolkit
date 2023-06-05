@@ -4,7 +4,11 @@ import re
 import subprocess
 import platform
 import warnings
-import multiprocessing
+if platform.system() != "Linux":
+    import multiprocessing as mp
+else:
+    import multiprocess as mp
+
 import signal
 
 from nctoolkit.cleanup import cleanup
@@ -945,7 +949,7 @@ def run_this(os_command, self, output="one", out_file=None, suppress=False):
                     original_sigint_handler = signal.signal(
                         signal.SIGTERM, signal.SIG_IGN
                     )
-                    pool = multiprocessing.Pool(cores)
+                    pool = mp.Pool(cores)
                     signal.signal(signal.SIGTERM, original_sigint_handler)
 
                     target_list = []

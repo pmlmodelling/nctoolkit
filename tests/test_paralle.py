@@ -23,10 +23,11 @@ ff = "data/sst.mon.mean.nc"
 import time
 import os
 def process_chain(ff):
+    print(f"processing {ff}")
     ds = nc.open_data(ff)
     ds.spatial_mean()
     ds.run()
-    time.sleep(0.1)
+    #time.sleep(0.1)
     x =  os.path.exists(ds[0])
 
     del ds
@@ -34,7 +35,9 @@ def process_chain(ff):
     return x
 
 class TestPar:
+#if True:
     def test_parallel(self):
+    #def test_parallel():
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff)
         n = len(nc.session_files())
@@ -72,10 +75,10 @@ class TestPar:
         ensemble = nc.open_data("data/ensemble/*.nc")
 
         ensemble = nc.create_ensemble("data/ensemble")
-        import multiprocessing
+        import multiprocess
         target_list = []
         results = dict()
-        pool = multiprocessing.Pool(n_cores)
+        pool = multiprocess.Pool(2)
         for ff in ensemble:
             temp = pool.apply_async(process_chain, [ff])
             results[ff] = temp
@@ -86,11 +89,10 @@ class TestPar:
         assert len([x for x in target_list if x == False]) == 0
 
 
-        #nc.options(parallel = False)
+        nc.options(parallel = False)
 
 
         nc.options(cores = 1)
-
 
 
 
