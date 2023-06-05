@@ -2,10 +2,11 @@ import glob
 import os
 #from multiprocessing import Manager
 import multiprocessing
+import multiprocess
 
 
 session_info = dict()
-with multiprocessing.Manager() as manager:
+with multiprocess.Manager() as manager:
         nc_safe_par = manager.list()
 #mgr = Manager()
 nc_safe = list()
