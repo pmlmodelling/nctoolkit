@@ -2,18 +2,19 @@ import glob
 import os
 #from multiprocessing import Manager
 import multiprocessing
-import multiprocess
 import platform
 
 
 session_info = dict()
-if platform.system() != "Linux":
-    with multiprocess.Manager() as manager:
-            nc_safe_par = manager.list()
-            temp_dirs_par = manager.list()
-            nc_protected_par = manager.list()
+if platform.system() == "Linux":
+    import multiprocess
+    from multiprocessing import Manager
+    nc_safe_par = Manager().list()
+    temp_dirs_par = Manager().list()
+    nc_protected_par = Manager().list()
 else:
-    with multiprocessing.Manager() as manager:
+    import multiprocess
+    with multiprocess.Manager() as manager:
             nc_safe_par = manager.list()
             temp_dirs_par = manager.list()
             nc_protected_par = manager.list()
