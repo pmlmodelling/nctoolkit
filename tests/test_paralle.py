@@ -27,7 +27,11 @@ def process_chain(ff):
     ds.spatial_mean()
     ds.run()
     time.sleep(0.1)
-    return os.path.exists(ds[0])
+    x =  os.path.exists(ds[0])
+
+    del ds
+    nc.cleanup()
+    return x
 
 class TestPar:
     def test_parallel(self):

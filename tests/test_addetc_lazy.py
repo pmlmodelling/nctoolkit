@@ -35,7 +35,7 @@ class TestAddetc:
         ds1.to_dataframe().abs().max()
         assert float(ds1.to_dataframe().abs().max()) < 1e-6
 
-    def test_yearlyts(self):
+    def test_yearlyts(self): 
         version = nc.cdo_version()
         if nc.utils.version_below(version, "1.9.9") == False:
             ds1 = nc.open_data(ff)

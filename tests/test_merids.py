@@ -67,3 +67,10 @@ class TestClip:
             assert data.to_dataframe().sst[0].astype("float") == 29.76824188232422
         else:
             assert data.to_dataframe().sst[0].astype("float") == 29.76813316345215
+        del data
+        del tracker
+        del ds
+
+        n = len(nc.session_files())
+        assert n == 0
+        assert len(nc.session.get_safe()) == 0

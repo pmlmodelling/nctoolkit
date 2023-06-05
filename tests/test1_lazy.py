@@ -6,7 +6,7 @@ import os, pytest
 
 nc.options(lazy=True)
 if platform.system() == "Linux":
-    nc.options(parallel = False)
+    nc.options(parallel = True)
 
 ff = "data/sst.mon.mean.nc"
 
