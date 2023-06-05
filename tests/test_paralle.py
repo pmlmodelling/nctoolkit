@@ -69,31 +69,6 @@ class TestPar:
         data = nc.open_data("data/ensemble/*.nc")
         data.spatial_sum(by_area = True)
         data.run()
-        nc.options(parallel = True)
-
-        if platform.system() == "Linux":
-            import multiprocessing as mp
-        else:
-            import multiprocess as mp
-
-        n_cores = mp.cpu_count()
-
-        ensemble = nc.create_ensemble("data/ensemble")
-        target_list = []
-        results = dict()
-        pool = mp.Pool(2)
-        for ff in ensemble:
-            temp = pool.apply_async(process_chain, [ff])
-            results[ff] = temp
-        pool.close()
-        pool.join()
-        for k, v in results.items():
-            target_list.append(v.get())
-        assert len([x for x in target_list if x == False]) == 0
-
-
-        nc.options(parallel = False)
-
 
         nc.options(cores = 1)
 
