@@ -67,4 +67,4 @@ jobs:
        run: |
          conda activate foo
          python testing/test_scripting.py
-         #pytest tests/test_*.py
+         pytest tests/test_*.py
