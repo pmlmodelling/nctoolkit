@@ -8,8 +8,8 @@ import multiprocess
 session_info = dict()
 with multiprocess.Manager() as manager:
         nc_safe_par = manager.list()
-        temp_dirs_par = Manager().list()
-        nc_protected_par = Manager().list()
+        temp_dirs_par = manager.list()
+        nc_protected_par = manager.list()
 #mgr = Manager()
 nc_safe = list()
 #nc_safe_par = Manager().list()
