@@ -8,6 +8,8 @@ import multiprocess
 session_info = dict()
 with multiprocess.Manager() as manager:
         nc_safe_par = manager.list()
+        temp_dirs_par = Manager().list()
+        nc_protected_par = Manager().list()
 #mgr = Manager()
 nc_safe = list()
 #nc_safe_par = Manager().list()
@@ -80,7 +82,6 @@ def get_protected():
 html_files = []
 
 temp_dirs = list()
-temp_dirs_par = Manager().list()
 
 
 def append_tempdirs(ff):
@@ -106,7 +107,6 @@ def get_tempdirs():
 
 
 nc_protected = list()
-nc_protected_par = Manager().list()
 
 
 def session_files():
