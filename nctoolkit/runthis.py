@@ -4,7 +4,7 @@ import re
 import subprocess
 import platform
 import warnings
-if platform.system() != "Linux":
+if platform.system() == "Linux":
     import multiprocessing as mp
 else:
     import multiprocess as mp

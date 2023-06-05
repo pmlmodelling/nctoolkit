@@ -6,7 +6,7 @@ import platform
 
 
 session_info = dict()
-if platform.system() != "Linux":
+if platform.system() == "Linux":
     from multiprocessing import Manager
     nc_safe_par = Manager().list()
     temp_dirs_par = Manager().list()
