@@ -57,7 +57,7 @@ ds_clim.subset(years = range(1900, 1920))
 
 ds_clim.tmean()
 
-ds_present = nc.open_data("data/sst.mon.mean.nc")
+ds_present = nc.open_data("sst.mon.mean.nc")
 
 ds_present.subset(years = range(2000, 2020))
 
