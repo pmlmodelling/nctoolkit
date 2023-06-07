@@ -23,7 +23,7 @@ Let’s start by calculating mean sea surface temperature for the year
 
 .. raw:: html
 
-   <iframe src="visualization_plot1.html" width="100%" height="350px"></iframe>
+   <iframe src="visualization_plot1.html" width="80%" height="350px"></iframe>
 
 
 We might be interested in the zonal mean. nctoolkit can automatically
