@@ -23,7 +23,7 @@ jobs:
       - uses: mamba-org/setup-micromamba@v1
         env:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: true
-      - uses: actions/checkout@v3
+      #- uses: actions/checkout@v3
       - uses: ./
         with:
           micromamba-version: '1.3.1-0'
