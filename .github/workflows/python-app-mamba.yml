@@ -23,8 +23,6 @@ jobs:
       - uses: mamba-org/setup-micromamba@v1
         env:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: true
-      #- uses: actions/checkout@v3
-      - uses: ./
         with:
           micromamba-version: '1.3.1-0'
           environment-name: foo
@@ -34,6 +32,7 @@ jobs:
             powershell
           cache-environment: true
           post-cleanup: 'all'
+       uses: actions/checkout@v3
       - name: Install dependencies
         shell: bash -l {0}
         run: |
