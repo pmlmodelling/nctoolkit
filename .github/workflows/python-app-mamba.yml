@@ -43,4 +43,4 @@ jobs:
           pip install coverage 
           pytest tests/test*.py
         #shell: micromamba-shell {0}
-        shell: bash -el {0} 
+        shell: bash -l {0} 
