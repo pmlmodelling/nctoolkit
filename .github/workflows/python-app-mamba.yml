@@ -34,7 +34,6 @@ jobs:
           pip install cartopy
           pip install dask
           pip install -r requirements.txt
-          pip install .
           pip install pandas
           pip install rioxarray
           pip install pytest
