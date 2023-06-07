@@ -26,7 +26,6 @@ jobs:
           init-shell: >-
             bash
           cache-environment: true
-          allow-softlinks: true
           post-cleanup: 'all'
       - name: Run python testing
         shell: bash -l {0} 
@@ -38,11 +37,11 @@ jobs:
           pip install cartopy
           pip install dask
           pip install -r requirements.txt
-          pip install .
+          pip install ../.
           pip install pandas
           pip install rioxarray
           pip install pytest
           pip install pytest-cov
           pip install coverage 
-          pytest tests/test*.py
+          pytest ../tests/test*.py
         #shell: micromamba-shell {0}
