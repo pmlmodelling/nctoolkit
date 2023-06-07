@@ -1,5 +1,5 @@
 Plotting
---------
+============
 
 nctoolkit provides automatic plotting of netCDF data in a similar way to
 the command line tool ncview.
@@ -24,14 +24,6 @@ Let’s start by calculating mean sea surface temperature for the year
 .. raw:: html
    :file: visualization_plot1.html 
 
-.. parsed-literal::
-
-    nctoolkit is using Climate Data Operators version 1.9.10
-
-
-
-
-
 
 
 
@@ -46,3 +38,48 @@ plot this easily:
     ds.tmean()
     ds.zonal_mean()
     ds.plot()
+
+.. raw:: html
+   :file: visualization_plot2.html
+
+nctoolkit can also easily handle heat maps. So, we can easily plot the change in zonal mean over time:
+
+
+
+.. code:: ipython3
+
+        ff =  "sst.mon.mean.nc"
+        ds = nc.open_data(ff)
+        ds.zonal_mean()
+        ds.annual_anomaly(baseline = [1850, 1869], window = 20)gg
+        ds.plot()
+
+.. raw:: html
+   :file: visualization_plot3.html
+
+In a similar vein, it can automatically handle time series. Below we plot a time series of global mean sea surface temperature since 1850:
+
+
+.. code:: ipython3
+
+        ff =  "sst.mon.mean.nc"
+        ds = nc.open_data(ff)
+        ds.spatial_mean()
+        ds.plot()
+
+.. raw:: html
+   :file: visualization_plot4.html
+
+
+Plotting internals
+---------------------
+Plotting is carried out using the ncplot package. ncplot will look at the dataset and identify a suitable plotting method. This is carried out internally using hvplot. If you come across any errors, 
+please raise an issue `here <https://github.com/pmlmodelling/ncplot>`__.
+
+This is a package that aims to deliver plotting for rapid exploratory analysis, and therefore it does not offer a large number of customizations. However, because it is built on hvplot, you can use most of the customization options available in hvplot, which are detailed `here <https://hvplot.holoviz.org/user_guide/Customization.html>`__. Arguments such as `title`, `logz` and `clim` can be passed to `plot` and will be automatically passed to the hvplot method used
+.
+
+
+
+
+
