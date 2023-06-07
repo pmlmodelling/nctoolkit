@@ -1,0 +1,52 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Linux testing 
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: "ubuntu-latest" 
+
+    steps:
+
+      - uses: mamba-org/setup-micromamba@v1
+        with:
+          micromamba-version: '1.3.1-0'
+          environment-name: foo 
+          init-shell: >-
+            bash
+            powershell
+          cache-environment: true
+          post-cleanup: 'all'
+      - name: Import numpy in micromamba environment (bash)
+        run: python -c "import numpy"
+        shell: bash -el {0}
+      - name: Import numpy in micromamba environment (pwsh)
+        run: python -c "import numpy"
+        shell: pwsh
+      - name: Run custom command in micromamba environment
+        run: 
+          mamba activate foo
+          mamba install cdo nco
+          pip install xarray
+          pip install rioxarray
+          pip install pytest
+          pip install numpy 
+          pip install cartopy
+          pip install dask
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install .
+          pip install pandas
+          pip install rioxarray
+          pip install pytest
+          pip install pytest-cov
+          pip install coverage 
+          pytest tests/test*.py
+        shell: micromamba-shell {0}
