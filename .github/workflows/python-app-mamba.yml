@@ -19,11 +19,12 @@ jobs:
     runs-on: "ubuntu-latest" 
 
     steps:
-      - uses: mamba-org/setup-micromamba@v1
+      #- uses: mamba-org/setup-micromamba@v1
+      - uses: mamba-org/provision-with-micromamba@v15
         env:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: true
         with:
-          micromamba-version: '1.3.1-0'
+          #micromamba-version: '1.3.1-0'
           environment-name: foo
           create-args: cdo nco geos
           init-shell: >-
