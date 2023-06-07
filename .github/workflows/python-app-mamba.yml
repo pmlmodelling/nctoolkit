@@ -32,11 +32,13 @@ jobs:
             powershell
           cache-environment: true
           post-cleanup: 'all'
+      - uses: ./
       - name: Run python testing
         #shell: bash -el {0} 
         #shell: pwsh 
         run: |
-          #ls *
+          cd ..
+          ls *
           pip install xarray
           pip install rioxarray
           pip install pytest
