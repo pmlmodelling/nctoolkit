@@ -31,7 +31,10 @@ def plot(self, vars=None, autoscale=True, out=None, coast=True, **kwargs):
     -------------
     vars: str or list
         A string or list of the variables to plot
-
+    autoscale: bool
+        Set to True if you want the colorbar to be scaled to the min/max of the data. Default is True
+    vars: str or list
+        A string or list of the variables to plot
     out: str
         Name of output file if you want to save as html. Defaults to None.
     coast: bool
@@ -39,6 +42,10 @@ def plot(self, vars=None, autoscale=True, out=None, coast=True, **kwargs):
 
     **kwargs: Optional args to be sent to hvplot
 
+
+    Returns
+    ---------
+    A hvplot object
 
     Examples
     ------------
