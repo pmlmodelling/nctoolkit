@@ -1,0 +1,6 @@
+# packages in environment at /local1/data/scratch/rwi/mambaforge3/envs/env:
+#
+# Name                    Version                   Build  Channel
+cdo                       2.2.0                he026af2_4    conda-forge
+nco                       5.1.6                hd62b316_0    conda-forge
+python                    3.10.11         he550d4f_0_cpython    conda-forge
