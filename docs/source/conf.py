@@ -38,7 +38,8 @@ extensions = [
     'sphinx.ext.githubpages',
 ]
 
-html_theme = "sphinx_rtd_theme"
+#html_theme = "sphinx_rtd_theme"
+html_theme = "haiku"
 html_static_path = ['_static']
 html_logo = "_static/nctoolkit_logo.jpg"
 
