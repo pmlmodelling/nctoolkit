@@ -37,7 +37,8 @@ jobs:
           pip install numpy 
           pip install cartopy
           pip install dask
-          pip install .
+          python -m pip install .
+          # pip install .
           pip install pandas
           pip install rioxarray
           pip install pytest
