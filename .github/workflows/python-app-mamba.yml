@@ -3,6 +3,10 @@
 
 name: Linux testing using micromamba
 
+defaults:
+  run:
+    shell: bash -l {0}
+
 on:
   push:
     branches: [ master ]
@@ -30,7 +34,7 @@ jobs:
           post-cleanup: 'all'
       - name: Run python testing
         #shell: bash -el {0} 
-        shell: pwsh 
+        #shell: pwsh 
         run: |
           #ls *
           pip install xarray
