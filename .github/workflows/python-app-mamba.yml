@@ -28,7 +28,6 @@ jobs:
           post-cleanup: 'all'
       - name: Run python testing
         run: 
-          mamba activate foo
           pip install xarray
           pip install rioxarray
           pip install pytest
