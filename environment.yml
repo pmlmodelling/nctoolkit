@@ -1,8 +1,4 @@
-channels:
-  - conda-forge
-  - defaults
-dependencies:
-  - cdo 
-  - nco 
-  - ncplot 
-  - xarray 
+#
+# Name                    Version                   Build  Channel
+cdo                       2.2.0                he026af2_4    conda-forge
+nco                       5.1.6                hd62b316_0    conda-forge
