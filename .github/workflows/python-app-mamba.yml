@@ -35,7 +35,7 @@ jobs:
           pip install numpy 
           pip install cartopy
           pip install dask
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install -r requirements.txt
           pip install .
           pip install pandas
           pip install rioxarray
