@@ -6,6 +6,7 @@ from nctoolkit.session import session_info
 class TimeoutException(Exception):
     pass
 
+from ncplot import view
 
 @contextmanager
 def time_limit(seconds):
@@ -21,7 +22,6 @@ def time_limit(seconds):
 
 
 def plot(self, vars=None, autoscale=True, out=None, coast=True, **kwargs):
-    from ncplot import view
 
     """
     Autoplotting method.
