@@ -42,4 +42,5 @@ jobs:
           pip install pytest-cov
           pip install coverage 
           pytest tests/test*.py
-        shell: micromamba-shell {0}
+        #shell: micromamba-shell {0}
+        shell: bash -el {0} 
