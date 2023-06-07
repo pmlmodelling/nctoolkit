@@ -10,6 +10,7 @@ ipywidgets
 xarray
 hvplot
 netCDF4
+ncplot
 numpy
 plotnine
 dill
