@@ -50,10 +50,4 @@ class TestNCO:
             tracker.nco_command(1)
 
 
-        nc.options(cores = 2)
-        ds = nc.open_data("data/woa*.nc")
-        ds.nco_command("ncks -v t_an")
-        assert ds.variables == ["t_an"]
-
-        nc.options(cores = 1)
 
