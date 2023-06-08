@@ -29,29 +29,11 @@ except:
 from textwrap import wrap
 
 
-class TimeoutException(Exception):
-    pass
-
-
 from difflib import SequenceMatcher
 
 
 def similar(a, b):
     return SequenceMatcher(None, a, b).ratio()
-
-
-@contextmanager
-def time_limit(seconds):
-    def signal_handler(signum, frame):
-        raise TimeoutException("Timed out. Try plotting fewer variables!")
-
-    signal.signal(signal.SIGALRM, signal_handler)
-    signal.alarm(seconds)
-    try:
-        yield
-    finally:
-        signal.alarm(0)
-
 
 from math import radians, sin, cos, asin, sqrt
 
@@ -78,6 +60,7 @@ def fix_label(x):
     if "$" in x:
         return x
     new_x = "(" + x + ")"
+    new_x = new_x.replace("/m**3", "m$^{-3}$")
     new_x = new_x.replace("/m^3", "m$^{-3}$")
     new_x = new_x.replace("/m^2", "m$^{-2}$")
     new_x = new_x.replace("/m2", "m$^{-2}$")
@@ -116,6 +99,7 @@ def pub_plot(
     grid_colour="auto",
     legend_position="auto",
     robust=False,
+    out = None,
     **kwargs,
 ):
     """
@@ -153,6 +137,9 @@ def pub_plot(
     legend_position = "auto"
     robust :    bool
         Whether to use robust statistics for the colour scale or not
+    out : str
+        Output file name
+
     *kwargs:
         kwargs to allow slight misspelling of arguments
 
@@ -160,7 +147,8 @@ def pub_plot(
     """
 
     if legend_position not in ["auto", "right", "bottom"]:
-        raise ValueError("legend_position must be one of right/bottom")
+        if legend_position is not None: 
+            raise ValueError("legend_position must be one of right/bottom or None")
 
     land_auto = land == "auto"
 
@@ -628,3 +616,14 @@ def pub_plot(
             cbax.set_xlabel(label)
         else:
             cbax.set_ylabel(label)
+
+    if legend_position is None:
+        cb.remove()
+    
+    if out is not None:
+        print("saving as file")
+        plt.savefig(out)
+
+    return plt
+
+
