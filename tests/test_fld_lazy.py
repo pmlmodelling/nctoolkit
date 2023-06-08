@@ -25,7 +25,7 @@ class TestFldsta:
         data.spatial_mean()
         x = data.to_dataframe().sst.values[0].astype("float")
 
-        assert x == 18.02419662475586
+        assert x == 12.573156356811523 
         n = len(nc.session_files())
         assert n == 1
 
@@ -36,7 +36,7 @@ class TestFldsta:
         data.spatial_max()
 
         x = data.to_dataframe().sst.values[0].astype("float")
-        assert x == 30.430002212524414
+        assert x == 23.31300163269043 
         n = len(nc.session_files())
         assert n == 1
 
@@ -47,7 +47,7 @@ class TestFldsta:
         data.spatial_min()
 
         x = data.to_dataframe().sst.values[0].astype("float")
-        assert x == -1.8530000448226929
+        assert x == -1.6100001335144043 
         n = len(nc.session_files())
         assert n == 1
 
@@ -60,7 +60,7 @@ class TestFldsta:
         data.spatial_mean()
 
         x = data.to_dataframe().sst.values[0].astype("float")
-        assert x ==  17.86652374267578
+        assert x ==  12.284067153930664 
 
         data = nc.open_data()
         with pytest.raises(ValueError):
@@ -81,7 +81,7 @@ class TestFldsta:
         data.spatial_mean()
 
         x = data.to_dataframe().sst.values[0].astype("float")
-        assert x ==  69.14716339111328
+        assert x ==  46.30331802368164 
 
 
 
@@ -93,7 +93,7 @@ class TestFldsta:
         x = data.to_dataframe().sst.values[0].astype("float")
 
 
-        assert x == 18.1085262298584
+        assert x == 12.64144229888916 
 
         data = nc.open_data(ff)
         data.subset(time = 0)
@@ -103,7 +103,7 @@ class TestFldsta:
         x = data.to_dataframe().sst.values[0].astype("float")
 
 
-        assert x == 17.62028694152832
+        assert x == 11.918464660644531 
 
 
         data = nc.open_data(ff)
@@ -114,7 +114,7 @@ class TestFldsta:
         x = data.to_dataframe().sst.values[0].astype("float")
 
 
-        assert x == 0.4882393181324005
+        assert x == 0.7229775190353394 
 
 
 
@@ -126,7 +126,7 @@ class TestFldsta:
         data.spatial_range()
 
         x = data.to_dataframe().sst.values[0].astype("float")
-        assert x == 32.28300094604492
+        assert x == 24.923002243041992 
         n = len(nc.session_files())
         assert n == 1
 
@@ -137,7 +137,7 @@ class TestFldsta:
         data.spatial_sum()
 
         x = data.to_dataframe().sst.values[0].astype("float")
-        assert x == 586924.6875
+        assert x == 25770.927734375 
         n = len(nc.session_files())
         assert n == 1
 
@@ -148,7 +148,7 @@ class TestFldsta:
         data.spatial_sum(by_area=True)
 
         x = data.to_dataframe().sst.values[0].astype("float")
-        assert x == 6612921954074624.0
+        assert x == 239103631163392.0 
         n = len(nc.session_files())
         assert n == 1
 
@@ -159,7 +159,7 @@ class TestFldsta:
         data.spatial_percentile(p=60)
 
         x = data.to_dataframe().sst.values[0].astype("float")
-        assert x == 19.700000762939453
+        assert x == 14.437000274658203 
         n = len(nc.session_files())
         assert n == 1
 
@@ -209,10 +209,10 @@ class TestFldsta:
         ds = nc.open_data("data/sst.mon.mean.nc")
         ds.subset(time = 0)
         ds.spatial_stdev()
-        assert float(ds.to_dataframe().sst.values[0]) == 10.148346900939941
+        assert float(ds.to_dataframe().sst.values[0]) == 5.8231096267700195 
         
         ds = nc.open_data("data/sst.mon.mean.nc")
         ds.subset(time = 0)
         ds.spatial_var()
-        assert float(ds.to_dataframe().sst.values[0]) == 102.98894500732422
+        assert float(ds.to_dataframe().sst.values[0]) == 33.908607482910156 
 

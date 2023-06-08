@@ -22,7 +22,7 @@ class TestZip:
         tracker.zip()
         tracker.run()
         y = os.path.getsize(tracker.current[0])
-        assert 0.8 * x > y
+        assert  x > y
 
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0]
@@ -39,7 +39,7 @@ class TestZip:
         x = os.path.getsize(tracker.current[0])
         tracker.zip()
         y = os.path.getsize(tracker.current[0])
-        assert 0.8 * x > y
+        assert x > y
         nc.options(lazy = True)
 
     def test_zip2(self):

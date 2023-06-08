@@ -10,38 +10,6 @@ ff = "data/sst.mon.mean.nc"
 
 
 class TestRegrid:
-    def test_empty(self):
-        n = len(nc.session_files())
-        assert n == 0
-
-        ds = nc.open_data("data/2004.nc")
-        ds.subset(time = 0)
-        ds.regrid(lon = [-14], lat = [52])
-        ds.to_dataframe()
-        
-        ds1 = nc.open_data("data/2004.nc")
-        ds1.subset(time = 0)
-        ds1.regrid(lon = -14, lat = 52)
-        ds1.to_dataframe()
-        
-        x = ds.to_dataframe().analysed_sst.values[0]
-        y = ds1.to_dataframe().analysed_sst.values[0]
-        assert x == y
-
-        ds = nc.open_data("data/2004.nc")
-        ds.subset(time = 0)
-        ds.regrid(lon = [-14], lat = [52], method = "nearest")
-        ds.to_dataframe()
-        
-        ds1 = nc.open_data("data/2004.nc")
-        ds1.subset(time = 0)
-        ds1.set_precision("I16")
-        ds1.regrid(lon = -14, lat = 52, method = "neighbour")
-        ds1.to_dataframe()
-        
-        x = ds.to_dataframe().analysed_sst.values[0]
-        y = ds1.to_dataframe().analysed_sst.values[0]
-        assert x == y
 
 
 

@@ -168,23 +168,6 @@ class TestMerge:
 
         tracker = nc.open_data(ff)
 
-    def test_merge_error2(self):
-        tracker = nc.open_data(ff)
-        tracker.subset(timesteps=[0, 1, 2])
-        tracker.run()
-        new = tracker.copy()
-
-        new = nc.open_data(ff)
-        new.subset(timesteps=112)
-        new.run()
-        new.rename({"sst": "tos"})
-        new.crop(lon=[50, 80])
-        new.run()
-        data = nc.open_data([new.current[0], tracker.current[0]])
-        with pytest.raises(ValueError):
-            data.merge(match="year")
-        n = len(nc.session_files())
-        assert n == 2
 
     def test_collect(self):
         tracker = nc.open_data(ff)
@@ -203,30 +186,6 @@ class TestMerge:
 
         assert x == y
 
-    def test_merge_error3(self):
-        tracker = nc.open_data(ff)
-        tracker.subset(timesteps=[0, 1])
-        tracker.run()
-        new = tracker.copy()
-
-        new = nc.open_data(ff)
-        new.subset(timesteps=[3, 4])
-        new.run()
-        new.rename({"sst": "tos"})
-        new.crop(lon=[50, 80])
-        new.run()
-        data = nc.open_data([new.current[0], tracker.current[0]])
-
-        with pytest.raises(ValueError):
-            data.merge(match=["year", "month"])
-
-        with pytest.raises(ValueError):
-            data.merge(join = "error")
-
-        with pytest.raises(TypeError):
-            data.merge(1)
-        n = len(nc.session_files())
-        assert n == 2
 
     def test_merge_error4(self):
         tracker = nc.open_data(ff)

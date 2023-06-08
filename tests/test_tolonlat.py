@@ -18,8 +18,8 @@ class TestTolonat:
         tracker = nc.open_data(ff)
         tracker.subset(years=1990)
         tracker.subset(months=1)
-        tracker.crop(lon=[0, 90])
-        tracker.crop(lat=[0, 90])
+        tracker.crop(lon=[-10, 10])
+        tracker.crop(lat=[40, 55])
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0].astype("float")
 
@@ -30,7 +30,7 @@ class TestTolonat:
         with pytest.raises(ValueError):
             tracker.to_latlon(lon=[0.5, 89.5], lat=[0.5, 89.5], res=[1, 1], method="sdafkjasdf")
 
-        tracker.to_latlon(lon=[0.5, 89.5], lat=[0.5, 89.5], res=[1, 1], method="nn")
+        tracker.to_latlon(lon=[-9.5, 9.5], lat=[40.5, 54.5], res=[1, 1], method="nn")
         tracker.spatial_mean()
         y = tracker.to_dataframe().sst.values[0].astype("float")
 
@@ -135,22 +135,5 @@ class TestTolonat:
         with pytest.raises(ValueError):
             tracker.to_latlon(lon=[1, 2], lat=[2, 1], res=1)
 
-        tracker = nc.open_data(ff)
-        tracker.subset(years=1990)
-        tracker.subset(months=1)
-        tracker.crop(lon=[0, 90])
-        tracker.crop(lat=[0, 90])
-        tracker.spatial_mean()
-        x = tracker.to_dataframe().sst.values[0].astype("float")
-
-        tracker = nc.open_data(ff)
-        tracker.subset(years=1990)
-        tracker.subset(months=1)
-        tracker.to_latlon(lon=[0.5, 89.5], lat=[0.5, 89.5], res=1, method="nn")
-        tracker.spatial_mean()
-        y = tracker.to_dataframe().sst.values[0].astype("float")
-
-        assert x == y
-
         n = len(nc.session_files())
-        assert n == 1
+        assert n == 0

@@ -58,7 +58,7 @@ class TestRollstat:
 
         assert x == y 
 
-        assert x == 18.087982177734375
+        assert x == 15.044238090515137  
 
 
         n = len(nc.session_files())
@@ -73,7 +73,7 @@ class TestRollstat:
         tracker.spatial_mean()
         tracker.run()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
-        assert x == 20.407316207885742  
+        assert x == 20.24394416809082 
         n = len(nc.session_files())
         assert n == 1
 
@@ -84,7 +84,7 @@ class TestRollstat:
         tracker.spatial_mean()
         tracker.run()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
-        assert x == 16.158565521240234 
+        assert x == 12.044412612915039 
 
         n = len(nc.session_files())
         assert n == 1
@@ -96,7 +96,7 @@ class TestRollstat:
         tracker.spatial_mean()
         tracker.run()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
-        assert x == 3.8962974548339844 
+        assert x == 7.759489059448242 
         n = len(nc.session_files())
         assert n == 1
 
@@ -107,7 +107,7 @@ class TestRollstat:
         tracker.spatial_mean()
         tracker.run()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
-        assert x == 180.8798065185547 
+        assert x == 150.4423828125 
         n = len(nc.session_files())
         assert n == 1
 

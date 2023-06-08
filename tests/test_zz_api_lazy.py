@@ -65,7 +65,7 @@ class TestApi:
     def test_file_size(self):
         ff = "data/sst.mon.mean.nc"
         x = nc.api.file_size(ff)
-        assert x == 41073246
+        assert x == 2607620 
 
     def test_open_data(self):
         ff = "data/sst.mon.mean.nc"
@@ -87,7 +87,7 @@ class TestApi:
     def test_size(self):
         ff = "data/sst.mon.mean.nc"
         data = nc.open_data(ff)
-        assert data.size["Ensemble size"] ==  "41.073246 MB" 
+        assert data.size["Ensemble size"] ==  "2.60762 MB" 
         data.split("year")
         assert data.size["Number of files in ensemble"] == 30
 

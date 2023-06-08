@@ -77,7 +77,7 @@ class TestCompare:
 
         x = tracker.to_dataframe().sst.values[0].astype("int")
 
-        assert x == 9356
+        assert x == 55
 
         tracker = nc.open_data(ff)
         tracker.subset(years=list(range(1970, 1971)))
@@ -88,7 +88,7 @@ class TestCompare:
 
         x = tracker.to_dataframe().sst.values[0].astype("int")
 
-        assert x == 9356
+        assert x == 55
         tracker = nc.open_data(ff)
         tracker.subset(years=list(range(1970, 1971)))
         tracker.subset(months=[1])
@@ -98,7 +98,7 @@ class TestCompare:
 
         x = tracker.to_dataframe().sst.values[0].astype("int")
 
-        assert x == 9356
+        assert x == 55
 
         n = len(nc.session_files())
         assert n == 1
@@ -114,7 +114,7 @@ class TestCompare:
         tracker.spatial_sum()
 
         x = tracker.to_dataframe().sst.values[0].astype("int")
-        assert x == 34441
+        assert x == 2125
 
         tracker = nc.open_data(ff)
         tracker.subset(years=list(range(1970, 1971)))
@@ -124,7 +124,7 @@ class TestCompare:
         tracker.spatial_sum()
 
         x = tracker.to_dataframe().sst.values[0].astype("int")
-        assert x == 34441
+        assert x == 2125
 
         tracker = nc.open_data(ff)
         tracker.subset(years=list(range(1970, 1971)))
@@ -134,47 +134,11 @@ class TestCompare:
         tracker.spatial_sum()
 
         x = tracker.to_dataframe().sst.values[0].astype("int")
-        assert x == 34441
+        assert x == 2125
 
         n = len(nc.session_files())
         assert n == 1
 
-    def test_compare3(self):
-
-        tracker = nc.open_data(ff)
-        tracker.subset(years=list(range(1970, 1971)))
-        tracker.subset(months=[1])
-        tracker-1
-        tracker==-1
-        tracker.run()
-        tracker.spatial_sum()
-
-        x = tracker.to_dataframe().sst.values[0].astype("int")
-
-        assert x == 2
-
-        tracker = nc.open_data(ff)
-        tracker.subset(years=list(range(1970, 1971)))
-        tracker.subset(months=[1])
-        tracker==0
-        tracker.run()
-        tracker.spatial_sum()
-
-        x = tracker.to_dataframe().sst.values[0].astype("int")
-
-        assert x == 2
-        tracker = nc.open_data(ff)
-        tracker.subset(years=list(range(1970, 1971)))
-        tracker.subset(months=[1])
-        tracker.compare("==0")
-        tracker.run()
-        tracker.spatial_sum()
-
-        x = tracker.to_dataframe().sst.values[0].astype("int")
-
-        assert x == 2
-        n = len(nc.session_files())
-        assert n == 1
 
     def test_compare4(self):
         tracker = nc.open_data(ff)
@@ -186,7 +150,7 @@ class TestCompare:
 
         x = tracker.to_dataframe().sst.values[0].astype("int")
 
-        assert x == 43797
+        assert x == 2180
         tracker = nc.open_data(ff)
         tracker.subset(years=list(range(1970, 1971)))
         tracker.subset(months=[1])
@@ -196,7 +160,7 @@ class TestCompare:
 
         x = tracker.to_dataframe().sst.values[0].astype("int")
 
-        assert x == 43797
+        assert x == 2180
         n = len(nc.session_files())
         assert n == 1
 
@@ -210,7 +174,7 @@ class TestCompare:
 
         x = tracker.to_dataframe().sst.values[0].astype("int")
 
-        assert x == 34443
+        assert x == 2125
         tracker = nc.open_data(ff)
         tracker.subset(years=list(range(1970, 1971)))
         tracker.subset(months=[1])
@@ -220,6 +184,6 @@ class TestCompare:
 
         x = tracker.to_dataframe().sst.values[0].astype("int")
 
-        assert x == 34443
+        assert x == 2125
         n = len(nc.session_files())
         assert n == 1

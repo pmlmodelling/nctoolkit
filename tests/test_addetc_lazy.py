@@ -71,7 +71,7 @@ class TestAddetc:
             sst_min = ds1.to_dataframe().analysed_sst.min()
 
 
-            assert sst_max > 1
+            assert sst_max > 0.88 and sst_max < 0.89
 
             ds1.subset(year = 2003)
 

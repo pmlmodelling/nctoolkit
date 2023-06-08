@@ -24,7 +24,7 @@ class TestPhenol:
 
         x = data.to_dataframe().peak.values[0].astype("float")
 
-        assert x == 4.852420330047607
+        assert x == 8.248063087463379 
         n = len(nc.session_files())
 
         assert n == 1

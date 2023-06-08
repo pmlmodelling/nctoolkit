@@ -93,7 +93,7 @@ class TestTimestat:
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0].astype("float")
 
-        assert x == 3.3688883781433105
+        assert x ==  9.449978828430176 
 
     def test_cumsum(self):
         tracker = nc.open_data(ff)
@@ -103,4 +103,4 @@ class TestTimestat:
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0].astype("float")
 
-        assert x == 12.964875221252441
+        assert x == 9.221193313598633 

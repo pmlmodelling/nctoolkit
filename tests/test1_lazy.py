@@ -20,7 +20,7 @@ class TestOne:
         tracker = nc.open_data(ff)
         tracker.tmean(["month"])
         y = tracker.to_xarray().sst.values[0][0][0].astype("float")
-        assert x == -1.7026667594909668
+        assert x == -1.5543334484100342 
         assert x == y
 
         n = len(nc.session_files())

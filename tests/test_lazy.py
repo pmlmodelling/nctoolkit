@@ -34,7 +34,7 @@ class TestLazy:
         tracker.spatial_mean()
         tracker.run()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
-        assert x == 18.435571670532227
+        assert x == 12.456936836242676 
         n = len(nc.session_files())
         assert n == 1
 
@@ -51,7 +51,7 @@ class TestLazy:
         tracker.run()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         y = len(tracker.history)
-        assert x == 18.435571670532227
+        assert x == 12.456936836242676 
         if cdo_version() in ["1.9.2", "1.9.3"]:
             assert y == 2
         else:
@@ -77,7 +77,7 @@ class TestLazy:
         assert len(nc.session_files()) == 1
 
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
-        assert x == 18.435571670532227
+        assert x == 12.456936836242676 
 
     def test_mergetime1(self):
         ff = "data/sst.mon.mean.nc"
@@ -95,7 +95,7 @@ class TestLazy:
         tracker.run()
         y = len(tracker.history)
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
-        assert x == 18.435571670532227
+        assert x == 12.456936836242676  
         assert n_files == 30
         if cdo_version() in ["1.9.2", "1.9.3"]:
             assert y == 4
@@ -126,7 +126,7 @@ class TestLazy:
         tracker.spatial_mean()
         tracker.run()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
-        assert x == 17.9996280670166
+        assert x == 12.944276809692383 
         n = len(nc.session_files())
         assert n == 1
 
@@ -155,7 +155,7 @@ class TestLazy:
         tracker.tmean()
         tracker.run()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
-        assert x == 0.11958891153335571
+        assert x == 0.15004977583885193 
         n = len(nc.session_files())
         assert n == 1
 

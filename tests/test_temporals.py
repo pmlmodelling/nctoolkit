@@ -37,13 +37,13 @@ class TestTemporals:
             ds.na_count()
             ds.spatial_sum()
             ds.to_dataframe()
-            assert ds.to_dataframe().sst.values[0] == 7560360.0 
+            assert ds.to_dataframe().sst.values[0] == 295200.0
 
             ds = nc.open_data(ff)
             ds.na_frac()
             ds.spatial_sum()
             ds.to_dataframe()
-            assert ds.to_dataframe().sst.values[0] == 21001.0 
+            assert ds.to_dataframe().sst.values[0] == 820.0 
 
             del ds
 
@@ -59,11 +59,11 @@ class TestTemporals:
         ds.tvar()
         ds.spatial_sum()
         ds.to_dataframe()
-        assert ds.to_dataframe().sst.values[0] == 133869.140625 
+        assert ds.to_dataframe().sst.values[0] == 19726.29296875 
 
         del ds
 
-        assert x == 18.002004623413086
+        assert x == 12.751260757446289 
 
         tracker = nc.open_data(ff)
         tracker.tmean(["month", "day"])
@@ -98,7 +98,7 @@ class TestTemporals:
         x = float(tracker.to_dataframe().sst.values[0])
 
 
-        assert x == 17.92256736755371
+        assert x ==  15.243741989135742  
 
 
 
@@ -111,7 +111,7 @@ class TestTemporals:
         x = float(tracker.to_dataframe().sst.values[0])
 
 
-        assert x == 18.002004623413086
+        assert x == 12.751260757446289 
 
 
 
@@ -123,7 +123,7 @@ class TestTemporals:
         tracker.spatial_mean()
         x = float(tracker.to_dataframe().sst.values[0])
 
-        assert x == 17.9996280670166
+        assert x == 12.944276809692383 
 
 
         # annual seasonal mean
@@ -134,7 +134,7 @@ class TestTemporals:
         x = float(tracker.to_dataframe().sst.values[0])
 
 
-        assert x == 18.0740909576416
+        assert x == 12.24020767211914 
 
         # daily mean
 
@@ -143,7 +143,7 @@ class TestTemporals:
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0]
 
-        assert float(x) == 18.02419662475586
+        assert float(x) == 12.573156356811523 
 
 
 
@@ -154,7 +154,7 @@ class TestTemporals:
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0]
 
-        assert float(x) == 18.02419662475586
+        assert float(x) == 12.573156356811523 
 
 
 
@@ -176,7 +176,7 @@ class TestTemporals:
         tracker.spatial_max()
         x = tracker.to_dataframe().sst.values[0]
 
-        assert float(x) == 30.970001220703125
+        assert float(x) == 24.663002014160156 
 
 
         # annual max
@@ -187,7 +187,7 @@ class TestTemporals:
         x = tracker.to_dataframe().sst.values[0]
 
 
-        assert float(x) == 33.48500061035156
+        assert float(x) == 28.94500160217285  
 
 
         # daily max climatology
@@ -197,7 +197,7 @@ class TestTemporals:
         tracker.spatial_max()
         x = tracker.to_dataframe().sst.values[0]
 
-        assert float(x) == 30.970001220703125
+        assert float(x) == 24.663002014160156 
 
 
 
@@ -209,7 +209,7 @@ class TestTemporals:
         tracker.spatial_max()
         x = tracker.to_dataframe().sst.values[0]
 
-        assert float(x) == 31.173002243041992
+        assert float(x) == 25.29400062561035 
 
 
 
@@ -221,7 +221,7 @@ class TestTemporals:
         tracker.spatial_max()
         x = tracker.to_dataframe().sst.values[0]
 
-        assert float(x) == 30.430002212524414
+        assert float(x) == 23.31300163269043 
 
 
 
@@ -233,7 +233,7 @@ class TestTemporals:
         x = tracker.to_dataframe().sst.values[0]
 
 
-        assert float(x) == 30.430002212524414
+        assert float(x) == 23.31300163269043 
 
 
 
@@ -255,7 +255,7 @@ class TestTemporals:
         tracker.spatial_min()
         x = tracker.to_dataframe().sst.values[0]
 
-        assert float(x) == -1.8540000915527344
+        assert float(x) == -1.8410000801086426 
 
 
         # annual min
@@ -265,7 +265,7 @@ class TestTemporals:
         tracker.spatial_min()
         x = tracker.to_dataframe().sst.values[0]
 
-        assert float(x) == -1.8540000915527344
+        assert float(x) == -1.852000117301941 
 
 
 
@@ -277,7 +277,7 @@ class TestTemporals:
         tracker.spatial_min()
         x = tracker.to_dataframe().sst.values[0]
 
-        assert float(x) == -1.8540000915527344
+        assert float(x) == -1.8410000801086426 
 
 
         # seasonal min climatology
@@ -287,7 +287,7 @@ class TestTemporals:
         tracker.spatial_min()
         x = tracker.to_dataframe().sst.values[0]
 
-        assert float(x) == -1.8610000610351562
+        assert float(x) == -1.8560000658035278 
 
 
 
@@ -299,7 +299,7 @@ class TestTemporals:
         tracker.spatial_min()
         x = tracker.to_dataframe().sst.values[0]
 
-        assert float(x) == -1.8530000448226929
+        assert float(x) == -1.6100001335144043  
 
 
 
@@ -310,7 +310,7 @@ class TestTemporals:
         tracker.spatial_min()
         x = tracker.to_dataframe().sst.values[0]
 
-        assert float(x) == -1.8530000448226929
+        assert float(x) ==  -1.6100001335144043 
 
 
 
@@ -326,7 +326,7 @@ class TestTemporals:
         tracker.spatial_range()
         x = tracker.to_dataframe().sst.values[0]
 
-        assert float(x) == 7.600000381469727
+        assert float(x) == 3.8899998664855957 
 
 
         # annual range
@@ -337,7 +337,7 @@ class TestTemporals:
         x = tracker.to_dataframe().sst.values[0]
 
 
-        assert float(x) == 24.88800048828125
+        assert float(x) == 20.002002716064453 
 
 
         # daily range climatology
@@ -348,7 +348,7 @@ class TestTemporals:
         x = tracker.to_dataframe().sst.values[0]
 
 
-        assert float(x) == 7.600000381469727
+        assert float(x) == 3.8899998664855957 
 
 
 
@@ -361,7 +361,7 @@ class TestTemporals:
         x = tracker.to_dataframe().sst.values[0]
 
 
-        assert float(x) == 10.569000244140625
+        assert float(x) == 6.654000759124756 
 
 
 

@@ -29,13 +29,13 @@ class TestClip:
         tracker.centre("longitude")
         x = tracker.to_dataframe().sst.values[0].astype("float")
 
-        assert np.round(x,4) == np.round(192.18060302734375 , 4)
+        assert np.round(x,4) == np.round(-31.178354263305664, 4)
 
         tracker = nc.open_data(ff)
         tracker.centre("latitude")
         x = tracker.to_dataframe().sst.values[0].astype("float")
 
-        assert np.round(x, 5) == np.round(-6.278953552246094, 5)
+        assert np.round(x, 5) == np.round(40.767086029052734, 5)
 
         n = len(nc.session_files())
         assert n == 1
@@ -47,4 +47,4 @@ class TestClip:
         tracker.centre("latitude")
         x = tracker.to_dataframe().sst1.values[0].astype("float")
 
-        assert np.round(x, 5) == np.round(-6.278953552246094, 5)
+        assert np.round(x, 5) == np.round(40.767086029052734, 5)

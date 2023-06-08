@@ -113,7 +113,7 @@ class TestSetters:
         tracker.run()
         x = tracker.to_dataframe().sst.values[0]
 
-        assert x == -1.2176581621170044444
+        assert x == -0.7675796747207642 
         n = len(nc.session_files())
         assert n == 1
 
