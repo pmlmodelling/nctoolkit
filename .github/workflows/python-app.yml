@@ -44,7 +44,6 @@ jobs:
          #conda install pip
          pip install pytest
          #conda install numpy=1.23.3 -y
-         conda install geos -y
          pip install dask 
          #    conda install flake8
          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
@@ -53,6 +52,7 @@ jobs:
          #pip install pandas==1.3.3
          pip install rioxarray
          pip install pytest-cov
+         conda install cartopy -y
 
          #- name: Lint with flake8
          #  shell: bash -l {0}

@@ -39,9 +39,8 @@ jobs:
        shell: bash -l {0}
        run: |
          conda activate foo
-         conda install cdo pip nco geos -y
+         conda install cdo pip nco cartopy -y
          pip install numpy 
-         pip install cartopy
          pip install dask
          #conda install numpy -y
          #conda install cartopy -y
