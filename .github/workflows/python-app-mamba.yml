@@ -50,3 +50,11 @@ jobs:
         shell: bash -l {0}
         run: |
           pytest tests/test*.py
+          python testing/test_parallel.py
+          coverage run -m pytest tests/test*.py
+          coverage report
+          coverage xml
+
+
+      - name: Upload Coverage to Codecov
+        uses: codecov/codecov-action@v2
