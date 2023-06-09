@@ -15,7 +15,8 @@ numpy
 plotnine
 dill
 #furo
-sphinx-book-theme
+#sphinx-book-theme
+sphinx_book_theme
 #piccolo-theme
 
 
