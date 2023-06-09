@@ -14,7 +14,8 @@ ncplot
 numpy
 plotnine
 dill
-furo
+#furo
+sphinx-press-theme
 
 
 
