@@ -32,6 +32,36 @@ nctoolkit offers plotting functionality that will let you automatically plot dat
 .. raw:: html
    :file: intro_plot1.html 
 
+It lets you easily subset data
+---------------------
+
+If we want to look at a particular region, we can subset the data using the 'subset' method, and further select a particular year and month, we can do this as follows:
+
+
+.. code:: ipython3
+
+   ds = nc.open_data("sst.mon.mean.nc")
+   ds.subset(year = 1998, month = 1, lon = [-13, 38], lat = [30, 67])
+   ds.plot()
+
+
+.. raw:: html
+   :file: intro_plot4.html
+
+It lets you calculate temporal averages
+---------------------------------------
+
+nctoolkit features a suite of methods, beginning with the letter t, that let you calculate temporal statistics. For example, if we wanted to calculate how much sea surface temperature varies each year, we could do this:
+
+.. code:: ipython3
+
+   ds = nc.open_data("sst.mon.mean.nc")
+   ds.tmean()
+   ds.plot()
+
+.. raw:: html
+   :file: intro_plot6.html
+
 
 It lets you calculate spatial averages
 --------------------------------------
@@ -62,22 +92,6 @@ nctoolkit offers an 'assign' method for performing mathematical operations on va
 .. raw:: html
    :file: intro_plot3.html
 
-It lets you easily subset data
----------------------
-
-If we want to look at a particular region, we can subset the data using the 'subset' method, and further select a particular year and month, we can do this as follows:
-
-
-.. code:: ipython3
-
-   ds = nc.open_data("sst.mon.mean.nc")
-   ds.subset(year = 1998, month = 1, lon = [-13, 38], lat = [30, 67])
-   ds.plot()
-
-
-.. raw:: html
-   :file: intro_plot4.html
-
 
 It lets you regrid data
 -----------------------
@@ -94,19 +108,6 @@ nctoolkit has built-in methods for regridding data to user-specified grids. One 
 .. raw:: html
    :file: intro_plot5.html
 
-It lets you calculate temporal averages
----------------------------------------
-
-nctoolkit features a suite of methods, beginning with the letter t, that let you calculate temporal statistics. For example, if we wanted to calculate how much sea surface temperature varies each year, we could do this:
-
-.. code:: ipython3
-
-   ds = nc.open_data("sst.mon.mean.nc")
-   ds.tmean()
-   ds.plot()
-
-.. raw:: html
-   :file: intro_plot6.html
 
 It lets you calculate anomalies
 ---------------------------------------
@@ -139,10 +140,3 @@ It is easy to calculate zonal averages using nctoolkit. In the example below cha
 .. raw:: html
    :file: intro_plot8.html
 
-
-
-
-
-## Getting started with nctoolkit
-
-To get started with nctoolkit it is best to start [here](datasets.rst), and to consider getting the [cheatsheet](cheat.rst).
