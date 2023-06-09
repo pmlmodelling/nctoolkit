@@ -8,12 +8,12 @@ sys.path.insert(0, os.path.abspath('../..'))
 # -- Project information -----------------------------------------------------
 
 project = 'nctoolkit'
-copyright = '2021, Robert Wilson'
+copyright = '2023, Robert Wilson'
 author = 'Robert Wilson'
 
 # The short X.Y version
 # The full version, including alpha/beta/rc tags
-version = '0.3.9'
+version = '0.9.3'
 
 # -- General configuration ---------------------------------------------------
 
