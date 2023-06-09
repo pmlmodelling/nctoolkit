@@ -57,7 +57,6 @@ If you want to interpolate to a regular latlon grid, you can use ``to_latlon``. 
 
 .. code:: ipython3
 
-
    ds = nc.open_thredds("https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc")
    ds.subset(timestep = 0)
    ds.to_latlon(lon = [-79.5, 79.5], lat = [0.75, 89.75], res = [1, 0.5])
@@ -73,18 +72,21 @@ If we are working with two datasets and want to put them on a common grid, we ca
 
 
 .. code:: ipython3
+
    ds1 = nc.open_thredds("https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc")
    ds1.subset(timestep = 0)
    ds1.subset(lat = [0, 90]) 
    ds1.plot()
 
 .. raw:: html
+
    :file: interpolate_plot3.html
 
 
 Now, we can regrid the original file to this northern hemisphere grid.
 
 .. code:: ipython3
+
    ds2 = nc.open_thredds("https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc")
    ds2.subset(timestep = 0)
    ds2.regrid(ds1)
@@ -92,6 +94,7 @@ Now, we can regrid the original file to this northern hemisphere grid.
 
 
 .. raw:: html
+
    :file: interpolate_plot4.html
 
 This method will also work using netCDF files. So, if you wanted you can also use a path to a netCDF file as the target grid.
@@ -109,17 +112,21 @@ Under the hood nctoolkit regrids data by first generating a weights file. There 
    ds.subset(timestep = 0)
    ds.to_latlon(lon = [-79.5, 79.5], lat = [-0.75, 89.75], res = [1, 0.5], recycle = True)
    ds.plot()
+
 .. raw:: html
+
    :file: interpolate_plot5.html
 
 
 .. code:: ipython3
+
    ds1 = nc.open_thredds("https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc")
    ds1.subset(timestep = 0)
    ds1.regrid(ds)
    ds1.plot()
 
 .. raw:: html
+
    :file: interpolate_plot6.html
 
 Horizontal Resampling
@@ -136,9 +143,10 @@ If you want to make data more coarse spatially, just use the ``resample_grid`` m
    ds.plot()
 
 .. raw:: html
+
    :file: interpolate_plot7.html
 
-spatial infilling
+Spatial infilling
 -----------------
 
 Some times you will have data with missing values, which you want to replace with a nearby value. nctoolkit handles this situation using the ``fill_na`` method. This uses distance-weighting. You just need to specify the number of nearest-neighbours to use for the weighting. For example, if you simply want to replace missing values with their nearest neighbour, you just set the number to 1, as follows:
@@ -151,6 +159,7 @@ Some times you will have data with missing values, which you want to replace wit
    ds.plot()
 
 ..raw:: html
+
    :file: interpolate_plot8.html
 
 ## Vertical interpolation
@@ -165,6 +174,7 @@ We can carry out vertical interpolation using the ``vertical_interp`` method. Th
    ds.plot()
 
 ..raw:: html
+
    :file: interpolate_plot9.html
 
 
