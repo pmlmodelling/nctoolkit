@@ -14,7 +14,7 @@ ncplot
 numpy
 plotnine
 dill
-sphinx-theme-pd
+sphinx-pdj-theme
 #furo
 #sphinx-book-theme
 sphinx-better-theme
