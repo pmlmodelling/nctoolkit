@@ -8,7 +8,6 @@ Horizontal interpolation
 
 We will illustrate how to carry out horizontal interpolation using a global dataset of global SST from NOAA. Find out more information about the datset `here <https://psl.noaa.gov/data/gridded/data.cobe2.html>`__.
 
-
 The data is available using a thredds server. So we will work with the first time step, which looks like this:
 
 
@@ -24,29 +23,7 @@ The data is available using a thredds server. So we will work with the first tim
    :file: interpolate_plot1.html 
 
 
-Interpolating to a set of coordinates
---------------------------------------
 
-
-If you want to regrid a dataset to a specified set of coordinates you
-can ``regrid`` and a pandas dataframe. The first column of the dataframe
-should be the longitudes and the second should be latitudes. The example
-below regrids a sea-surface temperature dataset to a single location
-with longitude -30 and latitude 50.
-
-
-.. code:: ipython3
-
-   import pandas as pd
-   ds = nc.open_thredds("https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc")
-   ds.subset(timestep = 0) 
-   coords = pd.DataFrame({"lon":[-30], "lat":[50]})
-   ds.regrid(coords)
-   ds.to_dataframe()
-
-
-.. raw:: html
-   '<table border="1" class="dataframe">\n  <thead>\n    <tr style="text-align: right;">\n      <th></th>\n      <th></th>\n      <th>lon</th>\n      <th>lat</th>\n      <th>sst</th>\n    </tr>\n    <tr>\n      <th>time</th>\n      <th>ncells</th>\n      <th></th>\n      <th></th>\n      <th></th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <th>1850-01-01</th>\n      <th>0</th>\n      <td>-30.0</td>\n      <td>50.0</td>\n      <td>10.935501</td>\n    </tr>\n  </tbody>\n</table>'
 
 Interpolating to a regular lonlat grid
 ---------------------------------------
@@ -123,6 +100,30 @@ Under the hood nctoolkit regrids data by first generating a weights file. There 
 
 .. raw:: html
    :file: interpolate_plot6.html
+
+Interpolating to a set of coordinates
+--------------------------------------
+
+If you want to regrid a dataset to a specified set of coordinates you
+can ``regrid`` and a pandas dataframe. The first column of the dataframe
+should be the longitudes and the second should be latitudes. The example
+below regrids a sea-surface temperature dataset to a single location
+with longitude -30 and latitude 50.
+
+
+.. code:: ipython3
+
+   import pandas as pd
+   ds = nc.open_thredds("https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc")
+   ds.subset(timestep = 0) 
+   coords = pd.DataFrame({"lon":[-30], "lat":[50]})
+   ds.regrid(coords)
+   ds.to_dataframe()
+
+
+.. raw:: html
+
+    <table border="1" class="dataframe">  <thead>    <tr style="text-align: right;">      <th>lon</th>      <th>lat</th>      <th>sst</th>    </tr>  </thead>  <tbody>    <tr>      <td>-30.0</td>      <td>50.0</td>      <td>10.935501</td>    </tr>  </tbody></table>
 
 Horizontal Resampling
 ---------------------
