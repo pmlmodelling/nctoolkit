@@ -40,9 +40,9 @@ extensions = [
 
 #html_theme = "sphinx_rtd_theme"
 #html_theme = "furo"
-import sphinx_bootstrap_theme
-html_theme = 'bootstrap'
-html_theme_path = sphinx_bootstrap_theme.get_html_theme_path()
+import sphinx_theme_pd
+html_theme = 'sphinx_theme_pd'
+html_theme_path = [sphinx_theme_pd.get_html_theme_path()]
 #html_theme = "better"
 html_static_path = ['_static']
 html_logo = "_static/nctoolkit_logo.jpg"
