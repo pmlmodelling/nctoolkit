@@ -16,7 +16,7 @@ plotnine
 dill
 #furo
 #sphinx-book-theme
-sphinx-material
+sphinx-better-theme
 #piccolo-theme
 
 
