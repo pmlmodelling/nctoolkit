@@ -22,7 +22,6 @@ Let’s start by calculating mean sea surface temperature for the year
     ds.plot()
 
 .. raw:: html
-
    :file: visualization_plot1.html
 
 
