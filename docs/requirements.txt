@@ -15,7 +15,7 @@ numpy
 plotnine
 dill
 #furo
-sphinx-press-theme
+piccolo-theme
 
 
 
