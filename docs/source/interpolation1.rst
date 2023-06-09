@@ -145,7 +145,7 @@ Spatial infilling
 
 Some times you will have data with missing values, which you want to replace with a nearby value. nctoolkit handles this situation using the ``fill_na`` method. This uses distance-weighting. You just need to specify the number of nearest-neighbours to use for the weighting. For example, if you simply want to replace missing values with their nearest neighbour, you just set the number to 1, as follows:
 
-..code:: ipython3
+.. code:: ipython3
 
    ds = nc.open_thredds("https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc")
    ds.subset(timestep = 0)
@@ -155,11 +155,12 @@ Some times you will have data with missing values, which you want to replace wit
 ..raw:: html
    :file: interpolate_plot8.html
 
-## Vertical interpolation
+Vertical interpolation
+----------------------
 
 We can carry out vertical interpolation using the ``vertical_interp`` method. This is particularly useful for oceanic data. This is illustrated below by interpolating depth-resolved ocean temperatures from `NOAA’s World Ocean Atlas <https://www.ncei.noaa.gov/products/world-ocean-atlas>`__ for January to a depth of 500 metres. The ``vertical_interp`` method requires a ``levels`` argument, which is sea-depth in this case. 
 
-..code:: ipython3
+.. code:: ipython3
 
    ds = nc.open_thredds("https://www.ncei.noaa.gov/thredds/dodsC/ncei/woa/temperature/decav/1.00/woa18_decav_t00_01.nc")
    ds.subset(timestep = 0)
