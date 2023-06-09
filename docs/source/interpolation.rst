@@ -120,6 +120,7 @@ with longitude -30 and latitude 50.
    ds.regrid(coords)
    ds.to_dataframe()
 
+This results in a dataframe with the following values:
 
 .. raw:: html
 
