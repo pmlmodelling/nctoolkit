@@ -152,7 +152,7 @@ Some times you will have data with missing values, which you want to replace wit
    ds.fill_na(1)
    ds.plot()
 
-..raw:: html
+.. raw:: html
    :file: interpolate_plot8.html
 
 Vertical interpolation
@@ -167,7 +167,7 @@ We can carry out vertical interpolation using the ``vertical_interp`` method. Th
    ds.vertical_interp(levels = 500, fixed = True)
    ds.plot()
 
-..raw:: html
+.. raw:: html
    :file: interpolate_plot9.html
 
 
