@@ -40,7 +40,7 @@ extensions = [
 
 #html_theme = "sphinx_rtd_theme"
 #html_theme = "furo"
-html_theme = "piccolo_theme"
+html_theme = "alabaster"
 html_static_path = ['_static']
 html_logo = "_static/nctoolkit_logo.jpg"
 
