@@ -46,7 +46,6 @@ with longitude -30 and latitude 50.
 
 
 .. raw:: html
-
    '<table border="1" class="dataframe">\n  <thead>\n    <tr style="text-align: right;">\n      <th></th>\n      <th></th>\n      <th>lon</th>\n      <th>lat</th>\n      <th>sst</th>\n    </tr>\n    <tr>\n      <th>time</th>\n      <th>ncells</th>\n      <th></th>\n      <th></th>\n      <th></th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <th>1850-01-01</th>\n      <th>0</th>\n      <td>-30.0</td>\n      <td>50.0</td>\n      <td>10.935501</td>\n    </tr>\n  </tbody>\n</table>'
 
 Interpolating to a regular lonlat grid
@@ -79,7 +78,6 @@ If we are working with two datasets and want to put them on a common grid, we ca
    ds1.plot()
 
 .. raw:: html
-
    :file: interpolate_plot3.html
 
 
@@ -94,7 +92,6 @@ Now, we can regrid the original file to this northern hemisphere grid.
 
 
 .. raw:: html
-
    :file: interpolate_plot4.html
 
 This method will also work using netCDF files. So, if you wanted you can also use a path to a netCDF file as the target grid.
@@ -114,7 +111,6 @@ Under the hood nctoolkit regrids data by first generating a weights file. There 
    ds.plot()
 
 .. raw:: html
-
    :file: interpolate_plot5.html
 
 
@@ -126,7 +122,6 @@ Under the hood nctoolkit regrids data by first generating a weights file. There 
    ds1.plot()
 
 .. raw:: html
-
    :file: interpolate_plot6.html
 
 Horizontal Resampling
@@ -143,7 +138,6 @@ If you want to make data more coarse spatially, just use the ``resample_grid`` m
    ds.plot()
 
 .. raw:: html
-
    :file: interpolate_plot7.html
 
 Spatial infilling
@@ -151,7 +145,7 @@ Spatial infilling
 
 Some times you will have data with missing values, which you want to replace with a nearby value. nctoolkit handles this situation using the ``fill_na`` method. This uses distance-weighting. You just need to specify the number of nearest-neighbours to use for the weighting. For example, if you simply want to replace missing values with their nearest neighbour, you just set the number to 1, as follows:
 
-..code :: ipython3
+..code:: ipython3
 
    ds = nc.open_thredds("https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc")
    ds.subset(timestep = 0)
@@ -159,14 +153,13 @@ Some times you will have data with missing values, which you want to replace wit
    ds.plot()
 
 ..raw:: html
-
    :file: interpolate_plot8.html
 
 ## Vertical interpolation
 
 We can carry out vertical interpolation using the ``vertical_interp`` method. This is particularly useful for oceanic data. This is illustrated below by interpolating depth-resolved ocean temperatures from `NOAA’s World Ocean Atlas <https://www.ncei.noaa.gov/products/world-ocean-atlas>`__ for January to a depth of 500 metres. The ``vertical_interp`` method requires a ``levels`` argument, which is sea-depth in this case. 
 
-..code :: ipython3
+..code:: ipython3
 
    ds = nc.open_thredds("https://www.ncei.noaa.gov/thredds/dodsC/ncei/woa/temperature/decav/1.00/woa18_decav_t00_01.nc")
    ds.subset(timestep = 0)
@@ -174,7 +167,6 @@ We can carry out vertical interpolation using the ``vertical_interp`` method. Th
    ds.plot()
 
 ..raw:: html
-
    :file: interpolate_plot9.html
 
 
