@@ -106,6 +106,7 @@ dataset. An example of usage is as follows:
 If you want to convert an xarray dataset to an nctoolkit dataset, you can just the ``from_xarray`` function, as follows:
 
 .. code:: ipython3
+
     ds = nc.from_xarray(ds_xr)
 
 Exporting subsets of data
@@ -116,9 +117,13 @@ If you want to only export a subset of the data you can do this by providing add
 
 For example, if you only wanted to export the year 2000 to xarray, you would do the following:
 
+.. code:: ipython3
+
     ds.to_xarray(year = 2000)
 
 Or if you wanted a spatial subset of the data you could do this:
+
+.. code:: ipython3
 
     ds.to_xarray(lon = [0, 90], lat = [0, 90])
 
