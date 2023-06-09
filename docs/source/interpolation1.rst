@@ -21,7 +21,7 @@ The data is available using a thredds server. So we will work with the first tim
    ds.plot()
 
 .. raw:: html
-   :file: interpolation_plot1.html 
+   :file: interpolate_plot1.html 
 
 
 Interpolating to a set of coordinates
@@ -47,49 +47,7 @@ with longitude -30 and latitude 50.
 
 .. raw:: html
 
-    <div>
-    <style scoped>
-        .dataframe tbody tr th:only-of-type {
-            vertical-align: middle;
-        }
-    
-        .dataframe tbody tr th {
-            vertical-align: top;
-        }
-    
-        .dataframe thead th {
-            text-align: right;
-        }
-    </style>
-    <table border="1" class="dataframe">
-      <thead>
-        <tr style="text-align: right;">
-          <th></th>
-          <th></th>
-          <th>lon</th>
-          <th>lat</th>
-          <th>sst</th>
-        </tr>
-        <tr>
-          <th>time</th>
-          <th>ncells</th>
-          <th></th>
-          <th></th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th>1850-01-01</th>
-          <th>0</th>
-          <td>-30.0</td>
-          <td>50.0</td>
-          <td>10.935501</td>
-        </tr>
-      </tbody>
-    </table>
-    </div>
-
+   '<table border="1" class="dataframe">\n  <thead>\n    <tr style="text-align: right;">\n      <th></th>\n      <th></th>\n      <th>lon</th>\n      <th>lat</th>\n      <th>sst</th>\n    </tr>\n    <tr>\n      <th>time</th>\n      <th>ncells</th>\n      <th></th>\n      <th></th>\n      <th></th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <th>1850-01-01</th>\n      <th>0</th>\n      <td>-30.0</td>\n      <td>50.0</td>\n      <td>10.935501</td>\n    </tr>\n  </tbody>\n</table>'
 
 Interpolating to a regular lonlat grid
 ---------------------------------------
@@ -106,7 +64,7 @@ If you want to interpolate to a regular latlon grid, you can use ``to_latlon``. 
    ds.plot()
 
 .. raw:: html
-   :file: interpolation_plot2.html
+   :file: interpolate_plot2.html
 
 
 Interpolating to another dataset’s grid
@@ -121,7 +79,7 @@ If we are working with two datasets and want to put them on a common grid, we ca
    ds1.plot()
 
 .. raw:: html
-   :file: interpolation_plot3.html
+   :file: interpolate_plot3.html
 
 
 Now, we can regrid the original file to this northern hemisphere grid.
@@ -134,7 +92,7 @@ Now, we can regrid the original file to this northern hemisphere grid.
 
 
 .. raw:: html
-   :file: interpolation_plot4.html
+   :file: interpolate_plot4.html
 
 This method will also work using netCDF files. So, if you wanted you can also use a path to a netCDF file as the target grid.
 
@@ -152,7 +110,7 @@ Under the hood nctoolkit regrids data by first generating a weights file. There 
    ds.to_latlon(lon = [-79.5, 79.5], lat = [-0.75, 89.75], res = [1, 0.5], recycle = True)
    ds.plot()
 .. raw:: html
-   :file: interpolation_plot5.html
+   :file: interpolate_plot5.html
 
 
 .. code:: ipython3
@@ -162,7 +120,7 @@ Under the hood nctoolkit regrids data by first generating a weights file. There 
    ds1.plot()
 
 .. raw:: html
-   :file: interpolation_plot6.html
+   :file: interpolate_plot6.html
 
 Horizontal Resampling
 ---------------------
@@ -178,7 +136,7 @@ If you want to make data more coarse spatially, just use the ``resample_grid`` m
    ds.plot()
 
 .. raw:: html
-   :file: interpolation_plot7.html
+   :file: interpolate_plot7.html
 
 spatial infilling
 -----------------
@@ -193,7 +151,7 @@ Some times you will have data with missing values, which you want to replace wit
    ds.plot()
 
 ..raw:: html
-   :file: interpolation_plot8.html
+   :file: interpolate_plot8.html
 
 ## Vertical interpolation
 
@@ -207,7 +165,7 @@ We can carry out vertical interpolation using the ``vertical_interp`` method. Th
    ds.plot()
 
 ..raw:: html
-   :file: interpolation_plot9.html
+   :file: interpolate_plot9.html
 
 
 
