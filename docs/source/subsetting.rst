@@ -87,19 +87,14 @@ Geographic subsetting
 ---------------------
 
 If you want to select a geographic subregion of a dataset, you can use
-crop. This method will select all data within a specific
+`subset`. This method will select all data within a specific
 longitude/latitude box. You just need to supply the minimum longitude
 and latitude required. In the example below, a dataset is cropped with
 longitudes between -80 and 90 and latitudes between 50 and 80:
 
-.. code:: ipython3
-
-    ds.crop(lon = [-80, 90], lat = [50, 80])
-
-
-Alternatively, you can use the `subset` method:
 
 .. code:: ipython3
 
     ds.subset(lon = [-80, 90], lat = [50, 80])
+
 
