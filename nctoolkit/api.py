@@ -1828,6 +1828,7 @@ class DataSet(object):
 
     from nctoolkit.plot import plot
     from nctoolkit.static_plot import pub_plot
+    from nctoolkit.static_plot import quiver_plot
 
     from nctoolkit.reduce import reduce_dims
 

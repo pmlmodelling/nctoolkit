@@ -201,6 +201,17 @@ def pub_plot(
         gs = None
 
 
+    if "quiver" in kwargs:
+        quiver = True
+        u = kwargs["u"]
+        v = kwargs["v"]
+        kwargs.pop("quiver")
+        kwargs.pop("u")
+        kwargs.pop("v")
+    else:
+        quiver = False
+
+
     for kk in kwargs:
         fixed = False
 
@@ -274,14 +285,15 @@ def pub_plot(
 
     ds1 = ds.copy()
 
-    if var is not None:
-        ds1.subset(variables=var)
-    ds1.run()
+    if not quiver:
+        if var is not None:
+            ds1.subset(variables=var)
+        ds1.run()
 
-    if len(ds1.variables) > 1:
-        raise ValueError("Only one variable wanted")
-    if len(ds1.times) > 1:
-        raise ValueError("Only one timestep wanted")
+        if len(ds1.variables) > 1:
+            raise ValueError("Only one variable wanted")
+        if len(ds1.times) > 1:
+            raise ValueError("Only one timestep wanted")
 
     ds_xr = ds1.to_xarray(decode_times=False)
     failed = False
@@ -402,54 +414,64 @@ def pub_plot(
         pass
 
     # read the values. the array is squeezed to remove the temporal dimension that has length 1
-    values = input_file.variables[ds1.variables[0]][:].squeeze()
+    if quiver:
+        u = input_file.variables[u][:].squeeze()
+        v = input_file.variables[v][:].squeeze()
 
-    # mask where the values is 0 == land points
-    values = np.ma.masked_where(values == 0, values)
+        # mask where the values is 0 == land points
+        # values = np.ma.masked_where(values == 0, values)
+        u = np.ma.masked_where(u == 0, u)
+        v = np.ma.masked_where(v == 0, v)
 
-    if limits != None:
-        if limits[0] is None:
-            limits[0] = np.min(values)
-        if limits[1] is None:
-            limits[1] = np.max(values)
+    if not quiver:
+        values = input_file.variables[ds1.variables[0]][:].squeeze()
 
-    if grid_colour == "auto":
-        value_10 = values.min() + (values.max() - values.min()) * 0.3
-        if np.mean(values.data < value_10) < 0.7:
-            grid_colour = "black"
+        # mask where the values is 0 == land points
+        values = np.ma.masked_where(values == 0, values)
 
-    r_min = None
-    r_max = None
+        if limits != None:
+            if limits[0] is None:
+                limits[0] = np.min(values)
+            if limits[1] is None:
+                limits[1] = np.max(values)
 
-    if limits is not None:
-        if isinstance(limits[0], str):
-            if "%" in limits[0]:
-                r_min = float(limits[0].split("%")[0])
-        if isinstance(limits[1], str):
-            if "%" in limits[1]:
-                r_max = float(limits[1].split("%")[0])
+        if grid_colour == "auto":
+            value_10 = values.min() + (values.max() - values.min()) * 0.3
+            if np.mean(values.data < value_10) < 0.7:
+                grid_colour = "black"
 
-    if mid_point is None and limits is None:
-        min_value = np.min(values)
-        max_value = np.max(values)
-        if robust:
-            min_value = np.nanpercentile(np.ma.filled(values, np.nan), 2)
-            max_value = np.nanpercentile(np.ma.filled(values, np.nan), 98)
-        if r_min is not None:
-            min_value = np.nanpercentile(np.ma.filled(values, np.nan), r_min)
-        if r_max is not None:
-            max_value = np.nanpercentile(np.ma.filled(values, np.nan), r_max)
+        r_min = None
+        r_max = None
 
-        if min_value < 0 and max_value > 0:
-            mid_point = 0
-            if colours == "auto":
-                colours = "coolwarm"
-                if land_auto:
-                    if land != "auto":
-                        land = "grey"
+        if limits is not None:
+            if isinstance(limits[0], str):
+                if "%" in limits[0]:
+                    r_min = float(limits[0].split("%")[0])
+            if isinstance(limits[1], str):
+                if "%" in limits[1]:
+                    r_max = float(limits[1].split("%")[0])
 
-    if colours == "auto":
-        colours = "viridis"
+        if mid_point is None and limits is None:
+            min_value = np.min(values)
+            max_value = np.max(values)
+            if robust:
+                min_value = np.nanpercentile(np.ma.filled(values, np.nan), 2)
+                max_value = np.nanpercentile(np.ma.filled(values, np.nan), 98)
+            if r_min is not None:
+                min_value = np.nanpercentile(np.ma.filled(values, np.nan), r_min)
+            if r_max is not None:
+                max_value = np.nanpercentile(np.ma.filled(values, np.nan), r_max)
+
+            if min_value < 0 and max_value > 0:
+                mid_point = 0
+                if colours == "auto":
+                    colours = "coolwarm"
+                    if land_auto:
+                        if land != "auto":
+                            land = "grey"
+
+        if colours == "auto":
+            colours = "viridis"
 
     # generate the figure and the axes where to plot the map. When the axes are generated (either with add_subplot or add_axes, or any other way), the projection to be used need to be specified
     # the axes generated show the entire globe up to the cutoff latitude
@@ -473,60 +495,61 @@ def pub_plot(
     # plot the map. the critical bit is the "transform" option, where the projection of the data is specified. In this case spherical coordinates
     # the shading option is to let pcolormesh understand that the coordinates passed are the cell centre, see https://matplotlib.org/stable/gallery/images_contours_and_fields/pcolormesh_grids.html
 
-    if limits is None:
-        vmin = None
-        vmax = None
-    else:
-        vmin = limits[0]
-        vmax = limits[1]
-        if r_min is not None:
-            vmin = np.nanpercentile(np.ma.filled(values, np.nan), r_min)
-        if r_max is not None:
-            vmax = np.nanpercentile(np.ma.filled(values, np.nan), r_max)
+    if not quiver:
+        if limits is None:
+            vmin = None
+            vmax = None
+        else:
+            vmin = limits[0]
+            vmax = limits[1]
+            if r_min is not None:
+                vmin = np.nanpercentile(np.ma.filled(values, np.nan), r_min)
+            if r_max is not None:
+                vmax = np.nanpercentile(np.ma.filled(values, np.nan), r_max)
 
-    if robust and limits is None:
-        vmin = np.nanpercentile(np.ma.filled(values, np.nan), 2)
-        vmax = np.nanpercentile(np.ma.filled(values, np.nan), 98)
-    if limits is None:
-        if r_min is not None:
-            vmin = np.nanpercentile(np.ma.filled(values, np.nan), r_min)
-        if r_max is not None:
-            vmax = np.nanpercentile(np.ma.filled(values, np.nan), r_max)
-
-    if mid_point is not None:
-        val_min = values.min()
-        val_max = values.max()
         if robust and limits is None:
-            val_min = np.nanpercentile(np.ma.filled(values, np.nan), 2)
-            val_max = np.nanpercentile(np.ma.filled(values, np.nan), 98)
-        if mid_point < val_min:
-            raise ValueError("mid_point is outside value range")
-        if mid_point > val_max:
-            raise ValueError("mid_point is outside value range")
-        adjustment = max(val_max - mid_point, mid_point - val_min)
-        vmin = mid_point - adjustment
-        vmax = mid_point + adjustment
+            vmin = np.nanpercentile(np.ma.filled(values, np.nan), 2)
+            vmax = np.nanpercentile(np.ma.filled(values, np.nan), 98)
+        if limits is None:
+            if r_min is not None:
+                vmin = np.nanpercentile(np.ma.filled(values, np.nan), r_min)
+            if r_max is not None:
+                vmax = np.nanpercentile(np.ma.filled(values, np.nan), r_max)
+
+        if mid_point is not None:
+            val_min = values.min()
+            val_max = values.max()
+            if robust and limits is None:
+                val_min = np.nanpercentile(np.ma.filled(values, np.nan), 2)
+                val_max = np.nanpercentile(np.ma.filled(values, np.nan), 98)
+            if mid_point < val_min:
+                raise ValueError("mid_point is outside value range")
+            if mid_point > val_max:
+                raise ValueError("mid_point is outside value range")
+            adjustment = max(val_max - mid_point, mid_point - val_min)
+            vmin = mid_point - adjustment
+            vmax = mid_point + adjustment
 
 
-    norm_plot = False
-    if norm in ["log", "log10"]:
-        norm = mpl.colors.LogNorm(vmin=vmin, vmax=vmax)
-        norm_plot = True
-    if norm is not None:
-        vmin = None
-        vmax = None
+        norm_plot = False
+        if norm in ["log", "log10"]:
+            norm = mpl.colors.LogNorm(vmin=vmin, vmax=vmax)
+            norm_plot = True
+        if norm is not None:
+            vmin = None
+            vmax = None
 
-    im = ax.pcolormesh(
-        lon,
-        lat,
-        values,
-        cmap=colours,
-        transform=data_crs,
-        shading="nearest",
-        norm=norm,
-        vmin=vmin,
-        vmax=vmax,
-    )
+        im = ax.pcolormesh(
+            lon,
+            lat,
+            values,
+            cmap=colours,
+            transform=data_crs,
+            shading="nearest",
+            norm=norm,
+            vmin=vmin,
+            vmax=vmax,
+        )
 
     # add coastline and land colour. More options, including about resolution of coastline, colour and so on can be found here
     # https://scitools.org.uk/cartopy/docs/v0.14/matplotlib/feature_interface.html
@@ -538,8 +561,12 @@ def pub_plot(
     # https://scitools.org.uk/cartopy/docs/v0.13/matplotlib/gridliner.html
     # note that if x_inline and y_inline are not set to False, the labels of the axis could be written inside the map
 
-    if grid_colour == "auto" and norm_plot:
-        grid_colour = "black"
+    if quiver:
+        im =  ax.quiver(lon, lat, u, v, units='width', transform = data_crs)
+
+    if not quiver:
+        if grid_colour == "auto" and norm_plot:
+            grid_colour = "black"
 
     if grid:
         if grid_colour == "auto":
@@ -589,27 +616,28 @@ def pub_plot(
         ax.set_title(title)
 
     # add colorbar
-    if legend_position == "auto":
-        l_location = "right"
-    else:
-        l_location = legend_position
+    if not quiver:
+        if legend_position == "auto":
+            l_location = "right"
+        else:
+            l_location = legend_position
 
-    if l_location == "bottom":
-        fraction = 0.046 * size[0] / size[1] * 0.8
-    else:
-        fraction = 0.046 * size[1] / size[0]
+        if l_location == "bottom":
+            fraction = 0.046 * size[0] / size[1] * 0.8
+        else:
+            fraction = 0.046 * size[1] / size[0]
 
-    if l_location == "bottom":
-        cb = plt.colorbar(im, fraction=fraction, pad=0.04, location=l_location)
-    else:
-        cb = plt.colorbar(im, fraction=fraction, pad=0.04)
+        if l_location == "bottom":
+            cb = plt.colorbar(im, fraction=fraction, pad=0.04, location=l_location)
+        else:
+            cb = plt.colorbar(im, fraction=fraction, pad=0.04)
     
-    # add breaks to colorbar cb
-    if breaks is not None:
-        cb.set_ticks(breaks)
-        cb.set_ticklabels(breaks)
+        # add breaks to colorbar cb
+        if breaks is not None:
+            cb.set_ticks(breaks)
+            cb.set_ticklabels(breaks)
 
-    cbax = cb.ax
+        cbax = cb.ax
     if land is not None:
         # ax.add_feature(cfeature.LAND, facecolor = land, zorder=10)
         if scale == "low":
@@ -639,35 +667,36 @@ def pub_plot(
             g_scale = "auto"
             ax.add_feature(cfeature.GSHHSFeature(scale=g_scale), linewidth=0.5)
 
-    if legend is not None:
-        cbax.set_ylabel(legend)
-    else:
-        ds_contents = ds1.contents
-        try:
-            label = (
-                fix_long(ds_contents.long_name.values[0])
-                + " ("
-                + fix_label(ds_contents.unit.values[0])
-                + ")"
-            )
-        except:
-            print(
-                "Unable to parse legend from dataset contents. Check long names and units"
-            )
-            label = ""
-
-        if l_location == "bottom":
-            label = "\n".join(wrap(label, 120))
+    if not quiver:
+        if legend is not None:
+            cbax.set_ylabel(legend)
         else:
-            label = "\n".join(wrap(label, 50))
+            ds_contents = ds1.contents
+            try:
+                label = (
+                    fix_long(ds_contents.long_name.values[0])
+                    + " ("
+                    + fix_label(ds_contents.unit.values[0])
+                    + ")"
+                )
+            except:
+                print(
+                    "Unable to parse legend from dataset contents. Check long names and units"
+                )
+                label = ""
 
-        if l_location == "bottom":
-            cbax.set_xlabel(label)
-        else:
-            cbax.set_ylabel(label)
+            if l_location == "bottom":
+                label = "\n".join(wrap(label, 120))
+            else:
+                label = "\n".join(wrap(label, 50))
 
-    if legend_position is None:
-        cb.remove()
+            if l_location == "bottom":
+                cbax.set_xlabel(label)
+            else:
+                cbax.set_ylabel(label)
+
+        if legend_position is None:
+            cb.remove()
     
     if out is not None:
         print("saving as file")
@@ -675,5 +704,33 @@ def pub_plot(
 
     if gs is None:
         return fig
+
+
+def quiver_plot(ds, u = None, v = None, **kwargs):
+    """
+    Quiver plot using u and v velocities
+
+    Parameters
+    ----------
+    ds : nctoolkit Dataset
+        dataset containing u and v velocities
+    u : str
+        u velocity  
+    v : str
+        v velocity
+    **kwargs : dict
+        kwargs to pass to pub_plot
+
+    Returns
+    -------
+    fig : matplotlib figure 
+        figure object
+    
+
+    """
+
+
+    pub_plot(ds, quiver = True, u = u, v = v, **kwargs)
+
 
 
