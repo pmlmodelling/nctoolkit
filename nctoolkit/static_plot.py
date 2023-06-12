@@ -146,6 +146,8 @@ def pub_plot(
     -------------
     """
 
+    axis = None
+
     if legend_position not in ["auto", "right", "bottom"]:
         if legend_position is not None: 
             raise ValueError("legend_position must be one of right/bottom or None")
@@ -186,8 +188,25 @@ def pub_plot(
         "legend_position",
     ]
 
+    n_rows = 1
+    n_cols = 1
+
+    if "fig" not in kwargs.keys():
+        fig = None
+    if "gs" not in kwargs.keys():
+        gs = None
+
+
     for kk in kwargs:
         fixed = False
+
+        if kk == "fig":
+            fig = kwargs[kk]
+            fixed = True
+        
+        if kk == "gs":
+            gs = kwargs[kk]
+            fixed = True
 
         if var is None:
             if kk.lower().startswith("var"):
@@ -218,6 +237,18 @@ def pub_plot(
                 norm = kwargs[kk]
                 fixed = True
 
+        if kk.lower().startswith("nrow"):
+            if n_rows == 1:
+                n_rows = kwargs[kk]
+        if kk.lower().startswith("ncol"):
+            if n_cols == 1:
+                n_cols = kwargs[kk]
+
+        if kk.lower().startswith("ax"):
+            if axis is None:
+                axis = kwargs[kk]
+                fixed = True
+
         if not fixed:
             possible = []
 
@@ -232,6 +263,10 @@ def pub_plot(
                 )
             else:
                 raise ValueError(f"{kk} is not a valid argument")
+    
+    if fig is not None:
+        if gs is None:
+            raise ValueError("If you specify fig, you must also specify gs")
 
     ds1 = ds.copy()
 
@@ -414,12 +449,15 @@ def pub_plot(
 
     # generate the figure and the axes where to plot the map. When the axes are generated (either with add_subplot or add_axes, or any other way), the projection to be used need to be specified
     # the axes generated show the entire globe up to the cutoff latitude
-    if size is not None:
-        fig = plt.figure(figsize=size)
+    if fig is None:
+        if size is not None:
+            fig = plt.figure(figsize=size)
+        else:
+            fig = plt.figure(figsize=(10, 10))
+        ax = fig.add_subplot(projection=proj)
     else:
-        fig = plt.figure(figsize=(10, 10))
-    # plt.ioff()
-    ax = fig.add_subplot(projection=proj)
+        ax = fig.add_subplot(gs, projection=proj)
+
     if globe:
         ax.set_global()
 
@@ -624,6 +662,7 @@ def pub_plot(
         print("saving as file")
         plt.savefig(out)
 
-    return plt
+    if gs is None:
+        return fig
 
 
