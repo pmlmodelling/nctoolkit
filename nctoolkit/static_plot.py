@@ -100,6 +100,7 @@ def pub_plot(
     legend_position="auto",
     robust=False,
     out = None,
+    breaks = None,
     **kwargs,
 ):
     """
@@ -139,6 +140,9 @@ def pub_plot(
         Whether to use robust statistics for the colour scale or not
     out : str
         Output file name
+    breaks : list
+        List of breaks for the colour bar
+
 
     *kwargs:
         kwargs to allow slight misspelling of arguments
@@ -503,6 +507,7 @@ def pub_plot(
         vmin = mid_point - adjustment
         vmax = mid_point + adjustment
 
+
     norm_plot = False
     if norm in ["log", "log10"]:
         norm = mpl.colors.LogNorm(vmin=vmin, vmax=vmax)
@@ -598,6 +603,12 @@ def pub_plot(
         cb = plt.colorbar(im, fraction=fraction, pad=0.04, location=l_location)
     else:
         cb = plt.colorbar(im, fraction=fraction, pad=0.04)
+    
+    # add breaks to colorbar cb
+    if breaks is not None:
+        cb.set_ticks(breaks)
+        cb.set_ticklabels(breaks)
+
     cbax = cb.ax
     if land is not None:
         # ax.add_feature(cfeature.LAND, facecolor = land, zorder=10)
