@@ -279,9 +279,9 @@ def pub_plot(
             else:
                 raise ValueError(f"{kk} is not a valid argument")
     
-    if fig is not None:
-        if gs is None:
-            raise ValueError("If you specify fig, you must also specify gs")
+    if gs is not None:
+        if fig is None:
+            raise ValueError("If you specify gs, you must also specify fig")
 
     ds1 = ds.copy()
 
@@ -482,7 +482,10 @@ def pub_plot(
             fig = plt.figure(figsize=(10, 10))
         ax = fig.add_subplot(projection=proj)
     else:
-        ax = fig.add_subplot(gs, projection=proj)
+        if gs is None:
+            ax = fig.add_subplot(projection=proj)
+        else:
+            ax = fig.add_subplot(gs, projection=proj)
 
     if globe:
         ax.set_global()
@@ -702,8 +705,6 @@ def pub_plot(
         print("saving as file")
         plt.savefig(out)
 
-    if gs is None:
-        return fig
 
 
 def quiver_plot(ds, u = None, v = None, **kwargs):
