@@ -729,6 +729,38 @@ def quiver_plot(ds, u = None, v = None, **kwargs):
 
     """
 
+    ds.run()
+
+    # check only one time step in ds
+
+    if len(ds.times) > 1:
+        raise ValueError("ds must contain only one time step for quiver_plot")
+
+    # some type checks for u and v
+
+    if u is None:
+        raise ValueError("u must be specified")
+    
+    if v is None:
+        raise ValueError("v must be specified")
+    
+    # check u and v are str
+
+    if not isinstance(u, str):
+        raise TypeError("u must be a string")
+    
+    if not isinstance(v, str):
+        raise TypeError("v must be a string")
+
+    vars = ds.variables
+
+    if u not in vars:
+        raise ValueError("u not in dataset")
+    
+    if v not in vars:
+        raise ValueError("v not in dataset")
+
+    
 
     pub_plot(ds, quiver = True, u = u, v = v, **kwargs)
 
