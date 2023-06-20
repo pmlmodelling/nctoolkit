@@ -73,6 +73,7 @@ Python dependencies
 - `bokeh <https://bokeh.org/>`__
 - `panel <https://panel.holoviz.org/>`__
 - `metpy <https://unidata.github.io/MetPy/latest/index.html>`__
+- `scipy <https://www.scipy.org/>`__
 
 
 System dependencies
