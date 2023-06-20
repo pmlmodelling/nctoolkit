@@ -34,7 +34,7 @@ This will install the core dependencies of nctoolkit. If you want slightly bette
 
    $ pip install nctoolkit[complete]
 
-The "complete" version of nctoolkit partly relies on cartopy for plotting. This has some additional dependencies, so you may need to follow their guide `here <https://pypi.org/project/nctoolkit/>`__ to ensure cartopy is installed fully. If you install nctoolkit using conda, you will not need to worry about that. Note: cartopy will automatically be installed in the conda version of nctoolkit. It is excluded as a core dependency on pypi because it can be difficult to install.
+If you have installed the non-complete version of nctoolkit from pypi, you might also want to install cartopy to get better looking plots. This has some additional dependencies, so you may need to follow their guide `here <https://pypi.org/project/nctoolkit/>`__ to ensure cartopy is installed fully. If you install nctoolkit using conda, you will not need to worry about that. Note: cartopy will automatically be installed in the conda version of nctoolkit. It is excluded as a core dependency on pypi because it can be difficult to install.
 
 Once you have installed nctoolkit using pip, you will need to install the system dependencies listed below.
 
