@@ -1,5 +1,6 @@
 ---
-title: 'nctoolkit: A Python package for netCDF analysis and post-processing'
+title: 
+  'nctoolkit: A Python package for netCDF analysis and post-processing'
 tags:
   - Python
   - climate
