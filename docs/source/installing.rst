@@ -34,7 +34,6 @@ This will install the core dependencies of nctoolkit. If you want slightly bette
 
    $ pip install nctoolkit[complete]
 
-If you have installed the non-complete version of nctoolkit from pypi, you might also want to install cartopy to get better looking plots. This has some additional dependencies, so you may need to follow their guide `here <https://pypi.org/project/nctoolkit/>`__ to ensure cartopy is installed fully. If you install nctoolkit using conda, you will not need to worry about that. Note: cartopy will automatically be installed in the conda version of nctoolkit. It is excluded as a core dependency on pypi because it can be difficult to install.
 
 Once you have installed nctoolkit using pip, you will need to install the system dependencies listed below.
 
@@ -42,6 +41,21 @@ To install the development version from GitHub::
 
    $ pip install git+https://github.com/r4ecology/nctoolkit.git
 
+
+How to get better looking plots
+---------------------
+
+ 
+If you have installed the non-complete version of nctoolkit from pypi, you might also want to install cartopy to get better looking plots. This has some additional dependencies, so you may need to follow their guide `here <https://pypi.org/project/nctoolkit/>`__ to ensure cartopy is installed fully. 
+
+If you installed nctoolkit using conda, you can install cartopy as follows::
+
+
+   $ mamba install -c conda-forge cartopy
+
+   $ conda install -c conda-forge cartopy
+
+Cartopy is not installed by default because installation can be slow or difficult on pypi or conda. However, no such issues exist on mamba. So, **use mamba**.
 
 
 Python dependencies
