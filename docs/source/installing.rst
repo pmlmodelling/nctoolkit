@@ -61,12 +61,18 @@ Cartopy is not installed by default because installation can be slow or difficul
 Python dependencies
 ---------------------
 
-- Python (3.6 or later)
+- Python (3.8 or later)
 - `numpy <http://www.numpy.org/>`__ (1.14 or later)
 - `pandas <http://pandas.pydata.org/>`__ (0.24 or later)
 - `xarray <http://xarray.pydata.org/en/stable/>`__ (0.14 or later)
 - `netCDF4 <https://unidata.github.io/netCDF4-python/netCDF4/index.html>`__ (1.53 or later)
 - `ncplot <https://ncplot.readthedocs.io/en/stable/>`__ 
+- `hvplot <https://hvplot.holoviz.org/>`__ 
+- `holoviews <https://holoviews.org/>`__
+- `matplotlib <https://matplotlib.org/>`__ 
+- `bokeh <https://bokeh.org/>`__
+- `panel <https://panel.holoviz.org/>`__
+- `metpy <https://unidata.github.io/MetPy/latest/index.html>`__
 
 
 System dependencies
