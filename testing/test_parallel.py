@@ -67,10 +67,10 @@ if True:
         data.spatial_sum(by_area = True)
         data.run()
 
-        #if platform.system() == "Linux":
-        import multiprocessing as mp
-        #else:
-        #    import multiprocess as mp
+        if platform.system() == "Linux":
+            import multiprocessing as mp
+        else:
+           import multiprocess as mp
         nc.options(parallel = True)
         n_cores = mp.cpu_count()
         ensemble = nc.open_data("data/ensemble/*.nc")
