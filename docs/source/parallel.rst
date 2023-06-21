@@ -5,8 +5,9 @@ nctoolkit is written to enable rapid processing and analysis of netCDF
 files, and this includes the ability to process in parallel. Two methods
 of parallel processing are available. First is the ability to carry out
 operations on multi-file datasets in parallel. Second is the ability to
-define a processing chain in nctoolkit, and then use the multiprocessing
-package to process files in parallel using that chain.
+define a processing chain in nctoolkit, and then use the multiprocessing or multiprocess
+package to process files in parallel using that chain. The multiprocessing package is not
+compatible with nctoolkit internals on macOS, so the multiprocess package should be used instead.
 
 Parallel processing of multi-file datasets
 ------------------------------------------
@@ -23,7 +24,7 @@ parallel and to use 6 cores when doing so. You can, of course, set the
 number of cores as high as you want. The only thing nctoolkit will do is
 limit it to the number of cores on your machine.
 
-Parallel processing using multiprocessing
+Parallel processing using multiprocessing or multiprocess
 -----------------------------------------
 
 A common task is taking a bunch of files in a folder, doing things to
@@ -47,7 +48,7 @@ are adding to this list in parallel, and this can cause problems.
 Telling nctoolkit it will be run in parallel tells it to switch to using
 a type of list that can be safely added to in parallel.
 
-We can use multiprocessing to do the following: take all of the files in
+We can use multiprocessing on Linux or multiprocess on macOS to do the following: take all of the files in
 folder foo, do a bunch of things to them, then save the results in a new
 folder:
 
@@ -69,8 +70,10 @@ function to them and then save the results in a new folder called new:
 .. code:: ipython3
 
     ensemble = nc.create_ensemble("../../data/ensemble")
-    import multiprocessing
-    pool = multiprocessing.Pool(3)
+    import multiprocessing as mp
+    # on macOS, use:
+    #import multiprocess as mp
+    pool = mp.Pool(3)
     for ff in ensemble:
         pool.apply_async(process_chain, [ff, ff.replace("ensemble", "new")])
     pool.close()
