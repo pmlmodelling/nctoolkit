@@ -41,8 +41,8 @@ if True:
         n = len(nc.session_files())
         assert n == 0
 
-        if platform.system() == "Linux":
-            nc.options(cores = 2)
+        #if platform.system() == "Linux":
+        nc.options(cores = 2)
         tracker = nc.open_data(ff)
         tracker.split("year")
         tracker.tmean()
@@ -67,10 +67,10 @@ if True:
         data.spatial_sum(by_area = True)
         data.run()
 
-        if platform.system() == "Linux":
-            import multiprocessing as mp
-        else:
-            import multiprocess as mp
+        #if platform.system() == "Linux":
+        import multiprocessing as mp
+        #else:
+        #    import multiprocess as mp
         nc.options(parallel = True)
         n_cores = mp.cpu_count()
         ensemble = nc.open_data("data/ensemble/*.nc")
