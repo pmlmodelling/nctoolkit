@@ -15,7 +15,7 @@ class TestRename:
         assert n == 0
 
     def test_rename(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.rename({"sst": "tos"})
         tracker.run()
         x = tracker.variables
@@ -24,7 +24,7 @@ class TestRename:
         assert n == 1
 
     def test_rename_error(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.run()
         with pytest.raises(TypeError):
             tracker.rename("sst")

@@ -30,25 +30,25 @@ class TestToxar:
 
 
     def test_xarray3(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(timesteps=[0])
         x = tracker.to_xarray(decode_times=True).time.dt.year.values[0]
 
         assert x == 1970
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(timesteps=[0])
         x = tracker.to_xarray(decode_times=True).time.dt.year.values[0]
         y = tracker.to_dataframe(decode_times=True).reset_index().time.dt.year.values[0]
         assert x == y
 
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(timesteps=[0])
         tracker.spatial_mean()
         x = tracker.to_dataframe(decode_times=True).reset_index().time.dt.year.values[0]
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(timesteps=[0])
         ds = tracker.to_xarray()
         tracker = nc.from_xarray(ds)
@@ -59,7 +59,7 @@ class TestToxar:
 
 
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         ds1 = tracker.to_xarray()
         ds2 = xr.open_dataset(ff)
         assert ds1.equals(ds2)

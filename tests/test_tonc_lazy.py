@@ -42,7 +42,7 @@ class TestTonnc:
     def test_1(self):
         ff = "data/sst.mon.mean.nc"
         ff1 = nc.temp_file.temp_file(".nc")
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.subset(timesteps=0)
         data.to_nc(ff1)
         data1 = nc.open_data(ff1)
@@ -56,7 +56,7 @@ class TestTonnc:
     def test_2(self):
         ff = "data/sst.mon.mean.nc"
         ff1 = nc.temp_file.temp_file(".nc")
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.subset(timesteps=0)
         data.run()
         data.to_nc(ff1, zip=False)
@@ -71,7 +71,7 @@ class TestTonnc:
     def test_3(self):
         ff = "data/sst.mon.mean.nc"
         ff1 = nc.temp_file.temp_file(".nc")
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.subset(timesteps=0)
         data.run()
         data.to_nc(ff1, zip=False)
@@ -83,7 +83,7 @@ class TestTonnc:
 
         ff = "data/sst.mon.mean.nc"
         ff1 = nc.temp_file.temp_file(".nc")
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.subset(timesteps=0)
         data.run()
         data.to_nc(ff1, zip=True)
@@ -97,7 +97,7 @@ class TestTonnc:
     def test_4(self):
         ff = "data/sst.mon.mean.nc"
         ff1 = nc.temp_file.temp_file(".nc")
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.subset(timesteps=0)
         data.to_nc(ff1, zip=False)
 
@@ -108,7 +108,7 @@ class TestTonnc:
 
         ff = "data/sst.mon.mean.nc"
         ff1 = nc.temp_file.temp_file(".nc")
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.subset(timesteps=0)
         data.to_nc(ff1, zip=True)
 
@@ -122,7 +122,7 @@ class TestTonnc:
     def test_5(self):
         ff = "data/sst.mon.mean.nc"
         ff1 = nc.temp_file.temp_file(".nc")
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.subset(timesteps=[0, 1])
         data.tmean()
         data.to_nc(ff1, zip=False)
@@ -134,7 +134,7 @@ class TestTonnc:
 
         ff = "data/sst.mon.mean.nc"
         ff1 = nc.temp_file.temp_file(".nc")
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.subset(timesteps=[0, 1])
         data.split("yearmonth")
         data.ensemble_mean()
@@ -149,7 +149,7 @@ class TestTonnc:
 
     def test_ens(self):
         ff = "data/sst.mon.mean.nc"
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.subset(timesteps=[0, 1, 2])
         data.split("yearmonth")
         with pytest.raises(ValueError):
@@ -163,6 +163,6 @@ class TestTonnc:
 
     def test_overwrite(self):
         ff = "data/sst.mon.mean.nc"
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         with pytest.raises(ValueError):
             data.to_nc(ff)

@@ -16,7 +16,7 @@ class TestRegrid:
 
     def test_list(self):
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.split("year")
         tracker.to_latlon(lon = [-90, 90], lat = [0, 40], res = 1)
         tracker.merge("time")
@@ -25,7 +25,7 @@ class TestRegrid:
 
         x = tracker.to_dataframe().sst.values[0].astype("float")
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.to_latlon(lon = [-90, 90], lat = [0, 40], res = 1)
         tracker.tmean()
         tracker.spatial_mean()
@@ -35,7 +35,7 @@ class TestRegrid:
 
         assert x == y
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(year = 1990)
         tracker.split("month")
         tracker.to_latlon(lon = [-90, 90], lat = [0, 40], res = 1)
@@ -46,7 +46,7 @@ class TestRegrid:
 
         x = tracker.to_dataframe().sst.values[0].astype("float")
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(year = 1990)
         tracker.to_latlon(lon = [-90, 90], lat = [0, 40], res = 1)
         tracker.tmean()
@@ -59,7 +59,7 @@ class TestRegrid:
 
 
     def test_regrid(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=1990)
         tracker.subset(months=1)
         tracker.crop(lon=[0, 90])
@@ -68,7 +68,7 @@ class TestRegrid:
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0].astype("float")
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=1990)
         tracker.subset(months=1)
         tracker.regrid(new, method="nn")
@@ -82,7 +82,7 @@ class TestRegrid:
         assert n == 2
 
     def test_regrid_list(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=1990)
         tracker.crop(lon=[0, 90])
         tracker.crop(lat=[0, 90])
@@ -92,7 +92,7 @@ class TestRegrid:
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0].astype("float")
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.crop(lon=[0, 90])
         tracker.crop(lat=[0, 90])
         tracker.subset(years=1990)
@@ -109,21 +109,21 @@ class TestRegrid:
         n = len(nc.session_files())
         assert n == 2
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.split("year")
-        new = nc.open_data(ff)
+        new = nc.open_data(ff, checks = False)
         with pytest.warns(UserWarning):
             new.regrid(tracker)
 
     def test_invalid_method(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(ValueError):
             tracker.regrid(tracker, method="x")
         n = len(nc.session_files())
         assert n == 0
 
     def test_error11(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(ValueError):
             tracker.regrid(grid=1)
 
@@ -144,7 +144,7 @@ class TestRegrid:
 
 
     def test_error1(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(ValueError):
             tracker.regrid("/tmp/stekancihwn.nc")
         n = len(nc.session_files())
@@ -153,7 +153,7 @@ class TestRegrid:
         assert 1 == 1
 
     def test_error2(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         from pathlib import Path
         import os, pytest
 
@@ -167,7 +167,7 @@ class TestRegrid:
         assert n == 0
 
     def test_montherror(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.run()
         with pytest.raises(ValueError):
             tracker.regrid()
@@ -176,7 +176,7 @@ class TestRegrid:
         assert n == 0
 
     def test_regrid1(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(timesteps=1)
         tracker.crop(lon=[0, 90])
         tracker.crop(lat=[0, 90])
@@ -186,7 +186,7 @@ class TestRegrid:
 
         grid = new.to_dataframe().reset_index().loc[:, ["lon", "lat"]]
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(timesteps=1)
         tracker.regrid(grid, method="nn")
         tracker.spatial_mean()
@@ -200,14 +200,14 @@ class TestRegrid:
     def test_single(self):
 
         ff = "data/sst.mon.mean.nc"
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.subset(timesteps=0)
         grid = pd.DataFrame({"lon": [1.5], "lat": [55.5]})
         data.regrid(grid)
         x = data.to_dataframe().sst.values[0]
 
         ff = "data/sst.mon.mean.nc"
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.subset(timesteps=0)
         grid = pd.DataFrame({"lon": [1.5], "lat": [55.5]})
         data.crop(lon=[1.2, 1.7], lat=[55.2, 55.7])
@@ -219,7 +219,7 @@ class TestRegrid:
 
     def test_another_df(self):
         ff = "data/sst.mon.mean.nc"
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.subset(timesteps=0)
         grid = pd.DataFrame({"lon": [1.5, 1.5], "lat": [55.5, 56.5]})
         data.regrid(grid)
@@ -227,7 +227,7 @@ class TestRegrid:
         x = data.to_dataframe().sst.values[0]
 
         ff = "data/sst.mon.mean.nc"
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.subset(timesteps=0)
         grid = pd.DataFrame({"lon": [1.5], "lat": [55.5]})
         data.crop(lon=[1.2, 1.7], lat=[55.2, 56.7])
@@ -239,7 +239,7 @@ class TestRegrid:
 
     def test_another_df2(self):
         ff = "data/sst.mon.mean.nc"
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.subset(timesteps=0)
         grid = pd.DataFrame({"lon": [1.5, 2.5], "lat": [55.5, 55.5]})
         data.regrid(grid)
@@ -247,7 +247,7 @@ class TestRegrid:
         x = data.to_dataframe().sst.values[0]
 
         ff = "data/sst.mon.mean.nc"
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.subset(timesteps=0)
         data.crop(lon=[1.2, 2.7], lat=[55.2, 55.7])
         data.spatial_mean()
@@ -259,7 +259,7 @@ class TestRegrid:
 
     def test_another_df3(self):
         ff = "data/sst.mon.mean.nc"
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.subset(timesteps=0)
         grid = pd.DataFrame({"lon": [1.5, 1.5, 20], "lat": [55.5, 56.5, 56.5]})
         data.regrid(grid, "nn")
@@ -267,7 +267,7 @@ class TestRegrid:
         x = data.to_dataframe().sst.mean()
 
         ff = "data/sst.mon.mean.nc"
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.subset(timesteps=0)
         grid = pd.DataFrame({"lon": [1.5], "lat": [55.5]})
         data.crop(lon=[1.2, 1.7], lat=[55.2, 56.7])

@@ -15,110 +15,110 @@ class TestMask:
         assert n == 0
 
     def test_mask(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(ValueError):
             tracker.mask_box(lon=[-390, 100])
         n = len(nc.session_files())
         assert n == 0
 
     def test_mask1(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(ValueError):
             tracker.mask_box(lat=[-390, 100])
         n = len(nc.session_files())
         assert n == 0
 
     def test_mask2(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(ValueError):
             tracker.mask_box(lat=[-390, 100, 1])
         n = len(nc.session_files())
         assert n == 0
 
     def test_mask3(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(ValueError):
             tracker.mask_box(lat=[0, -10])
         n = len(nc.session_files())
         assert n == 0
 
     def test_mask4(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(ValueError):
             tracker.mask_box(lon=[0, -10])
         n = len(nc.session_files())
         assert n == 0
 
     def test_mask5(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(ValueError):
             tracker.mask_box(lon=[-390, 100, 1])
         n = len(nc.session_files())
         assert n == 0
 
     def test_mask6(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(TypeError):
             tracker.mask_box(lon=1)
         n = len(nc.session_files())
         assert n == 0
 
     def test_mask7(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(TypeError):
             tracker.mask_box(lat=1)
         n = len(nc.session_files())
         assert n == 0
 
     def test_mask8(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(TypeError):
             tracker.mask_box(lat="1")
         n = len(nc.session_files())
         assert n == 0
 
     def test_mask9(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(TypeError):
             tracker.mask_box(lat="2")
         n = len(nc.session_files())
         assert n == 0
 
     def test_mask10(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(TypeError):
             tracker.mask_box(lat=["a", 1])
         n = len(nc.session_files())
         assert n == 0
 
     def test_mask11(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(TypeError):
             tracker.mask_box(lat=[2, "b"])
         n = len(nc.session_files())
         assert n == 0
 
     def test_mask12(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(TypeError):
             tracker.mask_box(lon=["a", 1])
         n = len(nc.session_files())
         assert n == 0
 
     def test_mask13(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(TypeError):
             tracker.mask_box(lon=[2, "b"])
         n = len(nc.session_files())
         assert n == 0
 
     def test_mask14(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.crop(lat=[0, 90], nco=False)
         tracker.subset(timesteps=0)
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0].astype("float")
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.mask_box(lat=[0, 90])
         tracker.subset(timesteps=0)
         tracker.spatial_mean()

@@ -28,7 +28,7 @@ class TestTimeint:
     def test_timeint(self):
         # this test fails due to a bug in cdo 1.9.4. Ignore for now
         if cdo_version() not in ["1.9.4"]:
-            tracker = nc.open_data(ff)
+            tracker = nc.open_data(ff, checks = False)
             tracker.time_interp(
                 start="1990/01/01", end="1990/31/01", resolution="daily"
             )
@@ -42,7 +42,7 @@ class TestTimeint:
 
     def test_timeint1(self):
         if cdo_version() not in ["1.9.4"]:
-            tracker = nc.open_data(ff)
+            tracker = nc.open_data(ff, checks = False)
             tracker.time_interp(
                 start="1991/01/01", end="1991/31/01", resolution="weekly"
             )
@@ -56,7 +56,7 @@ class TestTimeint:
 
     def test_timeint2(self):
         if cdo_version() not in ["1.9.4"]:
-            tracker = nc.open_data(ff)
+            tracker = nc.open_data(ff, checks = False)
             tracker.time_interp(
                 start="1990/01/01", end="1990/31/01", resolution="monthly"
             )
@@ -70,7 +70,7 @@ class TestTimeint:
 
     def test_timeint3(self):
         if cdo_version() not in ["1.9.4"]:
-            tracker = nc.open_data(ff)
+            tracker = nc.open_data(ff, checks = False)
             tracker.time_interp(
                 start="1990/01/01", end="1993/01/01", resolution="yearly"
             )
@@ -83,7 +83,7 @@ class TestTimeint:
             assert n == 1
 
     def test_timeint4(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.time_interp(start="1990/01/01", resolution="yearly")
         tracker.run()
 
@@ -94,7 +94,7 @@ class TestTimeint:
         assert n == 1
 
     def test_error(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(ValueError):
             tracker.time_interp(start="1990/01/01", end="1993/01/01", resolution="x")
 
@@ -102,7 +102,7 @@ class TestTimeint:
         assert n == 0
 
     def test_error2(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(ValueError):
             tracker.time_interp(end="1993/01/01", resolution="daily")
         n = len(nc.session_files())

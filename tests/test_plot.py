@@ -59,7 +59,5 @@ class TestCrop:
         assert os.path.exists(out_file)
         os.remove(out_file)
         print(nc.session.get_protected())
-
         print(nc.session_files())
-
 

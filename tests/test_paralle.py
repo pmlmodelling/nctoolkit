@@ -25,7 +25,7 @@ import time
 import os
 def process_chain(ff):
     print(f"processing {ff}")
-    ds = nc.open_data(ff)
+    ds = nc.open_data(ff, checks = False)
     ds.spatial_mean()
     ds.run()
     #time.sleep(0.1)
@@ -40,13 +40,13 @@ class TestPar:
     def test_parallel(self):
     #def test_parallel():
         ff = "data/sst.mon.mean.nc"
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         n = len(nc.session_files())
         assert n == 0
 
         if platform.system() == "Linux":
             nc.options(cores = 2)
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.split("year")
         tracker.tmean()
         tracker.merge("time")
@@ -55,7 +55,7 @@ class TestPar:
         x = tracker.to_dataframe().sst[0].astype("float")
 
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.tmean("year")
         tracker.tmean()
         tracker.spatial_mean()

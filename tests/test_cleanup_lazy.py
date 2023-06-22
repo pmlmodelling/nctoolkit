@@ -11,7 +11,7 @@ class TestClean:
     def test_cleanall(self):
         safe = nc.session.get_safe()
         print([ff for ff in safe if os.path.exists(ff)])
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(timesteps=0)
         tracker.run()
         safe = nc.session.get_safe()

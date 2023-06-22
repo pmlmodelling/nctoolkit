@@ -27,7 +27,7 @@ class TestSplit:
         assert n == 0
 
     def test_year(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         x = len(tracker.years)
         tracker.split("year")
         y = len(tracker.current)
@@ -36,7 +36,7 @@ class TestSplit:
         assert n == 30
 
     def test_yearmon(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         x = len(tracker.times)
         tracker.split("yearmonth")
         y = len(tracker.current)
@@ -45,7 +45,7 @@ class TestSplit:
         assert n == y
 
     def test_yearmon(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=1990)
         x = len(tracker.times)
         tracker.split("month")
@@ -53,7 +53,7 @@ class TestSplit:
         assert n == 12
 
     def test_season(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.split("season")
         y = len(tracker.current)
         assert y == 4
@@ -71,7 +71,7 @@ class TestSplit:
 
 
     def test_error2(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(ValueError):
             tracker.split("")
 
@@ -79,7 +79,7 @@ class TestSplit:
         assert n == 0
 
     def test_list(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         x = len(tracker.times)
         tracker.split("year")
         tracker.split("yearmonth")

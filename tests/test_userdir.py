@@ -18,12 +18,12 @@ class TestSession:
         if platform.system() == "Linux":
             nc.options(temp_dir ="/var/tmp")
             nc.options(lazy=False)
-            data = nc.open_data(ff)
+            data = nc.open_data(ff, checks = False)
             data.spatial_mean()
             data.tmean()
             nc.options(lazy=True)
 
-            data = nc.open_data(ff)
+            data = nc.open_data(ff, checks = False)
             data.spatial_mean()
             data.tmean()
             data.run()

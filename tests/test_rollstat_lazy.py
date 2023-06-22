@@ -42,14 +42,14 @@ class TestRollstat:
         assert [x.day for x in ds.times][0] == 4
 
     def test_mean(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.rolling_mean(window=10, align = "centre")
         tracker.subset(years=1990)
         tracker.spatial_mean()
         tracker.run()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.rolling_mean(window=10, align = "centre")
         tracker.subset(years=1990)
         tracker.spatial_mean()
@@ -67,7 +67,7 @@ class TestRollstat:
         assert n == 1
 
     def test_max(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.rolling_max(window=10, align = "centre")
         tracker.subset(years=1990)
         tracker.spatial_mean()
@@ -78,7 +78,7 @@ class TestRollstat:
         assert n == 1
 
     def test_min(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.rolling_min(window=10, align = "left")
         tracker.subset(years=1990)
         tracker.spatial_mean()
@@ -90,7 +90,7 @@ class TestRollstat:
         assert n == 1
 
     def test_range(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.rolling_range(window=10, align = "right")
         tracker.subset(years=1990)
         tracker.spatial_mean()
@@ -101,7 +101,7 @@ class TestRollstat:
         assert n == 1
 
     def test_sum(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.rolling_sum(window=10, align = "centre")
         tracker.subset(years=1990)
         tracker.spatial_mean()
@@ -112,14 +112,14 @@ class TestRollstat:
         assert n == 1
 
     def test_float(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.rolling_sum(window=10, align = "left")
         tracker.subset(years=1990)
         tracker.spatial_mean()
         tracker.run()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.rolling_sum(window=10, align = "left")
         tracker.subset(years=1990)
         tracker.spatial_mean()
@@ -131,7 +131,7 @@ class TestRollstat:
         assert n == 1
 
     def test_error(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(TypeError):
             tracker.rolling_sum(window="x")
 

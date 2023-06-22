@@ -23,22 +23,22 @@ ff = "data/sst.mon.mean.nc"
 
 class TestShifters:
     def test_hours(self):
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.shift(hours=-1)
         data.run()
         assert str(data.times[0]) == "1969-12-31 23:00:00"
 
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.shift(hours = -1)
         data.run()
         assert str(data.times[0]) == "1969-12-31 23:00:00"
 
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.shift(hours = -1.0)
         data.run()
         assert str(data.times[0]) == "1969-12-31 23:00:00"
 
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.shift(hours=-1.0)
         data.run()
         assert str(data.times[0]) == "1969-12-31 23:00:00"
@@ -68,60 +68,60 @@ class TestShifters:
 
 
     def test_days(self):
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.shift(days=1)
         data.run()
         assert str(data.times[0]) == "1970-01-02 00:00:00"
 
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.shift(days = 1)
         data.run()
         assert str(data.times[0]) == "1970-01-02 00:00:00"
 
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.shift(days = 1.0)
         data.run()
         assert str(data.times[0]) == "1970-01-02 00:00:00"
 
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.shift(days=1.0)
         data.run()
         assert str(data.times[0]) == "1970-01-02 00:00:00"
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
 
         with pytest.raises(TypeError):
             data.shift(days="x")
 
 
     def test_months(self):
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.shift(months=1)
         data.run()
         assert str(data.times[0])  == "1970-02-01 00:00:00"
 
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.shift(months=1.0)
         data.run()
         assert str(data.times[0]) == "1970-02-01 00:00:00"
 
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.shift(months = 1)
         data.run()
         assert str(data.times[0]) == "1970-02-01 00:00:00"
 
 
     def test_years(self):
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.shift(years=1)
         data.run()
         assert str(data.times[0]) == "1971-01-01 00:00:00"
 
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.shift(years=1.0)
         data.run()
         assert str(data.times[0]) == "1971-01-01 00:00:00"
 
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.shift(years = 1)
         data.run()
         assert str(data.times[0]) == "1971-01-01 00:00:00"

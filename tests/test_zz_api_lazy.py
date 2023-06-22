@@ -69,14 +69,14 @@ class TestApi:
 
     def test_open_data(self):
         ff = "data/sst.mon.mean.nc"
-        x = nc.open_data(ff)
+        x = nc.open_data(ff, checks = False)
         assert x.current[0] == "data/sst.mon.mean.nc"
 
     def test_merge(self):
         ff = "data/sst.mon.mean.nc"
-        x = nc.open_data(ff)
+        x = nc.open_data(ff, checks = False)
 
-        y = nc.open_data(ff)
+        y = nc.open_data(ff, checks = False)
         y.rename({"sst": "tos"})
         z = nc.merge(x, y)
         z.run()
@@ -86,7 +86,7 @@ class TestApi:
 
     def test_size(self):
         ff = "data/sst.mon.mean.nc"
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         assert data.size["Ensemble size"] ==  "2.60762 MB" 
         data.split("year")
         assert data.size["Number of files in ensemble"] == 30
@@ -98,18 +98,18 @@ class TestApi:
 
     def test_contents(self):
         ff = "data/sst.mon.mean.nc"
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         x = data.contents.query("variable == 'sst'").long_name.values
         assert x == "Monthly Means of Global Sea Surface Temperature"
 
     def test_cor_time(self):
         ff = "data/sst.mon.mean.nc"
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         test = nc.cor_time(data, data)
         test.spatial_mean()
         x = test.to_dataframe().cor.values[0].astype("float")
         assert x == 1
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         with pytest.raises(TypeError):
             test = nc.cor_time("y", data)
         with pytest.raises(TypeError):
@@ -121,7 +121,7 @@ class TestApi:
 
     def test_delstart(self):
         ff = "data/sst.mon.mean.nc"
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
 
         with pytest.raises(AttributeError):
             del data.start

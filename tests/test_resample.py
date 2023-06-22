@@ -13,7 +13,7 @@ ff1 = "data/woa18_decav_t01_01.nc"
 
 class TestResample:
     def test_resample(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(ValueError):
             tracker.resample_grid(factor = 0)
         with pytest.raises(TypeError):

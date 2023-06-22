@@ -24,11 +24,11 @@ class TestClip:
         ds = nc.open_data("data/vertical_tester.nc")
         with pytest.raises(TypeError):
             ds.meridonial_mean()
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         n = len(nc.session_files())
         assert n == 0
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         data = nc.open_data("data/sst.mon.mean.nc")
         data.tmean()
         data.meridonial_mean()
@@ -38,7 +38,7 @@ class TestClip:
         else:
             assert data.to_dataframe().sst[0].astype("float") == 17.679880142211914
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         data = nc.open_data("data/sst.mon.mean.nc")
         data.tmean()
         data.meridonial_min()
@@ -48,7 +48,7 @@ class TestClip:
         else:
             assert (data.to_dataframe().sst[0].astype("float") == -1.7714282274246216)
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         data = nc.open_data("data/sst.mon.mean.nc")
         data.tmean()
         data.meridonial_max()
@@ -58,7 +58,7 @@ class TestClip:
         else:
             assert data.to_dataframe().sst[0].astype("float") == 27.9967041015625
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         data = nc.open_data("data/sst.mon.mean.nc")
         data.tmean()
         data.meridonial_range()

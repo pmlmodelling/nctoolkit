@@ -13,7 +13,7 @@ ff = "data/sst.mon.mean.nc"
 class TestCompare:
     def test_compare(self):
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker1 = nc.open_data("data/ensemble/*.nc")
         with pytest.raises(ValueError):
             tracker.gt(tracker1)
@@ -21,7 +21,7 @@ class TestCompare:
         with pytest.raises(ValueError):
             tracker.lt(tracker1)
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
 
         tracker.subset(time = 0)
         tracker.gt(ff)
@@ -38,19 +38,19 @@ class TestCompare:
             tracker.gt(2)
 
         with pytest.raises(ValueError):
-            tracker = nc.open_data(ff)
+            tracker = nc.open_data(ff, checks = False)
             tracker.gt(none)
 
         with pytest.raises(ValueError):
-            tracker = nc.open_data(ff)
+            tracker = nc.open_data(ff, checks = False)
             tracker.lt(none)
 
         with pytest.raises(ValueError):
-            tracker = nc.open_data(ff)
+            tracker = nc.open_data(ff, checks = False)
             tracker.lt("x")
 
         with pytest.raises(ValueError):
-            tracker = nc.open_data(ff)
+            tracker = nc.open_data(ff, checks = False)
             tracker.gt("x")
 
 
@@ -64,8 +64,8 @@ class TestCompare:
         with pytest.raises(ValueError):
             tracker.lt(2)
 
-        tracker = nc.open_data(ff)
-        data = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
+        data = nc.open_data(ff, checks = False)
         tracker.subset(time = 0)
         tracker > data
 
@@ -74,8 +74,8 @@ class TestCompare:
         assert x == 0
 
 
-        tracker = nc.open_data(ff)
-        data = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
+        data = nc.open_data(ff, checks = False)
         tracker.subset(time = 0)
         tracker.gt(data)
 
@@ -83,8 +83,8 @@ class TestCompare:
 
         assert x == 0
 
-        tracker = nc.open_data(ff)
-        data = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
+        data = nc.open_data(ff, checks = False)
         tracker.subset(time = 0)
         tracker.gt(data[0])
 
@@ -94,8 +94,8 @@ class TestCompare:
 
 
 
-        tracker = nc.open_data(ff)
-        data = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
+        data = nc.open_data(ff, checks = False)
         tracker.subset(time = 0)
         tracker>data
 
@@ -103,8 +103,8 @@ class TestCompare:
 
         assert x == 0
 
-        tracker = nc.open_data(ff)
-        data = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
+        data = nc.open_data(ff, checks = False)
         tracker.subset(time = 0)
         tracker.lt(data[0])
 

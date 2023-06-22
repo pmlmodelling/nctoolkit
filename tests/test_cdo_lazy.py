@@ -25,33 +25,33 @@ class TestCdo:
         assert n == 0
 
     def test_cdo(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(ValueError):
             tracker.cdo_command("DJF")
         n = len(nc.session_files())
         assert n == 0
 
     def test_cdo_nocommand(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(ValueError):
             tracker.cdo_command()
 
     def test_cdo1(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(TypeError):
             tracker.cdo_command(1)
         n = len(nc.session_files())
         assert n == 0
 
     def test_cdo2(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(ValueError):
             tracker.cdo_command("-selmon,1 xy")
         n = len(nc.session_files())
         assert n == 0
 
     def test_cdo3(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.cdo_command("chname,sst,tos")
         tracker.run()
         x = tracker.variables
@@ -60,7 +60,7 @@ class TestCdo:
         assert n == 1
 
     def test_cdo4(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.cdo_command("cdo -chname,sst,tos")
         tracker.run()
         x = tracker.variables
@@ -71,11 +71,11 @@ class TestCdo:
     def test_cdo5(self):
         if cdo_version() in ["1.9.2", "1.9.3"]:
             return None
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.tmean()
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0]
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.split("year")
         tracker.cdo_command("-mergetime")
         tracker.tmean()

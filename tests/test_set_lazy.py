@@ -44,7 +44,7 @@ class TestSetters:
         assert ds.contents.data_type[0] == "F64"
         assert ds._precision == "default"
 
-        ds = nc.open_data(ff)
+        ds = nc.open_data(ff, checks = False)
         ds.subset(time = 0)
         ds.set_day(15)
         ds.run()
@@ -54,7 +54,7 @@ class TestSetters:
 
         # do not run this test with cdo version 1.9.3 as there is a bug
         if cdo_version() not in ["1.9.3"]:
-            tracker = nc.open_data(ff)
+            tracker = nc.open_data(ff, checks = False)
             tracker.subset(years=list(range(1970, 1971)))
             tracker.subset(months=[1])
             tracker.set_date(year=1990, month=1, day=1)
@@ -71,7 +71,7 @@ class TestSetters:
 
     def test_setdate2(self):
         if cdo_version() not in ["1.9.3"]:
-            tracker = nc.open_data(ff)
+            tracker = nc.open_data(ff, checks = False)
             tracker.subset(years=list(range(1970, 1971)))
             tracker.subset(months=[1])
             tracker.set_date(year=1990, month=1, day=1)
@@ -88,7 +88,7 @@ class TestSetters:
 
     def test_setdate3(self):
         if cdo_version() not in ["1.9.3"]:
-            tracker = nc.open_data(ff)
+            tracker = nc.open_data(ff, checks = False)
             tracker.subset(years=list(range(1970, 1971)))
             tracker.subset(months=[1])
             tracker.set_date(year=1990, month=3, day=1)
@@ -104,7 +104,7 @@ class TestSetters:
             assert n == 1
 
     def test_setmissing(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=1990)
         tracker.subset(months=[1])
 
@@ -118,16 +118,16 @@ class TestSetters:
         assert n == 1
 
     def test_setmissing2(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.as_missing([100, 100])
         x = tracker.history
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.as_missing(100)
         y = tracker.history
 
     def test_setunits(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=1990)
         tracker.subset(months=[1])
 
@@ -140,7 +140,7 @@ class TestSetters:
         assert n == 1
 
     def test_setmissing3(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(TypeError):
             tracker.as_missing("x")
 
@@ -193,21 +193,21 @@ class TestSetters:
         assert n == 0
 
     def test_setunits2(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(TypeError):
             tracker.set_units("x")
             n = len(nc.session_files())
             assert n == 0
 
     def test_longname_error(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(TypeError):
             tracker.set_longnames("x")
             n = len(nc.session_files())
             assert n == 0
 
     def test_setlongnames(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=1990)
         tracker.subset(months=[1])
 
@@ -220,7 +220,7 @@ class TestSetters:
         assert n == 1
 
     def test_setlongnames2(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=1990)
         tracker.split("yearmonth")
 

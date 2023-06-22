@@ -38,8 +38,8 @@ class TestAddetc:
     def test_yearlyts(self): 
         version = nc.cdo_version()
         if nc.utils.version_below(version, "1.9.9") == False:
-            ds1 = nc.open_data(ff)
-            ds2 = nc.open_data(ff)
+            ds1 = nc.open_data(ff, checks = False)
+            ds2 = nc.open_data(ff, checks = False)
             ds2.tmean("year")
             ds1.subtract(ds2)
             ds1.tmean("year")
@@ -95,8 +95,8 @@ class TestAddetc:
             assert (sst_max < 1e-6) and (sst_min > -0.02)
 
     def test_merger(self):
-        new = nc.open_data(ff)
-        tracker = nc.open_data(ff)
+        new = nc.open_data(ff, checks = False)
+        tracker = nc.open_data(ff, checks = False)
         tracker.split("year")
         tracker.merge("time")
         tracker.subtract(new)
@@ -110,7 +110,7 @@ class TestAddetc:
 
     def test_add_safe(self):
         nc.options(lazy = False)
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years = list(range(1970, 1971)))
         tracker.subset(months=[1])
         tracker.run()
@@ -130,7 +130,7 @@ class TestAddetc:
         nc.options(lazy = True)
 
     def test_add(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=list(range(1970, 1971)))
         tracker.subset(months=[1])
         tracker.run()
@@ -148,7 +148,7 @@ class TestAddetc:
         assert n == 2
 
     def test_add_multiple(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=list(range(1970, 1971)))
         tracker.subset(months=[1])
         tracker.run()
@@ -166,7 +166,7 @@ class TestAddetc:
         assert n == 2
 
     def test_add2(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=list(range(1970, 1971)))
         tracker.subset(months=[1])
         tracker.run()
@@ -184,7 +184,7 @@ class TestAddetc:
         assert n == 2
 
     def test_add21(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=list(range(1970, 1971)))
         tracker.subset(months=[1])
         tracker.run()
@@ -202,7 +202,7 @@ class TestAddetc:
         assert n == 2
 
     def test_add_var(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=list(range(1970, 1971)))
         tracker.subset(months=[1])
         tracker.run()
@@ -221,7 +221,7 @@ class TestAddetc:
         assert n == 2
 
     def test_add3(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=list(range(1970, 1971)))
         tracker.subset(months=[1])
         tracker.run()
@@ -240,7 +240,7 @@ class TestAddetc:
 
     def test_add4(self):
         nc.options(lazy=False)
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=list(range(1970, 1971)))
         tracker.subset(months=[1])
         tracker.run()
@@ -259,7 +259,7 @@ class TestAddetc:
         nc.options(lazy=True)
 
     def test_subtract(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=list(range(1970, 1971)))
         tracker.subset(months=[1])
         tracker.run()
@@ -277,7 +277,7 @@ class TestAddetc:
         assert n == 2
 
     def test_subtract1(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=list(range(1970, 1971)))
         tracker.subset(months=[1])
         tracker.run()
@@ -296,9 +296,9 @@ class TestAddetc:
 
     def test_op_list(self):
         ff = "data/sst.mon.mean.nc"
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.subset(timesteps=0)
-        new = nc.open_data(ff)
+        new = nc.open_data(ff, checks = False)
         new.subset(timesteps=[0, 1])
         new.split("yearmonth")
         new.subtract(data)
@@ -312,7 +312,7 @@ class TestAddetc:
         assert n == 2
 
     def test_subtract2(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=list(range(1970, 1971)))
         tracker.subset(months=[1])
         tracker.run()
@@ -329,7 +329,7 @@ class TestAddetc:
         assert n == 2
 
     def test_multiply(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=list(range(1970, 1971)))
         tracker.subset(months=[1])
         tracker.run()
@@ -347,7 +347,7 @@ class TestAddetc:
         assert n == 2
 
     def test_multiply1(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=list(range(1970, 1971)))
         tracker.subset(months=[1])
         tracker.run()
@@ -373,7 +373,7 @@ class TestAddetc:
         assert n == 0
 
     def test_multiply2(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=list(range(1970, 1971)))
         tracker.subset(months=[1])
         tracker.run()
@@ -393,7 +393,7 @@ class TestAddetc:
         assert n == 3
 
     def test_divide(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=list(range(1970, 1971)))
         tracker.subset(months=[1])
         tracker.run()
@@ -410,7 +410,7 @@ class TestAddetc:
         assert n == 2
 
     def test_divide1(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=list(range(1970, 1971)))
         tracker.subset(months=[1])
         tracker.run()
@@ -430,7 +430,7 @@ class TestAddetc:
         assert n == 3
 
     def test_divide2(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=list(range(1970, 1971)))
         tracker.subset(months=[1])
         tracker.run()
@@ -450,7 +450,7 @@ class TestAddetc:
         assert n == 3
 
     def test_divide3(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=list(range(1970, 1971)))
         tracker.subset(months=[1])
         tracker.run()
@@ -470,7 +470,7 @@ class TestAddetc:
         assert n == 3
 
     def test_file_incompat(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         ff2 = "data/2003.nc"
         data2 = nc.open_data(ff2)
         data2.assign(tos = lambda x: x.analysed_sst + 2)
@@ -481,7 +481,7 @@ class TestAddetc:
         assert n == 1
 
     def test_file_incompat1(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         ff2 = "data/2003.nc"
         data2 = nc.open_data(ff2)
         data2.assign(tos = lambda x:  x.analysed_sst + 2)
@@ -492,7 +492,7 @@ class TestAddetc:
         assert n == 1
 
     def test_file_incompat2(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         ff2 = "data/2003.nc"
         data2 = nc.open_data(ff2)
         data2.assign(tos = lambda x:  x.analysed_sst + 2)
@@ -503,35 +503,35 @@ class TestAddetc:
         assert n == 1
 
     def test_file_incompat3(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(ValueError):
             tracker.multiply("xyz")
         n = len(nc.session_files())
         assert n == 0
 
     def test_file_incompat4(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(ValueError):
             tracker.subtract("xyz")
         n = len(nc.session_files())
         assert n == 0
 
     def test_file_incompat5(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(ValueError):
             tracker.add("xyz")
         n = len(nc.session_files())
         assert n == 0
 
     def test_file_incompat6(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(ValueError):
             tracker.divide("xyz")
         n = len(nc.session_files())
         assert n == 0
 
     def test_file_incompat7(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         ff2 = "data/2003.nc"
         data2 = nc.open_data(ff2)
         data2.assign(tos = lambda x: x.analysed_sst + 2)
@@ -542,7 +542,7 @@ class TestAddetc:
         assert n == 1
 
     def test_file_typeerror(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         ff2 = "data/2003.nc"
         with pytest.raises(TypeError):
             tracker.multiply([1, 2])
@@ -610,7 +610,7 @@ class TestAddetc:
 
 
     def test_file_typeerror1(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         ff2 = "data/2003.nc"
         with pytest.raises(TypeError):
             tracker.subtract([1, 2])
@@ -618,7 +618,7 @@ class TestAddetc:
         assert n == 0
 
     def test_file_typeerror2(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         ff2 = "data/2003.nc"
         with pytest.raises(TypeError):
             tracker.add([1, 2])
@@ -627,7 +627,7 @@ class TestAddetc:
         assert n == 0
 
     def test_file_typeerror3(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         ff2 = "data/2003.nc"
         with pytest.raises(TypeError):
             tracker.divide([1, 2])
@@ -635,7 +635,7 @@ class TestAddetc:
         assert n == 0
 
     def test_file_typeerror4(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         ff2 = "data/2003.nc"
         with pytest.raises(TypeError):
             tracker.divide([1, 2])
@@ -643,17 +643,17 @@ class TestAddetc:
         assert n == 0
 
     def test_var_typeerror(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(TypeError):
             tracker.add(tracker, var=1)
 
     def test_var_valueerror(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(ValueError):
             tracker.add(tracker, var="tos222")
 
     def test_lazy_add(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=list(range(1970, 1971)))
         tracker.subset(months=[1])
         tracker.run()
@@ -678,7 +678,7 @@ class TestAddetc:
 
     def test_ariths(self):
 
-        ds = nc.open_data(ff)
+        ds = nc.open_data(ff, checks = False)
         ds.subset(time = 0)
         ds.power(2)
         ds.spatial_mean()
@@ -686,7 +686,7 @@ class TestAddetc:
 
 
 
-        ds = nc.open_data(ff)
+        ds = nc.open_data(ff, checks = False)
         ds.subset(time = 0)
         ds.assign(sst = lambda x: x.sst ** 2)
         ds.spatial_mean()
@@ -695,7 +695,7 @@ class TestAddetc:
         assert x == y
 
 
-        ds = nc.open_data(ff)
+        ds = nc.open_data(ff, checks = False)
         ds.subset(time = 0)
         ds.power(2.1)
         ds.spatial_range()
@@ -703,7 +703,7 @@ class TestAddetc:
 
 
 
-        ds = nc.open_data(ff)
+        ds = nc.open_data(ff, checks = False)
         ds.subset(time = 0)
         ds.assign(sst = lambda x: x.sst ** 2.1)
         ds.spatial_range()
@@ -713,13 +713,13 @@ class TestAddetc:
         x == y
 
 
-        ds = nc.open_data(ff)
+        ds = nc.open_data(ff, checks = False)
         ds.subset(time = 0)
         ds.abs()
         ds.spatial_mean()
         x = ds.to_dataframe().sst.values[0]
 
-        ds = nc.open_data(ff)
+        ds = nc.open_data(ff, checks = False)
         ds.subset(time = 0)
         ds.assign(sst = lambda x: abs(x.sst))
         ds.spatial_mean()
@@ -728,13 +728,13 @@ class TestAddetc:
         assert x == y
 
 
-        ds = nc.open_data(ff)
+        ds = nc.open_data(ff, checks = False)
         ds.subset(time = 0)
         ds.sqrt()
         ds.spatial_mean()
         x = ds.to_dataframe().sst.values[0]
 
-        ds = nc.open_data(ff)
+        ds = nc.open_data(ff, checks = False)
         ds.subset(time = 0)
         ds.assign(sst = lambda x: sqrt(x.sst))
         ds.spatial_mean()
@@ -742,13 +742,13 @@ class TestAddetc:
 
         assert x == y
 
-        ds = nc.open_data(ff)
+        ds = nc.open_data(ff, checks = False)
         ds.subset(time = 0)
         ds.exp()
         ds.spatial_mean()
         x = ds.to_dataframe().sst.values[0]
 
-        ds = nc.open_data(ff)
+        ds = nc.open_data(ff, checks = False)
         ds.subset(time = 0)
         ds.assign(sst = lambda x: exp(x.sst))
         ds.spatial_mean()
@@ -756,14 +756,14 @@ class TestAddetc:
 
         assert x == y
 
-        ds = nc.open_data(ff)
+        ds = nc.open_data(ff, checks = False)
         ds.subset(time = 0)
         ds.add(200)
         ds.log()
         ds.spatial_mean()
         x = ds.to_dataframe().sst.values[0]
 
-        ds = nc.open_data(ff)
+        ds = nc.open_data(ff, checks = False)
         ds.subset(time = 0)
         ds.add(200)
         ds.assign(sst = lambda x: log(x.sst))
@@ -772,14 +772,14 @@ class TestAddetc:
 
         assert x == y
 
-        ds = nc.open_data(ff)
+        ds = nc.open_data(ff, checks = False)
         ds.subset(time = 0)
         ds.add(200)
         ds.log10()
         ds.spatial_mean()
         x = ds.to_dataframe().sst.values[0]
 
-        ds = nc.open_data(ff)
+        ds = nc.open_data(ff, checks = False)
         ds.subset(time = 0)
         ds.add(200)
         ds.assign(sst = lambda x: log10(x.sst))
@@ -790,7 +790,7 @@ class TestAddetc:
 
 
 
-        ds = nc.open_data(ff)
+        ds = nc.open_data(ff, checks = False)
         ds.subset(time = 0)
         ds.power(2)
         ds.spatial_mean()
@@ -798,7 +798,7 @@ class TestAddetc:
 
 
 
-        ds = nc.open_data(ff)
+        ds = nc.open_data(ff, checks = False)
         ds.subset(time = 0)
         ds.square()
         ds.spatial_mean()

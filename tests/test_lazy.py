@@ -24,7 +24,7 @@ class TestLazy:
 
     def test_subset(self):
         ff = "data/sst.mon.mean.nc"
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=list(range(1970, 1979)))
         tracker.subset(months=[1, 2, 3, 4, 5])
         tracker.crop(lon=[0, 90])
@@ -40,7 +40,7 @@ class TestLazy:
 
     def test_lazy1(self):
         ff = "data/sst.mon.mean.nc"
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=list(range(1970, 1979)))
         tracker.subset(months=[1, 2, 3, 4, 5])
         tracker.crop(lon=[0, 90])
@@ -61,7 +61,7 @@ class TestLazy:
 
     def test_split1(self):
         ff = "data/sst.mon.mean.nc"
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.split(by="year")
         assert len(tracker.current) == 30
         tracker.merge("time")
@@ -81,7 +81,7 @@ class TestLazy:
 
     def test_mergetime1(self):
         ff = "data/sst.mon.mean.nc"
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.split(by="year")
         n_files = len(tracker.current)
         tracker.merge("time")
@@ -106,7 +106,7 @@ class TestLazy:
 
     def test_ensemble_mean_1(self):
         ff = nc.create_ensemble("data/ensemble/")
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.tmean()
         tracker.ensemble_mean()
         tracker.spatial_mean()
@@ -120,7 +120,7 @@ class TestLazy:
 
     def test_seasonal_clim1(self):
         ff = "data/sst.mon.mean.nc"
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.tmean("season")
         tracker.subset(months=2)
         tracker.spatial_mean()
@@ -132,8 +132,8 @@ class TestLazy:
 
     def test_merge_rename(self):
         ff = "data/sst.mon.mean.nc"
-        tracker1 = nc.open_data(ff)
-        tracker2 = nc.open_data(ff)
+        tracker1 = nc.open_data(ff, checks = False)
+        tracker2 = nc.open_data(ff, checks = False)
         tracker2.rename({"sst": "tos"})
         tracker2.run()
         tracker = nc.merge(tracker1, tracker2)
@@ -148,7 +148,7 @@ class TestLazy:
 
     def test_anomaly(self):
         ff = "data/sst.mon.mean.nc"
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.crop(lon=[-80, 20], lat=[30, 80])
         tracker.annual_anomaly(baseline=[1970, 1979])
         tracker.spatial_mean()
@@ -161,7 +161,7 @@ class TestLazy:
 
     def test_arithall(self):
         ff = "data/sst.mon.mean.nc"
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.add(1)
         tracker.subtract(1)
         tracker.multiply(2)
@@ -170,7 +170,7 @@ class TestLazy:
         tracker.tmean()
         tracker.run()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.spatial_mean()
         tracker.tmean()
         tracker.run()

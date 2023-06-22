@@ -15,21 +15,21 @@ class TestShow:
         assert n == 0
 
     def test_times(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(timesteps=range(0, 12))
         tracker.run()
         x = len(tracker.times)
         assert x == 12
 
     def test_times2(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         x = tracker.times
         tracker.split("year")
         y = tracker.times
         assert x == y
 
     def test_months(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(months=[1, 2])
         tracker.run()
         x = tracker.months
@@ -37,7 +37,7 @@ class TestShow:
         assert x == [1, 2]
 
     def test_months1(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=[1990, 1991])
         tracker.subset(months=[1, 2])
         tracker.split("year")
@@ -47,7 +47,7 @@ class TestShow:
         assert x == [1, 2]
 
     def test_years(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=[1990, 1999])
         tracker.run()
         x = tracker.years
@@ -55,7 +55,7 @@ class TestShow:
         assert x == [1990, 1999]
 
     def test_years1(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=[1990, 1999])
         tracker.split("year")
         x = tracker.years

@@ -28,11 +28,11 @@ class TestClip:
         with pytest.raises(TypeError):
             ds.zonal_mean()
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         n = len(nc.session_files())
         assert n == 0
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         data = nc.open_data("data/sst.mon.mean.nc")
         data.tmean()
         data.zonal_mean()
@@ -48,7 +48,7 @@ class TestClip:
                 == 17.550796508789062
             )
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         data = nc.open_data("data/sst.mon.mean.nc")
         data.split("year")
         data.zonal_mean()
@@ -69,7 +69,7 @@ class TestClip:
 
 
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         data = nc.open_data("data/sst.mon.mean.nc")
         data.tmean()
         data.zonal_min()
@@ -87,7 +87,7 @@ class TestClip:
 
 
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         data = nc.open_data("data/sst.mon.mean.nc")
         data.tmean()
         data.zonal_max()
@@ -103,7 +103,7 @@ class TestClip:
                 == 20.55091094970703
             )
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         data = nc.open_data("data/sst.mon.mean.nc")
         data.tmean()
         data.zonal_range()

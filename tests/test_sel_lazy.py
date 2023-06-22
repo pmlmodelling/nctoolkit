@@ -98,11 +98,11 @@ class TestSelect:
         ds.run()
         assert len(ds.times) == 619
 
-        ds = nc.open_data(ff)
+        ds = nc.open_data(ff, checks = False)
         with pytest.raises(TypeError):
             ds.subset(range = 1)
 
-        ds = nc.open_data(ff)
+        ds = nc.open_data(ff, checks = False)
         with pytest.raises(ValueError):
             ds.subset(range = ["01/01/2003", "01/01/2002"])
 
@@ -127,7 +127,7 @@ class TestSelect:
             ds.subset(range = ["01/01/2003", 1, 3])
 
     def test_strvar(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.assign(tos =  lambda x: x.sst+1)
         tracker.subset(variables="tos")
         tracker.run()
@@ -135,7 +135,7 @@ class TestSelect:
         assert x == ["tos"]
 
     def test_season(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(seasons="DJF")
         tracker.run()
         x = tracker.months
@@ -144,7 +144,7 @@ class TestSelect:
 
         assert n == 1
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(season = "DJF")
         tracker.run()
         x = tracker.months
@@ -154,7 +154,7 @@ class TestSelect:
         assert n == 1
 
     def test_months(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(months=1)
         tracker.run()
         x = tracker.months
@@ -162,7 +162,7 @@ class TestSelect:
         n = len(nc.session_files())
         assert n == 1
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(month = 1)
         tracker.run()
         x = tracker.months
@@ -171,7 +171,7 @@ class TestSelect:
         assert n == 1
 
     def test_months2(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(months=range(1, 3))
         tracker.run()
         x = tracker.months
@@ -180,7 +180,7 @@ class TestSelect:
         assert n == 1
 
     def test_years(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=1990)
         tracker.run()
         x = tracker.years
@@ -190,7 +190,7 @@ class TestSelect:
         assert n == 1
 
     def test_years_list(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.split("year")
         tracker.subset(years=1990)
         tracker.run()
@@ -199,7 +199,7 @@ class TestSelect:
         n = len(nc.session_files())
         assert n == 1
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.split("year")
         tracker.subset(year = 1990)
         tracker.run()
@@ -212,7 +212,7 @@ class TestSelect:
 
 
     def test_years1(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=[1949, 1970])
         tracker.run()
         x = tracker.years
@@ -221,7 +221,7 @@ class TestSelect:
         assert n == 1
 
     def test_years2(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=range(1990, 1993))
         tracker.run()
         x = tracker.years
@@ -230,7 +230,7 @@ class TestSelect:
         assert n == 1
 
     def test_years3(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=[1970, 1971])
         tracker.split("year")
         tracker.subset(years=[1970])
@@ -241,7 +241,7 @@ class TestSelect:
         assert n == 1
 
     def test_timestep(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(timesteps=0)
         tracker.run()
         x = tracker.years
@@ -249,7 +249,7 @@ class TestSelect:
         n = len(nc.session_files())
         assert n == 1
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(time = 0)
         tracker.run()
         x = tracker.years
@@ -257,12 +257,12 @@ class TestSelect:
         n = len(nc.session_files())
         assert n == 1
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(year = 1990, month = 1)
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0].astype("float")
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(year = 1990)
         tracker.subset(month = 1)
         tracker.spatial_mean()
@@ -274,7 +274,7 @@ class TestSelect:
 
 
     def test_timestepx23(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(timesteps=0)
         tracker.run()
         x = tracker.years
@@ -283,7 +283,7 @@ class TestSelect:
         assert n == 1
 
     def test_timestep2(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(timesteps=range(0, 13))
         tracker.run()
         x = tracker.years
@@ -293,7 +293,7 @@ class TestSelect:
 
 
     def test_timestep02(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(timesteps=range(0, 13))
         tracker.run()
         x = tracker.years
@@ -303,7 +303,7 @@ class TestSelect:
 
 
     def test_montherror(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(ValueError):
             tracker.subset(months=0)
 
@@ -359,14 +359,14 @@ class TestSelect:
         assert n == 0
 
     def test_missing_year(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(ValueError):
             tracker.subset(years=1800)
             n = len(nc.session_files())
             assert n == 0
 
     def test_var_list(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.assign(tos =  lambda x: x.sst+1)
         tracker.assign(tos1 =  lambda x: x.sst+1)
         tracker.subset(variables=["tos", "sst"])
@@ -376,7 +376,7 @@ class TestSelect:
         n = len(nc.session_files())
         assert n == 1
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.assign(tos =  lambda x: x.sst+1)
         tracker.assign(tos1 =  lambda x: x.sst+1)
         tracker.subset(var = ["tos", "sst"])
@@ -389,7 +389,7 @@ class TestSelect:
 
 
     def test_ensemble(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.split("year")
         tracker.merge("time")
         tracker.subset(years=1990)

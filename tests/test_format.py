@@ -13,20 +13,20 @@ class TestFormat:
 
     def test_format(self):
         ff = "data/sst.mon.mean.nc"
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         assert data.ncformat == ['NetCDF4 classic zip']
 
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.format("nc2")
         data.run()
 
         assert data.ncformat == ["NetCDF2"]
 
 
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
 
         nc.options(lazy = False)
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.format("nc2")
         data.run()
 

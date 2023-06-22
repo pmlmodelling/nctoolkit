@@ -17,7 +17,7 @@ class TestDelete:
         assert n == 0
 
     def test_drop(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=list(range(1970, 1971)))
         tracker.subset(months=[1])
         tracker.set_date(year=1990, month=1, day=1)
@@ -27,7 +27,7 @@ class TestDelete:
         x = tracker.variables
         assert x == ["tos"]
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(year = 1970)
         tracker.run()
         tracker.drop(time = -1)
@@ -35,7 +35,7 @@ class TestDelete:
         assert 12 not in tracker.months
 
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(time = [0,1, 2,3])
         tracker.drop(time = 0)
         tracker.run()
@@ -72,7 +72,7 @@ class TestDelete:
 
 
     def test_remove_error(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(ValueError):
             tracker.drop()
         with pytest.raises(ValueError):

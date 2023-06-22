@@ -11,7 +11,7 @@ ff = "data/sst.mon.mean.nc"
 
 class TestClip:
     def test_clip(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.tmean()
         tracker.assign(sst = lambda x:  x.sst+273.15)
         tracker.compare(">0")
@@ -20,7 +20,7 @@ class TestClip:
 
         x = int(tracker.to_dataframe().sst.values[0].astype("float"))
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.tmean()
         tracker.run()
         new = tracker.copy()

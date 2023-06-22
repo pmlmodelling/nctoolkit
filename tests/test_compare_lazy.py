@@ -16,7 +16,7 @@ class TestCompare:
         assert n == 0
 
     def test_compare(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=list(range(1970, 1971)))
         tracker.subset(months=[1])
         tracker.compare("<=0")
@@ -27,7 +27,7 @@ class TestCompare:
 
         x = tracker.to_dataframe().sst.values[0].astype("int")
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=list(range(1970, 1971)))
         tracker.subset(months=[1])
         tracker<=0
@@ -39,7 +39,7 @@ class TestCompare:
         x = tracker.to_dataframe().sst.values[0].astype("int")
 
     def test_compare_error(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(ValueError):
             tracker.compare("==")
         with pytest.raises(ValueError):
@@ -67,7 +67,7 @@ class TestCompare:
         assert n == 0
 
     def test_compare1(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=list(range(1970, 1971)))
         tracker.subset(months=[1])
         tracker-1
@@ -79,7 +79,7 @@ class TestCompare:
 
         assert x == 55
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=list(range(1970, 1971)))
         tracker.subset(months=[1])
         tracker<0
@@ -89,7 +89,7 @@ class TestCompare:
         x = tracker.to_dataframe().sst.values[0].astype("int")
 
         assert x == 55
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=list(range(1970, 1971)))
         tracker.subset(months=[1])
         tracker.compare("<0")
@@ -105,7 +105,7 @@ class TestCompare:
 
     def test_compare2(self):
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=list(range(1970, 1971)))
         tracker.subset(months=[1])
         tracker-1
@@ -116,7 +116,7 @@ class TestCompare:
         x = tracker.to_dataframe().sst.values[0].astype("int")
         assert x == 2125
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=list(range(1970, 1971)))
         tracker.subset(months=[1])
         tracker>0
@@ -126,7 +126,7 @@ class TestCompare:
         x = tracker.to_dataframe().sst.values[0].astype("int")
         assert x == 2125
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=list(range(1970, 1971)))
         tracker.subset(months=[1])
         tracker.compare(">0")
@@ -141,7 +141,7 @@ class TestCompare:
 
 
     def test_compare4(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=list(range(1970, 1971)))
         tracker.subset(months=[1])
         tracker!=0
@@ -151,7 +151,7 @@ class TestCompare:
         x = tracker.to_dataframe().sst.values[0].astype("int")
 
         assert x == 2180
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=list(range(1970, 1971)))
         tracker.subset(months=[1])
         tracker.compare("!=0")
@@ -165,7 +165,7 @@ class TestCompare:
         assert n == 1
 
     def test_compare5(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=list(range(1970, 1971)))
         tracker.subset(months=[1])
         tracker>=0
@@ -175,7 +175,7 @@ class TestCompare:
         x = tracker.to_dataframe().sst.values[0].astype("int")
 
         assert x == 2125
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=list(range(1970, 1971)))
         tracker.subset(months=[1])
         tracker.compare(">=0")

@@ -14,7 +14,7 @@ class TestMerge:
         assert n == 0
 
     def test_warning(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
 
         with pytest.warns(UserWarning):
             tracker.merge()
@@ -36,7 +36,7 @@ class TestMerge:
         assert len(ds1.times) == 731
 
     def test_warning1(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
 
         with pytest.warns(UserWarning):
             tracker.merge("time")
@@ -45,10 +45,10 @@ class TestMerge:
         assert n == 0
 
     def test_warning2(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(timesteps=[0, 1, 2])
         tracker.run()
-        new = nc.open_data(ff)
+        new = nc.open_data(ff, checks = False)
         new.subset(timesteps=[0])
         new.rename({"sst": "tos"})
         new.run()
@@ -64,14 +64,14 @@ class TestMerge:
     def test_merge_time(self):
 
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.split("year")
         tracker.merge("time")
         tracker.tmean()
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0]
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.tmean()
         tracker.spatial_mean()
 
@@ -81,14 +81,14 @@ class TestMerge:
         n = len(nc.session_files())
         assert n == 1
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.split("year")
         tracker.merge(join = "time")
         tracker.tmean()
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0]
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.tmean()
         tracker.spatial_mean()
 
@@ -99,7 +99,7 @@ class TestMerge:
         assert n == 1
 
     def test_merge(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.run()
         new = tracker.copy()
         new.rename({"sst": "tos"})
@@ -114,12 +114,12 @@ class TestMerge:
         assert n == 2
 
     def test_merge_error(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(timesteps=[0, 1, 2])
         tracker.run()
         new = tracker.copy()
 
-        new = nc.open_data(ff)
+        new = nc.open_data(ff, checks = False)
         new.subset(timesteps=112)
         new.run()
         new.rename({"sst": "tos"})
@@ -141,12 +141,12 @@ class TestMerge:
             ds.merge("time")
 
     def test_merge_error1(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(timesteps=[0])
         tracker.run()
         new = tracker.copy()
 
-        new = nc.open_data(ff)
+        new = nc.open_data(ff, checks = False)
         new.subset(timesteps=[0, 1, 2])
         new.run()
         new.rename({"sst": "tos"})
@@ -166,18 +166,18 @@ class TestMerge:
 
         n = len(nc.session_files())
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
 
 
     def test_collect(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(time =0)
         tracker.distribute(4,4)
         tracker.collect()
         tracker.spatial_sum()
         x = tracker.to_dataframe().sst.values[0]
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(time =0)
         tracker.distribute(4,4)
         tracker.collect()
@@ -188,7 +188,7 @@ class TestMerge:
 
 
     def test_merge_error4(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.run()
         new = tracker.copy()
         new.rename({"sst": "tos"})

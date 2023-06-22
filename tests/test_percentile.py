@@ -25,17 +25,17 @@ class TestPercentile:
 
         for by in byes:
 
-            data = nc.open_data(ff)
+            data = nc.open_data(ff, checks = False)
 
             data.tpercentile(p = 50, over = by)
             print(data.history)
             commands = data.history[0].split(" ")
 
-            data = nc.open_data(ff)
+            data = nc.open_data(ff, checks = False)
             data.tmin(over = by)
             part1 = data.history[0].split(" ")[-1]
 
-            data = nc.open_data(ff)
+            data = nc.open_data(ff, checks = False)
             data.tmax(over = by)
             part2 = data.history[0].split(" ")[-1]
 

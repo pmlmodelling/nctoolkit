@@ -15,7 +15,7 @@ class TestCor:
         assert n == 0
 
     def test_cor(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(timesteps=1)
         tracker.assign(tos =  lambda x: x.sst+273.15)
         tracker.cor_space(var1="tos", var2="sst")
@@ -26,7 +26,7 @@ class TestCor:
         assert n == 1
 
     def test_cor_list(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(timesteps=1)
         tracker.assign(tos = lambda x: x.sst+273.15)
         tracker.cor_space(var1="tos", var2="sst")
@@ -37,7 +37,7 @@ class TestCor:
         assert n == 1
 
     def test_cor1(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.assign(tos = lambda x: x.sst+273.15)
         tracker.cor_time(var1="tos", var2="sst")
         tracker.spatial_mean()
@@ -48,7 +48,7 @@ class TestCor:
         assert n == 1
 
     def test_cor2(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=range(1990, 2000))
         tracker.assign(tos = lambda x: x.sst+273.15)
         tracker.split("year")
@@ -65,13 +65,13 @@ class TestCor:
         assert n == 1
 
     def test_cor_error(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(ValueError):
             tracker.cor_space()
         n = len(nc.session_files())
         assert n == 0
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(timesteps=1)
         tracker.assign(tos = lambda x: x.sst+273.15)
         with pytest.raises(ValueError):
@@ -79,7 +79,7 @@ class TestCor:
         n = len(nc.session_files())
         assert n == 1
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(timesteps=1)
         tracker.assign(tos = lambda x: x.sst+273.15)
         with pytest.raises(ValueError):
@@ -87,7 +87,7 @@ class TestCor:
         n = len(nc.session_files())
         assert n == 1
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(TypeError):
             tracker.cor_space(var1=1, var2="y")
 

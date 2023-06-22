@@ -15,14 +15,14 @@ class Testrun:
 
     def test_run(self):
         print(nc.session.nc_safe)
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.split(("year"))
         tracker.merge("time")
         tracker.subset(timesteps=0)
         tracker.spatial_mean()
         tracker.run()
         x = tracker.to_dataframe().sst.values[0]
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(timesteps=0)
         tracker.spatial_mean()
         tracker.run()
@@ -34,7 +34,7 @@ class Testrun:
         assert n == 1
 
         if nc.session.session_info["parallel"] == False:
-            tracker = nc.open_data(ff)
+            tracker = nc.open_data(ff, checks = False)
             tracker.tmean()
             tracker._safe.append("asdfkjasdkfj.nc")
             nc.session.nc_safe.append("asdfkjasdkfj.nc")

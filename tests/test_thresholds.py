@@ -10,14 +10,14 @@ ff = "data/2003.nc"
 class TestClip:
     def test_thresholds(self):
 
-        ds1 = nc.open_data(ff)
-        ds2 = nc.open_data(ff)
+        ds1 = nc.open_data(ff, checks = False)
+        ds2 = nc.open_data(ff, checks = False)
         ds2.tmean()
         ds1.first_above(ds2)
         x = ds1.to_dataframe().analysed_sst.values[0]
 
-        ds1 = nc.open_data(ff)
-        ds2 = nc.open_data(ff)
+        ds1 = nc.open_data(ff, checks = False)
+        ds2 = nc.open_data(ff, checks = False)
         ds2.tmean()
         ds2.run()
         ds1.first_above(ds2[0])
@@ -25,14 +25,14 @@ class TestClip:
 
         assert x == y
 
-        ds1 = nc.open_data(ff)
-        ds2 = nc.open_data(ff)
+        ds1 = nc.open_data(ff, checks = False)
+        ds2 = nc.open_data(ff, checks = False)
         ds2.tmean()
         ds1.last_above(ds2)
         x = ds1.to_dataframe().analysed_sst.values[0]
 
-        ds1 = nc.open_data(ff)
-        ds2 = nc.open_data(ff)
+        ds1 = nc.open_data(ff, checks = False)
+        ds2 = nc.open_data(ff, checks = False)
         ds2.tmean()
         ds2.run()
         ds1.last_above(ds2[0])
@@ -40,14 +40,14 @@ class TestClip:
 
         assert x == y
 
-        ds1 = nc.open_data(ff)
-        ds2 = nc.open_data(ff)
+        ds1 = nc.open_data(ff, checks = False)
+        ds2 = nc.open_data(ff, checks = False)
         ds2.tmean()
         ds1.first_below(ds2)
         x = ds1.to_dataframe().analysed_sst.values[0]
 
-        ds1 = nc.open_data(ff)
-        ds2 = nc.open_data(ff)
+        ds1 = nc.open_data(ff, checks = False)
+        ds2 = nc.open_data(ff, checks = False)
         ds2.tmean()
         ds2.run()
         ds1.first_below(ds2[0])
@@ -55,14 +55,14 @@ class TestClip:
 
         assert x == y
 
-        ds1 = nc.open_data(ff)
-        ds2 = nc.open_data(ff)
+        ds1 = nc.open_data(ff, checks = False)
+        ds2 = nc.open_data(ff, checks = False)
         ds2.tmean()
         ds1.last_below(ds2)
         x = ds1.to_dataframe().analysed_sst.values[0]
 
-        ds1 = nc.open_data(ff)
-        ds2 = nc.open_data(ff)
+        ds1 = nc.open_data(ff, checks = False)
+        ds2 = nc.open_data(ff, checks = False)
         ds2.tmean()
         ds2.run()
         ds1.last_below(ds2[0])
@@ -77,9 +77,9 @@ class TestClip:
 
 
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         if nc.utils.version_below(nc.session.session_info["cdo"], "2.1.0"):
             tracker.assign(analysed_sst = lambda x: (x.analysed_sst == x.analysed_sst) * timestep(x.analysed_sst) + 0.01)
         else:
@@ -92,7 +92,7 @@ class TestClip:
 
         assert x == 349
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         with pytest.raises(ValueError):
             tracker.first_above("x")
         with pytest.raises(ValueError):
@@ -112,9 +112,9 @@ class TestClip:
             tracker.last_below([])
 
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         if nc.utils.version_below(nc.session.session_info["cdo"], "2.1.0"):
             tracker.assign(analysed_sst = lambda x: (x.analysed_sst == x.analysed_sst) * timestep(x.analysed_sst) + 0.01)
         else:
@@ -131,7 +131,7 @@ class TestClip:
 
         assert x == 349
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         if nc.utils.version_below(nc.session.session_info["cdo"], "2.1.0"):
             tracker.assign(analysed_sst = lambda x: (x.analysed_sst == x.analysed_sst) * timestep(x.analysed_sst) + 0.01)
         else:
@@ -144,7 +144,7 @@ class TestClip:
 
         assert x == 350.0
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         if nc.utils.version_below(nc.session.session_info["cdo"], "2.1.0"):
             tracker.assign(analysed_sst = lambda x: (x.analysed_sst == x.analysed_sst) * timestep(x.analysed_sst) + 0.01)
         else:
@@ -161,7 +161,7 @@ class TestClip:
 
 
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         if nc.utils.version_below(nc.session.session_info["cdo"], "2.1.0"):
             tracker.assign(analysed_sst = lambda x: (x.analysed_sst == x.analysed_sst) * timestep(x.analysed_sst) + 0.01)
         else:
@@ -177,7 +177,7 @@ class TestClip:
 
         assert x == 350.0
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         if nc.utils.version_below(nc.session.session_info["cdo"], "2.1.0"):
             tracker.assign(analysed_sst = lambda x: (x.analysed_sst == x.analysed_sst) * timestep(x.analysed_sst) + 0.01)
         else:
@@ -195,7 +195,7 @@ class TestClip:
 
 
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         if nc.utils.version_below(nc.session.session_info["cdo"], "2.1.0"):
             tracker.assign(analysed_sst = lambda x: (x.analysed_sst == x.analysed_sst) * timestep(x.analysed_sst) + 0.01)
         else:
@@ -212,7 +212,7 @@ class TestClip:
 
 
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         if nc.utils.version_below(nc.session.session_info["cdo"], "2.1.0"):
             tracker.assign(analysed_sst = lambda x: (x.analysed_sst == x.analysed_sst) * timestep(x.analysed_sst) + 0.01)
         else:

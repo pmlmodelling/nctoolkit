@@ -32,7 +32,7 @@ class TestApi2:
         ff2 = "this_file_does_not_exist2.nc"
 
         with pytest.raises(FileNotFoundError):
-            tracker = nc.open_data(ff)
+            tracker = nc.open_data(ff, checks = False)
 
         with pytest.raises(FileNotFoundError):
             tracker = nc.open_data([ff, ff2])
@@ -41,7 +41,7 @@ class TestApi2:
             nc.options(temp_dir = "/adsfjasdfiwnnck")
 
         ff = "data/sst.mon.mean.nc"
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         assert tracker.contents.long_name[0] == 'Monthly Means of Global Sea Surface Temperature'
         tracker.assign(sst2 = lambda x: x.sst + 283)
         tracker.run()

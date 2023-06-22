@@ -16,7 +16,7 @@ class TestCell:
         assert n == 0
 
     def test_cell_areas(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=list(range(1970, 1971)))
         tracker.subset(months=[1])
         tracker.run()
@@ -31,7 +31,7 @@ class TestCell:
         assert n == 1
 
     def test_cell_areas2(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(years=list(range(1970, 1971)))
         tracker.subset(months=[1])
         tracker.cell_area(join=False)
@@ -44,7 +44,7 @@ class TestCell:
         assert n == 1
 
     def test_cell_list(self):
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(timesteps=[0, 1])
         tracker.split("yearmonth")
         tracker.cell_area(join=True)
@@ -60,7 +60,7 @@ class TestCell:
         with pytest.raises(ValueError):
             tracker.cell_area(join=True)
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.cell_area(join=True)
         with pytest.raises(ValueError):
             tracker.cell_area(join=True)

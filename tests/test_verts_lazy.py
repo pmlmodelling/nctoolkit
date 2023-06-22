@@ -27,7 +27,7 @@ class TestVerts:
 
         ff = "data/vertical_tester.nc"
 
-        ds = nc.open_data(ff)
+        ds = nc.open_data(ff, checks = False)
 
 
         with pytest.raises(TypeError):
@@ -61,11 +61,11 @@ class TestVerts:
             ds.vertical_mean(thickness = ff, fixed = False)
 
         with pytest.raises(ValueError):
-            ds1 = nc.open_data(ff)
+            ds1 = nc.open_data(ff, checks = False)
             ds.vertical_mean(thickness = ds1, fixed = False)
 
         with pytest.raises(ValueError):
-            ds1 = nc.open_data(ff)
+            ds1 = nc.open_data(ff, checks = False)
             ds.vertical_integration(thickness = ds1, fixed = False)
 
         ds = nc.open_data("data/vertical_tester.nc")
@@ -113,7 +113,7 @@ class TestVerts:
             ds.vertical_integration("e3t")
             ds.subset(variable = "one")
             ds.run()
-            ds1 = nc.open_data(ff)
+            ds1 = nc.open_data(ff, checks = False)
             ds1.assign(e3t = lambda x: x.e3t * (isnan(x.one) is False ) )
             ds1.subset(variables = "e3t")
             ds1.as_missing(0)
@@ -125,19 +125,19 @@ class TestVerts:
             ds2.spatial_sum()
             assert ds2.to_dataframe().one.sum() == 0
 
-            ds = nc.open_data(ff)
+            ds = nc.open_data(ff, checks = False)
             ds.vertical_integration(depth_range=[2, 302], thickness="e3t")
             ds.spatial_max()
             assert ds.to_dataframe().one[0].astype("int") == 300
 
 
-            ds = nc.open_data(ff)
-            ds3 = nc.open_data(ff)
+            ds = nc.open_data(ff, checks = False)
+            ds3 = nc.open_data(ff, checks = False)
             ds3.subset(variable = "e3t")
             ds.vertical_integration(ds3)
             ds.subset(variable = "one")
             ds.run()
-            ds1 = nc.open_data(ff)
+            ds1 = nc.open_data(ff, checks = False)
             ds1.assign(e3t = lambda x: x.e3t * (isnan(x.one) is False ) )
             ds1.subset(variables = "e3t")
             ds1.as_missing(0)
@@ -149,14 +149,14 @@ class TestVerts:
             ds2.spatial_sum()
             ds2.to_dataframe().one.sum() == 0
 
-            ds = nc.open_data(ff)
-            ds3 = nc.open_data(ff)
+            ds = nc.open_data(ff, checks = False)
+            ds3 = nc.open_data(ff, checks = False)
             ds3.subset(variable = "e3t")
             ds3.run()
             ds.vertical_integration(ds3[0])
             ds.subset(variable = "one")
             ds.run()
-            ds1 = nc.open_data(ff)
+            ds1 = nc.open_data(ff, checks = False)
             ds1.assign(e3t = lambda x: x.e3t * (isnan(x.one) is False ) )
             ds1.subset(variables = "e3t")
             ds1.as_missing(0)
@@ -173,7 +173,7 @@ class TestVerts:
     def test_mean(self):
         ff = "data/woa18_decav_t01_01.nc"
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(variables="t_an")
         tracker.vertical_mean(fixed = True)
         tracker.spatial_mean()
@@ -185,7 +185,7 @@ class TestVerts:
     def test_max(self):
         ff = "data/woa18_decav_t01_01.nc"
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(variables="t_an")
         tracker.vertical_max()
         tracker.spatial_mean()
@@ -197,7 +197,7 @@ class TestVerts:
     def test_min(self):
         ff = "data/woa18_decav_t01_01.nc"
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(variables="t_an")
         tracker.vertical_min()
         tracker.spatial_mean()
@@ -209,7 +209,7 @@ class TestVerts:
     def test_sum(self):
         ff = "data/woa18_decav_t01_01.nc"
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(variables="t_an")
         tracker.vertical_sum()
         tracker.spatial_mean()
@@ -221,7 +221,7 @@ class TestVerts:
     def test_range(self):
         ff = "data/woa18_decav_t01_01.nc"
 
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(variables="t_an")
         tracker.vertical_range()
         tracker.spatial_mean()
@@ -264,7 +264,7 @@ class TestVerts:
 
     def test_int(self):
         ff = "data/woa18_decav_t01_01.nc"
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
         tracker.subset(variables="t_an")
         tracker.vertical_interp(10, fixed = True)
         x = tracker.to_dataframe().t_an.values[0].astype("float")
@@ -273,7 +273,7 @@ class TestVerts:
 
     def test_surface(self):
         ff = "data/woa18_decav_t01_01.nc"
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
 
         tracker.subset(variables="t_an")
         tracker.top()
@@ -286,7 +286,7 @@ class TestVerts:
 
     def test_bottom(self):
         ff = "data/woa18_decav_t01_01.nc"
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
 
         tracker.subset(variables="t_an")
         tracker.bottom()
@@ -300,7 +300,7 @@ class TestVerts:
     def test_bottom_error(self):
         n = len(nc.session_files())
         ff = "data/woa18_decav_t01_01.nc"
-        tracker = nc.open_data(ff)
+        tracker = nc.open_data(ff, checks = False)
 
         tracker.subset(variables="t_an")
         new = tracker.copy()
