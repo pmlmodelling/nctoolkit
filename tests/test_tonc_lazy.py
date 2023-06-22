@@ -9,12 +9,12 @@ import os, pytest
 class TestTonnc:
     def test_empty(self):
 
-        ds = nc.open_data("data/sst.mon.mean.nc")
+        ds = nc.open_data("data/sst.mon.mean.nc", checks = False)
         times = ds.times
         out = nc.temp_file.temp_file("nc")
         nc.session.append_safe(out)
         ds.to_nc(out, time = 1)
-        ds = nc.open_data(out)
+        ds = nc.open_data(out, checks = False)
         assert  len(ds.times) == 1
         assert ds.times[0] == times[1]
         nc.session.remove_safe(out)
@@ -28,12 +28,12 @@ class TestTonnc:
             ds.to_nc("/tmp/test.nc")
 
         out_file = "test123.nc"
-        ds = nc.open_data(["data/2003.nc", "data/2004.nc"])
+        ds = nc.open_data(["data/2003.nc", "data/2004.nc"], checks = False)
         ds.subset(time = 0)
         ds.merge("time")
         ds.to_nc(out_file, overwrite=True)
         os.path.exists(out_file)
-        ds = nc.open_data(["data/2003.nc", "data/2004.nc"])
+        ds = nc.open_data(["data/2003.nc", "data/2004.nc"], checks = False)
         ds.subset(time = 0)
         ds.merge("time")
         ds.to_nc(out_file, overwrite=True)
@@ -45,7 +45,7 @@ class TestTonnc:
         data = nc.open_data(ff, checks = False)
         data.subset(timesteps=0)
         data.to_nc(ff1)
-        data1 = nc.open_data(ff1)
+        data1 = nc.open_data(ff1, checks=False)
 
         data.spatial_mean()
         data1.spatial_mean()
@@ -60,7 +60,7 @@ class TestTonnc:
         data.subset(timesteps=0)
         data.run()
         data.to_nc(ff1, zip=False)
-        data1 = nc.open_data(ff1)
+        data1 = nc.open_data(ff1, checks=False)
 
         data.spatial_mean()
         data1.spatial_mean()
@@ -76,7 +76,7 @@ class TestTonnc:
         data.run()
         data.to_nc(ff1, zip=False)
 
-        data1 = nc.open_data(ff1)
+        data1 = nc.open_data(ff1, checks=False)
         data1.spatial_mean()
         x = data.to_dataframe().sst.values[0].astype("float")
         os.remove(ff1)
@@ -88,7 +88,7 @@ class TestTonnc:
         data.run()
         data.to_nc(ff1, zip=True)
 
-        data1 = nc.open_data(ff1)
+        data1 = nc.open_data(ff1, checks=False)
         data1.spatial_mean()
         y = data.to_dataframe().sst.values[0].astype("float")
         os.remove(ff1)
@@ -101,7 +101,7 @@ class TestTonnc:
         data.subset(timesteps=0)
         data.to_nc(ff1, zip=False)
 
-        data1 = nc.open_data(ff1)
+        data1 = nc.open_data(ff1, checks=False)
         data1.spatial_mean()
         x = data.to_dataframe().sst.values[0].astype("float")
         os.remove(ff1)
@@ -112,7 +112,7 @@ class TestTonnc:
         data.subset(timesteps=0)
         data.to_nc(ff1, zip=True)
 
-        data1 = nc.open_data(ff1)
+        data1 = nc.open_data(ff1, checks=False)
         data1.spatial_mean()
         y = data.to_dataframe().sst.values[0].astype("float")
         os.remove(ff1)
@@ -127,7 +127,7 @@ class TestTonnc:
         data.tmean()
         data.to_nc(ff1, zip=False)
 
-        data1 = nc.open_data(ff1)
+        data1 = nc.open_data(ff1, checks=False)
         data1.spatial_mean()
         x = data.to_dataframe().sst.values[0].astype("float")
         os.remove(ff1)
@@ -140,7 +140,7 @@ class TestTonnc:
         data.ensemble_mean()
         data.to_nc(ff1, zip=True)
 
-        data1 = nc.open_data(ff1)
+        data1 = nc.open_data(ff1, checks=False)
         data1.spatial_mean()
         y = data.to_dataframe().sst.values[0].astype("float")
         os.remove(ff1)

@@ -48,7 +48,7 @@ class TestAppend:
         with pytest.warns(UserWarning):
             new.append([ff1, ff1])
 
-        new = nc.open_data([ff1, ff2])
+        new = nc.open_data([ff1, ff2], checks=False)
 
         #with pytest.raises(ValueError):
         #    new.append(ff1)
@@ -57,7 +57,7 @@ class TestAppend:
 
         assert new.current == [ff1, ff2, ff]
 
-        new = nc.open_data([ff1, ff2])
+        new = nc.open_data([ff1, ff2], checks=False)
 
         data = nc.open_data(ff, checks = False)
         new.append(data)
@@ -65,17 +65,17 @@ class TestAppend:
         assert new.current == [ff1, ff2, ff]
 
 
-        new = nc.open_data([ff1, ff2])
+        new = nc.open_data([ff1, ff2], checks=False)
 
         assert new.current == [ff1, ff2]
 
-        new = nc.open_data([ff1, ff2])
+        new = nc.open_data([ff1, ff2], checks=False)
         new.append(data)
         new.remove(ff2)
 
         assert new.current == [ff1, ff]
 
-        new = nc.open_data([ff1, ff2])
+        new = nc.open_data([ff1, ff2], checks=False)
         new.append(data)
         new.remove([ff1, ff2])
 

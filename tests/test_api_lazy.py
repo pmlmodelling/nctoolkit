@@ -20,7 +20,7 @@ class TestApi2:
         ds.spatial_mean()
         assert  ds.to_dataframe().Band1.values[0] == 215.0
 
-        ds = nc.open_data([ff1, ff2])
+        ds = nc.open_data([ff1, ff2], checks=False)
         ds.subset(time = 0)
         ds.run()
 
@@ -50,15 +50,15 @@ class TestApi2:
 
         # check wildcard
 
-        data = nc.open_data("data/*.nc")
+        data = nc.open_data("data/*.nc", checks=False)  
 
         print([x for x in data if "" in x])
         assert [x for x in data if "data" in x] == [x for x in glob.glob("data/*.nc") if " " not in x]
         ff1 = "data/2003.nc"
         ff2 = "data/2004.nc"
 
-        data1 = nc.open_data(ff1)
-        data2 = nc.open_data(ff2)
+        data1 = nc.open_data(ff1, checks=False)
+        data2 = nc.open_data(ff2, checks=False)
         data = nc.cor_space(data1, data2)
 
         data.tmean()
@@ -94,11 +94,11 @@ class TestApi2:
         with pytest.raises(TypeError):
             nc.options(thread_safe = "x")
 
-        ds = nc.open_data(ff1)
+        ds = nc.open_data(ff1, checks=False)
         assert ds.current[0] == ds.start[0]
 
-        ds1 = nc.open_data("data/ukesm_tas space.nc")
-        ds2 = nc.open_data("data/ukesm_tas.nc")
+        ds1 = nc.open_data("data/ukesm_tas space.nc", checks=False)
+        ds2 = nc.open_data("data/ukesm_tas.nc", checks=False)
         ds1-ds2
         ds1.spatial_sum()
         assert ds1.to_dataframe().tas.abs().sum() == 0.0

@@ -22,7 +22,7 @@ class TestAssign:
         with pytest.raises(TypeError):
             nc.temp_file.temp_file(1)
 
-    ds = nc.open_data("data/woa18_decav_t01_01.nc")
+    ds = nc.open_data("data/woa18_decav_t01_01.nc", checks=False)
     with pytest.raises(ValueError):
         ds.assign(t_an = lambda x: x.t_an == vert_max(x.t_an), drop = True)
     with pytest.raises(ValueError):
@@ -44,19 +44,19 @@ class TestAssign:
     ds.spatial_max()
     assert ds.to_dataframe().t_an.values[0] == 1.0
 
-    ds = nc.open_data("data/woa18_decav_t01_01.nc")
+    ds = nc.open_data("data/woa18_decav_t01_01.nc", checks=False)
     ds.assign(t_an = lambda x: x.t_an is False)
     assert ds.history[0] == "cdo -aexpr,'t_an=t_an<1'"
 
-    ds = nc.open_data("data/woa18_decav_t01_01.nc")
+    ds = nc.open_data("data/woa18_decav_t01_01.nc", checks=False)
     ds.assign(t_an = lambda x: x.t_an is True)
     assert ds.history[0] == "cdo -aexpr,'t_an=t_an>0'"
 
-    ds = nc.open_data("data/woa18_decav_t01_01.nc")
+    ds = nc.open_data("data/woa18_decav_t01_01.nc", checks= False)
     ds.assign(t_an = lambda x: x.t_an == True)
     assert ds.history[0] == "cdo -aexpr,'t_an=t_an>0'"
 
-    ds = nc.open_data("data/woa18_decav_t01_01.nc")
+    ds = nc.open_data("data/woa18_decav_t01_01.nc", checks= False)
     ds.assign(t_an = lambda x: x.t_an == False)
     assert ds.history[0] == "cdo -aexpr,'t_an=t_an<1'"
 
@@ -370,11 +370,11 @@ class TestAssign:
         == "cdo -aexpr,'new=(sst==sst)*(ctimestep(sst+1)-1);old=sst+(ctimestep(sst)-1)'"
     )
 
-    data = nc.open_data("data/sst.mon.mean.nc")
+    data = nc.open_data("data/sst.mon.mean.nc", checks=False)
     data.assign(new=lambda x: vertical_mean(x.sst + 100))
     assert data.history[0] == "cdo -aexpr,'new=vertmean(sst+100)'"
 
-    data = nc.open_data("data/sst.mon.mean.nc")
+    data = nc.open_data("data/sst.mon.mean.nc", checks=False)
     with pytest.raises(ValueError):
         data.assign(new=lambda x: cell_area(x.sst + 100))
 
@@ -384,153 +384,153 @@ class TestAssign:
     with pytest.raises(ValueError):
         data.assign(new=lambda x: latitude(x.sst + 100))
 
-    data = nc.open_data("data/sst.mon.mean.nc")
+    data = nc.open_data("data/sst.mon.mean.nc", checks=False)
     data.assign(new=lambda x: cell_area(x.sst))
     assert data.history[0] == "cdo -aexpr,'new=gridarea(sst)'"
 
-    data = nc.open_data("data/sst.mon.mean.nc")
+    data = nc.open_data("data/sst.mon.mean.nc", checks=False)
     data.assign(new=lambda x: cell_area(x.sst) * x.sst)
     assert data.history[0] == "cdo -aexpr,'new=gridarea(sst)*sst'"
 
-    data = nc.open_data("data/sst.mon.mean.nc")
+    data = nc.open_data("data/sst.mon.mean.nc", checks=False) 
     data.assign(new=lambda x: level(x.sst) * x.sst)
     assert data.history[0] == "cdo -aexpr,'new=clev(sst)*sst'"
 
-    data = nc.open_data("data/sst.mon.mean.nc")
+    data = nc.open_data("data/sst.mon.mean.nc", checks=False)
     data.assign(new=lambda x: longitude(x.sst) * x.sst)
     assert data.history[0] == "cdo -aexpr,'new=clon(sst)*sst'"
 
-    data = nc.open_data("data/sst.mon.mean.nc")
+    data = nc.open_data("data/sst.mon.mean.nc", checks= False)
     data.assign(new=lambda x: latitude(x.sst) * x.sst)
     assert data.history[0] == "cdo -aexpr,'new=clat(sst)*sst'"
 
-    data = nc.open_data("data/sst.mon.mean.nc")
+    data = nc.open_data("data/sst.mon.mean.nc", checks=False)
     data.assign(new=lambda x: lon(x.sst) * x.sst)
     assert data.history[0] == "cdo -aexpr,'new=clon(sst)*sst'"
 
-    data = nc.open_data("data/sst.mon.mean.nc")
+    data = nc.open_data("data/sst.mon.mean.nc", checks=False)
     data.assign(new=lambda x: lat(x.sst) * x.sst)
     assert data.history[0] == "cdo -aexpr,'new=clat(sst)*sst'"
 
-    data = nc.open_data("data/sst.mon.mean.nc")
+    data = nc.open_data("data/sst.mon.mean.nc", checks=False)
     data.assign(new=lambda x: second(x.sst) * x.sst)
     assert data.history[0] == "cdo -aexpr,'new=csecond(sst)*sst'"
 
-    data = nc.open_data("data/sst.mon.mean.nc")
+    data = nc.open_data("data/sst.mon.mean.nc", checks=False)    
     data.assign(new=lambda x: minute(x.sst) * x.sst)
     assert data.history[0] == "cdo -aexpr,'new=cminute(sst)*sst'"
 
-    data = nc.open_data("data/sst.mon.mean.nc")
+    data = nc.open_data("data/sst.mon.mean.nc", checks= False   )
     data.assign(new=lambda x: hour(x.sst) * x.sst)
     assert data.history[0] == "cdo -aexpr,'new=chour(sst)*sst'"
 
-    data = nc.open_data("data/sst.mon.mean.nc")
+    data = nc.open_data("data/sst.mon.mean.nc", checks=False)   
     data.assign(new=lambda x: day(x.sst) * x.sst)
     assert data.history[0] == "cdo -aexpr,'new=cday(sst)*sst'"
 
-    data = nc.open_data("data/sst.mon.mean.nc")
+    data = nc.open_data("data/sst.mon.mean.nc", checks= False)
     data.assign(new=lambda x: month(x.sst) * x.sst)
     assert data.history[0] == "cdo -aexpr,'new=cmonth(sst)*sst'"
 
-    data = nc.open_data("data/sst.mon.mean.nc")
+    data = nc.open_data("data/sst.mon.mean.nc", checks=False)
     data.assign(new=lambda x: year(x.sst) * x.sst)
     assert data.history[0] == "cdo -aexpr,'new=cyear(sst)*sst'"
 
-    data = nc.open_data("data/sst.mon.mean.nc")
+    data = nc.open_data("data/sst.mon.mean.nc", checks=False)
     data.assign(new=lambda x: log(x.sst) * x.sst)
     assert data.history[0] == "cdo -aexpr,'new=ln(sst)*sst'"
 
-    data = nc.open_data("data/sst.mon.mean.nc")
+    data = nc.open_data("data/sst.mon.mean.nc", checks= False)
     data.assign(new=lambda x: x.sst - zonal_mean(x.sst))
     assert data.history[0] == "cdo -aexpr,'new=sst-zonmean(sst)'"
 
-    data = nc.open_data("data/sst.mon.mean.nc")
+    data = nc.open_data("data/sst.mon.mean.nc", checks=False)
     data.assign(new=lambda x: x.sst - zonal_max(x.sst))
     assert data.history[0] == "cdo -aexpr,'new=sst-zonmax(sst)'"
 
-    data = nc.open_data("data/sst.mon.mean.nc")
+    data = nc.open_data("data/sst.mon.mean.nc", checks=False )
     data.assign(new=lambda x: x.sst - zonal_min(x.sst))
     assert data.history[0] == "cdo -aexpr,'new=sst-zonmin(sst)'"
 
-    data = nc.open_data("data/sst.mon.mean.nc")
+    data = nc.open_data("data/sst.mon.mean.nc", checks=False)
     data.assign(new=lambda x: x.sst - zonal_sum(x.sst))
     assert data.history[0] == "cdo -aexpr,'new=sst-zonsum(sst)'"
 
-    data = nc.open_data("data/sst.mon.mean.nc")
+    data = nc.open_data("data/sst.mon.mean.nc", checks= False)
     with pytest.raises(ValueError):
         data.assign(new=lambda x: x.sst - zonal_range(x.sst))
 
-    data = nc.open_data("data/sst.mon.mean.nc")
+    data = nc.open_data("data/sst.mon.mean.nc", checks= False)
     data.assign(new=lambda x: x.sst - vertical_mean(x.sst))
     assert data.history[0] == "cdo -aexpr,'new=sst-vertmean(sst)'"
 
-    data = nc.open_data("data/sst.mon.mean.nc")
+    data = nc.open_data("data/sst.mon.mean.nc", checks=False)
     data.assign(new=lambda x: x.sst - vertical_max(x.sst))
     assert data.history[0] == "cdo -aexpr,'new=sst-vertmax(sst)'"
 
-    data = nc.open_data("data/sst.mon.mean.nc")
+    data = nc.open_data("data/sst.mon.mean.nc", checks=False)
     data.assign(new=lambda x: x.sst - vertical_min(x.sst))
     assert data.history[0] == "cdo -aexpr,'new=sst-vertmin(sst)'"
 
-    data = nc.open_data("data/sst.mon.mean.nc")
+    data = nc.open_data("data/sst.mon.mean.nc", checks= False)
     data.assign(new=lambda x: x.sst - vertical_sum(x.sst))
     assert data.history[0] == "cdo -aexpr,'new=sst-vertsum(sst)'"
 
-    data = nc.open_data("data/sst.mon.mean.nc")
+    data = nc.open_data("data/sst.mon.mean.nc", checks=False   )
     with pytest.raises(ValueError):
         data.assign(new=lambda x: x.sst - vertical_range(x.sst))
 
-    data = nc.open_data("data/sst.mon.mean.nc")
+    data = nc.open_data("data/sst.mon.mean.nc", checks=False)
     data.assign(new=lambda x: x.sst - spatial_mean(x.sst))
     assert data.history[0] == "cdo -aexpr,'new=sst-fldmean(sst)'"
 
-    data = nc.open_data("data/sst.mon.mean.nc")
+    data = nc.open_data("data/sst.mon.mean.nc", checks=False)
     data.assign(new=lambda x: x.sst - spatial_max(x.sst))
     assert data.history[0] == "cdo -aexpr,'new=sst-fldmax(sst)'"
 
-    data = nc.open_data("data/sst.mon.mean.nc")
+    data = nc.open_data("data/sst.mon.mean.nc", checks=False)
     data.assign(new=lambda x: x.sst - spatial_min(x.sst))
     assert data.history[0] == "cdo -aexpr,'new=sst-fldmin(sst)'"
 
-    data = nc.open_data("data/sst.mon.mean.nc")
+    data = nc.open_data("data/sst.mon.mean.nc", checks=False)
     data.assign(new=lambda x: x.sst - spatial_sum(x.sst))
     assert data.history[0] == "cdo -aexpr,'new=sst-fldsum(sst)'"
 
-    data = nc.open_data("data/sst.mon.mean.nc")
+    data = nc.open_data("data/sst.mon.mean.nc", checks=False)
     data.assign(new=lambda x: arctan(x.sst))
     assert data.history[0] == "cdo -aexpr,'new=atan(sst)'"
 
-    data = nc.open_data("data/sst.mon.mean.nc")
+    data = nc.open_data("data/sst.mon.mean.nc", checks=False)
     data.assign(new=lambda x: arccos(x.sst))
     assert data.history[0] == "cdo -aexpr,'new=acos(sst)'"
 
-    data = nc.open_data("data/sst.mon.mean.nc")
+    data = nc.open_data("data/sst.mon.mean.nc", checks=False)
     data.assign(new=lambda x: arcsin(x.sst))
     assert data.history[0] == "cdo -aexpr,'new=asin(sst)'"
 
-    data = nc.open_data("data/sst.mon.mean.nc")
+    data = nc.open_data("data/sst.mon.mean.nc", checks=False)
     data.assign(new=lambda x: ((x.sst > 1 & x.sst < 10)))
     assert data.history[0] == "cdo -aexpr,'new=((sst>1&&sst<10))'"
 
-    data = nc.open_data("data/sst.mon.mean.nc")
+    data = nc.open_data("data/sst.mon.mean.nc", checks=False)
     data.assign(new=lambda x: ((x.sst > 1 | x.sst < 10)))
     assert data.history[0] == "cdo -aexpr,'new=((sst>1||sst<10))'"
 
-    data = nc.open_data("data/sst.mon.mean.nc")
+    data = nc.open_data("data/sst.mon.mean.nc", checks=False)
     data.assign(one2ten=lambda x: x.sst > 1 and x.sst < 10)
     assert data.history[0] == "cdo -aexpr,'one2ten=sst>1&&sst<10'"
 
-    data = nc.open_data("data/sst.mon.mean.nc")
+    data = nc.open_data("data/sst.mon.mean.nc", checks=False)   
     data.assign(one2ten=lambda x: x.sst > 1 or x.sst < 10)
     assert data.history[0] == "cdo -aexpr,'one2ten=sst>1||sst<10'"
 
 
-    data = nc.open_data("data/sst.mon.mean.nc")
+    data = nc.open_data("data/sst.mon.mean.nc", checks=False)
     data.assign(one2ten=lambda x: abs(x.sst + 1) - abs(x.sst-1))
     assert data.history[0] == "cdo -aexpr,'one2ten=abs(sst+1)-abs(sst-1)'"
 
 
-    data = nc.open_data("data/sst.mon.mean.nc")
+    data = nc.open_data("data/sst.mon.mean.nc",     checks=False)
     data.assign(one2ten           =              lambda          x         :          abs(          x.sst + 1      ) - abs(        x.sst-1       )        )
     assert data.history[0] == "cdo -aexpr,'one2ten=abs(sst+1)-abs(sst-1)'"
 
@@ -539,16 +539,16 @@ class TestAssign:
 
 
 
-    ds1 = nc.open_data("data/woa18_decav_t01_01.nc")
+    ds1 = nc.open_data("data/woa18_decav_t01_01.nc",    checks=False)
     ds1.subset(variables = "t_an")
     ds1.vertical_mean(fixed = True)
 
-    ds2 = nc.open_data("data/woa18_decav_t01_01.nc")
+    ds2 = nc.open_data("data/woa18_decav_t01_01.nc", checks=False)
     ds2.assign(t_an = lambda x: x.t_an/vertical_mean(x.t_an))
     ds2.top()
     ds2.run()
 
-    ds3 = nc.open_data("data/woa18_decav_t01_01.nc")
+    ds3 = nc.open_data("data/woa18_decav_t01_01.nc",    checks=False)
     ds3.top()
     ds3.subset(variables = "t_an")
     ds3.divide(ds1)
@@ -570,12 +570,12 @@ class TestAssign:
 
 
 
-    ds = nc.open_data("data/sst.mon.mean.nc")
+    ds = nc.open_data("data/sst.mon.mean.nc", checks=False)
     ds.subset(time = 0)
     ds.spatial_mean()
     x = ds.to_dataframe().sst.values[0]
 
-    ds = nc.open_data("data/sst.mon.mean.nc")
+    ds = nc.open_data("data/sst.mon.mean.nc", checks=False)
     ds.subset(time = 0)
     ##ds.assign(sst = lambda x: x.sst + spatial_mean(x.sst)*(isnan(x.sst)<1))
     ds.assign(sst = lambda x: x.sst + spatial_mean(x.sst))

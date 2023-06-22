@@ -15,25 +15,25 @@ class TestSelect:
         assert n == 0
 
     def test_hours(self):
-        ds = nc.open_data("data/hourly/01/swr_1997_01_01.nc")
+        ds = nc.open_data("data/hourly/01/swr_1997_01_01.nc", checks = False)
         ds.subset(hours = 3)
         ds.run()
         assert ds.times[0].hour == 3
 
     def test_levels(self):
-        ds = nc.open_data("data/woa18_decav_t01_01.nc")
+        ds = nc.open_data("data/woa18_decav_t01_01.nc", checks = False)
         ds.subset(levels = [0, 40])
         ds.run()
         assert ds.levels == [0.0, 5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0]
 
-        ds = nc.open_data("data/woa18_decav_t01_01.nc")
+        ds = nc.open_data("data/woa18_decav_t01_01.nc", checks = False)
         ds.subset(levels = 5)
         
         ds.run()
         assert ds.levels == [5.0]
 
 
-        ds = nc.open_data("data/sst.mon.mean.nc")
+        ds = nc.open_data("data/sst.mon.mean.nc", checks=False)
         ds.subset(time = 0)
         ds.run()
         for hour in range(3):
@@ -60,17 +60,17 @@ class TestSelect:
         with pytest.raises(ValueError):
             ds_test.subset(hour = 1000) 
 
-        ds = nc.open_data("data/2003.nc")
+        ds = nc.open_data("data/2003.nc", checks=False)
         ds.subset(day = 10)
         ds.run()
         assert len(ds.times) == 12
         
-        ds = nc.open_data("data/2004.nc")
+        ds = nc.open_data("data/2004.nc", checks=False)
         ds.subset(day = 31)
         ds.run()
         assert len(ds.times)  == 7
         
-        ds = nc.open_data("data/2004.nc")
+        ds = nc.open_data("data/2004.nc",  checks=False)
         ds.subset(day = range(1,3))
         ds.run()
         assert len(ds.times)  == 24
@@ -86,13 +86,13 @@ class TestSelect:
 
 
     def test_range(self):
-        ds = nc.open_data("data/200*.nc")
+        ds = nc.open_data("data/200*.nc", checks = False)
         ds.merge("time")
         ds.subset(range = ["01/01/2003", "11/09/2004"])
         ds.run()
         assert len(ds.times) == 619
 
-        ds = nc.open_data("data/200*.nc")
+        ds = nc.open_data("data/200*.nc", checks=False)
         ds.merge("time")
         ds.subset(range = ["01-01-2003", "11-09-2004"])
         ds.run()

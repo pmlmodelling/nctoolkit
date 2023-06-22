@@ -15,27 +15,27 @@ class TestRollstat:
         assert n == 0
 
     def test_var(self):
-        ds = nc.open_data("data/2003.nc")
+        ds = nc.open_data("data/2003.nc", checks=False)
         ds.rolling_var(10)
         assert "cdo -runvar,10" == ds.history[0]
-        ds = nc.open_data("data/2003.nc")
+        ds = nc.open_data("data/2003.nc", checks=False)
         ds.rolling_stdev(10)
         assert "cdo -runstd,10" == ds.history[0]
 
     def test_align(self):
-        ds = nc.open_data("data/2003.nc")
+        ds = nc.open_data("data/2003.nc", checks=False)
         ds.subset(times = range(0, 20))
         ds.rolling_mean(7, align = "first")
         ds.run()
         assert [x.day for x in ds.times][0] == 1
         
-        ds = nc.open_data("data/2003.nc")
+        ds = nc.open_data("data/2003.nc", checks=False)
         ds.subset(times = range(0, 20))
         ds.rolling_mean(7, align = "last")
         ds.run()
         assert [x.day for x in ds.times][0] == 7
         
-        ds = nc.open_data("data/2003.nc")
+        ds = nc.open_data("data/2003.nc", checks=False)
         ds.subset(times = range(0, 20))
         ds.rolling_mean(7, align = "centre")
         ds.run()

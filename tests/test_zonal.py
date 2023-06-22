@@ -24,7 +24,7 @@ ff = "data/sst.mon.mean.nc"
 class TestClip:
     def test_zonal1(self):
 
-        ds = nc.open_data("data/vertical_tester.nc")
+        ds = nc.open_data("data/vertical_tester.nc", checks = False)
         with pytest.raises(TypeError):
             ds.zonal_mean()
 
@@ -33,7 +33,7 @@ class TestClip:
         assert n == 0
 
         tracker = nc.open_data(ff, checks = False)
-        data = nc.open_data("data/sst.mon.mean.nc")
+        data = nc.open_data("data/sst.mon.mean.nc", checks = False)
         data.tmean()
         data.zonal_mean()
         data.spatial_mean()
@@ -49,7 +49,7 @@ class TestClip:
             )
 
         tracker = nc.open_data(ff, checks = False)
-        data = nc.open_data("data/sst.mon.mean.nc")
+        data = nc.open_data("data/sst.mon.mean.nc", checks = False)
         data.split("year")
         data.zonal_mean()
         data.merge("time")
@@ -70,7 +70,7 @@ class TestClip:
 
 
         tracker = nc.open_data(ff, checks = False)
-        data = nc.open_data("data/sst.mon.mean.nc")
+        data = nc.open_data("data/sst.mon.mean.nc", checks = False)
         data.tmean()
         data.zonal_min()
         data.spatial_mean()
@@ -88,7 +88,7 @@ class TestClip:
 
 
         tracker = nc.open_data(ff, checks = False)
-        data = nc.open_data("data/sst.mon.mean.nc")
+        data = nc.open_data("data/sst.mon.mean.nc", checks=False)
         data.tmean()
         data.zonal_max()
         data.spatial_mean()
@@ -104,7 +104,7 @@ class TestClip:
             )
 
         tracker = nc.open_data(ff, checks = False)
-        data = nc.open_data("data/sst.mon.mean.nc")
+        data = nc.open_data("data/sst.mon.mean.nc", checks=False)
         data.tmean()
         data.zonal_range()
         data.spatial_mean()

@@ -13,10 +13,10 @@ class TestVerts:
 
     def test_integration(self):
 
-        ds1 = nc.open_data("data/woa18_decav_t01_01.nc")
+        ds1 = nc.open_data("data/woa18_decav_t01_01.nc", checks = False)
         ds1.subset(variable = "t_an")
         ds1.vertical_integration(depth_range = [0, 2.0], fixed = True)
-        ds2 = nc.open_data("data/woa18_decav_t01_01.nc")
+        ds2 = nc.open_data("data/woa18_decav_t01_01.nc", checks = False)
         ds2.subset(variable = "t_an")
         ds2.top()
         ds1.divide(ds2)
@@ -68,13 +68,13 @@ class TestVerts:
             ds1 = nc.open_data(ff, checks = False)
             ds.vertical_integration(thickness = ds1, fixed = False)
 
-        ds = nc.open_data("data/vertical_tester.nc")
+        ds = nc.open_data("data/vertical_tester.nc", checks = False)
         ds.vertical_mean("e3t", depth_range = [0, 30])
         ds.spatial_sum()
         x = ds.to_dataframe().one.sum()
 
-        ds = nc.open_data("data/vertical_tester.nc")
-        ds1 = nc.open_data("data/vertical_tester.nc")
+        ds = nc.open_data("data/vertical_tester.nc", checks = False)
+        ds1 = nc.open_data("data/vertical_tester.nc", checks=False)
         ds1.subset(variables = "e3t")
         ds.vertical_mean(ds1, depth_range = [0,30])
         ds.spatial_sum()
@@ -83,13 +83,13 @@ class TestVerts:
         assert x == y
 
 
-        ds = nc.open_data("data/vertical_tester.nc")
+        ds = nc.open_data("data/vertical_tester.nc", checks = False)
         ds.vertical_mean("e3t")
         ds.spatial_sum()
         x = ds.to_dataframe().one.sum()
 
-        ds = nc.open_data("data/vertical_tester.nc")
-        ds1 = nc.open_data("data/vertical_tester.nc")
+        ds = nc.open_data("data/vertical_tester.nc", checks = False)
+        ds1 = nc.open_data("data/vertical_tester.nc", checks=False)
         ds1.subset(variables = "e3t")
         ds.vertical_mean(ds1)
         ds.spatial_sum()
@@ -97,8 +97,8 @@ class TestVerts:
 
         assert x == y
 
-        ds = nc.open_data("data/vertical_tester.nc")
-        ds1 = nc.open_data("data/vertical_tester.nc")
+        ds = nc.open_data("data/vertical_tester.nc", checks = False)
+        ds1 = nc.open_data("data/vertical_tester.nc", checks=False)
         ds1.subset(variables = "e3t")
         ds1.run()
         ds.vertical_mean(ds1[0])
@@ -109,7 +109,7 @@ class TestVerts:
 
         version = nc.utils.cdo_version()
         if nc.utils.version_below(version, "1.9.8") == False:
-            ds = nc.open_data("data/vertical_tester.nc")
+            ds = nc.open_data("data/vertical_tester.nc", checks = False)
             ds.vertical_integration("e3t")
             ds.subset(variable = "one")
             ds.run()

@@ -127,7 +127,7 @@ class TestRegrid:
         with pytest.raises(ValueError):
             tracker.regrid(grid=1)
 
-        tracker = nc.open_data("data/20*.nc")
+        tracker = nc.open_data("data/20*.nc", checks = False)
         with pytest.raises(ValueError):
             tracker.regrid(grid=ff, recycle = True)
 

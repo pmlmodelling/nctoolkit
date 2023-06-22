@@ -16,15 +16,15 @@ class TestCrop:
     def test_matchpoint(self):
 
         print("test 1")
-        depths = nc.open_data("data/matchpoint_depths.nc")
+        depths = nc.open_data("data/matchpoint_depths.nc", checks=False)
 
         ensemble = nc.create_ensemble("data/matchpoint")[0:3]
 
-        ds = nc.open_data("data/matchpoint/amm7_1d_20000301_20000331_ptrc_T.nc")
+        ds = nc.open_data("data/matchpoint/amm7_1d_20000301_20000331_ptrc_T.nc", checks=False)
         levels = ds.levels
         levels += levels
         ds.subset(time = [0])
-        depths = nc.open_data("data/matchpoint_depths.nc")
+        depths = nc.open_data("data/matchpoint_depths.nc", checks=False)
         # ds.subset(time = 0)
         ds.append(depths)
         ds.merge()
@@ -37,7 +37,7 @@ class TestCrop:
         df["day"] = [x.day for x in df.time_counter]
         df = df.loc[:,["lon", "lat", "month", "day", "year", "N3_n", "depth"]].drop_duplicates()
 
-        ds = nc.open_data("data/matchpoint/amm7_1d_20000301_20000331_ptrc_T.nc")
+        ds = nc.open_data("data/matchpoint/amm7_1d_20000301_20000331_ptrc_T.nc", checks=False)
         ds.subset(time = [0])
         ds.run()
 
@@ -70,15 +70,15 @@ class TestCrop:
         matcher.add_points(df.drop(columns = "N3_n"))
         matcher.add_data(ds, variables = "N3_n", depths = depths)
 
-        depths = nc.open_data("data/matchpoint_depths.nc")
+        depths = nc.open_data("data/matchpoint_depths.nc", checks=False)
 
         ensemble = nc.create_ensemble("data/matchpoint")[0:3]
 
-        ds = nc.open_data("data/matchpoint/amm7_1d_20000301_20000331_ptrc_T.nc")
+        ds = nc.open_data("data/matchpoint/amm7_1d_20000301_20000331_ptrc_T.nc", checks=False)
         levels = ds.levels
         levels += levels
         ds.subset(time = [0])
-        depths = nc.open_data("data/matchpoint_depths.nc")
+        depths = nc.open_data("data/matchpoint_depths.nc", checks=False)
         # ds.subset(time = 0)
         ds.append(depths)
         ds.merge()
@@ -90,7 +90,7 @@ class TestCrop:
         df["year"] = [x.year for x in df.time_counter]
         df["day"] = [x.day for x in df.time_counter]
         df = df.loc[:,["lon", "lat", "month", "day", "year", "N3_n", "depth"]].drop_duplicates()
-        ds = nc.open_data("data/matchpoint/amm7_1d_20000301_20000331_ptrc_T.nc")
+        ds = nc.open_data("data/matchpoint/amm7_1d_20000301_20000331_ptrc_T.nc", checks=False)
         ds.subset(time = [0])
         ds.run()
         matcher = nc.open_matchpoint()
@@ -112,10 +112,10 @@ class TestCrop:
         #print("test 3")
 
         print("test 4")
-        ds = nc.open_data("data/emodnet_test.nc")
+        ds = nc.open_data("data/emodnet_test.nc", checks=False)
         ds.regrid(pd.DataFrame({"lon": [0.15, 0.175], "lat" : [54.1, 54.12]}) )
         df = ds.to_dataframe().reset_index()
-        ds = nc.open_data("data/emodnet_test.nc")
+        ds = nc.open_data("data/emodnet_test.nc", checks=False)
         matcher = nc.open_matchpoint()
         matcher.add_data(ds)
         matcher.add_points(df.loc[:,["lon", "lat"]])
@@ -125,7 +125,7 @@ class TestCrop:
         assert len(matcher.values) == len(df)
 
         print("test 7")
-        ds = nc.open_data("data/sst.mon.mean.nc")
+        ds = nc.open_data("data/sst.mon.mean.nc", checks=  False) 
         df = pd.DataFrame({"lon":[-20], "lat":56})
         ds.split("year")
 
@@ -145,7 +145,7 @@ class TestCrop:
 
 
 
-        ds = nc.open_data("data/woa18_decav_t01_01.nc")
+        ds = nc.open_data("data/woa18_decav_t01_01.nc", checks=False)
         df = pd.DataFrame({"lon":np.repeat(-20, 8), "lat":np.repeat(55, 8), "depth":np.arange(-7, 1)})
         df_matched = ds.match_points(df, max_extrap=6)
         assert np.isnan(df_matched.query("depth == -7").t_an[0])

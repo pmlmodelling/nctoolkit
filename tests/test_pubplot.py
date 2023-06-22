@@ -14,7 +14,7 @@ class TestCrop:
         # generate a random file name
         out_file = "asdfkjbuwnjlajksdfi.png"
 
-        ds = nc.open_data("data/sst.mon.mean.nc")
+        ds = nc.open_data("data/sst.mon.mean.nc", checks = False)
         ds.subset(time = 0)
         ds.pub_plot(out = out_file)
 

@@ -84,12 +84,12 @@ class TestCdo:
         n = len(nc.session_files())
         assert n == 1
 
-        tracker = nc.open_data("data/ensemble/*.nc")
+        tracker = nc.open_data("data/ensemble/*.nc", checks=False)
         tracker.ensemble_mean()
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0]
 
-        tracker = nc.open_data("data/ensemble/*.nc")
+        tracker = nc.open_data("data/ensemble/*.nc", checks=False)
         tracker.cdo_command("-ensmean", ensemble = True)
         tracker.spatial_mean()
 

@@ -73,13 +73,13 @@ class TestShow:
         assert x == ["sst"]
 
     def test_levels(self):
-        tracker = nc.open_data("data/woa18_decav_t01_01.nc")
+        tracker = nc.open_data("data/woa18_decav_t01_01.nc", checks = False)
         x = tracker.levels
         assert [x[0], x[4]] == [0.0, 20.0]
 
     def test_levels2(self):
         tracker = nc.open_data(
-            ["data/woa18_decav_t01_01.nc", "data/woa18_decav_t02_01.nc"]
+            ["data/woa18_decav_t01_01.nc", "data/woa18_decav_t02_01.nc"], checks=False
         )
         x = tracker.levels
         assert [x[0], x[4]] == [0.0, 20.0]

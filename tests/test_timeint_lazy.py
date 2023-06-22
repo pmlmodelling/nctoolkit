@@ -109,7 +109,7 @@ class TestTimeint:
         assert n == 0
 
     def test_timeintstep(self):
-        tracker = nc.open_data("data/2003.nc")
+        tracker = nc.open_data("data/2003.nc", checks = False)
         x = len(tracker.times)
 
         with pytest.raises(ValueError):

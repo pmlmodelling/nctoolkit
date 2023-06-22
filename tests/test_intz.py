@@ -12,7 +12,7 @@ class TestVerts:
 
 
     def test_zleve(self):
-        ds = nc.open_data("data/foo.nc")
+        ds = nc.open_data("data/foo.nc", checks=False)
         depths = ds.copy()
         depths.subset(variables = "e3t")
         thickness = ds.copy()

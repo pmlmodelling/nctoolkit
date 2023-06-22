@@ -566,43 +566,43 @@ class TestCalls:
 
         ff1 = "data/woa18_decav_t01_01.nc"
 
-        data = nc.open_data(ff1)
+        data = nc.open_data(ff1, checks=False)
         data.vertical_mean(fixed = True)
         assert data.history[0] == "cdo -vertmean"
 
-        data = nc.open_data(ff1)
+        data = nc.open_data(ff1, checks=False)
         data.vertical_min()
         assert data.history[0] == "cdo -vertmin"
 
-        data = nc.open_data(ff1)
+        data = nc.open_data(ff1, checks=False)
         data.vertical_max()
         assert data.history[0] == "cdo -vertmax"
 
-        data = nc.open_data(ff1)
+        data = nc.open_data(ff1, checks=False)
         data.vertical_range()
         assert data.history[0] == "cdo -vertrange"
 
-        data = nc.open_data(ff1)
+        data = nc.open_data(ff1, checks=False)
         data.vertical_sum()
         assert data.history[0] == "cdo -vertsum"
 
-        data = nc.open_data(ff1)
+        data = nc.open_data(ff1, checks=    False)
         data.vertical_cumsum()
         assert data.history[0] == "cdo -vertcum"
 
-        data = nc.open_data(ff1)
+        data = nc.open_data(ff1, checks=False)  
         data.top()
         assert data.history[0] == "cdo -sellevidx,1"
 
-        data = nc.open_data(ff1)
+        data = nc.open_data(ff1, checks=False)
         data.bottom()
         assert data.history[0] == "cdo -sellevidx,57"
 
-        data = nc.open_data(ff1)
+        data = nc.open_data(ff1, checks=False)
         data.vertical_interp([1, 19], fixed = True)
         assert data.history[0] == "cdo -intlevel,1,19"
 
-        data = nc.open_data(ff1)
+        data = nc.open_data(ff1, checks=False)
         data.invert_levels()
         assert data.history[0] == "cdo -invertlev"
 
@@ -614,28 +614,28 @@ class TestCalls:
         data.reduce_dims()
         assert data.history[0] == "cdo --reduce_dim copy"
 
-        data = nc.open_data(ff1)
+        data = nc.open_data(ff1, checks=    False)
         data.top()
         data.reduce_dims()
         assert data.history[0] == "cdo --reduce_dim -sellevidx,1"
 
-        data = nc.open_data(ensemble)
+        data = nc.open_data(ensemble, checks = False)
         data.ensemble_mean(nco=True)
         assert "ncea -y mean" in data.history[0]
 
-        data = nc.open_data(ensemble)
+        data = nc.open_data(ensemble, checks=False)
         data.ensemble_max(nco=True)
         assert "ncea -y max" in data.history[0]
 
-        data = nc.open_data(ensemble)
+        data = nc.open_data(ensemble, checks=False)
         data.ensemble_min(nco=True)
         assert "ncea -y min" in data.history[0]
 
-        data = nc.open_data(ensemble)
+        data = nc.open_data(ensemble, checks=False)
         data.ensemble_range()
         assert data.history[0] == "cdo --sortname -ensrange"
 
-        data = nc.open_data(ensemble)
+        data = nc.open_data(ensemble, checks=False)
         data.ensemble_percentile(10)
         assert data.history[0] == "cdo --sortname -enspctl,10"
 

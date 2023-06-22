@@ -151,7 +151,7 @@ class TestPhenol:
 
 
     def test_splits(self):
-        data = nc.open_data(["data/2003.nc", "data/2004.nc"])
+        data = nc.open_data(["data/2003.nc", "data/2004.nc"], checks = False)
         data.phenology("analysed_sst", metric="peak")
         data.spatial_mean()
         data.run()
@@ -165,7 +165,7 @@ class TestPhenol:
         data2.subset(years = 2003)
         z = data2.to_dataframe().peak.values[0].astype("float")
 
-        data = nc.open_data("data/2004.nc")
+        data = nc.open_data("data/2004.nc", checks = False)
         data.phenology("analysed_sst", metric="peak")
         data.spatial_mean()
         y = data.to_dataframe().peak.values[0].astype("float")
@@ -173,7 +173,7 @@ class TestPhenol:
         assert x == y
 
 
-        data = nc.open_data("data/2003.nc")
+        data = nc.open_data("data/2003.nc", checks=False)
         data.phenology("analysed_sst", metric="peak")
         data.spatial_mean()
         y = data.to_dataframe().peak.values[0].astype("float")

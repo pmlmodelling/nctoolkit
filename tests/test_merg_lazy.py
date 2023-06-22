@@ -24,7 +24,7 @@ class TestMerge:
         n = len(nc.session_files())
         assert n == 0
 
-        ds1 = nc.open_data("data/200*.nc")
+        ds1 = nc.open_data("data/200*.nc", checks = False)
         ds1.subset(lon = [-15, -13], lat = [50, 52])
         ds1.split("month")
         ds1.split("day")
@@ -52,7 +52,7 @@ class TestMerge:
         new.subset(timesteps=[0])
         new.rename({"sst": "tos"})
         new.run()
-        data = nc.open_data([tracker.current[0], new.current[0]])
+        data = nc.open_data([tracker.current[0], new.current[0]], checks = False)
         with pytest.warns(UserWarning):
             data.merge(match="year")
 
@@ -104,7 +104,7 @@ class TestMerge:
         new = tracker.copy()
         new.rename({"sst": "tos"})
         new.run()
-        data = nc.open_data([new.current[0], tracker.current[0]])
+        data = nc.open_data([new.current[0], tracker.current[0]], checks = False)
         data.merge()
         data.assign(test1 = lambda x:  x.tos-x.sst)
         data.spatial_mean()
@@ -124,14 +124,14 @@ class TestMerge:
         new.run()
         new.rename({"sst": "tos"})
         new.run()
-        data = nc.open_data([new.current[0], tracker.current[0]])
+        data = nc.open_data([new.current[0], tracker.current[0]], checks=False)
         with pytest.raises(ValueError):
             data.merge()
 
         n = len(nc.session_files())
         assert n == 2
 
-        data = nc.open_data([new.current[0], tracker.current[0]])
+        data = nc.open_data([new.current[0], tracker.current[0]], checks=False)
         with pytest.raises(TypeError):
             data.merge(match=1)
 
@@ -151,7 +151,7 @@ class TestMerge:
         new.run()
         new.rename({"sst": "tos"})
         new.run()
-        data = nc.open_data([tracker.current[0], new.current[0]])
+        data = nc.open_data([tracker.current[0], new.current[0]], checks=  False)
         with pytest.raises(ValueError):
             data.merge(match="month")
 
@@ -197,7 +197,7 @@ class TestMerge:
         tracker.run()
         new.run()
 
-        data = nc.open_data([new.current[0], tracker.current[0]])
+        data = nc.open_data([new.current[0], tracker.current[0]], checks=False)
 
         with pytest.raises(ValueError):
             data.merge()

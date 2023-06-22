@@ -21,7 +21,7 @@ ff = "data/sst.mon.mean.nc"
 
 class TestClip:
     def test_merid1(self):
-        ds = nc.open_data("data/vertical_tester.nc")
+        ds = nc.open_data("data/vertical_tester.nc", checks=False)
         with pytest.raises(TypeError):
             ds.meridonial_mean()
         tracker = nc.open_data(ff, checks = False)
@@ -59,7 +59,7 @@ class TestClip:
             assert data.to_dataframe().sst[0].astype("float") == 27.9967041015625
 
         tracker = nc.open_data(ff, checks = False)
-        data = nc.open_data("data/sst.mon.mean.nc")
+        data = nc.open_data("data/sst.mon.mean.nc", checks=False)
         data.tmean()
         data.meridonial_range()
         data.spatial_mean()

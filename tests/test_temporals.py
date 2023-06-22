@@ -11,17 +11,17 @@ ff = "data/sst.mon.mean.nc"
 
 class TestTemporals:
     def test_temporals_align(self):
-        ds = nc.open_data("data/sst.mon.mean.nc")
+        ds = nc.open_data("data/sst.mon.mean.nc", checks = False)
         ds.tmean(align = "left")
         ds.run()
         assert [x.year for x in ds.times][0] == 1970
         
-        ds = nc.open_data("data/sst.mon.mean.nc")
+        ds = nc.open_data("data/sst.mon.mean.nc", checks = False)
         ds.tmean(align = "right")
         ds.run()
         assert [x.year for x in ds.times][0] == 1999
         
-        ds = nc.open_data("data/sst.mon.mean.nc")
+        ds = nc.open_data("data/sst.mon.mean.nc", checks=False)
         ds.tmean("year", align = "right")
         ds.run()
         assert [x.month for x in ds.times][0] == 12
@@ -55,7 +55,7 @@ class TestTemporals:
         x = float(tracker.to_dataframe().sst.values[0])
 
 
-        ds = nc.open_data("data/sst.mon.mean.nc")
+        ds = nc.open_data("data/sst.mon.mean.nc", checks=False)
         ds.tvar()
         ds.spatial_sum()
         ds.to_dataframe()

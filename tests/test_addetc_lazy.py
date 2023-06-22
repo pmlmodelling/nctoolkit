@@ -13,8 +13,8 @@ ff = "data/sst.mon.mean.nc"
 class TestAddetc:
 
     def test_rmse(self):
-        ds1 = nc.open_data("data/sst.mon.mean.nc")
-        ds2 = nc.open_data("data/sst.mon.mean.nc")
+        ds1 = nc.open_data("data/sst.mon.mean.nc", checks=False)
+        ds2 = nc.open_data("data/sst.mon.mean.nc", checks=False)
         ds1.subtract(2)
         ds1.rmse(ds2)
         assert np.abs(ds1.to_dataframe().sst.max() - 2.0) < 0.000001
@@ -22,12 +22,12 @@ class TestAddetc:
 
 
     def test_dailyts(self):
-        ds = nc.open_data("data/hourly/01/*.nc")
+        ds = nc.open_data("data/hourly/01/*.nc", checks = False)
         ds.set_precision("F64")
         ds.merge("time")
         ds.tmean("day")
         ds.run()
-        ds1 = nc.open_data("data/hourly/01/*.nc")
+        ds1 = nc.open_data("data/hourly/01/*.nc", checks=False)
         ds1.set_precision("F64")
         ds1.merge("time")
         ds1.subtract(ds)
@@ -50,8 +50,8 @@ class TestAddetc:
 
 
             ff1 = "data/2003.nc"
-            ds1 = nc.open_data(ff1)
-            ds2 = nc.open_data(ff1)
+            ds1 = nc.open_data(ff1, checks=False)
+            ds2 = nc.open_data(ff1, checks=False)   
             ds2.tmean("month")
             ds1.subtract(ds2)
             ds1.tmean("month")
@@ -61,9 +61,9 @@ class TestAddetc:
 
             ff1 = "data/2003.nc"
             ff2 = "data/2004.nc"
-            ds1 = nc.open_data([ff1, ff2])
+            ds1 = nc.open_data([ff1, ff2], checks=False)
             ds1.merge("time")
-            ds2 = nc.open_data(ff1)
+            ds2 = nc.open_data(ff1, checks=False)
             ds2.tmean("month")
             ds1.subtract(ds2)
             ds1.tmean(["year","month"])
@@ -82,7 +82,7 @@ class TestAddetc:
 
             ff1 = "data/2003.nc"
             ff2 = "data/2004.nc"
-            ds1 = nc.open_data([ff1, ff2])
+            ds1 = nc.open_data([ff1, ff2], checks=False)
             ds1.merge("time")
             ds2 = ds1.copy()
             ds2.tmean(["year", "month"])
@@ -472,7 +472,7 @@ class TestAddetc:
     def test_file_incompat(self):
         tracker = nc.open_data(ff, checks = False)
         ff2 = "data/2003.nc"
-        data2 = nc.open_data(ff2)
+        data2 = nc.open_data(ff2, checks=False)
         data2.assign(tos = lambda x: x.analysed_sst + 2)
         data2.run()
         with pytest.raises(ValueError):
@@ -483,7 +483,7 @@ class TestAddetc:
     def test_file_incompat1(self):
         tracker = nc.open_data(ff, checks = False)
         ff2 = "data/2003.nc"
-        data2 = nc.open_data(ff2)
+        data2 = nc.open_data(ff2, checks=False)
         data2.assign(tos = lambda x:  x.analysed_sst + 2)
         data2.run()
         with pytest.raises(ValueError):
@@ -494,7 +494,7 @@ class TestAddetc:
     def test_file_incompat2(self):
         tracker = nc.open_data(ff, checks = False)
         ff2 = "data/2003.nc"
-        data2 = nc.open_data(ff2)
+        data2 = nc.open_data(ff2, checks=False)
         data2.assign(tos = lambda x:  x.analysed_sst + 2)
         data2.run()
         with pytest.raises(ValueError):
@@ -533,7 +533,7 @@ class TestAddetc:
     def test_file_incompat7(self):
         tracker = nc.open_data(ff, checks = False)
         ff2 = "data/2003.nc"
-        data2 = nc.open_data(ff2)
+        data2 = nc.open_data(ff2, checks=False)
         data2.assign(tos = lambda x: x.analysed_sst + 2)
         data2.run()
         with pytest.raises(ValueError):
@@ -581,14 +581,14 @@ class TestAddetc:
         if nc.utils.version_below(version, "1.9.9") == False:
             tracker = nc.open_data()
             ff2 = "data/2003.nc"
-            tracker2 = nc.open_data(ff2)
+            tracker2 = nc.open_data(ff2, checks=False)
             with pytest.raises(ValueError):
                 tracker.divide(tracker2)
             n = len(nc.session_files())
             assert n == 0
 
         ff2 = "data/2003.nc"
-        tracker = nc.open_data(ff2)
+        tracker = nc.open_data(ff2, checks=False)
         tracker2 = nc.open_data()
         with pytest.raises(ValueError):
             tracker.add(tracker2)
@@ -601,7 +601,7 @@ class TestAddetc:
         n = len(nc.session_files())
         assert n == 0
 
-        tracker = nc.open_data(ff2)
+        tracker = nc.open_data(ff2, checks=False)
 
         with pytest.raises(TypeError):
             tracker.power("x")

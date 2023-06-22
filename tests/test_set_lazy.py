@@ -26,7 +26,7 @@ class TestSetters:
         n = len(nc.session_files())
         assert n == 0
 
-        ds = nc.open_data("data/2003.nc")
+        ds = nc.open_data("data/2003.nc", checks = False)
         ds.subset(time = 0)
         ds.set_year(2010)
         ds.run()

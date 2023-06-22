@@ -206,12 +206,12 @@ class TestFldsta:
         n = len(nc.session_files())
         assert n == 1
 
-        ds = nc.open_data("data/sst.mon.mean.nc")
+        ds = nc.open_data("data/sst.mon.mean.nc", checks=False)
         ds.subset(time = 0)
         ds.spatial_stdev()
         assert float(ds.to_dataframe().sst.values[0]) == 5.8231096267700195 
         
-        ds = nc.open_data("data/sst.mon.mean.nc")
+        ds = nc.open_data("data/sst.mon.mean.nc", checks=False)
         ds.subset(time = 0)
         ds.spatial_var()
         assert float(ds.to_dataframe().sst.values[0]) == 33.908607482910156 

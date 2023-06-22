@@ -11,7 +11,7 @@ ff = "data/sst.mon.mean.nc"
 
 class TestCrop:
     def test_crop(self):
-        tracker = nc.open_data(["data/ukesm_tas.nc", "data/ukesm_gpp.nc"])
+        tracker = nc.open_data(["data/ukesm_tas.nc", "data/ukesm_gpp.nc"], checks = False)
         tracker.merge()
         tracker.cor_time("tas", "gpp")
         tracker.run()

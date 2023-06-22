@@ -66,7 +66,7 @@ class TestPar:
         for ff in nc.session.get_safe():
             nc.session.remove_safe(ff)
 
-        data = nc.open_data("data/ensemble/*.nc")
+        data = nc.open_data("data/ensemble/*.nc", checks = False)
         data.spatial_sum(by_area = True)
         data.run()
 
