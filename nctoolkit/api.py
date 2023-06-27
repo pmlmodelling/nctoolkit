@@ -1781,6 +1781,7 @@ class DataSet(object):
 
     from nctoolkit.esoteric import assign_coords
     from nctoolkit.esoteric import fix_nemo_ersem_grid
+    from nctoolkit.esoteric import fix_amm7_grid
     from nctoolkit.esoteric import set_gridtype
     from nctoolkit.esoteric import no_leaps
     from nctoolkit.esoteric import as_double

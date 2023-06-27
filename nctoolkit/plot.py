@@ -93,11 +93,19 @@ def plot(self, vars=None, autoscale=True, out=None, coast=True, **kwargs):
                 "Unable to plot datasets when variables have differing levels"
             )
     if vars is None and len(self.variables) > 1:
-        with time_limit(20):
+        if out is None:
+            with time_limit(20):
+                return view(self[0], autoscale=autoscale, coast=coast, **kwargs)
+        else:
             return view(self[0], autoscale=autoscale, coast=coast, **kwargs)
 
     if isinstance(vars, list) and len(vars) > 1:
-        with time_limit(20):
+        if out is None:
+            with time_limit(20):
+                return view(
+                    self[0], vars=vars, autoscale=autoscale, out=out, coast=coast, **kwargs
+                )
+        else:
             return view(
                 self[0], vars=vars, autoscale=autoscale, out=out, coast=coast, **kwargs
             )
