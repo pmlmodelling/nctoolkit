@@ -72,7 +72,7 @@ def top(self):
     run_this(cdo_command, self, output="ensemble")
 
 
-def vertical_interp(self, levels=None, fixed=None, thickness=None):
+def vertical_interp(self, levels=None, fixed=None, thickness=None, depths = None):
     """
     Verticaly interpolate a dataset based on given vertical levels
     This is calculated for each time step and grid cell
@@ -89,11 +89,18 @@ def vertical_interp(self, levels=None, fixed=None, thickness=None):
         Set to True if they are, e.g. you have z-levels. If you have the likes of sigma-coordinates,
         set this to False.
     thickness: str or Dataset
-        This must be supplied if fixed is False, otherwise vertical thickness cannot be known.
+        This or depths must be supplied if fixed is False, otherwise vertical thickness/depth cannot be known.
         Option argument when vertical levels vary in space.
         One of: a variable, in the dataset, which contains the variable thicknesses; a .nc file which contains
         the thicknesses; or a Dataset that contains the thicknesses. Note: the .nc file or Dataset must only contain
         one variable. Thickness should be in metres. Vertical interpolation will take the value from the mid-point of the level.
+    depths: str or Dataset
+        This or thickness must be supplied if fixed is False, otherwise vertical thickness/depth cannot be known.
+        Option argument when vertical levels vary in space.
+        One of: a variable, in the dataset, which contains the variable depths; a .nc file which contains
+        the depths; or a Dataset that contains the depths. Note: the .nc file or Dataset must only contain
+        one variable. Depths should be in metres, and be the mid-point of the level.
+
 
     Examples
     ------------
@@ -111,9 +118,10 @@ def vertical_interp(self, levels=None, fixed=None, thickness=None):
         if thickness is None:
             raise ValueError("You must provide the fixed arg")
 
-    if fixed is False:
-        if thickness is None:
-            raise ValueError("Please provide thickness")
+    if depths is None:
+        if fixed is False:
+            if thickness is None:
+                raise ValueError("Please provide thickness")
 
     if not isinstance(fixed, bool):
         if thickness is None:
@@ -123,7 +131,7 @@ def vertical_interp(self, levels=None, fixed=None, thickness=None):
         fixed = False
 
     if fixed is False:
-        self.to_zlevels(levels=levels, thickness=thickness)
+        self.to_zlevels(levels=levels, thickness=thickness, depths = depths)
         return None
 
     if levels is None:

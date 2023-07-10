@@ -392,3 +392,31 @@ class TestVerts:
         n = len(nc.session_files())
         assert n == 0
 
+    def test_depth_option(self):
+        ds = nc.open_data("data/pml_ersem_nitrate_example.nc")
+        ds.vertical_interp(levels = [50], thickness="e3t")
+        ds.subset(variables = "N3_n")
+        ds.run()
+
+        ds_depths = nc.open_data("data/pml_ersem_nitrate_example.nc")
+        ds_depths.subset(variable="e3t")
+        ds_depths.missing_as(1.0)
+        ds_medium = ds_depths.copy()
+        ds_medium / 2
+        ds_depths.vertical_cumsum()
+        ds_depths.run()
+        ds_depths - ds_medium
+        ds_depths.run()
+
+        ds1 = nc.open_data("data/pml_ersem_nitrate_example.nc")
+        ds1.subset(variable="N3_n")
+        ds1.vertical_interp(levels = [50], depths= ds_depths, fixed = False)
+        ds1.run()
+
+        ds2 = ds1.copy()
+        ds2 - ds
+        ds2.abs()
+        ds2.run()
+
+        assert ds2.to_dataframe().N3_n.max() < 0.000001
+
