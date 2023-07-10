@@ -87,7 +87,7 @@ def vertical_interp(self, levels=None, fixed=None, thickness=None):
     fixed : bool
         Define whether the vertical levels are the same in all spatial locations.
         Set to True if they are, e.g. you have z-levels. If you have the likes of sigma-coordinates,
-        set this to True.
+        set this to False.
     thickness: str or Dataset
         This must be supplied if fixed is False, otherwise vertical thickness cannot be known.
         Option argument when vertical levels vary in space.
