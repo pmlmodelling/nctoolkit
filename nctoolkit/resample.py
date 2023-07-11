@@ -1,5 +1,3 @@
-from nctoolkit.runthis import run_this
-
 
 def resample_grid(self, factor=None):
     """
@@ -27,4 +25,4 @@ def resample_grid(self, factor=None):
         raise ValueError(f"{factor} is not a postive integer greater than 1")
 
     cdo_command = f"cdo -samplegrid,{factor}"
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)

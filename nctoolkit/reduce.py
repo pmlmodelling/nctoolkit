@@ -1,5 +1,3 @@
-from nctoolkit.runthis import run_this
-
 
 def reduce_dims(self):
     """
@@ -24,4 +22,4 @@ def reduce_dims(self):
     else:
         cdo_command = "cdo --reduce_dim"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)

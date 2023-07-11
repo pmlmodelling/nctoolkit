@@ -1,7 +1,6 @@
 import os
 
 from nctoolkit.api import open_data
-from nctoolkit.runthis import run_this
 import nctoolkit.api as api
 
 
@@ -37,5 +36,5 @@ def reduce_grid(self, mask=None):
 
     cdo_command = f"cdo -reducegrid,{targeted_mask.current[0]}"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)
     self.run()

@@ -2,7 +2,6 @@ import pandas as pd
 import subprocess
 import warnings
 
-from nctoolkit.runthis import run_this
 from nctoolkit.session import session_info
 from nctoolkit.show import nc_variables, nc_times
 from nctoolkit.utils import version_below
@@ -121,7 +120,7 @@ def merge(self, join="variables", match=["year", "month", "day"], check=True):
         cdo_command = "cdo --sortname -mergetime"
 
         if len(self) < 400:
-            run_this(cdo_command, self, output="one")
+            self.cdo_command(cdo_command, ensemble=True)
         else:
             new_ds = open_data()
             files = chunks(self, 365)
@@ -130,7 +129,6 @@ def merge(self, join="variables", match=["year", "month", "day"], check=True):
                 ii += 1
                 ds = open_data(ff, checks=False)
                 ds.merge("time", check=check)
-                # run_this(cdo_command, ds, output="one")
                 ds.run()
                 new_ds.append(ds)
 
@@ -183,8 +181,6 @@ def merge(self, join="variables", match=["year", "month", "day"], check=True):
             stderr=subprocess.PIPE,
         )
         cdo_result = cdo_result.stdout.decode("utf-8")
-        # .stdout
-        #''cdo_result = str(cdo_result).replace("b'", "").strip()
         cdo_result = str(cdo_result)
         ntime = int(cdo_result.split("\n")[0])
         all_times.append(ntime)
@@ -214,14 +210,6 @@ def merge(self, join="variables", match=["year", "month", "day"], check=True):
     all_times = []
     for ff in self:
         cdo_result = nc_times(ff)
-        #    f"cdo showtimestamp {ff}",
-        #    shell=True,
-        #    stdout=subprocess.PIPE,
-        #    stderr=subprocess.PIPE,
-        # ).stdout
-        # cdo_result = str(cdo_result).replace("b'", "").strip()
-        # cdo_result = cdo_result.split()
-        # cdo_result = pd.Series((v for v in cdo_result))
         all_times.append(cdo_result)
 
     for i in range(1, len(all_times)):
@@ -249,7 +237,7 @@ def merge(self, join="variables", match=["year", "month", "day"], check=True):
             raise ValueError("Dates of data sets do not satisfy matching criteria!")
 
     cdo_command = "cdo -merge"
-    run_this(cdo_command, self, output="one")
+    self.cdo_command(cdo_command, ensemble=False)
 
     if session_info["lazy"]:
         self._merged = True
@@ -268,7 +256,7 @@ def collect(self):
 
     cdo_command = "cdo -collgrid"
 
-    run_this(cdo_command, self, output="one")
+    self.cdo_command(cdo_command, ensemble=True)
 
     if session_info["lazy"]:
         self._merged = True

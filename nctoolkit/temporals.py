@@ -1,12 +1,9 @@
-from nctoolkit.runthis import run_this
-
-
 def hourstat(self, stat="mean"):
     """Method to calculate the hourly statistic from a function"""
 
     cdo_command = f"cdo -hour{stat}"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def yhourstat(self, stat="mean"):
@@ -14,7 +11,7 @@ def yhourstat(self, stat="mean"):
 
     cdo_command = f"cdo -yhour{stat}"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def dhourstat(self, stat="mean"):
@@ -22,7 +19,7 @@ def dhourstat(self, stat="mean"):
 
     cdo_command = f"cdo -dhour{stat}"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def ymonstat(self, stat="mean"):
@@ -30,7 +27,7 @@ def ymonstat(self, stat="mean"):
 
     cdo_command = f"cdo -ymon{stat}"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def yearlystat(self, stat="mean"):
@@ -38,7 +35,7 @@ def yearlystat(self, stat="mean"):
 
     cdo_command = f"cdo -year{stat}"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def ydaystat(self, stat="mean"):
@@ -47,7 +44,8 @@ def ydaystat(self, stat="mean"):
     """
     # create the cdo command and run it
     cdo_command = "cdo -yday" + stat
-    run_this(cdo_command, self, output="ensemble")
+
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def seasclim(self, stat="mean"):
@@ -55,7 +53,7 @@ def seasclim(self, stat="mean"):
     # create cdo call and run it
     cdo_command = f"cdo -yseas{stat}"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def dailystat(self, stat="mean"):
@@ -63,14 +61,14 @@ def dailystat(self, stat="mean"):
 
     cdo_command = f"cdo -day{stat}"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def monstat(self, stat="mean"):
     """Method to calculate the monthly statistic from a netCDF file"""
     cdo_command = f"cdo -mon{stat}"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def seasstat(self, stat="mean"):
@@ -78,4 +76,4 @@ def seasstat(self, stat="mean"):
 
     cdo_command = f"cdo -seas{stat}"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)

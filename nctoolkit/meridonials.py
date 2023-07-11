@@ -1,4 +1,3 @@
-from nctoolkit.runthis import run_this
 from nctoolkit.utils import is_curvilinear
 
 
@@ -11,7 +10,7 @@ def zonstat(self, stat="mean"):
             )
     cdo_command = f"cdo -mer{stat}"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def meridonial_mean(self):

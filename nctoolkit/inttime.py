@@ -1,6 +1,3 @@
-from nctoolkit.runthis import run_this
-
-# to do. Some padding needs to be added in case something like 2000/1/1 is provided.
 
 
 def time_interp(self, start=None, end=None, resolution="monthly"):
@@ -48,7 +45,7 @@ def time_interp(self, start=None, end=None, resolution="monthly"):
         end = end.replace("/", "-")
         cdo_command = f"cdo -seldate,{start},{end} {cdo_command}"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def timestep_interp(self, steps=None):
@@ -71,4 +68,4 @@ def timestep_interp(self, steps=None):
 
     cdo_command = f"cdo -intntime,{steps}"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)

@@ -3,7 +3,7 @@ import warnings
 
 from nctoolkit.cleanup import cleanup
 from nctoolkit.flatten import str_flatten
-from nctoolkit.runthis import run_this, run_nco
+from nctoolkit.runthis import  run_nco
 from nctoolkit.temp_file import temp_file
 from nctoolkit.session import get_safe, remove_safe
 
@@ -42,7 +42,7 @@ def ensemble_percentile(self, p=None):
 
     # create the cdo command and run it
     cdo_command = f"cdo --sortname -enspctl,{p}"
-    run_this(cdo_command, self, output="one")
+    self.cdo_command(cdo_command, ensemble=True)
 
     # set the _merged attribute to True
     self._merged = True
@@ -103,9 +103,7 @@ def ensemble_stdev(self):
 
     cdo_command = "cdo --sortname -ensstd"
 
-    run_this(cdo_command, self)
-
-    self._merged = True
+    self.cdo_command(cdo_command, ensemble=True)
 
 
 def ensemble_var(self):
@@ -123,9 +121,7 @@ def ensemble_var(self):
 
     cdo_command = "cdo --sortname -ensvar"
 
-    run_this(cdo_command, self)
-
-    self._merged = True
+    self.cdo_command(cdo_command, ensemble=True)
 
 
 def ensemble_max(self, nco=False, ignore_time=False):
@@ -154,9 +150,7 @@ def ensemble_max(self, nco=False, ignore_time=False):
         else:
             cdo_command = "cdo -timmax --sortname -ensmax"
 
-        run_this(cdo_command, self)
-
-        self._merged = True
+        self.cdo_command(cdo_command, ensemble=True)
 
         return None
 
@@ -188,9 +182,7 @@ def ensemble_min(self, nco=False, ignore_time=False):
         else:
             cdo_command = "cdo -timmin --sortname -ensmin"
 
-        run_this(cdo_command, self)
-
-        self._merged = True
+        self.cdo_command(cdo_command, ensemble=True)
 
         return None
 
@@ -223,9 +215,7 @@ def ensemble_mean(self, nco=False, ignore_time=False):
         else:
             cdo_command = "cdo -timmean --sortname -ensmean"
 
-        run_this(cdo_command, self)
-
-        self._merged = True
+        self.cdo_command(cdo_command, ensemble=True)
 
         return None
 
@@ -245,9 +235,7 @@ def ensemble_range(self):
 
     cdo_command = "cdo --sortname -ensrange"
 
-    run_this(cdo_command, self)
-
-    self._merged = True
+    self.cdo_command(cdo_command, ensemble=True)
 
 
 def ensemble_sum(self):
@@ -263,6 +251,5 @@ def ensemble_sum(self):
 
     cdo_command = "cdo --sortname -enssum"
 
-    run_this(cdo_command, self)
+    self.cdo_command(cdo_command, ensemble=True)
 
-    self._merged = True

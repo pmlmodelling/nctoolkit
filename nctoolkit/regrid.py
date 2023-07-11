@@ -7,7 +7,7 @@ import warnings
 from nctoolkit.api import open_data
 from nctoolkit.cleanup import cleanup
 from nctoolkit.generate_grid import generate_grid
-from nctoolkit.runthis import run_this, run_cdo
+from nctoolkit.runthis import run_cdo, run_this
 from nctoolkit.session import append_safe, remove_safe, get_safe
 from nctoolkit.temp_file import temp_file
 import nctoolkit.api as api
@@ -80,7 +80,8 @@ def regrid(self, grid=None, method="bil", recycle=False, one_grid=False, **kwarg
             target_grid = grid._grid
             weights_nc = grid._weights
             cdo_command = f"cdo -remap,{target_grid},{weights_nc}"
-            run_this(cdo_command, self, output="ensemble")
+            self.cdo_command(cdo_command, ensemble=False)
+            # run_this(cdo_command, self, output="ensemble")
 
             return None
 
@@ -192,6 +193,7 @@ def regrid(self, grid=None, method="bil", recycle=False, one_grid=False, **kwarg
         cdo_command = f"cdo -remap,{target_grid},{weights_nc}"
 
         tracker._execute = True
+
 
         run_this(cdo_command, tracker, output="ensemble", suppress=suppress)
 

@@ -1,6 +1,3 @@
-from nctoolkit.runthis import run_this
-
-
 def fill_na(self, n=1):
     """
     Fill missing values with a distance-weighted average. This carries out infilling for each time step and vertical level.
@@ -13,4 +10,4 @@ def fill_na(self, n=1):
 
     cdo_command = f"cdo -setmisstodis,{n}"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(command=cdo_command, ensemble=False)

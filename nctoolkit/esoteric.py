@@ -5,7 +5,6 @@ import xarray as xr
 
 from .temp_file import temp_file
 from .cleanup import cleanup
-from .runthis import run_this
 from .runthis import run_nco
 from .api import open_data
 import warnings
@@ -154,7 +153,7 @@ def no_leaps(self):
 
     cdo_command = f"cdo -del29feb"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def set_gridtype(self, grid):
@@ -183,7 +182,7 @@ def set_gridtype(self, grid):
 
     cdo_command = f"cdo -setgridtype,{grid}"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def assign_coords(self, lon_name=None, lat_name=None, time_name=None):

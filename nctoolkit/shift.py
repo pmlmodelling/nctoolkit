@@ -1,5 +1,3 @@
-from nctoolkit.runthis import run_this
-
 
 def shift_hours(self, shift=None):
     """
@@ -22,7 +20,7 @@ def shift_hours(self, shift=None):
 
     cdo_command = f"cdo -shifttime,{shift}hour"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def shift_days(self, shift=None):
@@ -46,7 +44,7 @@ def shift_days(self, shift=None):
 
     cdo_command = f"cdo -shifttime,{shift}days"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def shift_months(self, shift=None):
@@ -70,7 +68,7 @@ def shift_months(self, shift=None):
 
     cdo_command = f"cdo -shifttime,{shift}months"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def shift_years(self, shift=None):
@@ -94,7 +92,7 @@ def shift_years(self, shift=None):
 
     cdo_command = f"cdo -shifttime,{shift}years"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def shift(self, **kwargs):

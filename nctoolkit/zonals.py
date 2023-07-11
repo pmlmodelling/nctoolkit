@@ -1,4 +1,3 @@
-from nctoolkit.runthis import run_this
 from nctoolkit.utils import is_curvilinear
 from nctoolkit.api import open_data
 
@@ -12,7 +11,7 @@ def zonstat(self, stat="mean"):
 
     cdo_command = f"cdo -zon{stat}"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble = False)
 
 
 def zonal_sum(self, by_area=False):

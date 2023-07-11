@@ -1,5 +1,3 @@
-from nctoolkit.runthis import run_this
-
 
 def align(self, align="right"):
     """
@@ -63,7 +61,7 @@ def rollstat(self, window=None, stat="mean"):
 
     # create the cdo call and run it
     cdo_command = f"cdo -run{stat},{str(window)}"
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def rolling_mean(self, window=None, align="right"):

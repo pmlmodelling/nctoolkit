@@ -1,7 +1,7 @@
 import copy
 
 from nctoolkit.cleanup import cleanup
-from nctoolkit.runthis import run_this, run_cdo, tidy_command
+from nctoolkit.runthis import run_cdo, run_this, tidy_command
 from nctoolkit.temp_file import temp_file
 from nctoolkit.session import remove_safe
 
@@ -24,7 +24,7 @@ def boxstat(self, stat="mean", x=1, y=1):
 
     cdo_command = f"cdo -gridbox{stat},{x},{y}"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def box_mean(self, x=1, y=1):
@@ -120,7 +120,7 @@ def fldstat(self, stat="mean"):
 
     cdo_command = f"cdo -fld{stat}"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def spatial_mean(self):
@@ -259,7 +259,9 @@ def spatial_sum(self, by_area=False):
         else:
             cdo_command = "cdo -fldsum"
 
-        run_this(cdo_command, self, output="ensemble")
+        self.cdo_command(cdo_command, ensemble=False)
+
+        # run_this(cdo_command, self, output="ensemble")
 
         return None
 
@@ -316,4 +318,4 @@ def spatial_percentile(self, p=None):
 
     cdo_command = f"cdo -fldpctl,{str(p)}"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)

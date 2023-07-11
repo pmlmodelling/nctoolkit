@@ -1,6 +1,4 @@
 from nctoolkit.flatten import str_flatten
-from nctoolkit.runthis import run_this
-
 
 def fix_ind(x):
     if x < 0:
@@ -84,7 +82,7 @@ def drop(self, **kwargs):
 
             # create the cdo command and run it
             cdo_command = f"cdo -delete,timestep={vars}"
-            run_this(cdo_command, self, output="ensemble")
+            self.cdo_command(cdo_command, ensemble=False)
 
         if "var" in key:
             vars = kwargs[key]
@@ -100,7 +98,7 @@ def drop(self, **kwargs):
 
             # create the cdo command and run it
             cdo_command = f"cdo -delete,name={vars}"
-            run_this(cdo_command, self, output="ensemble")
+            self.cdo_command(cdo_command, ensemble=False)
 
         if ("mon" in key) or ("day" in key) or ("year" in key):
             vars = kwargs[key]
@@ -126,4 +124,4 @@ def drop(self, **kwargs):
                 temporal_command = temporal_command + f",year={vars}"
 
     if len(temporal_command) > len("cdo -delete"):
-        run_this(temporal_command, self, output="ensemble")
+        self.cdo_command(temporal_command, ensemble=False)

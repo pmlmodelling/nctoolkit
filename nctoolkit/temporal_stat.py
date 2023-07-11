@@ -1,7 +1,7 @@
 import copy
 
 from nctoolkit.cleanup import cleanup
-from nctoolkit.runthis import run_this, run_cdo, tidy_command
+from nctoolkit.runthis import run_cdo, tidy_command
 from nctoolkit.temporals import *
 from nctoolkit.temp_file import temp_file
 from nctoolkit.session import remove_safe
@@ -16,7 +16,7 @@ def time_stat(self, stat="mean", over="time"):
 
     if over == "time":
         cdo_command = f"cdo -tim{stat}"
-        run_this(cdo_command, self, output="ensemble")
+        self.cdo_command(cdo_command, ensemble=False)
         return None
 
     if stat not in ["mean", "sum", "min", "max", "range", "var", "cumsum", "std"]:

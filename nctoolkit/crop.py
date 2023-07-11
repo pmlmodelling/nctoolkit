@@ -5,7 +5,7 @@ import numbers
 
 from nctoolkit.cleanup import cleanup
 from nctoolkit.flatten import str_flatten
-from nctoolkit.runthis import run_this, run_nco, tidy_command
+from nctoolkit.runthis import run_nco, tidy_command
 from nctoolkit.temp_file import temp_file
 from nctoolkit.session import remove_safe
 
@@ -88,7 +88,7 @@ def crop(self, lon=[-180, 180], lat=[-90, 90], nco=False, nco_vars=None):
             cdo_command = "cdo -sellonlatbox," + lat_box
             cdo_command = tidy_command(cdo_command)
 
-            run_this(cdo_command, self, output="ensemble")
+            self.cdo_command(cdo_command, ensemble=False)
             return None
         else:
             raise ValueError("The lonlat box supplied is not valid!")

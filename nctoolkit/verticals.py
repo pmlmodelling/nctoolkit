@@ -6,7 +6,6 @@ from nctoolkit.api import open_data
 from nctoolkit.temp_file import temp_file
 from nctoolkit.utils import version_above, cdo_version
 from nctoolkit.flatten import str_flatten
-from nctoolkit.runthis import run_this 
 import nctoolkit.api as api
 
 
@@ -48,9 +47,9 @@ def bottom(self):
         str(cdo_result).replace("b'", "").strip().replace("'", "").split("\\n")[0]
     )
 
-    cdo_command = f"cdo -sellevidx,{str(n_levels)}"
+    cdo_command = f"-sellevidx,{str(n_levels)}"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def top(self):
@@ -69,7 +68,7 @@ def top(self):
     """
 
     cdo_command = "cdo -sellevidx,1"
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def vertical_interp(self, levels=None, fixed=None, thickness=None, depths = None):
@@ -151,13 +150,13 @@ def vertical_interp(self, levels=None, fixed=None, thickness=None, depths = None
     levels = str_flatten(levels, ",")
     cdo_command = f"cdo -intlevel,{levels}"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def vertstat(self, stat="mean"):
     """Method to calculate the vertical mean from a function"""
     cdo_command = f"cdo -vert{stat}"
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def vertical_mean(self, thickness=None, depth_range=None, fixed=None):
@@ -533,7 +532,7 @@ def invert_levels(self):
     """
     cdo_command = "cdo -invertlev"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def bottom_mask(self):

@@ -68,6 +68,7 @@ def nco_command(self, command=None, ensemble=False):
                 append_safe(target)
 
                 the_command = f"{command} {ff} {target}"
+                the_command = the_command.replace("  ", " ")
 
                 temp = pool.apply_async(run_nco, [the_command, target])
                 results[ff] = temp
@@ -79,6 +80,7 @@ def nco_command(self, command=None, ensemble=False):
                 append_safe(target)
 
                 the_command = f"{command} {ff} {target}"
+                the_command = the_command.replace("  ", " ")
 
                 target = run_nco(the_command, target=target)
 
@@ -92,6 +94,7 @@ def nco_command(self, command=None, ensemble=False):
         files = str_flatten(self.current, " ")
 
         the_command = f"{command} {files} {target}"
+        the_command = the_command.replace("  ", " ")
 
         target = run_nco(the_command, target=target)
 
@@ -110,7 +113,9 @@ def nco_command(self, command=None, ensemble=False):
             if removed == 0:
                 break
 
-        self.history.append(command)
+        for cc in new_commands:
+            self.history.append(cc)
+        #self.history.append(command)
         self._hold_history = copy.deepcopy(self.history)
 
     if cores > 1:

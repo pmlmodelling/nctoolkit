@@ -1,4 +1,3 @@
-from nctoolkit.runthis import run_this
 from nctoolkit.show import nc_variables
 from nctoolkit.utils import name_check
 import warnings
@@ -72,4 +71,4 @@ def rename(self, newnames=None, **kwargs):
 
     # create the cdo call and run it
     cdo_command = "cdo -chname" + cdo_rename
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)

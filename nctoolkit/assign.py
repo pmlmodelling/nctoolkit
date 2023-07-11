@@ -3,7 +3,6 @@ import dill
 import inspect
 import numpy as np
 
-from nctoolkit.runthis import run_this
 from nctoolkit.session import session_info
 from nctoolkit.utils import version_below
 
@@ -757,4 +756,4 @@ def assign(self, drop=False, **kwargs):
     else:
         cdo_command = f"cdo -expr,'{command}'"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble = False) 

@@ -1,5 +1,3 @@
-from nctoolkit.runthis import run_this
-
 
 def is_integer(x):
     try:
@@ -179,7 +177,7 @@ def compare(self, expression=None):
 
     expression = fix_expr(expression)
     cdo_command = f"cdo -{expression}"
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def __eq__(self, x):

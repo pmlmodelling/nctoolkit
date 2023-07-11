@@ -4,7 +4,6 @@ from datetime import datetime, timedelta
 
 from nctoolkit.cleanup import cleanup
 from nctoolkit.flatten import str_flatten
-from nctoolkit.runthis import run_this
 from nctoolkit.show import nc_years
 from nctoolkit.utils import cdo_version, version_above, name_check
 
@@ -65,7 +64,7 @@ def select_levels(self, levels=None):
 
     cdo_command = f"cdo -sellevel,{levels}"
 
-    run_this(cdo_command, self, "ensemble")
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def select_period(self, period=None):
@@ -102,7 +101,7 @@ def select_period(self, period=None):
     end = str(end).split(" ")[0]
     cdo_command = f"cdo -seldate,{start},{end}"
 
-    run_this(cdo_command, self, "ensemble")
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def select_seasons(self, season=None):
@@ -125,7 +124,7 @@ def select_seasons(self, season=None):
         raise ValueError("Invalid season supplied")
 
     cdo_command = f"cdo -select,season={season}"
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def select_hours(self, hours=None):
@@ -164,7 +163,7 @@ def select_hours(self, hours=None):
     hours = str_flatten(hours, ",")
 
     cdo_command = f"cdo -selhour,{hours}"
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def select_days(self, days=None):
@@ -203,7 +202,7 @@ def select_days(self, days=None):
     days = str_flatten(days, ",")
 
     cdo_command = f"cdo -selday,{days}"
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def select_months(self, months=None):
@@ -242,7 +241,7 @@ def select_months(self, months=None):
     months = str_flatten(months, ",")
 
     cdo_command = f"cdo -selmonth,{months}"
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def select_years(self, years=None):
@@ -344,13 +343,13 @@ def select_years(self, years=None):
 
             cdo_command = f"cdo -selyear,{years}"
 
-            run_this(cdo_command, self, output="ensemble")
+            self.cdo_command(cdo_command, ensemble=False)
     else:
         years = str_flatten(years, ",")
 
         cdo_command = f"cdo -selyear,{years}"
 
-        run_this(cdo_command, self, output="one")
+        self.cdo_command(cdo_command, ensemble=True)
 
     cleanup()
 
@@ -386,7 +385,7 @@ def select_variables(self, vars=None):
 
     cdo_command = f"cdo -selname,{vars_list}"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def select_timesteps(self, times=None):
@@ -427,7 +426,7 @@ def select_timesteps(self, times=None):
 
     cdo_command = f"cdo -seltimestep,{times}"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def subset(self, **kwargs):

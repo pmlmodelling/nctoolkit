@@ -2,7 +2,7 @@ import copy
 
 from nctoolkit.cleanup import cleanup
 from nctoolkit.session import remove_safe
-from nctoolkit.runthis import run_this, tidy_command, run_cdo
+from nctoolkit.runthis import tidy_command, run_cdo
 from nctoolkit.show import nc_variables
 from nctoolkit.temp_file import temp_file
 
@@ -73,7 +73,7 @@ def cell_area(self, join=True):
 
     else:
         cdo_command = "cdo -gridarea"
-        run_this(cdo_command, self, output="ensemble")
+        self.cdo_command(cdo_command, ensemble=False)
 
     # add units
 

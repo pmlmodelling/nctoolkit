@@ -2,7 +2,6 @@ import copy
 import warnings
 
 from nctoolkit.cleanup import cleanup
-from nctoolkit.runthis import run_this, run_nco
 from nctoolkit.temp_file import temp_file
 from nctoolkit.session import remove_safe
 from nctoolkit.show import nc_variables
@@ -22,7 +21,7 @@ def set_year(self, x):
     if not isinstance(x, int):
         raise ValueError(f"{x} is not a int")
     cdo_command = f"cdo -setyear,{x}"
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def set_day(self, x):
@@ -38,7 +37,7 @@ def set_day(self, x):
     if not isinstance(x, int):
         raise ValueError(f"{x} is not a int")
     cdo_command = f"cdo -setday,{x}"
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def set_precision(self, x):
@@ -116,7 +115,7 @@ def set_date(self, year=None, month=None, day=None, base_year=1900):
         f"-setdate,{str(year)}-{str(month)}-{str(day)}"
     )
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def missing_as(self, value=None):
@@ -136,7 +135,7 @@ def missing_as(self, value=None):
 
     cdo_command = f"cdo -setmisstoc,{value}"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def set_fill(self, value=None):
@@ -161,7 +160,7 @@ def set_fill(self, value=None):
 
     cdo_command = f"cdo -setmissval,{value} -setmissval,nan"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def as_missing(self, value=None):
@@ -192,7 +191,7 @@ def as_missing(self, value=None):
     if isinstance(value, list):
         cdo_command = f"cdo -setrtomiss,{str(value[0])},{str(value[1])}"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def set_units(self, unit_dict=None, **kwargs):
@@ -243,7 +242,7 @@ def set_units(self, unit_dict=None, **kwargs):
             raise TypeError("key,values in unit_dict are not strings")
 
         cdo_command = f'cdo -setattribute,{i}@units="{unit_dict[i]}"'
-        run_this(cdo_command, self, output="ensemble")
+        self.cdo_command(cdo_command, ensemble=False)
 
 
 def set_longnames(self, name_dict=None, **kwargs):
@@ -276,11 +275,6 @@ def set_longnames(self, name_dict=None, **kwargs):
     if not isinstance(name_dict, dict):
         TypeError("A dictionary has not been supplied!")
 
-    # change the longnames in turn. This doesn't seem to be something you can chain?
-
-    new_commands = []
-    new_files = []
-
     if len(self.history) == len(self._hold_history):
         variables = nc_variables(self[0])
         for key in name_dict:
@@ -296,34 +290,14 @@ def set_longnames(self, name_dict=None, **kwargs):
         if name_check(key) is False:
             raise ValueError(f"{key} is not a valid netCDF variable name")
 
-    for ff in self:
-        nco_command = "ncatted "
-        for i in name_dict:
-            if not isinstance(i, str):
-                raise TypeError("key,values in name_dict are not strings")
-            if not isinstance(name_dict[i], str):
-                raise TypeError("key,values in name_dict are not strings")
-            i_dict = name_dict[i]
-            i_dict = i_dict.replace('"', "'")
-            nco_command += "-a long_name," + i + ',o,c,"' + i_dict + '" '
+    nco_command = "ncatted "
+    for i in name_dict:
+        if not isinstance(i, str):
+            raise TypeError("key,values in name_dict are not strings")
+        if not isinstance(name_dict[i], str):
+            raise TypeError("key,values in name_dict are not strings")
+        i_dict = name_dict[i]
+        i_dict = i_dict.replace('"', "'")
+        nco_command += "-a long_name," + i + ',o,c,"' + i_dict + '" '
 
-        target = temp_file("nc")
-
-        nco_command += ff + " " + target
-
-        target = run_nco(nco_command, target)
-
-        new_files.append(target)
-        new_commands.append(nco_command)
-
-    self.history += new_commands
-    self._hold_history = copy.deepcopy(self.history)
-
-    self.current = new_files
-
-    for ff in new_files:
-        remove_safe(ff)
-
-    # clean up the directory
-    cleanup()
-    self.disk_clean()
+    self.nco_command(nco_command)

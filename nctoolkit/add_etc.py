@@ -5,7 +5,7 @@ import pandas as pd
 
 
 from nctoolkit.cleanup import cleanup
-from nctoolkit.runthis import run_this, run_cdo, tidy_command
+from nctoolkit.runthis import run_cdo, tidy_command
 from nctoolkit.session import session_info, append_safe, remove_safe
 from nctoolkit.show import nc_variables, nc_times
 from nctoolkit.temp_file import temp_file
@@ -39,7 +39,7 @@ def day_stat(self, operation=None, x=None):
             x = x[0]
 
     # create the system command and run it
-    cdo_command = f"cdo -yday{stat} {self[0]} {x}"
+    cdo_command = f"cdo yday{stat} {self[0]} {x}"
     target = temp_file(".nc")
 
     the_command = cdo_command + " " + target
@@ -67,9 +67,9 @@ def arithall(self, stat="divc", x=None):
         raise ValueError("This does not work on empty datasets!")
 
     # create the system command and run it
-    cdo_command = f"cdo -{stat},{x}"
+    cdo_command = f"cdo {stat},{x}"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command)
 
 
 def operation(self, method="mul", ff=None, var=None):
@@ -678,7 +678,7 @@ def abs(self):
     """
     cdo_command = f"cdo -abs"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def power(self, x=None):
@@ -704,7 +704,7 @@ def power(self, x=None):
 
     cdo_command = f"cdo -pow,{x}"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command)
 
 
 __pow__ = power
@@ -724,7 +724,7 @@ def exp(self):
     """
     cdo_command = f"cdo -exp"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command)
 
 
 def log(self):
@@ -741,7 +741,7 @@ def log(self):
     """
     cdo_command = f"cdo -ln"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command)
 
 
 def log10(self):
@@ -758,7 +758,7 @@ def log10(self):
     """
     cdo_command = f"cdo -log10"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command)
 
 
 def square(self):
@@ -775,7 +775,7 @@ def square(self):
     """
     cdo_command = f"cdo -sqr"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command)
 
 
 def sqrt(self):
@@ -792,4 +792,4 @@ def sqrt(self):
     """
     cdo_command = f"cdo -sqrt"
 
-    run_this(cdo_command, self, output="ensemble")
+    self.cdo_command(cdo_command)

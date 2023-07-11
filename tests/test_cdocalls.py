@@ -74,7 +74,7 @@ class TestCalls:
         data.assign(k = lambda x: x.sst+273.15)
         data.sum_all()
 
-        assert data.history[1] == 'cdo -expr,total=k+sst '
+        assert data.history[1] == 'cdo -expr,total=k+sst'
 
     def test_selectseasoncall(self):
         nc.options(lazy=True)
@@ -612,7 +612,7 @@ class TestCalls:
 
         data = nc.open_data(ff, checks = False)
         data.reduce_dims()
-        assert data.history[0] == "cdo --reduce_dim copy"
+        assert data.history[0] == "cdo --reduce_dim -copy"
 
         data = nc.open_data(ff1, checks=    False)
         data.top()
