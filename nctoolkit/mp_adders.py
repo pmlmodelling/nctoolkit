@@ -2,6 +2,7 @@ import pandas as pd
 from nctoolkit.api import open_data, open_thredds
 from nctoolkit.matchpoint import open_matchpoint
 import nctoolkit.api as api
+import os
 
 
 def match_points(
@@ -260,7 +261,8 @@ def add_depths(self, x=None):
             raise ValueError("Depths file should only have one variable")
 
         self.depths = x.copy()
-        self.depths.rename({x.variables[0]: "depth"})
+        if x.variables[0] != "depth":
+            self.depths.rename({x.variables[0]: "depth"})
         self.depths.run()
 
 
