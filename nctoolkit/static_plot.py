@@ -29,11 +29,26 @@ except:
 from textwrap import wrap
 
 
+def find_closest_grid(z):
+    x = np.ceil(np.sqrt(z))
+    y = x
+
+    if (x * y) - z == 0.0:
+        return x, y
+    while True:
+        x = x - 1
+        if (x * y) - z < 0.0:
+            x = x + 1
+            break
+    return int(y), int(x)
+
+
 from difflib import SequenceMatcher
 
 
 def similar(a, b):
     return SequenceMatcher(None, a, b).ratio()
+
 
 from math import radians, sin, cos, asin, sqrt
 
@@ -99,8 +114,8 @@ def pub_plot(
     grid_colour="auto",
     legend_position="auto",
     robust=False,
-    out = None,
-    breaks = None,
+    out=None,
+    breaks=None,
     **kwargs,
 ):
     """
@@ -153,7 +168,7 @@ def pub_plot(
     axis = None
 
     if legend_position not in ["auto", "right", "bottom"]:
-        if legend_position is not None: 
+        if legend_position is not None:
             raise ValueError("legend_position must be one of right/bottom or None")
 
     land_auto = land == "auto"
@@ -200,7 +215,6 @@ def pub_plot(
     if "gs" not in kwargs.keys():
         gs = None
 
-
     if "quiver" in kwargs:
         quiver = True
         u = kwargs["u"]
@@ -211,14 +225,13 @@ def pub_plot(
     else:
         quiver = False
 
-
     for kk in kwargs:
         fixed = False
 
         if kk == "fig":
             fig = kwargs[kk]
             fixed = True
-        
+
         if kk == "gs":
             gs = kwargs[kk]
             fixed = True
@@ -278,7 +291,7 @@ def pub_plot(
                 )
             else:
                 raise ValueError(f"{kk} is not a valid argument")
-    
+
     if gs is not None:
         if fig is None:
             raise ValueError("If you specify gs, you must also specify fig")
@@ -533,7 +546,6 @@ def pub_plot(
             vmin = mid_point - adjustment
             vmax = mid_point + adjustment
 
-
         norm_plot = False
         if norm in ["log", "log10"]:
             norm = mpl.colors.LogNorm(vmin=vmin, vmax=vmax)
@@ -565,7 +577,7 @@ def pub_plot(
     # note that if x_inline and y_inline are not set to False, the labels of the axis could be written inside the map
 
     if quiver:
-        im =  ax.quiver(lon, lat, u, v, units='width', transform = data_crs)
+        im = ax.quiver(lon, lat, u, v, units="width", transform=data_crs)
 
     if not quiver:
         if grid_colour == "auto" and norm_plot:
@@ -634,7 +646,7 @@ def pub_plot(
             cb = plt.colorbar(im, fraction=fraction, pad=0.04, location=l_location)
         else:
             cb = plt.colorbar(im, fraction=fraction, pad=0.04)
-    
+
         # add breaks to colorbar cb
         if breaks is not None:
             cb.set_ticks(breaks)
@@ -676,12 +688,9 @@ def pub_plot(
         else:
             ds_contents = ds1.contents
             try:
-                label = (
-                    fix_long(ds_contents.long_name.values[0])
-                    + " ("
-                    + fix_label(ds_contents.unit.values[0])
-                    + ")"
-                )
+                label = fix_long(ds_contents.long_name.values[0])
+                if ds_contents.unit.values[0] is not None:
+                    label = label + " (" + fix_label(ds_contents.unit.values[0]) + ")"
             except:
                 print(
                     "Unable to parse legend from dataset contents. Check long names and units"
@@ -700,14 +709,13 @@ def pub_plot(
 
         if legend_position is None:
             cb.remove()
-    
+
     if out is not None:
         print("saving as file")
         plt.savefig(out)
 
 
-
-def quiver_plot(ds, u = None, v = None, **kwargs):
+def quiver_plot(ds, u=None, v=None, **kwargs):
     """
     Quiver plot using u and v velocities
 
@@ -716,7 +724,7 @@ def quiver_plot(ds, u = None, v = None, **kwargs):
     ds : nctoolkit Dataset
         dataset containing u and v velocities
     u : str
-        u velocity  
+        u velocity
     v : str
         v velocity
     **kwargs : dict
@@ -724,9 +732,9 @@ def quiver_plot(ds, u = None, v = None, **kwargs):
 
     Returns
     -------
-    fig : matplotlib figure 
+    fig : matplotlib figure
         figure object
-    
+
 
     """
 
@@ -741,15 +749,15 @@ def quiver_plot(ds, u = None, v = None, **kwargs):
 
     if u is None:
         raise ValueError("u must be specified")
-    
+
     if v is None:
         raise ValueError("v must be specified")
-    
+
     # check u and v are str
 
     if not isinstance(u, str):
         raise TypeError("u must be a string")
-    
+
     if not isinstance(v, str):
         raise TypeError("v must be a string")
 
@@ -757,13 +765,8 @@ def quiver_plot(ds, u = None, v = None, **kwargs):
 
     if u not in vars:
         raise ValueError("u not in dataset")
-    
+
     if v not in vars:
         raise ValueError("v not in dataset")
 
-    
-
-    pub_plot(ds, quiver = True, u = u, v = v, **kwargs)
-
-
-
+    pub_plot(ds, quiver=True, u=u, v=v, **kwargs)
