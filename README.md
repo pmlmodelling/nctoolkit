@@ -81,6 +81,9 @@ A full API reference, in depth tutorials and a how-to guide are available at [re
 
 
 
+## Contributing
+
+If you are interesting in contributing to nctoolkit feel free to read the [Contributing page](https://nctoolkit.readthedocs.io/en/latest/contributing.html).
 
 
 
