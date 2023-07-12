@@ -89,7 +89,7 @@ If you are interesting in contributing to nctoolkit feel free to read the [Contr
 
 - If you have a question about how to use nctoolkit, please ask on 
     [GitHub Discussions](https://github.com/pmlmodelling/nctoolkit/discussions).
-- Report any bugs, suggest newfeatures or view the source code [on
+- Report any bugs, suggest new features or view the source code [on
     GitHub](https://github.com/pmlmodelling/nctoolkit).
 
 
