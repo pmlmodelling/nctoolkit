@@ -85,7 +85,12 @@ A full API reference, in depth tutorials and a how-to guide are available at [re
 
 If you are interesting in contributing to nctoolkit feel free to read the [Contributing page](https://nctoolkit.readthedocs.io/en/latest/contributing.html).
 
+## Got questions about nctoolkit? 
 
+- If you have a question about how to use nctoolkit, please ask on 
+    [GitHub Discussions](https://github.com/pmlmodelling/nctoolkit/discussions).
+- Report any bugs, suggest newfeatures or view the source code [on
+    GitHub](https://github.com/pmlmodelling/nctoolkit).
 
 
 
