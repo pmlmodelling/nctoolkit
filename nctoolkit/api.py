@@ -119,6 +119,20 @@ session_info["progress"] = "on"
 session_info["checks"] = True
 session_info["user"] = ""
 
+# get the cdo methods
+
+read = subprocess.run(
+    "cdo --operators", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+).stdout
+
+cdo_methods = [x.split(" ")[0].replace("b'", "") for x in str(read).split("\\n")]
+
+cdo_methods = [mm for mm in cdo_methods if len(mm) > 0]
+
+cdo_methods.append("L")
+cdo_methods.append("reduce_dim")
+session_info["cdo_methods"] = cdo_methods
+
 
 def coast_check():
     try:
@@ -331,87 +345,6 @@ def options(**kwargs):
     update_options(kwargs)
     return None
 
-    for key in kwargs:
-        if key not in valid_keys:
-            raise AttributeError(key + " is not a valid option")
-
-        if key == "parallel" or key == "lazy" or key == "thread_safe":
-            if isinstance(kwargs[key], bool):
-                raise TypeError(f"{key} should be boolean")
-
-        if key == "checks":
-            if isinstance(kwargs[key], bool):
-                raise TypeError(f"{key} should be boolean")
-
-        if isinstance(kwargs[key], bool):
-            if key == "temp_dir":
-                if isinstance(kwargs[key], str):
-                    if os.path.exists(kwargs[key]) is False:
-                        raise ValueError("The temp_dir specified does not exist!")
-                    session_info[key] = os.path.abspath(kwargs[key])
-                    session_info["user_dir"] = True
-                return None
-            if key == "progress":
-                if kwargs[key] not in ["on", "off", "auto", "of"]:
-                    raise ValueError("progress must be one of 'on', 'off', 'auto'")
-
-                if kwargs[key] == "of":
-                    session_info[key] = "off"
-                else:
-                    session_info[key] = kwargs[key]
-                return None
-
-            if key == "cores":
-                if isinstance(kwargs[key], int):
-                    if kwargs[key] > mp.cpu_count():
-                        raise ValueError(
-                            str(kwargs[key])
-                            + " is greater than the number of system cores ("
-                            + str(mp.cpu_count())
-                            + ")"
-                        )
-                    session_info[key] = kwargs[key]
-                else:
-                    raise TypeError("cores must be an int")
-            else:
-                if key == "precision":
-                    if kwargs[key] not in ["I8", "I16", "I32", "F32", "F64"]:
-                        raise ValueError("precision supplied is not valid!")
-                    session_info[key] = kwargs[key]
-                else:
-                    raise ValueError(kwargs[key] + " is not valid session info!")
-        else:
-            session_info[key] = kwargs[key]
-
-            # update safe-lists etc. if running in parallel
-            if kwargs[key] and key == "parallel":
-                if len(temp_dirs) > 0:
-                    for ff in temp_dirs:
-                        append_tempdirs(ff)
-
-                if len(nc_safe) > 0:
-                    for ff in nc_safe:
-                        nc_safe_par.append(ff)
-
-                if len(nc_protected) > 0:
-                    for ff in nc_protected:
-                        nc_protected_par.append(ff)
-                        nc_protected.remove(ff)
-
-            if (kwargs[key] is False) and key == "parallel":
-                if len(temp_dirs_par) > 0:
-                    for ff in temp_dirs_par:
-                        append_tempdirs(ff)
-
-                if len(nc_safe_par) > 0:
-                    for ff in nc_safe_par:
-                        nc_safe.append(ff)
-                        nc_safe_par.remove(ff)
-
-                if len(nc_protected_par) > 0:
-                    for ff in nc_protected_par:
-                        nc_protected.append(ff)
-                        nc_protected_par.remove(ff)
 
 
 # if nctoolkitrc exists, we need to read the possible options from there...
@@ -425,7 +358,7 @@ def find_config():
 
     # now look in the home directory....
     from os.path import expanduser
-
+ 
     home = expanduser("~")
     for ff in [".nctoolkitrc", "nctoolkitrc"]:
         if os.path.exists(home + "/" + ff):
@@ -1198,6 +1131,7 @@ class DataSet(object):
         return
 
     def __repr__(self):
+        self.run()
         if len(self) == 0:
             return "Empty dataset"
         current = str(len(self))
@@ -1212,23 +1146,15 @@ class DataSet(object):
             output += "......"
         return output
 
-        # return(self.show_contents(min(12, len(self))))
-        #''    print(".......")
-
-        # return (
-        #    "<nctoolkit.DataSet>:\nFiles: "
-        #    + current
-        #    + "\n"
-        #    + "Variables: "
-        #    + str_flatten(variables)
-        # )
 
     @property
     def size(self):
+
         """The size of an object
         This will print the number of files, total size, and smallest and largest files
         in an DataSet object.
         """
+        self.run()
         all_sizes = []
 
         smallest_file = ""
@@ -1265,7 +1191,7 @@ class DataSet(object):
         List calendars of dataset files
         """
 
-        # return None
+        self.run()
 
         cals = []
         for ff in self:
@@ -1295,6 +1221,8 @@ class DataSet(object):
         List variables contained in a dataset
         """
 
+        self.run()
+
         all_variables = []
         for ff in self:
             all_variables += nc_variables(ff)
@@ -1310,6 +1238,8 @@ class DataSet(object):
         """
         List months contained in a dataset
         """
+
+        self.run()
 
         all_months = []
         for ff in self:
@@ -1327,6 +1257,8 @@ class DataSet(object):
         List levels contained in a dataset
         """
 
+        self.run()
+
         all_levels = []
         for ff in self:
             all_levels += nc_levels(ff)
@@ -1342,6 +1274,8 @@ class DataSet(object):
         """
         List times contained in a dataset
         """
+
+        self.run()
 
         all_times = []
         for ff in self:
@@ -1359,6 +1293,8 @@ class DataSet(object):
         List formats of files contained in a dataset
         """
 
+        self.run()
+
         all_formats = []
         for ff in self:
             all_formats += nc_format(ff)
@@ -1374,6 +1310,8 @@ class DataSet(object):
         """
         List years contained in a dataset
         """
+
+        self.run()
 
         all_years = []
         for ff in self:
@@ -1609,6 +1547,8 @@ class DataSet(object):
         Detailed list of variables contained in a dataset.
         This will only display the variables in the first file of an ensemble.
         """
+
+        self.run()
 
         return self.show_contents()
 
