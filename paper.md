@@ -79,5 +79,5 @@ nctoolkit is developed on GitHub as an open-source package, and the authors welc
 
 # Acknowledgements 
 
-This work was supported by the Natural Environment Research Council (NERC) Climate Linked Atlantic Sector Science programme (NE/R015953/1). We thank the authors of the Climate Data Operators (CDO) library for their work. nctoolkit makes use of many libraries, including xarray [@Hoyer2017], pandas [@mckinney2011pandas], holoviews [@Stevens2015], numpy [@Harris2020] and matplotlib [@hunter2007matplotlib].COBE Sea Surface Temperature data provided by the NOAA PSL, Boulder, Colorado, USA, from their website at [https://psl.noaa.gov](https://psl.noaa.gov).
+This work was supported by the Natural Environment Research Council (NERC) Climate Linked Atlantic Sector Science programme (NE/R015953/1). We thank the authors of the Climate Data Operators (CDO) library for their work. In addition, nctoolkit makes use of xarray [@Hoyer2017], pandas [@mckinney2011pandas], holoviews [@Stevens2015] and matplotlib [@hunter2007matplotlib] for the core plotting functionality. COBE Sea Surface Temperature data provided by the NOAA PSL, Boulder, Colorado, USA, from their website at [https://psl.noaa.gov](https://psl.noaa.gov).
 
