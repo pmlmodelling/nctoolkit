@@ -62,6 +62,7 @@ nctoolkit is developed as open source software by the Marine Systems Modelling g
    :caption: User Guide 
 
    datasets
+   supported
    exporting 
    subsetting 
    interpolation
