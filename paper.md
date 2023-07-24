@@ -19,7 +19,7 @@ authors:
 affiliations:
  - name: Robert J. Wilson. Plymouth Marine Laboratory 
    index: 1
-date: 28 Feburary 2023
+date: 25 July 2023
 bibliography: paper.bib
 ---
 
@@ -46,30 +46,33 @@ The package's core functionality includes the following dataset methods: regridd
 
 # Example Use Case
 
-This example shows how to calculate how much ocean temperatures have changed since the beginning of the 20th Century. The data used in this example is the NOAA COBE Sea Surface Temperature dataset [@Ishii2005], which is available from the NOAA Physical Sciences Laboratory website at [https://psl.noaa.gov/data/gridded/data.cobe.html](https://psl.noaa.gov/data/gridded/data.cobe.html). The data is stored in a netCDF file, which can be opened using the `open_data` function. This returns a `Dataset` object, which contains the data and metadata from the netCDF file. The `Dataset` object has a number of methods for working with the data, which can be used for manipulations and analysis. In this example, we first create a dataset which contains the average temperature for the years 1900-1919. We then calculate the average temperature for the years 2000-2019, and subtract the 1900-1919 average to calculate the change in temperature between the two periods. Finally, we plot the change in temperature using the `pub_plot` method, which generates a publication-quality plot. 
-
+This example shows how to calculate changes in surface temperatures projected by global climate models. The example is from the climate model MPI-ESM-2-LR under the SSP5 8.5 scenario, and we use the r1i1p1f1 variant available from the Earth System Grid Federation. We will show how to map projected changes in temperature between 1850-69 and 2080-99 and also how to calculate the global average temperature change.  The data is stored in multiple netCDF files, which are be opened using the `open_data` function. This returns a `Dataset` object, which contains the data and metadata from the netCDF file. The `Dataset` object has a number of methods for working with the data, which can be used for manipulations and analysis. In this example, we first merge the data along the time dimension. We then use the `annual_anomaly` method to calculate how much temperature will change in each model grid cell. The end of this time series, i.e. the change for 2080-99 is then mapped using `pub_plot`. Finally, we calculate the global average temperature change using the `spatial_mean` method, and plot the time series using `plot`. 
 
 ```python
+
 import nctoolkit as nc
 
-ds_clim = nc.open_data("sst.mon.mean.nc")
+ds_ts = nc.open_data("*.nc")
 
-ds_clim.subset(years = range(1900, 1920))
+ds_ts.merge("time")
 
-ds_clim.tmean()
+ds_ts.annual_anomaly(baseline = [1850, 1869], window = 20)
 
-ds_present = nc.open_data("sst.mon.mean.nc")
+ds_end = ds_ts.copy()
 
-ds_present.subset(years = range(2000, 2020))
+ds_end.subset(time = -1)
 
-ds_present.tmean()
+ds_end.pub_plot()
 
-ds_present-ds_clim
+ds_global = ds_ts.copy()
 
-ds_present.pub_plot(title = "Change in sea surface temperature between 1900-19 and 2000-19 (°C)", legend = "")
+ds_global.spatial_mean()
+
+ds_global.plot()
+
 ```
 
-![Change in global sea surface temperature between 1900-19 and 2000-19 as calculated by nctoolkit. The NOAA COBE 2 dataset is the source of the sea surface temperature.\label{fig:example}](fig.png){ width=80% }
+![Projected change in air temperature from the MPI-ESM-2-LR climate model under the SSP5 8.5 scenario. a) shows change between 1850-69 and 2080-99 per grid cell; and b) shows projected change in global average air temperature compared with 1850-69 using a rolling 20 year average.\label{fig:example}](fig.png){ width=80% }
 
 # Development Notes
 
