@@ -5,10 +5,8 @@ omit =
     # exclude anything that is not officially documented on the website
     nctoolkit/deprecated.py 
     nctoolkit/esoteric.py 
-    nctoolkit/toz*.py
     nctoolkit/val*.py
     nctoolkit/unify.py
-    nctoolkit/static_plot.py
     nctoolkit/bloom.py 
 [report]
 show_missing = True
