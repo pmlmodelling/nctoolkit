@@ -8,7 +8,7 @@ nc.options(parallel = True)
 for i in range(0, 5):
     def process_chain(ff):
 
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.run()
         data.add(1)
         data.run()
@@ -37,7 +37,7 @@ for i in range(0, 5):
 
     def process_chain(ff):
 
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.annual_anomaly(baseline = [1980,1989])
         data.to_nc(nc.temp_file.temp_file(".nc"), overwrite = True)
 
@@ -64,7 +64,7 @@ for i in range(0, 5):
 
     def process_chain(ff):
 
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.assign(sst_k = lambda x: x.sst + 273.15)
         data.run()
         data.cdo_command("timmean")
@@ -96,7 +96,7 @@ for i in range(0, 5):
 
     def process_chain(ff):
 
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.assign(sst_k = lambda x: x.sst + 273.15)
         data.run()
         data.nco_command("ncks -d lon,-10.0,10.0 -d lat,40.0,80.0")
@@ -128,7 +128,7 @@ for i in range(0, 5):
 
     def process_chain(ff):
 
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.assign(sst_k = lambda x: x.sst + 273.15)
         data.run()
         data.crop(lon = [-10, 10], lat = [40, 80], nco = True)
@@ -157,7 +157,7 @@ for i in range(0, 5):
 
     def process_chain(ff):
 
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.assign(sst_k = lambda x: x.sst + 273.15)
         data.run()
         data.cor_time("sst", "sst_k")
@@ -182,7 +182,7 @@ for i in range(0, 5):
 
     def process_chain(ff):
 
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.tmean()
         data.ensemble_mean()
         data.to_nc(nc.temp_file.temp_file(".nc"), overwrite = True)
@@ -209,7 +209,7 @@ for i in range(0, 5):
 
     def process_chain(ff):
 
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.assign(sst = lambda x: x.analysed_sst + 273.15)
         data.run()
         data.phenology("sst", "peak")
@@ -235,7 +235,7 @@ for i in range(0, 5):
 
     def process_chain(ff):
 
-        data = nc.open_data(ff)
+        data = nc.open_data(ff, checks = False)
         data.assign(sst = lambda x: x.sst + 273.15)
         data.run()
         data.tpercentile(50)
