@@ -27,7 +27,7 @@ class TestCdo:
     def test_cdo(self):
         tracker = nc.open_data(ff, checks = False)
         with pytest.raises(ValueError):
-            tracker.cdo_command("DJF")
+            tracker.cdo_command("DJF", check = True)
         n = len(nc.session_files())
         assert n == 0
 
@@ -46,7 +46,7 @@ class TestCdo:
     def test_cdo2(self):
         tracker = nc.open_data(ff, checks = False)
         with pytest.raises(ValueError):
-            tracker.cdo_command("-selmon,1 xy")
+            tracker.cdo_command("-selmon,1 xy", check = True)
         n = len(nc.session_files())
         assert n == 0
 
