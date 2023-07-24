@@ -435,6 +435,9 @@ def pub_plot(
         # values = np.ma.masked_where(values == 0, values)
         u = np.ma.masked_where(u == 0, u)
         v = np.ma.masked_where(v == 0, v)
+    
+    if limits is None:
+        limits = [None, None]
 
     if not quiver:
         values = input_file.variables[ds1.variables[0]][:].squeeze()
@@ -442,7 +445,7 @@ def pub_plot(
         # mask where the values is 0 == land points
         values = np.ma.masked_where(values == 0, values)
 
-        if limits != None:
+        if limits is not None:
             if limits[0] is None:
                 limits[0] = np.min(values)
             if limits[1] is None:
@@ -475,13 +478,19 @@ def pub_plot(
             if r_max is not None:
                 max_value = np.nanpercentile(np.ma.filled(values, np.nan), r_max)
 
-            if min_value < 0 and max_value > 0:
-                mid_point = 0
-                if colours == "auto":
-                    colours = "coolwarm"
-                    if land_auto:
-                        if land != "auto":
-                            land = "grey"
+        if limits is not None:
+            try:
+                if limits[0] < 0 and limits[1] > 0:
+                    min_value = limits[0]
+                    max_value = limits[1]
+                    mid_point = 0
+                    if colours == "auto":
+                        colours = "coolwarm"
+                        if land_auto:
+                            if land != "auto":
+                                land = "grey"
+            except:
+                pass
 
         if colours == "auto":
             colours = "viridis"
@@ -531,10 +540,18 @@ def pub_plot(
                 vmin = np.nanpercentile(np.ma.filled(values, np.nan), r_min)
             if r_max is not None:
                 vmax = np.nanpercentile(np.ma.filled(values, np.nan), r_max)
+        
 
         if mid_point is not None:
             val_min = values.min()
             val_max = values.max()
+
+
+
+            if mid_point == 0.0:
+                if limits is not None:
+                    val_min = limits[0]
+                    val_max = limits[1]
             if robust and limits is None:
                 val_min = np.nanpercentile(np.ma.filled(values, np.nan), 2)
                 val_max = np.nanpercentile(np.ma.filled(values, np.nan), 98)
