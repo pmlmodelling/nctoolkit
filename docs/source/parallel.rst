@@ -59,7 +59,7 @@ input file and output file:
 .. code:: ipython3
 
     def process_chain(infile, outfile):
-        ds = nc.open_data(ff) 
+        ds = nc.open_data(infile) 
         ds.assign(tos = lambda x: x.sst + 273.15)
         ds.tmean()
         ds.to_nc(outfile)
@@ -71,9 +71,12 @@ function to them and then save the results in a new folder called new:
 
     ensemble = nc.create_ensemble("../../data/ensemble")
     import multiprocessing as mp
+    import os
     # on macOS, use:
     #import multiprocess as mp
     pool = mp.Pool(3)
+    if not os.path.exists("new"):
+        os.mkdir("new")
     for ff in ensemble:
         pool.apply_async(process_chain, [ff, ff.replace("ensemble", "new")])
     pool.close()
