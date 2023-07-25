@@ -16,7 +16,7 @@ class TestCrop:
 
         ds = nc.open_data("data/sst.mon.mean.nc", checks = False)
         ds.subset(time = 0)
-        ds.pub_plot(out = out_file)
+        ds.pub_plot(out = out_file, land = "grey")
 
         with pytest.raises(ValueError, match=r"Did you mean"):
             ds.pub_plot(grid_colourrs = "none")
