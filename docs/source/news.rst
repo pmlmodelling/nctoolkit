@@ -1,6 +1,18 @@
 News
 ============
 
+Release of v1.0.0
+---------------
+Version 1.0.0 was released on 25th July 2023. This is a major release with some breaking changes.
+
+A critical change is that accessing dataset attributes will force evaluation, i.e. `ds.run()` will occur if you access an attribute such as `ds.times`. This makes behaviour more consistent with what new users would expect. 
+
+This should not have a major impact on any coding workflows.
+
+The `cdo_command` method has been changed so that it no longer checks the validity of the command before calling CDO. Checks can now be run using the `check` argument. 
+
+Some improvements have been made to method internals for `pub_plot`. 
+
 Release of v0.9.2
 ---------------
 
