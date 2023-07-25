@@ -486,7 +486,7 @@ def pub_plot(
                     mid_point = 0
                     if colours == "auto":
                         colours = "coolwarm"
-                        if land_auto:
+                        if land_auto and land is not None:
                             if land != "auto":
                                 land = "grey"
             except:
