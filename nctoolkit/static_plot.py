@@ -485,7 +485,7 @@ def pub_plot(
                     max_value = limits[1]
                     mid_point = 0
                     if colours == "auto":
-                        colours = "coolwarm"
+                        colours = "RdBu_r"
                         if land_auto and land is not None:
                             if land != "auto":
                                 land = "grey"
