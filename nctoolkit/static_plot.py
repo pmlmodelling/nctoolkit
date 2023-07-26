@@ -430,20 +430,12 @@ def pub_plot(
     if quiver:
         u = input_file.variables[u][:].squeeze()
         v = input_file.variables[v][:].squeeze()
-
-        # mask where the values is 0 == land points
-        # values = np.ma.masked_where(values == 0, values)
-        u = np.ma.masked_where(u == 0, u)
-        v = np.ma.masked_where(v == 0, v)
     
     if limits is None:
         limits = [None, None]
 
     if not quiver:
         values = input_file.variables[ds1.variables[0]][:].squeeze()
-
-        # mask where the values is 0 == land points
-        values = np.ma.masked_where(values == 0, values)
 
         if limits is not None:
             if limits[0] is None:
