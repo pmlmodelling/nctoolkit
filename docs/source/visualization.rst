@@ -83,7 +83,7 @@ This is carried out using the `pub_plot` method, and is designed to quickly prod
 
 # display a png file called pub_plot1.png
 
-.. image:: ../_static/pub_plot1.png
+.. image:: pub_plot1.png
    :width: 100%
    :align: center
    :alt: pub_plot1
