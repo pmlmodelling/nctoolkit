@@ -1,6 +1,15 @@
 News
 ============
 
+Release of v1.0.1
+---------------
+
+Versions 1.0.1 will be released in August/September. This will be a minor release with some improvements and new methods.
+
+A method for inverting vertical levels and latitude will be introduced: `invert`.
+
+The `pub_plot` method will use slightly better colour scales for diverging scales.
+
 Release of v1.0.0
 ---------------
 Version 1.0.0 was released on 25th July 2023. This is a major release with some breaking changes.
