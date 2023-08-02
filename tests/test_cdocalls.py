@@ -656,4 +656,19 @@ class TestCalls:
         assert data.history[0] == "cdo -shifttime,-1years"
 
 
+        ff1 = "data/woa18_decav_t01_01.nc"
+
+        # test invert
+        ds = nc.open_data(ff1, checks=False)
+        ds.invert("lat")
+        assert ds.history[0] == "cdo -invertlat"
+
+        # test invert levels
+
+        ds = nc.open_data(ff1, checks=False)
+        ds.invert("lev")
+        assert ds.history[0] == "cdo -invertlev"
+
+
+
 

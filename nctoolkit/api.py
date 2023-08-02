@@ -1749,6 +1749,8 @@ class DataSet(object):
     from nctoolkit.inttime import time_interp
     from nctoolkit.inttime import timestep_interp
 
+    from nctoolkit.invert import invert
+
     from nctoolkit.masking import mask_box
 
     from nctoolkit.mergers import collect
