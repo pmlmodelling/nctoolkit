@@ -568,6 +568,7 @@ def open_data(x=[], checks=True, **kwargs):
             source = kwargs[key]
 
     if isinstance(x, str) and thredds is False:
+        x = os.path.expanduser(x)
         if is_url(x) is False:
             x = glob.glob(x)
             if len(x) == 0:
@@ -588,6 +589,7 @@ def open_data(x=[], checks=True, **kwargs):
         x = [x]
 
     if isinstance(x, list):
+        x = [os.path.expanduser(y) for y in x]
         x = fix_files(x)
 
     if isinstance(x, list):
@@ -602,6 +604,8 @@ def open_data(x=[], checks=True, **kwargs):
         stop_time = min(file_stop, stop_time)
 
     if isinstance(x, str):
+        x = os.path.expanduser(x)
+        print(x)
         if source != "file" or os.path.exists(x) is False:
             if is_url(x):
                 if thredds is False:
