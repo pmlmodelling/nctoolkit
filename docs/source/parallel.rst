@@ -58,6 +58,7 @@ In this case, the original file is in a directory called ensemble and we will pu
 
 
 .. code:: ipython3
+
     def process_chain(infile):
         '''
         This function takes a file, converts the temperature to Kelvin and then saves the output in a new directory
@@ -79,6 +80,7 @@ We now want to loop through all of the files in a folder, apply the
 function to them and then save the results in a new folder called new. 
 
 .. code:: ipython3
+
     # identify files in the ensemble directory 
     ensemble = nc.create_ensemble("ensemble")
     import multiprocessing as mp
