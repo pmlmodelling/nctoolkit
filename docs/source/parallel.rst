@@ -48,39 +48,53 @@ are adding to this list in parallel, and this can cause problems.
 Telling nctoolkit it will be run in parallel tells it to switch to using
 a type of list that can be safely added to in parallel.
 
-We can use multiprocessing on Linux or multiprocess on macOS to do the following: take all of the files in
-folder foo, do a bunch of things to them, then save the results in a new
-folder:
+We can illustrate the use of nctoolkit to post-process multiple files in parallel with a simple chain which will
+convert files that have temperature in degrees Celsius and then convert them to Kelvin and also save the new outputs as separate files. 
 
-We start with a function giving a processing chain. There are obviously
-different ways of doing this, but I like to use a function that takes the
-input file and output file:
+
+First, we would define a function that can take the input file, carry out the necessary processing and then save the output file in a new directory.
+
+In this case, the original file is in a directory called ensemble and we will put it in a new one called new.
+
 
 .. code:: ipython3
+    def process_chain(infile):
+        '''
+        This function takes a file, converts the temperature to Kelvin and then saves the output in a new directory
+        '''
 
-    def process_chain(infile, outfile):
-        ds = nc.open_data(infile) 
+        # define the outfile name
+        outfile = infile.replace('ensemble', 'new')
+        # check if directory for outfile exists and create if not
+        if not os.path.exists(os.path.dirname(outfile)):
+            os.mkdir(os.path.dirname(outfile))
+        ds = nc.open_data(infile)
+        # convert to Kelvin
         ds.assign(tos = lambda x: x.sst + 273.15)
-        ds.tmean()
+        # save the output
         ds.to_nc(outfile)
 
+
 We now want to loop through all of the files in a folder, apply the
-function to them and then save the results in a new folder called new:
+function to them and then save the results in a new folder called new. 
 
 .. code:: ipython3
-
-    ensemble = nc.create_ensemble("../../data/ensemble")
+    # identify files in the ensemble directory 
+    ensemble = nc.create_ensemble("ensemble")
     import multiprocessing as mp
     import os
     # on macOS, use:
     #import multiprocess as mp
+    # create a pool of workers
     pool = mp.Pool(3)
-    if not os.path.exists("new"):
-        os.mkdir("new")
+    # apply the function to each file in the ensemble
     for ff in ensemble:
-        pool.apply_async(process_chain, [ff, ff.replace("ensemble", "new")])
+        pool.apply_async(process_chain, [ff])
+    # close the pool and wait for the work to finish
     pool.close()
+    # wait for the processes to finish
     pool.join()
+
 
 The number 3 in this case signifies that 3 cores are to be used.
 
@@ -93,4 +107,4 @@ any parallel processing:
     nc.options(parallel = False)
 
 This is because of the effects of manually terminating commands on
-multiprocessing lists, which nctoolkit uses when in parallel mode.
+multiprocessing lists, which nctoolkit uses when in parallel mode. This appears to be due to a book in multiprocessing, which is hard to avoid.
