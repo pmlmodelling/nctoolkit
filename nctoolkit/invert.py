@@ -1,16 +1,3 @@
-from nctoolkit.show import nc_variables
-from nctoolkit.utils import name_check
-import warnings
-
-
-# A custom format for warnings.
-def custom_formatwarning(msg, *args, **kwargs):
-    # ignore everything except the message
-    return str(msg) + "\n"
-
-
-warnings.formatwarning = custom_formatwarning
-
 
 def invert(self, x = None):
     """

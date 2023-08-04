@@ -485,10 +485,8 @@ def assign(self, drop=False, **kwargs):
                         # need to tweak this so that it captures the output and returns an appropriate error
                         new_x = eval(x, globals(), frame.f_back.f_locals)
                         if isinstance(new_x, str):
-                            error_message = f"{x} evaluates to a string!"
                             raise ValueError(f"{x} evaluates to a string")
                         if is_number(str(new_x)) is False:
-                            error_message = f"{x} does not evaluate to numeric!"
                             raise ValueError(f"{x} does not evaluate to numeric!")
 
                         new_start = ""

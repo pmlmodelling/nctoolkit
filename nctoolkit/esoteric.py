@@ -332,7 +332,6 @@ def delete_attributes(self, atts):
         atts = [atts]
 
     for i in atts:
-        i_dict = i
         nco_command += "-a " + i + ",global,d,, "
 
     target = ""

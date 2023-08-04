@@ -111,8 +111,6 @@ def operation(self, method="mul", ff=None, var=None):
         warnings.warn("Use CDO>=1.9.10 for smarter operations")
         self.run()
 
-    bad_vars = False
-
     if var is None:
         for x in self:
             n_vars = len(nc_variables(ff))
@@ -130,19 +128,15 @@ def operation(self, method="mul", ff=None, var=None):
         if method == "mul":
             nc_str = "Multiplying by a"
         if method == "sub":
-            nc_operation = "subtraction"
             nc_str = "Subtracting a"
         if method == "add":
-            nc_operation = "addition"
             nc_str = "Adding a"
         if method == "div":
-            nc_operation = "division"
             nc_str = "Dividing by a"
 
     if new:
         ff_times = nc_times(ff)
         if len(ff_times) <= 1:
-            op_method = "single"
             new = False
             method = method
         else:
@@ -275,16 +269,6 @@ def operation(self, method="mul", ff=None, var=None):
     if new:
         if ff_times_df.groupby(["month", "year", "day"]).size().max() == 1:
             for ss in self_times:
-                x11 = (
-                    ss.loc[:, ["month", "year", "day"]]
-                    .drop_duplicates()
-                    .reset_index(drop=True)
-                )
-                x12 = (
-                    ff_times_df.loc[:, ["month", "year", "day"]]
-                    .drop_duplicates()
-                    .reset_index(drop=True)
-                )
 
                 if (
                     ss.loc[:, ["month", "year", "day"]]
@@ -676,7 +660,7 @@ def abs(self):
     >>> ds.abs()
 
     """
-    cdo_command = f"cdo -abs"
+    cdo_command = "cdo -abs"
 
     self.cdo_command(cdo_command, ensemble=False)
 
@@ -722,7 +706,7 @@ def exp(self):
     >>> ds.exp(0.5)
 
     """
-    cdo_command = f"cdo -exp"
+    cdo_command = "cdo -exp"
 
     self.cdo_command(cdo_command)
 
@@ -739,7 +723,7 @@ def log(self):
     >>> ds.log()
 
     """
-    cdo_command = f"cdo -ln"
+    cdo_command = "cdo -ln"
 
     self.cdo_command(cdo_command)
 
@@ -756,7 +740,7 @@ def log10(self):
     >>> ds.log10()
 
     """
-    cdo_command = f"cdo -log10"
+    cdo_command = "cdo -log10"
 
     self.cdo_command(cdo_command)
 
@@ -773,7 +757,7 @@ def square(self):
     >>> ds.power()
 
     """
-    cdo_command = f"cdo -sqr"
+    cdo_command = "cdo -sqr"
 
     self.cdo_command(cdo_command)
 
@@ -790,6 +774,6 @@ def sqrt(self):
     >>> ds.sqrt()
 
     """
-    cdo_command = f"cdo -sqrt"
+    cdo_command = "cdo -sqrt"
 
     self.cdo_command(cdo_command)

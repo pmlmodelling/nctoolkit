@@ -68,10 +68,9 @@ def ensemble_nco(self, method, ignore_time=False):
     # run the call
     target = run_nco(nco_command, target)
 
+    remove_target = False
     if target in get_safe():
         remove_target = True
-    else:
-        remove_target = False
 
     # add the call to the history and tempfile to nc_safe
     self.history.append(nco_command)

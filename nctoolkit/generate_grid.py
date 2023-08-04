@@ -18,7 +18,7 @@ def generate_grid(coords):
         if len(lat_unique) > 1:
             lat_step = (max(lat_unique) - min(lat_unique)) / (len(lat_unique) - 1)
         else:
-            lat_setp = 0.0
+            lat_step = 0.0
 
         if len(lon_unique) == 1:
             lon_step = 0

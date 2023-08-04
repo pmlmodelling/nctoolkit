@@ -14,8 +14,7 @@ import platform
 
 from netCDF4 import Dataset
 
-from nctoolkit.cleanup import cleanup, clean_all, temp_check
-from nctoolkit.flatten import str_flatten
+from nctoolkit.cleanup import cleanup, temp_check
 from nctoolkit.runthis import run_cdo
 from nctoolkit.session import (
     nc_protected,
@@ -330,17 +329,6 @@ def options(**kwargs):
     >>> nc.options(temp_dir = "/foo")
 
     """
-
-    valid_keys = [
-        "thread_safe",
-        "lazy",
-        "cores",
-        "precision",
-        "temp_dir",
-        "parallel",
-        "checks",
-        "progress",
-    ]
 
     update_options(kwargs)
     return None
@@ -829,7 +817,7 @@ def open_thredds(x=None, wait=None, checks=False):
         raise TypeError("Please provide boolean for checks")
 
     if wait is not None:
-        if not instance(wait, (int, float)):
+        if not isinstance(wait, (int, float)):
             raise TypeError("Please provide an integer for wait!")
         if wait <= 0:
             raise ValueError("Please provide a positive value for wait!")
@@ -1156,8 +1144,6 @@ class DataSet(object):
         self.run()
         all_sizes = []
 
-        smallest_file = ""
-        largest_file = ""
         min_size = 1e15
         max_size = -1
 
@@ -1166,11 +1152,9 @@ class DataSet(object):
 
             if file_size(ff) > max_size:
                 max_size = file_size(ff)
-                largest_file = ff
 
             if file_size(ff) < min_size:
                 min_size = file_size(ff)
-                smallest_file = ff
 
         min_size = convert_bytes(min_size)
         max_size = convert_bytes(max_size)

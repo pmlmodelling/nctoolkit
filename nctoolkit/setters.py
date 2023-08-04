@@ -1,9 +1,5 @@
-import copy
 import warnings
 
-from nctoolkit.cleanup import cleanup
-from nctoolkit.temp_file import temp_file
-from nctoolkit.session import remove_safe
 from nctoolkit.show import nc_variables
 from nctoolkit.utils import name_check
 

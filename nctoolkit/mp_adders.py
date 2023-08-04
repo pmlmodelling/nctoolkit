@@ -2,8 +2,6 @@ import pandas as pd
 from nctoolkit.api import open_data, open_thredds
 from nctoolkit.matchpoint import open_matchpoint
 import nctoolkit.api as api
-import os
-
 
 def match_points(
     ds=None,

@@ -3,7 +3,6 @@ import warnings
 import copy
 from nctoolkit.cleanup import cleanup
 from nctoolkit.api import open_data
-from nctoolkit.temp_file import temp_file
 from nctoolkit.utils import version_above, cdo_version
 from nctoolkit.flatten import str_flatten
 import nctoolkit.api as api

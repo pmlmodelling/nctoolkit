@@ -1,9 +1,6 @@
 import glob
 import os
-#from multiprocessing import Manager
-import multiprocessing
 import platform
-
 
 session_info = dict()
 if platform.system() == "Linux":
@@ -12,16 +9,12 @@ if platform.system() == "Linux":
     temp_dirs_par = Manager().list()
     nc_protected_par = Manager().list()
 else:
-    import multiprocess
     from multiprocess import Manager
     nc_safe_par = Manager().list()
     temp_dirs_par = Manager().list()
     nc_protected_par = Manager().list()
 
-#mgr = Manager()
 nc_safe = list()
-#nc_safe_par = Manager().list()
-
 
 def append_safe(ff):
     """

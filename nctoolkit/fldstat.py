@@ -1,7 +1,7 @@
 import copy
 
 from nctoolkit.cleanup import cleanup
-from nctoolkit.runthis import run_cdo, run_this, tidy_command
+from nctoolkit.runthis import run_cdo, tidy_command
 from nctoolkit.temp_file import temp_file
 from nctoolkit.session import remove_safe
 
