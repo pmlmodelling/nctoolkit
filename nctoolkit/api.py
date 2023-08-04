@@ -605,7 +605,6 @@ def open_data(x=[], checks=True, **kwargs):
 
     if isinstance(x, str):
         x = os.path.expanduser(x)
-        print(x)
         if source != "file" or os.path.exists(x) is False:
             if is_url(x):
                 if thredds is False:
@@ -706,8 +705,6 @@ def open_data(x=[], checks=True, **kwargs):
                 if is_url(ff):
                     if thredds is False:
                         new_x = temp_file(".nc")
-                        print(f"Downloading {ff}")
-                        print("\033[A                             \033[A")
 
                         if ftp_details is not None and x.startswith("ftp"):
                             user = ftp_details["user"]
