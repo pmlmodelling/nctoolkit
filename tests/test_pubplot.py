@@ -30,19 +30,30 @@ class TestCrop:
         assert os.path.getsize(out_file) > 160000 and os.path.getsize(out_file) < 170000
 
 
+        # value error check
+
+        with pytest.raises(ValueError):
+            ds.pub_plot(legend_position = "blah")
+
+        with pytest.raises(ValueError):
+            ds.pub_plot(scale = "blah")
+
+        with pytest.raises(ValueError):
+            ds.pub_plot(coast = "blah")
+
+        ds1 = ds.copy()
+        ds1.assign(tos = lambda x: x.sst + 273.15)
+
+        with pytest.raises(ValueError):
+            ds1.pub_plot()
+        with pytest.raises(ValueError):
+            ds1 = nc.open_data("data/sst.mon.mean.nc", checks = False)
+            ds1.pub_plot()
+
+
         from difflib import SequenceMatcher
 
         def similar(a, b):
             return SequenceMatcher(None, a, b).ratio()
-
-
-#        x = str(open("data/pubplot_test.png", "rb").read())[0:2000]
-#        y = str(open(out_file, "rb").read())[0:2000]
-#
-#        assert similar(x, y) > 0.96
-#
- 
-
-        # assert open("data/pubplot_test.png", "rb").read() == open(out_file, "rb").read()
 
         os.remove(out_file)

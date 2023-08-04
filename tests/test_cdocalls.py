@@ -669,6 +669,11 @@ class TestCalls:
         ds.invert("lev")
         assert ds.history[0] == "cdo -invertlev"
 
+        # value error
+
+        with pytest.raises(ValueError):
+            ds.invert("time")
+
 
 
 

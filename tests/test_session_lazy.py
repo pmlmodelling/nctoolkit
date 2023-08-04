@@ -16,6 +16,11 @@ class TestSession:
 
     def test_session(self):
 
+        nc.session.append_protected("foo.nc")
+        assert "foo.nc" in nc.session.nc_protected
+        nc.session.remove_protected("foo.nc")
+        assert "foo.nc" not in nc.session.nc_protected
+
         nc.options(lazy=True)
         assert nc.session.session_info["lazy"]
 
