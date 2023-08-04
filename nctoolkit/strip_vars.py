@@ -3,6 +3,8 @@ import copy
 from nctoolkit.flatten import str_flatten
 from nctoolkit.runthis import run_nco
 from nctoolkit.temp_file import temp_file
+from nctoolkit.session import get_safe
+from nctoolkit.session import remove_safe
 
 
 def strip_variables(self, vars=None):
@@ -35,12 +37,17 @@ def strip_variables(self, vars=None):
     new_files = []
     new_commands = []
 
+    delete_these = []
+
     for ff in self:
         target = temp_file(".nc")
 
         the_command = f"{command} {ff} {target}"
 
         target = run_nco(the_command, target=target)
+
+        if target in get_safe():
+            delete_these.append(target)
 
         new_files.append(target)
         new_commands.append(the_command)
@@ -49,5 +56,9 @@ def strip_variables(self, vars=None):
 
     self.history.append(command)
     self._hold_history = copy.deepcopy(self.history)
+
+    for ff in delete_these:
+        remove_safe(ff)
+
 
     self.disk_clean()
