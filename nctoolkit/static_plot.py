@@ -1,47 +1,25 @@
 from nctoolkit.session import session_info
 
 try:
-    import signal
-    from contextlib import contextmanager
-    from mpl_toolkits.axes_grid1 import make_axes_locatable
     import matplotlib as mpl
-
-    from mpl_toolkits import axes_grid1
 
     from netCDF4 import Dataset
     import numpy as np
 
     import matplotlib.pyplot as plt
-    import matplotlib.ticker as mticker
-    import nctoolkit as nc
 
     import cartopy.crs as ccrs
     import cartopy.feature as cfeature
 
     import sys
 
-    ## this is to fix some bug in themodules that should be solved with the right version of modules loaded
+    # this is to fix some bug in themodules that should be solved with the right version of modules loaded
     from matplotlib.axes import Axes
     from cartopy.mpl.geoaxes import GeoAxes
 except:
     session_info["static_plot"] = False
 
 from textwrap import wrap
-
-
-def find_closest_grid(z):
-    x = np.ceil(np.sqrt(z))
-    y = x
-
-    if (x * y) - z == 0.0:
-        return x, y
-    while True:
-        x = x - 1
-        if (x * y) - z < 0.0:
-            x = x + 1
-            break
-    return int(y), int(x)
-
 
 from difflib import SequenceMatcher
 
@@ -246,7 +224,7 @@ def pub_plot(
                 fixed = True
 
         if kk.lower().startswith("trans"):
-            if norm == None:
+            if norm is None:
                 norm = kwargs[kk]
                 fixed = True
 
@@ -261,7 +239,7 @@ def pub_plot(
                 fixed = True
 
         if kk.lower().startswith("norm"):
-            if norm == None:
+            if norm is None:
                 norm = kwargs[kk]
                 fixed = True
 
@@ -430,7 +408,7 @@ def pub_plot(
     if quiver:
         u = input_file.variables[u][:].squeeze()
         v = input_file.variables[v][:].squeeze()
-    
+
     if limits is None:
         limits = [None, None]
 
@@ -532,13 +510,10 @@ def pub_plot(
                 vmin = np.nanpercentile(np.ma.filled(values, np.nan), r_min)
             if r_max is not None:
                 vmax = np.nanpercentile(np.ma.filled(values, np.nan), r_max)
-        
 
         if mid_point is not None:
             val_min = values.min()
             val_max = values.max()
-
-
 
             if mid_point == 0.0:
                 if limits is not None:
@@ -631,8 +606,6 @@ def pub_plot(
                 y_inline=False,
             )
 
-        # gl.xlocator = mticker.FixedLocator([-20,-10,0,10])
-        # gl.ylocator = mticker.FixedLocator([40,50,60])
         # here you can select on which side to write the labels for the grid
 
     # add title
