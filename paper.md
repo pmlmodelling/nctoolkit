@@ -17,7 +17,7 @@ authors:
     affiliation: "1" # (Multiple affiliations must be quoted)
 
 affiliations:
- - name: Robert J. Wilson. Plymouth Marine Laboratory 
+ - name: Plymouth Marine Laboratory, The Hoe, Plymouth, UK
    index: 1
 date: 25 July 2023
 bibliography: paper.bib
