@@ -44,6 +44,10 @@ def to_nc(self, out, zip=True, overwrite=False, **kwargs):
 
     """
 
+    # out may have ~ in it, which may need fixing
+
+    out = os.path.expanduser(out)
+
     if len(self) == 0:
         raise ValueError("You cannot save an empty dataset!")
 

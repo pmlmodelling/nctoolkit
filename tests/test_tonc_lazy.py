@@ -4,6 +4,7 @@ nc.options(lazy=True)
 import pandas as pd
 import xarray as xr
 import os, pytest
+import platform
 
 
 class TestTonnc:
@@ -166,3 +167,24 @@ class TestTonnc:
         data = nc.open_data(ff, checks = False)
         with pytest.raises(ValueError):
             data.to_nc(ff)
+
+    def test_osx(self):
+        # only run on non-linux
+        if platform.system() != "Linux":
+            ff = "data/sst.mon.mean.nc"
+
+            ds = nc.open_data(ff, checks = False)
+            ds.subset(timesteps= 0)
+            ds.to_nc("~/Downloads/test.nc")
+
+            ds1 = nc.open_data("~/Downloads/test.nc", checks = False)
+
+            ds1 - ds
+
+            # make sure everything is zero in ds1
+
+            ds1.spatial_mean()
+
+            assert ds1.to_dataframe().sst.values[0] == 0
+
+
