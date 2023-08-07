@@ -235,18 +235,18 @@ class TestSetters:
         assert n == 1
 
 
-        ds = nc.open_data("~/projects/nctoolkit/nctoolkit/data/sst.mon.mean.nc")
+        ds = nc.open_data("data/sst.mon.mean.nc")
         ds.subset(time = 0)
         ds.set(long_names = {"sst": "Sea Surface Temperature"})
         assert ds.contents.long_name.values[0] == "Sea Surface Temperature"
         
-        ds = nc.open_data("~/projects/nctoolkit/nctoolkit/data/sst.mon.mean.nc")
+        ds = nc.open_data("data/sst.mon.mean.nc")
         ds.subset(time = 0)
         ds.set(unit = {"sst": "degree"})
         assert ds.contents.unit.values[0] == "degree"
         
         
-        ds = nc.open_data("~/projects/nctoolkit/nctoolkit/data/sst.mon.mean.nc")
+        ds = nc.open_data("data/sst.mon.mean.nc")
         ds.subset(time = 0)
         ds.set(names = {"sst": "tos"})
         assert "tos" in ds.variables
