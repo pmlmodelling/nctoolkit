@@ -26,6 +26,9 @@ def nco_command(self, command=None, ensemble=False):
 
     self.run()
 
+    if len(self) == 1:
+        ensemble = False
+
     cores = session_info["cores"]
 
     if platform.system() != "Linux":
@@ -118,7 +121,7 @@ def nco_command(self, command=None, ensemble=False):
         #self.history.append(command)
         self._hold_history = copy.deepcopy(self.history)
 
-    if cores > 1:
+    if cores > 1 and ensemble is False:
         pool.close()
         pool.close()
         for k, v in results.items():
