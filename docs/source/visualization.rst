@@ -72,7 +72,7 @@ Publication quality plots
 ---------------------
 
 The ability to produce plots that are at or close to publication quality was introduced in version 0.9.2 in nctoolkit.
-This is carried out using the `pub_plot` method, and is designed to quickly produce a plot that is suitable for a publication or presentation.
+This is carried out using the ``pub_plot`` method, and is designed to quickly produce a plot that is suitable for a publication or presentation.
 
 .. code:: ipython3
 
@@ -88,7 +88,7 @@ This is carried out using the `pub_plot` method, and is designed to quickly prod
    :align: center
    :alt: pub_plot1
 
-Currently, `pub_plot` is restricted to work with regular lon/lat grids. A limited number of modifications can be made, as changes to the colour scale. Over-time this will become a fully featured method.
+Currently, ``pub_plot`` is restricted to work with regular lon/lat grids. A limited number of modifications can be made, such as changes to the colour scale. Over-time this will become a fully featured method.
 
 
 Plotting internals
