@@ -1,0 +1,38 @@
+cff-version: "1.2.0"
+authors:
+- family-names: Wilson
+  given-names: Robert J.
+  orcid: "https://orcid.org/0000-0002-0592-366X"
+- family-names: Artioli
+  given-names: Yuri
+  orcid: "https://orcid.org/0000-0002-5498-4223"
+contact:
+- family-names: Wilson
+  given-names: Robert J.
+  orcid: "https://orcid.org/0000-0002-0592-366X"
+doi: 10.5281/zenodo.8183367
+message: If you use this software, please cite our article in the
+  Journal of Open Source Software.
+preferred-citation:
+  authors:
+  - family-names: Wilson
+    given-names: Robert J.
+    orcid: "https://orcid.org/0000-0002-0592-366X"
+  - family-names: Artioli
+    given-names: Yuri
+    orcid: "https://orcid.org/0000-0002-5498-4223"
+  date-published: 2023-08-09
+  doi: 10.21105/joss.05494
+  issn: 2475-9066
+  issue: 88
+  journal: Journal of Open Source Software
+  publisher:
+    name: Open Journals
+  start: 5494
+  title: "nctoolkit: A Python package for netCDF analysis and
+    post-processing"
+  type: article
+  url: "https://joss.theoj.org/papers/10.21105/joss.05494"
+  volume: 8
+title: "nctoolkit: A Python package for netCDF analysis and
+  post-processing"
