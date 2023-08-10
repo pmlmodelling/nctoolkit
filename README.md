@@ -8,7 +8,7 @@
 ![GitHub Testing](https://github.com/pmlmodelling/nctoolkit/actions/workflows/python-app-macos.yml/badge.svg)
 ![GitHub Testing](https://github.com/pmlmodelling/nctoolkit/actions/workflows/python-app-linux.yml/badge.svg)
 [![Documentation Status](https://readthedocs.org/projects/nctoolkit/badge/?version=latest)](https://nctoolkit.readthedocs.io/en/latest/?badge=latest)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3938745.svg)](https://doi.org/10.5281/zenodo.3938745)
+[![DOI](https://joss.theoj.org/papers/10.21105/joss.05494/status.svg)](https://doi.org/10.21105/joss.05494)
 
 
 
