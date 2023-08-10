@@ -54,6 +54,7 @@ nctoolkit is developed as open source software by the Marine Systems Modelling g
    installing
    introduction
    news
+   citation
 
 
 .. toctree::
