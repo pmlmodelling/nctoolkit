@@ -6,7 +6,7 @@ from nctoolkit.session import remove_safe
 import nctoolkit.api as api
 
 
-def to_zlevels(self, levels=None, thickness=None, depths = None):
+def to_zlevels(self, levels=None, thickness=None, depths = None, surface= None):
     """
     to_zlevels: Convert datasets with non z-level verticals to z-levels
     Experimental method: Use at your own risk.
@@ -26,6 +26,9 @@ def to_zlevels(self, levels=None, thickness=None, depths = None):
         One of: a variable, in the dataset, which contains the variable depths; a .nc file which contains
         the depths; or a Dataset that contains the depths. Note: the .nc file or Dataset must only contain
         one variable. Depths should be in metres, and be the mid-point of the level.
+    surface: str
+        If thickness is supplied you must also supply this to identify whether the top or bottom of the level is the surface, i.e. the lowest level.
+        This must be one of 'top' or 'bottom'.
     """
     self.run()
 
@@ -91,6 +94,9 @@ def to_zlevels(self, levels=None, thickness=None, depths = None):
         ds_depths.cdo_command("setmisstoc,1.0")
         ds_depths.run()
         ds_thick = ds_depths.copy()
+        if surface == "bottom":
+            ds_thick.invert("levels")
+            ds_depths.invert("levels")
         ds_thick.divide(2)
         ds_depths.vertical_cumsum()
         ds_depths.rename({"thickness": "depth"})
@@ -98,6 +104,10 @@ def to_zlevels(self, levels=None, thickness=None, depths = None):
         ds_depths.assign( depth=lambda x: x.depth * (vertical_min(x.depth) < x.depth) * (isnan(x.depth) == False), drop=True,)
         ds_depths.subset(times=0)
         ds_depths.cdo_command("setmisstoc,-9999999")
+
+        if surface == "bottom":
+            ds_depths.invert("levels")
+
         ds_depths.run()
 
 

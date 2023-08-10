@@ -72,7 +72,7 @@ def top(self):
     self.cdo_command(cdo_command, ensemble=False)
 
 
-def vertical_interp(self, levels=None, fixed=None, thickness=None, depths = None):
+def vertical_interp(self, levels=None, fixed=None, thickness=None, depths = None, surface = None):
     """
     vertical_interp: Verticaly interpolate a dataset based on given vertical levels
     Vertical interpolation is calculated for each time step and grid cell
@@ -100,6 +100,9 @@ def vertical_interp(self, levels=None, fixed=None, thickness=None, depths = None
         One of: a variable, in the dataset, which contains the variable depths; a .nc file which contains
         the depths; or a Dataset that contains the depths. Note: the .nc file or Dataset must only contain
         one variable. Depths should be in metres, and be the mid-point of the level.
+    surface: str
+        If thickness is supplied you must also supply this to identify whether the top or bottom of the level is the surface, i.e. the lowest level.
+        This must be one of 'top' or 'bottom'.
 
 
     Examples
@@ -113,6 +116,19 @@ def vertical_interp(self, levels=None, fixed=None, thickness=None, depths = None
     It will require that vertical levels are the same in every grid cell.
 
     """
+
+    # check surface
+    
+    if surface is not None:
+        if surface not in ["top", "bottom"]:
+            raise ValueError("Surface must be one of 'top' or 'bottom'")
+
+
+    if thickness is not None:
+        if depths is not None:
+            if surface is None:
+                raise ValueError("Please provide surface")
+
 
     if fixed is None:
         if thickness is None:
@@ -131,7 +147,7 @@ def vertical_interp(self, levels=None, fixed=None, thickness=None, depths = None
         fixed = False
 
     if fixed is False:
-        self.to_zlevels(levels=levels, thickness=thickness, depths = depths)
+        self.to_zlevels(levels=levels, thickness=thickness, depths = depths, surface = surface)
         return None
 
     if levels is None:
