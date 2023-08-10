@@ -33,12 +33,12 @@ def plot(self, vars=None, autoscale=True, out=None, coast=True, **kwargs):
         A string or list of the variables to plot
     autoscale: bool
         Set to True if you want the colorbar to be scaled to the min/max of the data. Default is True
-    vars: str or list
+    vars: str , list
         A string or list of the variables to plot
     out: str
         Name of output file if you want to save as html. Defaults to None.
     coast: bool
-        Set to True if you want a coastline to show up on spatial map. Default is False
+        Set to True if you want a coastline to show up on spatial map. Default is True if cartopy is installed and working. Otherwise it is False.
 
     **kwargs: Optional args to be sent to hvplot
 
