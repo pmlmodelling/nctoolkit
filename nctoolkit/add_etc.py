@@ -544,7 +544,7 @@ def add(self, x=None, var=None):
     var: str
         A variable in the x to use for the operation
 
-      Examples
+    Examples
     ------------
 
     If you wanted to add 10 to all variables in a dataset, you would do the following:

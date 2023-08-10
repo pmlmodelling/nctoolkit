@@ -907,6 +907,12 @@ def merge(*datasets, match=["day", "year", "month"]):
         For example, if you want to ensure the datasets have the same years, then use
         match = ["year"].
     """
+    # A deprecation warning:
+    warnings.warn(
+        "This method is deprecated. Use the append and merge approach instead.",
+        DeprecationWarning,
+    )
+
     all_files = []
     for dataset in datasets:
         if not isinstance(dataset, DataSet):
@@ -932,6 +938,11 @@ def cor_time(x=None, y=None):
         First dataset to use
     y: dataset
         Second dataset to use
+
+    Returns
+    -------------
+    cor_time: nctoolkit Dataset
+        A dataset containing the temporal correlation coefficient for each grid cell 
     """
 
     if not isinstance(x, DataSet):
@@ -1001,6 +1012,11 @@ def cor_space(x=None, y=None):
     This will calculate the spatial correlation coefficient, for each time step,
     between two datasets. The datasets must either have the same variables or only
     have one variable.
+
+    Returns
+    -------------
+    cor_space: nctoolkit Dataset
+        A dataset containing the correlation coefficient for each time step.
 
     Parameters
     -------------
@@ -1141,6 +1157,11 @@ class DataSet(object):
         """The size of an object
         This will print the number of files, total size, and smallest and largest files
         in an DataSet object.
+
+        Returns
+        -------------
+        size: dict
+            A dictionary containing the number of files, total size, and smallest and
         """
         self.run()
         all_sizes = []
@@ -1173,6 +1194,12 @@ class DataSet(object):
     def calendar(self):
         """
         List calendars of dataset files
+
+        Returns
+        -------
+        list
+            List of calendars in the dataset files
+
         """
 
         self.run()
@@ -1203,6 +1230,12 @@ class DataSet(object):
     def variables(self):
         """
         List variables contained in a dataset
+
+        Returns
+        -------
+        list
+            List of variables
+
         """
 
         self.run()
@@ -1221,6 +1254,11 @@ class DataSet(object):
     def months(self):
         """
         List months contained in a dataset
+
+        Returns
+        -------
+        list
+            List of months in the dataset
         """
 
         self.run()
@@ -1239,6 +1277,12 @@ class DataSet(object):
     def levels(self):
         """
         List levels contained in a dataset
+
+        Returns
+        -------
+        list
+            List of levels in the dataset
+
         """
 
         self.run()
@@ -1257,6 +1301,11 @@ class DataSet(object):
     def times(self):
         """
         List times contained in a dataset
+
+        Returns
+        -------
+        list
+            List of times in the dataset 
         """
 
         self.run()
@@ -1275,6 +1324,11 @@ class DataSet(object):
     def ncformat(self):
         """
         List formats of files contained in a dataset
+
+        Return
+        ------
+        list
+            List of netCDF formats in the dataset
         """
 
         self.run()
@@ -1293,6 +1347,12 @@ class DataSet(object):
     def years(self):
         """
         List years contained in a dataset
+
+        Returns
+        -------
+        list
+            List of years in the dataset
+
         """
 
         self.run()
@@ -1530,6 +1590,11 @@ class DataSet(object):
         """
         Detailed list of variables contained in a dataset.
         This will only display the variables in the first file of an ensemble.
+
+        Returns
+        -------
+        pandas.DataFrame
+            A pandas dataframe containing the variables, number of points, number of levels, long name, units, and data type of each variable in the dataset.
         """
 
         self.run()
@@ -1540,6 +1605,11 @@ class DataSet(object):
     def start(self):
         """
         The starting file or files of the DataSet object
+
+        Returns
+        -------
+        list
+            A list of the starting files in the DataSet object
         """
         return self._start
 
@@ -1554,6 +1624,11 @@ class DataSet(object):
     def current(self):
         """
         The current file or files in the DataSet object
+
+        Returns
+        -------
+        list
+            A list of the current files in the DataSet object
         """
         return self._current
 
@@ -1575,6 +1650,11 @@ class DataSet(object):
     def history(self):
         """
         The history of operations on the DataSet
+
+        Returns
+        -------
+        list
+            A list of the operations performed on the DataSet
         """
         return self._history
 

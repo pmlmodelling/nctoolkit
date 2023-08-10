@@ -42,10 +42,10 @@ def plot(self, vars=None, autoscale=True, out=None, coast=True, **kwargs):
 
     **kwargs: Optional args to be sent to hvplot
 
-
     Returns
-    ---------
-    A hvplot object
+    ----------
+    If out is None, returns a hvplot object. Otherwise, saves a html file to the location specified by out.
+
 
     Examples
     ------------

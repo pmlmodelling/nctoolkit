@@ -120,8 +120,15 @@ def missing_as(self, value=None):
 
     Parameters
     -------------
-    value : Number to convert the missing values to
+    value : int/float 
         If int/float is provided, the missing value will be converted to that.
+    
+    Examples
+    -------------
+    Convert all missing values to 0:
+    >>> ds.missing_as(0)
+
+
     """
 
     try:
@@ -140,10 +147,13 @@ def set_fill(self, value=None):
 
     Parameters
     -------------
-    value : 2 variable list or int/float
-        If int/float is provided, the missing value will be set to that.
-        If a list is provided, values between the two values (inclusive)
-        of the list are set to missing.
+    value : int/float 
+        The fill value to set. 
+    
+    Examples
+    -------------
+    Set the fill value to -9999
+    >>> ds.set_fill(-9999)
     """
 
     if value is None:
@@ -169,6 +179,16 @@ def as_missing(self, value=None):
         If int/float is provided, the missing value will be set to that.
         If a list is provided, values between the two values (inclusive)
         of the list are set to missing.
+    
+    Examples
+    -------------
+    Set all zeros to missing:
+    >>> ds.as_missing(0)
+
+    Set all values between 0 and 1 to missing:
+    >>> ds.as_missing([0, 1])
+
+
     """
 
     if value is None:
@@ -200,7 +220,16 @@ def set_units(self, unit_dict=None, **kwargs):
         A dictionary where the key-value pairs are the variables and
         new units respectively.
     * kwargs
-        Alternative method for setting units
+        Alternative method for setting units using direct assignment
+    
+    Examples
+    -------------
+    Set the units for a variable called 'tas' to 'K':
+    >>> ds.set_units({'tas': 'K'})
+
+    Set the units for a variable called 'tas' to 'K' using kwargs:
+    >>> ds.set_units(tas='K')
+
     """
 
     if unit_dict is None and len(kwargs) > 0:
@@ -252,6 +281,16 @@ def set_longnames(self, name_dict=None, **kwargs):
         their long names
     * kwargs
         Alternative method for setting units
+    
+    Examples
+    -------------
+    Set the long name of the variable tas to "Temperature" using the dictionary approach:
+    >>> ds.set_longnames(name_dict={"tas": "Temperature"})
+    Alternatively, use the kwargs approach:
+    >>> ds.set_longnames(tas="Temperature")
+
+
+
 
     """
 

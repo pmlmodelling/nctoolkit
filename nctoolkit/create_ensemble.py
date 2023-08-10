@@ -19,8 +19,8 @@ def create_ensemble(path="", recursive=True):
 
     Returns
     -------------
-    list
-        A list of files
+
+    files : list of files
 
     Examples
     ------------

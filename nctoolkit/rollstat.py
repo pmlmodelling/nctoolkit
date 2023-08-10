@@ -188,7 +188,7 @@ def rolling_var(self, window=None, align="right"):
     Parameters
     -------------
     window: int
-        The size of the window for the calculation of the rolling sum
+        The size of the window for the calculation of the rolling variance
     align: str
         This determines whether the output time is at the left, centre or right hand side of the time window.
         Options are "left", "centre" and "right"
@@ -198,7 +198,8 @@ def rolling_var(self, window=None, align="right"):
 
     If you wanted to calculate a rolling variance with the variance calculated over every 10 time steps, do the following:
 
-    >>> ds.rolling_sum(10)
+    >>> ds.rolling_var(10)
+
     """
     self.align(align)
     rollstat(self, window=window, stat="var")
@@ -211,7 +212,7 @@ def rolling_stdev(self, window=None, align="right"):
     Parameters
     -------------
     window: int
-        The size of the window for the calculation of the rolling sum
+        The size of the window for the calculation of the rolling standard deviation
     align: str
         This determines whether the output time is at the left, centre or right hand side of the time window.
         Options are "left", "centre" and "right"
@@ -221,7 +222,8 @@ def rolling_stdev(self, window=None, align="right"):
 
     If you wanted to calculate a rolling standard deviation with the standard deviation calculated over every 10 time steps, do the following:
 
-    >>> ds.rolling_sum(10)
+    >>> ds.rolling_stdev(10)
+
     """
     self.align(align)
     rollstat(self, window=window, stat="std")

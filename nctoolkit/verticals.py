@@ -367,7 +367,7 @@ def vertical_integration(self, thickness=None, depth_range=None, fixed=None):
     thickness: str or Dataset
         This must be supplied when vertical levels vary spatially.
         One of: a variable, in the dataset, which contains the variable thicknesses; a .nc file which contains
-        the thicknesses; or a Dataset that contains the thicknesses. Note: the .nc file or Dataset must only contain
+        the thicknesses; or a Dataset that contains the thicknesses. Note: the .nc file or DataSet must only contain
         one variable.
     depth_range: list
         Set a depth range if desired. Should be of the form [min_depth, max_depth].
@@ -379,9 +379,9 @@ def vertical_integration(self, thickness=None, depth_range=None, fixed=None):
     Examples
     ------------
 
-    If you wanted to sum of values across all vertical levels of every variable in a dataset that has spatially fixed vertical levels, you would do this:
+    If you wanted to integrate values across all vertical levels of every variable in a dataset that has spatially fixed vertical levels, you would do this:
 
-    >>> ds.vertical_sum(fixed = True)
+    >>> ds.vertical_integration(fixed = True)
 
     """
     if fixed is None and thickness is None:
@@ -562,8 +562,12 @@ def bottom_mask(self):
     bottom_mask: Create a mask identifying the deepest cell without missing values.
     This converts a dataset to a mask identifying which cell represents the bottom,
     for example the seabed. 1 identifies the deepest cell with non-missing values.
-    Everything else is 0, or missing. At present this method only uses the first
-    available variable from netCDF files, so it may not be suitable for all data
+    Everything else is 0, or missing. 
+
+    Note
+    ------
+    This will only work for single file datasets.
+    The method will modify the dataset in place, so make a copy if you want to keep the original.
     """
     self.run()
 

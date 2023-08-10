@@ -171,21 +171,34 @@ def assign(self, drop=False, **kwargs):
     """
     assign: Create new variables
     Existing columns that are re-assigned will be overwritten.
+    This method operators in a similar fashion to the pandas assign method.
 
     Parameters
     ----------
     drop : bool
         Set to True if you want existing variables to be removed once the new ones have been created.
-        Defaults to False.
-
-        should evaluate to a numeric. New variables are calculated for each grid cell and time step.
+        Defaults to False. 
     **kwargs : dict of {str: callable}
-        New variable names are keywords. All terms in the equation given by the lamda function
+        New variable names are keywords. All terms in the equation given by the lambda function
         should evaluate to a numeric. New variables are calculated for each grid cell and time step.
     Notes
     -----
     Operations are carried out in the order give. So if a new variable is created in the first argument,
     it can then be used in following arguments.
+
+    Examples
+    --------
+
+    Temperature could be converted from Celsius to Kelvin by:
+
+    >>> ds.assign(temperature_K=lambda x: x.temperature + 273.15)
+
+    Temperatures higher than the spatial average temperature could be found by:
+
+    >>> ds.assign(hot=lambda x: x.temperature > spatial_mean(x.temperature))) 
+
+
+
 
 
 
