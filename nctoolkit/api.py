@@ -297,20 +297,19 @@ def update_options(kwargs):
 def options(**kwargs):
     """
     Define session options.
-    Set the options in the session. Available options are thread_safe and lazy.
-    Set thread_safe = True if hdf5 was built to be thread safe.
-    Set lazy = False if you want methods to evaluate non-lazily
-    Set cores = n, if you want nctoolkit to process the individual files in multi-file datasets in parallel. Note this
-    only applies to multi-file datasets and will not improve performance with single files.
-    Set temp_dir = "/foo" if you want to change the temporary directory used by nctoolkit to save temporary files.
-    Set  = "/foo" if you want to change the temporary directory used by nctoolkit to save temporary files.
-    Set progress to "on" or "off" if you always or never want a progress bar to show when multi-file datasets are processed. This defaults to "auto", i.e.
-    nctoolkit will automatically decide whether to show a progress bar based on the size of the ensemble.
 
     Parameters
     ---------------
     **kwargs
         Define options using key, value pairs.
+        Set thread_safe = True if hdf5 was built to be thread safe.
+        Set lazy = False if you want methods to evaluate non-lazily
+        Set cores = n, if you want nctoolkit to process the individual files in multi-file datasets in parallel. Note this
+        only applies to multi-file datasets and will not improve performance with single files.
+        Set temp_dir = "/foo" if you want to change the temporary directory used by nctoolkit to save temporary files.
+        Set  = "/foo" if you want to change the temporary directory used by nctoolkit to save temporary files.
+        Set progress to "on" or "off" if you always or never want a progress bar to show when multi-file datasets are processed. This defaults to "auto", i.e.
+        nctoolkit will automatically decide whether to show a progress bar based on the size of the ensemble.
 
     Examples
     ------------
@@ -456,7 +455,8 @@ def from_xarray(ds):
 
 def open_geotiff(x=[]):
     """
-    Open geotiff and convert to nctoolkit dataset
+    Open a geotiff and convert to a Dataset
+    This requires rioxarray to be installed.
 
     Parameters
     ---------------
@@ -492,7 +492,7 @@ def open_geotiff(x=[]):
 
 def open_data(x=[], checks=True, **kwargs):
     """
-    Read netCDF data as a DataSet object
+    Read netCDF data as a Dataset object
 
     Parameters
     ---------------
@@ -503,7 +503,8 @@ def open_data(x=[], checks=True, **kwargs):
         By default an empty dataset is created, ie. using open_data() will create an empty
         dataset that can then be expanded using append.
     checks: boolean
-        Do you want basic checks to ensure cdo can read files? Default to True
+        Do you want basic checks to ensure cdo can read files? Default to True.
+        Setting to False can result in a minor speed up.
     **kwargs: kwargs
         Optional arguments for internal use by open_thredds and open_url.
 
@@ -787,7 +788,7 @@ def open_data(x=[], checks=True, **kwargs):
 
 def open_thredds(x=None, wait=None, checks=False):
     """
-    Read thredds data as a DataSet object
+    Read thredds data as a Dataset object
 
     Parameters
     ---------------
@@ -1585,6 +1586,7 @@ class DataSet(object):
         """
         Make a deep copy of an DataSet object.
         Note: This will not make disk copies of the temporary files underlying datasets, so it will be disk-space efficient.
+
         Returns
         ---------------
         copy: nctoolkit DataSet
