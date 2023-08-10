@@ -6,7 +6,8 @@ import nctoolkit.api as api
 
 def first_above(self, x=None):
     """
-    first_above: Identify the time step when a value is first above a threshold
+    first_above: Identify the time step when a value is first above a threshold.
+
     This will do the comparison with either a number, a Dataset or a netCDF file.
 
     Parameters

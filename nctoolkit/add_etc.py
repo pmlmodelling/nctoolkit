@@ -269,7 +269,6 @@ def operation(self, method="mul", ff=None, var=None):
     if new:
         if ff_times_df.groupby(["month", "year", "day"]).size().max() == 1:
             for ss in self_times:
-
                 if (
                     ss.loc[:, ["month", "year", "day"]]
                     .drop_duplicates()
@@ -368,7 +367,8 @@ def operation(self, method="mul", ff=None, var=None):
 
 def multiply(self, x=None, var=None):
     """
-    multiply: Multiply a dataset
+    multiply: Multiply a dataset.
+
     This will multiply a dataset by a constant, another dataset or a netCDF file.
 
     Parameters
@@ -387,9 +387,17 @@ def multiply(self, x=None, var=None):
 
     >>> ds.multiply(10)
 
+    Or, you could use standard python multiplication syntax:
+
+    >>> ds * 10
+
     To multiply the values in a dataset by the values of variables in dataset ds2, you would do the following:
 
     >>> ds1.multiply(ds2)
+
+    Or, you could use standard python multiplication syntax:
+
+    >>> ds1 * ds2
 
     Grids in the datasets must match. Multiplication will occur in matching timesteps in ds1 and ds2. If there is only 1 timestep in ds2, then
     the data from that timestep in ds2 will multiply the data in all timesteps in ds1.
@@ -473,7 +481,8 @@ def rmse(self, x=None):
 
 def subtract(self, x=None, var=None):
     """
-    subtract: Subtract from a dataset
+    subtract: Subtract from a dataset.
+
     This will subtract a constant, another dataset or a netCDF file from the dataset.
 
     Parameters
@@ -492,16 +501,21 @@ def subtract(self, x=None, var=None):
 
     >>> ds.subtract(10)
 
+    Or, you could use standard python subtraction syntax:
+
+    >>> ds - 10
+
     To substract the values in a dataset ds2 from those in a dataset ds1, you would do the following:
 
     >>> ds1.subtract(ds2)
 
+    Or, you could use standard python subtraction syntax:
+
+    >>> ds1 - ds2
+
     Grids in the datasets must match. Division will occur in matching timesteps in ds1 and ds2 if there are matching timesteps. If there is only 1 timestep in ds2, then
     the data from that timestep in ds2 will be subtracted from the data in all timesteps in ds1.
 
-    Subtracting of the data from another netCDF file will work in the same way:
-
-    >>> ds1.subtract("example.nc")
     """
 
     # 1: int, float subtraction
@@ -532,6 +546,7 @@ __sub__ = subtract
 def add(self, x=None, var=None):
     """
     add: Add to a dataset
+
     This will add a constant, another dataset or a netCDF file to the dataset.
     nctoolkit will automatically determine the appropriate comparison required.
 
@@ -551,9 +566,17 @@ def add(self, x=None, var=None):
 
     >>> ds.add(10)
 
+    Or, you could use standard python addition syntax:
+
+    >>> ds + 10
+
     To add the values in a dataset ds2 from a dataset ds1, you would do the following:
 
     >>> ds1.add(ds2)
+
+    Or, you could use standard python addition syntax:
+
+    >>> ds1 + ds2
 
     Grids in the datasets must match. Addition will occur in matching timesteps in ds1 and ds2. If there is only 1 timestep in ds2, then
     the data from that timestep will be added to the data in all ds1 time steps.
@@ -561,7 +584,6 @@ def add(self, x=None, var=None):
     Adding the data from another netCDF file will work in the same way:
 
     >>> ds1.add("example.nc")
-
 
     """
 
@@ -592,7 +614,8 @@ __add__ = add
 
 def divide(self, x=None, var=None):
     """
-    divide: Divide the data
+    divide: Divide the data.
+
     This will divide the dataset by a constant, another dataset or a netCDF file.
 
     Parameters
@@ -607,20 +630,25 @@ def divide(self, x=None, var=None):
     Examples
     ------------
 
-    If you wanted to dividie all variables in a dataset by 20, you would do the following:
+    If you wanted to divide all variables in a dataset by 20, you would do the following:
 
     >>> ds.divide(10)
+
+    Or, you could use standard python division syntax:
+
+    >>> ds / 10
 
     To divide values in a dataset by those in the dataset ds2 from a dataset ds1, you would do the following:
 
     >>> ds1.divide(ds2)
 
+    Or, you could use standard python division syntax:
+
+    >>> ds1 / ds2
+
     Grids in the datasets must match. Division will occur in matching timesteps in ds1 and ds2. If there is only 1 timestep in ds2, then
     the data from that timestep in ds2 will divided the data in all ds1 time steps.
 
-    Adding the data from another netCDF file will work in the same way:
-
-    >>> ds.divide("example.nc")
     """
 
     # 1: int, float division
@@ -754,7 +782,7 @@ def square(self):
 
     If you wanted to calculate the square of each variable, you just need to do this:
 
-    >>> ds.power()
+    >>> ds.square()
 
     """
     cdo_command = "cdo -sqr"

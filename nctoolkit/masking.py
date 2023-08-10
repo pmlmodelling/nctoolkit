@@ -11,6 +11,11 @@ def mask_box(self, lon=[-180, 180], lat=[-90, 90]):
         Longitude range to mask. Must be of the form: [lon_min, lon_max]
     lat : list
         Latitude range to mask. Must be of the form: [lat_min, lat_max]
+
+    Examples
+    -------------
+    If you want to mask a lon/lat box from -10 to 10 degrees longitude and -10 to 10 degrees latitude, you would do:
+    >>> data.mask_box(lon=[-10, 10], lat=[-10, 10])
     """
 
     if not isinstance(lon, list) or not isinstance(lat, list):

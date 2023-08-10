@@ -226,7 +226,6 @@ def matchup(self, tmean=False, regrid="bil", max_extrap=5):
 
     n_missing = 0
 
-
     if (len(df_times)) == 0:
         raise ValueError("There are no matching times")
 

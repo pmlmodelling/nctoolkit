@@ -5,7 +5,7 @@ from nctoolkit.runthis import run_this
 from nctoolkit.session import session_info
 
 
-def cdo_command(self, command=None, ensemble=False, check = False):
+def cdo_command(self, command=None, ensemble=False, check=False):
     """
     cdo_command: Apply a cdo command
 
@@ -15,9 +15,15 @@ def cdo_command(self, command=None, ensemble=False, check = False):
         cdo command to call. This command must be such that
         "cdo {command} infile outfile" will run.
     ensemble : bool
-        Is this an ensemble command?
+        Is this an ensemble method command? For example ensmean, mergetime, etc.
     check : bool
         Check whether the command is valid
+
+    Examples
+    -------------
+    Use CDO to select a year from a dataset
+    >>> ds.cdo_command("selyear,2000")
+
     """
 
     # First, check that the command is valid
@@ -32,10 +38,15 @@ def cdo_command(self, command=None, ensemble=False, check = False):
 
     if check:
         read = subprocess.run(
-            "cdo --operators", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+            "cdo --operators",
+            shell=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
         ).stdout
 
-        cdo_methods = [x.split(" ")[0].replace("b'", "") for x in str(read).split("\\n")]
+        cdo_methods = [
+            x.split(" ")[0].replace("b'", "") for x in str(read).split("\\n")
+        ]
 
         cdo_methods = [mm for mm in cdo_methods if len(mm) > 0]
 
@@ -67,7 +78,7 @@ def cdo_command(self, command=None, ensemble=False, check = False):
 
     new_command = ""
     for cc in command.split(" "):
-        if cc in session_info["cdo_methods"]: 
+        if cc in session_info["cdo_methods"]:
             new_command += " -" + cc
         else:
             new_command += " " + cc

@@ -104,9 +104,13 @@ letters = string.ascii_lowercase
 try:
     login = os.getlogin()
 except:
-    login = "" 
+    login = ""
 session_info["stamp"] = (
-    "nctoolkit_" + login + "_" +   "".join(random.choice(letters) for i in range(8)) + "nctoolkit"
+    "nctoolkit_"
+    + login
+    + "_"
+    + "".join(random.choice(letters) for i in range(8))
+    + "nctoolkit"
 )
 session_info["temp_dir"] = "/tmp/"
 session_info["user_dir"] = False
@@ -333,7 +337,6 @@ def options(**kwargs):
     return None
 
 
-
 # if nctoolkitrc exists, we need to read the possible options from there...
 
 
@@ -345,7 +348,7 @@ def find_config():
 
     # now look in the home directory....
     from os.path import expanduser
- 
+
     home = expanduser("~")
     for ff in [".nctoolkitrc", "nctoolkitrc"]:
         if os.path.exists(home + "/" + ff):
@@ -942,7 +945,7 @@ def cor_time(x=None, y=None):
     Returns
     -------------
     cor_time: nctoolkit Dataset
-        A dataset containing the temporal correlation coefficient for each grid cell 
+        A dataset containing the temporal correlation coefficient for each grid cell
     """
 
     if not isinstance(x, DataSet):
@@ -1150,10 +1153,8 @@ class DataSet(object):
             output += "......"
         return output
 
-
     @property
     def size(self):
-
         """The size of an object
         This will print the number of files, total size, and smallest and largest files
         in an DataSet object.
@@ -1305,7 +1306,7 @@ class DataSet(object):
         Returns
         -------
         list
-            List of times in the dataset 
+            List of times in the dataset
         """
 
         self.run()

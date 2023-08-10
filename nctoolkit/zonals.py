@@ -11,12 +11,12 @@ def zonstat(self, stat="mean"):
 
     cdo_command = f"cdo -zon{stat}"
 
-    self.cdo_command(cdo_command, ensemble = False)
+    self.cdo_command(cdo_command, ensemble=False)
 
 
 def zonal_sum(self, by_area=False):
     """
-    zonal_sum: Calculate the zonal sum for each time step  
+    zonal_sum: Calculate the zonal sum for each time step
 
     Parameters
     -------------
@@ -43,7 +43,7 @@ def zonal_sum(self, by_area=False):
 
 def zonal_mean(self):
     """
-    zonal_mean: Calculate the zonal mean for each time step 
+    zonal_mean: Calculate the zonal mean for each time step
 
     Examples
     ------------
@@ -57,7 +57,7 @@ def zonal_mean(self):
 
 def zonal_min(self):
     """
-    zonal_min: Calculate the zonal minimum for each time step 
+    zonal_min: Calculate the zonal minimum for each time step
 
     Examples
     ------------
@@ -83,7 +83,7 @@ def zonal_max(self):
 
 def zonal_range(self):
     """
-    zonal_range: Calculate the zonal range for each time step 
+    zonal_range: Calculate the zonal range for each time step
 
     Examples
     ------------

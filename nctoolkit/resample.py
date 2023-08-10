@@ -1,4 +1,3 @@
-
 def resample_grid(self, factor=None):
     """
     resample_grid: Resample the horizontal grid of a dataset

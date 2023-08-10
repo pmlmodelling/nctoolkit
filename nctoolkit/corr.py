@@ -91,9 +91,12 @@ def cor(self, var1=None, var2=None, method="fld"):
 
 def cor_space(self, var1=None, var2=None):
     """
-    cor_space: Calculate the correlation correct between two variables in space
+    cor_space: Calculate the correlation correct between two variables in space.
+
     This is calculated for each time step. The correlation coefficient coefficient is
     calculated using values in all grid cells, ignoring missing values.
+
+    This calculates the Pearson correlation coefficient.
 
     Parameters
     -------------
@@ -120,7 +123,9 @@ def cor_space(self, var1=None, var2=None):
 def cor_time(self, var1=None, var2=None):
     """
     cor_time: Calculate the correlation correct in time between two variables
+
     The correlation is calculated for each grid cell, ignoring missing values.
+    This calculates the Pearson correlation coefficient.
 
     Parameters
     -------------
@@ -134,7 +139,7 @@ def cor_time(self, var1=None, var2=None):
 
     If you wanted to calculate the temporal correlation coefficient between variables x and y in a dataset, you would do this:
 
-    >>> ds.cor_space("x", "y")
+    >>> ds.cor_time("x", "y")
 
     The correlation coefficient will be calculated for each grid cell.  This method will indicate how temporally correlated variables are
     in different spatial regions.

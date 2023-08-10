@@ -432,6 +432,7 @@ def select_timesteps(self, times=None):
 def subset(self, **kwargs):
     """
     subset: A method for subsetting datasets to specific variables, years, longitudes etc.
+
     Operations are applied in the order supplied.
 
     Parameters
@@ -467,10 +468,10 @@ def subset(self, **kwargs):
 
     lon: list
         The longitude range to select. This must be two variables,
-        between -180 and 180.
+        between -180 and 180. The variables should be the minimum and maximum longitude.
     lat: list
         The latitude range to select. This must be two variables,
-        between -90 and 90.
+        between -90 and 90. The variables should be the minimum and maximum latitude.
 
     levels : list
         List of the form [min_level, max_level]. Levels/depths between the two will be selected

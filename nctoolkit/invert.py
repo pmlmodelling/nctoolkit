@@ -1,14 +1,13 @@
-
-def invert(self, x = None):
+def invert(self, x=None):
     """
-    invert: Invert levels or latitudes 
+    invert: Invert levels or latitudes
 
     Parameters
     -------------
     x: str
         What you want to invert. Either "levels" or "latitudes"
         Note: this is reasonably fuzzy so anything with "lev" or "lat" will work
-    
+
     Examples
     -------------
     If you want to invert the vertical levels of a file, you can do the following:
@@ -20,8 +19,8 @@ def invert(self, x = None):
 
     # create the cdo call and run it
     if "lev" in x.lower():
-        cdo_command = "cdo invertlev" 
-    
+        cdo_command = "cdo invertlev"
+
     elif "lat" in x.lower():
         cdo_command = "cdo invertlat"
 

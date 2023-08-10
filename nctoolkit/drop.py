@@ -1,5 +1,6 @@
 from nctoolkit.flatten import str_flatten
 
+
 def fix_ind(x):
     if x < 0:
         return x
@@ -19,6 +20,7 @@ def drop(self, **kwargs):
         Possible arguments: var, year, month, day
 
         Note: this uses partial matches. So years, month, variable etc. will also work
+
 
     Each kwarg works as follows:
 

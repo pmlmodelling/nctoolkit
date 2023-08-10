@@ -4,7 +4,9 @@ from nctoolkit.session import session_info
 def zip(self):
     """
     zip: Zip the dataset
-    This will compress the files within the dataset. 
+
+    This will compress the files within the dataset.
+
     This will occur lazily, so will only occur after everything has been evaluated.
 
     Examples

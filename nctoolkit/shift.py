@@ -1,4 +1,3 @@
-
 def shift_hours(self, shift=None):
     """
     Shift times in dataset by a number of hours
@@ -97,7 +96,8 @@ def shift_years(self, shift=None):
 
 def shift(self, **kwargs):
     """
-    shit: Shift method. A wrapper for shift_days, shift_hours
+    shift: Shift times in dataset by a number of hours, days, months, or years.
+
     Operations are applied in the order supplied.
 
     Parameters

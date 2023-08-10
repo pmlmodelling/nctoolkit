@@ -88,6 +88,12 @@ def distribute(self, m=1, n=1):
     n : int
         Number of columns
 
+    Examples
+    --------------------
+    If you want to split the dataset into 2 by 2 with 4 new files:
+    >>> ds.distribute(m=2, n=2)
+
+
     """
 
     if not isinstance(m, int) or not isinstance(n, int):

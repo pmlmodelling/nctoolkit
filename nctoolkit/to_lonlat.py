@@ -34,6 +34,16 @@ def to_latlon(
     one_grid : bool
         Set to True if all files in multi-file dataset have the same grid, to speed things up.
 
+    Examples
+    -------------
+    Regrid a dataset to a 0.25 degree latlon grid over the UK:
+    >>> ds.to_latlon(lon=[-10, 10], lat=[50, 60], res=0.25)
+
+    Regrid a dataset to a 0.25 degree latlon grid over the UK, using nearest neighbour interpolation:
+
+    >>> ds.to_latlon(lon=[-10, 10], lat=[50, 60], res=0.25, method="nn")
+
+
     """
 
     valid_methods = ["bil", "nn", "bic", "dis", "con", "con2", "laf"]
@@ -86,7 +96,6 @@ def to_latlon(
             res = [float(r) for r in res]
         except:
             raise TypeError("res supplied is not valid")
-
 
     if isinstance(res, float):
         res = [res, res]

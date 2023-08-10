@@ -3,15 +3,16 @@ import warnings
 
 from nctoolkit.cleanup import cleanup
 from nctoolkit.flatten import str_flatten
-from nctoolkit.runthis import  run_nco
+from nctoolkit.runthis import run_nco
 from nctoolkit.temp_file import temp_file
 from nctoolkit.session import get_safe, remove_safe
 
 
 def ensemble_percentile(self, p=None):
     """
-    ensemble_percentile: Calculate an ensemble percentile
-    This will calculate the percentles for each time step in the files.
+    ensemble_percentile: Calculate an ensemble percentile.
+
+    This will calculate the percentiles for each time step in the files.
     For example, if you had an ensemble of files where each file included
     12 months of data, it would calculate the percentile for each month.
     This operates on a grid cell by grid cell basis.
@@ -20,6 +21,13 @@ def ensemble_percentile(self, p=None):
     -------------
     p : float or int
         percentile to calculate. 0<=p<=100.
+
+    Examples
+    -------------
+    If you had an ensemble of climate models with data covering the same time steps, you would calculate the ensemble 90th percentile as follows:
+
+    >>> ds.ensemble_percentile(p=90)
+
     """
 
     # make sure p is a number
@@ -95,6 +103,14 @@ def ensemble_stdev(self):
     The ensemble standard deviation is calculated for each time steps; for example, if the ensemble is made up of
     monthly files the standard deviation for each month will be calculated.
     This operates on a grid cell by grid cell basis.
+
+    Examples
+    -------------
+    If you had an ensemble of climate models with data covering the same time steps, you would calculate the ensemble standard deviation as follows:
+
+    >>> ds.ensemble_stdev()
+
+
     """
 
     self.run()
@@ -114,6 +130,13 @@ def ensemble_var(self):
     The ensemble variance is calculated for each time steps; for example, if the ensemble is made up of
     monthly files the standard deviation for each month will be calculated.
     This operates on a grid cell by grid cell basis.
+
+    Examples
+    -------------
+    If you had an ensemble of climate models with data covering the same time steps, you would calculate the ensemble variance as follows:
+
+    >>> ds.ensemble_var()
+
     """
 
     self.run()
@@ -129,6 +152,7 @@ def ensemble_var(self):
 def ensemble_max(self, nco=False, ignore_time=False):
     """
     ensemble_max: Calculate an ensemble maximum
+
     This operates on a grid cell by grid cell basis.
 
     Parameters
@@ -140,6 +164,14 @@ def ensemble_max(self, nco=False, ignore_time=False):
         If True the max is calculated over all time steps. If False, the ensemble max
         is calculated for each time steps; for example, if the ensemble is made up of
         monthly files the max for each month will be calculated.
+
+    Examples
+    -------------
+    If you had an ensemble of climate models with data covering the same time steps, you would calculate the ensemble max as follows:
+
+    >>> ds.ensemble_max()
+
+
     """
 
     if nco is False:
@@ -175,6 +207,18 @@ def ensemble_min(self, nco=False, ignore_time=False):
         If True the min is calculated over all time steps. If False, the ensemble min is
         calculated for each time steps; for example, if the ensemble is made up of
         monthly files the min for each month will be calculated.
+
+    Examples
+    -------------
+    If you had an ensemble of climate models with data covering the same time steps, you would calculate the ensemble min as follows:
+
+    >>> ds.ensemble_min()
+
+
+
+
+
+
     """
     if len(self) == 1:
         warnings.warn(message="There is only one file in the dataset")
@@ -209,6 +253,17 @@ def ensemble_mean(self, nco=False, ignore_time=False):
         If True the mean is calculated over all time steps. If False, the ensemble mean
         is calculated for each time steps; for example, if the ensemble is made up of
         monthly files the mean for each month will be calculated.
+
+    Examples
+    -------------
+    If you had an ensemble of climate models with data covering the same time steps, you would calculate the ensemble mean as follows:
+    ds.ensemble_mean()
+
+    If you had an ensemble of files that covered different time steps and want to calculate the mean over all time steps, you would do the following:
+
+    ds.ensemble_mean(ignore_time=True)
+
+
     """
 
     if nco is False:
@@ -232,9 +287,17 @@ def ensemble_mean(self, nco=False, ignore_time=False):
 def ensemble_range(self):
     """
     ensemble_range: Calculate an ensemble range
+
     The range is calculated for each time step; for example, if each file in the
     ensemble has 12 months of data the statistic will be calculated for each month.
+
     This operates on a grid cell by grid cell basis.
+
+    Examples
+    -------------
+    If you had an ensemble of climate models with data covering the same time steps, you would calculate the ensemble range as follows:
+
+    >>> ds.ensemble_range()
     """
     self.run()
 
@@ -249,10 +312,18 @@ def ensemble_range(self):
 def ensemble_sum(self):
     """
     ensemble_sum: Calculate an ensemble sum
+
     The sum is calculated for each time step; for example, if each file in the
     ensemble has 12 months of data the statistic will be calculated for each month.
 
     This operates on a grid cell by grid cell basis.
+
+    Examples
+    -------------
+    If you had an ensemble of climate models with data covering the same time steps, you would calculate the ensemble sum as follows:
+
+    >>> ds.ensemble_sum()
+
     """
     self.run()
 
@@ -262,4 +333,3 @@ def ensemble_sum(self):
     cdo_command = "cdo --sortname -enssum"
 
     self.cdo_command(cdo_command, ensemble=True)
-

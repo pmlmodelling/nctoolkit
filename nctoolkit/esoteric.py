@@ -9,6 +9,7 @@ from .runthis import run_nco
 from .api import open_data
 import warnings
 
+
 def fix_amm7_grid(self):
     """
     A quick hack to change the grid file in AMM7 North West European shelf Nemo grids.
@@ -75,6 +76,7 @@ def fix_amm7_grid(self):
         file.write(f"yinc= {yinc}\n")
     self.cdo_command(f"setgrid,{grid_file}")
     self.run()
+
 
 def fix_nemo_ersem_grid(self):
     """
@@ -148,6 +150,11 @@ def no_leaps(self):
     """
     Remove leap years.
     This uses an undocumented CDO feature to remove Feb 29 and sets the calendar to leap year free
+
+    Examples
+    ------------
+    Remove leap years from a dataset:
+    >>> ds.no_leaps()
 
     """
 
@@ -364,6 +371,11 @@ def as_type(self, x):
     x : dict
         A dictionary mapping variables to type. Values in dict must be one of 'int', 'float32' and 'float64'.
 
+    Examples
+    -------------
+    Change time to float64:
+    >>> ds.as_type({'time': 'float64'})
+
     """
 
     self.run()
@@ -404,6 +416,11 @@ def as_double(self, x):
     -------------
     x : list
         A list of variable/dimensions you want to convert to floats
+
+    Examples
+    -------------
+    Change time to double:
+    >>> ds.as_double('time])
 
     """
 

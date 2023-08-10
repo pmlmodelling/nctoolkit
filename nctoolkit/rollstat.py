@@ -1,4 +1,3 @@
-
 def align(self, align="right"):
     """
     Method to align output time in temporal methods.

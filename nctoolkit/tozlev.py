@@ -6,9 +6,10 @@ from nctoolkit.session import remove_safe
 import nctoolkit.api as api
 
 
-def to_zlevels(self, levels=None, thickness=None, depths = None, surface= None):
+def to_zlevels(self, levels=None, thickness=None, depths=None, surface=None):
     """
-    to_zlevels: Convert datasets with non z-level verticals to z-levels
+    to_zlevels: Convert datasets with non z-level verticals to z-levels.
+
     Experimental method: Use at your own risk.
 
 
@@ -73,7 +74,9 @@ def to_zlevels(self, levels=None, thickness=None, depths = None, surface= None):
             ds_depths = depths.copy()
             ds_depths.run()
             if len(ds_depths.variables) != 1:
-                raise ValueError("Please provide a thickness or depths dataset with 1 variable!")
+                raise ValueError(
+                    "Please provide a thickness or depths dataset with 1 variable!"
+                )
             sorted = True
 
     if depths is None:
@@ -110,9 +113,8 @@ def to_zlevels(self, levels=None, thickness=None, depths = None, surface= None):
 
         ds_depths.run()
 
-
     if isinstance(depths, str):
-        ds_depths = open_data(depths) 
+        ds_depths = open_data(depths)
 
     if not isinstance(levels, list):
         raise TypeError("levels must be a list")
@@ -125,8 +127,10 @@ def to_zlevels(self, levels=None, thickness=None, depths = None, surface= None):
 
     if depths is not None:
         if len(ds_depths.variables) > 1:
-            raise ValueError("Please provide a thickness or depths dataset with 1 variable!")
-        
+            raise ValueError(
+                "Please provide a thickness or depths dataset with 1 variable!"
+            )
+
         if "depth" not in ds_depths.variables:
             ds_depths.rename({ds_depths.variables[0]: "depth"})
             ds_depths.run()

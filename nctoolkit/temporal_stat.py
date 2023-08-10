@@ -119,13 +119,29 @@ def time_stat(self, stat="mean", over="time"):
 
 def tsum(self, over="time", align="right"):
     """
-    tsum: Calculate the temporal sum of all variables
+    tsum: Calculate the temporal sum of all variables.
 
     Parameters
     -------------
-    align = str
+    align : str
         This determines whether the output time is at the left, centre or right hand side of the time window.
         Options are "left", "centre" and "right"
+    over : str or list
+        Time periods to count the sum over. Options are 'year', 'month', 'day'.
+        This operates in a similar way to the groupby method in pandas or the tidyverse in R,
+        so you can supply combinations of these to get the sum over each year, month or day.
+
+    Examples
+    ------------
+    If you want to calculate sum over all time steps. Do the following:
+    >>> ds.tsum()
+    If you want to calculate the sum over each year:
+    >>> ds.tsum(over="year")
+    If you want to calculate the sum over each month. This will add up all data in each month across all years not within each year.
+    >>> ds.tsum(over="month")
+    If you want to calculate the sum over each day. This will add up all data in each day across all years not within each year.
+    >>> ds.tsum(over="day")
+
     """
     self.align(align)
     time_stat(self, stat="sum", over=over)
@@ -133,7 +149,7 @@ def tsum(self, over="time", align="right"):
 
 def na_count(self, over="time", align="right"):
     """
-    na_count: Calculate the number of missing values
+    na_count: Calculate the number of missing values.
 
     Parameters
     -------------
@@ -143,6 +159,13 @@ def na_count(self, over="time", align="right"):
     align: str
         This determines whether the output time is at the left, centre or right hand side of the time window.
         Options are "left", "centre" and "right"
+
+    Examples
+    ------------
+    If you want to calculate the number of missing values over all time steps. Do the following:
+    >>> ds.na_count()
+    If you want to calculate the number of missing values in each year:
+    >>> ds.na_count(over="year")
     """
     self.align(align)
 
@@ -156,7 +179,7 @@ def na_count(self, over="time", align="right"):
 
 def na_frac(self, over="time", align="right"):
     """
-    na_frac: Calculate the fraction of missing values in each grid cell across all time steps
+    na_frac: Calculate the fraction of missing values in each grid cell across all time steps.
 
     Parameters
     -------------
@@ -166,6 +189,14 @@ def na_frac(self, over="time", align="right"):
     align: str
         This determines whether the output time is at the left, centre or right hand side of the time window.
         Options are "left", "centre" and "right"
+
+    Examples
+    ------------
+    If you want to calculate the fraction of missing values over all time steps. Do the following:
+    >>> ds.na_frac()
+    If you want to calculate the fraction of missing values in each year:
+    >>> ds.na_frac(over="year")
+
     """
     self.align(align)
 
@@ -179,13 +210,15 @@ def na_frac(self, over="time", align="right"):
 
 def tmean(self, over="time", align="right"):
     """
-    tmean: Calculate the temporal mean of all variables
+    tmean: Calculate the temporal mean of all variables.
+
     Useful for: monthly mean, annual/yearly mean, seasonal mean, daily mean, daily climatology, monthly climatology, seasonal climatology
 
     Parameters
     -------------
     over: str or list
         Time periods to average over. Options are 'year', 'month', 'day'.
+        This operates in a similar way to the groupby method in pandas or the tidyverse in R.
 
     align: str
         This determines whether the output time is at the left, centre or right hand side of the time window.
@@ -200,10 +233,6 @@ def tmean(self, over="time", align="right"):
     If you want to calculate the mean for each year in a dataset, do this:
 
         >>> ds.tmean("year")
-
-    If you want to calculate the mean for each month in a dataset, do this:
-
-        >>> ds.tmean("month")
 
     If you want to calculate the mean for each month in each year in a dataset, do this:
 
@@ -226,13 +255,15 @@ def tmean(self, over="time", align="right"):
 
 def tmin(self, over="time", align="right"):
     """
-    tmin: Calculate the temporal minimum of all variables
+    tmin: Calculate the temporal minimum of all variables.
+
     Useful for: monthly minimum, annual/yearly minimum, seasonal minimum, daily minimum, daily climatology, monthly climatology, seasonal climatology
 
     Parameters
     -------------
     over: str or list
         Time periods to average over. Options are 'year', 'month', 'day'.
+        This operates in a similar way to the groupby method in pandas or the tidyverse in R, with over acting as the grouping.
 
     align: str
         This determines whether the output time is at the left, centre or right hand side of the time window.
@@ -272,13 +303,15 @@ def tmin(self, over="time", align="right"):
 
 def tmax(self, over="time", align="right"):
     """
-    tmax: Calculate the temporal maximum of all variables
-    Useful for: monthly maximum, annual/yearly maximum, seasonal maximum, daily maximum, daily climatology, monthly climatology, seasonal climatology 
+    tmax: Calculate the temporal maximum of all variables.
+
+    Useful for: monthly maximum, annual/yearly maximum, seasonal maximum, daily maximum, daily climatology, monthly climatology, seasonal climatology
 
     Parameters
     -------------
     over: str or list
         Time periods to average over. Options are 'year', 'month', 'day'.
+        This operates in a similar way to the groupby method in pandas or the tidyverse in R, with over acting as the grouping.
     align = str
         This determines whether the output time is at the left, centre or right hand side of the time window.
         Options are "left", "centre" and "right"
@@ -316,13 +349,15 @@ def tmax(self, over="time", align="right"):
 
 def tmedian(self, over="time", align="right"):
     """
-    tmedian: Calculate the temporal median of all variables
+    tmedian: Calculate the temporal median of all variables.
+
     Useful for: monthly median, annual/yearly median, seasonal median, daily median, daily climatology, monthly climatology, seasonal climatology
 
     Parameters
     -------------
     over: str or list
         Time periods to average over. Options are 'year', 'month', 'day'.
+        This operates in a similar way to the groupby method in pandas or the tidyverse in R, with over acting as the grouping.
     align: str
         This determines whether the output time is at the left, centre or right hand side of the time window.
         Options are "left", "centre" and "right"
@@ -367,6 +402,7 @@ def trange(self, over="time", align="right"):
     -------------
     over: str or list
         Time periods to average over. Options are 'year', 'month', 'day'.
+        This operates in a similar way to the groupby method in pandas or the tidyverse in R, with over acting as the grouping.
     align: str
         This determines whether the output time is at the left, centre or right hand side of the time window.
         Options are "left", "centre" and "right"
@@ -412,6 +448,7 @@ def tvar(self, over="time", align="right"):
     -------------
     over: str or list
         Time periods to average over. Options are 'year', 'month', 'day'.
+        This operates in a similar way to the groupby method in pandas or the tidyverse in R, with over acting as the grouping.
     align: str
         This determines whether the output time is at the left, centre or right hand side of the time window.
         Options are "left", "centre" and "right"
@@ -457,6 +494,7 @@ def tstdev(self, over="time", align="right"):
     -------------
     over: str or list
         Time periods to average over. Options are 'year', 'month', 'day'.
+        This operates in a similar way to the groupby method in pandas or the tidyverse in R, with over acting as the grouping.
     align: str
         This determines whether the output time is at the left, centre or right hand side of the time window.
         Options are "left", "centre" and "right"
@@ -524,6 +562,9 @@ def tpercentile(self, p=None, over="time", align="right"):
     -------------
     p: float or int
         Percentile to calculate
+    over: str or list
+        Time periods to average over. Options are 'year', 'month', 'day'.
+        This operates in a similar way to the groupby method in pandas or the tidyverse in R, with over acting as the grouping.
     align: str
         This determines whether the output time is at the left, centre or right hand side of the time window.
         Options are "left", "centre" and "right"
@@ -537,6 +578,10 @@ def tpercentile(self, p=None, over="time", align="right"):
     If you want to calculate the 20th percentile for each year in a dataset, do this:
 
         >>> ds.tpercentile(20)
+
+    If you want to calculate the 20th percentile for each year in a dataset, do this:
+
+        >>> ds.tpercentile(p= 20, over = "year")
 
     """
     self.align(align=align)

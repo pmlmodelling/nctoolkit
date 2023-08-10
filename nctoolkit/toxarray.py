@@ -118,5 +118,11 @@ def to_dataframe(self, decode_times=True, **kwargs):
     ---------------
     to_dataframe :  pandas.DataFrame
 
+    Examples
+    ------------
+    If you want to convert a dataset to a pandas data frame, do the following:
+
+    >>> ds.to_dataframe()
+
     """
     return self.to_xarray(decode_times=decode_times, **kwargs).to_dataframe()

@@ -11,9 +11,12 @@ import nctoolkit.api as api
 def bottom(self):
     """
     bottom: Extract the bottom level from a dataset
+
     This extracts the bottom level from each netCDF file. Please note that for
     ensembles, it uses the first file to derive the index of the bottom level.
+
     You may need to double check that the bottom vertical level is the sea 'bottom' etc., as this is not always the case.
+
     Use bottom_mask for files when the bottom cell in netCDF files do not represent
     the actual bottom.
 
@@ -55,8 +58,11 @@ def bottom(self):
 def top(self):
     """
     top: Extract the top/surface level from a dataset
+
     This extracts the first vertical level from each file in a dataset.
-    This method is most useful for things like oceanic data, where this method will extract the sea surface. 
+
+    This method is most useful for things like oceanic data, where this method will extract the sea surface.
+
     You may need to double check that the first vertical level is the surface, as this is not always the case.
 
     Examples
@@ -72,11 +78,17 @@ def top(self):
     self.cdo_command(cdo_command, ensemble=False)
 
 
-def vertical_interp(self, levels=None, fixed=None, thickness=None, depths = None, surface = None):
+def vertical_interp(
+    self, levels=None, fixed=None, thickness=None, depths=None, surface=None
+):
     """
     vertical_interp: Verticaly interpolate a dataset based on given vertical levels
+
     Vertical interpolation is calculated for each time step and grid cell
-    Note: This requires consistent vertical levels in space. For the likes of sigma-coordinates,
+
+    Note
+    ------
+    This requires consistent vertical levels in space. For the likes of sigma-coordinates,
     please use to_zlevels.
 
     Parameters
@@ -118,17 +130,15 @@ def vertical_interp(self, levels=None, fixed=None, thickness=None, depths = None
     """
 
     # check surface
-    
+
     if surface is not None:
         if surface not in ["top", "bottom"]:
             raise ValueError("Surface must be one of 'top' or 'bottom'")
-
 
     if thickness is not None:
         if depths is not None:
             if surface is None:
                 raise ValueError("Please provide surface")
-
 
     if fixed is None:
         if thickness is None:
@@ -147,7 +157,9 @@ def vertical_interp(self, levels=None, fixed=None, thickness=None, depths = None
         fixed = False
 
     if fixed is False:
-        self.to_zlevels(levels=levels, thickness=thickness, depths = depths, surface = surface)
+        self.to_zlevels(
+            levels=levels, thickness=thickness, depths=depths, surface=surface
+        )
         return None
 
     if levels is None:
@@ -178,8 +190,9 @@ def vertstat(self, stat="mean"):
 
 def vertical_mean(self, thickness=None, depth_range=None, fixed=None):
     """
-    vertical_mean: Calculate the depth-averaged mean for each variable
-    This is calculated for each time step and grid cell
+    vertical_mean: Calculate the depth-averaged mean for each variable.
+
+    This is calculated for each time step and grid cell.
 
     Optional parameters
     -------------
@@ -311,8 +324,9 @@ def vertical_mean(self, thickness=None, depth_range=None, fixed=None):
 
 def vertical_min(self):
     """
-    vertical_min: Calculate the vertical minimum of variable values
-    This is calculated for each time step and grid cell
+    vertical_min: Calculate the vertical minimum of variable values.
+
+    This is calculated for each time step and grid cell.
 
     Examples
     ------------
@@ -327,8 +341,9 @@ def vertical_min(self):
 
 def vertical_max(self):
     """
-    vertical_max: Calculate the vertical maximum of variable values
-    This is calculated for each time step and grid cell
+    vertical_max: Calculate the vertical maximum of variable values.
+
+    This is calculated for each time step and grid cell.
 
     Examples
     ------------
@@ -343,8 +358,9 @@ def vertical_max(self):
 
 def vertical_range(self):
     """
-    vertical_range: Calculate the vertical range of variable values
-    This is calculated for each time step and grid cell
+    vertical_range: Calculate the vertical range of variable values.
+
+    This is calculated for each time step and grid cell.
 
     Examples
     ------------
@@ -359,7 +375,8 @@ def vertical_range(self):
 
 def vertical_integration(self, thickness=None, depth_range=None, fixed=None):
     """
-    vertical_integration: Calculate the vertically integrated sum over the water column
+    vertical_integration: Calculate the vertically integrated sum over the water column.
+
     This calculates the sum of the variable multiplied by the cell thickness
 
     Parameters
@@ -503,8 +520,9 @@ def vertical_integration(self, thickness=None, depth_range=None, fixed=None):
 
 def vertical_sum(self):
     """
-    vertical_sum: Calculate the vertical sum of variable values
-    This is calculated for each time step and grid cell
+    vertical_sum: Calculate the vertical sum of variable values.
+
+    This is calculated for each time step and grid cell.
 
     Examples
     ------------
@@ -519,8 +537,9 @@ def vertical_sum(self):
 
 def vertical_cumsum(self):
     """
-    vertical_cumsum: Calculate the vertical sum of variable values
-    This is calculated for each time step and grid cell
+    vertical_cumsum: Calculate the vertical sum of variable values.
+
+    This is calculated for each time step and grid cell.
 
     Examples
     ------------
@@ -536,8 +555,9 @@ def vertical_cumsum(self):
 
 def invert_levels(self):
     """
-    Invert the levels of 3D variables
-    This is calculated for each time step and grid cell
+    Invert the levels of 3D variables.
+
+    This is calculated for each time step and grid cell.
 
     Examples
     ------------
@@ -559,15 +579,23 @@ def invert_levels(self):
 
 def bottom_mask(self):
     """
-    bottom_mask: Create a mask identifying the deepest cell without missing values.
+    bottom_mask: Create a mask identifying the deepest cell without missing values..
+
     This converts a dataset to a mask identifying which cell represents the bottom,
     for example the seabed. 1 identifies the deepest cell with non-missing values.
-    Everything else is 0, or missing. 
+    Everything else is 0, or missing.
 
     Note
     ------
     This will only work for single file datasets.
     The method will modify the dataset in place, so make a copy if you want to keep the original.
+
+    Examples
+    ------------
+
+    If you wanted to create a mask identifying the bottom, you would do this:
+
+    >>> ds.bottom_mask()
     """
     self.run()
 
@@ -606,10 +634,18 @@ def bottom_mask(self):
 def surface_mask(self):
     """
     surface_mask: Create a mask identifying the shallowest cell without missing values.
+
     This converts a dataset to a mask identifying which cell represents top level,
     for example the sea surface. 1 identifies the shallowest cell with non-missing values.
     Everything else is 0, or missing. At present this method only uses the first
     available variable from netCDF files, so it may not be suitable for all data
+
+    Examples
+    ------------
+
+    If you wanted to create a mask identifying the surface, you would do this:
+
+    >>> ds.surface_mask()
     """
 
     self.invert_levels()

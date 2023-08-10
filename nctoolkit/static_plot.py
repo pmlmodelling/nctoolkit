@@ -98,6 +98,7 @@ def pub_plot(
 ):
     """
     pub_plot: Static plotting. This requires datasets to have regular latlon grids.
+
     Plots a static map, and requires only one variable, time step and vertical level
 
     Parameters

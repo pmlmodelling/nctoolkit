@@ -28,6 +28,11 @@ def set_day(self, x):
     -------------
     x : int
         Day to set dataset to
+
+    Examples
+    -------------
+    Set the day to 1 for all time steps, effectively setting the date to the first of the month:
+    >>> ds.set_day(1)
     """
 
     if not isinstance(x, int):
@@ -44,6 +49,12 @@ def set_precision(self, x):
     -------------
     x : str
         The precision. One of 'I8', 'I16', 'I32', 'F32', 'F64'.
+
+    Examples
+    -------------
+    Set the precision to 32 bit:
+    >>> ds.set_precision("F32")
+
     """
 
     if x not in ["I8", "I16", "I32", "F32", "F64"]:
@@ -55,6 +66,7 @@ def set_precision(self, x):
 def set_date(self, year=None, month=None, day=None, base_year=1900):
     """
     Set the date in a dataset
+
     You should only do this if you have to fix/change a dataset with a single,
     not multiple dates.
 
@@ -68,6 +80,11 @@ def set_date(self, year=None, month=None, day=None, base_year=1900):
         The day
     base_year : int
         The base year for time creation in the netCDF. Defaults to 1900.
+
+    Examples
+    -------------
+    Set the date to 2000-01-01:
+    >>> ds.set_date(year=2000, month=1, day=1)
     """
 
     if year is None:
@@ -120,9 +137,9 @@ def missing_as(self, value=None):
 
     Parameters
     -------------
-    value : int/float 
+    value : int/float
         If int/float is provided, the missing value will be converted to that.
-    
+
     Examples
     -------------
     Convert all missing values to 0:
@@ -147,9 +164,9 @@ def set_fill(self, value=None):
 
     Parameters
     -------------
-    value : int/float 
-        The fill value to set. 
-    
+    value : int/float
+        The fill value to set.
+
     Examples
     -------------
     Set the fill value to -9999
@@ -179,7 +196,7 @@ def as_missing(self, value=None):
         If int/float is provided, the missing value will be set to that.
         If a list is provided, values between the two values (inclusive)
         of the list are set to missing.
-    
+
     Examples
     -------------
     Set all zeros to missing:
@@ -221,7 +238,7 @@ def set_units(self, unit_dict=None, **kwargs):
         new units respectively.
     * kwargs
         Alternative method for setting units using direct assignment
-    
+
     Examples
     -------------
     Set the units for a variable called 'tas' to 'K':
@@ -281,7 +298,7 @@ def set_longnames(self, name_dict=None, **kwargs):
         their long names
     * kwargs
         Alternative method for setting units
-    
+
     Examples
     -------------
     Set the long name of the variable tas to "Temperature" using the dictionary approach:

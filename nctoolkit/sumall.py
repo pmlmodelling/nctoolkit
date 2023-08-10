@@ -1,4 +1,4 @@
-def sum_all(self, drop=True, new_name = None):
+def sum_all(self, drop=True, new_name=None):
     """
     sum_all: Calculate the sum of all variables for each time step
 
@@ -21,7 +21,6 @@ def sum_all(self, drop=True, new_name = None):
             raise TypeError("new_name must be a string")
 
     self.run()
-
 
     contents = self.contents
 
@@ -48,7 +47,7 @@ def sum_all(self, drop=True, new_name = None):
         else:
             self.cdo_command("expr," + new_name + "=" + "+".join(self.variables))
     else:
-        if new_name is  not None:
+        if new_name is not None:
             self.cdo_command("expr," + new_name + "=" + "+".join(self.variables))
             return None
         if "total" not in self.variables:

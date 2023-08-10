@@ -6,8 +6,7 @@ import os
 
 def create_ensemble(path="", recursive=True):
     """
-    create_ensemble:
-    Generate an ensemble
+    create_ensemble: Generate an ensemble of files from a directory.
 
     Parameters
     -------------

@@ -8,6 +8,10 @@ import warnings
 def is_corrupt(self):
     """
     is_corrupt: Check if files are corrupt
+
+    Example
+    -------
+    >>> ds.is_corrupt()
     """
 
     for ff in self:
@@ -32,6 +36,11 @@ def is_corrupt(self):
 def check(self):
     """
     check: Check contents of files for common data problems.
+
+    Example
+    -------
+    Check if files have any issues:
+    >>> ds.check()
     """
 
     print("*****************************************")

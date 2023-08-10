@@ -34,6 +34,7 @@ def check_checker(f):
 def merge(self, join="variables", match=["year", "month", "day"], check=True):
     """
     merge: Merge a multi-file ensemble into a single file
+
     2 methods are available. 1) merging files with different variables, but the same time steps.
     2) merging files with the same variables, with different times.
 
@@ -55,6 +56,20 @@ def merge(self, join="variables", match=["year", "month", "day"], check=True):
         By default nctoolkit out checks in case files do not have the same variables etc. Set check to False if you are confident merging will be problem free.
         If you are unsure if files have the same variables, set check to True to find out. Note: if you do not explicitly provide check and there are more than 30
         files in a dataset, checks will be turned off.
+
+    Examples
+    -------------
+    If you wanted to merge files with the same variables, but different time steps, you would do:
+    >>> ds.merge(join='time')
+    If you wanted to merge files with different variables, but the same time steps, you would do:
+    >>> ds.merge(join='variables')
+
+    If you wanted to merge files with different variables, but the same time steps, but only needed to ensure that the month in each time step matched, you would do:
+
+    >>> ds.merge(join='variables', match='month')
+
+    The above may be useful if you have a dataset with monthly data, but some files have the first of the month, and some have the 15th of the month.
+
     """
 
     if check == "default":
@@ -246,6 +261,13 @@ def merge(self, join="variables", match=["year", "month", "day"], check=True):
 def collect(self):
     """
     Collect a dataset that has been split using distribute
+
+    Examples
+    --------
+    >>> ds.distribute(4,4)
+    >>> #... Carry out some operations
+    >>> ds.collect()
+
     """
 
     self.run()

@@ -11,6 +11,7 @@ from nctoolkit.show import nc_variables
 def phenology(self, var=None, metric=None, p=None):
     """
     phenology: Calculate phenologies from a dataset
+
     Each file in an ensemble must only cover a single year, and ideally have all days.
     The method assumes datasets have daily resolution.
 

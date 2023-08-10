@@ -22,6 +22,11 @@ def nco_command(self, command=None, ensemble=False):
     ensemble : boolean
         Set to True if you want the command to take all of the files as input.
         This is useful for ensemble methods.
+
+    Examples
+    -------------
+    Select a variable from a file
+    >>> ds.nco_command("ncks -v tas")
     """
 
     self.run()
@@ -118,7 +123,7 @@ def nco_command(self, command=None, ensemble=False):
 
         for cc in new_commands:
             self.history.append(cc)
-        #self.history.append(command)
+        # self.history.append(command)
         self._hold_history = copy.deepcopy(self.history)
 
     if cores > 1 and ensemble is False:

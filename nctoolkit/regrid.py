@@ -24,6 +24,7 @@ def is_iterable(x):
 def regrid(self, grid=None, method="bil", recycle=False, one_grid=False, **kwargs):
     """
     regrid: Regrid a dataset to a target grid
+
     Horizontal interpolation
 
     Parameters
@@ -48,6 +49,25 @@ def regrid(self, grid=None, method="bil", recycle=False, one_grid=False, **kwarg
         Instead of supplying a grid using 'grid', you can supply `lon` and `lat`. These must be equally
         lengthed lists or arrays that will be used to generate the grid. If you want to regrid to a single
         location you can just supply a float to lon and lat.
+
+    Examples
+    -------------
+    Regrid to a grid defined by a pandas data frame:
+
+    >>> ds.regrid(grid=grid_df)
+
+    Regrid to a grid defined by a netCDF file:
+
+    >>> ds.regrid(grid="grid.nc")
+
+    Regrid to a grid defined by a nctoolkit.DataSet:
+
+    >>> ds.regrid(grid=grid_ds)
+
+    Regrid to a grid defined by a pandas data frame using nearest neighbour:
+
+    >>> ds.regrid(grid=grid_df, method="nn")
+
 
     """
 
@@ -194,7 +214,6 @@ def regrid(self, grid=None, method="bil", recycle=False, one_grid=False, **kwarg
         cdo_command = f"cdo -remap,{target_grid},{weights_nc}"
 
         tracker._execute = True
-
 
         run_this(cdo_command, tracker, output="ensemble", suppress=suppress)
 

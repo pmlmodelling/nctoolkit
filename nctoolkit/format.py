@@ -3,7 +3,8 @@ from nctoolkit.session import session_info
 
 def format(self, ext=None):
     """
-    format: Change the netCDF format of a dataset 
+    format: Change the netCDF format of a dataset.
+
     This will compress the files within the dataset. This works lazily.
 
     Parameters
@@ -15,6 +16,16 @@ def format(self, ext=None):
         netCDF4 (HDF5) = nc4
         netCDF4-classi = nc4c
         netCDF version 5 (64-bit data) = nc5
+
+    Examples
+    -------------
+    Change the format of a dataset to netCDF4:
+    >>> ds.format("nc4")
+
+    Change the format of a dataset to netCDF5:
+    >>> ds.format("nc5")
+
+
     """
 
     if ext is None:

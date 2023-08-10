@@ -28,7 +28,7 @@ def rename(self, newnames=None, **kwargs):
     If you want to rename a variable x to y, do the following:
 
         >>> ds.rename({"x":"y"})
-    
+
     Alternatively, you could do the following:
 
         >>> ds.rename(x="y")

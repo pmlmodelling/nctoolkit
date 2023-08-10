@@ -29,7 +29,8 @@ def boxstat(self, stat="mean", x=1, y=1):
 
 def box_mean(self, x=1, y=1):
     """
-    box_mean: Calculate the grid box mean for all variables
+    box_mean: Calculate the grid box mean for all variables.
+
     This is performed for each time step.
 
     Parameters
@@ -38,6 +39,12 @@ def box_mean(self, x=1, y=1):
         Number of boxes in the x, e.g. east-west direction
     y: int or float
         Number of boxes in the y, e.g. north-south direction
+
+    Examples
+    ------------
+    If you want to calculate the mean in each 4 by 4 box:
+
+    >>> ds.box_mean(x=4, y=4)
 
     """
 
@@ -46,7 +53,8 @@ def box_mean(self, x=1, y=1):
 
 def box_max(self, x=1, y=1):
     """
-    box_max: Calculate the grid box max for all variables
+    box_max: Calculate the grid box max for all variables.
+
     This is performed for each time step.
 
     Parameters
@@ -55,6 +63,13 @@ def box_max(self, x=1, y=1):
         Number of boxes in the x, e.g. east-west direction
     y: int or float
         Number of boxes in the y, e.g. north-south direction
+
+
+    Examples
+    ------------
+    If you want to calculate the max in each 4 by 4 box:
+
+    >>> ds.box_max(x=4, y=4)
 
     """
 
@@ -63,7 +78,8 @@ def box_max(self, x=1, y=1):
 
 def box_min(self, x=1, y=1):
     """
-    box_min: Calculate the grid box min for all variables
+    box_min: Calculate the grid box min for all variables.
+
     This is performed for each time step.
 
     Parameters
@@ -72,6 +88,12 @@ def box_min(self, x=1, y=1):
         Number of boxes in the x, e.g. east-west direction
     y: int or float
         Number of boxes in the y, e.g. north-south direction
+
+    Examples
+    ------------
+    If you want to calculate the min in each 4 by 4 box:
+
+    >>> ds.box_min(x=4, y=4)
 
     """
 
@@ -80,7 +102,8 @@ def box_min(self, x=1, y=1):
 
 def box_sum(self, x=1, y=1):
     """
-    box_sum: Calculate the grid box sum for all variables
+    box_sum: Calculate the grid box sum for all variables.
+
     This is performed for each time step.
 
     Parameters
@@ -89,6 +112,13 @@ def box_sum(self, x=1, y=1):
         Number of boxes in the x, e.g. east-west direction
     y: int or float
         Number of boxes in the y, e.g. north-south direction
+
+    Examples
+    ------------
+
+    If you want to calculate the sum in each 4 by 4 box:
+
+    >>> ds.box_sum(x=4, y=4)
 
     """
 
@@ -97,7 +127,8 @@ def box_sum(self, x=1, y=1):
 
 def box_range(self, x=1, y=1):
     """
-    box_range: Calculate the grid box range for all variables
+    box_range: Calculate the grid box range for all variables.
+
     This is performed for each time step.
 
     Parameters
@@ -106,6 +137,13 @@ def box_range(self, x=1, y=1):
         Number of boxes in the x, e.g. east-west direction
     y: int or float
         Number of boxes in the y, e.g. north-south direction
+
+    Examples
+    ------------
+    If you want to calculate the range in each 4 by 4 box:
+
+    >>> ds.box_range(x=4, y=4)
+
 
     """
 
@@ -125,7 +163,8 @@ def fldstat(self, stat="mean"):
 
 def spatial_mean(self):
     """
-    spatial_mean: Calculate the area weighted spatial mean for all variables
+    spatial_mean: Calculate the area weighted spatial mean for all variables.
+
     This is performed for each time step.
 
     Examples
@@ -135,7 +174,9 @@ def spatial_mean(self):
 
     >>> ds.spatial_mean()
 
-    Note that this calculation will calculate the average using weights based on each cell's
+    Note
+    ------
+    This method will calculate the average using weights based on each cell's
     area. If cell areas cannot be calculated, it will take a straight average, and a warning
     will say this.
 
@@ -145,7 +186,8 @@ def spatial_mean(self):
 
 def spatial_min(self):
     """
-    spatial_min: Calculate the spatial minimum for all variables
+    spatial_min: Calculate the spatial minimum for all variables.
+
     This is performed for each time step.
 
     Examples
@@ -161,7 +203,8 @@ def spatial_min(self):
 
 def spatial_max(self):
     """
-    spatial_max: Calculate the spatial maximum for all variables
+    spatial_max: Calculate the spatial maximum for all variables.
+
     This is performed for each time step.
 
     Examples
@@ -176,35 +219,40 @@ def spatial_max(self):
 
 def spatial_stdev(self):
     """
-    spatial_stdev: Calculate the spatial standard deviation for all variables
+    spatial_stdev: Calculate the spatial standard deviation for all variables.
+
     This is performed for each time step.
 
     Examples
     ------------
-    If you want to calculate the range of each variable across space for a dataset, just do the following:
+    If you want to calculate the spatial standard deviation for a dataset, just do the following:
 
-    >>> ds.spatial_max()
+    >>> ds.spatial_stdev()
     """
     fldstat(self, stat="std")
 
 
 def spatial_var(self):
     """
-    spatial_var: Calculate the spatial variance for all variables
+    spatial_var: Calculate the spatial variance for all variables.
+
     This is performed for each time step.
 
     Examples
     ------------
-    If you want to calculate the range of each variable across space for a dataset, just do the following:
+    If you want to calculate the spatial variance for a dataset, just do the following:
 
-    >>> ds.spatial_max()
+    >>> ds.spatial_var()
+
+
     """
     fldstat(self, stat="var")
 
 
 def spatial_range(self):
     """
-    spatial_range: Calculate the spatial range for all variables
+    spatial_range: Calculate the spatial range for all variables.
+
     This is performed for each time step.
 
     Examples
@@ -218,7 +266,8 @@ def spatial_range(self):
 
 def spatial_sum(self, by_area=False):
     """
-    spatial_sum: Calculate the spatial sum for all variables
+    spatial_sum: Calculate the spatial sum for all variables.
+
     This is performed for each time step.
 
     Parameters
@@ -291,6 +340,7 @@ def spatial_sum(self, by_area=False):
 def spatial_percentile(self, p=None):
     """
     spatial_percentile: Calculate the spatial percentile for all variables
+
     This is performed for each time step.
 
     Parameters

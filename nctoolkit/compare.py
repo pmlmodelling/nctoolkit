@@ -1,4 +1,3 @@
-
 def is_integer(x):
     try:
         y = int(str(x))
@@ -160,11 +159,19 @@ def compare(self, expression=None):
 
     >>> ds.compare(">0")
 
+    This could also be done using standard python syntax:
+
+    >>> ds > 0
+
     This will be calculcated for each time step.
 
     If you wanted to identify grid cells with negative values, you would do this
 
     >>> ds.compare("<0")
+
+    This could also be done using standard python syntax:
+
+    >>> ds < 0
 
 
     """

@@ -169,7 +169,8 @@ pattern = re.compile(":\w*")
 
 def assign(self, drop=False, **kwargs):
     """
-    assign: Create new variables
+    assign: Create new variables using mathematical operations on existing variables.
+
     Existing columns that are re-assigned will be overwritten.
     This method operators in a similar fashion to the pandas assign method.
 
@@ -177,7 +178,7 @@ def assign(self, drop=False, **kwargs):
     ----------
     drop : bool
         Set to True if you want existing variables to be removed once the new ones have been created.
-        Defaults to False. 
+        Defaults to False.
     **kwargs : dict of {str: callable}
         New variable names are keywords. All terms in the equation given by the lambda function
         should evaluate to a numeric. New variables are calculated for each grid cell and time step.
@@ -195,7 +196,7 @@ def assign(self, drop=False, **kwargs):
 
     Temperatures higher than the spatial average temperature could be found by:
 
-    >>> ds.assign(hot=lambda x: x.temperature > spatial_mean(x.temperature))) 
+    >>> ds.assign(hot=lambda x: x.temperature > spatial_mean(x.temperature)))
 
 
 
@@ -767,4 +768,4 @@ def assign(self, drop=False, **kwargs):
     else:
         cdo_command = f"cdo -expr,'{command}'"
 
-    self.cdo_command(cdo_command, ensemble = False) 
+    self.cdo_command(cdo_command, ensemble=False)
