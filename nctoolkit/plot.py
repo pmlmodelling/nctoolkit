@@ -24,7 +24,7 @@ def time_limit(seconds):
 def plot(self, vars=None, autoscale=True, out=None, coast=True, **kwargs):
 
     """
-    Autoplotting method.
+    plot: Autoplotting method.
     Automatically plot a dataset.
 
     Parameters

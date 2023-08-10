@@ -29,7 +29,7 @@ def boxstat(self, stat="mean", x=1, y=1):
 
 def box_mean(self, x=1, y=1):
     """
-    Calculate the grid box mean for all variables
+    box_mean: Calculate the grid box mean for all variables
     This is performed for each time step.
 
     Parameters
@@ -46,7 +46,7 @@ def box_mean(self, x=1, y=1):
 
 def box_max(self, x=1, y=1):
     """
-    Calculate the grid box max for all variables
+    box_max: Calculate the grid box max for all variables
     This is performed for each time step.
 
     Parameters
@@ -63,7 +63,7 @@ def box_max(self, x=1, y=1):
 
 def box_min(self, x=1, y=1):
     """
-    Calculate the grid box min for all variables
+    box_min: Calculate the grid box min for all variables
     This is performed for each time step.
 
     Parameters
@@ -80,7 +80,7 @@ def box_min(self, x=1, y=1):
 
 def box_sum(self, x=1, y=1):
     """
-    Calculate the grid box sum for all variables
+    box_sum: Calculate the grid box sum for all variables
     This is performed for each time step.
 
     Parameters
@@ -97,7 +97,7 @@ def box_sum(self, x=1, y=1):
 
 def box_range(self, x=1, y=1):
     """
-    Calculate the grid box range for all variables
+    box_range: Calculate the grid box range for all variables
     This is performed for each time step.
 
     Parameters
@@ -125,7 +125,7 @@ def fldstat(self, stat="mean"):
 
 def spatial_mean(self):
     """
-    Calculate the area weighted spatial mean for all variables
+    spatial_mean: Calculate the area weighted spatial mean for all variables
     This is performed for each time step.
 
     Examples
@@ -145,7 +145,7 @@ def spatial_mean(self):
 
 def spatial_min(self):
     """
-    Calculate the spatial minimum for all variables
+    spatial_min: Calculate the spatial minimum for all variables
     This is performed for each time step.
 
     Examples
@@ -161,7 +161,7 @@ def spatial_min(self):
 
 def spatial_max(self):
     """
-    Calculate the spatial maximum for all variables
+    spatial_max: Calculate the spatial maximum for all variables
     This is performed for each time step.
 
     Examples
@@ -176,7 +176,7 @@ def spatial_max(self):
 
 def spatial_stdev(self):
     """
-    Calculate the spatial range for all variables
+    spatial_stdev: Calculate the spatial standard deviation for all variables
     This is performed for each time step.
 
     Examples
@@ -190,7 +190,7 @@ def spatial_stdev(self):
 
 def spatial_var(self):
     """
-    Calculate the spatial range for all variables
+    spatial_var: Calculate the spatial variance for all variables
     This is performed for each time step.
 
     Examples
@@ -204,7 +204,7 @@ def spatial_var(self):
 
 def spatial_range(self):
     """
-    Calculate the spatial range for all variables
+    spatial_range: Calculate the spatial range for all variables
     This is performed for each time step.
 
     Examples
@@ -218,7 +218,7 @@ def spatial_range(self):
 
 def spatial_sum(self, by_area=False):
     """
-    Calculate the spatial sum for all variables
+    spatial_sum: Calculate the spatial sum for all variables
     This is performed for each time step.
 
     Parameters
@@ -290,7 +290,7 @@ def spatial_sum(self, by_area=False):
 
 def spatial_percentile(self, p=None):
     """
-    Calculate the spatial sum for all variables
+    spatial_percentile: Calculate the spatial percentile for all variables
     This is performed for each time step.
 
     Parameters

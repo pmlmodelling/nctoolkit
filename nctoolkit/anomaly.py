@@ -11,7 +11,7 @@ from nctoolkit.utils import version_below
 
 def annual_anomaly(self, baseline=None, metric="absolute", window=1, align="right"):
     """
-    Calculate annual anomalies for each variable based on a baseline period
+    annual_anomaly: Calculate annual anomalies for each variable based on a baseline period
     The anomaly is derived by first calculating the climatological annual mean for the
     given baseline period. Annual means are then calculated for each year and the
     anomaly is calculated compared with the baseline mean. This will be calculated on a
@@ -155,7 +155,7 @@ def annual_anomaly(self, baseline=None, metric="absolute", window=1, align="righ
 
 def monthly_anomaly(self, baseline=None):
     """
-    Calculate monthly anomalies based on a baseline period
+    monthly:anomaly: Calculate monthly anomalies based on a baseline period
     The anomaly is derived by first calculating the climatological monthly mean for the
     given baseline period. Monthly means are then calculated for each year and the
     anomaly is calculated compared with the baseline mean. This is calculated separately

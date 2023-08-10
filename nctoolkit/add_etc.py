@@ -368,7 +368,7 @@ def operation(self, method="mul", ff=None, var=None):
 
 def multiply(self, x=None, var=None):
     """
-    Multiply a dataset
+    multiply: Multiply a dataset
     This will multiply a dataset by a constant, another dataset or a netCDF file.
 
     Parameters
@@ -426,7 +426,7 @@ __mul__ = multiply
 
 def rmse(self, x=None):
     """
-    Calculate the root-mean-square-error of two datasets
+    rmse: Calculate the root-mean-square-error of two datasets
 
     Parameters
     ------------
@@ -473,7 +473,7 @@ def rmse(self, x=None):
 
 def subtract(self, x=None, var=None):
     """
-    Subtract from a dataset
+    subtract: Subtract from a dataset
     This will subtract a constant, another dataset or a netCDF file from the dataset.
 
     Parameters
@@ -531,7 +531,7 @@ __sub__ = subtract
 
 def add(self, x=None, var=None):
     """
-    Add to a dataset
+    add: Add to a dataset
     This will add a constant, another dataset or a netCDF file to the dataset.
     nctoolkit will automatically determine the appropriate comparison required.
 
@@ -592,7 +592,7 @@ __add__ = add
 
 def divide(self, x=None, var=None):
     """
-    Divide the data
+    divide: Divide the data
     This will divide the dataset by a constant, another dataset or a netCDF file.
 
     Parameters
@@ -650,7 +650,7 @@ __truediv__ = divide
 
 def abs(self):
     """
-    Method to get the absolute value of variables
+    abs: Method to get the absolute value of variables
 
     Examples
     ------------
@@ -667,7 +667,7 @@ def abs(self):
 
 def power(self, x=None):
     """
-    Powers of variables in dataset
+    power: Powers of variables in dataset
 
     Parameters
     ------------
@@ -696,7 +696,7 @@ __pow__ = power
 
 def exp(self):
     """
-    Method to get the exponential of variables
+    exp: Method to get the exponential of variables
 
     Examples
     ------------
@@ -713,7 +713,7 @@ def exp(self):
 
 def log(self):
     """
-    Method to get the natural log of variables
+    log: Method to get the natural log, ln, of variables
 
     Examples
     ------------
@@ -730,7 +730,7 @@ def log(self):
 
 def log10(self):
     """
-    Method to get the base 10 log of variables
+    log10: Method to get the base 10 log, log10, of variables
 
     Examples
     ------------
@@ -747,7 +747,7 @@ def log10(self):
 
 def square(self):
     """
-    Method to get the square of variables
+    square: Method to get the square of variables
 
     Examples
     ------------
@@ -764,7 +764,7 @@ def square(self):
 
 def sqrt(self):
     """
-    Method to get the square root of variables
+    sqrt: Method to get the square root of variables
 
     Examples
     ------------

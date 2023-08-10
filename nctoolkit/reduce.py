@@ -1,7 +1,7 @@
 
 def reduce_dims(self):
     """
-    Reduce dimensions of data
+    reduce_dims: Reduce dimensions of data
     This will remove any dimensions with only one value. For example, if only selecting
     one vertical level, the vertical dimension will be removed.
 

@@ -6,6 +6,7 @@ import os
 
 def create_ensemble(path="", recursive=True):
     """
+    create_ensemble:
     Generate an ensemble
 
     Parameters

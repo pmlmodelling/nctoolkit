@@ -12,7 +12,7 @@ from nctoolkit.session import remove_safe
 
 def crop(self, lon=[-180, 180], lat=[-90, 90], nco=False, nco_vars=None):
     """
-    Crop to a rectangular longitude and latitude box
+    crop: Crop to a rectangular longitude and latitude box
 
     Parameters
     -------------

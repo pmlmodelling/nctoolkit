@@ -119,7 +119,7 @@ def time_stat(self, stat="mean", over="time"):
 
 def tsum(self, over="time", align="right"):
     """
-    Calculate the temporal sum of all variables
+    tsum: Calculate the temporal sum of all variables
 
     Parameters
     -------------
@@ -133,7 +133,7 @@ def tsum(self, over="time", align="right"):
 
 def na_count(self, over="time", align="right"):
     """
-    Calculate the number of missing values
+    na_count: Calculate the number of missing values
 
     Parameters
     -------------
@@ -156,7 +156,7 @@ def na_count(self, over="time", align="right"):
 
 def na_frac(self, over="time", align="right"):
     """
-    Calculate the number of missing values
+    na_frac: Calculate the fraction of missing values in each grid cell across all time steps
 
     Parameters
     -------------
@@ -179,7 +179,8 @@ def na_frac(self, over="time", align="right"):
 
 def tmean(self, over="time", align="right"):
     """
-    Calculate the temporal mean of all variables
+    tmean: Calculate the temporal mean of all variables
+    Useful for: monthly mean, annual/yearly mean, seasonal mean, daily mean, daily climatology, monthly climatology, seasonal climatology
 
     Parameters
     -------------
@@ -225,7 +226,8 @@ def tmean(self, over="time", align="right"):
 
 def tmin(self, over="time", align="right"):
     """
-    Calculate the temporal minimum of all variables
+    tmin: Calculate the temporal minimum of all variables
+    Useful for: monthly minimum, annual/yearly minimum, seasonal minimum, daily minimum, daily climatology, monthly climatology, seasonal climatology
 
     Parameters
     -------------
@@ -270,7 +272,8 @@ def tmin(self, over="time", align="right"):
 
 def tmax(self, over="time", align="right"):
     """
-    Calculate the temporal maximum of all variables
+    tmax: Calculate the temporal maximum of all variables
+    Useful for: monthly maximum, annual/yearly maximum, seasonal maximum, daily maximum, daily climatology, monthly climatology, seasonal climatology 
 
     Parameters
     -------------
@@ -313,7 +316,8 @@ def tmax(self, over="time", align="right"):
 
 def tmedian(self, over="time", align="right"):
     """
-    Calculate the temporal median of all variables
+    tmedian: Calculate the temporal median of all variables
+    Useful for: monthly median, annual/yearly median, seasonal median, daily median, daily climatology, monthly climatology, seasonal climatology
 
     Parameters
     -------------
@@ -356,7 +360,8 @@ def tmedian(self, over="time", align="right"):
 
 def trange(self, over="time", align="right"):
     """
-    Calculate the temporal range of all variables
+    trange: Calculate the temporal range of all variables
+    Useful for: monthly range, annual/yearly range, seasonal range, daily range, daily climatology, monthly climatology, seasonal climatology
 
     Parameters
     -------------
@@ -400,7 +405,8 @@ def trange(self, over="time", align="right"):
 
 def tvar(self, over="time", align="right"):
     """
-    Calculate the temporal variance of all variables
+    tvar: Calculate the temporal variance of all variables
+    Useful for: monthly variance, annual/yearly variance, seasonal variance, daily variance, daily climatology, monthly climatology, seasonal climatology
 
     Parameters
     -------------
@@ -444,7 +450,8 @@ def tvar(self, over="time", align="right"):
 
 def tstdev(self, over="time", align="right"):
     """
-    Calculate the temporal standard deviation of all variables
+    tstdev: Calculate the temporal standard deviation of all variables
+    Useful for: monthly standard deviation, annual/yearly standard deviation, seasonal standard deviation, daily standard deviation, daily climatology, monthly climatology, seasonal climatology
 
     Parameters
     -------------
@@ -488,7 +495,7 @@ def tstdev(self, over="time", align="right"):
 
 def tcumsum(self, align="right"):
     """
-    Calculate the temporal cumulative sum of all variables
+    tcumsum: Calculate the temporal cumulative sum of all variables
 
     Parameters
     -------------
@@ -510,7 +517,8 @@ def tcumsum(self, align="right"):
 
 def tpercentile(self, p=None, over="time", align="right"):
     """
-    Calculate the temporal percentile of all variables
+    tpercentile: Calculate the temporal percentile of all variables
+    Useful for monthly percentile, annual/yearly percentile, seasonal percentile, daily percentile, daily climatology, monthly climatology, seasonal climatology
 
     Parameters
     -------------

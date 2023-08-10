@@ -1,7 +1,7 @@
 
 def invert(self, x = None):
     """
-    Invert levels or latitudes 
+    invert: Invert levels or latitudes 
 
     Parameters
     -------------

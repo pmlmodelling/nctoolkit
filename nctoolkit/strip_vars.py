@@ -9,7 +9,7 @@ from nctoolkit.session import remove_safe
 
 def strip_variables(self, vars=None):
     """
-    Remove any variables, such as bnds etc., from variables.
+    strip_variables: Remove any variables, such as bnds etc., from variables.
     This should probably only be done at the end of a processing chain before converting to a dataframe etc., as it is stripping away critical info for netCDF operations.
 
     Parameters

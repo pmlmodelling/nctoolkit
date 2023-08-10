@@ -6,7 +6,7 @@ import nctoolkit.api as api
 
 def append(self, x=None):
     """
-    Add new file(s) to a dataset.
+    append: Add new file(s) to a dataset.
 
     Parameters
     -------------
@@ -63,7 +63,7 @@ def append(self, x=None):
 
 def remove(self, x=None):
     """
-    Remove file(s) from a dataset
+    remove: Remove file(s) from a dataset
 
     Parameters
     -------------

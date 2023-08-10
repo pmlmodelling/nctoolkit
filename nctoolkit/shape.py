@@ -4,7 +4,7 @@ from nctoolkit.api import from_xarray
 
 def open_shape(ff=None, res=None):
     """
-    Calculate the correlation correct in time between two variables
+    open_shape: Calculate the correlation correct in time between two variables
     The correlation is calculated for each grid cell, ignoring missing values.
 
     Parameters

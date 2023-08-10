@@ -1,6 +1,6 @@
 def sum_all(self, drop=True):
     """
-    Calculate the sum of all variables for each time step
+    sum_all: Calculate the sum of all variables for each time step
 
     Parameters
     -------------

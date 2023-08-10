@@ -169,7 +169,7 @@ pattern = re.compile(":\w*")
 
 def assign(self, drop=False, **kwargs):
     """
-    Create new variables
+    assign: Create new variables
     Existing columns that are re-assigned will be overwritten.
 
     Parameters

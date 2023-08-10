@@ -3,7 +3,7 @@ from nctoolkit.session import session_info
 
 def format(self, ext=None):
     """
-    Zip the dataset
+    format: Change the netCDF format of a dataset 
     This will compress the files within the dataset. This works lazily.
 
     Parameters

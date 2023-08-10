@@ -7,7 +7,7 @@ import warnings
 
 def is_corrupt(self):
     """
-    Check if files are corrupt
+    is_corrupt: Check if files are corrupt
     """
 
     for ff in self:
@@ -31,7 +31,7 @@ def is_corrupt(self):
 
 def check(self):
     """
-    Check contents of files for common data problems.
+    check: Check contents of files for common data problems.
     """
 
     print("*****************************************")

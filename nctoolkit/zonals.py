@@ -16,8 +16,7 @@ def zonstat(self, stat="mean"):
 
 def zonal_sum(self, by_area=False):
     """
-    Calculate the zonal sum for each year/month combination in files.
-    This applies to each file in an ensemble.
+    zonal_sum: Calculate the zonal sum for each time step  
 
     Parameters
     -------------
@@ -44,8 +43,7 @@ def zonal_sum(self, by_area=False):
 
 def zonal_mean(self):
     """
-    Calculate the zonal mean for each year/month combination in files.
-    This applies to each file in an ensemble.
+    zonal_mean: Calculate the zonal mean for each time step 
 
     Examples
     ------------
@@ -59,8 +57,7 @@ def zonal_mean(self):
 
 def zonal_min(self):
     """
-    Calculate the zonal minimum for each year/month combination in files.
-    This applies to each file in an ensemble.
+    zonal_min: Calculate the zonal minimum for each time step 
 
     Examples
     ------------
@@ -73,8 +70,7 @@ def zonal_min(self):
 
 def zonal_max(self):
     """
-    Calculate the zonal maximum for each year/month combination in files.
-    This applies to each file in an ensemble.
+    zonal_max: Calculate the zonal maximum for each time step
 
     Examples
     ------------
@@ -87,8 +83,7 @@ def zonal_max(self):
 
 def zonal_range(self):
     """
-    Calculate the zonal range for each year/month combination in files.
-    This applies to each file in an ensemble.
+    zonal_range: Calculate the zonal range for each time step 
 
     Examples
     ------------

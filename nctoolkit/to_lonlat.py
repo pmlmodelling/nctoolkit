@@ -7,7 +7,7 @@ def to_latlon(
     self, lon=None, lat=None, res=None, method="bil", recycle=False, one_grid=False
 ):
     """
-    Regrid a dataset to a regular latlon grid
+    to_latlon: Regrid a dataset to a regular latlon grid
 
     Parameters
     -------------

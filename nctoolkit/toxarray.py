@@ -4,7 +4,7 @@ import xarray as xr
 
 def to_xarray(self, decode_times=True, **kwargs):
     """
-    Open a dataset as an xarray object
+    to_xarray: Open a dataset as an xarray object
 
     Parameters
     -------------
@@ -104,7 +104,7 @@ def to_xarray(self, decode_times=True, **kwargs):
 
 def to_dataframe(self, decode_times=True, **kwargs):
     """
-    Open a dataset as a pandas data frame
+    to_dataframe: Convert a dataset to a pandas data frame
 
     Parameters
     -------------

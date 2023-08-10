@@ -7,7 +7,7 @@ from nctoolkit.session import session_info
 
 def cdo_command(self, command=None, ensemble=False, check = False):
     """
-    Apply a cdo command
+    cdo_command: Apply a cdo command
 
     Parameters
     -------------

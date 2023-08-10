@@ -97,7 +97,7 @@ def shift_years(self, shift=None):
 
 def shift(self, **kwargs):
     """
-    Shift method. A wrapper for shift_days, shift_hours
+    shit: Shift method. A wrapper for shift_days, shift_hours
     Operations are applied in the order supplied.
 
     Parameters

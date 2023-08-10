@@ -6,7 +6,7 @@ import nctoolkit.api as api
 
 def reduce_grid(self, mask=None):
     """
-    Reduce the dataset to non-zero locations in a mask
+    reduce_grid: Reduce the dataset to non-zero locations in a mask
 
     Parameters
     -------------

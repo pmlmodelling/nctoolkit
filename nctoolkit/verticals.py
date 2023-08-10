@@ -10,9 +10,10 @@ import nctoolkit.api as api
 
 def bottom(self):
     """
-    Extract the bottom level from a dataset
+    bottom: Extract the bottom level from a dataset
     This extracts the bottom level from each netCDF file. Please note that for
     ensembles, it uses the first file to derive the index of the bottom level.
+    You may need to double check that the bottom vertical level is the sea 'bottom' etc., as this is not always the case.
     Use bottom_mask for files when the bottom cell in netCDF files do not represent
     the actual bottom.
 
@@ -53,8 +54,10 @@ def bottom(self):
 
 def top(self):
     """
-    Extract the top/surface level from a dataset
+    top: Extract the top/surface level from a dataset
     This extracts the first vertical level from each file in a dataset.
+    This method is most useful for things like oceanic data, where this method will extract the sea surface. 
+    You may need to double check that the first vertical level is the surface, as this is not always the case.
 
     Examples
     ------------
@@ -63,7 +66,6 @@ def top(self):
 
     >>> ds.top()
 
-    This method is most useful for things like oceanic data, where this method will extract the sea surface.
     """
 
     cdo_command = "cdo -sellevidx,1"
@@ -72,8 +74,8 @@ def top(self):
 
 def vertical_interp(self, levels=None, fixed=None, thickness=None, depths = None):
     """
-    Verticaly interpolate a dataset based on given vertical levels
-    This is calculated for each time step and grid cell
+    vertical_interp: Verticaly interpolate a dataset based on given vertical levels
+    Vertical interpolation is calculated for each time step and grid cell
     Note: This requires consistent vertical levels in space. For the likes of sigma-coordinates,
     please use to_zlevels.
 
@@ -160,13 +162,13 @@ def vertstat(self, stat="mean"):
 
 def vertical_mean(self, thickness=None, depth_range=None, fixed=None):
     """
-    Calculate the depth-averaged mean for each variable
+    vertical_mean: Calculate the depth-averaged mean for each variable
     This is calculated for each time step and grid cell
 
     Optional parameters
     -------------
     thickness: str or Dataset
-        This mube be supplied when vertical levels vary in space, i.e. fixed=False.
+        This must be supplied when vertical levels vary in space, i.e. fixed=False.
         One of: a variable, in the dataset, which contains the variable thicknesses; a .nc file which contains
         the thicknesses; or a Dataset that contains the thicknesses. Note: the .nc file or Dataset must only contain
         one variable.
@@ -293,7 +295,7 @@ def vertical_mean(self, thickness=None, depth_range=None, fixed=None):
 
 def vertical_min(self):
     """
-    Calculate the vertical minimum of variable values
+    vertical_min: Calculate the vertical minimum of variable values
     This is calculated for each time step and grid cell
 
     Examples
@@ -309,7 +311,7 @@ def vertical_min(self):
 
 def vertical_max(self):
     """
-    Calculate the vertical maximum of variable values
+    vertical_max: Calculate the vertical maximum of variable values
     This is calculated for each time step and grid cell
 
     Examples
@@ -325,7 +327,7 @@ def vertical_max(self):
 
 def vertical_range(self):
     """
-    Calculate the vertical range of variable values
+    vertical_range: Calculate the vertical range of variable values
     This is calculated for each time step and grid cell
 
     Examples
@@ -341,7 +343,7 @@ def vertical_range(self):
 
 def vertical_integration(self, thickness=None, depth_range=None, fixed=None):
     """
-    Calculate the vertically integrated sum over the water column
+    vertical_integration: Calculate the vertically integrated sum over the water column
     This calculates the sum of the variable multiplied by the cell thickness
 
     Parameters
@@ -485,7 +487,7 @@ def vertical_integration(self, thickness=None, depth_range=None, fixed=None):
 
 def vertical_sum(self):
     """
-    Calculate the vertical sum of variable values
+    vertical_sum: Calculate the vertical sum of variable values
     This is calculated for each time step and grid cell
 
     Examples
@@ -501,7 +503,7 @@ def vertical_sum(self):
 
 def vertical_cumsum(self):
     """
-    Calculate the vertical sum of variable values
+    vertical_cumsum: Calculate the vertical sum of variable values
     This is calculated for each time step and grid cell
 
     Examples
@@ -529,6 +531,11 @@ def invert_levels(self):
     >>> ds.invert_levels()
 
     """
+    # add deprecation warning message
+    warnings.warn(
+        "invert_levels is deprecated and will be removed in a future version. Please use invert instead",
+        DeprecationWarning,
+    )
     cdo_command = "cdo -invertlev"
 
     self.cdo_command(cdo_command, ensemble=False)
@@ -536,7 +543,7 @@ def invert_levels(self):
 
 def bottom_mask(self):
     """
-    Create a mask identifying the deepest cell without missing values.
+    bottom_mask: Create a mask identifying the deepest cell without missing values.
     This converts a dataset to a mask identifying which cell represents the bottom,
     for example the seabed. 1 identifies the deepest cell with non-missing values.
     Everything else is 0, or missing. At present this method only uses the first
@@ -578,7 +585,7 @@ def bottom_mask(self):
 
 def surface_mask(self):
     """
-    Create a mask identifying the shallowest cell without missing values.
+    surface_mask: Create a mask identifying the shallowest cell without missing values.
     This converts a dataset to a mask identifying which cell represents top level,
     for example the sea surface. 1 identifies the shallowest cell with non-missing values.
     Everything else is 0, or missing. At present this method only uses the first

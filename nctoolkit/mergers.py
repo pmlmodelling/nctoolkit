@@ -33,7 +33,7 @@ def check_checker(f):
 @check_checker
 def merge(self, join="variables", match=["year", "month", "day"], check=True):
     """
-    Merge a multi-file ensemble into a single file
+    merge: Merge a multi-file ensemble into a single file
     2 methods are available. 1) merging files with different variables, but the same time steps.
     2) merging files with the same variables, with different times.
 

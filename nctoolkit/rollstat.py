@@ -66,7 +66,7 @@ def rollstat(self, window=None, stat="mean"):
 
 def rolling_mean(self, window=None, align="right"):
     """
-    Calculate a rolling mean based on a window
+    rolling_mean: Calculate a rolling mean based on a window
 
     Parameters
     -------------
@@ -92,7 +92,7 @@ def rolling_mean(self, window=None, align="right"):
 
 def rolling_min(self, window=None, align="right"):
     """
-    Calculate a rolling minimum based on a window
+    rolling_min: Calculate a rolling minimum based on a window
 
     Parameters
     -------------
@@ -115,7 +115,7 @@ def rolling_min(self, window=None, align="right"):
 
 def rolling_max(self, window=None, align="right"):
     """
-    Calculate a rolling maximum based on a window
+    rolling_max: Calculate a rolling maximum based on a window
 
     Parameters
     -------------
@@ -137,7 +137,7 @@ def rolling_max(self, window=None, align="right"):
 
 def rolling_range(self, window=None, align="right"):
     """
-    Calculate a rolling range based on a window
+    rolling_range: Calculate a rolling range based on a window
 
     Parameters
     -------------
@@ -160,7 +160,7 @@ def rolling_range(self, window=None, align="right"):
 
 def rolling_sum(self, window=None, align="right"):
     """
-    Calculate a rolling sum based on a window
+    rolling_sum: Calculate a rolling sum based on a window
 
     Parameters
     -------------
@@ -183,7 +183,7 @@ def rolling_sum(self, window=None, align="right"):
 
 def rolling_var(self, window=None, align="right"):
     """
-    Calculate a rolling variance based on a window
+    rolling_var: Calculate a rolling variance based on a window
 
     Parameters
     -------------
@@ -206,7 +206,7 @@ def rolling_var(self, window=None, align="right"):
 
 def rolling_stdev(self, window=None, align="right"):
     """
-    Calculate a rolling standard deviation based on a window
+    rolling_stdev: Calculate a rolling standard deviation based on a window
 
     Parameters
     -------------

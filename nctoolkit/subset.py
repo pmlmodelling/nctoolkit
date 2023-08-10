@@ -431,7 +431,7 @@ def select_timesteps(self, times=None):
 
 def subset(self, **kwargs):
     """
-    A method for subsetting datasets to specific variables, years, longitudes etc.
+    subset: A method for subsetting datasets to specific variables, years, longitudes etc.
     Operations are applied in the order supplied.
 
     Parameters

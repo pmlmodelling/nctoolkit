@@ -10,10 +10,11 @@ from nctoolkit.session import get_safe, remove_safe
 
 def ensemble_percentile(self, p=None):
     """
-    Calculate an ensemble percentile
+    ensemble_percentile: Calculate an ensemble percentile
     This will calculate the percentles for each time step in the files.
     For example, if you had an ensemble of files where each file included
     12 months of data, it would calculate the percentile for each month.
+    This operates on a grid cell by grid cell basis.
 
     Parameters
     -------------
@@ -89,10 +90,11 @@ def ensemble_nco(self, method, ignore_time=False):
 
 def ensemble_stdev(self):
     """
-    Calculate an ensemble standard deviation
+    ensemble_stdev: Calculate an ensemble standard deviation
 
     The ensemble standard deviation is calculated for each time steps; for example, if the ensemble is made up of
     monthly files the standard deviation for each month will be calculated.
+    This operates on a grid cell by grid cell basis.
     """
 
     self.run()
@@ -107,10 +109,11 @@ def ensemble_stdev(self):
 
 def ensemble_var(self):
     """
-    Calculate an ensemble variance
+    ensemble_var: Calculate an ensemble variance
 
     The ensemble variance is calculated for each time steps; for example, if the ensemble is made up of
     monthly files the standard deviation for each month will be calculated.
+    This operates on a grid cell by grid cell basis.
     """
 
     self.run()
@@ -125,7 +128,8 @@ def ensemble_var(self):
 
 def ensemble_max(self, nco=False, ignore_time=False):
     """
-    Calculate an ensemble maximum
+    ensemble_max: Calculate an ensemble maximum
+    This operates on a grid cell by grid cell basis.
 
     Parameters
     -------------
@@ -158,7 +162,9 @@ def ensemble_max(self, nco=False, ignore_time=False):
 
 def ensemble_min(self, nco=False, ignore_time=False):
     """
-    Calculate an ensemble min
+    ensemble_min: Calculate an ensemble minimum.
+
+    This operates on a grid cell by grid cell basis.
 
     Parameters
     -------------
@@ -190,7 +196,9 @@ def ensemble_min(self, nco=False, ignore_time=False):
 
 def ensemble_mean(self, nco=False, ignore_time=False):
     """
-    Calculate an ensemble mean
+    ensemble_mean: Calculate an ensemble mean
+
+    This operates on a grid cell by grid cell basis.
 
     Parameters
     -------------
@@ -223,9 +231,10 @@ def ensemble_mean(self, nco=False, ignore_time=False):
 
 def ensemble_range(self):
     """
-    Calculate an ensemble range
+    ensemble_range: Calculate an ensemble range
     The range is calculated for each time step; for example, if each file in the
     ensemble has 12 months of data the statistic will be calculated for each month.
+    This operates on a grid cell by grid cell basis.
     """
     self.run()
 
@@ -239,9 +248,11 @@ def ensemble_range(self):
 
 def ensemble_sum(self):
     """
-    Calculate an ensemble sum
+    ensemble_sum: Calculate an ensemble sum
     The sum is calculated for each time step; for example, if each file in the
     ensemble has 12 months of data the statistic will be calculated for each month.
+
+    This operates on a grid cell by grid cell basis.
     """
     self.run()
 

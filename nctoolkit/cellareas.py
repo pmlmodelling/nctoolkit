@@ -9,7 +9,7 @@ from nctoolkit.temp_file import temp_file
 
 def cell_area(self, join=True):
     """
-    Calculate the area of grid cells.
+    cell_area: Calculate the area of grid cells.
     Area of grid cells is given in square meters.
 
     Parameters

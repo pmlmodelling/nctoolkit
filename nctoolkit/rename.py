@@ -14,7 +14,7 @@ warnings.formatwarning = custom_formatwarning
 
 def rename(self, newnames=None, **kwargs):
     """
-    Rename variables in a dataset
+    rename: Rename variables in a dataset
 
     Parameters
     -------------

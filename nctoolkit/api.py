@@ -456,7 +456,7 @@ def from_xarray(ds):
 
 def open_geotiff(x=[]):
     """
-    Read geotiff and convert to nctoolkit dataset
+    Open geotiff and convert to nctoolkit dataset
 
     Parameters
     ---------------
@@ -466,7 +466,7 @@ def open_geotiff(x=[]):
 
     Returns
     ---------------
-    open_data : nctoolkit.DataSet
+    open_geotiff: nctoolkit.DataSet
     """
 
     if isinstance(x, str):

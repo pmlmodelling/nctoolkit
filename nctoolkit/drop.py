@@ -9,7 +9,8 @@ def fix_ind(x):
 
 def drop(self, **kwargs):
     """
-    Remove variables
+    drop: Remove variables, days, months, years or time steps from a dataset
+
     This will remove stated variables from files in the dataset.
 
     Parameters

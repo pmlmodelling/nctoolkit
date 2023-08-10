@@ -2,7 +2,7 @@
 
 def time_interp(self, start=None, end=None, resolution="monthly"):
     """
-    Temporally interpolate variables based on date range and time resolution
+    time_interp: Temporally interpolate variables based on date range and time resolution
 
     Parameters
     -------------

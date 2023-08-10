@@ -3,7 +3,7 @@ from nctoolkit.flatten import str_flatten
 
 def mask_box(self, lon=[-180, 180], lat=[-90, 90]):
     """
-    Mask a lon/lat box
+    mask_box: Mask a lon/lat box
 
     Parameters
     -------------

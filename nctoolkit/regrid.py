@@ -23,7 +23,8 @@ def is_iterable(x):
 
 def regrid(self, grid=None, method="bil", recycle=False, one_grid=False, **kwargs):
     """
-    Regrid a dataset to a target grid
+    regrid: Regrid a dataset to a target grid
+    Horizontal interpolation
 
     Parameters
     -------------

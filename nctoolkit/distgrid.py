@@ -79,7 +79,7 @@ def dist_cdo(self, i=None, j=None):
 
 def distribute(self, m=1, n=1):
     """
-    Split the dataset into multiple evenly sized horizontal and vertical new files
+    distribute: Split the dataset into multiple evenly sized horizontal and vertical new files
 
     Parameters
     --------------------

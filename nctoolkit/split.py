@@ -80,7 +80,7 @@ def split_cdo(self, method="year"):
 
 def split(self, by=None):
     """
-    Split the dataset
+    split: Split the dataset
     Each file in the ensemble will be separated into new files based on the
     splitting argument.
 

@@ -8,7 +8,7 @@ import nctoolkit.api as api
 
 def to_zlevels(self, levels=None, thickness=None, depths = None):
     """
-    Convert datasets with non z-level verticals to z-levels
+    to_zlevels: Convert datasets with non z-level verticals to z-levels
     Experimental method: Use at your own risk.
 
 

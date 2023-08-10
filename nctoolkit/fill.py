@@ -1,6 +1,7 @@
 def fill_na(self, n=1):
     """
-    Fill missing values with a distance-weighted average. This carries out infilling for each time step and vertical level.
+    fill_na: Fill missing values with a distance-weighted average. This carries out infilling for each time step and vertical level.
+    Filling only uses horizontal neighbours
 
     Parameters
     -------------

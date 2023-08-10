@@ -14,7 +14,7 @@ def match_points(
     **kwargs,
 ):
     """
-    Match dataset to a spatiotemporal points dataframe
+    match_points: Match dataset to a spatiotemporal points dataframe
 
     Parameters
     -------------

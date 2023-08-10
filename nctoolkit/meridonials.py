@@ -15,7 +15,7 @@ def zonstat(self, stat="mean"):
 
 def meridonial_mean(self):
     """
-    Calculate the meridonial mean for each year/month combination in files.
+    meridonial_mean: Calculate the meridonial mean for each year/month combination in files.
     This applies to each file in an ensemble.
 
     Examples
@@ -29,7 +29,7 @@ def meridonial_mean(self):
 
 def meridonial_min(self):
     """
-    Calculate the meridonial minimum for each year/month combination in files.
+    meridonial_min: Calculate the meridonial minimum for each year/month combination in files.
     This applies to each file in an ensemble.
 
     Examples
@@ -43,7 +43,7 @@ def meridonial_min(self):
 
 def meridonial_max(self):
     """
-    Calculate the meridonial maximum for each year/month combination in files.
+    meridonial_max: Calculate the meridonial maximum for each year/month combination in files.
     This applies to each file in an ensemble.
 
     Examples
@@ -58,7 +58,7 @@ def meridonial_max(self):
 
 def meridonial_range(self):
     """
-    Calculate the meridonial range for each year/month combination in files.
+    meridonial_range: Calculate the meridonial range for each year/month combination in files.
     This applies to each file in an ensemble.
 
     Examples

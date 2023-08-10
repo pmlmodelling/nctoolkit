@@ -8,7 +8,7 @@ from nctoolkit.session import remove_safe
 
 def to_nc(self, out, zip=True, overwrite=False, **kwargs):
     """
-    Save a dataset to a named file
+    to_nc: Save a dataset to a named file
     This will only work with single file datasets.
 
     Parameters

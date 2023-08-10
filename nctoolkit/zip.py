@@ -3,8 +3,9 @@ from nctoolkit.session import session_info
 
 def zip(self):
     """
-    Zip the dataset
-    This will compress the files within the dataset. This works lazily.
+    zip: Zip the dataset
+    This will compress the files within the dataset. 
+    This will occur lazily, so will only occur after everything has been evaluated.
 
     Examples
     ------------
@@ -12,7 +13,6 @@ def zip(self):
 
         >>> ds.zip()
 
-    This will occur lazily, so will only occur after everything has been evaluated.
 
     """
     self._zip = True
