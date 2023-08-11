@@ -1,10 +1,14 @@
 News
 ============
 
-Release of v1.0.1
+Release of v1.1.0
 ---------------
 
-Versions 1.0.1 will be released in August/September. This will be a minor release with some improvements and new methods.
+Versions 1.1.0 will be released in September 2023. This will be a major release with some improvements and new methods.
+
+This release will require that CDO version 2.0.5 or above is installed. 
+
+The cost of maintaining support for CDO versions 1.9.10 and below was increasingly high compared with the declining user base for these versions.
 
 A method for inverting vertical levels and latitude will be introduced: `invert`.
 
