@@ -28,9 +28,12 @@ class TestTolonat:
         tracker.subset(months=1)
 
         with pytest.raises(ValueError):
-            tracker.to_latlon(lon=[0.5, 89.5], lat=[0.5, 89.5], res=[1, 1], method="sdafkjasdf")
+            tracker.to_latlon(lon=[0.5, 89.5], lat=[0.5, 89.5], res= [1, 1], method="sdafkjasdf")
 
-        tracker.to_latlon(lon=[-9.5, 9.5], lat=[40.5, 54.5], res=[1, 1], method="nn")
+        with pytest.raises(TypeError):
+            tracker.to_latlon(lon=[0.5, 89.5], lat=[0.5, 89.5], res= [1, "1.x"], method="nn")
+
+        tracker.to_latlon(lon=[-9.5, 9.5], lat=[40.5, 54.5], res= 1, method="nn")
         tracker.spatial_mean()
         y = tracker.to_dataframe().sst.values[0].astype("float")
 
