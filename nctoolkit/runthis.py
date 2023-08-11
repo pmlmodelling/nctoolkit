@@ -24,8 +24,6 @@ from nctoolkit.temp_file import temp_file
 
 from nctoolkit.show import nc_variables
 
-from nctoolkit.utils import version_below
-
 
 def file_size(file_path):
     """
@@ -1171,11 +1169,7 @@ def run_this(os_command, self, output="one", out_file=None, suppress=False):
                         for var in set(var_list):
                             if len(var_com) == len([x for x in var_com if var in x]):
                                 new_list.append(var)
-                        if version_below(session_info["cdo"], "1.9.9"):
-                            target = run_cdo(
-                                os_command, target, out_file, precision=self._precision
-                            )
-                        else:
+                        if True:
                             f_list = ",".join(new_list)
                             os_command = os_command.replace(
                                 "-mergetime ", f'-mergetime -apply,"-selname,{f_list}" '

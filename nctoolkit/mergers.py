@@ -4,7 +4,6 @@ import warnings
 
 from nctoolkit.session import session_info
 from nctoolkit.show import nc_variables, nc_times
-from nctoolkit.utils import version_below
 from nctoolkit.api import open_data
 
 
@@ -91,29 +90,6 @@ def merge(self, join="variables", match=["year", "month", "day"], check=True):
 
     if join.startswith("time"):
         self.run()
-        if version_below(session_info["cdo"], "1.9.9"):
-            var_list = []
-            var_com = []
-
-            for ff in self:
-                var_list += nc_variables(ff)
-                var_com.append(nc_variables(ff))
-            new_list = []
-
-            for var in set(var_list):
-                if len(var_com) == len([x for x in var_com if var in x]):
-                    new_list.append(var)
-
-            self.subset(variables=new_list)
-            self.run()
-
-            removed = ",".join([x for x in set(var_list) if x not in new_list])
-            if len([x for x in set(var_list) if x not in new_list]) > 0:
-                warnings.warn(
-                    f"The following variables are not in all files, so were ignored when merging: {removed}"
-                )
-                self.subset(variables=new_list)
-                self.run()
 
         if len(self) == 1:
             warnings.warn(

@@ -3,6 +3,9 @@ import subprocess
 
 
 def name_check(x):
+    """
+    Function to check whether a string is a valid variable name
+    """
     if len(x) == 0:
         return False
 
@@ -58,103 +61,33 @@ def version_below(x, y):
     return x < y
 
 
-def version_above(x, y):
-    x = x.split(".")
-    x = int(x[0]) * 1000 + int(x[1]) * 100 + int(x[2])
 
-    y = y.split(".")
-    y = int(y[0]) * 1000 + int(y[1]) * 100 + int(y[2])
-
-    return x > y
-
-
-# check version of cdo installed
-
-
-def latest_version():
-    try:
-        import requests
-
-        url = "https://anaconda.org/conda-forge/cdo"
-        r = requests.get(url)
-        import re
-
-        text = re.compile("v.*..*..[0-10]")
-
-        text = re.compile("v[0-9].[0-9]?[0-9].[0-9]?[0-9]")
-        options = []
-        for x in [text.findall(x) for x in r.text.split(" ") if "2.0.5" in x]:
-            options += x
-
-        versions = []
-        for x in options:
-            versions.append(x.replace("v", ""))
-        versions = list(set(versions))
-        if len(versions) == 1:
-            return versions[0]
-        else:
-            return None
-    except:
-        return None
-
-
-def validate_version():
+def validate_version(version):
     """
     Function to tell the user whether a valid version of CDO is installed
     """
-    bad = False
-
+    bad = True
+    print(version)
     try:
-        version = cdo_version()
-        bad = version_above(cdo_version(), "2.0.0") and version_below(
-            cdo_version(), "2.0.5"
-        )
-        actual_version = version
-        if version is None:
-            print(
-                "Please install CDO version 1.9.7 or above: https://code.mpimet.mpg.de/projects/cdo/ or https://anaconda.org/conda-forge/cdo"
-            )
-        sub = "."
-        wanted = ""
-        n = 3
-        where = [m.start() for m in re.finditer(sub, version)][n - 1]
-
-        version = re.sub("[A-Za-z]", "", version)
-
-        before = version[:where]
-        after = version[where:]
-        after = after.replace(sub, wanted)
-        if version_below(cdo_version(), "1.9.7"):
-            print(
-                "Please install CDO version 1.9.7 or above: https://code.mpimet.mpg.de/projects/cdo/ or https://anaconda.org/conda-forge/cdo"
-            )
-        else:
-            ## Ignore check for CDO version
-            # latest = latest_version()
-            latest = None
-
-            if latest is None:
+        if version_below(version, "2.0.5") is False:
                 print(
-                    f"nctoolkit is using Climate Data Operators version {actual_version}"
+                    f"nctoolkit is using Climate Data Operators version {version}"
                 )
-            else:
-                if version_below(actual_version, latest):
-                    print(
-                        f"nctoolkit is using Climate Data Operators version {actual_version}. v{latest} is available: https://anaconda.org/conda-forge/cdo!"
-                    )
-                else:
-                    print(
-                        f"nctoolkit is using the latest version of Climate Data Operators version: {actual_version}"
-                    )
-
+                bad = False
     except:
-        print(
-            "Please install CDO version 1.9.7 or above: https://code.mpimet.mpg.de/projects/cdo/ or https://anaconda.org/conda-forge/cdo"
-        )
+        bad = True
+
     if bad:
-        raise ValueError(
-            "This version of nctoolkit is not compatible with CDO versions 2.0.0, 2.0.1, 2.0.2 and 2.0.3 and 2.0.4. Please upgrade."
-        )
+        try:
+            error = (
+                f"This version of nctoolkit requires CDO>=2.0.5. Please install a recent version of CDO. You have version {version}."
+            )
+        except:
+            raise ValueError(
+                f"This version of nctoolkit requires CDO>=2.0.5. Please install a recent version of CDO."
+            )
+        raise ValueError(error)
+
 
 
 def cdo_version():
@@ -181,4 +114,6 @@ def cdo_version():
     candidates = [
         x for x in version.split(" ") if x.startswith("1") or x.startswith("2")
     ]
-    return candidates[0]
+    version = candidates[0]
+    validate_version(version)
+    return version 

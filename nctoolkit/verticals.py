@@ -3,7 +3,6 @@ import warnings
 import copy
 from nctoolkit.cleanup import cleanup
 from nctoolkit.api import open_data
-from nctoolkit.utils import version_above, cdo_version
 from nctoolkit.flatten import str_flatten
 import nctoolkit.api as api
 
@@ -405,8 +404,6 @@ def vertical_integration(self, thickness=None, depth_range=None, fixed=None):
         raise ValueError("Please state if levels are fixed or provide thickness")
 
     if fixed:
-        if version_above(cdo_version(), "2.0.0") is False:
-            raise ValueError("Please install CDO>2.0.0")
         warnings.warn("Extracting vertical thickness from dataset level data")
         var = list(self.contents.query("nlevels > 1").variable)[0]
 
@@ -551,30 +548,6 @@ def vertical_cumsum(self):
     The cumulative sum will be calculated from the first to the last vertical level. For example, in oceanic data it would start at the sea surface.
     """
     vertstat(self, stat="cum")
-
-
-def invert_levels(self):
-    """
-    Invert the levels of 3D variables.
-
-    This is calculated for each time step and grid cell.
-
-    Examples
-    ------------
-
-    If you wanted to invert the vertical levels, you would do this:
-
-    >>> ds.invert_levels()
-
-    """
-    # add deprecation warning message
-    warnings.warn(
-        "invert_levels is deprecated and will be removed in a future version. Please use invert instead",
-        DeprecationWarning,
-    )
-    cdo_command = "cdo -invertlev"
-
-    self.cdo_command(cdo_command, ensemble=False)
 
 
 def bottom_mask(self):

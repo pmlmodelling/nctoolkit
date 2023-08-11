@@ -1920,7 +1920,6 @@ class DataSet(object):
     from nctoolkit.verticals import bottom
     from nctoolkit.verticals import bottom_mask
     from nctoolkit.verticals import surface_mask
-    from nctoolkit.verticals import invert_levels
 
     from nctoolkit.zip import zip
 
@@ -1929,3 +1928,6 @@ class DataSet(object):
     from nctoolkit.zonals import zonal_max
     from nctoolkit.zonals import zonal_range
     from nctoolkit.zonals import zonal_sum
+
+    # deprecated methods
+    from nctoolkit.deprecated import invert_levels

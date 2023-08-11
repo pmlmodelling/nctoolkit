@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from nctoolkit.cleanup import cleanup
 from nctoolkit.flatten import str_flatten
 from nctoolkit.show import nc_years
-from nctoolkit.utils import cdo_version, version_above, name_check
+from nctoolkit.utils import name_check
 
 
 def fix_ind(x):
@@ -411,11 +411,6 @@ def select_timesteps(self, times=None):
     for tt in times:
         if not isinstance(tt, int):
             raise TypeError(f"{tt} is not an int")
-        if tt < 0:
-            if version_above(cdo_version(), "2.0.0") is False:
-                raise ValueError(
-                    f"Please install CDO version 2.0.5 or above for negative timestep selections"
-                )
 
     # all of the variables in months need to be converted to ints,
     # just in case floats have been provided

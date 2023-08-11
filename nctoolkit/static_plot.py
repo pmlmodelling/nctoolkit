@@ -117,6 +117,8 @@ def pub_plot(
         List with [xsize, ysize] for plotting size
     land: str
         Character string with colour required for land. Set to None if you do not want land to show.
+    colours: str
+        Character string with colour map to use. Set to None if you do not want to use a colour map.
     norm: str or matplotlib.colors norm
          Norm to use for colour bar
     projection: cartopy projection
@@ -220,7 +222,7 @@ def pub_plot(
                 var = kwargs[kk]
                 fixed = True
         if kk.lower().startswith("col") and kk.lower().endswith("rs"):
-            if colours == "viridis":
+            if colours == "auto":
                 colours = kwargs[kk]
                 fixed = True
 
@@ -454,7 +456,8 @@ def pub_plot(
                 if limits[0] < 0 and limits[1] > 0:
                     min_value = limits[0]
                     max_value = limits[1]
-                    mid_point = 0
+                    if mid_point is None:
+                        mid_point = 0
                     if colours == "auto":
                         colours = "RdBu_r"
                         if land_auto and land is not None:
