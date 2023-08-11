@@ -397,3 +397,17 @@ class TestSelect:
         x = tracker.years
 
         assert x == [1990]
+    
+    def test_negative(self):
+        tracker = nc.open_data(ff, checks = False)
+        correct_time = tracker.times[-1]
+        tracker.subset(time=-1)
+        assert tracker.times[0] == correct_time
+
+    def test_warnings(self):
+        tracker = nc.open_data(ff, checks = False)
+
+        with pytest.warns(UserWarning):
+            tracker.subset(years = range(1900, 2000))
+
+

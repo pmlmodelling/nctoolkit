@@ -9,12 +9,17 @@ import re
 ff = "data/sst.mon.mean.nc"
 
 class TestCrop:
-    def test_plot(self):
+    def test_pub_plot(self):
 
         # generate a random file name
         out_file = "asdfkjbuwnjlajksdfi.png"
 
         ds = nc.open_data("data/sst.mon.mean.nc", checks = False)
+
+        with pytest.raises(ValueError):
+            ds.pub_plot()
+
+
         ds.subset(time = 0)
         ds.pub_plot(out = out_file, land = "grey")
 
@@ -29,6 +34,19 @@ class TestCrop:
         # this needs to be improved so it figures if the file is similar to the one in the repo
         assert os.path.getsize(out_file) > 160000 and os.path.getsize(out_file) < 170000
 
+        with pytest.raises(ValueError):
+            ds.pub_plot(mid_point = -1000)
+        with pytest.raises(ValueError):
+            ds.pub_plot(mid_point = 1000)
+
+
+        ds.assign(tos = lambda x: x.sst + 273.15)
+        ds.pub_plot(var = "sst", out = out_file, land = "grey")
+
+        assert os.path.exists(out_file)
+        # get file size
+        # this needs to be improved so it figures if the file is similar to the one in the repo
+        assert os.path.getsize(out_file) > 160000 and os.path.getsize(out_file) < 170000
 
         # value error check
 
@@ -41,6 +59,9 @@ class TestCrop:
         with pytest.raises(ValueError):
             ds.pub_plot(coast = "blah")
 
+        with pytest.raises(TypeError):
+            ds.pub_plot(land = 1)
+
         ds1 = ds.copy()
         ds1.assign(tos = lambda x: x.sst + 273.15)
 
@@ -49,11 +70,20 @@ class TestCrop:
         with pytest.raises(ValueError):
             ds1 = nc.open_data("data/sst.mon.mean.nc", checks = False)
             ds1.pub_plot()
+        
+        with pytest.raises(ValueError):
+            ds1.pub_plot()
 
 
         from difflib import SequenceMatcher
 
         def similar(a, b):
             return SequenceMatcher(None, a, b).ratio()
+        
+        with pytest.raises(ValueError):
+            ds.pub_plot(all_wrong = False)
+
+        with pytest.raises(ValueError):
+            ds.pub_plot(lands = "grey")
 
         os.remove(out_file)

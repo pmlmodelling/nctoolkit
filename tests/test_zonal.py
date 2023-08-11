@@ -130,3 +130,4 @@ class TestClip:
         assert ( data.to_dataframe().sst[0].astype("float") == 8.78212833404541)
 
 
+

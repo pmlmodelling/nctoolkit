@@ -394,7 +394,7 @@ class TestVerts:
 
     def test_depth_option(self):
         ds = nc.open_data("data/pml_ersem_nitrate_example.nc")
-        ds.vertical_interp(levels = [50], thickness="e3t")
+        ds.vertical_interp(levels = [50], thickness="e3t", surface = "top")
         ds.subset(variables = "N3_n")
         ds.run()
 

@@ -22,6 +22,16 @@ class TestTonnc:
         del ds
 
 
+        ds = nc.open_data("data/sst.mon.mean.nc", checks = False)
+        times = ds.times
+        out = nc.temp_file.temp_file("nc")
+        nc.session.append_safe(out)
+        ds.to_nc(out, time = 1, zip = False)
+        ds = nc.open_data(out, checks = False)
+        assert  len(ds.times) == 1
+        assert ds.times[0] == times[1]
+        nc.session.remove_safe(out)
+        del ds
         n = len(nc.session_files())
         assert n == 0
         ds = nc.open_data()
@@ -68,6 +78,21 @@ class TestTonnc:
         x = data.to_dataframe().sst.values[0].astype("float")
         y = data1.to_dataframe().sst.values[0].astype("float")
         assert x == y
+
+        ff = "data/sst.mon.mean.nc"
+        ff1 = nc.temp_file.temp_file(".nc")
+        data = nc.open_data(ff, checks = False)
+        data.subset(timesteps=0)
+        data.to_nc(ff1, zip=False)
+        data1 = nc.open_data(ff1, checks=False)
+
+        data.spatial_mean()
+        data1.spatial_mean()
+        x = data.to_dataframe().sst.values[0].astype("float")
+        y = data1.to_dataframe().sst.values[0].astype("float")
+        assert x == y
+
+
 
     def test_3(self):
         ff = "data/sst.mon.mean.nc"
