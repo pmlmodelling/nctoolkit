@@ -91,23 +91,16 @@ def to_latlon(
         except:
             raise TypeError("res supplied is not valid")
 
-    if isinstance(res, list):
-        try:
-            res = [float(r) for r in res]
-        except:
-            raise TypeError("res supplied is not valid")
-
     if isinstance(res, float):
         res = [res, res]
 
     if isinstance(res, list):
-        if isinstance(res[0], int):
-            res[0] = float(res[0])
-        if isinstance(res[1], int):
-            res[1] = float(res[1])
-
-        if not isinstance(res[0], float) or not isinstance(res[1], float):
+        try:
+            res = [float(r) for r in res]
+        except:
+            print("here")
             raise TypeError("res supplied is not valid")
+
         if (res[0] <= 0) or (res[1] <= 0):
             raise ValueError("Check res supplied are positive values")
 

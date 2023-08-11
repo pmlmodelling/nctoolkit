@@ -88,45 +88,33 @@ def to_nc(self, out, zip=True, overwrite=False, **kwargs):
         self1.run()
         ff = copy.deepcopy(self1.current)
 
-        if len(self1.history) == len(self1._hold_history):
-            if zip:
-                cdo_command = f"cdo -z zip_9 copy {ff[0]} {out}"
-                run_cdo(
-                    cdo_command,
-                    target=out,
-                    overwrite=overwrite,
-                    precision=self._precision,
-                )
+        if zip:
+            cdo_command = f"cdo -z zip_9 copy {ff[0]} {out}"
+            run_cdo(
+                cdo_command,
+                target=out,
+                overwrite=overwrite,
+                precision=self._precision,
+            )
 
-                self1.history.append(cdo_command)
-                self1._hold_history = copy.deepcopy(self1.history)
-                self1.current = out
-                remove_safe(out)
-
-            else:
-                cdo_command = f"cdo copy {ff[0]} {out}"
-                run_cdo(
-                    cdo_command,
-                    target=out,
-                    overwrite=overwrite,
-                    precision=self1._precision,
-                )
-                self1.history.append(cdo_command)
-                self1._hold_history = copy.deepcopy(self1.history)
-
-                self1.current = out
-                remove_safe(out)
+            self1.history.append(cdo_command)
+            self1._hold_history = copy.deepcopy(self1.history)
+            self1.current = out
+            remove_safe(out)
 
         else:
-            if zip:
-                cdo_command = "cdo -z zip_9 "
-            else:
-                cdo_command = "cdo "
+            cdo_command = f"cdo copy {ff[0]} {out}"
+            run_cdo(
+                cdo_command,
+                target=out,
+                overwrite=overwrite,
+                precision=self1._precision,
+            )
+            self1.history.append(cdo_command)
+            self1._hold_history = copy.deepcopy(self1.history)
 
-            self1._execute = True
-
-            run_this(cdo_command, self1, out_file=out)
-            self1._execute = False
+            self1.current = out
+            remove_safe(out)
 
         if os.path.exists(out) is False:
             raise ValueError("File zipping was not successful")
