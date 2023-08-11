@@ -125,7 +125,7 @@ session_info["user"] = ""
 # get the cdo methods
 
 read = subprocess.run(
-    "cdo --operators", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+   "cdo --operators", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
 ).stdout
 
 cdo_methods = [x.split(" ")[0].replace("b'", "") for x in str(read).split("\\n")]
@@ -137,20 +137,21 @@ cdo_methods.append("reduce_dim")
 session_info["cdo_methods"] = cdo_methods
 
 
-def coast_check():
-    try:
-        import geoviews
-        import cartopy
-        from cartopy import crs
-        import cartopy.crs as ccrs
+# def coast_check():
+#     try:
+#         import geoviews
+#         import cartopy
+#         from cartopy import crs
+#         import cartopy.crs as ccrs
 
-        projection = ccrs.PlateCarree()
-        return True
-    except:
-        return False
+#         projection = ccrs.PlateCarree()
+#         return True
+#     except:
+#         return False
 
 
-session_info["coast"] = coast_check()
+#session_info["coast"] = coast_check()
+session_info["coast"] = None 
 
 
 session_info["interactive"] = sys.__stdin__.isatty()
