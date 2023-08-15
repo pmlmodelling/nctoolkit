@@ -67,7 +67,6 @@ def validate_version(version):
     Function to tell the user whether a valid version of CDO is installed
     """
     bad = True
-    print(version)
     try:
         if version_below(version, "2.0.5") is False:
                 print(

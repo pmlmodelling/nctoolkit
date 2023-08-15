@@ -137,21 +137,21 @@ cdo_methods.append("reduce_dim")
 session_info["cdo_methods"] = cdo_methods
 
 
-# def coast_check():
-#     try:
-#         import geoviews
-#         import cartopy
-#         from cartopy import crs
-#         import cartopy.crs as ccrs
+def coast_check():
+    try:
+        import geoviews
+        import cartopy
+        from cartopy import crs
+        import cartopy.crs as ccrs
 
-#         projection = ccrs.PlateCarree()
-#         return True
-#     except:
-#         return False
+        projection = ccrs.PlateCarree()
+        return True
+    except:
+        return False
 
 
-#session_info["coast"] = coast_check()
-session_info["coast"] = None 
+session_info["coast"] = coast_check()
+#session_info["coast"] = None 
 
 
 session_info["interactive"] = sys.__stdin__.isatty()
@@ -195,9 +195,15 @@ def update_options(kwargs):
             if not isinstance(kwargs[key], bool):
                 raise TypeError(f"{key} should be boolean")
 
+        if key == "coast":
+            if not isinstance(kwargs[key], bool):
+                raise TypeError(f"{key} should be boolean")
+            session_info["key"] = kwargs[key]
+
         if key == "checks":
             if not isinstance(kwargs[key], bool):
                 raise TypeError(f"{key} should be boolean")
+            find = False
 
         if not isinstance(kwargs[key], bool) and find:
             if key == "temp_dir":
