@@ -29,6 +29,10 @@ class TestSession:
         with Capturing() as output:
             nc.utils.cdo_version()
         version = nc.session_info["cdo"]
+        print("************")
+        print("testing output")
+        print("************")
+        print(output)
         assert output[1] == f"nctoolkit is using Climate Data Operators version {version}" 
 
         # test version below

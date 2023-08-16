@@ -49,4 +49,5 @@ jobs:
         shell: bash -l {0}
         run: |
           python testing/test_parallel.py
-          pytest tests/test*.py
+          # use pytests without output printed
+          pytest tests/test*.py -s
