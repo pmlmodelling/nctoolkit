@@ -45,7 +45,6 @@ def fix_long(x):
     new_x = x
     new_x = new_x.replace("N2O", "N$_2$O")
     new_x = new_x.replace("hlorophyll a", "hlorophyll $a$")
-    new_x = new_x.capitalize()
     return new_x
 
 
