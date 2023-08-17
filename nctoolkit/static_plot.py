@@ -145,6 +145,9 @@ def pub_plot(
     -------------
     """
 
+    if projection is False:
+        projection = None
+
     axis = None
 
     if legend_position not in ["auto", "right", "bottom"]:
