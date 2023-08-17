@@ -453,7 +453,7 @@ def pub_plot(
             if r_max is not None:
                 max_value = np.nanpercentile(np.ma.filled(values, np.nan), r_max)
 
-        if limits is not None:
+        if limits is not None and colours == "auto":
             try:
                 if limits[0] < 0 and limits[1] > 0:
                     min_value = limits[0]
