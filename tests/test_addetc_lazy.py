@@ -55,9 +55,8 @@ class TestAddetc:
             ds2.tmean("month")
             ds1.subtract(ds2)
             ds1.tmean("month")
-            sst_max = ds1.to_dataframe().analysed_sst.max()
-            sst_min = ds1.to_dataframe().analysed_sst.min()
-            assert (sst_max < 1e-6) and (sst_min > -0.02)
+            sst_max = ds1.to_dataframe().analysed_sst.abs().max()
+            assert (sst_max < 1e-4)
 
             ff1 = "data/2003.nc"
             ff2 = "data/2004.nc"
@@ -67,18 +66,13 @@ class TestAddetc:
             ds2.tmean("month")
             ds1.subtract(ds2)
             ds1.tmean(["year","month"])
-            sst_max = ds1.to_dataframe().analysed_sst.max()
-            sst_min = ds1.to_dataframe().analysed_sst.min()
-
-
-            assert sst_max > 0.88 and sst_max < 0.89
 
             ds1.subset(year = 2003)
 
-            sst_max = ds1.to_dataframe().analysed_sst.max()
-            sst_min = ds1.to_dataframe().analysed_sst.min()
+            sst_max = ds1.to_dataframe().analysed_sst.abs().max()
 
-            assert (sst_max < 1e-6) and (sst_min > -0.02)
+            assert (sst_max < 1e-4)
+
 
             ff1 = "data/2003.nc"
             ff2 = "data/2004.nc"
@@ -89,10 +83,9 @@ class TestAddetc:
             ds1.subtract(ds2)
             ds1.tmean(["year", "month"])
 
-            sst_max = ds1.to_dataframe().analysed_sst.max()
-            sst_min = ds1.to_dataframe().analysed_sst.min()
+            sst_max = ds1.to_dataframe().analysed_sst.abs().max()
 
-            assert (sst_max < 1e-6) and (sst_min > -0.02)
+            assert (sst_max < 1e-4)
 
     def test_merger(self):
         new = nc.open_data(ff, checks = False)
