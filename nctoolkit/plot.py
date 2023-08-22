@@ -22,7 +22,7 @@ def time_limit(seconds):
         signal.alarm(0)
 
 
-def plot(self, vars=None, autoscale=True, out=None, coast=True, **kwargs):
+def plot(self, vars=None, autoscale=True, out=None, coast=None, **kwargs):
     """
     plot: Automatically plot a dataset.
 
@@ -68,7 +68,13 @@ def plot(self, vars=None, autoscale=True, out=None, coast=True, **kwargs):
     self.run()
 
     if not session_info["coast"]:
-        coast = False
+        if coast is None:
+            coast = False
+    else:
+        if coast is None:
+            coast = True
+
+
 
     if len(self) > 1:
         raise TypeError("You cannot view multiple files!")
