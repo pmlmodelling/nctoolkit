@@ -52,17 +52,22 @@ class TestAddetc:
             ff1 = "data/2003.nc"
             ds1 = nc.open_data(ff1, checks=False)
             ds2 = nc.open_data(ff1, checks=False)   
+            ds1.set_precision("F32")
+            ds2.set_precision("F32")
             ds2.tmean("month")
             ds1.subtract(ds2)
             ds1.tmean("month")
+            ds1.run()
             sst_max = ds1.to_dataframe().analysed_sst.abs().max()
             assert (sst_max < 1e-4)
 
             ff1 = "data/2003.nc"
             ff2 = "data/2004.nc"
             ds1 = nc.open_data([ff1, ff2], checks=False)
+            ds1.set_precision("F32")
             ds1.merge("time")
             ds2 = nc.open_data(ff1, checks=False)
+            ds2.set_precision("F32")
             ds2.tmean("month")
             ds1.subtract(ds2)
             ds1.tmean(["year","month"])
@@ -77,6 +82,7 @@ class TestAddetc:
             ff1 = "data/2003.nc"
             ff2 = "data/2004.nc"
             ds1 = nc.open_data([ff1, ff2], checks=False)
+            ds1.set_precision("F32")
             ds1.merge("time")
             ds2 = ds1.copy()
             ds2.tmean(["year", "month"])
