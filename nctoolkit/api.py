@@ -1133,6 +1133,22 @@ class DataSet(object):
         # track number of held over commands
         self._ncommands = 0
 
+        # add a dictionary for caching attributes
+        self._atts = dict()
+
+        self._atts["variables"] = [None, -1]
+        self._atts["months"] = [None, -1]
+        self._atts["levels"] = [None, -1]
+        self._atts["times"] = [None, -1]
+        self._atts["calendar"] = [None, -1]
+        self._atts["size"] = [None, -1]
+        self._atts["ncformat"] = [None, -1]
+        self._atts["years"] = [None, -1]
+        self._atts["calendar"] = [None, -1]
+        self._atts["contents"] = [None, -1]
+
+
+
     def __getitem__(self, index):
         return self.current[index]
 
@@ -1212,6 +1228,11 @@ class DataSet(object):
 
         self.run()
 
+        n_commands = self._atts["calendar"][1]
+
+        if n_commands == len(self._hold_history):
+            return self._atts["calendar"][0]
+
         cals = []
         for ff in self:
             ds = Dataset(ff)
@@ -1231,7 +1252,13 @@ class DataSet(object):
         cals = pd.concat(cals).reset_index(drop=True)
 
         if len(set(cals.calendar)) == 1:
+            self._atts["calendar"][0] = cals.calendar[0]
             return cals.calendar[0]
+
+        self._atts["calendar"][1] = len(self._hold_history)
+
+        self._atts["calendar"][0] = cals
+
         return cals
 
     @property
@@ -1248,6 +1275,12 @@ class DataSet(object):
 
         self.run()
 
+        n_commands = self._atts["variables"][1]
+
+        if n_commands == len(self._hold_history):
+            return self._atts["variables"][0]
+
+
         all_variables = []
         for ff in self:
             all_variables += nc_variables(ff)
@@ -1255,6 +1288,12 @@ class DataSet(object):
         all_variables = list(set(all_variables))
 
         all_variables.sort()
+
+        # populate the atts dictionary
+
+        self._atts["variables"][0] = all_variables
+        self._atts["variables"][1] = len(self._hold_history)
+
 
         return all_variables
 
@@ -1271,6 +1310,11 @@ class DataSet(object):
 
         self.run()
 
+        n_commands = self._atts["months"][1]
+
+        if n_commands == len(self._hold_history): 
+            return self._atts["months"][0]
+
         all_months = []
         for ff in self:
             all_months += nc_months(ff)
@@ -1278,6 +1322,11 @@ class DataSet(object):
         all_months = list(set(all_months))
 
         all_months.sort()
+
+        # populate the atts dictionary
+
+        self._atts["months"][0] = all_months
+        self._atts["months"][1] = len(self._hold_history)
 
         return all_months
 
@@ -1295,6 +1344,11 @@ class DataSet(object):
 
         self.run()
 
+        n_commands = self._atts["levels"][1]
+
+        if n_commands == len(self._hold_history):
+            return self._atts["levels"][0]
+
         all_levels = []
         for ff in self:
             all_levels += nc_levels(ff)
@@ -1302,6 +1356,12 @@ class DataSet(object):
         all_levels = list(set(all_levels))
 
         all_levels.sort()
+
+        # populate the atts dictionary
+
+        self._atts["levels"][0] = all_levels
+        self._atts["levels"][1] = len(self._hold_history)
+
 
         return all_levels
 
@@ -1318,6 +1378,12 @@ class DataSet(object):
 
         self.run()
 
+        n_commands = self._atts["times"][1]
+
+        if n_commands == len(self._hold_history):
+            return self._atts["times"][0]
+
+
         all_times = []
         for ff in self:
             all_times += nc_times(ff)
@@ -1325,6 +1391,12 @@ class DataSet(object):
         all_times = list(set(all_times))
 
         all_times.sort()
+
+        # populate the atts dictionary
+
+        self._atts["times"][0] = all_times
+        self._atts["times"][1] = len(self._hold_history)
+
 
         return all_times
 
@@ -1365,6 +1437,11 @@ class DataSet(object):
 
         self.run()
 
+        n_commands = self._atts["years"][1]
+
+        if n_commands == len(self._hold_history):
+            return self._atts["years"][0]
+
         all_years = []
         for ff in self:
             all_years += nc_years(ff)
@@ -1372,6 +1449,13 @@ class DataSet(object):
         all_years = list(set(all_years))
 
         all_years.sort()
+
+        # populate the atts dictionary
+
+        self._atts["years"][0] = all_years
+
+        self._atts["years"][1] = len(self._hold_history)
+
 
         return all_years
 
@@ -1607,7 +1691,16 @@ class DataSet(object):
 
         self.run()
 
-        return self.show_contents()
+        n_commands = self._atts["contents"][1]
+
+        if n_commands == len(self._hold_history):
+            return self._atts["contents"][0]
+        
+        df = self.show_contents()
+        self._atts["contents"][0] = df
+        self._atts["contents"][1] = len(self._hold_history)
+
+        return df
 
     @property
     def start(self):

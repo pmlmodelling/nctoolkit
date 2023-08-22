@@ -91,3 +91,15 @@ def remove(self, x=None):
     for ff in x:
         self.current.remove(ff)
         remove_safe(ff)
+
+    # if files have been removed, we need to reset the attributes
+    self._atts["variables"] = [None, -1]
+    self._atts["months"] = [None, -1]
+    self._atts["levels"] = [None, -1]
+    self._atts["times"] = [None, -1]
+    self._atts["calendar"] = [None, -1]
+    self._atts["size"] = [None, -1]
+    self._atts["ncformat"] = [None, -1]
+    self._atts["years"] = [None, -1]
+    self._atts["calendar"] = [None, -1]
+    self._atts["contents"] = [None, -1]
