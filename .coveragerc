@@ -4,6 +4,7 @@ omit =
     tests/*
     # exclude anything that is not officially documented on the website
     nctoolkit/deprecated.py 
+    nctoolkit/shape.py 
     nctoolkit/esoteric.py 
     nctoolkit/val*.py
     nctoolkit/unify.py
