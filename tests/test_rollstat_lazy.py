@@ -134,9 +134,13 @@ class TestRollstat:
         tracker = nc.open_data(ff, checks = False)
         with pytest.raises(TypeError):
             tracker.rolling_sum(window="x")
+        with pytest.raises(TypeError):
+            tracker.rolling_sum(10, align = 10)
 
         with pytest.raises(ValueError):
             tracker.rolling_sum()
+        with pytest.raises(ValueError):
+            tracker.rolling_sum(10, align = "mistake")
 
         with pytest.raises(ValueError):
             tracker.rolling_sum(window=0)
@@ -146,3 +150,18 @@ class TestRollstat:
 
         n = len(nc.session_files())
         assert n == 0
+    
+    def test_align(self):
+        tracker = nc.open_data(ff, checks = False)
+        tracker.align("left")
+        tracker.tmean("year")
+        tracker.rolling_mean(window=10, align = "right")
+        x = tracker.to_xarray().sst.values[0][0][0].astype("float")
+        # 120 window
+        tracker = nc.open_data(ff, checks = False)
+        tracker.rolling_mean(window=120, align = "right")
+        y = tracker.to_xarray().sst.values[0][0][0].astype("float")
+
+        assert x == y
+
+

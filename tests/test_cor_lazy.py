@@ -21,9 +21,28 @@ class TestCor:
         tracker.cor_space(var1="tos", var2="sst")
         x = tracker.to_dataframe().cor.values[0]
 
+        ## test valuerror  raised
+
+        with pytest.raises(ValueError):
+            ds1 = nc.open_data(ff, checks = False)
+            ds1.subset(time = 0)
+            ds2 = nc.open_data(ff, checks = False)
+            ds2.subset(time = 0)
+            ds2.set_precision("F64")
+            ds2.rename({"sst": "tos"})
+            ds1.append(ds2)
+            ds1.merge("variables)")
+            ds1.cor_space(var1="tos", var2="sst")
+
+            del ds1
+            del ds2
+
         assert x == 1.0
         n = len(nc.session_files())
-        assert n == 1
+        assert n == 3
+
+
+
 
     def test_cor_list(self):
         tracker = nc.open_data(ff, checks = False)

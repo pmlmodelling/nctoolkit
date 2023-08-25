@@ -16,6 +16,29 @@ class TestRegrid:
 
     def test_list(self):
 
+        # test iterables
+
+        ds1 = nc.open_data(ff, checks = False)
+        ds1.subset(time = 0)
+        ds1.regrid(lon = -20, lat = 45, method = "nn")
+        x = ds1.to_dataframe().sst.values[0].astype("float")
+
+        ds2 = nc.open_data(ff, checks = False)
+        ds2.subset(time = 0)
+        ds2.regrid(lon = [-20], lat = [45], method = "nearest")
+        y = ds2.to_dataframe().sst.values[0].astype("float")
+
+        ds3 = nc.open_data(ff, checks = False)
+        ds3.subset(time = 0)
+        ds3.regrid(lon = [-20], lat = [45], method = "neighbour")
+        z = ds3.to_dataframe().sst.values[0].astype("float")
+
+        assert x == y == z
+
+
+
+
+
         tracker = nc.open_data(ff, checks = False)
         tracker.split("year")
         tracker.to_latlon(lon = [-90, 90], lat = [0, 40], res = 1)

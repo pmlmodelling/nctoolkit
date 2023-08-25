@@ -74,6 +74,8 @@ class TestSplit:
         tracker = nc.open_data(ff, checks = False)
         with pytest.raises(ValueError):
             tracker.split("")
+        with pytest.raises(ValueError):
+            tracker.split()
 
         n = len(nc.session_files())
         assert n == 0
@@ -87,3 +89,45 @@ class TestSplit:
         assert x == y
         n = len(nc.session_files())
         assert n == y
+    
+    def test_splitname(self):
+        ff = "data/sst.mon.mean.nc"
+        tracker = nc.open_data(ff, checks = False)
+        tracker.subset(time = 0)
+        tracker.assign(tos = lambda x: x.sst+273.15)
+        tracker.split("name")
+        for ff in tracker:
+            if "tos" in ff:
+                assert "tos" == nc.nc_variables(ff)[0]
+            else:
+                assert "sst" == nc.nc_variables(ff)[0]
+
+
+        ff = "data/sst.mon.mean.nc"
+        tracker = nc.open_data(ff, checks = False)
+        tracker.subset(time = 0)
+        tracker.assign(tos = lambda x: x.sst+273.15)
+        tracker.run()
+        tracker.split("variable")
+        for ff in tracker:
+            if "tos" in ff:
+                assert "tos" == nc.nc_variables(ff)[0]
+            else:
+                assert "sst" == nc.nc_variables(ff)[0]
+
+
+        ff = "data/sst.mon.mean.nc"
+        tracker = nc.open_data(ff, checks = False)
+        tracker.subset(time = [0,1 ])
+        tracker.split("timestep")
+        assert len(tracker) == 2
+        tracker.ensemble_mean()
+        x = tracker.to_dataframe().sst.values[0].astype("float")
+        tracker = nc.open_data(ff, checks = False)
+        tracker.subset(time = [0,1])
+        tracker.tmean()
+        y = tracker.to_dataframe().sst.values[0].astype("float")
+        assert x == y
+
+
+

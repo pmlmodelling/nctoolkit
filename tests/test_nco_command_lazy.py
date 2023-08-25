@@ -1,4 +1,5 @@
 import nctoolkit as nc
+import platform
 
 nc.options(lazy=True)
 import pandas as pd
@@ -46,8 +47,26 @@ class TestNCO:
         tracker = nc.open_data("data/2003.nc", checks=False)
         with pytest.raises(ValueError):
             tracker.nco_command()
+        with pytest.raises(ValueError):
+            tracker.nco_command("ncblah -y mean", ensemble=False)
         with pytest.raises(TypeError):
             tracker.nco_command(1)
+
+        ff = "data/sst.mon.mean.nc"
+
+        # Run this check below on linux
+        if platform.system() == "Linux":
+            nc.options(cores = 2)
+            ds = nc.open_data(ff, checks=False)
+            ds.subset(time = 0)
+            ds.assign(t_k = lambda x: x.sst+273.15)
+            # select t_k using NCO
+            ds.nco_command("ncks -v t_k", ensemble=False)
+            assert ds.variables[0] == "t_k"
+            nc.options(cores = 1)
+
+
+
 
 
 
