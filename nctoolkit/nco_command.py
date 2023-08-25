@@ -61,7 +61,7 @@ def nco_command(self, command=None, ensemble=False):
     new_files = []
     new_commands = []
 
-    if cores >= 1:
+    if cores > 1:
         pool = multiprocessing.Pool(cores)
         target_list = []
         results = dict()
