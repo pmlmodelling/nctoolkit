@@ -59,6 +59,10 @@ def rename(self, newnames=None, **kwargs):
     cdo_rename = ""
 
     for key, value in newnames.items():
+        if not isinstance(key, str):
+            raise TypeError(f"{key} is not a str")
+        if not isinstance(value, str):
+            raise TypeError(f"{value} is not a str")
         if name_check(key) is False:
             raise ValueError(f"{key} is not a valid netCDF variable name")
 
@@ -66,10 +70,6 @@ def rename(self, newnames=None, **kwargs):
             raise ValueError(f"{value} is not a valid netCDF variable name")
 
     for key, value in newnames.items():
-        if not isinstance(key, str):
-            raise TypeError(f"{key} is not a str")
-        if not isinstance(value, str):
-            raise TypeError(f"{value} is not a str")
         cdo_rename += "," + key
         cdo_rename += "," + value
 
