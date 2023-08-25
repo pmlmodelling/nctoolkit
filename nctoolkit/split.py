@@ -114,7 +114,7 @@ def split(self, by=None):
     if by == "year":
         method = "year"
 
-    if by == "timestep":
+    if "time" in by: 
         method = "sel,1"
 
     if by == "month":
