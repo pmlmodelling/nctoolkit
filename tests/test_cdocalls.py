@@ -47,7 +47,7 @@ class TestCalls:
         data = nc.open_data(ff, checks = False)
         data.crop(lon=[0, 90], lat=[0, 90])
 
-        assert data.history[0] == "cdo -L -sellonlatbox,0,90,0,90"
+        assert data.history[0] == "cdo -sellonlatbox,0,90,0,90"
 
     def test_selectvariablescall(self):
         nc.options(lazy=True)

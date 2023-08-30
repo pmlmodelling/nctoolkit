@@ -17,10 +17,10 @@ class TestCrop:
         tracker = nc.open_data(ff, checks = False)
         ds = nc.open_data(ff, checks = False)
         ds.subset(lon = [0, 90])
-        assert ds.history[0] == 'cdo -L -sellonlatbox,0,90,-90,90'
+        assert ds.history[0] == 'cdo -sellonlatbox,0,90,-90,90'
         ds = nc.open_data(ff, checks = False)
         ds.subset(lat = [0, 90])
-        assert ds.history[0] == 'cdo -L -sellonlatbox,-180,180,0,90'
+        assert ds.history[0] == 'cdo -sellonlatbox,-180,180,0,90'
 
         tracker = nc.open_data(ff, checks = False)
         with pytest.raises(ValueError):
