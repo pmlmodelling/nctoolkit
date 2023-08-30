@@ -59,7 +59,7 @@ def rollstat(self, window=None, stat="mean"):
         raise ValueError(f"{window} is not a valid window!")
 
     # create the cdo call and run it
-    cdo_command = f"cdo -run{stat},{str(window)}"
+    cdo_command = f"-run{stat},{str(window)}"
     self.cdo_command(cdo_command, ensemble=False)
 
 

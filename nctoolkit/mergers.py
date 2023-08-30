@@ -108,7 +108,7 @@ def merge(self, join="variables", match=["year", "month", "day"], check=True):
                     "You are trying to merge files with different variables!"
                 )
 
-        cdo_command = "cdo --sortname -mergetime"
+        cdo_command = "--sortname -mergetime"
 
         if len(self) < 400:
             self.cdo_command(cdo_command, ensemble=True)
@@ -227,7 +227,7 @@ def merge(self, join="variables", match=["year", "month", "day"], check=True):
         if all_df[0].equals(all_df[i]) is False:
             raise ValueError("Dates of data sets do not satisfy matching criteria!")
 
-    cdo_command = "cdo -merge"
+    cdo_command = "-merge"
     self.cdo_command(cdo_command, ensemble=False)
 
     if session_info["lazy"]:
@@ -252,7 +252,7 @@ def collect(self):
         warnings.warn(message="There is only file in the dataset. No need to merge!")
         return None
 
-    cdo_command = "cdo -collgrid"
+    cdo_command = "-collgrid"
 
     self.cdo_command(cdo_command, ensemble=True)
 

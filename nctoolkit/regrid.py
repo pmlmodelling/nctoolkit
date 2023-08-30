@@ -100,7 +100,7 @@ def regrid(self, grid=None, method="bil", recycle=False, one_grid=False, **kwarg
         if grid._weights is not None and grid._grid is not None:
             target_grid = grid._grid
             weights_nc = grid._weights
-            cdo_command = f"cdo -remap,{target_grid},{weights_nc}"
+            cdo_command = f"-remap,{target_grid},{weights_nc}"
             self.cdo_command(cdo_command, ensemble=False)
             # run_this(cdo_command, self, output="ensemble")
 

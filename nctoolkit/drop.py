@@ -67,7 +67,7 @@ def drop(self, **kwargs):
         if key_check > 1 or key_check == 0:
             raise ValueError("Drop term is invalid or ambiguous")
 
-    temporal_command = "cdo -delete"
+    temporal_command = "-delete"
 
     for key in kwargs:
         if "time" in key:
@@ -84,7 +84,7 @@ def drop(self, **kwargs):
             vars = str_flatten(vars, ",")
 
             # create the cdo command and run it
-            cdo_command = f"cdo -delete,timestep={vars}"
+            cdo_command = f"-delete,timestep={vars}"
             self.cdo_command(cdo_command, ensemble=False)
 
         if "var" in key:
@@ -100,7 +100,7 @@ def drop(self, **kwargs):
             vars = str_flatten(vars, ",")
 
             # create the cdo command and run it
-            cdo_command = f"cdo -delete,name={vars}"
+            cdo_command = f"-delete,name={vars}"
             self.cdo_command(cdo_command, ensemble=False)
 
         if ("mon" in key) or ("day" in key) or ("year" in key):
@@ -126,5 +126,5 @@ def drop(self, **kwargs):
             if "year" in key:
                 temporal_command = temporal_command + f",year={vars}"
 
-    if len(temporal_command) > len("cdo -delete"):
+    if len(temporal_command) > len("-delete"):
         self.cdo_command(temporal_command, ensemble=False)

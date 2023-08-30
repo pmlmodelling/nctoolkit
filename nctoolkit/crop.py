@@ -85,7 +85,7 @@ def crop(self, lon=[-180, 180], lat=[-90, 90], nco=False, nco_vars=None):
     if nco is False:
         if (lon[0] >= -180) and (lon[1] <= 180) and (lat[0] >= -90) and (lat[1] <= 90):
             lat_box = str_flatten(lon + lat)
-            cdo_command = "cdo -sellonlatbox," + lat_box
+            cdo_command = "-sellonlatbox," + lat_box
             cdo_command = tidy_command(cdo_command)
 
             self.cdo_command(cdo_command, ensemble=False)

@@ -42,7 +42,7 @@ def centre(self, by="latitude", by_area=False):
             ops.append(f"{var}={var}*clon({var})")
 
     ops = ";".join(ops)
-    ops = f"expr,'{ops}'"
+    ops = f"-expr,'{ops}'"
     self.cdo_command(ops)
     ds1.spatial_sum(by_area=by_area)
     self.spatial_sum(by_area=by_area)

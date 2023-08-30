@@ -43,19 +43,19 @@ def sum_all(self, drop=True, new_name=None):
 
     if drop is True:
         if new_name is None:
-            self.cdo_command("expr,total=" + "+".join(self.variables))
+            self.cdo_command("-expr,total=" + "+".join(self.variables))
         else:
-            self.cdo_command("expr," + new_name + "=" + "+".join(self.variables))
+            self.cdo_command("-expr," + new_name + "=" + "+".join(self.variables))
     else:
         if new_name is not None:
-            self.cdo_command("expr," + new_name + "=" + "+".join(self.variables))
+            self.cdo_command("-expr," + new_name + "=" + "+".join(self.variables))
             return None
         if "total" not in self.variables:
-            self.cdo_command("aexpr,total=" + "+".join(self.variables))
+            self.cdo_command("-aexpr,total=" + "+".join(self.variables))
         else:
             i = 0
             while True:
                 if f"total{i}" not in self.variables:
                     break
                 i += 1
-            self.cdo_command("aexpr,total" + str(i) + "=" + "+".join(self.variables))
+            self.cdo_command("-aexpr,total" + str(i) + "=" + "+".join(self.variables))

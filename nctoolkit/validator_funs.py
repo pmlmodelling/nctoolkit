@@ -211,7 +211,7 @@ def matchup(self, levels="top", na_match=False, **kwargs):
         else:
             fixed_value = value.replace("(", "\(")
             fixed_value = fixed_value.replace(")", "\)")
-            self.model.cdo_command(f"aexpr,{key}={fixed_value}")
+            self.model.cdo_command(f"-aexpr,{key}={fixed_value}")
 
     keep_these = []
     for key, value in self.obs_map.items():
@@ -225,7 +225,7 @@ def matchup(self, levels="top", na_match=False, **kwargs):
         else:
             fixed_value = value.replace("(", "\(")
             fixed_value = fixed_value.replace(")", "\)")
-            self.obs.cdo_command(f"aexpr,'{key}={fixed_value}'")
+            self.obs.cdo_command(f"-aexpr,'{key}={fixed_value}'")
 
     self.model.subset(variables=list(self.model_map.keys()))
     self.obs.subset(variables=list(self.obs_map.keys()))

@@ -73,7 +73,7 @@ def top(self):
 
     """
 
-    cdo_command = "cdo -sellevidx,1"
+    cdo_command = "-sellevidx,1"
     self.cdo_command(cdo_command, ensemble=False)
 
 
@@ -176,14 +176,14 @@ def vertical_interp(
             raise TypeError(f"{vv} is not a valid depth")
 
     levels = str_flatten(levels, ",")
-    cdo_command = f"cdo -intlevel,{levels}"
+    cdo_command = f"-intlevel,{levels}"
 
     self.cdo_command(cdo_command, ensemble=False)
 
 
 def vertstat(self, stat="mean"):
     """Method to calculate the vertical mean from a function"""
-    cdo_command = f"cdo -vert{stat}"
+    cdo_command = f"-vert{stat}"
     self.cdo_command(cdo_command, ensemble=False)
 
 
@@ -583,7 +583,7 @@ def bottom_mask(self):
     data.subset(variables=var_use)
     data.subset(timesteps=0)
     data.as_missing([0, 0])
-    data.cdo_command(f"expr,'Wet={var_use}=={var_use}'")
+    data.cdo_command(f"-expr,'Wet={var_use}=={var_use}'")
     data.invert_levels()
     data.run()
     bottom = data.copy()

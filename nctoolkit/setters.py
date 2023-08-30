@@ -16,7 +16,7 @@ def set_year(self, x):
 
     if not isinstance(x, int):
         raise ValueError(f"{x} is not a int")
-    cdo_command = f"cdo -setyear,{x}"
+    cdo_command = f"-setyear,{x}"
     self.cdo_command(cdo_command, ensemble=False)
 
 
@@ -37,7 +37,7 @@ def set_day(self, x):
 
     if not isinstance(x, int):
         raise ValueError(f"{x} is not a int")
-    cdo_command = f"cdo -setday,{x}"
+    cdo_command = f"-setday,{x}"
     self.cdo_command(cdo_command, ensemble=False)
 
 
@@ -124,7 +124,7 @@ def set_date(self, year=None, month=None, day=None, base_year=1900):
         raise TypeError("day supplied is not an int")
 
     cdo_command = (
-        f"cdo -setreftime,{str(base_year)}-01-01 "
+        f"-setreftime,{str(base_year)}-01-01 "
         f"-setdate,{str(year)}-{str(month)}-{str(day)}"
     )
 
@@ -153,7 +153,7 @@ def missing_as(self, value=None):
     except:
         raise TypeError("value must be coercible to float")
 
-    cdo_command = f"cdo -setmisstoc,{value}"
+    cdo_command = f"-setmisstoc,{value}"
 
     self.cdo_command(cdo_command, ensemble=False)
 
@@ -181,7 +181,7 @@ def set_fill(self, value=None):
     except:
         raise TypeError("value cannot evaluate to a float")
 
-    cdo_command = f"cdo -setmissval,{value} -setmissval,nan"
+    cdo_command = f"-setmissval,{value} -setmissval,nan"
 
     self.cdo_command(cdo_command, ensemble=False)
 
@@ -222,7 +222,7 @@ def as_missing(self, value=None):
             raise TypeError(f"{vv} is not an int or float")
 
     if isinstance(value, list):
-        cdo_command = f"cdo -setrtomiss,{str(value[0])},{str(value[1])}"
+        cdo_command = f"-setrtomiss,{str(value[0])},{str(value[1])}"
 
     self.cdo_command(cdo_command, ensemble=False)
 
@@ -283,7 +283,7 @@ def set_units(self, unit_dict=None, **kwargs):
         if not isinstance(unit_dict[i], str):
             raise TypeError("key,values in unit_dict are not strings")
 
-        cdo_command = f'cdo -setattribute,{i}@units="{unit_dict[i]}"'
+        cdo_command = f'-setattribute,{i}@units="{unit_dict[i]}"'
         self.cdo_command(cdo_command, ensemble=False)
 
 

@@ -20,7 +20,7 @@ def invert_levels(self):
         "invert_levels is deprecated and will be removed in a future version. Please use invert instead",
         DeprecationWarning,
     )
-    cdo_command = "cdo -invertlev"
+    cdo_command = "-invertlev"
 
     self.cdo_command(cdo_command, ensemble=False)
 

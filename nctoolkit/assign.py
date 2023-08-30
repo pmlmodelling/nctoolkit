@@ -758,8 +758,8 @@ def assign(self, drop=False, **kwargs):
 
     # create the cdo call and run it
     if drop is False:
-        cdo_command = f"cdo -aexpr,'{command}'"
+        cdo_command = f"-aexpr,'{command}'"
     else:
-        cdo_command = f"cdo -expr,'{command}'"
+        cdo_command = f"-expr,'{command}'"
 
     self.cdo_command(cdo_command, ensemble=False)

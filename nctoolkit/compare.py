@@ -183,7 +183,7 @@ def compare(self, expression=None):
         raise TypeError("Expression supplied is not str")
 
     expression = fix_expr(expression)
-    cdo_command = f"cdo -{expression}"
+    cdo_command = f"-{expression}"
     self.cdo_command(cdo_command, ensemble=False)
 
 

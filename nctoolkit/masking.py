@@ -50,7 +50,7 @@ def mask_box(self, lon=[-180, 180], lat=[-90, 90]):
 
     if (lon[0] >= -180) and (lon[1] <= 180) and (lat[0] >= -90) and (lat[1] <= 90):
         lat_box = str_flatten(lon + lat)
-        cdo_command = f"cdo -masklonlatbox,{lat_box}"
+        cdo_command = f"-masklonlatbox,{lat_box}"
         self.cdo_command(cdo_command, ensemble=False)
     else:
         raise ValueError("The lonlat box supplied is not valid!")

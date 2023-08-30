@@ -94,7 +94,7 @@ def to_zlevels(self, levels=None, thickness=None, depths=None, surface=None):
         thick_var = ds_depths.variables[0]
 
         ds_depths.rename({thick_var: "thickness"})
-        ds_depths.cdo_command("setmisstoc,1.0")
+        ds_depths.cdo_command("-setmisstoc,1.0")
         ds_depths.run()
         ds_thick = ds_depths.copy()
         if surface == "bottom":
@@ -106,7 +106,7 @@ def to_zlevels(self, levels=None, thickness=None, depths=None, surface=None):
         ds_depths.subtract(ds_thick)
         ds_depths.assign( depth=lambda x: x.depth * (vertical_min(x.depth) < x.depth) * (isnan(x.depth) == False), drop=True,)
         ds_depths.subset(times=0)
-        ds_depths.cdo_command("setmisstoc,-9999999")
+        ds_depths.cdo_command("-setmisstoc,-9999999")
 
         if surface == "bottom":
             ds_depths.invert("levels")
@@ -159,7 +159,7 @@ def to_zlevels(self, levels=None, thickness=None, depths=None, surface=None):
     run_cdo(command, target=out, precision=self._precision)
 
     test = open_data(out)
-    test.cdo_command(f"setzaxis,{zaxis}")
+    test.cdo_command(f"-setzaxis,{zaxis}")
     test.subset(variables=vars)
     test.run()
     self.current = test.current

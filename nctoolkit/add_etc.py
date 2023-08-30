@@ -38,7 +38,7 @@ def day_stat(self, operation=None, x=None):
             x = x[0]
 
     # create the system command and run it
-    cdo_command = f"cdo yday{stat} {self[0]} {x}"
+    cdo_command = f"cdo -yday{stat} {self[0]} {x}"
     target = temp_file(".nc")
 
     the_command = cdo_command + " " + target
@@ -66,7 +66,7 @@ def arithall(self, stat="divc", x=None):
         raise ValueError("This does not work on empty datasets!")
 
     # create the system command and run it
-    cdo_command = f"cdo {stat},{x}"
+    cdo_command = f"-{stat},{x}"
 
     self.cdo_command(cdo_command)
 
@@ -683,7 +683,7 @@ def abs(self):
     >>> ds.abs()
 
     """
-    cdo_command = "cdo -abs"
+    cdo_command = "-abs"
 
     self.cdo_command(cdo_command, ensemble=False)
 
@@ -709,7 +709,7 @@ def power(self, x=None):
     if not isinstance(x, (int, float)):
         raise TypeError("x is not a float or int")
 
-    cdo_command = f"cdo -pow,{x}"
+    cdo_command = f"-pow,{x}"
 
     self.cdo_command(cdo_command)
 
@@ -729,7 +729,7 @@ def exp(self):
     >>> ds.exp(0.5)
 
     """
-    cdo_command = "cdo -exp"
+    cdo_command = "-exp"
 
     self.cdo_command(cdo_command)
 
@@ -746,7 +746,7 @@ def log(self):
     >>> ds.log()
 
     """
-    cdo_command = "cdo -ln"
+    cdo_command = "-ln"
 
     self.cdo_command(cdo_command)
 
@@ -763,7 +763,7 @@ def log10(self):
     >>> ds.log10()
 
     """
-    cdo_command = "cdo -log10"
+    cdo_command = "-log10"
 
     self.cdo_command(cdo_command)
 
@@ -780,7 +780,7 @@ def square(self):
     >>> ds.square()
 
     """
-    cdo_command = "cdo -sqr"
+    cdo_command = "-sqr"
 
     self.cdo_command(cdo_command)
 
@@ -797,6 +797,6 @@ def sqrt(self):
     >>> ds.sqrt()
 
     """
-    cdo_command = "cdo -sqrt"
+    cdo_command = "-sqrt"
 
     self.cdo_command(cdo_command)

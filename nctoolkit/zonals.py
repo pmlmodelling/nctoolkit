@@ -9,7 +9,7 @@ def zonstat(self, stat="mean"):
         if is_curvilinear(ff):
             raise TypeError(f"zonal_{stat} cannot be calculated for curvilinear grids.")
 
-    cdo_command = f"cdo -zon{stat}"
+    cdo_command = f"-zon{stat}"
 
     self.cdo_command(cdo_command, ensemble=False)
 

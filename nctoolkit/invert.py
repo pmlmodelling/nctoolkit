@@ -19,10 +19,10 @@ def invert(self, x=None):
 
     # create the cdo call and run it
     if "lev" in x.lower():
-        cdo_command = "cdo invertlev"
+        cdo_command = "-invertlev"
 
     elif "lat" in x.lower():
-        cdo_command = "cdo invertlat"
+        cdo_command = "-invertlat"
 
     else:
         raise ValueError("x must be either levels or latitudes")

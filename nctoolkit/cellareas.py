@@ -73,7 +73,7 @@ def cell_area(self, join=True):
         cleanup()
 
     else:
-        cdo_command = "cdo -gridarea"
+        cdo_command = "-gridarea"
         self.cdo_command(cdo_command, ensemble=False)
 
     # add units

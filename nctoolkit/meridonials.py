@@ -8,7 +8,7 @@ def zonstat(self, stat="mean"):
             raise TypeError(
                 f"meridonal_{stat} cannot be calculated for curvilinear grids."
             )
-    cdo_command = f"cdo -mer{stat}"
+    cdo_command = f"-mer{stat}"
 
     self.cdo_command(cdo_command, ensemble=False)
 

@@ -74,5 +74,5 @@ def rename(self, newnames=None, **kwargs):
         cdo_rename += "," + value
 
     # create the cdo call and run it
-    cdo_command = "cdo -chname" + cdo_rename
+    cdo_command = "-chname" + cdo_rename
     self.cdo_command(cdo_command, ensemble=False)

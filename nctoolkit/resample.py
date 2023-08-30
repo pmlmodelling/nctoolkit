@@ -23,5 +23,5 @@ def resample_grid(self, factor=None):
     if factor < 1:
         raise ValueError(f"{factor} is not a postive integer greater than 1")
 
-    cdo_command = f"cdo -samplegrid,{factor}"
+    cdo_command = f"-samplegrid,{factor}"
     self.cdo_command(cdo_command, ensemble=False)

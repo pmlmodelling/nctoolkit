@@ -19,6 +19,6 @@ def fill_na(self, n=1):
 
     """
 
-    cdo_command = f"cdo -setmisstodis,{n}"
+    cdo_command = f"-setmisstodis,{n}"
 
     self.cdo_command(command=cdo_command, ensemble=False)

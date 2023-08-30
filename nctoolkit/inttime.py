@@ -53,10 +53,10 @@ def time_interp(self, start=None, end=None, resolution="monthly"):
     cdo_command = f"-inttime,{start},12:00:00,{resolution}"
 
     if end is None:
-        cdo_command = f"cdo {cdo_command}"
+        cdo_command = f"{cdo_command}"
     else:
         end = end.replace("/", "-")
-        cdo_command = f"cdo -seldate,{start},{end} {cdo_command}"
+        cdo_command = f"-seldate,{start},{end} {cdo_command}"
 
     self.cdo_command(cdo_command, ensemble=False)
 
@@ -86,6 +86,6 @@ def timestep_interp(self, steps=None):
     if steps < 2:
         raise ValueError(f"{steps} is not greater than 1")
 
-    cdo_command = f"cdo -intntime,{steps}"
+    cdo_command = f"-intntime,{steps}"
 
     self.cdo_command(cdo_command, ensemble=False)

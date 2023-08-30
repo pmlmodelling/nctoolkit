@@ -17,7 +17,7 @@ def shift_hours(self, shift=None):
     if not isinstance(shift, int):
         raise TypeError("Please supply an int for shift")
 
-    cdo_command = f"cdo -shifttime,{shift}hour"
+    cdo_command = f"-shifttime,{shift}hour"
 
     self.cdo_command(cdo_command, ensemble=False)
 
@@ -41,7 +41,7 @@ def shift_days(self, shift=None):
     if not isinstance(shift, int):
         raise TypeError("Please supply an int for shift")
 
-    cdo_command = f"cdo -shifttime,{shift}days"
+    cdo_command = f"-shifttime,{shift}days"
 
     self.cdo_command(cdo_command, ensemble=False)
 
@@ -65,7 +65,7 @@ def shift_months(self, shift=None):
     if not isinstance(shift, int):
         raise TypeError("Please supply an int for shift")
 
-    cdo_command = f"cdo -shifttime,{shift}months"
+    cdo_command = f"-shifttime,{shift}months"
 
     self.cdo_command(cdo_command, ensemble=False)
 
@@ -89,7 +89,7 @@ def shift_years(self, shift=None):
     if not isinstance(shift, int):
         raise TypeError("Please supply an int for shift")
 
-    cdo_command = f"cdo -shifttime,{shift}years"
+    cdo_command = f"-shifttime,{shift}years"
 
     self.cdo_command(cdo_command, ensemble=False)
 

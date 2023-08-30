@@ -18,8 +18,8 @@ def reduce_dims(self):
     """
 
     if len(self.history) == len(self._hold_history):
-        cdo_command = "cdo --reduce_dim copy"
+        cdo_command = "--reduce_dim copy"
     else:
-        cdo_command = "cdo --reduce_dim"
+        cdo_command = "--reduce_dim"
 
     self.cdo_command(cdo_command, ensemble=False)

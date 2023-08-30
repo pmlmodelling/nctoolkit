@@ -107,7 +107,7 @@ def matchup(self, tmean=False, regrid="bil", max_extrap=5):
     ds.subset(variables=ds.variables[0])
     ds.subset(time=0)
     ds.top()
-    ds.cdo_command("setmisstoc,1")
+    ds.cdo_command("-setmisstoc,1")
     df = points.loc[:, ["lon", "lat"]].drop_duplicates()
     ds.regrid(df, method=regrid)
     grid = (

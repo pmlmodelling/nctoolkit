@@ -62,7 +62,7 @@ def select_levels(self, levels=None):
             raise ValueError("levels have the wrong order")
         levels = f"{levels[0]}/{levels[1]}"
 
-    cdo_command = f"cdo -sellevel,{levels}"
+    cdo_command = f"-sellevel,{levels}"
 
     self.cdo_command(cdo_command, ensemble=False)
 
@@ -99,7 +99,7 @@ def select_period(self, period=None):
     start = str(period[0]).split(" ")[0]
     end = period[1] - timedelta(days=1)
     end = str(end).split(" ")[0]
-    cdo_command = f"cdo -seldate,{start},{end}"
+    cdo_command = f"-seldate,{start},{end}"
 
     self.cdo_command(cdo_command, ensemble=False)
 
@@ -123,7 +123,7 @@ def select_seasons(self, season=None):
     if season not in ["DJF", "MAM", "JJA", "SON"]:
         raise ValueError("Invalid season supplied")
 
-    cdo_command = f"cdo -select,season={season}"
+    cdo_command = f"-select,season={season}"
     self.cdo_command(cdo_command, ensemble=False)
 
 
@@ -162,7 +162,7 @@ def select_hours(self, hours=None):
 
     hours = str_flatten(hours, ",")
 
-    cdo_command = f"cdo -selhour,{hours}"
+    cdo_command = f"-selhour,{hours}"
     self.cdo_command(cdo_command, ensemble=False)
 
 
@@ -201,7 +201,7 @@ def select_days(self, days=None):
 
     days = str_flatten(days, ",")
 
-    cdo_command = f"cdo -selday,{days}"
+    cdo_command = f"-selday,{days}"
     self.cdo_command(cdo_command, ensemble=False)
 
 
@@ -240,7 +240,7 @@ def select_months(self, months=None):
 
     months = str_flatten(months, ",")
 
-    cdo_command = f"cdo -selmonth,{months}"
+    cdo_command = f"-selmonth,{months}"
     self.cdo_command(cdo_command, ensemble=False)
 
 
@@ -341,13 +341,13 @@ def select_years(self, years=None):
         if missing_files > 0:
             years = str_flatten(years, ",")
 
-            cdo_command = f"cdo -selyear,{years}"
+            cdo_command = f"-selyear,{years}"
 
             self.cdo_command(cdo_command, ensemble=False)
     else:
         years = str_flatten(years, ",")
 
-        cdo_command = f"cdo -selyear,{years}"
+        cdo_command = f"-selyear,{years}"
 
         self.cdo_command(cdo_command, ensemble=True)
 
@@ -383,7 +383,7 @@ def select_variables(self, vars=None):
 
     vars_list = str_flatten(vars_list, ",")
 
-    cdo_command = f"cdo -selname,{vars_list}"
+    cdo_command = f"-selname,{vars_list}"
 
     self.cdo_command(cdo_command, ensemble=False)
 
@@ -419,7 +419,7 @@ def select_timesteps(self, times=None):
     times = [str(x) for x in times]
     times = str_flatten(times)
 
-    cdo_command = f"cdo -seltimestep,{times}"
+    cdo_command = f"-seltimestep,{times}"
 
     self.cdo_command(cdo_command, ensemble=False)
 

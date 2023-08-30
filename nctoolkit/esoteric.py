@@ -74,7 +74,7 @@ def fix_amm7_grid(self):
         file.write(f"xinc= {xinc}\n")
         file.write(f"yfirst= {yfirst}\n")
         file.write(f"yinc= {yinc}\n")
-    self.cdo_command(f"setgrid,{grid_file}")
+    self.cdo_command(f"-setgrid,{grid_file}")
     self.run()
 
 
@@ -142,7 +142,7 @@ def fix_nemo_ersem_grid(self):
         file.write(f"xinc= {xinc}\n")
         file.write(f"yfirst= {yfirst}\n")
         file.write(f"yinc= {yinc}\n")
-    self.cdo_command(f"setgrid,{grid_file}")
+    self.cdo_command(f"-setgrid,{grid_file}")
     self.run()
 
 
@@ -158,7 +158,7 @@ def no_leaps(self):
 
     """
 
-    cdo_command = f"cdo -del29feb"
+    cdo_command = f"-del29feb"
 
     self.cdo_command(cdo_command, ensemble=False)
 
@@ -187,7 +187,7 @@ def set_gridtype(self, grid):
     ]:
         raise ValueError("Grid type supplies is not supported")
 
-    cdo_command = f"cdo -setgridtype,{grid}"
+    cdo_command = f"-setgridtype,{grid}"
 
     self.cdo_command(cdo_command, ensemble=False)
 

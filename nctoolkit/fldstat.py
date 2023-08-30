@@ -22,7 +22,7 @@ def boxstat(self, stat="mean", x=1, y=1):
     if len(self) == 0:
         raise ValueError("Failure due to empty dataset!")
 
-    cdo_command = f"cdo -gridbox{stat},{x},{y}"
+    cdo_command = f"-gridbox{stat},{x},{y}"
 
     self.cdo_command(cdo_command, ensemble=False)
 
@@ -156,7 +156,7 @@ def fldstat(self, stat="mean"):
     if len(self) == 0:
         raise ValueError("Failure due to empty dataset!")
 
-    cdo_command = f"cdo -fld{stat}"
+    cdo_command = f"-fld{stat}"
 
     self.cdo_command(cdo_command, ensemble=False)
 
@@ -304,9 +304,9 @@ def spatial_sum(self, by_area=False):
         if by_area:
             self.run()
 
-            cdo_command = f"cdo -fldsum -mul {self.current[0]} -gridarea "
+            cdo_command = f"-fldsum -mul {self.current[0]} -gridarea "
         else:
-            cdo_command = "cdo -fldsum"
+            cdo_command = "-fldsum"
 
         self.cdo_command(cdo_command, ensemble=False)
 
@@ -366,6 +366,6 @@ def spatial_percentile(self, p=None):
     if (p < 0) or (p > 100):
         raise ValueError(f"p: {str(p)} is not between 0 and 100!")
 
-    cdo_command = f"cdo -fldpctl,{str(p)}"
+    cdo_command = f"-fldpctl,{str(p)}"
 
     self.cdo_command(cdo_command, ensemble=False)

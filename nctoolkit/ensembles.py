@@ -50,7 +50,7 @@ def ensemble_percentile(self, p=None):
         warnings.warn(message="There is only one file in the dataset")
 
     # create the cdo command and run it
-    cdo_command = f"cdo --sortname -enspctl,{p}"
+    cdo_command = f"--sortname -enspctl,{p}"
     self.cdo_command(cdo_command, ensemble=True)
 
     # set the _merged attribute to True
@@ -118,7 +118,7 @@ def ensemble_stdev(self):
     if len(self) == 1:
         warnings.warn(message="There is only one file in the dataset")
 
-    cdo_command = "cdo --sortname -ensstd"
+    cdo_command = "--sortname -ensstd"
 
     self.cdo_command(cdo_command, ensemble=True)
 
@@ -144,7 +144,7 @@ def ensemble_var(self):
     if len(self) == 1:
         warnings.warn(message="There is only one file in the dataset")
 
-    cdo_command = "cdo --sortname -ensvar"
+    cdo_command = "--sortname -ensvar"
 
     self.cdo_command(cdo_command, ensemble=True)
 
@@ -181,9 +181,9 @@ def ensemble_max(self, nco=False, ignore_time=False):
             warnings.warn(message="There is only one file in the dataset")
 
         if ignore_time is False:
-            cdo_command = "cdo --sortname -ensmax"
+            cdo_command = "--sortname -ensmax"
         else:
-            cdo_command = "cdo -timmax --sortname -ensmax"
+            cdo_command = "-timmax --sortname -ensmax"
 
         self.cdo_command(cdo_command, ensemble=True)
 
@@ -227,9 +227,9 @@ def ensemble_min(self, nco=False, ignore_time=False):
         self.run()
 
         if ignore_time is False:
-            cdo_command = "cdo --sortname -ensmin"
+            cdo_command = "--sortname -ensmin"
         else:
-            cdo_command = "cdo -timmin --sortname -ensmin"
+            cdo_command = "-timmin --sortname -ensmin"
 
         self.cdo_command(cdo_command, ensemble=True)
 
@@ -273,9 +273,9 @@ def ensemble_mean(self, nco=False, ignore_time=False):
             warnings.warn(message="There is only one file in the dataset")
 
         if ignore_time is False:
-            cdo_command = "cdo --sortname -ensmean"
+            cdo_command = "--sortname -ensmean"
         else:
-            cdo_command = "cdo -timmean --sortname -ensmean"
+            cdo_command = "-timmean --sortname -ensmean"
 
         self.cdo_command(cdo_command, ensemble=True)
 
@@ -304,7 +304,7 @@ def ensemble_range(self):
     if len(self) == 1:
         warnings.warn(message="There is only one file in the dataset")
 
-    cdo_command = "cdo --sortname -ensrange"
+    cdo_command = "--sortname -ensrange"
 
     self.cdo_command(cdo_command, ensemble=True)
 
@@ -330,6 +330,6 @@ def ensemble_sum(self):
     if len(self) == 1:
         warnings.warn(message="There is only one file in the dataset")
 
-    cdo_command = "cdo --sortname -enssum"
+    cdo_command = "--sortname -enssum"
 
     self.cdo_command(cdo_command, ensemble=True)

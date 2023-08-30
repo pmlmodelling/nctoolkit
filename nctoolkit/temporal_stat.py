@@ -15,7 +15,7 @@ def time_stat(self, stat="mean", over="time"):
         raise ValueError("Failure due to empty dataset!")
 
     if over == "time":
-        cdo_command = f"cdo -tim{stat}"
+        cdo_command = f"-tim{stat}"
         self.cdo_command(cdo_command, ensemble=False)
         return None
 
