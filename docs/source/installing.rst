@@ -41,6 +41,19 @@ To install the development version from GitHub::
 
    $ pip install git+https://github.com/r4ecology/nctoolkit.git
 
+Known issues
+---------------------
+
+Recent updates to dependencies may cause issues with certain versions of nctoolkit. Please ensure you are using up to date versions of geoviews if you want to use coastlines in plots, and jupyter_bokeh if you want to use plots in jupyter notebooks.
+
+To do this, run the following commands::
+
+   $ conda install -c conda-forge geoviews=1.10.1
+
+   $ conda install -c conda-forge jupyter_bokeh=3.0.7
+
+This issue should not impact fresh installs of nctoolkit, which will have dependency pinning.
+
 
 How to get better looking plots
 ---------------------
