@@ -283,6 +283,7 @@ def update_options(kwargs):
                 if len(nc_safe) > 0:
                     for ff in nc_safe:
                         nc_safe_par.append(ff)
+                        nc_safe.remove(ff)
 
                 if len(nc_protected) > 0:
                     for ff in nc_protected:
