@@ -1,11 +1,75 @@
 import copy
+import platform
+import os
 
 from nctoolkit.api import open_data
 from nctoolkit.cleanup import cleanup
 from nctoolkit.runthis import run_cdo, tidy_command
 from nctoolkit.show import nc_years
 from nctoolkit.temp_file import temp_file
-from nctoolkit.session import remove_safe, session_info
+from nctoolkit.session import remove_safe, session_info, nc_safe_par, nc_safe
+from nctoolkit.api import update_options
+
+if platform.system() == "Linux":
+    import multiprocessing as mp
+    from multiprocessing import Manager
+
+    manager = Manager()
+else:
+    import multiprocess as mp
+    from multiprocess import Manager
+
+    manager = Manager()
+
+
+def ann_anomaly(
+    ff, baseline, metric, window, align, precision, new_files, new_commands, nc_safe
+):
+    """
+    Function to calculate the anomaly for a single file
+    """
+
+    # throw error if baseline is not valid
+    orig_safe = copy.deepcopy(nc_safe)
+    target = temp_file("nc")
+    nc_safe.append(target)
+    try:
+        if len([yy for yy in baseline if yy not in nc_years(ff)]) > 0:
+            raise ValueError("Check that the years in baseline are in the dataset!")
+
+        # create the target file
+        # generate the cdo command
+        if metric == "absolute":
+            cdo_command = (
+                f"cdo -sub -runmean,{window} -yearmean {ff} -timmean "
+                f"-selyear,{baseline[0]}/{baseline[1]} {ff} {target}"
+            )
+        else:
+            cdo_command = (
+                f"cdo -div -runmean,{window} -yearmean {ff} -timmean "
+                f"-selyear,{baseline[0]}/{baseline[1]} {ff} {target}"
+            )
+
+        # run the command and save the temp file
+
+        cdo_command = tidy_command(cdo_command)
+        cdo_command = cdo_command.replace(
+            "cdo ", f"cdo --timestat_date {align} "
+        ).replace("  ", " ")
+
+        target = run_cdo(cdo_command, target, precision=precision)
+        if target not in nc_safe:
+            nc_safe.append(target)
+
+        # update the new files and commands
+        new_files.append(target)
+        new_commands.append(cdo_command)
+    except BaseException as e:
+        try:
+            nc_safe.remove(target)
+        except:
+            pass
+        return e
 
 
 def annual_anomaly(self, baseline=None, metric="absolute", window=1, align="right"):
@@ -88,7 +152,7 @@ def annual_anomaly(self, baseline=None, metric="absolute", window=1, align="righ
     if not isinstance(baseline[0], int):
         raise TypeError("Provide a valid baseline")
     if not isinstance(baseline[1], int):
-        raise TypeError("Provide a vaid baseline")
+        raise TypeError("Provide a valid baseline")
     if baseline[1] < baseline[0]:
         raise ValueError("Second baseline year is before the first!")
 
@@ -103,54 +167,103 @@ def annual_anomaly(self, baseline=None, metric="absolute", window=1, align="righ
     # calculate the anomalies for each file
     # this is not parallelized yet
     # list of new files created
-    new_files = []
+    new_files = manager.list()
     # list of new commands
-    new_commands = []
+    new_commands = manager.list()
 
-    for ff in self:
-        # create the target file
-        target = temp_file("nc")
+    # keep track of whether we started parallel, so it can be reset
+    start_parallel = session_info["parallel"]
 
-        # throw error if baseline is not valid
-        if len([yy for yy in baseline if yy not in nc_years(ff)]) > 0:
-            raise ValueError("Check that the years in baseline are in the dataset!")
-        # generate the cdo command
-        if metric == "absolute":
-            cdo_command = (
-                f"cdo -sub -runmean,{window} -yearmean {ff} -timmean "
-                f"-selyear,{baseline[0]}/{baseline[1]} {ff} {target}"
+    if start_parallel is False:
+        update_options({"parallel": True})
+
+    nc_safe_par_start = copy.deepcopy(nc_safe_par)
+    try:
+        # loop over the files and calculate the anomaly in parallel
+        cores = session_info["cores"]
+
+        target_list = []
+        results = dict()
+
+        pool = mp.pool.Pool(cores)
+        precision = copy.deepcopy(self._precision)
+        for ff in self:
+            results[ff] = pool.apply_async(
+                ann_anomaly,
+                [
+                    ff,
+                    baseline,
+                    metric,
+                    window,
+                    align,
+                    precision,
+                    new_files,
+                    new_commands,
+                    nc_safe_par,
+                ],
             )
+        for k, v in results.items():
+            out = v.get()
+            if "Check that the years in baseline are in the dataset!" in str(out):
+                raise ValueError("Check that the years in baseline are in the dataset!")
+
+        pool.close()
+        pool.join()
+
+        self.history += list(new_commands)
+        self._hold_history = copy.deepcopy(self.history)
+
+        if start_parallel is False:
+            update_options({"parallel": False})
+            while True:
+                for ff in nc_safe_par:
+                    if ff not in nc_safe:
+                        nc_safe.append(ff)
+                    nc_safe_par.remove(ff)
+                if len(nc_safe_par) == 0:
+                    break
+
+        self.current = list(new_files)
+
+        for ff in new_files:
+            remove_safe(ff)
+
+        if start_parallel is False:
+            for ff in list(set(new_files)):
+                while True:
+                    if ff in nc_safe:
+                        nc_safe.remove(ff)
+                    else:
+                        break
+                nc_safe.append(ff)
+
+        if start_parallel:
+            for ff in list(set(new_files)):
+                while True:
+                    if ff in nc_safe_par:
+                        nc_safe_par.remove(ff)
+                    else:
+                        break
+                nc_safe_par.append(ff)
+
+        cleanup()
+
+        self.disk_clean()
+    except BaseException as e:
+        if start_parallel is False:
+            update_options({"parallel": False})
+        if start_parallel:
+            for ff in nc_safe_par:
+                if ff not in nc_safe_par_start:
+                    nc_safe_par.remove(ff)
         else:
-            cdo_command = (
-                f"cdo -div -runmean,{window} -yearmean {ff} -timmean "
-                f"-selyear,{baseline[0]}/{baseline[1]} {ff} {target}"
-            )
+            for ff in nc_safe:
+                if ff not in nc_safe_par_start:
+                    nc_safe.remove(ff)
+            for ff in nc_safe_par:
+                nc_safe_par.remove(ff)
 
-        # run the command and save the temp file
-
-        cdo_command = tidy_command(cdo_command)
-        cdo_command = cdo_command.replace(
-            "cdo ", f"cdo --timestat_date {align} "
-        ).replace("  ", " ")
-
-        target = run_cdo(cdo_command, target, precision=self._precision)
-
-        # updae the new files and commands
-        new_files.append(target)
-        new_commands.append(cdo_command)
-
-    # update the history
-    self.history += new_commands
-    self._hold_history = copy.deepcopy(self.history)
-
-    self.current = new_files
-
-    for ff in new_files:
-        remove_safe(ff)
-
-    cleanup()
-
-    self.disk_clean()
+        raise e
 
 
 def monthly_anomaly(self, baseline=None):

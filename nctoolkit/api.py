@@ -1877,6 +1877,7 @@ class DataSet(object):
 
     from nctoolkit.ensembles import ensemble_mean
     from nctoolkit.ensembles import ensemble_max
+    from nctoolkit.ensembles import ensemble_median
     from nctoolkit.ensembles import ensemble_min
     from nctoolkit.ensembles import ensemble_range
     from nctoolkit.ensembles import ensemble_stdev

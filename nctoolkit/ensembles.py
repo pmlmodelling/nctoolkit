@@ -148,6 +148,31 @@ def ensemble_var(self):
 
     self.cdo_command(cdo_command, ensemble=True)
 
+def ensemble_median(self):
+    """
+    ensemble_median: Calculate an ensemble median
+
+    The ensemble median is calculated for each time steps; for example, if the ensemble is made up of
+    monthly files the median for each month will be calculated.
+    This operates on a grid cell by grid cell basis.
+
+    Examples
+    -------------
+    If you had an ensemble of climate models with data covering the same time steps, you would calculate the ensemble median as follows:
+
+    >>> ds.ensemble_median()
+
+    """
+
+    self.run()
+
+    if len(self) == 1:
+        warnings.warn(message="There is only one file in the dataset")
+
+    cdo_command = "--sortname -enspctl,50"
+
+    self.cdo_command(cdo_command, ensemble=True)
+
 
 def ensemble_max(self, nco=False, ignore_time=False):
     """

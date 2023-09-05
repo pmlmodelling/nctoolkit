@@ -182,6 +182,30 @@ class TestEnsemble:
         n = len(nc.session_files())
         assert n == 1
 
+        # test ensemble_median
+
+        data = nc.open_data(nc.create_ensemble("data/ensemble"), checks=   False)
+        data.ensemble_median()
+        data.spatial_mean()
+        x = data.to_dataframe().sst.values[0].astype("float")
+
+        data = nc.open_data(nc.create_ensemble("data/ensemble"), checks=   False)
+        data.ensemble_percentile(50)
+        data.spatial_mean()
+        y = data.to_dataframe().sst.values[0].astype("float")
+
+        assert x == y
+
+
+
+
+
+
+        n = len(nc.session_files())
+        assert n == 1
+
+
+
     def test_ens_percent_error(self):
         data = nc.open_data(nc.create_ensemble("data/ensemble"), checks=   False)
         with pytest.raises(TypeError):
