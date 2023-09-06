@@ -24,7 +24,7 @@ jobs:
         env:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: true
         with:
-          micromamba-version: '1.4.5'
+          micromamba-version: '1.4.5-0'
           environment-name: foo
           create-args: cdo nco cartopy
           init-shell: >-
