@@ -521,7 +521,13 @@ def subset(self, **kwargs):
         if "lat" in key.lower():
             lat = kwargs[key]
     if lon is not None or lat is not None:
-        self.crop(lon=lon, lat=lat)
+        if "nco" in kwargs:
+            if kwargs["nco"] is True:
+                self.crop(lon=lon, lat=lat, nco = True)
+            else:
+                self.crop(lon=lon, lat=lat)
+        else:
+            self.crop(lon=lon, lat=lat)
         non_selected = False
 
     for key in kwargs:

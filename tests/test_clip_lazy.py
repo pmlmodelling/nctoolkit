@@ -87,7 +87,7 @@ class TestCrop:
 
 
         tracker = nc.open_data(ff, checks = False)
-        tracker.crop(lat=[0, 90], nco=True)
+        tracker.subset(lat=[0, 90], nco=True)
         tracker.subset(timesteps=0)
         tracker.spatial_mean()
         x = tracker.to_dataframe().sst.values[0].astype("float")
