@@ -4,6 +4,11 @@ import numpy as np
 from nctoolkit.api import open_data, open_thredds
 from tqdm import tqdm
 
+def tqdm_2(x, quiet = False):
+    if quiet is False:
+        return tqdm(x)
+    else:
+        return x
 
 from scipy.interpolate import interp1d
 
@@ -46,7 +51,7 @@ def interp(x, y, levels, max_extrap=5):
         return new
 
 
-def matchup(self, tmean=False, regrid="bil", max_extrap=5):
+def matchup(self, tmean=False, regrid="bil", max_extrap=5, quiet = False):
     """
     matchup: Matchup gridded model and point observational data
 
@@ -61,6 +66,8 @@ def matchup(self, tmean=False, regrid="bil", max_extrap=5):
         "nn" for nearest neighbour.
     max_extrap: float
         Maximum distance for vertical extrapolation of values
+    quiet: bool
+        Set to True to suppress progress bars and any messages
 
     """
 
@@ -71,7 +78,8 @@ def matchup(self, tmean=False, regrid="bil", max_extrap=5):
 
     if self.depths is not None:
         if "depth" not in self.points.columns:
-            print("Depths were supplied, but are not in df")
+            if quiet is False:
+                print("Depths were supplied, but are not in df")
             self.depths = None
 
     on = None
@@ -127,9 +135,10 @@ def matchup(self, tmean=False, regrid="bil", max_extrap=5):
 
     if len(points) < n_start:
         n_remove = n_start - len(points)
-        print(
-            f"{n_remove} points are outside the dataset grid, and were therefore removed."
-        )
+        if quiet is False:
+            print(
+                f"{n_remove} points are outside the dataset grid, and were therefore removed."
+            )
 
     n_levels = len(self.data.levels)
 
@@ -137,7 +146,8 @@ def matchup(self, tmean=False, regrid="bil", max_extrap=5):
         if self.temporal:
             if on is None:
                 on = ["all"]
-                print("Points will be matched for all time steps")
+                if quiet is False:
+                    print("Points will be matched for all time steps")
 
     if on is None:
         if self.temporal is True:
@@ -232,8 +242,9 @@ def matchup(self, tmean=False, regrid="bil", max_extrap=5):
     if points_merged is False:
         df_times = df_times.sample(frac=1)
 
-        print("Looping through times in ds and df to matchup")
-        for i in tqdm(range(0, len(df_times))):
+        if quiet is False:
+            print("Looping through times in ds and df to matchup")
+        for i in tqdm_2(range(0, len(df_times)), quiet):
             if self.temporal:
                 i_df = df_times.iloc[i : (i + 1) :,]
                 i_df = i_df.reset_index(drop=True)

@@ -14,6 +14,7 @@ def match_points(
     tmean=False,
     regrid="bil",
     max_extrap=5,
+    quiet=False,
     **kwargs,
 ):
     """
@@ -66,7 +67,7 @@ def match_points(
     return mp.values
 
 
-def add_data(self, x=None, variables=None, depths=None, nan=None, top=False, **kwargs):
+def add_data(self, x=None, variables=None, depths=None, nan=None, top=False, quiet = False, **kwargs):
     """
     Add dataset for matching
 
@@ -86,6 +87,8 @@ def add_data(self, x=None, variables=None, depths=None, nan=None, top=False, **k
         Only required if values in dataset need changed to missing
     top: bool
         Set to True if you want only the top/surface level of the dataset to be selected for matching.
+    quiet: bool
+        Set to True to suppress output
 
     """
     thredds = False
@@ -119,11 +122,13 @@ def add_data(self, x=None, variables=None, depths=None, nan=None, top=False, **k
                 ds_depths.subtract(ds1)
                 self.depths = ds_depths.copy()
                 self.depths.rename({"e3t": "depth"})
-                print("Depths were derived from e3t variable.")
+                if quiet is False:
+                    print("Depths were derived from e3t variable.")
             else:
                 try:
                     self.depths = ds.levels
-                    print(f"Depths assumed to be {self.depths}")
+                    if quiet is False:
+                        print(f"Depths assumed to be {self.depths}")
                 except:
                     raise ValueError(
                         "Unable to derive depths from the dataset! Please provide them."
@@ -153,10 +158,12 @@ def add_data(self, x=None, variables=None, depths=None, nan=None, top=False, **k
         # ds_vars = open_data(self.data[0], checks = False)
 
     if variables is None:
-        print("All variables will be used")
+        if quiet is False:
+            print("All variables will be used")
 
     if len(self.data) > 12:
-        print("Checking file times. This could take a minute")
+        if quiet is False:
+            print("Checking file times. This could take a minute")
 
     self.data_nan = nan
 
@@ -206,7 +213,8 @@ def add_data(self, x=None, variables=None, depths=None, nan=None, top=False, **k
         x = list(set(df_times.path))
 
     if len(self.data) > 12:
-        print("Finished checking file times.")
+        if quiet is False:
+            print("Finished checking file times.")
 
     if thredds:
         self.data = open_thredds(x, checks=False)
@@ -265,7 +273,7 @@ def add_depths(self, x=None):
         self.depths.run()
 
 
-def add_points(self, df=None):
+def add_points(self, df=None, quiet=False):
     """
     Add point data
 
@@ -275,6 +283,8 @@ def add_points(self, df=None):
         The column names must be made up of a subset of "lon", "lat", "year", "month", "day" and "depth"
         Pressure, named "pressure" can also be used instead of "depth", which will require the optional
         dependency seawater to be installed.
+    quiet: bool
+        Set to True to suppress output
 
     """
 
@@ -308,7 +318,8 @@ def add_points(self, df=None):
             import seawater as sw
         except:
             raise ImportError("Please install seawater")
-        print("Converting pressure to depth")
+        if quiet is False:
+            print("Converting pressure to depth")
         self.points["depth"] = sw.dpth(self.points.pressure, self.points.lat)
 
     if self.depths is None and self.data is not None:

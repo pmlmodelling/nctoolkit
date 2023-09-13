@@ -11,6 +11,7 @@ def match_points(
     nan=None,
     regrid="bil",
     max_extrap=5,
+    quiet = False,
     **kwargs,
 ):
     """
@@ -45,8 +46,11 @@ def match_points(
         "nn" for nearest neighbour.
     max_extrap: float
         Maximum distance for extrapolation. Defaults to 5.
+    quiet: bool
+        Set to True to suppress output
     kwargs: kwargs
         Additional arguments to send to assign
+
 
     Returns
     ---------------
@@ -83,7 +87,7 @@ def match_points(
         if x in df.columns:
             self.points_temporal = True
 
-    mp.add_data(x=ds, depths=depths, variables=variables, top=top, nan=nan, **kwargs)
-    mp.add_points(df)
-    mp.matchup(tmean=tmean, regrid=regrid, max_extrap=max_extrap)
+    mp.add_data(x=ds, depths=depths, variables=variables, top=top, nan=nan, quiet = quiet, **kwargs)
+    mp.add_points(df, quiet = quiet)
+    mp.matchup(tmean=tmean, regrid=regrid, max_extrap=max_extrap, quiet = quiet)
     return mp.values
