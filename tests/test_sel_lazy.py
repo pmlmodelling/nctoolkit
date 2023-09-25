@@ -410,4 +410,16 @@ class TestSelect:
         with pytest.warns(UserWarning):
             tracker.subset(years = range(1900, 2000))
 
+    def test_files_missingmonths(self):
+        ds1 = nc.open_data("data/2003.nc")
+        ds1.subset(month = 1)
+        ds2 = nc.open_data("data/2003.nc")
+        ds2.subset(month = 2)
+        ds1.append(ds2)
+        ds1.subset(month = 1)
+        ds1.run()
+        assert len(ds1) == 1
+        ds1.subset(month = 2)
+        ds1.run()
+        assert len(ds1) == 0
 
