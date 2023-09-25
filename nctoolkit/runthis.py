@@ -393,9 +393,10 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
         errors = text.findall(error)
         if len(errors) > 0:
             error = errors[0]
-            raise ValueError(
-                f"None of the months supplied are in the dataset. Please check months supplied to nctoolkit methods!"
+            warnings.warn(
+                f"None of the months supplied are in one of the dataset files. Please check months supplied to nctoolkit methods, if necessary!"
             )
+            return None
 
         text = re.compile(r"month [0-9]* not found")
         errors = text.findall(error)
@@ -1070,6 +1071,7 @@ def run_this(os_command, self, output="one", out_file=None, suppress=False):
 
                 self.history = copy.deepcopy(new_history)
                 self.current = copy.deepcopy(target_list)
+                self.current = [x for x in self.current if x is not None]
 
                 if cores == 1 or session_info["parallel"]:
                     for ff in target_list:
