@@ -1,2 +1,3 @@
 nctoolkit
+numpydoc
 
