@@ -145,6 +145,12 @@ def pub_plot(
     -------------
     """
 
+    relief = False
+    # check if relief is in kwargs
+    if "relief" in kwargs.keys():
+        relief = kwargs["relief"]
+        kwargs.pop("relief")
+
     if projection is False:
         projection = None
 
@@ -641,6 +647,8 @@ def pub_plot(
             cb.set_ticklabels(breaks)
 
         cbax = cb.ax
+        if relief:
+            ax.stock_img()
     if land is not None:
         # ax.add_feature(cfeature.LAND, facecolor = land, zorder=10)
         if scale == "low":
@@ -652,6 +660,8 @@ def pub_plot(
         if scale == "high":
             l_scale = "10m"
 
+        if relief:
+            ax.stock_img()
         ax.add_feature(
             cfeature.NaturalEarthFeature(
                 category="physical", scale=l_scale, name="land", facecolor=land
