@@ -2,5 +2,6 @@ nctoolkit
 numpydoc
 nbsphinx>=0.8.6
 sphinx-book-theme
+sphinx_rtd_theme
 
 
