@@ -131,7 +131,8 @@ def matchup(self, tmean=False, regrid="bil", max_extrap=5, quiet = False):
     points = points.merge(grid)
 
     if len(points) == 0:
-        raise ValueError("None of the points are contained within the dataset grid")
+        warnings.warn("None of the points are contained within the dataset grid")
+        return None
 
     if len(points) < n_start:
         n_remove = n_start - len(points)
