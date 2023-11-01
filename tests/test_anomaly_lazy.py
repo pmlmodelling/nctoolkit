@@ -22,6 +22,8 @@ class TestAnomaly:
         assert n == 1
 
     def test_error1(self):
+        n = len(nc.session_files())
+        assert n == 0
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff, checks = False)
         with pytest.raises(TypeError):
