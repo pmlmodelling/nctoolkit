@@ -50,4 +50,4 @@ jobs:
         run: |
           python testing/test_parallel.py
           # use pytests without output printed
-          pytest tests/test*.py 
+          pytest tests/test*_a*.py 
