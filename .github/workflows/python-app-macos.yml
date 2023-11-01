@@ -38,6 +38,7 @@ jobs:
           pip install numpy 
           pip install dask
           python -m pip install .
+          pip install xarray==2023.9.0
           # pip install .
           pip install pandas
           pip install rioxarray
