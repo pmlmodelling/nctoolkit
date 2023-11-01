@@ -26,7 +26,7 @@ jobs:
         with:
           micromamba-version: '1.4.5-0'
           environment-name: foo
-          create-args: cdo nco cartopy
+          create-args: cdo=2.2.2 nco cartopy
           init-shell: >-
             bash
             powershell
