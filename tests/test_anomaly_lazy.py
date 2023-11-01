@@ -21,6 +21,7 @@ class TestAnomaly:
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         assert x == 1.0
         n = len(nc.session_files())
+        del tracker
         assert n == 1
 
     def test_error1(self):
