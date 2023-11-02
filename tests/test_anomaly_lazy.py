@@ -25,8 +25,13 @@ class TestAnomaly:
         del tracker
         assert n == 1
         assert nc.session.session_info["parallel"] == False
+        print(nc.session_files())
+        n = len(nc.session_files())
+        assert n == 0
 
     def test_error1(self):
+        #print session files
+        print(nc.session_files())
         assert nc.session.session_info["parallel"] == False
         n = len(nc.session_files())
         assert n == 0
