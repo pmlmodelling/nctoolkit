@@ -38,7 +38,7 @@ jobs:
           pip install numpy 
           pip install dask
           python -m pip install .
-          pip install xarray==2023.9.0
+          pip install xarray
           # pip install .
           pip install pandas
           pip install rioxarray
@@ -51,4 +51,4 @@ jobs:
         run: |
           python testing/test_parallel.py
           # use pytests without output printed
-          pytest tests/test*_a*.py 
+          pytest tests/test*.py 
