@@ -57,7 +57,7 @@ class TestAnomaly:
             tracker.monthly_anomaly(baseline="x")
         n = len(nc.session_files())
         assert n == 0
-        assert = nc.session.session_info["parallel"] == False
+        assert nc.session.session_info["parallel"] == False
 
     def test_error3(self):
         ff = "data/sst.mon.mean.nc"
