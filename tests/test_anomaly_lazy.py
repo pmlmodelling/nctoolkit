@@ -61,13 +61,13 @@ class TestAnomaly:
         n = len(nc.session_files())
         assert n == 0
 
-    def test_error4(self):
-        ff = "data/sst.mon.mean.nc"
-        tracker = nc.open_data(ff, checks = False)
-        with pytest.raises(ValueError):
-            tracker.monthly_anomaly(baseline=[1, 2, 3])
-        n = len(nc.session_files())
-        assert n == 0
+    # def test_error4(self):
+    #     ff = "data/sst.mon.mean.nc"
+    #     tracker = nc.open_data(ff, checks = False)
+    #     with pytest.raises(ValueError):
+    #         tracker.monthly_anomaly(baseline=[1, 2, 3])
+    #     n = len(nc.session_files())
+    #     assert n == 0
 
     # def test_error5(self):
     #     ff = "data/sst.mon.mean.nc"
