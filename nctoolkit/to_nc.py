@@ -69,7 +69,7 @@ def to_nc(self, out, zip=True, overwrite=False, **kwargs):
         write = True
 
     if write is False:
-        raise ValueError("You cannot save multiple files!")
+        raise ValueError("You cannot save multiple files! Please use a method such as merge to create one file.")
 
     if (os.path.exists(out)) and (overwrite is True):
         if len(self) > 1:
