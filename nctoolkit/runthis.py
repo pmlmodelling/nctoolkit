@@ -495,110 +495,6 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
                         .replace("\\n", "")
                         .replace("'", "")
                     )
-            session_info["temp_dir"] = "/var/tmp/"
-
-            # loop through the warnings
-
-            messages = str(result1).split("\\n")
-
-            missing_years = []
-            missing_months = []
-            for x in messages:
-                if "Warning:" in x:
-                    print_result1 = True
-                    if ("merge" in x) and ("Duplicate entry of parameter" in str(x)):
-                        print_result1 = False
-
-                    # deal with warning messages for selecting months
-                    pattern = re.compile(r"Year \d{4} not found")
-                    if pattern.search(x):
-                        print_result1 = False
-                        d = re.findall("\d{4}", x)
-                        missing_years.append(d[0])
-
-                    pattern = re.compile(r"Month ([1-9][0-9]?|100) not found")
-                    if pattern.search(x):
-                        print_result1 = False
-                        d = re.findall("([1-9][0-9]?|100)", x)
-                        missing_months.append(d[0])
-                    if print_result1:
-                        warnings.warn(
-                            message="CDO warning:"
-                            + x.replace("b'Warning:", "").replace("Warning:", "")
-                        )
-                        warned = True
-
-            if len(missing_years) > 0:
-                warnings.warn(
-                    message=f'CDO warning: Years {str_flatten(missing_years, ",")} '
-                    "are missing",
-                    stacklevel=2,
-                )
-                warned = True
-
-            if len(missing_months) > 0:
-                warnings.warn(
-                    message=f'CDO warning: Months {str_flatten(missing_months, ",")} '
-                    "are missing",
-                    stacklevel=2,
-                )
-                warned = True
-
-            if len(missing_months) > 0:
-                warnings.warn(
-                    message=f'CDO warning: Month {str_flatten(missing_months, ",")} '
-                    "not found",
-                    stacklevel=2,
-                )
-                warned = True
-
-    else:
-        messages = str(result).split("\\n")
-
-        missing_years = []
-        missing_months = []
-        for x in messages:
-            if "Warning:" in x:
-                print_result = True
-                if ("merge" in x) and ("Duplicate entry of parameter" in str(x)):
-                    print_result = False
-
-                # deal with warning messages for selecting months
-                pattern = re.compile(r"Year \d{4} not found")
-
-                if pattern.search(x):
-                    d = re.findall("\d{4}", x)
-                    missing_years.append(d[0])
-                    print_result = False
-
-                pattern = re.compile(r"Month ([1-9][0-9]?|100) not found")
-
-                if pattern.search(x):
-                    d = re.findall("([1-9][0-9]?|100)", x)
-                    missing_months.append(d[0])
-                    print_result = False
-
-                if print_result:
-                    warnings.warn(
-                        message="CDO warning:"
-                        + x.replace("b'Warning:", "").replace("Warning:", "")
-                    )
-                    warned = True
-
-        if len(missing_years) > 0:
-            warnings.warn(
-                message=f'CDO warning: Years {str_flatten(missing_years, ",")} '
-                "are missing!",
-                category=Warning,
-            )
-            warned = True
-        if len(missing_months) > 0:
-            warnings.warn(
-                message=f'CDO warning: Months {str_flatten(missing_months, ",")} '
-                "are missing",
-                category=Warning,
-            )
-            warned = True
 
     if os.path.exists(target) is False:
         remove_safe(target)
@@ -627,8 +523,6 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
             for y in errors:
                 for z in re.findall(r"\d+", y):
                     drop_warnings.append(z)
-                    # message= f"Warning: Unable to find month {z}"
-                    # warnings.warn(message)
                     ignore = True
 
         if "selyear" in x:
