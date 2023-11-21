@@ -167,7 +167,8 @@ def ensemble_median(self):
     self.run()
 
     if len(self) == 1:
-        warnings.warn(message="There is only one file in the dataset")
+        warnings.warn(message="There is only one file in the dataset, so ensemble median cannot be calculated.")
+        return None
 
     cdo_command = "--sortname -enspctl,50"
 
