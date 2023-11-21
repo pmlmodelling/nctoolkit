@@ -105,14 +105,21 @@ class TestAnomaly:
             tracker.annual_anomaly(baseline=[1990, 1980])
         n = len(nc.session_files())
         assert n == 0
+        del tracker
+        assert len(nc.session.get_safe()) == 0
 
     def test_error8(self):
+        assert len(nc.session.get_safe()) == 0
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff, checks = False)
         with pytest.raises(ValueError):
             tracker.annual_anomaly(baseline=[1000, 1990])
+            # tracker.annual_anomaly(baseline=[1990, 1980])
         n = len(nc.session_files())
         n == 0
+        assert len(nc.session.get_safe()) == 1
+        del tracker
+        assert len(nc.session.get_safe()) == 0
 
     def test_error9(self):
         ff = "data/sst.mon.mean.nc"

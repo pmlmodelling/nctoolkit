@@ -21,6 +21,111 @@ ensemble = nc.create_ensemble("data/ensemble")
 
 
 class TestCalls:
+
+    def test_cdowarnings(self):
+        # tests to see if warnings are raised
+        with pytest.warns(UserWarning):
+            ds = nc.open_data(ff)
+            ds.subset(year = 1990)
+            ds.subset(month = [1,2])
+            ds.subset(month = [1,2,3])
+            ds.run()
+
+        with pytest.warns(UserWarning):
+            ds = nc.open_data(ff)
+            ds.subset(year = 1991)
+            ds.no_leaps()
+            ds.run()
+
+
+        with pytest.warns(UserWarning):
+            ds = nc.open_data(ff)
+            ds.subset(time = 0)
+            ds.subset(variables = ["sst", "foobar"])
+            ds.run()
+
+        with pytest.warns(UserWarning):
+            ff1 = "data/hourly/01/swr_1997_01_01.nc"
+            ds = nc.open_data(ff1)
+            ds.subset(hour = 1)
+            ds.subset(hour = [1,2])
+            ds.run()
+
+        with pytest.warns(UserWarning):
+            ff1 = "data/woa18_decav_t02_01.nc"
+            ds = nc.open_data(ff1)
+            ds.subset(levels = [ds.levels[0], 1000])
+            ds.run()
+
+        with pytest.warns(UserWarning):
+            ff1 = "data/hourly/01/swr_1997_01_01.nc"
+            ds = nc.open_data(ff1)
+            ds.subset(day = [1,2])
+            ds.run()
+
+        with pytest.warns(UserWarning):
+            ds = nc.open_data(ff)
+            ds.subset(year = 1990)
+            ds.subset(month = [1,2])
+            ds.subset(month = [1,2,3])
+            ds.run()
+
+        with pytest.warns(UserWarning):
+            ds = nc.open_data(ff)
+            ds.subset(year = 1990)
+            ds.subset(month = [1,2])
+            ds.subset(month = [1,2,3])
+            ds.run()
+
+        with pytest.warns(UserWarning):
+            ds = nc.open_data(ff)
+            ds.subset(year = 1990)
+            ds.subset(month = [1,2])
+            ds.subset(month = [1,2,3, 4])
+            ds.subset(year = [1990, 1991])
+            ds.run()
+
+        with pytest.warns(UserWarning):
+            ds = nc.open_data(ff)
+            ds.subset(year = 1990)
+            ds.subset(year = [1990, 1991])
+            ds.run()
+
+    def test_runcdo(self):
+        # type error
+        with pytest.raises(TypeError):
+            nc.runthis.run_cdo(command = "cdo blah blah", precision = 1, target = "foobar.nc")
+
+        with pytest.raises(ValueError):
+            nc.runthis.run_cdo(command = "cdo blah blah", precision = "F35", target = "foobar.nc")
+
+        with pytest.raises(ValueError):
+            nc.runthis.run_cdo(command = "cdo blah blah", precision = "F32", out_file = "data/sst.mon.mean.nc", target = "foobar.nc")
+
+        with pytest.raises(ValueError):
+            nc.runthis.run_cdo(command = "cdo blah blah data/sst.mon.mean.nc", precision = "F32", target = "foobar.nc")
+
+        with pytest.raises(TypeError):
+            nc.runthis.run_cdo(command = "cdo blah blah data/sst.mon.mean.nc", precision = "F32")
+
+        with pytest.raises(ValueError):
+            nc.runthis.run_cdo(command = "blah blah data/blah_blah.nc", precision = "F32", target = "foobar.nc")
+
+
+
+    def test_threadsafe(self):
+        nc.options(thread_safe = True)
+        data = nc.open_data(ff, checks = False)
+        data.cell_area(join=False)
+
+        assert data.history[0] == 'cdo -setattribute,cell_area@units="m^2" -gridarea'
+
+        data = nc.open_data(ff, checks = False)
+        data.cell_area(join=True)
+
+        assert "cdo -merge data/sst.mon.mean.nc" in data.history[0].replace("  ", " ")
+        nc.options(thread_safe = False)
+
     def test_cellcall(self):
         data = nc.open_data(ff, checks = False)
         data.cell_area(join=False)

@@ -67,6 +67,17 @@ class TestFldsta:
             data.box_mean(2,2)
 
         with pytest.raises(ValueError):
+            data.box_mean(-1,2)
+
+        with pytest.raises(ValueError):
+            data.box_mean(1,-1)
+
+        with pytest.raises(ValueError):
+            data.box_mean(1,"a")
+        with pytest.raises(ValueError):
+            data.box_mean("a",1)
+
+        with pytest.raises(ValueError):
             data.spatial_mean()
 
         with pytest.raises(ValueError):
@@ -84,6 +95,9 @@ class TestFldsta:
         assert x ==  46.30331802368164 
 
 
+        data = nc.open_data()
+        with pytest.raises(ValueError):
+            data.box_mean(2,2)
 
         data = nc.open_data(ff, checks = False)
         data.subset(time = 0)

@@ -196,13 +196,18 @@ class TestEnsemble:
 
         assert x == y
 
+        data = nc.open_data("data/sst.mon.mean.nc")
+        data.ensemble_median()
+        data.run()
+        assert len(data.history) == 0
+
 
 
 
 
 
         n = len(nc.session_files())
-        assert n == 1
+        assert n == 0
 
 
 

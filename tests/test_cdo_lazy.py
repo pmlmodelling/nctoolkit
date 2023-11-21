@@ -30,6 +30,18 @@ class TestCdo:
             tracker.cdo_command("DJF", check = True)
         n = len(nc.session_files())
         assert n == 0
+    def test_cdo_command_tidy(self):
+        ds = nc.open_data("data/sst.mon.mean.nc")
+        ds.subset(time = 0)
+        ds.assign(sst_k = lambda x: x.sst - 273.15)
+        ds.cdo_command("cdo selname,'sst'", check = True)
+        assert ds.variables == ["sst"]
+
+        ds = nc.open_data("data/sst.mon.mean.nc")
+        ds.subset(time = 0)
+        ds.assign(sst_k = lambda x: x.sst - 273.15)
+        ds.cdo_command('cdo selname,"sst"', check = True)
+        assert ds.variables == ["sst"]
 
     def test_cdo_nocommand(self):
         tracker = nc.open_data(ff, checks = False)

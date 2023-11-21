@@ -13,6 +13,16 @@ class TestMerge:
         n = len(nc.session_files())
         assert n == 0
 
+    def test_merge_inconsistent_names(self):
+        ds1 = nc.open_data(ff)
+        ds1.subset(year = 1990)
+        ds2 = nc.open_data(ff)
+        ds2.assign(sst_k = lambda x: x.sst + 273.15)
+        ds2.subset(year = 1991)
+        ds = nc.open_data([ds1.current[0], ds2.current[0]])
+        ds.merge("time")
+        ds.years == [1990, 1992]
+
     def test_warning(self):
         tracker = nc.open_data(ff, checks = False)
 

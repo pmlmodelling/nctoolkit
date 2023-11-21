@@ -129,5 +129,18 @@ class TestClip:
         ds.zonal_sum(by_area = True)
         assert ( data.to_dataframe().sst[0].astype("float") == 8.78212833404541)
 
+        ds = nc.open_data(ff, checks = False)
+        ds.subset(time = [0,1])
+        ds.split("time")
+        ds.zonal_sum(by_area = True)
+        ds.merge("time")
 
+        ds1 = nc.open_data(ff, checks = False)
+        ds1.subset(time = [0,1])
+        ds1.zonal_sum(by_area = True)
+        ds1 - ds
+        # check this is zero
+        ds.tmean()
+        ds.spatial_mean()
 
+        assert ( ds1.to_dataframe().sst[0].astype("float") == 0.0)
