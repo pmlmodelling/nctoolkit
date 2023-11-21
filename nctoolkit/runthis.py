@@ -63,16 +63,6 @@ def tidy_command(command):
 def run_nco(command, target, out_file=None, overwrite=False):
     command = command.strip()
     append_safe(target)
-    if (
-        command.startswith("ncea ")
-        or command.startswith("ncra ")
-        or command.startswith("ncap ")
-        or command.startswith("ncap2 ")
-        or command.startswith("ncks ")
-        or command.startswith("ncrename ")
-        or command.startswith("ncatted")
-    ) is False:
-        raise ValueError("This is not a valid NCO command")
 
     # Make sure it is not attempting to overwrite a protected file
     if out_file is None:
@@ -156,7 +146,7 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
     warned = False
 
     if not isinstance(precision, str):
-        raise ValueError("Precision must be str")
+        raise TypeError("Precision must be str")
 
     if precision not in ["I8", "I16", "I32", "F32", "F64", "default"]:
         raise ValueError(f"Precision - {precision} - is not valid")
@@ -168,6 +158,10 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
     # make sure the output file does not exist
 
     command = tidy_command(command)
+
+    if target is None:
+        raise TypeError("Target must be specified")
+
     start_target = target
 
     if out_file is None:
@@ -186,10 +180,11 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
                     new_target = target.replace("/tmp/", "/var/tmp/")
                     command = command.replace(target, new_target)
                     target = target.replace("/tmp/", "/var/tmp/")
-    append_safe(target)
 
     if command.startswith("cdo ") is False:
         raise ValueError("The command does not start with cdo!")
+
+    append_safe(target)
 
     out = subprocess.Popen(
         command,
@@ -545,6 +540,14 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
                 warnings.warn(
                     message=f'CDO warning: Months {str_flatten(missing_months, ",")} '
                     "are missing",
+                    stacklevel=2,
+                )
+                warned = True
+
+            if len(missing_months) > 0:
+                warnings.warn(
+                    message=f'CDO warning: Month {str_flatten(missing_months, ",")} '
+                    "not found",
                     stacklevel=2,
                 )
                 warned = True
