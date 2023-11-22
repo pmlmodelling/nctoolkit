@@ -14,11 +14,18 @@ def time_stat(self, stat="mean", over="time", window = None):
     # check if window is an int
     if window is not None:
         if isinstance(window, int):
+
+            ## check if over is time 
+            if over != "time":
+                raise ValueError("You cannot supply a window if you are not grouping over all time periods")
+
             cdo_command = f"-timsel{stat},{window}"
             self.cdo_command(cdo_command, ensemble=False)
             return None
         else:
             raise ValueError("Window must be an integer")
+    
+
 
 
     if len(self) == 0:
