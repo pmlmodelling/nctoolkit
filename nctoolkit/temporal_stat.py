@@ -7,9 +7,19 @@ from nctoolkit.temp_file import temp_file
 from nctoolkit.session import remove_safe
 
 
-def time_stat(self, stat="mean", over="time"):
+def time_stat(self, stat="mean", over="time", window = None):
     """Method to calculate a stat over all time steps"""
     # create cdo command and run it
+
+    # check if window is an int
+    if window is not None:
+        if isinstance(window, int):
+            cdo_command = f"-timsel{stat},{window}"
+            self.cdo_command(cdo_command, ensemble=False)
+            return None
+        else:
+            raise ValueError("Window must be an integer")
+
 
     if len(self) == 0:
         raise ValueError("Failure due to empty dataset!")
@@ -117,7 +127,7 @@ def time_stat(self, stat="mean", over="time"):
         raise ValueError(f"Grouping {over} is currently not supported!")
 
 
-def tsum(self, over="time", align="right"):
+def tsum(self, over="time", align="right", window = None):
     """
     tsum: Calculate the temporal sum of all variables.
 
@@ -130,6 +140,9 @@ def tsum(self, over="time", align="right"):
         Time periods to count the sum over. Options are 'year', 'month', 'day'.
         This operates in a similar way to the groupby method in pandas or the tidyverse in R,
         so you can supply combinations of these to get the sum over each year, month or day.
+    window : int
+        This determines the number of time steps to sum over, on a non-rolling basis. 
+        This is useful if you need to calculate the sum every 5 days, for example.
 
     Examples
     ------------
@@ -144,10 +157,10 @@ def tsum(self, over="time", align="right"):
 
     """
     self.align(align)
-    time_stat(self, stat="sum", over=over)
+    time_stat(self, stat="sum", over=over, window = window)
 
 
-def na_count(self, over="time", align="right"):
+def na_count(self, over="time", align="right", window = None):
     """
     na_count: Calculate the number of missing values.
 
@@ -159,6 +172,9 @@ def na_count(self, over="time", align="right"):
     align: str
         This determines whether the output time is at the left, centre or right hand side of the time window.
         Options are "left", "centre" and "right"
+    window : int
+        This determines the number of time steps to calculate, on a non-rolling basis. 
+        This is useful if you need to calculate the sum every 5 days, for example.
 
     Examples
     ------------
@@ -174,10 +190,10 @@ def na_count(self, over="time", align="right"):
     for vv in self.variables:
         self.cdo_command(f"-aexpr,'{vv}=isMissval({vv})'")
 
-    self.tsum(over=over)
+    self.tsum(over=over, window = window)
 
 
-def na_frac(self, over="time", align="right"):
+def na_frac(self, over="time", align="right", window = None):
     """
     na_frac: Calculate the fraction of missing values in each grid cell across all time steps.
 
@@ -189,6 +205,9 @@ def na_frac(self, over="time", align="right"):
     align: str
         This determines whether the output time is at the left, centre or right hand side of the time window.
         Options are "left", "centre" and "right"
+    window: int
+        This determines the number of time steps to calculate over, on a non-rolling basis. 
+        This is useful if you need to calculate the fraction for every non-overlapping 5 day periods, for example.
 
     Examples
     ------------
@@ -205,10 +224,10 @@ def na_frac(self, over="time", align="right"):
     for vv in self.variables:
         self.cdo_command(f"-aexpr,'{vv}=isMissval({vv})'")
 
-    self.tmean(over=over)
+    self.tmean(over=over, window = window)
 
 
-def tmean(self, over="time", align="right"):
+def tmean(self, over="time", align="right", window = None):
     """
     tmean: Calculate the temporal mean of all variables.
 
@@ -223,6 +242,9 @@ def tmean(self, over="time", align="right"):
     align: str
         This determines whether the output time is at the left, centre or right hand side of the time window.
         Options are "left", "centre" and "right"
+    window: int
+        This determines the number of time steps to calculate the mean over to calculate over, on a non-rolling basis. 
+        This is useful if you need to calculate the mean every 5 days, for example.
 
     Examples
     ------------
@@ -250,10 +272,10 @@ def tmean(self, over="time", align="right"):
 
     """
     self.align(align=align)
-    time_stat(self, stat="mean", over=over)
+    time_stat(self, stat="mean", over=over, window = window)
 
 
-def tmin(self, over="time", align="right"):
+def tmin(self, over="time", align="right", window = None):
     """
     tmin: Calculate the temporal minimum of all variables.
 
@@ -268,6 +290,9 @@ def tmin(self, over="time", align="right"):
     align: str
         This determines whether the output time is at the left, centre or right hand side of the time window.
         Options are "left", "centre" and "right"
+    window: int
+        This determines the number of time steps to calculate the minimum over to calculate over, on a non-rolling basis. 
+        This is useful if you need to calculate the minimum every 5 days, for example.
 
     Examples
     ------------
@@ -298,10 +323,10 @@ def tmin(self, over="time", align="right"):
 
     """
     self.align(align=align)
-    time_stat(self, stat="min", over=over)
+    time_stat(self, stat="min", over=over, window = window)
 
 
-def tmax(self, over="time", align="right"):
+def tmax(self, over="time", align="right", window = None):
     """
     tmax: Calculate the temporal maximum of all variables.
 
@@ -312,9 +337,12 @@ def tmax(self, over="time", align="right"):
     over: str or list
         Time periods to average over. Options are 'year', 'month', 'day'.
         This operates in a similar way to the groupby method in pandas or the tidyverse in R, with over acting as the grouping.
-    align = str
+    align: str
         This determines whether the output time is at the left, centre or right hand side of the time window.
         Options are "left", "centre" and "right"
+    window: int
+        This determines the number of time steps to calculate the maximum over to calculate over, on a non-rolling basis. 
+        This is useful if you need to calculate the maximum every 5 days, for example.
 
     Examples
     ------------
@@ -344,7 +372,7 @@ def tmax(self, over="time", align="right"):
         >>> ds.tmax( "day")
     """
     self.align(align=align)
-    time_stat(self, stat="max", over=over)
+    time_stat(self, stat="max", over=over, window = window)
 
 
 def tmedian(self, over="time", align="right"):
@@ -393,7 +421,7 @@ def tmedian(self, over="time", align="right"):
     self.tpercentile(p=50, over=over)
 
 
-def trange(self, over="time", align="right"):
+def trange(self, over="time", align="right", window = None):
     """
     trange: Calculate the temporal range of all variables
     Useful for: monthly range, annual/yearly range, seasonal range, daily range, daily climatology, monthly climatology, seasonal climatology
@@ -406,6 +434,9 @@ def trange(self, over="time", align="right"):
     align: str
         This determines whether the output time is at the left, centre or right hand side of the time window.
         Options are "left", "centre" and "right"
+    window: int
+        This determines the number of time steps to calculate the range over to calculate over, on a non-rolling basis. 
+        This is useful if you need to calculate the range every 5 days, for example.
 
     Examples
     ------------
@@ -436,10 +467,10 @@ def trange(self, over="time", align="right"):
 
     """
     self.align(align=align)
-    time_stat(self, stat="range", over=over)
+    time_stat(self, stat="range", over=over, window = window)
 
 
-def tvar(self, over="time", align="right"):
+def tvar(self, over="time", align="right", window = None):
     """
     tvar: Calculate the temporal variance of all variables
     Useful for: monthly variance, annual/yearly variance, seasonal variance, daily variance, daily climatology, monthly climatology, seasonal climatology
@@ -452,7 +483,9 @@ def tvar(self, over="time", align="right"):
     align: str
         This determines whether the output time is at the left, centre or right hand side of the time window.
         Options are "left", "centre" and "right"
-
+    window: int
+        This determines the number of time steps to calculate the variance over to calculate over, on a non-rolling basis. 
+        This is useful if you need to calculate the variance every 5 days, for example.
 
     Examples
     ------------
@@ -482,10 +515,10 @@ def tvar(self, over="time", align="right"):
         >>> ds.tvar( "day")
     """
     self.align(align=align)
-    time_stat(self, stat="var", over=over)
+    time_stat(self, stat="var", over=over, window = window)
 
 
-def tstdev(self, over="time", align="right"):
+def tstdev(self, over="time", align="right", window = None):
     """
     tstdev: Calculate the temporal standard deviation of all variables
     Useful for: monthly standard deviation, annual/yearly standard deviation, seasonal standard deviation, daily standard deviation, daily climatology, monthly climatology, seasonal climatology
@@ -498,6 +531,9 @@ def tstdev(self, over="time", align="right"):
     align: str
         This determines whether the output time is at the left, centre or right hand side of the time window.
         Options are "left", "centre" and "right"
+    window: int
+        This determines the number of time steps to calculate the standard deviation over to calculate over, on a non-rolling basis. 
+        This is useful if you need to calculate the standard deviation every 5 days, for example.
 
 
     Examples
@@ -528,7 +564,7 @@ def tstdev(self, over="time", align="right"):
         >>> ds.tstdev("day")
     """
     self.align(align=align)
-    time_stat(self, stat="std", over=over)
+    time_stat(self, stat="std", over=over, window = window)
 
 
 def tcumsum(self, align="right"):

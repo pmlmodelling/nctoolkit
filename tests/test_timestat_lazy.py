@@ -104,3 +104,109 @@ class TestTimestat:
         x = tracker.to_dataframe().sst.values[0].astype("float")
 
         assert x == 9.221193313598633 
+    
+    def test_tstatwindow(self):
+        ds1 = nc.open_data("data/2003.nc")
+        ds1.subset(time = range(0, 5))
+        ds1.tmean()
+        ds1.run()
+        ds2 = nc.open_data("data/2003.nc")
+        ds2.subset(time = range(0, 5))
+
+        ds2.tmean(window = 5)
+        ds2.run()
+        ds1 - ds2
+        ds1.spatial_mean()
+        assert ds1.to_dataframe().analysed_sst.mean() == 0.0
+
+        # max
+        ds1 = nc.open_data("data/2003.nc")
+        ds1.subset(time = range(0, 5))
+        ds1.tmax()
+        ds1.run()
+        ds2 = nc.open_data("data/2003.nc")
+        ds2.subset(time = range(0, 5))
+
+        ds2.tmax(window = 5)
+        ds2.run()
+        ds1 - ds2
+        ds1.spatial_mean()
+        assert ds1.to_dataframe().analysed_sst.mean() == 0.0
+
+        # min
+        ds1 = nc.open_data("data/2003.nc")
+        ds1.subset(time = range(0, 5))
+        ds1.tmin()
+        ds1.run()
+        ds2 = nc.open_data("data/2003.nc")
+        ds2.subset(time = range(0, 5))
+
+        ds2.tmin(window = 5)
+        ds2.run()
+        ds1 - ds2
+        ds1.spatial_mean()
+        assert ds1.to_dataframe().analysed_sst.mean() == 0.0
+
+        # range
+        ds1 = nc.open_data("data/2003.nc")
+        ds1.subset(time = range(0, 5))
+        ds1.trange()
+        ds1.run()
+        ds2 = nc.open_data("data/2003.nc")
+        ds2.subset(time = range(0, 5))
+
+        ds2.trange(window = 5)
+        ds2.run()
+        ds1 - ds2
+        ds1.spatial_mean()
+        assert ds1.to_dataframe().analysed_sst.mean() == 0.0
+
+        # std
+
+        ds1 = nc.open_data("data/2003.nc")
+        ds1.subset(time = range(0, 5))
+        ds1.tstdev()
+        ds1.run()
+        ds2 = nc.open_data("data/2003.nc")
+        ds2.subset(time = range(0, 5))
+        
+        ds2.tstdev(window = 5)
+        ds2.run()
+        ds1 - ds2
+        ds1.spatial_mean()
+        assert ds1.to_dataframe().analysed_sst.mean() == 0.0
+
+        # var
+        ds1 = nc.open_data("data/2003.nc")
+        ds1.subset(time = range(0, 5))
+        ds1.tvar()
+        ds1.run()
+        ds2 = nc.open_data("data/2003.nc")
+        ds2.subset(time = range(0, 5))
+
+        ds2.tvar(window = 5)
+        ds2.run()
+        ds1 - ds2
+        ds1.spatial_mean()
+
+        assert ds1.to_dataframe().analysed_sst.mean() == 0.0
+
+        # sum
+
+        ds1 = nc.open_data("data/2003.nc")
+        ds1.subset(time = range(0, 5))
+        ds1.tsum()
+        ds1.run()
+        ds2 = nc.open_data("data/2003.nc")
+        ds2.subset(time = range(0, 5))
+        
+        ds2.tsum(window = 5)
+        ds2.run()
+        ds1 - ds2
+        ds1.spatial_mean()
+        assert ds1.to_dataframe().analysed_sst.mean() == 0.0
+
+        ds1 = nc.open_data("data/2003.nc")
+        ds1.tmean(window = 5)
+        assert (ds1.times[5] - ds1.times[0]).days == 25
+
