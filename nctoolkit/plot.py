@@ -37,7 +37,7 @@ def plot(self, vars=None, autoscale=True, out=None, coast=None, **kwargs):
     out: str
         Name of output file if you want to save as html. Defaults to None.
     coast: bool
-        Set to True if you want a coastline to show up on spatial map. Default is True if cartopy is installed and working. Otherwise it is False.
+        Set to True if you want a coastline to show up on spatial map. Default is True if a working version of cartopy is available. It is False otherwise.
 
     **kwargs: Optional args to be sent to hvplot
 
