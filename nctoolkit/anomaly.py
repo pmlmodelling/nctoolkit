@@ -12,6 +12,9 @@ from nctoolkit.api import update_options
 
 if platform.system() == "Linux":
     import multiprocessing as mp
+    #start = mp.get_start_method()
+    #if start != "spawn":
+    #    mp.set_start_method("spawn")
     from multiprocessing import Manager
 
     manager = Manager()
@@ -28,14 +31,11 @@ def ann_anomaly(
     """
     Function to calculate the anomaly for a single file
     """
-
     # throw error if baseline is not valid
     orig_safe = copy.deepcopy(nc_safe)
     target = temp_file("nc")
     nc_safe.append(target)
     try:
-        if len([yy for yy in baseline if yy not in nc_years(ff)]) > 0:
-            raise ValueError("Check that the years in baseline are in the dataset!")
 
         # create the target file
         # generate the cdo command
@@ -163,6 +163,9 @@ def annual_anomaly(self, baseline=None, metric="absolute", window=1, align="righ
     # This cannot possibly be threaded in cdo. Release it
 
     self.run()
+    for ff in self:
+        if len([yy for yy in baseline if yy not in nc_years(ff)]) > 0:
+            raise ValueError("Check that the years in baseline are in the dataset!")
 
     # calculate the anomalies for each file
     # this is not parallelized yet
