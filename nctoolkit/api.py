@@ -137,21 +137,7 @@ cdo_methods.append("reduce_dim")
 session_info["cdo_methods"] = cdo_methods
 
 
-def coast_check():
-    try:
-        import geoviews
-        import cartopy
-        from cartopy import crs
-        import cartopy.crs as ccrs
-
-        projection = ccrs.PlateCarree()
-        return True
-    except:
-        return False
-
-
-session_info["coast"] = coast_check()
-#session_info["coast"] = None 
+session_info["coast"] = None 
 
 
 session_info["interactive"] = sys.__stdin__.isatty()
@@ -1935,7 +1921,6 @@ class DataSet(object):
 
     from nctoolkit.phenology import phenology
 
-    # from nctoolkit.phenology import initiation
 
     from nctoolkit.plot import plot
     from nctoolkit.static_plot import pub_plot

@@ -1,8 +1,20 @@
 import signal
-from ncplot import view
 
 from contextlib import contextmanager
 from nctoolkit.session import session_info
+
+def coast_check():
+    try:
+        import geoviews
+        import cartopy
+        from cartopy import crs
+        import cartopy.crs as ccrs
+
+        projection = ccrs.PlateCarree()
+        return True
+    except:
+        return False
+
 
 
 class TimeoutException(Exception):
@@ -59,7 +71,10 @@ def plot(self, vars=None, autoscale=True, out=None, coast=None, **kwargs):
     >>> ds.plot("var_of_choice")
 
     """
+    from ncplot import view
 
+    if session_info["coast"] is None:
+        session_info["coast"] = coast_check()
 
     if "title" not in kwargs.keys():
         kwargs["title"] = ""
