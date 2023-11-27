@@ -4,7 +4,7 @@ import sys
 DESCRIPTION = "A Python package for netCDF analysis and post-processing"
 LONG_DESCRIPTION = """
 
-**nctoolkit** is a comprehensive Python (3.6 and above) package for analyzing netCDF data on Linux and macOS.
+**nctoolkit** is a comprehensive Python (3.8 and above) package for analyzing netCDF data on Linux and macOS.
 
 Core abilities of nctoolkit include:
 
@@ -47,7 +47,7 @@ extras_require["complete"] = ["geoviews", "rioxarray", "cfchecker", "geocube", "
 REQUIREMENTS = [i.strip() for i in open("requirements.txt").readlines()]
 
 setup(name='nctoolkit',
-      version='1.1.3',
+      version='1.1.4',
       description=DESCRIPTION,
       long_description=LONG_DESCRIPTION,
       python_requires='>=3.6.1',
