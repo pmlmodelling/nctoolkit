@@ -14,6 +14,7 @@ class TestAnomaly:
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff, checks = False)
         tracker.annual_anomaly(baseline=[1970, 1979])
+        assert nc.session.session_info["parallel"] == False
 
         tracker.annual_anomaly(baseline=[1970, 1979], metric="relative", window=10)
         tracker.spatial_mean()
@@ -22,10 +23,15 @@ class TestAnomaly:
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
         assert x == 1.0
         n = len(nc.session_files())
+
+        import gc
+
         del tracker
+        # del ds1
+        nc.cleanup()
         assert n == 1
         assert nc.session.session_info["parallel"] == False
-        print(nc.session_files())
+        gc.collect()
         n = len(nc.session_files())
         assert n == 0
 
