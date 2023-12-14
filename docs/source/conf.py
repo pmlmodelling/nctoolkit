@@ -95,7 +95,7 @@ pygments_style = 'sphinx'
 #
 html_theme_options = {
 
-    'analytics_id': 'G-S277SCW123' ## 'UA-46143561-3'
+    'analytics_id': 'G-V5H3V2BZ74' ## 'UA-46143561-3'
 
         }
 
