@@ -4,7 +4,7 @@ nc.options(lazy=True)
 import pandas as pd
 import xarray as xr
 import numpy as np
-import os, pytest, pytest
+import os, pytest
 
 
 ff = "data/sst.mon.mean.nc"

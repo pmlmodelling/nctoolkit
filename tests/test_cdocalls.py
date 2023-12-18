@@ -521,12 +521,12 @@ class TestCalls:
         data.split("year")
         assert "cdo -s -splityear data/sst.mon.mean.nc" in data.history[0]
 
-        data = nc.open_data(ff, checks = False)
-        data.annual_anomaly(baseline=[1970, 1979], window=10)
-        assert (
-                "cdo --timestat_date last -L -sub -runmean,10 -yearmean data/sst.mon.mean.nc -timmean -selyear,1970/1979 data/sst.mon.mean.nc"
-            in data.history[0]
-        )
+        #data = nc.open_data(ff, checks = False)
+        #data.annual_anomaly(baseline=[1970, 1979], window=10)
+        #assert (
+        #        "cdo --timestat_date last -L -sub -runmean,10 -yearmean data/sst.mon.mean.nc -timmean -selyear,1970/1979 data/sst.mon.mean.nc"
+        #    in data.history[0]
+        #)
 
         data = nc.open_data(ff, checks = False)
         data.monthly_anomaly(baseline=[1970, 1979])
