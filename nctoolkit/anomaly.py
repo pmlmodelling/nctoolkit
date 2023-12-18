@@ -8,7 +8,7 @@ from nctoolkit.runthis import run_cdo, tidy_command
 from nctoolkit.show import nc_years
 from nctoolkit.temp_file import temp_file
 from nctoolkit.session import remove_safe, session_info, nc_safe_par, nc_safe
-from nctoolkit.api import update_options
+from nctoolkit.api import options
 from nctoolkit.runners import ann_anomaly
 
 if platform.system() == "Linux":
@@ -133,7 +133,7 @@ def annual_anomaly(self, baseline=None, metric="absolute", window=1, align="righ
     start_parallel = session_info["parallel"]
 
     if start_parallel is False:
-        update_options({"parallel": True})
+        options(parallel =  True)
 
     nc_safe_par_start = copy.deepcopy(nc_safe_par)
     try:
@@ -165,14 +165,15 @@ def annual_anomaly(self, baseline=None, metric="absolute", window=1, align="righ
             if "Check that the years in baseline are in the dataset!" in str(out):
                 raise ValueError("Check that the years in baseline are in the dataset!")
 
-        pool.close()
-        pool.join()
+        #pool.close()
+        #pool.join()
 
         self.history += list(new_commands)
         self._hold_history = copy.deepcopy(self.history)
 
         if start_parallel is False:
-            update_options({"parallel": False})
+            #update_options({"parallel": False})
+            options(parallel = False)
             while True:
                 for ff in nc_safe_par:
                     if ff not in nc_safe:
@@ -209,7 +210,8 @@ def annual_anomaly(self, baseline=None, metric="absolute", window=1, align="righ
         self.disk_clean()
     except BaseException as e:
         if start_parallel is False:
-            update_options({"parallel": False})
+            #update_options({"parallel": False})
+            options(parallel = False)
         if start_parallel:
             for ff in nc_safe_par:
                 if ff not in nc_safe_par_start:
