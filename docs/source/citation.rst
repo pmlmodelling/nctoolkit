@@ -1,4 +1,3 @@
-.. _references:
 
 ############
 How to cite nctoolkit
@@ -14,6 +13,6 @@ Articles using nctoolkit
 The following scientific publications have used nctoolkit:
 
 
+    Cordes, Erik E., et al. "A Global View of the Cold-Water Coral Reefs of the World." Cold-Water Coral Reefs of the World. Cham: Springer International Publishing, 2023. 1-30.
 
-.. bibliography:: ref.bib
-    :style: plain
+    Fatolahzadeh Gheysari, Ali, et al. "Reliability of ERA5 and ERA5-Land reanalysis data in the Canadian Prairies." Theoretical and Applied Climatology (2023): 1-12.    
