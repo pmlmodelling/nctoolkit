@@ -14,9 +14,8 @@ You can use the following BibTeX entry:
 
 
 
-####################
 Articles using nctoolkit
-####################
+----------------
 
 The following scientific publications have used nctoolkit:
 
