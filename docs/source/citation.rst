@@ -12,6 +12,8 @@ Articles using nctoolkit
 
 The following scientific publications have used nctoolkit:
 
+.. raw:: latex
+
 
 .. bibliography:: ref.bib
     :style: plain
