@@ -31,6 +31,7 @@ extensions = [
     "sphinx.ext.extlinks",
     "sphinx.ext.mathjax",
     "sphinx.ext.napoleon",
+    'sphinxcontrib.bibtex',
     "numpydoc",
     "sphinx_rtd_theme",
     "nbsphinx",
