@@ -114,4 +114,6 @@ html_static_path = ['_static']
 #
 # html_sidebars = {}
 
+bibtex_bibfiles = ['ref.bib']
+
 
