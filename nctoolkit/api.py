@@ -2007,6 +2007,7 @@ class DataSet(object):
     from nctoolkit.verticals import bottom
     from nctoolkit.verticals import bottom_mask
     from nctoolkit.verticals import surface_mask
+    from nctoolkit.verticals import generate_level_bounds
 
     from nctoolkit.zip import zip
 

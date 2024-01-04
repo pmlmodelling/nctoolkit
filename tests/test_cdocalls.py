@@ -779,6 +779,12 @@ class TestCalls:
         with pytest.raises(ValueError):
             ds.invert("time")
 
+        ff1 = "data/woa18_decav_t02_01.nc"
+        ds = nc.open_data(ff1, checks = False)
+        ds.generate_level_bounds()
+        assert ds.history[0] == "cdo -genlevelbounds"
+
+
 
 
 

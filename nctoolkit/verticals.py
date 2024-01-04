@@ -6,6 +6,31 @@ from nctoolkit.api import open_data
 from nctoolkit.flatten import str_flatten
 import nctoolkit.api as api
 
+# method to generate level bounds
+
+def generate_level_bounds(self):
+    """
+    generate_level_bounds: Generate level bounds for a dataset
+
+    This method will generate level bounds for a dataset.
+
+    Internally, this will use CDO's method genlevelbounds, which will generate the bounds based on the vertical levels in the dataset.
+    In most cases, this will result in something sensible. However, you may want to check output in case the vertical levels are very irregular.
+
+
+
+    Examples
+    ------------
+
+    If you wanted to generate level bounds for a dataset, do the following:
+
+    >>> ds.generate_level_bounds()
+
+    """
+
+    self.cdo_command("-genlevelbounds", ensemble=False)
+
+
 
 def bottom(self):
     """
