@@ -7,7 +7,9 @@ It is designed explicitly with climate change and oceanographic work in mind. Un
 
 
 
-Let's look at what it can do using a historical global dataset of sea surface temperature, which you learn about `here <https://psl.noaa.gov/data/gridded/data.cobe2.html>`__ and download at `this link <https://downloads.psl.noaa.gov/Datasets/COBE2/sst.mon.mean.nc>`__.
+Let's look at what it can do using a historical global dataset of sea surface temperature, which you learn about `here <https://psl.noaa.gov/data/gridded/data.cobe2.html>`__.
+
+Here we will use monthly average temperature for the years 1991-2020 and extract data using a thredds server.
 
 
 The preferred way to import nctoolkit is:
@@ -24,8 +26,7 @@ nctoolkit offers plotting functionality that will let you automatically plot dat
 
 .. code:: ipython3
 
-   ds = nc.open_data("sst.mon.mean.nc")
-   ds.subset(year = 2000)
+   ds = nc.open_thredds("https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.ltm.1991-2020.nc")
    ds.plot()
 
 
@@ -40,8 +41,8 @@ If we want to look at a particular region, we can subset the data using the 'sub
 
 .. code:: ipython3
 
-   ds = nc.open_data("sst.mon.mean.nc")
-   ds.subset(year = 1998, month = 1, lon = [-13, 38], lat = [30, 67])
+   ds = nc.open_thredds("https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.ltm.1991-2020.nc")
+   ds.subset(month = 1, lon = [-13, 38], lat = [30, 67])
    ds.plot()
 
 
@@ -51,12 +52,12 @@ If we want to look at a particular region, we can subset the data using the 'sub
 It lets you calculate temporal averages
 ---------------------------------------
 
-nctoolkit features a suite of methods, beginning with the letter t, that let you calculate temporal statistics. For example, if we wanted to calculate how much sea surface temperature varies each year, we could do this:
+nctoolkit features a suite of methods, beginning with the letter t, that let you calculate temporal statistics. For example, if we wanted to calculate a seasonal average, we could do this:
 
 .. code:: ipython3
 
-   ds = nc.open_data("sst.mon.mean.nc")
-   ds.tmean()
+   ds = nc.open_thredds("https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.ltm.1991-2020.nc")
+   ds.tmean("season")
    ds.plot()
 
 .. raw:: html
@@ -70,7 +71,9 @@ Calculating the spatial average of a variable is as simple as:
 
 .. code:: ipython3
 
-   ds = nc.open_data("sst.mon.mean.nc")
+   ds = nc.open_thredds("https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.ltm.1991-2020.nc")
+   ds.subset(variables = "sst")
+   ds.subset(lon = [-13, 38], lat = [30, 67])
    ds.spatial_mean()
    ds.plot()
 
@@ -84,10 +87,10 @@ nctoolkit offers an 'assign' method for performing mathematical operations on va
 
 .. code:: ipython3
 
-   ds = nc.open_data("sst.mon.mean.nc")
+   ds = nc.open_thredds("https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.ltm.1991-2020.nc")
    ds.tmean()
    ds.assign(delta = lambda x: x.sst - spatial_mean(x.sst), drop = True)
-   ds.plot("anomaly")
+   ds.plot()
 
 .. raw:: html
    :file: intro_plot3.html
@@ -100,40 +103,23 @@ nctoolkit has built-in methods for regridding data to user-specified grids. One 
 
 .. code:: ipython3
 
-   ds = nc.open_data("sst.mon.mean.nc")
-   ds.subset(time = 0)
-   ds.to_latlon(lon = [-13, 38], lat = [30, 67], resolution = 1, method = "bilinear")
+   ds = nc.open_thredds("https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.ltm.1991-2020.nc")
+   ds.to_latlon(lon = [-13, 38], lat = [30, 67], res = 1, method = "bil")
    ds.plot()
 
 .. raw:: html
    :file: intro_plot5.html
 
 
-It lets you calculate anomalies
----------------------------------------
-
-In an example above we calculated the global mean sea surface temperature every month since 1850. But calculate the anomaly might be more interesting. The code below will calculate the change in  global annual mean sea surface temperature since 1850-1969. The window argument let's you calculate it on a rolling basis.
-
-
-.. code:: ipython3
-
-   ds = nc.open_data("sst.mon.mean.nc")
-   ds.spatial_mean()
-   ds.annual_anomaly(baseline = [1850, 1869], window= 20)
-   ds.plot()
-
-.. raw:: html
-   :file: intro_plot7.html
 
 It lets you calculate zonal averages
 ---------------------------------------
 
-It is easy to calculate zonal averages using nctoolkit. In the example below change in temperature since 1850-1869 in each latitude band is calculated:
+It is easy to calculate zonal averages using nctoolkit using the `zonal_mean` method. 
 
 .. code:: ipython3
 
-   ds = nc.open_data("sst.mon.mean.nc")
-   ds.annual_anomaly(baseline = [1850, 1869], window= 20)
+   ds = nc.open_thredds("https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.ltm.1991-2020.nc")
    ds.zonal_mean()
    ds.plot()
 
