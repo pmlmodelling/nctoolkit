@@ -53,8 +53,8 @@ nctoolkit is developed as open source software by the Marine Systems Modelling g
 
    installing
    introduction
-   news
-   citation
+   supported
+   cheat
 
 
 .. toctree::
@@ -63,11 +63,10 @@ nctoolkit is developed as open source software by the Marine Systems Modelling g
    :caption: User Guide 
 
    datasets
-   supported
    exporting 
+   visualization
    subsetting 
    interpolation
-   visualization
    temporals 
    ensembles 
    matchpoint 
@@ -89,9 +88,10 @@ nctoolkit is developed as open source software by the Marine Systems Modelling g
    :caption: Reference & help
 
    api
+   news
+   citation
    contributing
    info
-   cheat
    
 
 
