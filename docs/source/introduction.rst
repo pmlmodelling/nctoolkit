@@ -7,7 +7,7 @@ It is designed explicitly with climate change and oceanographic work in mind. Un
 
 
 
-Let's look at what it can do using a historical global dataset of sea surface temperature, which you can find `here <https://psl.noaa.gov/data/gridded/data.cobe2.html>`__.
+Let's look at what it can do using a historical global dataset of sea surface temperature, which you learn about `here <https://psl.noaa.gov/data/gridded/data.cobe2.html>`__ and download at `this link <https://downloads.psl.noaa.gov/Datasets/COBE2/sst.mon.mean>`__.
 
 
 The preferred way to import nctoolkit is:
