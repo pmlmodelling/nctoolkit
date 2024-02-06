@@ -44,6 +44,7 @@ jobs:
             pip install pytest
             pip install coverage
             pip install numpy 
+            pip install textract
             pip install cartopy
             pip install rioxarray
             pip install --user codecov
@@ -57,6 +58,7 @@ jobs:
             pip install coverage
             pip install numpy 
             pip install cartopy
+            pip install textract
             pip install rioxarray
             pip install --user codecov
             pip install .
