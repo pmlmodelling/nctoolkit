@@ -1,7 +1,6 @@
 import pandas as pd
 import xarray as xr
 import os, pytest
-import textract
 
 import importlib
 import nctoolkit as nc
@@ -13,6 +12,7 @@ class TestFinal:
 
         # only run this test on linux
         if os.name == "posix":
+            import textract
             assert len(nc.session_files()) == 0
             assert len(nc.session.get_safe()) == 0
             ff = "../cheatsheet/nctoolkit_cheatsheet.pdf"
