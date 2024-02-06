@@ -81,8 +81,6 @@ This is carried out using the ``pub_plot`` method, and is designed to quickly pr
         ds.tmean()
         ds.pub_plot()
 
-# display a png file called pub_plot1.png
-
 .. image:: pub_plot1.png
    :width: 100%
    :align: center
