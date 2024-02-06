@@ -43,6 +43,7 @@ jobs:
           pip install pandas
           pip install rioxarray
           pip install pytest
+          pip install textract
           pip install pytest-cov
           pip install coverage 
 
