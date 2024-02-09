@@ -4,6 +4,7 @@ import os, pytest
 
 import importlib
 import nctoolkit as nc
+import platform
 
 
 
@@ -11,7 +12,7 @@ class TestFinal:
     def test_cheat(self):
 
         # only run this test on linux
-        if os.name == "posix":
+        if platform.system() == "Linux"
             import textract
             assert len(nc.session_files()) == 0
             assert len(nc.session.get_safe()) == 0
