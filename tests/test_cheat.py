@@ -12,7 +12,7 @@ class TestFinal:
     def test_cheat(self):
 
         # only run this test on linux
-        if platform.system() == "Linux"
+        if platform.system() == "Linux":
             import textract
             assert len(nc.session_files()) == 0
             assert len(nc.session.get_safe()) == 0
