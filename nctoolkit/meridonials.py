@@ -5,9 +5,7 @@ def zonstat(self, stat="mean"):
     """Method to calculate the meridonial statistic from a netCDF file"""
     for ff in self:
         if is_curvilinear(ff):
-            raise TypeError(
-                f"meridonal_{stat} cannot be calculated for curvilinear grids."
-            )
+            raise TypeError(f"meridonial_{stat} cannot be calculated for this grid type. Please consider using to_latlon to convert to a regular grid.")
     cdo_command = f"-mer{stat}"
 
     self.cdo_command(cdo_command, ensemble=False)
