@@ -12,9 +12,11 @@ The best and easiest way to install nctoolkit is to use conda. This will install
 
    $ conda install -c conda-forge nctoolkit
 
-Conda can often install a very old version of nctoolkit. So you might want to install a recent version::
+Conda can often install a very old version of nctoolkit. So you might want to install the latest version. You can find the latest version available on conda 
+ `here  <https://anaconda.org/conda-forge/nctoolkit>`__. If you wanted to install version version 1.1.6, you would do the following::
 
-   $ conda install -c conda-forge nctoolkit=0.9.4
+   $ conda install -c conda-forge nctoolkit=1.1.6
+
 
 Mamba is a smoother way to manage conda environments. If you don't use it, you should try. Install it from  `here  <https://github.com/conda-forge/miniforge/>`__.
 
