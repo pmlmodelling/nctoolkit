@@ -459,23 +459,6 @@ def pub_plot(
             if r_max is not None:
                 max_value = np.nanpercentile(np.ma.filled(values, np.nan), r_max)
 
-        if limits is not None and colours == "auto":
-            try:
-                if limits[0] < 0 and limits[1] > 0:
-                    min_value = limits[0]
-                    max_value = limits[1]
-                    if mid_point is None:
-                        mid_point = 0
-                    if colours == "auto":
-                        colours = "RdBu_r"
-                        if land_auto and land is not None:
-                            if land != "auto":
-                                land = "grey"
-            except:
-                pass
-
-        if colours == "auto":
-            colours = "viridis"
 
     # generate the figure and the axes where to plot the map. When the axes are generated (either with add_subplot or add_axes, or any other way), the projection to be used need to be specified
     # the axes generated show the entire globe up to the cutoff latitude
@@ -522,6 +505,26 @@ def pub_plot(
                 vmin = np.nanpercentile(np.ma.filled(values, np.nan), r_min)
             if r_max is not None:
                 vmax = np.nanpercentile(np.ma.filled(values, np.nan), r_max)
+            
+        if mid_point is None:
+            if vmin < 0 and vmax > 0:
+                mid_point = 0
+                limits[0] = vmin
+                limits[1] = vmax
+                try:
+                    if limits[0] < 0 and limits[1] > 0:
+                        min_value = limits[0]
+                        max_value = limits[1]
+                        if mid_point is None:
+                            mid_point = 0
+                        if colours == "auto":
+                            colours = "RdBu_r"
+                            if land_auto and land is not None:
+                                if land != "auto":
+                                    land = "grey"
+                except:
+                    pass
+
 
         if mid_point is not None:
             val_min = values.min()
@@ -550,6 +553,26 @@ def pub_plot(
             vmin = None
             vmax = None
 
+        if limits is not None and colours == "auto":
+            try:
+                if limits[0] < 0 and limits[1] > 0:
+                    min_value = limits[0]
+                    max_value = limits[1]
+                    if mid_point is None:
+                        mid_point = 0
+                    if colours == "auto":
+                        colours = "RdBu_r"
+                        if land_auto and land is not None:
+                            if land != "auto":
+                                land = "grey"
+                else:
+                    colours = "viridis"
+            except:
+                pass
+
+        if colours == "auto":
+            colours = "viridis"
+
         im = ax.pcolormesh(
             lon,
             lat,
@@ -561,6 +584,7 @@ def pub_plot(
             vmin=vmin,
             vmax=vmax,
         )
+
 
     # add coastline and land colour. More options, including about resolution of coastline, colour and so on can be found here
     # https://scitools.org.uk/cartopy/docs/v0.14/matplotlib/feature_interface.html
