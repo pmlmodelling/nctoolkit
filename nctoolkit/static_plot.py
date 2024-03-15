@@ -119,6 +119,11 @@ def pub_plot(
         Character string with colour map to use. Set to None if you do not want to use a colour map.
     norm: str or matplotlib.colors norm
          Norm to use for colour bar
+    limits: list
+        List with [min, max] for colour bar limits.
+        Please note that if the colour scale passes through zero, the colour scale will be symmetrical around zero.
+        So the limits will be reset to the maximum absolute value of the data.
+
     projection: cartopy projection
         Cartopy projection to use.
     coast: str
@@ -551,12 +556,12 @@ def pub_plot(
             if mid_point > val_max:
                 raise ValueError("mid_point is outside value range")
             adjustment = max(val_max - mid_point, mid_point - val_min)
-            if limits is None:
-                vmin = mid_point - adjustment
-                vmax = mid_point + adjustment
-            else:
-                vmin = limits[0]
-                vmax = limits[1]
+            vmin = mid_point - adjustment
+            vmax = mid_point + adjustment
+            # else:
+            #     print(limits)
+            #     vmin = limits[0]
+            #     vmax = limits[1]
 
         norm_plot = False
         if norm in ["log", "log10"]:
@@ -585,6 +590,11 @@ def pub_plot(
 
         if colours == "auto":
             colours = "viridis"
+
+        if vmin < 0 and vmax >0:
+            # ensure vmin and vmax are symmetric
+            vmax = max(abs(vmin), abs(vmax))
+            vmin = -vmax
 
         im = ax.pcolormesh(
             lon,
