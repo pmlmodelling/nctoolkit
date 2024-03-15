@@ -84,7 +84,6 @@ def pub_plot(
     norm=None,
     limits=None,
     projection="auto",
-    mid_point=None,
     coast="auto",
     scale="auto",
     grid=True,
@@ -122,8 +121,6 @@ def pub_plot(
          Norm to use for colour bar
     projection: cartopy projection
         Cartopy projection to use.
-    mid_point: float
-        Mid-point to use for colour bar
     coast: str
         Set to "coarse", "low", "intermediate", "high" or "full" if you want to use GSHHS coastlines
     scale: str
@@ -144,6 +141,7 @@ def pub_plot(
 
     -------------
     """
+    mid_point = None
 
     relief = False
     # check if relief is in kwargs
@@ -239,10 +237,10 @@ def pub_plot(
                 norm = kwargs[kk]
                 fixed = True
 
-        if kk.lower().startswith("mid") and kk.lower().endswith("nt"):
-            if mid_point is None:
-                mid_point = kwargs[kk]
-                fixed = True
+        #if kk.lower().startswith("mid") and kk.lower().endswith("nt"):
+        #    if mid_point is None:
+        #        mid_point = kwargs[kk]
+        #        fixed = True
 
         if kk.lower().startswith("proj"):
             if projection == "auto":
@@ -525,6 +523,17 @@ def pub_plot(
                 except:
                     pass
 
+        if mid_point is not None and limits is not None:
+            try:
+                if colours == "auto":
+                    colours = "RdBu_r"
+                    if land_auto and land is not None:
+                        if land != "auto":
+                            land = "grey"
+            except:
+                pass
+
+
 
         if mid_point is not None:
             val_min = values.min()
@@ -542,8 +551,12 @@ def pub_plot(
             if mid_point > val_max:
                 raise ValueError("mid_point is outside value range")
             adjustment = max(val_max - mid_point, mid_point - val_min)
-            vmin = mid_point - adjustment
-            vmax = mid_point + adjustment
+            if limits is None:
+                vmin = mid_point - adjustment
+                vmax = mid_point + adjustment
+            else:
+                vmin = limits[0]
+                vmax = limits[1]
 
         norm_plot = False
         if norm in ["log", "log10"]:
