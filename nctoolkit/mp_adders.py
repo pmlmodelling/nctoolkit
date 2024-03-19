@@ -41,7 +41,7 @@ def match_points(
         monthly dataset.
         This is equivalent to apply `ds.tmean(..)` to the dataset.
     nan: float or list
-        Value or range of values to set to nan. Defaults to 0.
+        Value or range of values to set to nan. Defaults to None, so no values will bre reset to nan.
         Only required if values in dataset need changed to missing
     top: bool
         Set to True if you want only the top/surface level of the dataset to be selected for matching.
