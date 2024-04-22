@@ -242,7 +242,7 @@ def pub_plot(
                 norm = kwargs[kk]
                 fixed = True
 
-        #if kk.lower().startswith("mid") and kk.lower().endswith("nt"):
+        # if kk.lower().startswith("mid") and kk.lower().endswith("nt"):
         #    if mid_point is None:
         #        mid_point = kwargs[kk]
         #        fixed = True
@@ -462,7 +462,6 @@ def pub_plot(
             if r_max is not None:
                 max_value = np.nanpercentile(np.ma.filled(values, np.nan), r_max)
 
-
     # generate the figure and the axes where to plot the map. When the axes are generated (either with add_subplot or add_axes, or any other way), the projection to be used need to be specified
     # the axes generated show the entire globe up to the cutoff latitude
     if fig is None:
@@ -508,7 +507,7 @@ def pub_plot(
                 vmin = np.nanpercentile(np.ma.filled(values, np.nan), r_min)
             if r_max is not None:
                 vmax = np.nanpercentile(np.ma.filled(values, np.nan), r_max)
-            
+
         if mid_point is None:
             if vmin < 0 and vmax > 0:
                 mid_point = 0
@@ -538,8 +537,6 @@ def pub_plot(
             except:
                 pass
 
-
-
         if mid_point is not None:
             val_min = values.min()
             val_max = values.max()
@@ -558,10 +555,6 @@ def pub_plot(
             adjustment = max(val_max - mid_point, mid_point - val_min)
             vmin = mid_point - adjustment
             vmax = mid_point + adjustment
-            # else:
-            #     print(limits)
-            #     vmin = limits[0]
-            #     vmax = limits[1]
 
         norm_plot = False
         if norm in ["log", "log10"]:
@@ -591,10 +584,11 @@ def pub_plot(
         if colours == "auto":
             colours = "viridis"
 
-        if vmin < 0 and vmax >0:
-            # ensure vmin and vmax are symmetric
-            vmax = max(abs(vmin), abs(vmax))
-            vmin = -vmax
+        if norm is None:
+            if vmin < 0 and vmax > 0:
+                # ensure vmin and vmax are symmetric
+                vmax = max(abs(vmin), abs(vmax))
+                vmin = -vmax
 
         im = ax.pcolormesh(
             lon,
@@ -607,7 +601,6 @@ def pub_plot(
             vmin=vmin,
             vmax=vmax,
         )
-
 
     # add coastline and land colour. More options, including about resolution of coastline, colour and so on can be found here
     # https://scitools.org.uk/cartopy/docs/v0.14/matplotlib/feature_interface.html
