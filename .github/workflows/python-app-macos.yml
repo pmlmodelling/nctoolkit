@@ -37,7 +37,8 @@ jobs:
         run: |
           pip install numpy 
           pip install dask
-          python -m pip install .
+          #python -m pip install .
+          pip install nctoolkit
           pip install xarray
           # pip install .
           pip install pandas
