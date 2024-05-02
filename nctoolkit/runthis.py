@@ -4,6 +4,7 @@ import re
 import subprocess
 import platform
 import warnings
+from unittest.mock import patch
 
 if platform.system() == "Linux":
     import multiprocessing as mp
@@ -19,11 +20,90 @@ from nctoolkit.session import (
     append_safe,
     remove_safe,
     get_protected,
+    session_warnings
 )
 from nctoolkit.temp_file import temp_file
 
 from nctoolkit.show import nc_variables
 from nctoolkit.runners import run_cdo, tidy_command, run_nco
+
+
+def ignore_warning(x):
+    """
+    Parameters
+    -------------
+    x: str
+        Warning message
+
+        Returns
+        -------------
+        True if the warning should be ignored
+        False if the warning should not be ignored
+    """
+    if "None of the points are contained" in x:
+        return True
+    if "0 as the fill value" in x:
+        return True
+    if "found more than one time variabl" in x:
+        return True
+    if "coordinates variable time" in x and "be assigned" in x:
+        return True
+    return False
+
+def tidy_name_1(x, lower = False):
+    """
+    A function to create a better name for tables etc.
+
+    """
+
+    if "flux" in x.lower():
+        if lower:
+            return "air-sea CO2 flux"
+        else:
+            return "Air-sea CO2 flux"
+
+    if "pco2" in x.lower():
+        return "pCO2"
+    if "sst" in x.lower():
+        return "SST"
+    if "nitrate" in x.lower():
+        if lower:
+            return "nitrate"
+        else:
+            return "Nitrate"
+    if "poc" in x.lower():
+        return "POC"
+    if x.lower() == "doc":
+        return "DOC" 
+    if x.lower() == "ph":
+        return "pH"
+    if lower:
+        return x.lower()
+    else:
+        return x.title()
+# vectorize the function
+def tidy_name(x, lower = False):
+    if isinstance(x, str):
+        x = [x]
+    out = [tidy_name_1(xx, lower = lower) for xx in x]
+        # sort
+    out = sorted(out)
+    out = list_to_string(out)
+    return out
+
+
+def tidy_warnings(w):
+    # A function to tidy up the warnings
+    out_warnings = []
+    for x in w:
+        x_message = str(x.message)
+        bad = True
+        bad = ignore_warning(x_message) is False
+        if bad:
+            out_warnings.append(x_message)
+    for ww in out_warnings:
+        warnings.warn(ww)
+
 
 
 def file_size(file_path):
@@ -165,6 +245,10 @@ def run_this(os_command, self, output="one", out_file=None, suppress=False):
 
                     new_history.append(ff_command)
 
+                    #warnings.simplefilter("ignore")
+
+                    #with patch('sys.warnoptions', []):
+
                     if cores > 1:
                         temp = pool.apply_async(
                             run_cdo,
@@ -180,22 +264,33 @@ def run_this(os_command, self, output="one", out_file=None, suppress=False):
                         if progress_bar:
                            if not suppress:
                                pbar.update(1)
+                    
 
                 if cores > 1:
-                   if progress_bar:
-                       if session_info["progress"] == "on":
-                           if not suppress:
-                               print("Processing ensemble. In progress:")
-                       else:
-                           if not suppress:
-                               print("Processing a large ensemble. In progress:")
-                       if not suppress:
-                          pbar = tqdm(total=len(file_list), position=0, leave=True)
-                   for k, v in results.items():
-                       target_list.append(v.get())
-                       if progress_bar:
-                          if not suppress:
-                              pbar.update(1)
+                    #with patch('sys.warnoptions', []):
+                    #with warnings.catch_warnings(record=True) as w:
+                    if progress_bar:
+                        if session_info["progress"] == "on":
+                            if not suppress:
+                                print("Processing ensemble. In progress:")
+                    else:
+                        if not suppress:
+                            print("Processing a large ensemble. In progress:")
+                    if not suppress:
+                        pbar = tqdm(total=len(file_list), position=0, leave=True)
+                    for k, v in results.items():
+                        target_list.append(v.get())
+                        if progress_bar:
+                            if not suppress:
+                                pbar.update(1)
+                    for mm in session_warnings:
+                        warnings.warn(mm)
+                        if mm in session_warnings:
+                            session_warnings.remove(mm)
+                        # remove element from session_warnings
+
+                        #session_warnings.remove(ff)
+                    #tidy_warnings(w)
                 #if cores > 1:
                 #    pool.close()
 
@@ -219,6 +314,11 @@ def run_this(os_command, self, output="one", out_file=None, suppress=False):
                 self._ncommands = 0
 
                 self._format = None
+
+                for mm in session_warnings:
+                    warnings.warn(mm)
+                    if mm in session_warnings:
+                        session_warnings.remove(mm)
 
                 return None
 
@@ -323,6 +423,10 @@ def run_this(os_command, self, output="one", out_file=None, suppress=False):
                     target = run_cdo(
                         os_command, target, out_file, precision=self._precision
                     )
+                for mm in session_warnings:
+                    warnings.warn(mm)
+                    if mm in session_warnings:
+                        session_warnings.remove(mm)
 
                 remove_safe(target)
 

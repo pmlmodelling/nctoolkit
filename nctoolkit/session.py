@@ -111,6 +111,7 @@ def get_tempdirs():
 
 
 nc_protected = list()
+session_warnings = Manager().list() 
 
 
 def session_files():

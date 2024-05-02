@@ -16,6 +16,7 @@ from nctoolkit.session import (
     append_safe,
     remove_safe,
     get_protected,
+    session_warnings
 )
 from nctoolkit.temp_file import temp_file
 
@@ -218,7 +219,6 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
         raise ValueError("The command does not start with cdo!")
 
     append_safe(target)
-
     out = subprocess.Popen(
         command,
         shell=True,
@@ -546,296 +546,304 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
 
     drop_warnings = []
 
-    for x in result.decode("utf-8").lower().split("\n"):
-        warned = False
-        ignore = False
 
-        text = re.compile("delete \(warning\): month >[0-9]*< not found!")
-        errors = text.findall(x)
-        if len(errors) > 0:
-            for y in errors:
-                for z in re.findall(r"\d+", y):
-                    drop_warnings.append(z)
+    with warnings.catch_warnings(record=True) as w:
+
+        for x in result.decode("utf-8").lower().split("\n"):
+            warned = False
+            ignore = False
+
+            text = re.compile("delete \(warning\): month >[0-9]*< not found!")
+            errors = text.findall(x)
+            if len(errors) > 0:
+                for y in errors:
+                    for z in re.findall(r"\d+", y):
+                        drop_warnings.append(z)
+                        ignore = True
+
+            if "selyear" in x:
+                text = re.compile("selyear \\(warning\\): year [0-9]* not found")
+                all_text = text.findall(x)
+                if len(all_text) > 0:
+                    for tt in all_text:
+                        sel_year.append(int(re.findall(r"\d+", all_text[0])[0]))
                     ignore = True
 
-        if "selyear" in x:
-            text = re.compile("selyear \\(warning\\): year [0-9]* not found")
-            all_text = text.findall(x)
-            if len(all_text) > 0:
-                for tt in all_text:
-                    sel_year.append(int(re.findall(r"\d+", all_text[0])[0]))
-                ignore = True
+            if "selhour" in x:
+                text = re.compile("selhour \\(warning\\): hour [0-9]* not found")
+                all_text = text.findall(x)
+                if len(all_text) > 0:
+                    for tt in all_text:
+                        sel_hour.append(int(re.findall(r"\d+", all_text[0])[0]))
+                    ignore = True
 
-        if "selhour" in x:
-            text = re.compile("selhour \\(warning\\): hour [0-9]* not found")
-            all_text = text.findall(x)
-            if len(all_text) > 0:
-                for tt in all_text:
-                    sel_hour.append(int(re.findall(r"\d+", all_text[0])[0]))
-                ignore = True
+            if "selday" in x:
+                text = re.compile("selday \\(warning\\): day [0-9]* not found")
+                all_text = text.findall(x)
+                if len(all_text) > 0:
+                    for tt in all_text:
+                        sel_day.append(int(re.findall(r"\d+", all_text[0])[0]))
+                    ignore = True
 
-        if "selday" in x:
-            text = re.compile("selday \\(warning\\): day [0-9]* not found")
-            all_text = text.findall(x)
-            if len(all_text) > 0:
-                for tt in all_text:
-                    sel_day.append(int(re.findall(r"\d+", all_text[0])[0]))
-                ignore = True
-
-        if "seltimestep" in x:
-            text = re.compile(
-                "seltimestep \\(warning\\): timesteps [0-9]*-[0-9]* not found"
-            )
-            all_text = text.findall(x.replace("  ", " "))
-            if len(all_text) > 0:
-                for tt in all_text:
-                    tt_range = range(
-                        int(re.findall(r"\d+", all_text[0])[0]) - 1,
-                        int(re.findall(r"\d+", all_text[0])[1]),
-                    )
-                    tt_range = list(tt_range)
-                    sel_timestep += tt_range
-                ignore = True
-
-        if "sellevel" in x:
-            text = re.compile("sellevel \\(warning\\): level [0-9]* not found")
-            all_text = text.findall(x)
-            if len(all_text) > 0:
-                for tt in all_text:
-                    sel_level.append(int(re.findall(r"\d+", all_text[0])[0]))
-                ignore = True
-        if "grid latitudes differ" in x:
-            warnings.warn(
-                message="Grid latitudes differ in operation. Check if this is acceptable!"
-            )
-            ignore = True
-
-        if "grid longitudes differ" in x:
-            warnings.warn(
-                message="Grid longitudes differ in operation. Check if this is acceptable!"
-            )
-            ignore = True
-
-        if "found more than one time variable, skipped variable" in x:
-            message = x.split("found more than one time variable, skipped variable ")[
-                1
-            ].replace("!", "")
-            warnings.warn(
-                message=f"CDO found more than one time variable. Only one is allowed. {message} was skipped"
-            )
-            ignore = True
-
-        if "Using constant grid cell area weights!" in x:
-            warnings.warn(
-                message="Using constant grid cell area weights! If you need weighted cell areas, please fix the dataset grid!"
-            )
-            ignore = True
-
-        if "selmonth" in x:
-            text = re.compile("selmonth \\(warning\\): month [0-9]* not found")
-            all_text = text.findall(x)
-            if len(all_text) > 0:
-                for tt in all_text:
-                    sel_month.append(int(re.findall(r"\d+", all_text[0])[0]))
-                ignore = True
-        if "warning" in x:
-            text = re.compile("variable name .* not found")
-            if len(text.findall(x)) > 0:
-                for y in text.findall(x):
-                    sel_var.append(y.split("variable name ")[1].split(" ")[0])
-                ignore = True
-
-        if not ignore:
-            if "warning" in x and "vertmean" in x:
-                if "layer bounds not available, using constant vertical weights" in x:
-                    warnings.warn(
-                        "Layer bounds not available in netCDF file, using constant vertical weights for vertical mean"
-                    )
-                    warned = True
-
-            if "warning" in x:
-                if (
-                    "Grid cell bounds not available, using constant grid cell area weights"
-                    in x
-                ):
-                    warnings.warn(
-                        "CDO warning: Grid cell bounds not available, using constant grid cell area weights for operation"
-                    )
-                    warned = True
-
-            if "warning" in x:
-                if (
-                    "Computation of grid cell area weights failed, grid cell center and bounds coordinates missing"
-                    in x
-                ):
-                    warnings.warn(
-                        "CDO warning: Computation of grid cell area weights failed, grid cell center and bounds coordinates missing from netCDF"
-                    )
-                    warned = True
-            if "warning" in x:
-                if (
-                    "fldmean (warning): grid cell bounds not available, using constant grid cell area weights"
-                    in x
-                ):
-                    warnings.warn(
-                        "Grid cell bounds are not available. Constant grid cell weights are used for spatial mean!"
-                    )
-                    warned = True
-            if "warning" in x:
+            if "seltimestep" in x:
                 text = re.compile(
-                    "unknown units \[.*\] supplied for grid cell corner .*; proceeding assuming .*!"
+                    "seltimestep \\(warning\\): timesteps [0-9]*-[0-9]* not found"
                 )
-                text_find = text.findall(x)
-                if len(text_find) > 0:
-                    message = text_find[0]
-                    message = "Warning for grid area calculations: " + message
+                all_text = text.findall(x.replace("  ", " "))
+                if len(all_text) > 0:
+                    for tt in all_text:
+                        tt_range = range(
+                            int(re.findall(r"\d+", all_text[0])[0]) - 1,
+                            int(re.findall(r"\d+", all_text[0])[1]),
+                        )
+                        tt_range = list(tt_range)
+                        sel_timestep += tt_range
+                    ignore = True
+
+            if "sellevel" in x:
+                text = re.compile("sellevel \\(warning\\): level [0-9]* not found")
+                all_text = text.findall(x)
+                if len(all_text) > 0:
+                    for tt in all_text:
+                        sel_level.append(int(re.findall(r"\d+", all_text[0])[0]))
+                    ignore = True
+            if "grid latitudes differ" in x:
+                warnings.warn(
+                    message="Grid latitudes differ in operation. Check if this is acceptable!"
+                )
+                ignore = True
+
+            if "grid longitudes differ" in x:
+                warnings.warn(
+                    message="Grid longitudes differ in operation. Check if this is acceptable!"
+                )
+                ignore = True
+
+            if "found more than one time variable, skipped variable" in x:
+                message = x.split("found more than one time variable, skipped variable ")[
+                    1
+                ].replace("!", "")
+                warnings.warn(
+                    message=f"CDO found more than one time variable. Only one is allowed. {message} was skipped"
+                )
+                ignore = True
+
+            if "Using constant grid cell area weights!" in x:
+                warnings.warn(
+                    message="Using constant grid cell area weights! If you need weighted cell areas, please fix the dataset grid!"
+                )
+                ignore = True
+
+            if "selmonth" in x:
+                text = re.compile("selmonth \\(warning\\): month [0-9]* not found")
+                all_text = text.findall(x)
+                if len(all_text) > 0:
+                    for tt in all_text:
+                        sel_month.append(int(re.findall(r"\d+", all_text[0])[0]))
+                    ignore = True
+            if "warning" in x:
+                text = re.compile("variable name .* not found")
+                if len(text.findall(x)) > 0:
+                    for y in text.findall(x):
+                        sel_var.append(y.split("variable name ")[1].split(" ")[0])
+                    ignore = True
+
+            if not ignore:
+                if "warning" in x and "vertmean" in x:
+                    if "layer bounds not available, using constant vertical weights" in x:
+                        warnings.warn(
+                            "Layer bounds not available in netCDF file, using constant vertical weights for vertical mean"
+                        )
+                        warned = True
+
+                if "warning" in x:
+                    if (
+                        "Grid cell bounds not available, using constant grid cell area weights"
+                        in x
+                    ):
+                        warnings.warn(
+                            "CDO warning: Grid cell bounds not available, using constant grid cell area weights for operation"
+                        )
+                        warned = True
+
+                if "warning" in x:
+                    if (
+                        "Computation of grid cell area weights failed, grid cell center and bounds coordinates missing"
+                        in x
+                    ):
+                        warnings.warn(
+                            "CDO warning: Computation of grid cell area weights failed, grid cell center and bounds coordinates missing from netCDF"
+                        )
+                        warned = True
+                if "warning" in x:
+                    if (
+                        "fldmean (warning): grid cell bounds not available, using constant grid cell area weights"
+                        in x
+                    ):
+                        warnings.warn(
+                            "Grid cell bounds are not available. Constant grid cell weights are used for spatial mean!"
+                        )
+                        warned = True
+                if "warning" in x:
+                    text = re.compile(
+                        "unknown units \[.*\] supplied for grid cell corner .*; proceeding assuming .*!"
+                    )
+                    text_find = text.findall(x)
+                    if len(text_find) > 0:
+                        message = text_find[0]
+                        message = "Warning for grid area calculations: " + message
+                        warnings.warn(message)
+                        warned = True
+
+                    text = re.compile("delete \(warning\): timestep .* not found")
+                    text_find = text.findall(x)
+                    if len(text_find) > 0:
+                        message = text_find[0]
+                        message = "Warning: attempting to drop non-existent timesteps!"
+                        warnings.warn(message)
+                        warned = True
+
+                ## Unsupported array structure message
+                if "unsupported" in x and "skipped variable" in x:
+                    text = re.compile("skipped variable .*!")
+                    bad_var = text.findall(x)[0].split(" ")[2].replace("!", "")
+                    message = f"This variable's structure is not supported by CDO: {bad_var}. Full CDO warning: {x}"
                     warnings.warn(message)
                     warned = True
 
-                text = re.compile("delete \(warning\): timestep .* not found")
-                text_find = text.findall(x)
-                if len(text_find) > 0:
-                    message = text_find[0]
-                    message = "Warning: attempting to drop non-existent timesteps!"
-                    warnings.warn(message)
+                if "warning" in x:
+                    if "day 29feb not found" in x:
+                        warnings.warn("No leap years found in data!")
+                        warned = True
+
+                text = re.compile(
+                    "grids have different types! first grid: .*; second grid: .*"
+                )
+                checks = text.findall(x)
+                if len(checks) > 0:
+                    i_out = checks[0].replace("grids have", "Grids have")
+                    warnings.warn(i_out)
                     warned = True
 
-            ## Unsupported array structure message
-            if "unsupported" in x and "skipped variable" in x:
-                text = re.compile("skipped variable .*!")
-                bad_var = text.findall(x)[0].split(" ")[2].replace("!", "")
-                message = f"This variable's structure is not supported by CDO: {bad_var}. Full CDO warning: {x}"
-                warnings.warn(message)
-                warned = True
+                if "warning" in x:
+                    if "input parameters have different levels!" in x:
+                        warnings.warn("Input parameters have different levels!")
+                        warned = True
 
-            if "warning" in x:
-                if "day 29feb not found" in x:
-                    warnings.warn("No leap years found in data!")
-                    warned = True
+                if not warned:
+                    if "arning" in x:
+                        warnings.warn(f"CDO warning: {x}")
+        if len(drop_warnings) > 0:
+            message = ",".join(drop_warnings)
+            message = f"The following months do not exist in the dataset: {message}"
+            warnings.warn(message)
 
-            text = re.compile(
-                "grids have different types! first grid: .*; second grid: .*"
-            )
-            checks = text.findall(x)
-            if len(checks) > 0:
-                i_out = checks[0].replace("grids have", "Grids have")
-                warnings.warn(i_out)
-                warned = True
-
-            if "warning" in x:
-                if "input parameters have different levels!" in x:
-                    warnings.warn("Input parameters have different levels!")
-                    warned = True
-
-            if not warned:
-                if "arning" in x:
-                    warnings.warn(f"CDO warning: {x}")
-    if len(drop_warnings) > 0:
-        message = ",".join(drop_warnings)
-        message = f"The following months do not exist in the dataset: {message}"
-        warnings.warn(message)
-
-    if len(sel_timestep) > 0:
-        len_sel = len(sel_timestep)
-        # first, figure out if this is a timestep range
-        if set(range(min(sel_timestep), max(sel_timestep) + 1)) == set(sel_timestep):
-            sel_timestep = [x for x in sel_timestep]
-            if len(sel_timestep) > 1:
-                sel_timestep = str(min(sel_timestep)) + "-" + str(max(sel_timestep))
+        if len(sel_timestep) > 0:
+            len_sel = len(sel_timestep)
+            # first, figure out if this is a timestep range
+            if set(range(min(sel_timestep), max(sel_timestep) + 1)) == set(sel_timestep):
+                sel_timestep = [x for x in sel_timestep]
+                if len(sel_timestep) > 1:
+                    sel_timestep = str(min(sel_timestep)) + "-" + str(max(sel_timestep))
+                else:
+                    sel_timestep = str(sel_timestep[0])
             else:
-                sel_timestep = str(sel_timestep[0])
-        else:
-            sel_timestep = ",".join([str(x) for x in sel_timestep])
-        if len_sel > 1:
-            message = f"{len_sel} timesteps were missing in the dataset: {sel_timestep}"
-        else:
-            message = (
-                f"The following timestep was missing in the dataset: {sel_timestep}"
-            )
-        warnings.warn(message=message)
-
-    if len(sel_level) > 0:
-        len_sel = len(sel_level)
-        # first, figure out if this is a level range
-        if set(range(min(sel_level), max(sel_level) + 1)) == set(sel_level):
-            if len(sel_level) > 1:
-                sel_level = str(min(sel_level)) + "-" + str(max(sel_level))
+                sel_timestep = ",".join([str(x) for x in sel_timestep])
+            if len_sel > 1:
+                message = f"{len_sel} timesteps were missing in the dataset: {sel_timestep}"
             else:
-                sel_level = str(sel_level[0])
-        else:
-            sel_level = ",".join([str(x) for x in sel_level])
-        if len_sel > 1:
-            message = f"{len_sel} levels were missing in the dataset: {sel_level}"
-        else:
-            message = f"The following level was missing in the dataset: {sel_level}"
-        warnings.warn(message=message)
+                message = (
+                    f"The following timestep was missing in the dataset: {sel_timestep}"
+                )
+            warnings.warn(message=message)
 
-    if len(sel_day) > 0:
-        len_sel = len(sel_day)
-        # first, figure out if this is a day range
-        if set(range(min(sel_day), max(sel_day) + 1)) == set(sel_day):
-            if len(sel_day) > 1:
-                sel_day = str(min(sel_day)) + "-" + str(max(sel_day))
+        if len(sel_level) > 0:
+            len_sel = len(sel_level)
+            # first, figure out if this is a level range
+            if set(range(min(sel_level), max(sel_level) + 1)) == set(sel_level):
+                if len(sel_level) > 1:
+                    sel_level = str(min(sel_level)) + "-" + str(max(sel_level))
+                else:
+                    sel_level = str(sel_level[0])
             else:
-                sel_day = str(sel_day[0])
-        else:
-            sel_day = ",".join([str(x) for x in sel_day])
-        if len_sel > 1:
-            message = f"{len_sel} days were missing in the dataset: {sel_day}"
-        else:
-            message = f"The following day was missing in the dataset: {sel_day}"
-        warnings.warn(message=message)
+                sel_level = ",".join([str(x) for x in sel_level])
+            if len_sel > 1:
+                message = f"{len_sel} levels were missing in the dataset: {sel_level}"
+            else:
+                message = f"The following level was missing in the dataset: {sel_level}"
+            warnings.warn(message=message)
 
-    if len(sel_hour) > 0:
-        len_sel = len(sel_hour)
-        # first, figure out if this is a hour range
-        if set(range(min(sel_hour), max(sel_hour) + 1)) == set(sel_hour):
-            if len(sel_hour) > 1:
-                sel_hour = str(min(sel_hour)) + "-" + str(max(sel_hour))
+        if len(sel_day) > 0:
+            len_sel = len(sel_day)
+            # first, figure out if this is a day range
+            if set(range(min(sel_day), max(sel_day) + 1)) == set(sel_day):
+                if len(sel_day) > 1:
+                    sel_day = str(min(sel_day)) + "-" + str(max(sel_day))
+                else:
+                    sel_day = str(sel_day[0])
             else:
-                sel_hour = str(sel_hour[0])
-        else:
-            sel_hour = ",".join([str(x) for x in sel_hour])
-        if len_sel > 1:
-            message = f"{len_sel} hours were missing in the dataset: {sel_hour}"
-        else:
-            message = f"The following hour was missing in the dataset: {sel_hour}"
-        warnings.warn(message=message)
-    if len(sel_var) > 0:
-        sel_var = ",".join(sel_var)
-        message = f"The following variables were missing in the dataset: {sel_var}"
-        warnings.warn(message)
+                sel_day = ",".join([str(x) for x in sel_day])
+            if len_sel > 1:
+                message = f"{len_sel} days were missing in the dataset: {sel_day}"
+            else:
+                message = f"The following day was missing in the dataset: {sel_day}"
+            warnings.warn(message=message)
 
-    if len(sel_year) > 0:
-        len_sel = len(sel_year)
-        # first, figure out if this is a year range
-        if set(range(min(sel_year), max(sel_year) + 1)) == set(sel_year):
-            if len(sel_year) > 1:
-                sel_year = str(min(sel_year)) + "-" + str(max(sel_year))
+        if len(sel_hour) > 0:
+            len_sel = len(sel_hour)
+            # first, figure out if this is a hour range
+            if set(range(min(sel_hour), max(sel_hour) + 1)) == set(sel_hour):
+                if len(sel_hour) > 1:
+                    sel_hour = str(min(sel_hour)) + "-" + str(max(sel_hour))
+                else:
+                    sel_hour = str(sel_hour[0])
             else:
-                sel_year = str(sel_year[0])
-        else:
-            sel_year = ",".join([str(x) for x in sel_year])
-        if len_sel > 1:
-            message = f"{len_sel} years were missing in the dataset: {sel_year}"
-        else:
-            message = f"The following year was missing in the dataset: {sel_year}"
-        warnings.warn(message=message)
+                sel_hour = ",".join([str(x) for x in sel_hour])
+            if len_sel > 1:
+                message = f"{len_sel} hours were missing in the dataset: {sel_hour}"
+            else:
+                message = f"The following hour was missing in the dataset: {sel_hour}"
+            warnings.warn(message=message)
+        if len(sel_var) > 0:
+            sel_var = ",".join(sel_var)
+            message = f"The following variables were missing in the dataset: {sel_var}"
+            warnings.warn(message)
 
-    if len(sel_month) > 0:
-        len_sel = len(sel_month)
-        # first, figure out if this is a month range
-        if set(range(min(sel_month), max(sel_month) + 1)) == set(sel_month):
-            if len(sel_month) > 1:
-                sel_month = str(min(sel_month)) + "-" + str(max(sel_month))
+        if len(sel_year) > 0:
+            len_sel = len(sel_year)
+            # first, figure out if this is a year range
+            if set(range(min(sel_year), max(sel_year) + 1)) == set(sel_year):
+                if len(sel_year) > 1:
+                    sel_year = str(min(sel_year)) + "-" + str(max(sel_year))
+                else:
+                    sel_year = str(sel_year[0])
             else:
-                sel_month = str(sel_month[0])
-        else:
-            sel_month = ",".join([str(x) for x in sel_month])
-        if len_sel > 1:
-            message = f"{len_sel} months were missing in the dataset: {sel_month}"
-        else:
-            message = f"The following month was missing in the dataset: {sel_month}"
-        warnings.warn(message=message)
+                sel_year = ",".join([str(x) for x in sel_year])
+            if len_sel > 1:
+                message = f"{len_sel} years were missing in the dataset: {sel_year}"
+            else:
+                message = f"The following year was missing in the dataset: {sel_year}"
+            warnings.warn(message=message)
+
+        if len(sel_month) > 0:
+            len_sel = len(sel_month)
+            # first, figure out if this is a month range
+            if set(range(min(sel_month), max(sel_month) + 1)) == set(sel_month):
+                if len(sel_month) > 1:
+                    sel_month = str(min(sel_month)) + "-" + str(max(sel_month))
+                else:
+                    sel_month = str(sel_month[0])
+            else:
+                sel_month = ",".join([str(x) for x in sel_month])
+            if len_sel > 1:
+                message = f"{len_sel} months were missing in the dataset: {sel_month}"
+            else:
+                message = f"The following month was missing in the dataset: {sel_month}"
+            warnings.warn(message=message)
+    for ww in w:
+        if ww.message not in session_warnings:
+            session_warnings.append(ww.message)
+            #print(session_warnings)
+
 
     return target
