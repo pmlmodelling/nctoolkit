@@ -841,8 +841,11 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
                 message = f"The following month was missing in the dataset: {sel_month}"
             warnings.warn(message=message)
     for ww in w:
-        if ww.message not in session_warnings:
-            session_warnings.append(ww.message)
+        if platform.system() == "Linux":
+            if ww.message not in session_warnings:
+                session_warnings.append(ww.message)
+        else:
+            warnings.warn(ww.message)
             #print(session_warnings)
 
 

@@ -283,10 +283,11 @@ def run_this(os_command, self, output="one", out_file=None, suppress=False):
                         if progress_bar:
                             if not suppress:
                                 pbar.update(1)
-                    for mm in session_warnings:
-                        warnings.warn(mm)
-                        if mm in session_warnings:
-                            session_warnings.remove(mm)
+                    if platform.system() == "Linux":
+                        for mm in session_warnings:
+                            warnings.warn(mm)
+                            if mm in session_warnings:
+                                session_warnings.remove(mm)
                         # remove element from session_warnings
 
                         #session_warnings.remove(ff)
@@ -315,10 +316,11 @@ def run_this(os_command, self, output="one", out_file=None, suppress=False):
 
                 self._format = None
 
-                for mm in session_warnings:
-                    warnings.warn(mm)
-                    if mm in session_warnings:
-                        session_warnings.remove(mm)
+                if platform.system() == "Linux":
+                    for mm in session_warnings:
+                        warnings.warn(mm)
+                        if mm in session_warnings:
+                            session_warnings.remove(mm)
 
                 return None
 
