@@ -425,10 +425,11 @@ def run_this(os_command, self, output="one", out_file=None, suppress=False):
                     target = run_cdo(
                         os_command, target, out_file, precision=self._precision
                     )
-                for mm in session_warnings:
-                    warnings.warn(mm)
-                    if mm in session_warnings:
-                        session_warnings.remove(mm)
+                if platform.system() == "Linux":
+                    for mm in session_warnings:
+                        warnings.warn(mm)
+                        if mm in session_warnings:
+                            session_warnings.remove(mm)
 
                 remove_safe(target)
 
