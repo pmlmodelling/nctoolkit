@@ -280,12 +280,11 @@ def select_years(self, years=None):
         # loop through all of the files and remove any that do not have valid years
         new_current = []
 
-        all_check = []
-
+        found_years = []
         for ff in self:
             all_years = nc_years(ff)
             all_years = list(set(all_years))
-            all_check += all_years
+            found_years += all_years
             all_years = [int(v) for v in all_years]
             inter = [element for element in all_years if element in years]
 
@@ -310,7 +309,7 @@ def select_years(self, years=None):
                 + " files did not have valid years, so were removed from the dataset!"
             )
 
-        missing_years = [str(x) for x in years if x not in all_years]
+        missing_years = [str(x) for x in years if x not in found_years]
         if len(missing_years) > 0:
             len_missing = len(missing_years)
             missing_years = [int(x) for x in missing_years]
