@@ -92,6 +92,7 @@ def pub_plot(
     robust=False,
     out=None,
     breaks=None,
+    dpi = "figure",
     **kwargs,
 ):
     """
@@ -139,6 +140,8 @@ def pub_plot(
         Output file name
     breaks : list
         List of breaks for the colour bar
+    dpi : int
+        DPI for output file. Default is "figure".
 
 
     *kwargs:
@@ -206,6 +209,8 @@ def pub_plot(
         fig = None
     if "gs" not in kwargs.keys():
         gs = None
+    if "dpi" not in kwargs.keys():
+        dpi = "figure"
 
     if "quiver" in kwargs:
         quiver = True
@@ -223,6 +228,9 @@ def pub_plot(
         if kk == "fig":
             fig = kwargs[kk]
             fixed = True
+        if kk == "dpi":
+            fixed = True
+            dpi = kwargs[kk]
 
         if kk == "gs":
             gs = kwargs[kk]
@@ -750,7 +758,7 @@ def pub_plot(
 
     if out is not None:
         print("saving as file")
-        plt.savefig(out)
+        plt.savefig(out, dpi = dpi)
 
 
 def quiver_plot(ds, u=None, v=None, **kwargs):
