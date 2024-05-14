@@ -22,6 +22,12 @@ from nctoolkit.temp_file import temp_file
 
 from nctoolkit.show import nc_variables
 
+def ignore_warning(x):
+    text = re.compile("remap weights from .* not used")
+    if len(text.findall(x)) > 0:
+        return True
+    return False
+
 def ann_anomaly(
     ff, baseline, metric, window, align, precision, new_files, new_commands, nc_safe):
     """
@@ -840,10 +846,14 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
             else:
                 message = f"The following month was missing in the dataset: {sel_month}"
             warnings.warn(message=message)
+        #remap weights from /tmp/nctoolkit_rwi_brtnahgznctoolkittmpqwadyf2y.nc not used, lonlat (984x582) grid with mask (407783) not found!
+        # detect regex pattern, based on above
+        
     for ww in w:
         if platform.system() == "Linux":
             if ww.message not in session_warnings:
-                session_warnings.append(ww.message)
+                if ignore_warning(str(ww.message)) is False:
+                    session_warnings.append(ww.message)
         else:
             warnings.warn(ww.message)
             #print(session_warnings)
