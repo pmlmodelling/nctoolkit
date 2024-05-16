@@ -28,7 +28,7 @@ atexit.register(clean_all)
 
 signal.signal(signal.SIGTERM, clean_all)
 
-from nctoolkit.create_ensemble import create_ensemble
+from nctoolkit.create_ensemble import create_ensemble, glob
 from nctoolkit.session import session_files
 from nctoolkit.show import nc_variables, nc_years, nc_months, nc_times
 
