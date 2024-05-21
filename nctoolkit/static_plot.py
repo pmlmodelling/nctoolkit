@@ -389,11 +389,11 @@ def pub_plot(
     if projection == None:
         proj = ccrs.PlateCarree()
 
-    if projection == ccrs.NorthPolarStereo() and size == "auto":
+    if isinstance(projection, ccrs.NorthPolarStereo) and size == "auto":
         size = [8,8]
-    if projection == ccrs.SouthPolarStereo() and size == "auto":
+    if isinstance(projection, ccrs.SouthPolarStereo) and size == "auto":
         size = [8,8]
-    if projection == ccrs.AzimuthalEquidistant() and size == "auto":
+    if isinstance(projection, ccrs.AzimuthalEquidistant) and size == "auto":
         size  = [12, 8]
     if size == "auto":
         size = [10, 10]
