@@ -360,8 +360,8 @@ def pub_plot(
 
     # set globe to True if lon lat spread is big enough
 
-    if np.max(lon) - np.min(lon) > 358:
-        if np.max(lat) - np.min(lat) > 176:
+    if np.max(lon) - np.min(lon) > 340:
+        if np.max(lat) - np.min(lat) > 160:
             globe = True
 
     # proj=ccrs.LambertConformal(central_longitude=np.mean(lon), central_latitude=np.mean(lat), false_easting=0.0, false_northing=0.0,  cutoff=38)
