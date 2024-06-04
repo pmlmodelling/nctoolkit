@@ -44,8 +44,6 @@ def plot(self, vars=None, autoscale=True, out=None, coast=None, **kwargs):
         A string or list of the variables to plot
     autoscale: bool
         Set to True if you want the colorbar to be scaled to the min/max of the data. Default is True
-    vars: str , list
-        A string or list of the variables to plot
     out: str
         Name of output file if you want to save as html. Defaults to None.
     coast: bool
