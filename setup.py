@@ -47,7 +47,7 @@ extras_require["complete"] = ["geoviews", "rioxarray", "cfchecker", "geocube", "
 REQUIREMENTS = [i.strip() for i in open("requirements.txt").readlines()]
 
 setup(name='nctoolkit',
-      version='1.1.10',
+      version='1.1.11',
       description=DESCRIPTION,
       description_content_type='text/plain',
       long_description=LONG_DESCRIPTION,
