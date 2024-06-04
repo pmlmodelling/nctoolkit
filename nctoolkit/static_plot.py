@@ -749,11 +749,12 @@ def pub_plot(
                     "Unable to parse legend from dataset contents. Check long names and units"
                 )
                 label = ""
+            # label may need some slight tidying
 
             if l_location == "bottom":
                 label = "\n".join(wrap(label, 120))
             else:
-                label = "\n".join(wrap(label, 50))
+                label = "\n".join(wrap(label, 30))
 
             if l_location == "bottom":
                 cbax.set_xlabel(label)
@@ -765,6 +766,7 @@ def pub_plot(
 
     if out is not None:
         print("saving as file")
+        plt.savefig(out, dpi = dpi)
         plt.savefig(out, dpi = dpi)
 
 
