@@ -278,12 +278,13 @@ def set_units(self, unit_dict=None, **kwargs):
 
     # change the units in turn. This doesn't seem to be something you can chain?
     for i in unit_dict:
-        if not isinstance(i, str):
-            raise TypeError("key,values in unit_dict are not strings")
-        if not isinstance(unit_dict[i], str):
-            raise TypeError("key,values in unit_dict are not strings")
+        if unit_dict[i] is not None:
+            if not isinstance(i, str):
+                raise TypeError("key,values in unit_dict are not strings")
+            if not isinstance(unit_dict[i], str):
+                raise TypeError("key,values in unit_dict are not strings")
 
-        cdo_command = f'-setattribute,{i}@units="{unit_dict[i]}"'
+        cdo_command = f'-setattribute,{i}@units="{unit_dict[str(i)]}"'
         self.cdo_command(cdo_command, ensemble=False)
 
 
