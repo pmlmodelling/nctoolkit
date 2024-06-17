@@ -93,6 +93,7 @@ def pub_plot(
     out=None,
     breaks=None,
     dpi = "figure",
+    font = None,
     **kwargs,
 ):
     """
@@ -514,9 +515,13 @@ def pub_plot(
             if r_max is not None:
                 vmax = np.nanpercentile(np.ma.filled(values, np.nan), r_max)
 
-        if robust and limits is None:
+        if robust:
             vmin = np.nanpercentile(np.ma.filled(values, np.nan), 2)
             vmax = np.nanpercentile(np.ma.filled(values, np.nan), 98)
+            limits = [0,0]
+            limits[0] = vmin
+            limits[1] = vmax
+
         if limits is None:
             if r_min is not None:
                 vmin = np.nanpercentile(np.ma.filled(values, np.nan), r_min)
@@ -691,10 +696,34 @@ def pub_plot(
         else:
             fraction = 0.046 * size[1] / size[0]
 
-        if l_location == "bottom":
-            cb = plt.colorbar(im, fraction=fraction, pad=0.04, location=l_location)
+        min_value = np.min(values)
+        max_value = np.max(values)
+
+        min_arrow = False
+
+        if vmin is not None:
+            if vmin > min_value:
+                min_arrow = True
+        max_arrow = False
+        if vmax is not None:
+            if vmax < max_value:
+                max_arrow = True
+        
+        if min_arrow and max_arrow:
+            extend = "both"
         else:
-            cb = plt.colorbar(im, fraction=fraction, pad=0.04)
+            if min_arrow:
+                extend = "min"
+            else:
+                if max_arrow:
+                    extend = "max"
+                else:
+                    extend = "neither"
+
+        if l_location == "bottom":
+            cb = plt.colorbar(im, fraction=fraction, pad=0.04, location=l_location, extend = extend)
+        else:
+            cb = plt.colorbar(im, fraction=fraction, pad=0.04, extend = extend)
 
         # add breaks to colorbar cb
         if breaks is not None:
@@ -763,6 +792,13 @@ def pub_plot(
 
         if legend_position is None:
             cb.remove()
+    
+    if font is not None:
+        for text in [ax.title, ax.xaxis.label, ax.yaxis.label, cb.ax.yaxis.label, cb.ax.xaxis.label]:
+            text.set_fontsize(font)
+        for item in ([ax.title, ax.xaxis.label, ax.yaxis.label, cb.ax.yaxis.label, cb.ax.xaxis.label] +
+                 ax.get_xticklabels() + ax.get_yticklabels()):
+            item.set_fontsize(font)
 
     if out is not None:
         print("saving as file")
