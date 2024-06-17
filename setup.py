@@ -21,7 +21,6 @@ Core abilities of nctoolkit include:
   - Calculating the correlations between variables
   - Calculating vertical statistics for the likes of oceanic data
   - Calculating ensemble statistics
-  - Calculating phenological metrics
 
 Operation of the package requires the installation of Climate Data Operators (CDO). This is the computational backend for most of the methods used. No knowledge of CDO is required to use nctoolkit. A couple of methods provide users with the option of using netCDF Operators (NCO) as a backend. Guidance for how to install the backends are available `here <https://nctoolkit.readthedocs.io/en/stable/installing.html>`__.
 
@@ -47,7 +46,7 @@ extras_require["complete"] = ["geoviews", "rioxarray", "cfchecker", "geocube", "
 REQUIREMENTS = [i.strip() for i in open("requirements.txt").readlines()]
 
 setup(name='nctoolkit',
-      version='1.1.12',
+      version='1.1.11',
       description=DESCRIPTION,
       description_content_type='text/plain',
       long_description=LONG_DESCRIPTION,
