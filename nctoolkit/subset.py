@@ -45,6 +45,8 @@ def select_levels(self, levels=None):
     levels : list
         List of the form [min_level, max_level]. Levels/depth between the two will be selected
     """
+    ds_levels = self.levels
+
     if not isinstance(levels, list):
         type(levels)
         try:
@@ -54,15 +56,18 @@ def select_levels(self, levels=None):
 
     if isinstance(levels, list):
         try:
-            levels[0] = int(np.floor(float(levels[0])))
-            levels[1] = int(np.ceil(float(levels[1])))
+            levels[0] = float(levels[0])
+            levels[1] = float(levels[1])
         except:
             raise ValueError("levels provided are not valid!")
         if levels[0] > levels[1]:
             raise ValueError("levels have the wrong order")
-        levels = f"{levels[0]}/{levels[1]}"
-
-    cdo_command = f"-sellevel,{levels}"
+    
+    sel_levels = [str(x) for x in ds_levels if levels[0] <= x <= levels[1]]
+    if len(sel_levels) == 0:
+        raise ValueError("No levels found in the dataset")
+    sel_levels = ",".join(sel_levels)
+    cdo_command = f"-sellevel,{sel_levels}"
 
     self.cdo_command(cdo_command, ensemble=False)
 
