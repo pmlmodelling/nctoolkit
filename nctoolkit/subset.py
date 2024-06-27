@@ -53,7 +53,7 @@ def select_levels(self, levels=None):
             levels = float(levels)
         except:
             raise ValueError("levels provided are not valid!")
-        levels [float(levels), float(levels)]
+        levels = [float(levels), float(levels)]
 
     if isinstance(levels, list):
         try:
