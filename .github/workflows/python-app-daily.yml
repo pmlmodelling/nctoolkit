@@ -1,0 +1,65 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Linux tests
+
+defaults:
+  run:
+    shell: bash -l {0}
+
+on:
+  schedule:
+  - cron: "30 11 * * *"
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: "ubuntu-latest" 
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: mamba-org/setup-micromamba@v1
+      # - uses: mamba-org/provision-with-micromamba@v15
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+        with:
+          micromamba-version: '1.4.5-0'
+          environment-name: foo
+          create-args: cdo=2.4.0 nco cartopy python=3.11
+          init-shell: >-
+            bash
+            powershell
+          cache-environment: true
+          post-cleanup: 'all'
+      - name: Install dependencies
+        shell: bash -l {0}
+        run: |
+          pip install numpy 
+          pip install dask
+          python -m pip install .
+          # pip install .
+          pip install pandas
+          pip install rioxarray
+          pip install pytest
+          pip install textract
+          pip install pytest-cov
+          #pip install pytest-xdist
+          #pip install pytest-cov
+          pip install coverage 
+
+      - name: Test with pytest
+        shell: bash -l {0}
+        run: |
+          python testing/test_parallel.py
+          #coverage run -m pytest -n auto tests/test*.py
+          coverage run -m pytest tests/test*.py
+          coverage report
+          coverage xml
+
+
+      - name: Upload Coverage to Codecov
+        uses: codecov/codecov-action@v4
