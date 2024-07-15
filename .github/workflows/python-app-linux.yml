@@ -45,14 +45,15 @@ jobs:
           pip install pytest
           pip install textract
           pip install pytest-cov
-          pip install pytest-xdist
+          #pip install pytest-xdist
           pip install coverage 
 
       - name: Test with pytest
         shell: bash -l {0}
         run: |
           python testing/test_parallel.py
-          coverage run -m pytest -n auto tests/test*.py
+          #coverage run -m pytest -n auto tests/test*.py
+          coverage run -m pytest tests/test*.py
           coverage report
           coverage xml
 
