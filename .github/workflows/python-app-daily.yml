@@ -9,7 +9,7 @@ defaults:
 
 on:
   schedule:
-  - cron: "30 11 * * *"
+  - cron: "05 11 * * *"
 
 jobs:
   build:
