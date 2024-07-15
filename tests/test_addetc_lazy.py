@@ -32,8 +32,9 @@ class TestAddetc:
         ds1.merge("time")
         ds1.subtract(ds)
         ds1.tmean("day")
-        ds1.to_dataframe().abs().max()
-        assert float(ds1.to_dataframe().abs().max()) < 1e-6
+        # get variable name
+        var_name = ds1.variables[0]
+        assert float(ds1.to_dataframe()[var_name].abs().max()) < 1e-6
 
     def test_yearlyts(self): 
         version = nc.cdo_version()
