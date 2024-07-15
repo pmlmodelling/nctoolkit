@@ -10,10 +10,6 @@ defaults:
 on:
   schedule:
   - cron: "30 11 * * *"
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
 
 jobs:
   build:
