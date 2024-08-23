@@ -145,12 +145,12 @@ def temp_check():
         if len(mylist) > 0:
             if len(mylist) == 1:
                 print(
-                    f"{len(mylist)} file was created by nctoolkit in prior or current "
+                    f"{len(mylist)} temporary file was created by nctoolkit in prior or current "
                     f"sessions. Consider running deep_clean!"
                 )
             else:
                 print(
-                    f"{len(mylist)} files were created by nctoolkit in prior or current"
+                    f"{len(mylist)} temporary files were created by nctoolkit in prior or current"
                     f" sessions. Consider running deep_clean!"
                 )
 
@@ -163,12 +163,12 @@ def temp_check():
         if len(mylist) > 0:
             if len(mylist) == 1:
                 print(
-                    f"{len(mylist)} file was created by nctoolkit in prior or current "
+                    f"{len(mylist)} temporary file was created by nctoolkit in prior or current "
                     f"sessions. Consider running deep_clean!"
                 )
             else:
                 print(
-                    f"{len(mylist)} files were created by nctoolkit in prior or "
+                    f"{len(mylist)} temporary files were created by nctoolkit in prior or "
                     f"current sessions. Consider running deep_clean!"
                 )
 
