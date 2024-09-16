@@ -21,3 +21,4 @@ sphinx-book-theme
 nctoolkit
 sphinxcontrib-bibtex
 
+setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
