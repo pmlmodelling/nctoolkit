@@ -180,6 +180,9 @@ def vertical_interp(
     if thickness is not None:
         fixed = False
 
+    if isinstance(levels, (int, float)):
+        levels = [levels]
+
     if fixed is False:
         self.to_zlevels(
             levels=levels, thickness=thickness, depths=depths, surface=surface
@@ -191,8 +194,6 @@ def vertical_interp(
 
     # first a quick fix for the case when there is only one vertical depth
 
-    if isinstance(levels, (int, float)):
-        levels = [levels]
 
     # levels = [float(x) for x in levels]
 
