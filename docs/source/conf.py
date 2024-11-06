@@ -36,6 +36,7 @@ extensions = [
     "sphinx_rtd_theme",
     "nbsphinx",
     'sphinx.ext.todo',
+    'sphinxcontrib.googleanalytics',
     'sphinx.ext.githubpages',
 ]
 
@@ -104,6 +105,8 @@ html_theme_options = {
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+googleanalytics_id = 'G-V5H3V2BZ74' 
+
 
 # Custom sidebar templates, must be a dictionary that maps document names
 # to template names.
