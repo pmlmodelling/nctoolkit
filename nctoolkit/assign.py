@@ -91,6 +91,8 @@ funs = [
     "exp",
     "ln",
     "sin",
+    "min",
+    "max",
     "cos",
     "tan",
     "int",
