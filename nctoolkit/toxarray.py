@@ -102,7 +102,7 @@ def to_xarray(self, decode_times=True, **kwargs):
         return data
 
 
-def to_dataframe(self, decode_times=True, **kwargs):
+def to_dataframe(self, decode_times=True, drop_bnds = True, **kwargs):
     """
     to_dataframe: Convert a dataset to a pandas data frame
 
@@ -111,6 +111,10 @@ def to_dataframe(self, decode_times=True, **kwargs):
     decode_times: boolean
         Set to False if you do not want xarray to decode the times prior to
         conversion to data frame. Default is True.
+    drop_bnds: boolean
+        Set to False if you do not want to drop the bounds from the data frame.
+        Variables/coordinates with '_bnds' in their names will be dropped.
+        Default is True.
     **kwargs : kwargs
         Optional arguments to be sent to subset.
 
@@ -125,4 +129,9 @@ def to_dataframe(self, decode_times=True, **kwargs):
     >>> ds.to_dataframe()
 
     """
-    return self.to_xarray(decode_times=decode_times, **kwargs).to_dataframe()
+    df = self.to_xarray(decode_times=decode_times, **kwargs).to_dataframe()
+    df = df.reset_index()
+    if drop_bnds:
+        df = df.drop(columns=[col for col in df.columns if 'bnds' in col])
+    df = df.drop_duplicates().reset_index(drop = True)
+    return df 
