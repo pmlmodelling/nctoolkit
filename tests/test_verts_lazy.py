@@ -236,7 +236,7 @@ class TestVerts:
         ds = nc.open_data("data/woa18_decav_t01_01.nc")
         ds.subset(variable = "t_an")
         ds.run()
-        df = ds.to_dataframe()
+        df = ds.to_dataframe(drop_bnds = False)
         depths = df.reset_index().loc[:,["depth", "bnds", "depth_bnds"]].drop_duplicates().drop(columns = "bnds").groupby(["depth"]).apply(foo).drop(columns = "depth").reset_index()
         depths.columns = ["depth", "depth_bnds"]
         df_check = (
