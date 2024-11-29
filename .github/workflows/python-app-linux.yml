@@ -27,7 +27,7 @@ jobs:
         with:
           micromamba-version: '1.4.5-0'
           environment-name: foo
-          create-args: cdo=2.4.0 nco cartopy python=3.11
+          create-args: cdo=2.4.0 nco cartopy python=3.13
           init-shell: >-
             bash
             powershell
@@ -46,6 +46,7 @@ jobs:
           pip install textract
           pip install pytest-cov
           #pip install pytest-xdist
+          #pip install pytest-cov
           pip install coverage 
 
       - name: Test with pytest
