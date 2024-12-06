@@ -3,7 +3,8 @@
 =======================================================
 
 .. image:: code_front.png 
-  :width: 600
+   :width: 100%
+   :align: center
 
 
 nctoolkit is a comprehensive and computationally efficient Python package for analyzing and post-processing netCDF data.
