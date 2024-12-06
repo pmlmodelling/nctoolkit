@@ -4,5 +4,6 @@ nbsphinx>=0.8.6
 sphinx-book-theme
 sphinx_rtd_theme
 sphinxcontrib-bibtex
+sphinxcontrib-googleanalytics==0.4
 
 

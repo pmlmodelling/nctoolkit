@@ -83,6 +83,9 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
+googleanalytics_id = 'G-V5H3V2BZ74' 
+
+googleanalytics_enabled = True
 
 
 # -- Options for HTML output -------------------------------------------------
