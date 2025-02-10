@@ -4,7 +4,7 @@ import sys
 DESCRIPTION = "A Python package for netCDF analysis and post-processing"
 LONG_DESCRIPTION = """
 
-**nctoolkit** is a comprehensive Python (3.8 and above) package for analyzing netCDF data on Linux and macOS.
+**nctoolkit** is a comprehensive Python (3.10 and above) package for analyzing netCDF data on Linux and macOS.
 
 Core abilities of nctoolkit include:
 
@@ -51,13 +51,11 @@ setup(name='nctoolkit',
       description_content_type='text/plain',
       long_description=LONG_DESCRIPTION,
       long_description_content_type='text/plain',
-      python_requires='>=3.6.1',
+      python_requires='>=3.10.0',
       classifiers=[
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Operating System :: POSIX :: Linux",
         "Operating System :: MacOS",
-        'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',
         'Programming Language :: Python :: 3.12',
