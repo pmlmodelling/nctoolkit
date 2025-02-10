@@ -51,7 +51,7 @@ setup(name='nctoolkit',
       description_content_type='text/plain',
       long_description=LONG_DESCRIPTION,
       long_description_content_type='text/plain',
-      python_requires='>=3.10.0',
+      python_requires='>=3.6.1',
       classifiers=[
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Operating System :: POSIX :: Linux",
