@@ -413,6 +413,12 @@ def select_timesteps(self, times=None):
     if not isinstance(times, list):
         times = [times]
 
+    # coerce to int
+    try:
+        times = [int(x) for x in times]
+    except:
+        pass
+
     for tt in times:
         if not isinstance(tt, int):
             raise TypeError(f"{tt} is not an int")
