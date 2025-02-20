@@ -415,7 +415,7 @@ def select_timesteps(self, times=None):
 
     # coerce to int
     try:
-        times = [int(x) for x in times]
+        times = [int(x) if "int" in str(type(x)) else x for x in times]
     except:
         pass
 
