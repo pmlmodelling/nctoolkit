@@ -55,6 +55,7 @@ def fix_label(x):
     new_x = new_x.replace("/m**3", "m$^{-3}$")
     new_x = new_x.replace("/m^3", "m$^{-3}$")
     new_x = new_x.replace("/m^2", "m$^{-2}$")
+    new_x = new_x.replace("/yr", "year$^{-1}$")
     new_x = new_x.replace("/m2", "m$^{-2}$")
     new_x = new_x.replace("/d)", "d$^{-1}$)")
     new_x = new_x.replace("/s)", "s$^{-1}$)")
