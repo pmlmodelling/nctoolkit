@@ -32,32 +32,44 @@ def generate_level_bounds(self):
 
 
 
-def bottom(self):
+def bottom(self, choice = "level"):
     """
-    bottom: Extract the bottom level from a dataset
+    bottom: Extract the bottom level or value from a dataset
 
-    This extracts the bottom level from each netCDF file. Please note that for
+    This extracts the bottom level or value from each netCDF file. Please note that for
     ensembles, it uses the first file to derive the index of the bottom level.
 
-    You may need to double check that the bottom vertical level is the sea 'bottom' etc., as this is not always the case.
-
-    Use bottom_mask for files when the bottom cell in netCDF files do not represent
-    the actual bottom.
+    Parameters
+    -------------
+    choice : str
+        Set to 'level' to extract the bottom level, or 'value' to extract the bottommost non-missing value. 
 
     Examples
     ------------
 
     If you wanted to extract the bottom vertical level of a dataset, do the following:
 
-    >>> ds.bottom()
+    >>> ds.bottom(choice = 'level')
 
     This method is most useful for things like oceanic model data, where the bottom cell corresponds to the bottom of the ocean.
+
+    If you wanted to find the deepest non-missing value in a dataset, you would do the following:
+
+    >>> ds.bottom(choice = 'value')
 
     """
 
     # extract the number of the bottom level
     # Use the first file for an ensemble
     # pull the cdo command together, then run it or store it
+
+    if choice not in ["level", "value"]:
+        raise ValueError("Choice must be either 'level' or 'value'")
+
+    if choice == "value":
+        self.cdo_command("bottomvalue")
+        return None
+
     if len(self) > 1:
         ff = self.current[0]
         warnings.warn(
