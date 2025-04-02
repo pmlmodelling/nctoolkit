@@ -73,6 +73,7 @@ Plotting
    :toctree: generated/
 
    DataSet.plot
+   DataSet.pub_plot
 
 
 Variable modification 
