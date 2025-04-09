@@ -128,6 +128,10 @@ def run_this(os_command, self, output="one", out_file=None, suppress=False):
 
     cores = session_info["cores"]
 
+    # if len(self) == 1:
+    #     if cores > 1:
+    #         os_command = os_command.replace("cdo ", f"cdo -P {cores} ")
+
     if len(self) == 1:
         output = "ensemble"
 
@@ -243,11 +247,15 @@ def run_this(os_command, self, output="one", out_file=None, suppress=False):
                         if self._zip:
                             ff_command = ff_command.replace("cdo ", "cdo -z zip ")
 
+                    if session_info["cores"] > 1:
+                        if len(self) == 1:
+                            ff_command = ff_command.replace("cdo ", f"cdo -P {session_info['cores']} ")
                     new_history.append(ff_command)
 
                     #warnings.simplefilter("ignore")
 
                     #with patch('sys.warnoptions', []):
+
 
                     if cores > 1:
                         temp = pool.apply_async(
@@ -288,13 +296,6 @@ def run_this(os_command, self, output="one", out_file=None, suppress=False):
                             warnings.warn(mm)
                             if mm in session_warnings:
                                 session_warnings.remove(mm)
-                        # remove element from session_warnings
-
-                        #session_warnings.remove(ff)
-                    #tidy_warnings(w)
-                #if cores > 1:
-                #    pool.close()
-
 
                 self.history = copy.deepcopy(new_history)
                 self.current = copy.deepcopy(target_list)
@@ -323,6 +324,7 @@ def run_this(os_command, self, output="one", out_file=None, suppress=False):
                             session_warnings.remove(mm)
 
                 return None
+
 
             if ((output == "one") and (len(self) > 1)) or self._zip is False:
                 new_history = copy.deepcopy(self._hold_history)
@@ -417,11 +419,15 @@ def run_this(os_command, self, output="one", out_file=None, suppress=False):
                                 warnings.warn(
                                     f"The following variables are not in all files, so were ignored when merging: {removed}"
                                 )
-
+                            
                             target = run_cdo(
                                 os_command, target, out_file, precision=self._precision
                             )
                 else:
+                    if session_info["cores"] > 1: 
+                        if len(self) == 1:
+                           os_command = os_command.replace("cdo ", f"cdo -P {session_info['cores']} ")
+
                     target = run_cdo(
                         os_command, target, out_file, precision=self._precision
                     )
