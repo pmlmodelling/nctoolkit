@@ -313,6 +313,8 @@ def spatial_sum(self, by_area=False):
         # run_this(cdo_command, self, output="ensemble")
 
         return None
+    
+    self.run()
 
     new_files = []
     new_commands = []
