@@ -1,5 +1,6 @@
 import subprocess
 from dateutil.parser import parse
+import xarray as xr
 
 
 def nc_times(ff):
@@ -31,7 +32,12 @@ def nc_times(ff):
         cdo_result = [parse(x) for x in cdo_result]
         return cdo_result
     except:
-        return cdo_result
+        try:
+            ds = xr.open_dataset(ff) 
+            times = list(ds.time.values)
+            return times
+        except:
+            return cdo_result
 
 
 def nc_format(ff):
