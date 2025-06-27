@@ -51,13 +51,4 @@ jobs:
         run: |
           python testing/test_parallel.py
           #coverage run -m pytest -n auto tests/test*.py
-          coverage run -m pytest tests/test*.py
-          coverage report
-          coverage xml
-
-
-      - name: Upload Coverage to Codecov
-        uses: codecov/codecov-action@v5
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-
+          pytest tests/test*.py
