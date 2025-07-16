@@ -145,11 +145,17 @@ def operation(self, method="mul", ff=None, var=None):
             else:
                 ff_times_df = (
                     pd.DataFrame({"time": ff_times})
-                    .assign(
-                        year=lambda x: x.time.dt.year,
-                        month=lambda x: x.time.dt.month,
-                        day=lambda x: x.time.dt.day,
-                    )
+                )
+                ff_times_df["year"] = [x.year for x in ff_times]
+                ff_times_df["month"] = [x.month for x in ff_times]
+                ff_times_df["day"] = [x.day for x in ff_times]
+                    # .assign(
+                    #     year=lambda x: x.time.dt.year,
+                    #     month=lambda x: x.time.dt.month,
+                    #     day=lambda x: x.time.dt.day,
+                    # )
+                ff_times_df = (
+                    ff_times_df
                     .drop(columns="time")
                 )
 
