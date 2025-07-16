@@ -55,9 +55,11 @@ def to_zlevels(self, levels=None, thickness=None, depths=None, surface=None):
     # Set up the thickness
 
     ds = self.copy()
-
-    ds.subset(variables=ds.contents.query("nlevels > 1").variable)
-    ds.run()
+   
+    var_select = list(ds.contents.query("nlevels > 1").variable)
+    if len(var_select) > 1: 
+        ds.subset(variables=ds.contents.query("nlevels > 1").variable)
+        ds.run()
     vars = ds.variables
 
     sorted = False
