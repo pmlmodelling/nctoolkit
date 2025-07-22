@@ -41,6 +41,7 @@ jobs:
           # pip install .
           pip install pandas
           pip install rioxarray
+          pip install xarray!=2025.7.0
           pip install pytest
           #pip install textract
           pip install pytest-cov
