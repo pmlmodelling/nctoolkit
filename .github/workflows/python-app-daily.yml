@@ -38,6 +38,7 @@ jobs:
           python -m pip install .
           # pip install .
           pip install pandas
+          pip install xarray!=2025.7.0
           pip install rioxarray
           pip install pytest
           pip install textract
