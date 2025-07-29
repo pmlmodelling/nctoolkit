@@ -53,6 +53,7 @@ class TestCrop:
         assert len(matcher.values) == len(df)
 
 
+
         print("test 2")
         matcher = nc.open_matchpoint()
         depths = ds.levels
@@ -127,7 +128,6 @@ class TestCrop:
         print("test 7")
         ds = nc.open_data("data/sst.mon.mean.nc", checks=  False) 
         df = pd.DataFrame({"lon":[-20], "lat":56})
-        ds.split("year")
 
         matcher = nc.open_matchpoint()
         matcher.add_data(ds)
