@@ -12,7 +12,6 @@ def match_points(
     regrid="bil",
     max_extrap=5,
     quiet = False,
-    direction_positive = None,
     **kwargs,
 ):
     """
@@ -49,11 +48,6 @@ def match_points(
         Maximum distance for extrapolation. Defaults to 5.
     quiet: bool
         Set to True to suppress output
-    direction_positive: str
-        Set to "down" if the netcdf data is ordered from shallower to deeper depths only. 
-        Set to "up" if the netcdf data is ordered from deeper to shallower depths only.
-        Default is None, which will parse it from the files
-        Most netCDF files are ordered from shallower to deeper depths. 
     kwargs: kwargs
         Additional arguments to send to assign
 
@@ -93,7 +87,7 @@ def match_points(
         if x in df.columns:
             self.points_temporal = True
 
-    mp.add_data(x=ds, depths=depths, variables=variables, top=top, nan=nan, quiet = quiet, direction_positive = direction_positive, **kwargs)
+    mp.add_data(x=ds, depths=depths, variables=variables, top=top, nan=nan, quiet = quiet, **kwargs)
     mp.add_points(df, quiet = quiet)
     mp.matchup(tmean=tmean, regrid=regrid, max_extrap=max_extrap, quiet = quiet)
     return mp.values

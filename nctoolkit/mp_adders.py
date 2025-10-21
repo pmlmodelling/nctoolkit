@@ -4,31 +4,31 @@ from nctoolkit.matchpoint import open_matchpoint
 import nctoolkit.api as api
 import xarray as xr
 
-def is_z_down(ff):
-    import netCDF4 as nc
-    try:
-        ds = open_data(ff, checks = False)
-        var = ds.variables[0]
-        ds = xr.open_dataset(ff)
-        for x in ds[var].metpy.coordinates("longitude"):
-            lon_name = x.name
-        for x in ds[var].metpy.coordinates("latitude"):
-            lat_name = x.name
-        for x in ds[var].metpy.coordinates("time"):
-            time_name = x.name
-        coords = [x for x in list(ds.coords) if x not in [lon_name, lat_name, time_name]]
-        ds = nc.Dataset(ff)
-        if len(coords) == 1:
+# def is_z_down(ff):
+#     import netCDF4 as nc
+#     try:
+#         ds = open_data(ff, checks = False)
+#         var = ds.variables[0]
+#         ds = xr.open_dataset(ff)
+#         for x in ds[var].metpy.coordinates("longitude"):
+#             lon_name = x.name
+#         for x in ds[var].metpy.coordinates("latitude"):
+#             lat_name = x.name
+#         for x in ds[var].metpy.coordinates("time"):
+#             time_name = x.name
+#         coords = [x for x in list(ds.coords) if x not in [lon_name, lat_name, time_name]]
+#         ds = nc.Dataset(ff)
+#         if len(coords) == 1:
 
-            z = ds.variables[coords[0]]
-            if hasattr(z, 'positive'):
-                if z.positive == 'down':
-                    return True
-                else:
-                    return False
-        raise ValueError("Could not determine if z-axis is down from the provided file.")
-    except:
-        raise ValueError("Could not determine if z-axis is down from the provided file.")
+#             z = ds.variables[coords[0]]
+#             if hasattr(z, 'positive'):
+#                 if z.positive == 'down':
+#                     return True
+#                 else:
+#                     return False
+#         raise ValueError("Could not determine if z-axis is down from the provided file.")
+#     except:
+#         raise ValueError("Could not determine if z-axis is down from the provided file.")
 
 
 def match_points(
@@ -94,7 +94,7 @@ def match_points(
     return mp.values
 
 
-def add_data(self, x=None, variables=None, depths=None, nan=None, top=False, quiet = False, direction_positive = None, **kwargs):
+def add_data(self, x=None, variables=None, depths=None, nan=None, top=False, quiet = False, **kwargs):
     """
     Add dataset for matching
 
@@ -118,6 +118,7 @@ def add_data(self, x=None, variables=None, depths=None, nan=None, top=False, qui
         Set to True to suppress output
 
     """
+    self.depths = None
 
     invert = False
     if direction_positive is not None:
@@ -170,11 +171,10 @@ def add_data(self, x=None, variables=None, depths=None, nan=None, top=False, qui
                         "Unable to derive depths from the dataset! Please provide them."
                     )
 
-    try:
-        if is_z_down(self.depths[0]) is False:
-            invert = True
-    except:
-        pass
+    # if isinstance(self.depths, api.DataSet):
+    #     if is_z_down(self.depths[0]) is False and direction_positive != None:
+    #         invert = True
+
     if depths is None:
         if self.points is not None:
             if "depth" in self.points:
@@ -263,9 +263,10 @@ def add_data(self, x=None, variables=None, depths=None, nan=None, top=False, qui
     else:
         self.data = open_data(x, checks=False)
 
-    if invert:
-        self.depths.invert_levels()
-        self.data.invert_levels()
+    # if invert:
+    #     self.depths.invert_levels()
+    #     self.data.invert_levels()
+    #     print("inverted")
 
     self.variables = variables
 
