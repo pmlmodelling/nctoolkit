@@ -2,6 +2,33 @@ import pandas as pd
 from nctoolkit.api import open_data, open_thredds
 from nctoolkit.matchpoint import open_matchpoint
 import nctoolkit.api as api
+import xarray as xr
+
+def is_z_down(ff):
+    import netCDF4 as nc
+    try:
+        ds = open_data(ff, checks = False)
+        var = ds.variables[0]
+        ds = xr.open_dataset(ff)
+        for x in ds[var].metpy.coordinates("longitude"):
+            lon_name = x.name
+        for x in ds[var].metpy.coordinates("latitude"):
+            lat_name = x.name
+        for x in ds[var].metpy.coordinates("time"):
+            time_name = x.name
+        coords = [x for x in list(ds.coords) if x not in [lon_name, lat_name, time_name]]
+        ds = nc.Dataset(ff)
+        if len(coords) == 1:
+
+            z = ds.variables[coords[0]]
+            if hasattr(z, 'positive'):
+                if z.positive == 'down':
+                    return True
+                else:
+                    return False
+        raise ValueError("Could not determine if z-axis is down from the provided file.")
+    except:
+        raise ValueError("Could not determine if z-axis is down from the provided file.")
 
 
 def match_points(
@@ -67,7 +94,7 @@ def match_points(
     return mp.values
 
 
-def add_data(self, x=None, variables=None, depths=None, nan=None, top=False, quiet = False, **kwargs):
+def add_data(self, x=None, variables=None, depths=None, nan=None, top=False, quiet = False, direction_positive = None, **kwargs):
     """
     Add dataset for matching
 
@@ -91,6 +118,15 @@ def add_data(self, x=None, variables=None, depths=None, nan=None, top=False, qui
         Set to True to suppress output
 
     """
+
+    invert = False
+    if direction_positive is not None:
+        # must be  down or up
+        if direction_positive not in ["up", "down"]:
+            raise ValueError("direction_positive must be True or False")
+        if direction_positive != "down":
+            invert = True
+
     thredds = False
     try:
         if len(x.history) == 0:
@@ -134,6 +170,11 @@ def add_data(self, x=None, variables=None, depths=None, nan=None, top=False, qui
                         "Unable to derive depths from the dataset! Please provide them."
                     )
 
+    try:
+        if is_z_down(self.depths[0]) is False:
+            invert = True
+    except:
+        pass
     if depths is None:
         if self.points is not None:
             if "depth" in self.points:
@@ -156,6 +197,7 @@ def add_data(self, x=None, variables=None, depths=None, nan=None, top=False, qui
     else:
         self.data = open_data(x, checks=False)
         # ds_vars = open_data(self.data[0], checks = False)
+
 
     if variables is None:
         if quiet is False:
@@ -220,6 +262,10 @@ def add_data(self, x=None, variables=None, depths=None, nan=None, top=False, qui
         self.data = open_thredds(x, checks=False)
     else:
         self.data = open_data(x, checks=False)
+
+    if invert:
+        self.depths.invert_levels()
+        self.data.invert_levels()
 
     self.variables = variables
 
