@@ -302,7 +302,8 @@ def matchup(self, tmean=False, regrid="bil", max_extrap=5, quiet = False):
             if self.variables is not None:
                 ds.subset(variables=self.variables)
             if self.top:
-                ds.top()
+                if len(ds.levels) > 1:
+                    ds.cdo_command("topvalue")
 
             if self.temporal:
                 for opt in ["day", "year", "month"]:
