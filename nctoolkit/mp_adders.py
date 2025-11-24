@@ -4,33 +4,6 @@ from nctoolkit.matchpoint import open_matchpoint
 import nctoolkit.api as api
 import xarray as xr
 
-# def is_z_down(ff):
-#     import netCDF4 as nc
-#     try:
-#         ds = open_data(ff, checks = False)
-#         var = ds.variables[0]
-#         ds = xr.open_dataset(ff)
-#         for x in ds[var].metpy.coordinates("longitude"):
-#             lon_name = x.name
-#         for x in ds[var].metpy.coordinates("latitude"):
-#             lat_name = x.name
-#         for x in ds[var].metpy.coordinates("time"):
-#             time_name = x.name
-#         coords = [x for x in list(ds.coords) if x not in [lon_name, lat_name, time_name]]
-#         ds = nc.Dataset(ff)
-#         if len(coords) == 1:
-
-#             z = ds.variables[coords[0]]
-#             if hasattr(z, 'positive'):
-#                 if z.positive == 'down':
-#                     return True
-#                 else:
-#                     return False
-#         raise ValueError("Could not determine if z-axis is down from the provided file.")
-#     except:
-#         raise ValueError("Could not determine if z-axis is down from the provided file.")
-
-
 def match_points(
     ds=None,
     df=None,
@@ -121,12 +94,6 @@ def add_data(self, x=None, variables=None, depths=None, nan=None, top=False, qui
     self.depths = None
 
     invert = False
-    if direction_positive is not None:
-        # must be  down or up
-        if direction_positive not in ["up", "down"]:
-            raise ValueError("direction_positive must be True or False")
-        if direction_positive != "down":
-            invert = True
 
     thredds = False
     try:
@@ -170,10 +137,6 @@ def add_data(self, x=None, variables=None, depths=None, nan=None, top=False, qui
                     raise ValueError(
                         "Unable to derive depths from the dataset! Please provide them."
                     )
-
-    # if isinstance(self.depths, api.DataSet):
-    #     if is_z_down(self.depths[0]) is False and direction_positive != None:
-    #         invert = True
 
     if depths is None:
         if self.points is not None:
