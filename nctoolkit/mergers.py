@@ -216,9 +216,14 @@ def merge(self, join="variables", match=["year", "month", "day"], check=True):
     all_df = []
     if len(all_times) > 1:
         for i in range(0, len(all_times)):
-            month = [v.month for v in all_times[i]]
-            year = [v.year for v in all_times[i]]
-            day = [v.day for v in all_times[i]]
+            try:
+                month = [v.month for v in all_times[i]]
+                year = [v.year for v in all_times[i]]
+                day = [v.day for v in all_times[i]]
+            except:
+                month = [int(str(v).split("T")[0].split("-")[1]) for v in all_times[i]]
+                year = [int(str(v).split("T")[0].split("-")[0]) for v in all_times[i]]
+                day = [int(str(v).split("T")[0].split("-")[2]) for v in all_times[i]]
             i_data = pd.DataFrame({"year": year, "month": month, "day": day})
             i_data = i_data.loc[:, match]
             all_df.append(i_data)
