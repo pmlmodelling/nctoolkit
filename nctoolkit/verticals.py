@@ -176,21 +176,20 @@ def vertical_interp(
             if surface is None:
                 raise ValueError("Please provide surface")
 
-    if fixed is None:
-        if thickness is None:
-            raise ValueError("You must provide the fixed arg")
-
     if depths is None:
         if fixed is False:
             if thickness is None:
-                raise ValueError("Please provide thickness")
+                raise ValueError("Please provide thickness or depths")
+
+    if thickness is not None:
+        fixed = False
+
+    if depths is not None:
+        fixed = False
 
     if not isinstance(fixed, bool):
         if thickness is None:
             raise TypeError("fixed must be a bool")
-
-    if thickness is not None:
-        fixed = False
 
     if isinstance(levels, (int, float)):
         levels = [levels]
