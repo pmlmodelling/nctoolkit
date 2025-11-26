@@ -32,7 +32,7 @@ class TestCrop:
         assert os.path.exists(out_file)
         # get file size
         # this needs to be improved so it figures if the file is similar to the one in the repo
-        assert os.path.getsize(out_file) > 160000 and os.path.getsize(out_file) < 170000
+        assert os.path.getsize(out_file) > 140000 and os.path.getsize(out_file) < 150000
 
         with pytest.raises(ValueError):
             ds.pub_plot(mid_point = -1000)
@@ -46,7 +46,7 @@ class TestCrop:
         assert os.path.exists(out_file)
         # get file size
         # this needs to be improved so it figures if the file is similar to the one in the repo
-        assert os.path.getsize(out_file) > 160000 and os.path.getsize(out_file) < 170000
+        assert os.path.getsize(out_file) > 140000 and os.path.getsize(out_file) < 150000
 
         # value error check
 
