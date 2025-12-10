@@ -162,7 +162,6 @@ Ensemble creation
    :toctree: generated/
 
    create_ensemble
-   generate_ensemble
 
 Arithemetic methods
 ---------------------
