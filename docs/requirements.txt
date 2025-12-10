@@ -18,6 +18,4 @@ numpy
 plotnine
 dill
 sphinx-book-theme
-sphinxcontrib-bibtex
-sphinxcontrib-googleanalytics==0.4
 
