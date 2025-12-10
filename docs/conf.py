@@ -8,7 +8,7 @@ sys.path.insert(0, os.path.abspath('../..'))
 # -- Project information -----------------------------------------------------
 
 project = 'nctoolkit'
-copyright = '2023, Robert Wilson'
+copyright = '2025, Robert Wilson'
 author = 'Robert Wilson'
 
 # The short X.Y version
@@ -76,9 +76,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
-googleanalytics_id = 'G-V5H3V2BZ74' 
 
-googleanalytics_enabled = True
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -91,17 +89,11 @@ googleanalytics_enabled = True
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
-html_theme_options = {
-
-    'analytics_id': 'G-V5H3V2BZ74' ## 'UA-46143561-3'
-
-        }
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
-googleanalytics_id = 'G-V5H3V2BZ74' 
 
 
 # Custom sidebar templates, must be a dictionary that maps document names
@@ -114,6 +106,5 @@ googleanalytics_id = 'G-V5H3V2BZ74'
 #
 # html_sidebars = {}
 
-bibtex_bibfiles = ['ref.bib']
 
 
