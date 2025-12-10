@@ -31,7 +31,6 @@ extensions = [
     "sphinx.ext.extlinks",
     "sphinx.ext.mathjax",
     "sphinx.ext.napoleon",
-    "sphinx_rtd_theme",
     "nbsphinx",
     'sphinx.ext.todo',
     'sphinxcontrib.googleanalytics',
