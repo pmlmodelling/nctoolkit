@@ -7,3 +7,4 @@ widgetsnbextension
 ipywidgets
 pandas
 docutils<0.17
+nctoolkit
