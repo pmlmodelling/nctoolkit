@@ -35,7 +35,7 @@ extensions = [
     'sphinx.ext.githubpages',
 ]
 
-html_theme = "haiku"
+html_theme = "sphinx_rtd_theme"
 
 
 html_static_path = ['_static']
