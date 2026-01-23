@@ -33,6 +33,12 @@ extensions = [
     "sphinx.ext.napoleon",
     'sphinx.ext.todo',
     'sphinx.ext.githubpages',
+    'jupyter_sphinx.execute',
+    # nbsphinx
+    'nbsphinx'
+
+
+
 ]
 
 html_theme = "sphinx_rtd_theme"
