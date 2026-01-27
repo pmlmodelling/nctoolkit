@@ -26,7 +26,7 @@ class TestToxar:
 
         ds = nc.open_data("data/woa18_decav_t01_01.nc", checks = False)
         x = ds.to_xarray().time.values[0]
-        assert str(x) == '1986-01-16T12:00:00.000000000'
+        assert str(x) == '1986-01-16T12:00:00.000000'
 
 
     def test_xarray3(self):
