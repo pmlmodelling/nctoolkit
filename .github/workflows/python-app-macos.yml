@@ -40,7 +40,7 @@ jobs:
           python -m pip install .
           pip install xarray
           # pip install .
-          pip install pandas>=3.0.0
+          pip install pandas==3.0.0
           pip install rioxarray
           pip install pytest
           pip install pytest-cov
