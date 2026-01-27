@@ -48,7 +48,7 @@ class TestApi2:
         tracker.assign(sst2 = lambda x: x.sst + 283)
         tracker.run()
         # linux only
-        if platform.system() == "":
+        if platform.system() == "Linux":
             assert str(tracker.contents.long_name[1]) == "nan" 
         else:
             assert tracker.contents.long_name[1] == None 
