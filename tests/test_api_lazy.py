@@ -4,6 +4,7 @@ import glob
 import xarray as xr
 import os, pytest
 import numpy as np
+import platform
 
 nc.options(lazy=True)
 
@@ -46,7 +47,11 @@ class TestApi2:
         assert tracker.contents.long_name[0] == 'Monthly Means of Global Sea Surface Temperature'
         tracker.assign(sst2 = lambda x: x.sst + 283)
         tracker.run()
-        assert str(tracker.contents.long_name[1]) == "nan" 
+        # linux only
+        if platform.system() == "":
+            assert str(tracker.contents.long_name[1]) == "nan" 
+        else:
+            assert tracker.contents.long_name[1] == None 
 
 
         # check wildcard
