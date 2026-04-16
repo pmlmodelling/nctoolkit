@@ -314,6 +314,11 @@ def vertical_mean(self, thickness=None, depth_range=None, fixed=None):
             ds_thick = open_data(thickness)
             if len(ds_thick.variables) != 1:
                 raise ValueError("Please provide a thickness file with 1 variable!")
+    ds_mask = open_data(self[0])
+    ds_mask.subset(variables=ds_mask.variables[0], time = 0)
+    ds_mask.abs()
+    ds_mask > 0
+    ds_thick * ds_mask
 
     thick_var = ds_thick.variables[0]
     # modify the depth if it is a list
