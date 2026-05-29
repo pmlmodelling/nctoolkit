@@ -1,7 +1,6 @@
 import glob
 import shutil
 import os
-import platform
 import tempfile
 import time
 import stat
@@ -66,19 +65,17 @@ def cleanup():
         if os.path.exists(dd):
             nc_remove(dd)
 
-    # only update the session size on linux
 
     if session_info["user_dir"] is False:
-        if platform.system() == "Linux":
-            result = os.statvfs("/tmp/")
-            result = result.f_frsize * result.f_bavail
-            if result > session_info["size"]:
-                if session_info["temp_dir"] == "/var/tmp/":
-                    session_info["temp_dir"] = "/tmp/"
-            session_info["size"] = result
-
-            if session_info["size"] > (1.5 * session_info["latest_size"]):
+        result = os.statvfs("/tmp/")
+        result = result.f_frsize * result.f_bavail
+        if result > session_info["size"]:
+            if session_info["temp_dir"] == "/var/tmp/":
                 session_info["temp_dir"] = "/tmp/"
+        session_info["size"] = result
+
+        if session_info["size"] > (1.5 * session_info["latest_size"]):
+            session_info["temp_dir"] = "/tmp/"
 
 
 def clean_all(x = None, y = None):
@@ -140,43 +137,25 @@ def temp_check():
     Function to check temp files
     """
 
-    if platform.system() == "Linux":
-        mylist = [f for f in glob.glob("/tmp/*")]
-        mylist = mylist + [f for f in glob.glob("/var/tmp/*")]
-        mylist = mylist + [f for f in glob.glob("/usr/tmp/*")]
-        mylist = [f for f in mylist if "nctoolkit" in f]
+    mylist = [f for f in glob.glob("/tmp/*")]
+    mylist = mylist + [f for f in glob.glob("/var/tmp/*")]
+    mylist = mylist + [f for f in glob.glob("/usr/tmp/*")]
+    mylist = [f for f in mylist if "nctoolkit" in f]
 
-        session_info["old_files"] = mylist
+    session_info["old_files"] = mylist
 
-        if len(mylist) > 0:
-            if len(mylist) == 1:
-                print(
-                    f"{len(mylist)} temporary file was created by nctoolkit in prior or current "
-                    f"sessions. Consider running deep_clean!"
-                )
-            else:
-                print(
-                    f"{len(mylist)} temporary files were created by nctoolkit in prior or current"
-                    f" sessions. Consider running deep_clean!"
-                )
+    if len(mylist) > 0:
+        if len(mylist) == 1:
+            print(
+                f"{len(mylist)} temporary file was created by nctoolkit in prior or current "
+                f"sessions. Consider running deep_clean!"
+            )
+        else:
+            print(
+                f"{len(mylist)} temporary files were created by nctoolkit in prior or current"
+                f" sessions. Consider running deep_clean!"
+            )
 
-    else:
-        temp_folder = tempfile.gettempdir()
-
-        mylist = [f for f in glob.glob(f"{temp_folder}/*")]
-        mylist = [f for f in mylist if "nctoolkit" in f]
-
-        if len(mylist) > 0:
-            if len(mylist) == 1:
-                print(
-                    f"{len(mylist)} temporary file was created by nctoolkit in prior or current "
-                    f"sessions. Consider running deep_clean!"
-                )
-            else:
-                print(
-                    f"{len(mylist)} temporary files were created by nctoolkit in prior or "
-                    f"current sessions. Consider running deep_clean!"
-                )
 
 
 def disk_clean(self):
@@ -187,46 +166,44 @@ def disk_clean(self):
     if session_info["user_dir"]:
         return None
 
-    # only use this on linux
-    if platform.system() == "Linux":
-        # get files as a list
+    # get files as a list
 
-        ff_list = self.current
+    ff_list = self.current
 
-        # First step is to figure out how much space is in /tmp
-        # Do nothing if it is less than 0.5 GB
+    # First step is to figure out how much space is in /tmp
+    # Do nothing if it is less than 0.5 GB
 
-        if session_info["temp_dir"] == "/tmp/":
-            result = os.statvfs("/tmp/")
-            result = result.f_frsize * result.f_bavail
+    if session_info["temp_dir"] == "/tmp/":
+        result = os.statvfs("/tmp/")
+        result = result.f_frsize * result.f_bavail
 
-            if result > 0.5 * 1e9:
-                return None
-
-        if session_info["temp_dir"] not in ["/tmp/", "/var/tmp", "/usr/tmp"]:
+        if result > 0.5 * 1e9:
             return None
 
-        # at this point we want to change the temp dir,
-        # though it probably has been already
-        session_info["temp_dir"] = "/var/tmp/"
-        # get a list of the new file names
+    if session_info["temp_dir"] not in ["/tmp/", "/var/tmp", "/usr/tmp"]:
+        return None
 
-        # loop through the existing ones
-        for ff in ff_list:
-            # check if the file is in /var/tmp
-            # if it is, keep it that way
-            # check the space remaining the /tmp
-            result = os.statvfs("/tmp/")
-            result = result.f_frsize * result.f_bavail
-            # if there is less than 0.5 GB left, move the file to /var/tmp
-            if result < 0.5 * 1e9:
-                if ff.startswith("/tmp/"):
-                    new_ff = ff.replace("/tmp/", "/var/tmp/")
-                    append_safe(new_ff)
-                    remove_safe(ff)
-                    shutil.copyfile(ff, new_ff)
-                    self.current = [
-                        new_ff if file == ff else file for file in self.current
-                    ]
+    # at this point we want to change the temp dir,
+    # though it probably has been already
+    session_info["temp_dir"] = "/var/tmp/"
+    # get a list of the new file names
 
-        cleanup()
+    # loop through the existing ones
+    for ff in ff_list:
+        # check if the file is in /var/tmp
+        # if it is, keep it that way
+        # check the space remaining the /tmp
+        result = os.statvfs("/tmp/")
+        result = result.f_frsize * result.f_bavail
+        # if there is less than 0.5 GB left, move the file to /var/tmp
+        if result < 0.5 * 1e9:
+            if ff.startswith("/tmp/"):
+                new_ff = ff.replace("/tmp/", "/var/tmp/")
+                append_safe(new_ff)
+                remove_safe(ff)
+                shutil.copyfile(ff, new_ff)
+                self.current = [
+                    new_ff if file == ff else file for file in self.current
+                ]
+
+    cleanup()

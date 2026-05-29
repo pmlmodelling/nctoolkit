@@ -3,7 +3,6 @@ import copy
 import os
 import re
 import subprocess
-import platform
 import warnings
 
 import signal
@@ -109,19 +108,18 @@ def run_nco(command, target, out_file=None, overwrite=False):
             if overwrite is False:
                 raise ValueError("Attempting to overwrite an opened file")
 
-    if platform.system() == "Linux":
-        if session_info["temp_dir"] == "/tmp/":
-            result = os.statvfs("/tmp/")
-            result = result.f_frsize * result.f_bavail
+    if session_info["temp_dir"] == "/tmp/":
+        result = os.statvfs("/tmp/")
+        result = result.f_frsize * result.f_bavail
 
-            if result < 1 * 1e9:
-                session_info["temp_dir"] == "/var/tmp/"
-                if target.startswith("/tmp"):
-                    new_target = target.replace("/tmp/", "/var/tmp/")
-                    command = command.replace(target, new_target)
-                    remove_safe(target)
-                    target = new_target
-                    append_safe(target)
+        if result < 1 * 1e9:
+            session_info["temp_dir"] == "/var/tmp/"
+            if target.startswith("/tmp"):
+                new_target = target.replace("/tmp/", "/var/tmp/")
+                command = command.replace(target, new_target)
+                remove_safe(target)
+                target = new_target
+                append_safe(target)
 
     out = subprocess.Popen(
         command,
@@ -209,17 +207,16 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
             if overwrite is False:
                 raise ValueError("Attempting to overwrite file")
 
-    if platform.system() == "Linux":
-        if session_info["temp_dir"] == "/tmp/":
-            result = os.statvfs("/tmp/")
-            result = result.f_frsize * result.f_bavail
+    if session_info["temp_dir"] == "/tmp/":
+        result = os.statvfs("/tmp/")
+        result = result.f_frsize * result.f_bavail
 
-            if result < 1 * 1e9:
-                session_info["temp_dir"] == "/var/tmp/"
-                if target.startswith("/tmp"):
-                    new_target = target.replace("/tmp/", "/var/tmp/")
-                    command = command.replace(target, new_target)
-                    target = target.replace("/tmp/", "/var/tmp/")
+        if result < 1 * 1e9:
+            session_info["temp_dir"] == "/var/tmp/"
+            if target.startswith("/tmp"):
+                new_target = target.replace("/tmp/", "/var/tmp/")
+                command = command.replace(target, new_target)
+                target = target.replace("/tmp/", "/var/tmp/")
 
     if command.startswith("cdo ") is False:
         raise ValueError("The command does not start with cdo!")
@@ -850,13 +847,8 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
         # detect regex pattern, based on above
         
     for ww in w:
-        if platform.system() == "Linux":
-            if ww.message not in session_warnings:
-                if ignore_warning(str(ww.message)) is False:
-                    session_warnings.append(ww.message)
-        else:
-            warnings.warn(ww.message)
-            #print(session_warnings)
-
+        if ww.message not in session_warnings:
+            if ignore_warning(str(ww.message)) is False:
+                session_warnings.append(ww.message)
 
     return target

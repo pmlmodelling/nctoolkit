@@ -1,5 +1,4 @@
 import copy
-import platform
 import os
 
 from nctoolkit.api import open_data
@@ -11,19 +10,13 @@ from nctoolkit.session import remove_safe, session_info, nc_safe_par, nc_safe
 from nctoolkit.api import options
 from nctoolkit.runners import ann_anomaly
 
-if platform.system() == "Linux":
-    import multiprocessing as mp
-    #start = mp.get_start_method()
-    #if start != "spawn":
-    #    mp.set_start_method("spawn")
-    from multiprocessing import Manager
+import multiprocessing as mp
+#start = mp.get_start_method()
+#if start != "spawn":
+#    mp.set_start_method("spawn")
+from multiprocessing import Manager
 
-    manager = Manager()
-else:
-    import multiprocess as mp
-    from multiprocess import Manager
-
-    manager = Manager()
+manager = Manager()
 
 
 

@@ -10,7 +10,6 @@ import string
 import subprocess
 import warnings
 import urllib.request
-import platform
 
 from netCDF4 import Dataset
 
@@ -143,19 +142,15 @@ session_info["coast"] = None
 session_info["interactive"] = sys.__stdin__.isatty()
 
 
-if platform.system() == "Linux":
-    result = os.statvfs("/tmp/")
-    session_info["size"] = result.f_frsize * result.f_bavail
-else:
-    session_info["size"] = 0
+result = os.statvfs("/tmp/")
+session_info["size"] = result.f_frsize * result.f_bavail
 
 
 session_info["latest_size"] = 0
 session_info["cores"] = 1
 
-if platform.system() == "Linux":
-    append_tempdirs("/tmp")
-    append_tempdirs("/var/tmp")
+append_tempdirs("/tmp")
+append_tempdirs("/var/tmp")
 
 
 def update_options(kwargs):

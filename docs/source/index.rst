@@ -19,7 +19,7 @@ nctoolkit is designed primarily with climate and oceanic data in mind. If you wo
 What systems can nctoolkit work on? 
 ########
 
-nctoolkit requires a Linux or macOS operating system.
+nctoolkit requires a Linux operating system.
 
 What can nctoolkit do? 
 ########

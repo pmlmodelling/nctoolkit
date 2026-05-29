@@ -2,14 +2,10 @@ import copy
 import os
 import re
 import subprocess
-import platform
 import warnings
 from unittest.mock import patch
 
-if platform.system() == "Linux":
-    import multiprocessing as mp
-else:
-    import multiprocess as mp
+import multiprocessing as mp
 
 import signal
 
@@ -247,9 +243,9 @@ def run_this(os_command, self, output="one", out_file=None, suppress=False):
                         if self._zip:
                             ff_command = ff_command.replace("cdo ", "cdo -z zip ")
 
-                    if session_info["cores"] > 1:
-                        if len(self) == 1:
-                            ff_command = ff_command.replace("cdo ", f"cdo -P {session_info['cores']} ")
+                    #if session_info["cores"] > 1:
+                    #    if len(self) == 1:
+                    #        ff_command = ff_command.replace("cdo ", f"cdo -P {session_info['cores']} ")
                     new_history.append(ff_command)
 
                     #warnings.simplefilter("ignore")
@@ -291,11 +287,10 @@ def run_this(os_command, self, output="one", out_file=None, suppress=False):
                         if progress_bar:
                             if not suppress:
                                 pbar.update(1)
-                    if platform.system() == "Linux":
-                        for mm in session_warnings:
-                            warnings.warn(mm)
-                            if mm in session_warnings:
-                                session_warnings.remove(mm)
+                    for mm in session_warnings:
+                        warnings.warn(mm)
+                        if mm in session_warnings:
+                            session_warnings.remove(mm)
 
                 self.history = copy.deepcopy(new_history)
                 self.current = copy.deepcopy(target_list)
@@ -317,11 +312,10 @@ def run_this(os_command, self, output="one", out_file=None, suppress=False):
 
                 self._format = None
 
-                if platform.system() == "Linux":
-                    for mm in session_warnings:
-                        warnings.warn(mm)
-                        if mm in session_warnings:
-                            session_warnings.remove(mm)
+                for mm in session_warnings:
+                    warnings.warn(mm)
+                    if mm in session_warnings:
+                        session_warnings.remove(mm)
 
                 return None
 
@@ -334,18 +328,17 @@ def run_this(os_command, self, output="one", out_file=None, suppress=False):
                     os_command = os_command.replace("  ", " ")
 
                 # ensure there is sufficient space in /tmp if it is to be used
-                if platform.system() == "Linux":
-                    all_sizes = 0
+                all_sizes = 0
 
-                    for ff in self:
-                        if file_size(ff) is not None:
-                            all_sizes += file_size(ff)
+                for ff in self:
+                    if file_size(ff) is not None:
+                        all_sizes += file_size(ff)
 
-                    result = os.statvfs("/tmp/")
-                    result = result.f_frsize * result.f_bavail
+                result = os.statvfs("/tmp/")
+                result = result.f_frsize * result.f_bavail
 
-                    if result < (2 * all_sizes):
-                        session_info["temp_dir"] == "/var/tmp/"
+                if result < (2 * all_sizes):
+                    session_info["temp_dir"] == "/var/tmp/"
 
                 target = temp_file("nc")
 
@@ -431,11 +424,10 @@ def run_this(os_command, self, output="one", out_file=None, suppress=False):
                     target = run_cdo(
                         os_command, target, out_file, precision=self._precision
                     )
-                if platform.system() == "Linux":
-                    for mm in session_warnings:
-                        warnings.warn(mm)
-                        if mm in session_warnings:
-                            session_warnings.remove(mm)
+                for mm in session_warnings:
+                    warnings.warn(mm)
+                    if mm in session_warnings:
+                        session_warnings.remove(mm)
 
                 remove_safe(target)
 

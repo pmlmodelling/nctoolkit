@@ -1,7 +1,6 @@
 import glob
 import copy
 import os
-import platform
 
 from nctoolkit.cleanup import cleanup
 from nctoolkit.temp_file import temp_file
@@ -26,14 +25,13 @@ def dist_cdo(self, i=None, j=None):
         # But, first we need to check if there is space in the output folder
         # If there isn't, we need to switch to the /var/tmp
 
-        if platform.system() == "Linux":
-            if session_info["temp_dir"] == "/tmp/":
-                result = os.statvfs("/tmp/")
-                result = result.f_frsize * result.f_bavail
-                session_info["size"] = result
+        if session_info["temp_dir"] == "/tmp/":
+            result = os.statvfs("/tmp/")
+            result = result.f_frsize * result.f_bavail
+            session_info["size"] = result
 
-                if os.path.getsize(ff) * 2 > session_info["size"]:
-                    session_info["temp_dir"] = "/var/tmp/"
+            if os.path.getsize(ff) * 2 > session_info["size"]:
+                session_info["temp_dir"] = "/var/tmp/"
 
         split_base = temp_file()
         bases.append(split_base)

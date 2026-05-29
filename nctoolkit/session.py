@@ -1,20 +1,12 @@
 import glob
 import os
-import platform
 
 session_info = dict()
-if platform.system() == "Linux":
-    from multiprocessing import Manager
+from multiprocessing import Manager
 
-    nc_safe_par = Manager().list()
-    temp_dirs_par = Manager().list()
-    nc_protected_par = Manager().list()
-else:
-    from multiprocess import Manager
-
-    nc_safe_par = Manager().list()
-    temp_dirs_par = Manager().list()
-    nc_protected_par = Manager().list()
+nc_safe_par = Manager().list()
+temp_dirs_par = Manager().list()
+nc_protected_par = Manager().list()
 
 nc_safe = list()
 

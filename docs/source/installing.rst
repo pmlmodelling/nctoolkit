@@ -6,7 +6,7 @@ Installation
 How to install nctoolkit
 ---------------------
 
-You will need a Linux or Mac operating system for nctoolkit to work. It will not work on Windows due to system requirements. 
+You will need a Linux operating system for nctoolkit to work. It will not work on Windows or macOS due to system requirements. 
 
 The best and easiest way to install nctoolkit is to use conda. This will install all system dependencies, and nctoolkit will just work out of the box. This can be done as follows::
 
@@ -17,16 +17,6 @@ Conda can often install a very old version of nctoolkit. So you might want to in
 
    $ conda install -c conda-forge nctoolkit=1.1.6
 
-
-Mamba is a smoother way to manage conda environments. If you don't use it, you should try. Install it from  `here  <https://github.com/conda-forge/miniforge/>`__.
-
-Once mambaforge is installed you can install nctoolkit as follows::
-
-   $ mamba install -c conda-forge nctoolkit
-
-This will be much faster to install than using conda, because mamba resolves environments much faster.
-
-Note that recent releases are not available on macOS on conda. This issue is being investigated at the minute, and will hopefully be resolved shortly. In the meantime, if you are using macOS, it is best to install using pip.
 
 If you do not use conda, you can install nctoolkit using pip. The package is available from the `Python Packaging Index. <https://pypi.org/project/nctoolkit/>`__   To install nctoolkit using pip::
 
