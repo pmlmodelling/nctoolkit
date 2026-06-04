@@ -239,6 +239,15 @@ def run_this(os_command, self, output="one", out_file=None, suppress=False):
 
                     if self._zip and zip_copy and format_it is False:
                         ff_command = ff_command.replace("cdo ", "cdo -z zip copy ")
+                        # find any -b F32 type commands and move them to before the -z zip copy
+                        # use regex for this
+                        match = re.search(r"-b\s+\w+", ff_command)
+                        if match:
+                            bit_command = match.group(0)
+                            ff_command = ff_command.replace(bit_command, "")
+                            ff_command = ff_command.replace(
+                                "cdo -z zip copy ", f"cdo {bit_command} -z zip copy "
+                            )
                     else:
                         if self._zip:
                             ff_command = ff_command.replace("cdo ", "cdo -z zip ")
