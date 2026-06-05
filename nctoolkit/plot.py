@@ -90,7 +90,11 @@ def plot(self, vars=None, autoscale=True, out=None, coast=None, **kwargs):
 
 
     if len(self) > 1:
-        raise TypeError("You cannot view multiple files!")
+        vars_1 = nc.nc_variables(self[0] )
+        vars_2 = nc.nc_variables(self[1] )
+        # check if they have the same variables
+        if set(vars_1) != set(vars_2):  
+            raise ValueError("Unable to plot multi-file datasets when variables differ across files.") 
 
     if vars is None:
         if len(set(self.contents.nlevels)) > 1:
@@ -131,7 +135,7 @@ def plot(self, vars=None, autoscale=True, out=None, coast=None, **kwargs):
                 )
         else:
             return view(
-                self[0], vars=vars, autoscale=autoscale, out=out, coast=coast, **kwargs
+                self.current, vars=vars, autoscale=autoscale, out=out, coast=coast, **kwargs
             )
 
-    return view(self[0], vars=vars, autoscale=autoscale, out=out, coast=coast, **kwargs)
+    return view(self.current, vars=vars, autoscale=autoscale, out=out, coast=coast, **kwargs)
