@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CDO &amp; NCO Backends — NCToolkit</title>
+<meta name="description" content="How NCToolkit uses Climate Data Operators (CDO) under the hood, and how to run raw CDO or NCO commands directly with cdo_command and nco_command.">
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container nav">
+    <a class="brand" href="index.html">
+      <img src="assets/img/nctoolkit_wordmark.svg" alt="NCToolkit">
+      <span id="nctoolkit-docs-version" class="brand-version">v&hellip;</span>
+    </a>
+    <nav class="nav-links" id="nav-links">
+      <a href="installing.html" data-page="installing.html">Install</a>
+      <a href="quickstart.html" data-page="quickstart.html">Quickstart</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle" aria-expanded="false">Guide
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="nav-dropdown-menu">
+          <a href="guide-basics.html" data-page="guide-basics.html">Working with data<small>Opening, subsetting, exporting, settings</small></a>
+          <a href="guide-analysis.html" data-page="guide-analysis.html">Analysis &amp; statistics<small>Temporal, vertical, ensembles, regridding, math</small></a>
+          <a href="guide-advanced.html" data-page="guide-advanced.html">Visualization &amp; tips<small>Plotting, parallel processing, hacks, troubleshooting</small></a>
+        </div>
+      </div>
+      <a href="api.html" data-page="api.html">API</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle" aria-expanded="false">Data
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="nav-dropdown-menu">
+          <a href="data-formats.html" data-page="data-formats.html">Supported data<small>Grids, time axes, CF-compliance</small></a>
+          <a href="backends.html" data-page="backends.html">CDO &amp; NCO backends<small>Using raw commands directly</small></a>
+        </div>
+      </div>
+      <a href="qa.html" data-page="qa.html">Q&amp;A</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle" aria-expanded="false">About
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="nav-dropdown-menu">
+          <a href="about.html" data-page="about.html">About &amp; citation<small>Project background, how to cite</small></a>
+          <a href="news.html" data-page="news.html">Changelog<small>Release notes</small></a>
+          <a href="version-history.html" data-page="version-history.html">Version history<small>Archived documentation snapshots</small></a>
+        </div>
+      </div>
+    </nav>
+    <div class="nav-actions">
+      <a class="icon-btn" href="https://github.com/pmlmodelling/nctoolkit" target="_blank" rel="noopener" aria-label="NCToolkit on GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 .5C5.73.5.5 5.74.5 12.09c0 5.08 3.29 9.38 7.86 10.9.57.1.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.56-.29-5.26-1.28-5.26-5.71 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.44-2.7 5.42-5.28 5.7.42.36.78 1.08.78 2.17 0 1.57-.01 2.83-.01 3.22 0 .3.21.66.8.55A10.6 10.6 0 0 0 23.5 12.1C23.5 5.74 18.27.5 12 .5Z"/></svg>
+      </a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="page-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="index.html">Home</a> / Data / CDO &amp; NCO backends</div>
+    <h1>CDO &amp; NCO backends</h1>
+    <p class="lead">NCToolkit is a stand-alone package &mdash; no CDO knowledge is required to use it. But if you already know CDO or NCO, you can call them directly.</p>
+  </div>
+</div>
+
+<div class="container docs-layout">
+  <aside class="docs-toc">
+    <div class="docs-toc-title">On this page</div>
+    <ul>
+      <li><a href="#cdo">Using CDO commands</a></li>
+      <li><a href="#nco">Using NCO commands</a></li>
+    </ul>
+  </aside>
+
+  <div class="docs-content">
+
+    <p>NCToolkit relies on <a href="https://code.mpimet.mpg.de/projects/cdo/" target="_blank" rel="noopener">Climate Data Operators</a> (CDO) as its computational backend &mdash; a high-powered command-line tool for manipulating and analyzing climate model data. Users don't need to know CDO to use NCToolkit, but if you do, <code>cdo_command</code> lets you drop down to it directly.</p>
+
+    <h2 id="cdo">Using CDO commands</h2>
+    <p>To apply a CDO command in NCToolkit, strip the leading <code>cdo</code> and the input/output file names. A typical CDO command:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
+      <pre>cdo yearmean infile.nc outfile.nc</pre>
+    </div>
+    <p>becomes:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.cdo_command(<span class="tok-str">"yearmean"</span>)</pre>
+    </div>
+    <p>If the command is an ensemble method that takes multiple files as input and produces one output, tell NCToolkit that explicitly:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.cdo_command(<span class="tok-str">"ensmean"</span>, ensemble=<span class="tok-kw">True</span>)</pre>
+    </div>
+    <p>If you use CDO and NCToolkit together and find something in CDO that isn't yet wrapped as a proper NCToolkit method, <a href="https://github.com/pmlmodelling/nctoolkit/issues" target="_blank" rel="noopener">open an issue</a> &mdash; see <a href="about.html#contributing">Contributing</a>.</p>
+
+    <h2 id="nco">Using NCO commands</h2>
+    <p><a href="http://nco.sourceforge.net/" target="_blank" rel="noopener">NetCDF Operators</a> (NCO) is an optional backend, available through <code>nco_command</code>. Strip the two file names from the command you want to apply. So:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
+      <pre>ncks -v kd_490 -d lat,40.0,70.0 -d lon,-20.0,15.0 infile.nc outfile.nc</pre>
+    </div>
+    <p>becomes:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.nco_command(<span class="tok-str">"ncks -v kd_490 -d lat,40.0,70.0 -d lon,-20.0,15.0"</span>)</pre>
+    </div>
+    <p>NCO is optional &mdash; NCToolkit will work without it unless you specifically call <code>nco_command</code>. See <a href="installing.html#system">System dependencies</a> for installation.</p>
+
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container footer-pml">
+    <a href="https://pml.ac.uk/" target="_blank" rel="noopener"><img src="assets/img/pml_logo.jpg" alt="Plymouth Marine Laboratory"></a>
+    <span>Developed by the <a href="https://pml.ac.uk/science/Marine-Systems-Modelling/" target="_blank" rel="noopener">Marine Systems Modelling group</a> at <a href="https://pml.ac.uk/" target="_blank" rel="noopener">Plymouth Marine Laboratory</a></span>
+  </div>
+  <div class="container footer-top">
+    <div class="footer-brand">
+      <img src="assets/img/nctoolkit_wordmark.svg" alt="NCToolkit">
+      <p>A comprehensive Python package for netCDF analysis and post-processing. Subset, compute, and visualize &mdash; in a few lines of code.</p>
+      <div class="footer-social">
+        <a href="https://github.com/pmlmodelling/nctoolkit" target="_blank" rel="noopener" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 .5C5.73.5.5 5.74.5 12.09c0 5.08 3.29 9.38 7.86 10.9.57.1.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.56-.29-5.26-1.28-5.26-5.71 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.44-2.7 5.42-5.28 5.7.42.36.78 1.08.78 2.17 0 1.57-.01 2.83-.01 3.22 0 .3.21.66.8.55A10.6 10.6 0 0 0 23.5 12.1C23.5 5.74 18.27.5 12 .5Z"/></svg>
+        </a>
+        <a href="mailto:rwi@pml.ac.uk" aria-label="Email">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Documentation</h4>
+      <ul>
+        <li><a href="installing.html">Installing</a></li>
+        <li><a href="quickstart.html">Quickstart</a></li>
+        <li><a href="guide-basics.html">Working with data</a></li>
+        <li><a href="guide-analysis.html">Analysis &amp; statistics</a></li>
+        <li><a href="guide-advanced.html">Visualization &amp; tips</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Reference</h4>
+      <ul>
+        <li><a href="api.html">API reference</a></li>
+        <li><a href="data-formats.html">Supported data</a></li>
+        <li><a href="backends.html">CDO &amp; NCO backends</a></li>
+        <li><a href="qa.html">Q&amp;A</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Project</h4>
+      <ul>
+        <li><a href="about.html">About &amp; citation</a></li>
+        <li><a href="news.html">Changelog</a></li>
+        <li><a href="version-history.html">Version history</a></li>
+        <li><a href="https://github.com/pmlmodelling/nctoolkit" target="_blank" rel="noopener">GitHub repository</a></li>
+        <li><a href="https://github.com/pmlmodelling/nctoolkit/issues" target="_blank" rel="noopener">Report an issue</a></li>
+        <li><a href="https://anaconda.org/conda-forge/nctoolkit" target="_blank" rel="noopener">conda-forge package</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>&copy; 2026 <a href="https://pml.ac.uk/" target="_blank" rel="noopener">Plymouth Marine Laboratory</a>. Released under the GNU GPLv3 license.</span>
+    <span>Built by ocean and climate modellers, for netCDF users everywhere.</span>
+  </div>
+</footer>
+
+<button class="back-to-top" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+</button>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>

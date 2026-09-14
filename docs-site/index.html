@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NCToolkit — A Python Toolkit for netCDF Analysis</title>
+<meta name="description" content="NCToolkit is a comprehensive Python package for analyzing and post-processing netCDF data. Subset, regrid, compute statistics and visualize climate and ocean data in a few lines of code.">
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container nav">
+    <a class="brand" href="index.html">
+      <img src="assets/img/nctoolkit_wordmark.svg" alt="NCToolkit">
+      <span id="nctoolkit-docs-version" class="brand-version">v&hellip;</span>
+    </a>
+    <nav class="nav-links" id="nav-links">
+      <a href="installing.html" data-page="installing.html">Install</a>
+      <a href="quickstart.html" data-page="quickstart.html">Quickstart</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle" aria-expanded="false">Guide
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="nav-dropdown-menu">
+          <a href="guide-basics.html" data-page="guide-basics.html">Working with data<small>Opening, subsetting, exporting, settings</small></a>
+          <a href="guide-analysis.html" data-page="guide-analysis.html">Analysis &amp; statistics<small>Temporal, vertical, ensembles, regridding, math</small></a>
+          <a href="guide-advanced.html" data-page="guide-advanced.html">Visualization &amp; tips<small>Plotting, parallel processing, hacks, troubleshooting</small></a>
+        </div>
+      </div>
+      <a href="api.html" data-page="api.html">API</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle" aria-expanded="false">Data
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="nav-dropdown-menu">
+          <a href="data-formats.html" data-page="data-formats.html">Supported data<small>Grids, time axes, CF-compliance</small></a>
+          <a href="backends.html" data-page="backends.html">CDO &amp; NCO backends<small>Using raw commands directly</small></a>
+        </div>
+      </div>
+      <a href="qa.html" data-page="qa.html">Q&amp;A</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle" aria-expanded="false">About
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="nav-dropdown-menu">
+          <a href="about.html" data-page="about.html">About &amp; citation<small>Project background, how to cite</small></a>
+          <a href="news.html" data-page="news.html">Changelog<small>Release notes</small></a>
+          <a href="version-history.html" data-page="version-history.html">Version history<small>Archived documentation snapshots</small></a>
+        </div>
+      </div>
+    </nav>
+    <div class="nav-actions">
+      <a class="icon-btn" href="https://github.com/pmlmodelling/nctoolkit" target="_blank" rel="noopener" aria-label="NCToolkit on GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 .5C5.73.5.5 5.74.5 12.09c0 5.08 3.29 9.38 7.86 10.9.57.1.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.56-.29-5.26-1.28-5.26-5.71 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.44-2.7 5.42-5.28 5.7.42.36.78 1.08.78 2.17 0 1.57-.01 2.83-.01 3.22 0 .3.21.66.8.55A10.6 10.6 0 0 0 23.5 12.1C23.5 5.74 18.27.5 12 .5Z"/></svg>
+      </a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <h1>netCDF analysis, <em>without the boilerplate</em></h1>
+      <p class="hero-sub">NCToolkit is a comprehensive Python package for analyzing and post-processing netCDF data. Point it at your climate or ocean model output and subset, regrid, compute statistics and visualize it — all in a few lines of code, with Climate Data Operators doing the heavy lifting underneath.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="quickstart.html">
+          Get started
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="api.html" target="_blank" rel="noopener">
+          Browse the API reference
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+      </div>
+      <ul class="hero-points">
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          <span>Subset, clip, and regrid CF-compliant netCDF data</span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          <span>Calculate climatologies, anomalies and rolling statistics</span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          <span>Interactive plotting for almost any netCDF file, in Jupyter or a browser</span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          <span>Vertical, zonal and ensemble statistics built for oceanic and climate data</span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          <span>Powered by Climate Data Operators — no CDO knowledge required</span>
+        </li>
+      </ul>
+    </div>
+    <div class="hero-panel">
+      <div class="code-card">
+        <div class="code-card__bar">
+          <div class="code-card__dots"><span></span><span></span><span></span></div>
+          <span class="code-card__label">analysis.py</span>
+          <button class="code-card__copy" data-copy-target="#hero-code">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span class="copy-label">Copy</span>
+          </button>
+        </div>
+        <pre id="hero-code"><span class="tok-kw">import</span> nctoolkit <span class="tok-kw">as</span> nc
+
+ds = nc.<a href="api.html#opening"><span class="tok-fn">open_thredds</span></a>(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/"
+                     "Datasets/COBE2/sst.mon.mean.nc"</span>)
+
+ds.<a href="guide-basics.html#subsetting"><span class="tok-fn">subset</span></a>(lon=[-13, 38], lat=[30, 67])
+ds.<a href="guide-analysis.html#temporal"><span class="tok-fn">tmean</span></a>(<span class="tok-str">"season"</span>)
+ds.<a href="guide-advanced.html#visualization"><span class="tok-fn">plot</span></a>()  <span class="tok-com"># -> interactive figure</span></pre>
+      </div>
+    </div>
+  </div>
+  <div class="wave-divider">
+    <svg viewBox="0 0 1440 110" preserveAspectRatio="none">
+      <path fill="#ffffff" d="M0,64 C240,110 480,10 720,40 C960,70 1200,110 1440,56 L1440,110 L0,110 Z"></path>
+    </svg>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <span class="kicker">How it works</span>
+      <h2>Open, chain, and export</h2>
+      <p>NCToolkit turns netCDF post-processing into a short, readable chain of method calls, so you spend your time on the science, not on wrangling files.</p>
+    </div>
+    <div class="steps">
+      <div class="step-card">
+        <span class="step-num">1</span>
+        <h3>Open your data</h3>
+        <p><a href="guide-basics.html#opening"><code>open_data()</code></a> handles single files, wildcards and lists. <code>open_url</code> and <code>open_thredds</code> handle remote and OPeNDAP data.</p>
+        <span class="step-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+      </div>
+      <div class="step-card">
+        <span class="step-num">2</span>
+        <h3>Chain operations, lazily</h3>
+        <p>Calls to <a href="guide-basics.html#subsetting"><code>subset()</code></a>, <a href="guide-analysis.html#temporal"><code>tmean()</code></a>, <a href="guide-analysis.html#interpolation"><code>regrid()</code></a> and <a href="guide-analysis.html#math"><code>assign()</code></a> build up a single CDO pipeline instead of writing a file at every step.</p>
+        <span class="step-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+      </div>
+      <div class="step-card">
+        <span class="step-num">3</span>
+        <h3>Export or visualize</h3>
+        <p>Write out with <a href="guide-basics.html#exporting"><code>to_nc()</code></a>, hand off to pandas or xarray, or call <a href="guide-advanced.html#visualization"><code>plot()</code></a> for an interactive figure.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-head">
+      <span class="kicker">Why NCToolkit</span>
+      <h2>Everything you need for day-to-day netCDF work</h2>
+      <p>Built by climate and ocean modellers at Plymouth Marine Laboratory, for anyone who works with netCDF data — casual users and power users alike.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <h3>Comprehensive by design</h3>
+        <p>Covers 80&ndash;100% of day-to-day netCDF analysis and post-processing in one consistent, chainable API.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
+        <h3>Built on Climate Data Operators</h3>
+        <p>CDO does the heavy lifting under the hood, so operations stay fast — no CDO expertise required to use it.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+        <h3>Rich statistics</h3>
+        <p>Temporal, spatial, vertical, zonal and ensemble statistics, plus climatologies, anomalies and rolling windows.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M3 12h4M17 12h4M12 3v4M12 17v4"/></svg></div>
+        <h3>Interactive plotting</h3>
+        <p>Call <code>plot()</code> on almost any netCDF file for an automatic interactive figure, in Jupyter or a browser.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></div>
+        <h3>Point &amp; gridded matchups</h3>
+        <p>Match model output against spatiotemporal point observations at varying depths with <code>match_points</code>.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+        <h3>Works with your data</h3>
+        <p>GDT, COARDS and CF-compliant structured grids, with limited support for unstructured grids too.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="preview-panel">
+      <div>
+        <span class="kicker">See it in action</span>
+        <h2>Automatic plots from a single method call</h2>
+        <p>Every <a href="guide-advanced.html#visualization"><code>plot()</code></a> call inspects the shape of your dataset and picks a sensible interactive chart — maps for gridded fields, time series for spatial means, heatmaps for Hovm&ouml;ller-style zonal data — built on hvplot.</p>
+        <a class="btn btn-outline" href="guide-advanced.html#visualization">
+          Read about plotting
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+      </div>
+      <div class="browser-mock">
+        <div class="browser-mock__bar">
+          <span></span><span></span><span></span>
+          <div class="browser-mock__url">sst.mon.mean.nc &mdash; spatial_mean().plot()</div>
+        </div>
+        <div class="browser-mock__body">
+          <div class="fake-title"></div>
+          <div class="mock-stat-row">
+            <div class="mock-stat"><span>Variable</span><strong>sst</strong></div>
+            <div class="mock-stat"><span>Time steps</span><strong>2,112</strong></div>
+            <div class="mock-stat"><span>Grid</span><strong>1&deg; &times; 1&deg;</strong></div>
+          </div>
+          <div class="mock-chart">
+            <svg viewBox="0 0 400 130" preserveAspectRatio="none">
+              <polyline points="0,100 40,96 80,92 120,90 160,80 200,72 240,60 280,55 320,42 360,34 400,24" fill="none" stroke="#087f8c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container">
+    <div class="sample">
+      <div class="code-card">
+        <div class="code-card__bar">
+          <div class="code-card__dots"><span></span><span></span><span></span></div>
+          <span class="code-card__label">terminal</span>
+        </div>
+        <pre><span class="tok-com"># install</span>
+conda install -c conda-forge nctoolkit
+
+<span class="tok-com"># from a Python or Jupyter session</span>
+<span class="tok-kw">import</span> nctoolkit <span class="tok-kw">as</span> nc
+
+ds = nc.<a href="api.html#opening"><span class="tok-fn">open_data</span></a>(<span class="tok-str">"data/*.nc"</span>)
+ds.<a href="guide-basics.html#subsetting"><span class="tok-fn">subset</span></a>(lon=[-80, 90], lat=[50, 80])
+ds.<a href="guide-analysis.html#temporal"><span class="tok-fn">tmean</span></a>(<span class="tok-str">"year"</span>)
+ds.<a href="guide-basics.html#exporting"><span class="tok-fn">to_nc</span></a>(<span class="tok-str">"annual_mean.nc"</span>)</pre>
+      </div>
+      <div>
+        <span class="kicker">Get started in minutes</span>
+        <h2>From raw netCDF to analysis-ready output</h2>
+        <p>Install with conda and go from a folder of raw files to a subset, statistic or plot in a handful of lines. NCToolkit handles the CDO calls, temporary files and method chaining for you.</p>
+        <ul>
+          <li>Works with single files, wildcards, lists, URLs and thredds/OPeNDAP servers.</li>
+          <li>Evaluation is lazy by default — nothing runs until you need a result.</li>
+          <li>Process multi-file ensembles in parallel by setting <code>nc.options(cores=6)</code>.</li>
+        </ul>
+        <a class="btn btn-primary" href="quickstart.html">
+          Read the quickstart
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <span class="kicker">Fits your stack</span>
+      <h2>Works alongside the tools you already use</h2>
+      <p>NCToolkit is a stand-alone package with no knowledge of CDO required to use it, but it plays nicely with the rest of the scientific Python ecosystem.</p>
+    </div>
+    <ul class="pill-list" style="justify-content:center;">
+      <li>Climate Data Operators (CDO)</li>
+      <li>NetCDF Operators (NCO)</li>
+      <li>xarray</li>
+      <li>pandas</li>
+      <li>Jupyter notebooks</li>
+      <li>cartopy &amp; hvplot</li>
+    </ul>
+    <div style="text-align:center; margin-top:1.6rem;">
+      <a class="btn btn-outline" href="data-formats.html">
+        See supported data &amp; backends
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="section section-tight">
+  <div class="container">
+    <div class="cta-banner">
+      <h2>Ready to analyze your netCDF data?</h2>
+      <p>Install NCToolkit from conda-forge or PyPI and go from raw files to processed, plotted output today.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="installing.html">Install NCToolkit</a>
+        <a class="btn btn-ghost" href="https://github.com/pmlmodelling/nctoolkit" target="_blank" rel="noopener">Star on GitHub</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container footer-pml">
+    <a href="https://pml.ac.uk/" target="_blank" rel="noopener"><img src="assets/img/pml_logo.jpg" alt="Plymouth Marine Laboratory"></a>
+    <span>Developed by the <a href="https://pml.ac.uk/science/Marine-Systems-Modelling/" target="_blank" rel="noopener">Marine Systems Modelling group</a> at <a href="https://pml.ac.uk/" target="_blank" rel="noopener">Plymouth Marine Laboratory</a></span>
+  </div>
+  <div class="container footer-top">
+    <div class="footer-brand">
+      <img src="assets/img/nctoolkit_wordmark.svg" alt="NCToolkit">
+      <p>A comprehensive Python package for netCDF analysis and post-processing. Subset, compute, and visualize &mdash; in a few lines of code.</p>
+      <div class="footer-social">
+        <a href="https://github.com/pmlmodelling/nctoolkit" target="_blank" rel="noopener" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 .5C5.73.5.5 5.74.5 12.09c0 5.08 3.29 9.38 7.86 10.9.57.1.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.56-.29-5.26-1.28-5.26-5.71 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.44-2.7 5.42-5.28 5.7.42.36.78 1.08.78 2.17 0 1.57-.01 2.83-.01 3.22 0 .3.21.66.8.55A10.6 10.6 0 0 0 23.5 12.1C23.5 5.74 18.27.5 12 .5Z"/></svg>
+        </a>
+        <a href="mailto:rwi@pml.ac.uk" aria-label="Email">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Documentation</h4>
+      <ul>
+        <li><a href="installing.html">Installing</a></li>
+        <li><a href="quickstart.html">Quickstart</a></li>
+        <li><a href="guide-basics.html">Working with data</a></li>
+        <li><a href="guide-analysis.html">Analysis &amp; statistics</a></li>
+        <li><a href="guide-advanced.html">Visualization &amp; tips</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Reference</h4>
+      <ul>
+        <li><a href="api.html">API reference</a></li>
+        <li><a href="data-formats.html">Supported data</a></li>
+        <li><a href="backends.html">CDO &amp; NCO backends</a></li>
+        <li><a href="qa.html">Q&amp;A</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Project</h4>
+      <ul>
+        <li><a href="about.html">About &amp; citation</a></li>
+        <li><a href="news.html">Changelog</a></li>
+        <li><a href="version-history.html">Version history</a></li>
+        <li><a href="https://github.com/pmlmodelling/nctoolkit" target="_blank" rel="noopener">GitHub repository</a></li>
+        <li><a href="https://github.com/pmlmodelling/nctoolkit/issues" target="_blank" rel="noopener">Report an issue</a></li>
+        <li><a href="https://anaconda.org/conda-forge/nctoolkit" target="_blank" rel="noopener">conda-forge package</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>&copy; 2026 <a href="https://pml.ac.uk/" target="_blank" rel="noopener">Plymouth Marine Laboratory</a>. Released under the GNU GPLv3 license.</span>
+    <span>Built by ocean and climate modellers, for netCDF users everywhere.</span>
+  </div>
+</footer>
+
+<button class="back-to-top" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+</button>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>

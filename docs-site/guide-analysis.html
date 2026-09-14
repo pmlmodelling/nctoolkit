@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Analysis &amp; Statistics — NCToolkit Guide</title>
+<meta name="description" content="Temporal statistics, vertical methods, horizontal and vertical interpolation, ensembles and multi-file datasets, mathematical operations, and matching to point observations.">
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container nav">
+    <a class="brand" href="index.html">
+      <img src="assets/img/nctoolkit_wordmark.svg" alt="NCToolkit">
+      <span id="nctoolkit-docs-version" class="brand-version">v&hellip;</span>
+    </a>
+    <nav class="nav-links" id="nav-links">
+      <a href="installing.html" data-page="installing.html">Install</a>
+      <a href="quickstart.html" data-page="quickstart.html">Quickstart</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle" aria-expanded="false">Guide
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="nav-dropdown-menu">
+          <a href="guide-basics.html" data-page="guide-basics.html">Working with data<small>Opening, subsetting, exporting, settings</small></a>
+          <a href="guide-analysis.html" data-page="guide-analysis.html">Analysis &amp; statistics<small>Temporal, vertical, ensembles, regridding, math</small></a>
+          <a href="guide-advanced.html" data-page="guide-advanced.html">Visualization &amp; tips<small>Plotting, parallel processing, hacks, troubleshooting</small></a>
+        </div>
+      </div>
+      <a href="api.html" data-page="api.html">API</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle" aria-expanded="false">Data
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="nav-dropdown-menu">
+          <a href="data-formats.html" data-page="data-formats.html">Supported data<small>Grids, time axes, CF-compliance</small></a>
+          <a href="backends.html" data-page="backends.html">CDO &amp; NCO backends<small>Using raw commands directly</small></a>
+        </div>
+      </div>
+      <a href="qa.html" data-page="qa.html">Q&amp;A</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle" aria-expanded="false">About
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="nav-dropdown-menu">
+          <a href="about.html" data-page="about.html">About &amp; citation<small>Project background, how to cite</small></a>
+          <a href="news.html" data-page="news.html">Changelog<small>Release notes</small></a>
+          <a href="version-history.html" data-page="version-history.html">Version history<small>Archived documentation snapshots</small></a>
+        </div>
+      </div>
+    </nav>
+    <div class="nav-actions">
+      <a class="icon-btn" href="https://github.com/pmlmodelling/nctoolkit" target="_blank" rel="noopener" aria-label="NCToolkit on GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 .5C5.73.5.5 5.74.5 12.09c0 5.08 3.29 9.38 7.86 10.9.57.1.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.56-.29-5.26-1.28-5.26-5.71 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.44-2.7 5.42-5.28 5.7.42.36.78 1.08.78 2.17 0 1.57-.01 2.83-.01 3.22 0 .3.21.66.8.55A10.6 10.6 0 0 0 23.5 12.1C23.5 5.74 18.27.5 12 .5Z"/></svg>
+      </a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="page-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="index.html">Home</a> / Guide / Analysis &amp; statistics</div>
+    <h1>Analysis &amp; statistics</h1>
+    <p class="lead">Temporal and vertical statistics, horizontal and vertical interpolation, multi-file ensembles, mathematical operations, and matching to point observations.</p>
+  </div>
+</div>
+
+<div class="container docs-layout">
+  <aside class="docs-toc">
+    <div class="docs-toc-title">On this page</div>
+    <ul>
+      <li><a href="#temporal">Temporal statistics</a></li>
+      <li><a href="#vertical">Vertical methods</a></li>
+      <li><a href="#interpolation">Interpolation &amp; regridding</a></li>
+      <li><a href="#ensembles">Ensembles &amp; multi-file datasets</a></li>
+      <li><a href="#math">Mathematical operations</a></li>
+      <li><a href="#matchpoint">Matchups with point data</a></li>
+    </ul>
+  </aside>
+
+  <div class="docs-content">
+
+    <h2 id="temporal">Temporal statistics</h2>
+    <p>A family of methods prefixed with <code>t</code> calculates temporal statistics: <code>tmean</code>, <code>tmin</code>, <code>tmax</code>, <code>trange</code>, <code>tpercentile</code>, <code>tmedian</code>, <code>tvariance</code>, <code>tstdev</code> and <code>tcumsum</code>.</p>
+    <p>By default they average over all available time steps. Use <code>over</code> to average within groups &mdash; <code>"day"</code> (day of year), <code>"month"</code>, <code>"year"</code>, or <code>"season"</code>:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.tmean()                    <span class="tok-com"># mean over all time steps</span>
+ds.tmean(<span class="tok-str">"year"</span>)              <span class="tok-com"># annual mean</span>
+ds.tmax([<span class="tok-str">"month"</span>, <span class="tok-str">"year"</span>])    <span class="tok-com"># max in each month of each year</span>
+ds.tmean(<span class="tok-str">"season"</span>)            <span class="tok-com"># seasonal climatology</span></pre>
+    </div>
+
+    <h3>Rolling statistics</h3>
+    <p><code>rolling_mean</code>, <code>rolling_min</code>, <code>rolling_max</code>, <code>rolling_range</code> and <code>rolling_sum</code> compute a statistic over a moving window of time steps:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.rolling_mean(<span class="tok-num">7</span>)   <span class="tok-com"># rolling weekly mean, for daily data</span></pre>
+    </div>
+
+    <h3>Anomalies</h3>
+    <p><code>annual_anomaly</code> and <code>monthly_anomaly</code> both need a baseline period:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.annual_anomaly(baseline=[<span class="tok-num">1950</span>, <span class="tok-num">1969</span>])
+ds.annual_anomaly(baseline=[<span class="tok-num">1950</span>, <span class="tok-num">1969</span>], metric=<span class="tok-str">"relative"</span>)
+ds.annual_anomaly(baseline=[<span class="tok-num">1950</span>, <span class="tok-num">1969</span>], window=<span class="tok-num">10</span>)   <span class="tok-com"># smoothed, rolling</span>
+ds.monthly_anomaly(baseline=[<span class="tok-num">1950</span>, <span class="tok-num">1969</span>])</pre>
+    </div>
+    <p>By default the anomaly is an absolute difference from the baseline mean; <code>metric="relative"</code> gives a relative change instead.</p>
+
+    <h3>Cumulative sums</h3>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.tcumsum()   <span class="tok-com"># over all time periods only; no `over` argument</span></pre>
+    </div>
+
+    <h2 id="vertical">Vertical methods</h2>
+    <p>NCToolkit handles files with either fixed or varying vertical levels &mdash; z-level ocean data and terrain-following coordinates alike. Vertical means account for cell thickness where it's available.</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.vertical_mean(fixed=<span class="tok-kw">True</span>)     <span class="tok-com"># mean across all vertical levels</span>
+ds.vertical_interp(levels=<span class="tok-num">1000</span>, fixed=<span class="tok-kw">True</span>)   <span class="tok-com"># interpolate to 1000m depth</span>
+ds.top()                          <span class="tok-com"># select the surface level</span>
+ds.bottom()                       <span class="tok-com"># select the sea-floor level</span></pre>
+    </div>
+    <p>Other vertical methods: <code>vertical_min</code>, <code>vertical_max</code>, <code>vertical_range</code>, <code>vertical_cumsum</code> and <code>invert_levels</code>. For a full water-column total that accounts for cell thickness, use <code>vertical_integration</code>.</p>
+
+    <h2 id="interpolation">Interpolation &amp; regridding</h2>
+    <h3>Regular lon/lat grids</h3>
+    <p><a href="api.html#interpolation"><code>to_latlon</code></a> regrids to a regular grid: give the extent (<code>lon</code>, <code>lat</code>) and resolution (<code>res</code>):</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.to_latlon(lon=[-79.5, 79.5], lat=[<span class="tok-num">0.75</span>, <span class="tok-num">89.75</span>], res=[<span class="tok-num">1</span>, <span class="tok-num">0.5</span>])</pre>
+    </div>
+    <h3>Another dataset's grid</h3>
+    <p><code>regrid</code> interpolates a dataset onto the grid of another dataset (or a netCDF file used purely as a grid template):</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds2.regrid(ds1)</pre>
+    </div>
+    <p>Regridding first generates a weights file. If you're regridding many files onto the same target grid one after another, set <code>recycle=True</code> on the first call to reuse the weights on subsequent calls to <code>regrid</code>.</p>
+    <h3>A set of coordinates</h3>
+    <p><code>regrid</code> also accepts a pandas dataframe of <code>lon</code>/<code>lat</code> columns, to interpolate onto specific points:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>coords = pd.DataFrame({<span class="tok-str">"lon"</span>: [-<span class="tok-num">30</span>], <span class="tok-str">"lat"</span>: [<span class="tok-num">50</span>]})
+ds.regrid(coords)</pre>
+    </div>
+    <h3>Coarsening &amp; infilling</h3>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.resample_grid(<span class="tok-num">10</span>)   <span class="tok-com"># keep every 10th grid cell, north-south and east-west</span>
+ds.fill_na(<span class="tok-num">1</span>)          <span class="tok-com"># distance-weighted infill using 1 nearest neighbour</span></pre>
+    </div>
+
+    <h2 id="ensembles">Ensembles &amp; multi-file datasets</h2>
+    <p>Multi-file datasets are created the same way as single-file ones &mdash; a list of paths or a wildcard:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds = nc.open_data(<span class="tok-str">"foo/*.nc"</span>)
+ds.tmean()   <span class="tok-com"># applied independently to each file in the ensemble</span></pre>
+    </div>
+    <h3>Merging</h3>
+    <p>Two merge strategies are available via <code>merge</code>:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.merge(<span class="tok-str">"time"</span>)       <span class="tok-com"># files share variables/grid, distinct times</span>
+ds.merge(<span class="tok-str">"variable"</span>)   <span class="tok-com"># files share time steps; this is the default</span></pre>
+    </div>
+    <h3>Ensemble statistics</h3>
+    <p>To calculate a statistic <em>across</em> ensemble members (e.g. across climate models) rather than within each one, use the ensemble methods: <code>ensemble_mean</code>, <code>ensemble_percentile</code>, <code>ensemble_stdev</code>, <code>ensemble_var</code>, <code>ensemble_max</code>, <code>ensemble_min</code>, <code>ensemble_range</code> and <code>ensemble_sum</code>.</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.ensemble_mean()   <span class="tok-com"># e.g. monthly mean across 20 climate models</span></pre>
+    </div>
+    <h3>Speeding up multi-file processing</h3>
+    <p>Set the number of cores used for processing files in a multi-file dataset in parallel. It's almost always faster to process files with a high core count before merging, rather than merging first:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>nc.options(cores=<span class="tok-num">6</span>)</pre>
+    </div>
+    <p>For processing an ensemble with your own Python function via <code>multiprocessing</code>, see <a href="guide-advanced.html#parallel">Parallel processing</a>.</p>
+
+    <h2 id="math">Mathematical operations</h2>
+    <h3>Creating new variables with <code>assign</code></h3>
+    <p><code>assign</code> works like pandas' <code>assign</code>, using lambda functions evaluated per grid cell, per time step:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.assign(new=<span class="tok-kw">lambda</span> x: x.var + <span class="tok-num">10</span>)
+ds.assign(new=<span class="tok-kw">lambda</span> x: x.var + <span class="tok-num">10</span>, drop=<span class="tok-kw">True</span>)   <span class="tok-com"># keep only the new variable</span></pre>
+    </div>
+    <div class="callout warn">
+      <div class="callout-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Write assign on a single line
+      </div>
+      <p>Each call to <code>assign</code> currently needs to be written on one line &mdash; splitting the arguments across multiple lines will not parse correctly.</p>
+    </div>
+    <p>Numpy-style math functions and NCToolkit-specific helpers are available inside the lambda: <code>abs</code>, <code>floor</code>, <code>ceil</code>, <code>sqrt</code>, <code>exp</code>, <code>log10</code>, trig functions, plus <code>spatial_mean</code>, <code>spatial_max/min/sum</code>, <code>vertical_mean/max/min/sum</code>, <code>zonal_mean/max/min/sum</code>, <code>cell_area</code>, <code>latitude</code>, <code>longitude</code>, <code>level</code>, <code>year</code>, <code>month</code>, <code>day</code>, <code>hour</code> and <code>timestep</code>. See the full list on the <a href="api.html#assign-functions">API reference</a>.</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.assign(temp_comp=<span class="tok-kw">lambda</span> x: x.temperature - spatial_mean(x.temperature), drop=<span class="tok-kw">True</span>)</pre>
+    </div>
+    <p>Multiple variables can be created in one call &mdash; each can reference the ones created before it:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.assign(var1=<span class="tok-kw">lambda</span> x: x.var + <span class="tok-num">1</span>, var2=<span class="tok-kw">lambda</span> x: x.var1 + <span class="tok-num">1</span>, diff=<span class="tok-kw">lambda</span> x: x.var2 - x.var1)</pre>
+    </div>
+
+    <h3>Simple arithmetic &amp; comparisons</h3>
+    <p>Standard Python operators work directly on datasets, using <code>add</code>, <code>subtract</code>, <code>multiply</code> and <code>divide</code> under the hood:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.add(<span class="tok-num">10</span>)          <span class="tok-com"># or: ds + 10</span>
+ds1.add(ds2)        <span class="tok-com"># or: ds1 + ds2</span>
+ds.compare(<span class="tok-str">">0"</span>)      <span class="tok-com"># or: ds > 0</span></pre>
+    </div>
+    <p>When one side has a single time step, or one dataset holds a monthly/annual climatology and the other a longer time series, NCToolkit automatically works out how to line the two up &mdash; and tells you which alignment it inferred.</p>
+
+    <h2 id="matchpoint">Matchups with point data</h2>
+    <p>Matching gridded data to sparse point observations &mdash; often at varying depths and times &mdash; is handled by <a href="api.html#matchpoint"><code>match_points</code></a>. The dataframe of points must use column names from <code>lon</code>, <code>lat</code>, <code>depth</code>, <code>year</code>, <code>month</code> or <code>day</code>.</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>df_matched = ds.match_points(df)</pre>
+    </div>
+    <p>Spatially, the data is regridded with bilinear interpolation to the given lon/lat pairs; if depths are supplied it is then interpolated vertically with 1D interpolation (via scipy). Omitting <code>day</code> (or <code>month</code>/<code>day</code>) returns every matching day (or month/day) for the years and months given &mdash; the same behaviour as a partial merge key in pandas.</p>
+    <p>Useful optional arguments:</p>
+    <ul class="param-list">
+      <li><code class="param-name">variables</code><p>Restrict the matchup to a subset of variables.</p></li>
+      <li><code class="param-name">tmean</code><p>Apply <code>ds.tmean()</code> with the temporal grouping implied by the dataframe columns before matching &mdash; useful when point data is coarser than the dataset (e.g. monthly points, daily data).</p></li>
+      <li><code class="param-name">top</code><p>When the dataset has multiple vertical levels but you only want the top one.</p></li>
+      <li><code class="param-name">nan</code><p>Values in the dataset that should be treated as missing.</p></li>
+    </ul>
+
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container footer-pml">
+    <a href="https://pml.ac.uk/" target="_blank" rel="noopener"><img src="assets/img/pml_logo.jpg" alt="Plymouth Marine Laboratory"></a>
+    <span>Developed by the <a href="https://pml.ac.uk/science/Marine-Systems-Modelling/" target="_blank" rel="noopener">Marine Systems Modelling group</a> at <a href="https://pml.ac.uk/" target="_blank" rel="noopener">Plymouth Marine Laboratory</a></span>
+  </div>
+  <div class="container footer-top">
+    <div class="footer-brand">
+      <img src="assets/img/nctoolkit_wordmark.svg" alt="NCToolkit">
+      <p>A comprehensive Python package for netCDF analysis and post-processing. Subset, compute, and visualize &mdash; in a few lines of code.</p>
+      <div class="footer-social">
+        <a href="https://github.com/pmlmodelling/nctoolkit" target="_blank" rel="noopener" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 .5C5.73.5.5 5.74.5 12.09c0 5.08 3.29 9.38 7.86 10.9.57.1.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.56-.29-5.26-1.28-5.26-5.71 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.44-2.7 5.42-5.28 5.7.42.36.78 1.08.78 2.17 0 1.57-.01 2.83-.01 3.22 0 .3.21.66.8.55A10.6 10.6 0 0 0 23.5 12.1C23.5 5.74 18.27.5 12 .5Z"/></svg>
+        </a>
+        <a href="mailto:rwi@pml.ac.uk" aria-label="Email">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Documentation</h4>
+      <ul>
+        <li><a href="installing.html">Installing</a></li>
+        <li><a href="quickstart.html">Quickstart</a></li>
+        <li><a href="guide-basics.html">Working with data</a></li>
+        <li><a href="guide-analysis.html">Analysis &amp; statistics</a></li>
+        <li><a href="guide-advanced.html">Visualization &amp; tips</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Reference</h4>
+      <ul>
+        <li><a href="api.html">API reference</a></li>
+        <li><a href="data-formats.html">Supported data</a></li>
+        <li><a href="backends.html">CDO &amp; NCO backends</a></li>
+        <li><a href="qa.html">Q&amp;A</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Project</h4>
+      <ul>
+        <li><a href="about.html">About &amp; citation</a></li>
+        <li><a href="news.html">Changelog</a></li>
+        <li><a href="version-history.html">Version history</a></li>
+        <li><a href="https://github.com/pmlmodelling/nctoolkit" target="_blank" rel="noopener">GitHub repository</a></li>
+        <li><a href="https://github.com/pmlmodelling/nctoolkit/issues" target="_blank" rel="noopener">Report an issue</a></li>
+        <li><a href="https://anaconda.org/conda-forge/nctoolkit" target="_blank" rel="noopener">conda-forge package</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>&copy; 2026 <a href="https://pml.ac.uk/" target="_blank" rel="noopener">Plymouth Marine Laboratory</a>. Released under the GNU GPLv3 license.</span>
+    <span>Built by ocean and climate modellers, for netCDF users everywhere.</span>
+  </div>
+</footer>
+
+<button class="back-to-top" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+</button>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>

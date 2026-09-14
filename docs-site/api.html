@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>API Reference — NCToolkit</title>
+<meta name="description" content="Full method reference for NCToolkit's DataSet class and module-level functions, grouped by category: opening data, subsetting, statistics, interpolation, plotting, and more.">
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container nav">
+    <a class="brand" href="index.html">
+      <img src="assets/img/nctoolkit_wordmark.svg" alt="NCToolkit">
+      <span id="nctoolkit-docs-version" class="brand-version">v&hellip;</span>
+    </a>
+    <nav class="nav-links" id="nav-links">
+      <a href="installing.html" data-page="installing.html">Install</a>
+      <a href="quickstart.html" data-page="quickstart.html">Quickstart</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle" aria-expanded="false">Guide
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="nav-dropdown-menu">
+          <a href="guide-basics.html" data-page="guide-basics.html">Working with data<small>Opening, subsetting, exporting, settings</small></a>
+          <a href="guide-analysis.html" data-page="guide-analysis.html">Analysis &amp; statistics<small>Temporal, vertical, ensembles, regridding, math</small></a>
+          <a href="guide-advanced.html" data-page="guide-advanced.html">Visualization &amp; tips<small>Plotting, parallel processing, hacks, troubleshooting</small></a>
+        </div>
+      </div>
+      <a href="api.html" data-page="api.html">API</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle" aria-expanded="false">Data
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="nav-dropdown-menu">
+          <a href="data-formats.html" data-page="data-formats.html">Supported data<small>Grids, time axes, CF-compliance</small></a>
+          <a href="backends.html" data-page="backends.html">CDO &amp; NCO backends<small>Using raw commands directly</small></a>
+        </div>
+      </div>
+      <a href="qa.html" data-page="qa.html">Q&amp;A</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle" aria-expanded="false">About
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="nav-dropdown-menu">
+          <a href="about.html" data-page="about.html">About &amp; citation<small>Project background, how to cite</small></a>
+          <a href="news.html" data-page="news.html">Changelog<small>Release notes</small></a>
+          <a href="version-history.html" data-page="version-history.html">Version history<small>Archived documentation snapshots</small></a>
+        </div>
+      </div>
+    </nav>
+    <div class="nav-actions">
+      <a class="icon-btn" href="https://github.com/pmlmodelling/nctoolkit" target="_blank" rel="noopener" aria-label="NCToolkit on GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 .5C5.73.5.5 5.74.5 12.09c0 5.08 3.29 9.38 7.86 10.9.57.1.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.56-.29-5.26-1.28-5.26-5.71 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.44-2.7 5.42-5.28 5.7.42.36.78 1.08.78 2.17 0 1.57-.01 2.83-.01 3.22 0 .3.21.66.8.55A10.6 10.6 0 0 0 23.5 12.1C23.5 5.74 18.27.5 12 .5Z"/></svg>
+      </a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="page-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="index.html">Home</a> / API reference</div>
+    <h1>API reference</h1>
+    <p class="lead">Every method NCToolkit exposes, grouped by what it does. Unless noted otherwise, methods are called on a <code>DataSet</code> object (what <code>open_data()</code> and friends return).</p>
+  </div>
+</div>
+
+<div class="container docs-layout">
+  <aside class="docs-toc">
+    <div class="docs-toc-title">Categories</div>
+    <ul>
+      <li><a href="#options">Session options</a></li>
+      <li><a href="#opening">Opening &amp; copying data</a></li>
+      <li><a href="#attributes">Accessing attributes</a></li>
+      <li><a href="#subsetting">Subsetting &amp; time</a></li>
+      <li><a href="#statistics">Statistics</a></li>
+      <li><a href="#vertical">Vertical methods</a></li>
+      <li><a href="#interpolation">Interpolation &amp; matching</a></li>
+      <li><a href="#matchpoint">Point matchups &amp; ecology</a></li>
+      <li><a href="#ensembles">Ensembles &amp; merging</a></li>
+      <li><a href="#arithmetic">Arithmetic &amp; comparisons</a></li>
+      <li><a href="#assign-functions">Functions for assign()</a></li>
+      <li><a href="#variables">Variable &amp; attribute editing</a></li>
+      <li><a href="#visualization">Plotting</a></li>
+      <li><a href="#exporting">Output &amp; formatting</a></li>
+      <li><a href="#evaluation">Evaluation &amp; cleanup</a></li>
+      <li><a href="#misc">Miscellaneous</a></li>
+    </ul>
+  </aside>
+
+  <div class="docs-content">
+
+    <h2 id="options">Session options</h2>
+    <div class="table-wrap"><table><tbody>
+      <tr><td><code>options(...)</code></td><td>Set global session settings &mdash; <code>cores</code>, <code>temp_dir</code>, <code>progress</code>, <code>lazy</code>, <code>parallel</code>. See <a href="guide-basics.html#settings">Global settings</a>.</td></tr>
+    </tbody></table></div>
+
+    <h2 id="opening">Opening &amp; copying data</h2>
+    <div class="table-wrap"><table><tbody>
+      <tr><td><code>open_data(path)</code></td><td>Open one or more local netCDF files. Accepts a path, list, or wildcard.</td></tr>
+      <tr><td><code>open_url(url)</code></td><td>Download a file from a URL or ftp address, then open it.</td></tr>
+      <tr><td><code>open_thredds(url)</code></td><td>Open data served over a thredds/OPeNDAP endpoint (must end in <code>.nc</code>).</td></tr>
+      <tr><td><code>open_geotiff(path)</code></td><td>Open a GeoTIFF file as a dataset.</td></tr>
+      <tr><td><code>from_xarray(ds)</code></td><td>Create a dataset from an existing xarray Dataset.</td></tr>
+      <tr><td><code>create_ensemble(dir)</code></td><td>List the files in a directory as an ensemble, for use with <code>open_data</code> or parallel processing.</td></tr>
+      <tr><td><code>DataSet.copy()</code></td><td>Return an independent copy of a dataset.</td></tr>
+    </tbody></table></div>
+
+    <h2 id="attributes">Accessing attributes</h2>
+    <div class="table-wrap"><table><tbody>
+      <tr><td><code>DataSet.variables</code></td><td>Variable names in the dataset.</td></tr>
+      <tr><td><code>DataSet.contents</code></td><td>Dataframe of variables, units, long names and data types.</td></tr>
+      <tr><td><code>DataSet.times</code> / <code>years</code> / <code>months</code></td><td>Time steps / years / months present.</td></tr>
+      <tr><td><code>DataSet.levels</code></td><td>Vertical levels present.</td></tr>
+      <tr><td><code>DataSet.size</code></td><td>Size of the dataset's temporary file(s).</td></tr>
+      <tr><td><code>DataSet.current</code></td><td>Current temporary file(s) representing dataset state.</td></tr>
+      <tr><td><code>DataSet.history</code></td><td>CDO command(s) generated by operations run so far.</td></tr>
+      <tr><td><code>DataSet.start</code></td><td>Start date of the dataset.</td></tr>
+      <tr><td><code>DataSet.calendar</code></td><td>Calendar type used by the time axis.</td></tr>
+      <tr><td><code>DataSet.ncformat</code></td><td>netCDF format of the underlying file(s).</td></tr>
+    </tbody></table></div>
+
+    <h2 id="subsetting">Subsetting &amp; time-based methods</h2>
+    <div class="table-wrap"><table><tbody>
+      <tr><td><code>DataSet.subset(...)</code></td><td>Select variables, years, months, seasons, timesteps or a lon/lat box. See <a href="guide-basics.html#subsetting">Subsetting data</a>.</td></tr>
+      <tr><td><code>DataSet.crop(...)</code></td><td>Geographic subsetting to a lon/lat box.</td></tr>
+      <tr><td><code>DataSet.drop(...)</code></td><td>Drop specific times, e.g. leap days.</td></tr>
+      <tr><td><code>DataSet.set_date(...)</code></td><td>Set/override the start date of a dataset.</td></tr>
+      <tr><td><code>DataSet.set_day(...)</code></td><td>Set the day-of-month used for time steps.</td></tr>
+      <tr><td><code>DataSet.shift(...)</code></td><td>Shift time forward or backward by hours, days, months or years.</td></tr>
+    </tbody></table></div>
+
+    <h2 id="statistics">Statistical methods</h2>
+    <p>Temporal statistics (prefixed <code>t</code>), each accepting an optional <code>over</code> grouping of <code>"day"</code>/<code>"month"</code>/<code>"year"</code>/<code>"season"</code> &mdash; see <a href="guide-analysis.html#temporal">Temporal statistics</a>:</p>
+    <div class="table-wrap"><table><tbody>
+      <tr><td><code>DataSet.tmean / tmin / tmax / tmedian / tsum / trange / tstdev / tvar / tpercentile / tcumsum</code></td><td>Mean, min, max, median, sum, range, standard deviation, variance, percentile, or cumulative sum over time.</td></tr>
+      <tr><td><code>DataSet.rolling_mean / rolling_min / rolling_max / rolling_sum / rolling_range / rolling_stdev / rolling_var</code></td><td>The same statistics over a moving window of time steps.</td></tr>
+      <tr><td><code>DataSet.annual_anomaly / monthly_anomaly</code></td><td>Anomaly relative to a baseline period, absolute or relative, optionally smoothed with a rolling window.</td></tr>
+    </tbody></table></div>
+    <p>Spatial and zonal statistics:</p>
+    <div class="table-wrap"><table><tbody>
+      <tr><td><code>DataSet.spatial_mean / spatial_min / spatial_max / spatial_sum / spatial_range / spatial_stdev / spatial_var / spatial_percentile</code></td><td>Statistic across the horizontal domain at each time step.</td></tr>
+      <tr><td><code>DataSet.zonal_mean / zonal_min / zonal_max / zonal_range / zonal_sum</code></td><td>Statistic along lines of latitude.</td></tr>
+      <tr><td><code>DataSet.meridonial_mean / meridonial_min / meridonial_max / meridonial_range</code></td><td>Statistic along lines of longitude.</td></tr>
+      <tr><td><code>DataSet.centre()</code></td><td>Centre a variable by removing its spatial mean.</td></tr>
+      <tr><td><code>DataSet.cor_space(...) / cor_time(...)</code></td><td>Spatial or temporal correlation between variables or datasets.</td></tr>
+    </tbody></table></div>
+
+    <h2 id="vertical">Vertical methods</h2>
+    <div class="table-wrap"><table><tbody>
+      <tr><td><code>DataSet.top() / bottom()</code></td><td>Select the surface (or sea-floor) vertical level.</td></tr>
+      <tr><td><code>DataSet.vertical_interp(levels, fixed)</code></td><td>Interpolate to specified vertical levels.</td></tr>
+      <tr><td><code>DataSet.vertical_mean / vertical_min / vertical_max / vertical_range / vertical_sum</code></td><td>Statistic across vertical levels, thickness-weighted where available.</td></tr>
+      <tr><td><code>DataSet.vertical_integration()</code></td><td>Full water-column total, accounting for cell thickness.</td></tr>
+      <tr><td><code>DataSet.vertical_cumsum()</code></td><td>Cumulative sum with depth/height.</td></tr>
+      <tr><td><code>DataSet.invert_levels()</code></td><td>Reverse the order of vertical levels.</td></tr>
+      <tr><td><code>DataSet.bottom_mask()</code></td><td>Mask indicating the deepest valid level at each point.</td></tr>
+    </tbody></table></div>
+
+    <h2 id="interpolation">Interpolation, matching &amp; resampling</h2>
+    <div class="table-wrap"><table><tbody>
+      <tr><td><code>DataSet.regrid(target, recycle=False)</code></td><td>Regrid onto another dataset's grid, a netCDF file's grid, or a dataframe of lon/lat coordinates.</td></tr>
+      <tr><td><code>DataSet.to_latlon(lon, lat, res, method)</code></td><td>Regrid to a regular lon/lat grid with a given extent and resolution.</td></tr>
+      <tr><td><code>DataSet.resample_grid(n)</code></td><td>Coarsen the horizontal grid by keeping every <em>n</em>th cell.</td></tr>
+      <tr><td><code>DataSet.fill_na(n)</code></td><td>Distance-weighted infilling of missing values using <em>n</em> nearest neighbours.</td></tr>
+      <tr><td><code>DataSet.time_interp(...) / timestep_interp(...)</code></td><td>Interpolate onto a new time axis, by date or by timestep.</td></tr>
+      <tr><td><code>DataSet.box_mean / box_max / box_min / box_sum / box_range</code></td><td>Statistic within a set of geographic boxes.</td></tr>
+      <tr><td><code>DataSet.mask_box(...)</code></td><td>Mask a dataset outside a geographic box.</td></tr>
+    </tbody></table></div>
+
+    <h2 id="matchpoint">Point matchups &amp; ecological methods</h2>
+    <div class="table-wrap"><table><tbody>
+      <tr><td><code>DataSet.match_points(df, variables=None, tmean=False, top=False, nan=None)</code></td><td>Match gridded data to a dataframe of point observations (<code>lon</code>/<code>lat</code>/<code>depth</code>/<code>year</code>/<code>month</code>/<code>day</code>). See <a href="guide-analysis.html#matchpoint">Matchups with point data</a>.</td></tr>
+      <tr><td><code>DataSet.phenology(...)</code></td><td>Calculate phenological metrics (e.g. bloom timing) from a time series.</td></tr>
+    </tbody></table></div>
+
+    <h2 id="ensembles">Ensembles &amp; merging</h2>
+    <div class="table-wrap"><table><tbody>
+      <tr><td><code>merge(datasets, ...)</code> / <code>DataSet.merge("time"|"variable")</code></td><td>Combine multiple files by matching time steps or by stacking variables. See <a href="guide-analysis.html#ensembles">Ensembles &amp; multi-file datasets</a>.</td></tr>
+      <tr><td><code>DataSet.split(...)</code></td><td>Split a dataset back out into separate files.</td></tr>
+      <tr><td><code>DataSet.append(...) / remove(...)</code></td><td>Add or remove member files from a multi-file dataset.</td></tr>
+      <tr><td><code>DataSet.ensemble_mean / ensemble_min / ensemble_max / ensemble_sum / ensemble_range / ensemble_stdev / ensemble_var / ensemble_percentile</code></td><td>Statistic calculated across ensemble members, e.g. across climate models.</td></tr>
+    </tbody></table></div>
+
+    <h2 id="arithmetic">Arithmetic &amp; comparisons</h2>
+    <div class="table-wrap"><table><tbody>
+      <tr><td><code>DataSet.add / subtract / multiply / divide</code></td><td>Elementwise arithmetic against a constant or another dataset. Also available as <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>.</td></tr>
+      <tr><td><code>DataSet.abs / exp / log / log10 / sqrt / square / power(n)</code></td><td>Elementwise mathematical transforms.</td></tr>
+      <tr><td><code>DataSet.compare("&gt;0")</code></td><td>Elementwise logical comparison against a constant or dataset; also available as <code>&gt;</code>, <code>&lt;</code>, <code>==</code>, <code>&gt;=</code>, <code>&lt;=</code>, <code>!=</code>.</td></tr>
+      <tr><td><code>DataSet.gt(...) / lt(...)</code></td><td>Explicit greater-than / less-than comparisons.</td></tr>
+      <tr><td><code>DataSet.sum_all()</code></td><td>Sum all variables in a dataset into one.</td></tr>
+    </tbody></table></div>
+
+    <h2 id="assign-functions">Functions available inside <code>assign()</code></h2>
+    <p>These can be used inside the lambda functions passed to <a href="guide-analysis.html#math"><code>assign()</code></a>:</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Function</th><th>Description</th><th>Example</th></tr></thead>
+      <tbody>
+        <tr><td><code>abs</code></td><td>Absolute value</td><td><code>abs(x.sst)</code></td></tr>
+        <tr><td><code>ceiling</code> / <code>floor</code></td><td>Ceiling / floor of a variable</td><td><code>ceiling(x.sst - 1)</code></td></tr>
+        <tr><td><code>sqrt</code> / <code>exp</code> / <code>log</code> / <code>log10</code></td><td>Square root, exponential, natural log, base-10 log</td><td><code>log10(x.sst + 1)</code></td></tr>
+        <tr><td><code>sin</code> / <code>cos</code> / <code>tan</code></td><td>Trigonometric functions</td><td><code>cos(x.var)</code></td></tr>
+        <tr><td><code>isnan</code></td><td>Is the value missing?</td><td><code>isnan(x.var)</code></td></tr>
+        <tr><td><code>cell_area</code></td><td>Grid-cell area (m&sup2;)</td><td><code>cell_area(x.var)</code></td></tr>
+        <tr><td><code>latitude</code> / <code>longitude</code></td><td>Coordinates of the grid cell</td><td><code>latitude(x.var)</code></td></tr>
+        <tr><td><code>level</code></td><td>Vertical level of the variable</td><td><code>level(x.var)</code></td></tr>
+        <tr><td><code>year</code> / <code>month</code> / <code>day</code> / <code>hour</code></td><td>Date/time components of the variable</td><td><code>month(x.var)</code></td></tr>
+        <tr><td><code>timestep</code></td><td>Time step index (Python indexing)</td><td><code>timestep(x.var)</code></td></tr>
+        <tr><td><code>spatial_mean</code> / <code>spatial_max</code> / <code>spatial_min</code> / <code>spatial_sum</code></td><td>Spatial statistic at each time-step</td><td><code>spatial_mean(x.var)</code></td></tr>
+        <tr><td><code>zonal_mean</code> / <code>zonal_max</code> / <code>zonal_min</code> / <code>zonal_sum</code></td><td>Zonal statistic at each time-step</td><td><code>zonal_mean(x.var)</code></td></tr>
+      </tbody>
+    </table></div>
+
+    <h2 id="variables">Variable &amp; attribute editing</h2>
+    <div class="table-wrap"><table><tbody>
+      <tr><td><code>DataSet.assign(...)</code></td><td>Create new variables from lambda functions, pandas-style. See <a href="guide-analysis.html#math">Mathematical operations</a>.</td></tr>
+      <tr><td><code>DataSet.rename({old: new})</code></td><td>Rename one or more variables.</td></tr>
+      <tr><td><code>DataSet.as_missing(...) / missing_as(...) / set_fill(...)</code></td><td>Set values to missing, replace missing values, or change the netCDF fill value.</td></tr>
+      <tr><td><code>DataSet.set_longnames(...) / set_units(...)</code></td><td>Edit a variable's <code>long_name</code> or <code>units</code> netCDF attribute.</td></tr>
+      <tr><td><code>DataSet.strip_variables(...)</code></td><td>Remove non-essential variables from the dataset.</td></tr>
+    </tbody></table></div>
+
+    <h2 id="visualization">Plotting</h2>
+    <div class="table-wrap"><table><tbody>
+      <tr><td><code>DataSet.plot(...)</code></td><td>Automatic interactive plot &mdash; map, time series, or heatmap depending on the data's shape. See <a href="guide-advanced.html#visualization">Visualization</a>.</td></tr>
+      <tr><td><code>DataSet.pub_plot(...)</code></td><td>Static, publication-quality plot for regular lon/lat grids.</td></tr>
+    </tbody></table></div>
+
+    <h2 id="exporting">Output &amp; formatting</h2>
+    <div class="table-wrap"><table><tbody>
+      <tr><td><code>DataSet.to_nc(path)</code></td><td>Write the dataset to a netCDF file.</td></tr>
+      <tr><td><code>DataSet.to_dataframe()</code></td><td>Convert the dataset to a pandas dataframe.</td></tr>
+      <tr><td><code>DataSet.to_xarray()</code></td><td>Convert the dataset to an xarray Dataset.</td></tr>
+      <tr><td><code>DataSet.zip()</code></td><td>Mark the dataset to be written as a compressed netCDF file on export.</td></tr>
+      <tr><td><code>DataSet.format(fmt)</code></td><td>Set the netCDF format: <code>nc1</code>, <code>nc2</code>/<code>nc</code>, <code>nc4</code>, <code>nc4c</code>, <code>nc5</code>.</td></tr>
+    </tbody></table></div>
+
+    <h2 id="evaluation">Evaluation &amp; cleanup</h2>
+    <div class="table-wrap"><table><tbody>
+      <tr><td><code>DataSet.run()</code></td><td>Force evaluation of any pending lazy operations. See <a href="guide-basics.html#lazy">Lazy evaluation</a>.</td></tr>
+      <tr><td><code>cleanup()</code></td><td>Remove NCToolkit's own temporary files from the current session.</td></tr>
+      <tr><td><code>deep_clean()</code></td><td>Remove all NCToolkit temporary files, including from other sessions.</td></tr>
+      <tr><td><code>DataSet.reset()</code></td><td>Reset a dataset back to its originally opened state.</td></tr>
+    </tbody></table></div>
+
+    <h2 id="misc">Miscellaneous</h2>
+    <div class="table-wrap"><table><tbody>
+      <tr><td><code>DataSet.check()</code></td><td>Run general sanity checks: integer types, integer time axis, CF-compliance, grid consistency. See <a href="guide-advanced.html#troubleshooting">Troubleshooting</a>.</td></tr>
+      <tr><td><code>DataSet.is_corrupt()</code></td><td>Check whether the source file(s) are corrupt.</td></tr>
+      <tr><td><code>DataSet.assign_coords(lon_name, lat_name)</code></td><td>Tell NCToolkit which variables to treat as longitude/latitude coordinates.</td></tr>
+      <tr><td><code>DataSet.set_precision(dtype)</code></td><td>Change the numerical precision used for calculations, e.g. <code>"F64"</code>.</td></tr>
+      <tr><td><code>DataSet.set_gridtype(...) / fix_nemo_ersem_grid(...)</code></td><td>Correct grid-type metadata, including a helper for NEMO-ERSEM output.</td></tr>
+      <tr><td><code>DataSet.reduce_dims() / reduce_grid(...)</code></td><td>Drop length-1 dimensions, or reduce an unnecessarily large grid.</td></tr>
+      <tr><td><code>DataSet.surface_mask(...)</code></td><td>Generate a land/sea mask from the surface level.</td></tr>
+      <tr><td><code>DataSet.no_leaps()</code></td><td>Remove leap days from the time axis.</td></tr>
+      <tr><td><code>DataSet.as_double() / as_type(dtype)</code></td><td>Cast the dataset to double precision, or a specific data type.</td></tr>
+      <tr><td><code>DataSet.na_count() / na_frac()</code></td><td>Count, or fraction, of missing values.</td></tr>
+      <tr><td><code>DataSet.first_above(...) / first_below(...) / last_above(...) / last_below(...)</code></td><td>First/last time step crossing a threshold.</td></tr>
+      <tr><td><code>DataSet.distribute(...) / collect(...)</code></td><td>Split processing across, then gather results back from, worker files.</td></tr>
+      <tr><td><code>DataSet.cell_area(join=True)</code></td><td>Add (or return only) grid-cell area in m&sup2;.</td></tr>
+      <tr><td><code>DataSet.cdo_command(cmd, ensemble=False) / nco_command(cmd)</code></td><td>Run a raw CDO or NCO command. See <a href="backends.html">CDO &amp; NCO backends</a>.</td></tr>
+    </tbody></table></div>
+
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container footer-pml">
+    <a href="https://pml.ac.uk/" target="_blank" rel="noopener"><img src="assets/img/pml_logo.jpg" alt="Plymouth Marine Laboratory"></a>
+    <span>Developed by the <a href="https://pml.ac.uk/science/Marine-Systems-Modelling/" target="_blank" rel="noopener">Marine Systems Modelling group</a> at <a href="https://pml.ac.uk/" target="_blank" rel="noopener">Plymouth Marine Laboratory</a></span>
+  </div>
+  <div class="container footer-top">
+    <div class="footer-brand">
+      <img src="assets/img/nctoolkit_wordmark.svg" alt="NCToolkit">
+      <p>A comprehensive Python package for netCDF analysis and post-processing. Subset, compute, and visualize &mdash; in a few lines of code.</p>
+      <div class="footer-social">
+        <a href="https://github.com/pmlmodelling/nctoolkit" target="_blank" rel="noopener" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 .5C5.73.5.5 5.74.5 12.09c0 5.08 3.29 9.38 7.86 10.9.57.1.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.56-.29-5.26-1.28-5.26-5.71 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.44-2.7 5.42-5.28 5.7.42.36.78 1.08.78 2.17 0 1.57-.01 2.83-.01 3.22 0 .3.21.66.8.55A10.6 10.6 0 0 0 23.5 12.1C23.5 5.74 18.27.5 12 .5Z"/></svg>
+        </a>
+        <a href="mailto:rwi@pml.ac.uk" aria-label="Email">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Documentation</h4>
+      <ul>
+        <li><a href="installing.html">Installing</a></li>
+        <li><a href="quickstart.html">Quickstart</a></li>
+        <li><a href="guide-basics.html">Working with data</a></li>
+        <li><a href="guide-analysis.html">Analysis &amp; statistics</a></li>
+        <li><a href="guide-advanced.html">Visualization &amp; tips</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Reference</h4>
+      <ul>
+        <li><a href="api.html">API reference</a></li>
+        <li><a href="data-formats.html">Supported data</a></li>
+        <li><a href="backends.html">CDO &amp; NCO backends</a></li>
+        <li><a href="qa.html">Q&amp;A</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Project</h4>
+      <ul>
+        <li><a href="about.html">About &amp; citation</a></li>
+        <li><a href="news.html">Changelog</a></li>
+        <li><a href="version-history.html">Version history</a></li>
+        <li><a href="https://github.com/pmlmodelling/nctoolkit" target="_blank" rel="noopener">GitHub repository</a></li>
+        <li><a href="https://github.com/pmlmodelling/nctoolkit/issues" target="_blank" rel="noopener">Report an issue</a></li>
+        <li><a href="https://anaconda.org/conda-forge/nctoolkit" target="_blank" rel="noopener">conda-forge package</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>&copy; 2026 <a href="https://pml.ac.uk/" target="_blank" rel="noopener">Plymouth Marine Laboratory</a>. Released under the GNU GPLv3 license.</span>
+    <span>Built by ocean and climate modellers, for netCDF users everywhere.</span>
+  </div>
+</footer>
+
+<button class="back-to-top" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+</button>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>

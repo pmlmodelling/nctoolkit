@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Working with Data — NCToolkit Guide</title>
+<meta name="description" content="Opening single and multi-file datasets, lazy evaluation and method chaining, dataset attributes, subsetting, exporting and global settings in NCToolkit.">
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container nav">
+    <a class="brand" href="index.html">
+      <img src="assets/img/nctoolkit_wordmark.svg" alt="NCToolkit">
+      <span id="nctoolkit-docs-version" class="brand-version">v&hellip;</span>
+    </a>
+    <nav class="nav-links" id="nav-links">
+      <a href="installing.html" data-page="installing.html">Install</a>
+      <a href="quickstart.html" data-page="quickstart.html">Quickstart</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle" aria-expanded="false">Guide
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="nav-dropdown-menu">
+          <a href="guide-basics.html" data-page="guide-basics.html">Working with data<small>Opening, subsetting, exporting, settings</small></a>
+          <a href="guide-analysis.html" data-page="guide-analysis.html">Analysis &amp; statistics<small>Temporal, vertical, ensembles, regridding, math</small></a>
+          <a href="guide-advanced.html" data-page="guide-advanced.html">Visualization &amp; tips<small>Plotting, parallel processing, hacks, troubleshooting</small></a>
+        </div>
+      </div>
+      <a href="api.html" data-page="api.html">API</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle" aria-expanded="false">Data
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="nav-dropdown-menu">
+          <a href="data-formats.html" data-page="data-formats.html">Supported data<small>Grids, time axes, CF-compliance</small></a>
+          <a href="backends.html" data-page="backends.html">CDO &amp; NCO backends<small>Using raw commands directly</small></a>
+        </div>
+      </div>
+      <a href="qa.html" data-page="qa.html">Q&amp;A</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle" aria-expanded="false">About
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="nav-dropdown-menu">
+          <a href="about.html" data-page="about.html">About &amp; citation<small>Project background, how to cite</small></a>
+          <a href="news.html" data-page="news.html">Changelog<small>Release notes</small></a>
+          <a href="version-history.html" data-page="version-history.html">Version history<small>Archived documentation snapshots</small></a>
+        </div>
+      </div>
+    </nav>
+    <div class="nav-actions">
+      <a class="icon-btn" href="https://github.com/pmlmodelling/nctoolkit" target="_blank" rel="noopener" aria-label="NCToolkit on GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 .5C5.73.5.5 5.74.5 12.09c0 5.08 3.29 9.38 7.86 10.9.57.1.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.56-.29-5.26-1.28-5.26-5.71 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.44-2.7 5.42-5.28 5.7.42.36.78 1.08.78 2.17 0 1.57-.01 2.83-.01 3.22 0 .3.21.66.8.55A10.6 10.6 0 0 0 23.5 12.1C23.5 5.74 18.27.5 12 .5Z"/></svg>
+      </a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="page-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="index.html">Home</a> / Guide / Working with data</div>
+    <h1>Working with data</h1>
+    <p class="lead">Opening datasets, understanding lazy evaluation, reading dataset attributes, subsetting, exporting, and configuring NCToolkit's global settings.</p>
+  </div>
+</div>
+
+<div class="container docs-layout">
+  <aside class="docs-toc">
+    <div class="docs-toc-title">On this page</div>
+    <ul>
+      <li><a href="#opening">Opening datasets</a></li>
+      <li><a href="#lazy">Lazy evaluation &amp; chaining</a></li>
+      <li><a href="#attributes">Dataset attributes</a></li>
+      <li><a href="#subsetting">Subsetting data</a></li>
+      <li><a href="#exporting">Importing &amp; exporting</a></li>
+      <li><a href="#settings">Global settings</a></li>
+    </ul>
+  </aside>
+
+  <div class="docs-content">
+
+    <h2 id="opening">Opening datasets</h2>
+    <p>NCToolkit can work with data on local file systems, at URLs, and over thredds/OPeNDAP servers. There are three ways to create a dataset:</p>
+    <ul class="param-list">
+      <li><code class="param-name">open_data(path)</code><p>Opens local files. Accepts a single path, a list of paths, or a wildcard such as <code>"data/*.nc"</code>.</p></li>
+      <li><code class="param-name">open_url(url)</code><p>Downloads a file at a URL or ftp address to a temporary folder, then opens it.</p></li>
+      <li><code class="param-name">open_thredds(url)</code><p>Opens data served over a thredds server or OPeNDAP. The URL must end in <code>.nc</code>.</p></li>
+    </ul>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre><span class="tok-kw">import</span> nctoolkit <span class="tok-kw">as</span> nc
+
+ds = nc.open_data(infile)             <span class="tok-com"># a single file</span>
+ds = nc.open_data(file_list)          <span class="tok-com"># a list of files</span>
+ds = nc.open_data(<span class="tok-str">"data/*.nc"</span>)         <span class="tok-com"># a wildcard, i.e. a multi-file dataset</span></pre>
+    </div>
+    <p>NCToolkit requires netCDF that follows the GDT, COARDS or CF conventions &mdash; see <a href="data-formats.html">Supported data</a> for details. When you open a multi-file dataset, standard methods apply to each member file individually; to combine members, see <a href="guide-analysis.html#ensembles">merging &amp; ensembles</a>.</p>
+
+    <h2 id="lazy">Lazy evaluation &amp; method chaining</h2>
+    <p>By default, NCToolkit evaluates lazily: operations are recorded, not run, until a result is actually needed. This lets NCToolkit collapse a whole chain of calls into a single CDO command instead of writing a temporary file at every step.</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds = nc.open_data(<span class="tok-str">"sst.mon.mean.nc"</span>)
+ds.subset(year=<span class="tok-num">2000</span>)
+ds.tmean()
+ds.spatial_mean()
+<span class="tok-com"># nothing has run yet &mdash; ds.current still points at the original file</span></pre>
+    </div>
+    <p>Calling <a href="api.html#evaluation"><code>run()</code></a>, or any method that needs a result &mdash; such as <code>plot()</code> or an attribute access &mdash; forces evaluation. Use <code>ds.history</code> after running to see the underlying CDO command NCToolkit generated.</p>
+    <div class="callout warn">
+      <div class="callout-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        No pandas-style method chaining
+      </div>
+      <p>NCToolkit methods modify a dataset in place rather than returning a new one, so <code>ds.subset(...).tmean()</code> will not work. Call methods on separate lines instead:</p>
+      <div class="code-block">
+        <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+        <pre>ds.subset(year=<span class="tok-num">2000</span>)
+ds.tmean()</pre>
+      </div>
+    </div>
+
+    <h2 id="attributes">Dataset attributes</h2>
+    <p>Useful attributes for inspecting a dataset:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Attribute</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>ds.variables</code></td><td>Variable names in the dataset.</td></tr>
+          <tr><td><code>ds.contents</code></td><td>A dataframe of variables with units, long names and other metadata.</td></tr>
+          <tr><td><code>ds.times</code> / <code>years</code> / <code>months</code></td><td>Time steps, years, or months present.</td></tr>
+          <tr><td><code>ds.levels</code></td><td>Vertical levels present.</td></tr>
+          <tr><td><code>ds.current</code></td><td>The current temporary file(s) representing dataset state.</td></tr>
+          <tr><td><code>ds.history</code></td><td>The CDO command(s) generated by the operations run so far.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Temporary files are created and deleted automatically as needed &mdash; there's no need to manage them yourself. See <a href="qa.html">Q&amp;A</a> for cleaning them up manually if you ever need to.</p>
+
+    <h2 id="subsetting">Subsetting data</h2>
+    <p>The main method for selecting parts of a dataset is <a href="api.html#subsetting"><code>subset</code></a>. Its arguments allow partial matches (e.g. <code>year</code> works the same as <code>years</code>).</p>
+
+    <h3>Variables</h3>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.subset(variables=[<span class="tok-str">"var1"</span>, <span class="tok-str">"var2"</span>])
+ds.subset(variables=<span class="tok-str">"var1"</span>)</pre>
+    </div>
+    <h3>Years, months, seasons and timesteps</h3>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.subset(years=[<span class="tok-num">2000</span>, <span class="tok-num">2001</span>])
+ds.subset(years=range(<span class="tok-num">2000</span>, <span class="tok-num">2010</span>))
+ds.subset(months=[<span class="tok-num">1</span>,<span class="tok-num">2</span>,<span class="tok-num">3</span>,<span class="tok-num">4</span>])
+ds.subset(season=<span class="tok-str">"DJF"</span>)
+ds.subset(time=[<span class="tok-num">0</span>,<span class="tok-num">1</span>])          <span class="tok-com"># first two timesteps</span></pre>
+    </div>
+    <h3 id="geographic">Geographic subsetting</h3>
+    <p>Crop to a longitude/latitude box by giving the minimum and maximum of each:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.subset(lon=[-80, 90], lat=[50, 80])</pre>
+    </div>
+
+    <h2 id="exporting">Importing &amp; exporting</h2>
+    <h3>Save as netCDF</h3>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds = nc.open_data(infile)
+ds.tmean()
+ds.<a href="api.html#exporting"><span class="tok-fn">to_nc</span></a>(outfile)      <span class="tok-com"># use ds.zip() first for a compressed file</span></pre>
+    </div>
+    <h3>pandas and xarray</h3>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>df = ds.<a href="api.html#exporting"><span class="tok-fn">to_dataframe</span></a>()
+xr_ds = ds.<a href="api.html#exporting"><span class="tok-fn">to_xarray</span></a>()
+ds = nc.<a href="api.html#opening"><span class="tok-fn">from_xarray</span></a>(xr_ds)</pre>
+    </div>
+    <h3>Exporting a subset</h3>
+    <p>Pass <code>subset</code> arguments straight to <code>to_nc</code>, <code>to_xarray</code> or <code>to_dataframe</code>:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.to_xarray(year=<span class="tok-num">2000</span>)
+ds.to_xarray(lon=[<span class="tok-num">0</span>, <span class="tok-num">90</span>], lat=[<span class="tok-num">0</span>, <span class="tok-num">90</span>])</pre>
+    </div>
+
+    <h2 id="settings">Global settings</h2>
+    <p>Session-wide behaviour is controlled with <a href="api.html#options"><code>nc.options()</code></a>:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Setting</th><th>Example</th><th>Effect</th></tr></thead>
+        <tbody>
+          <tr><td><code>cores</code></td><td><code>nc.options(cores=6)</code></td><td>Process multi-file datasets in parallel across N cores.</td></tr>
+          <tr><td><code>temp_dir</code></td><td><code>nc.options(temp_dir="/foo")</code></td><td>Where temporary files are written, instead of the OS default.</td></tr>
+          <tr><td><code>progress</code></td><td><code>nc.options(progress="on")</code></td><td>Force a progress bar on (or off) for multi-file operations.</td></tr>
+          <tr><td><code>lazy</code></td><td><code>nc.options(lazy=False)</code></td><td>Evaluate every method immediately instead of lazily.</td></tr>
+          <tr><td><code>parallel</code></td><td><code>nc.options(parallel=True)</code></td><td>Switch to a process-safe internal file list &mdash; required before using <code>multiprocessing</code>, see <a href="guide-advanced.html#parallel">Parallel processing</a>.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Settings can also be set once, per-project, using a plain-text <code>.nctoolkitrc</code> (or <code>nctoolkitrc</code>) file in your working directory or home directory:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">.nctoolkitrc</span></div>
+      <pre>lazy : True
+cores : 6</pre>
+    </div>
+    <p>NCToolkit checks the working directory first, then the home directory, and falls back to its defaults if no file is found.</p>
+
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container footer-pml">
+    <a href="https://pml.ac.uk/" target="_blank" rel="noopener"><img src="assets/img/pml_logo.jpg" alt="Plymouth Marine Laboratory"></a>
+    <span>Developed by the <a href="https://pml.ac.uk/science/Marine-Systems-Modelling/" target="_blank" rel="noopener">Marine Systems Modelling group</a> at <a href="https://pml.ac.uk/" target="_blank" rel="noopener">Plymouth Marine Laboratory</a></span>
+  </div>
+  <div class="container footer-top">
+    <div class="footer-brand">
+      <img src="assets/img/nctoolkit_wordmark.svg" alt="NCToolkit">
+      <p>A comprehensive Python package for netCDF analysis and post-processing. Subset, compute, and visualize &mdash; in a few lines of code.</p>
+      <div class="footer-social">
+        <a href="https://github.com/pmlmodelling/nctoolkit" target="_blank" rel="noopener" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 .5C5.73.5.5 5.74.5 12.09c0 5.08 3.29 9.38 7.86 10.9.57.1.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.56-.29-5.26-1.28-5.26-5.71 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.44-2.7 5.42-5.28 5.7.42.36.78 1.08.78 2.17 0 1.57-.01 2.83-.01 3.22 0 .3.21.66.8.55A10.6 10.6 0 0 0 23.5 12.1C23.5 5.74 18.27.5 12 .5Z"/></svg>
+        </a>
+        <a href="mailto:rwi@pml.ac.uk" aria-label="Email">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Documentation</h4>
+      <ul>
+        <li><a href="installing.html">Installing</a></li>
+        <li><a href="quickstart.html">Quickstart</a></li>
+        <li><a href="guide-basics.html">Working with data</a></li>
+        <li><a href="guide-analysis.html">Analysis &amp; statistics</a></li>
+        <li><a href="guide-advanced.html">Visualization &amp; tips</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Reference</h4>
+      <ul>
+        <li><a href="api.html">API reference</a></li>
+        <li><a href="data-formats.html">Supported data</a></li>
+        <li><a href="backends.html">CDO &amp; NCO backends</a></li>
+        <li><a href="qa.html">Q&amp;A</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Project</h4>
+      <ul>
+        <li><a href="about.html">About &amp; citation</a></li>
+        <li><a href="news.html">Changelog</a></li>
+        <li><a href="version-history.html">Version history</a></li>
+        <li><a href="https://github.com/pmlmodelling/nctoolkit" target="_blank" rel="noopener">GitHub repository</a></li>
+        <li><a href="https://github.com/pmlmodelling/nctoolkit/issues" target="_blank" rel="noopener">Report an issue</a></li>
+        <li><a href="https://anaconda.org/conda-forge/nctoolkit" target="_blank" rel="noopener">conda-forge package</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>&copy; 2026 <a href="https://pml.ac.uk/" target="_blank" rel="noopener">Plymouth Marine Laboratory</a>. Released under the GNU GPLv3 license.</span>
+    <span>Built by ocean and climate modellers, for netCDF users everywhere.</span>
+  </div>
+</footer>
+
+<button class="back-to-top" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+</button>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
