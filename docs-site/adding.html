@@ -71,12 +71,32 @@
   <div class="docs-content">
 
     <h2 id="constants">Arithmetic with constants and datasets</h2>
-    <p>Illustrated using monthly sea surface temperature from 1850 to the present. The first time step is in Celsius &mdash; converting to Kelvin is as simple as adding a constant:</p>
+    <p>Illustrated using monthly sea surface temperature from 1850 to the present. The first time step, in Celsius:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc"</span>)
 ds.subset(timestep=<span class="tok-num">0</span>)
-ds + <span class="tok-num">273.15</span></pre>
+ds.plot()</pre>
+    </div>
+    <div class="plot-embed">
+      <div class="plot-embed__bar">
+        <span class="plot-embed__label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg> ds.plot() &mdash; interactive output</span>
+        <a class="plot-embed__open" href="assets/plots/adding_plot1.html" target="_blank" rel="noopener">Open interactive <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+      </div>
+      <div class="plot-embed__image-wrap"><a href="assets/plots/adding_plot1.html" target="_blank" rel="noopener"><img src="assets/plots/adding_plot1.png" loading="lazy" alt="Global sea surface temperature in Celsius, first time step"></a></div>
+    </div>
+    <p>Converting to Kelvin is as simple as adding a constant:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds + <span class="tok-num">273.15</span>
+ds.plot()</pre>
+    </div>
+    <div class="plot-embed">
+      <div class="plot-embed__bar">
+        <span class="plot-embed__label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg> ds.plot() &mdash; interactive output</span>
+        <a class="plot-embed__open" href="assets/plots/adding_plot2.html" target="_blank" rel="noopener">Open interactive <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+      </div>
+      <div class="plot-embed__image-wrap"><a href="assets/plots/adding_plot2.html" target="_blank" rel="noopener"><img src="assets/plots/adding_plot2.png" loading="lazy" alt="Global sea surface temperature in Kelvin, first time step"></a></div>
     </div>
     <p>The same works between two datasets. Here, working out how much warmer the 2010s were than the 1910s:</p>
     <div class="code-block">
@@ -89,7 +109,15 @@ ds_1910s = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/d
 ds_1910s.subset(years=range(<span class="tok-num">1910</span>, <span class="tok-num">1920</span>))
 ds_1910s.tmean()
 
-ds_2010s - ds_1910s</pre>
+ds_2010s - ds_1910s
+ds_2010s.plot()</pre>
+    </div>
+    <div class="plot-embed">
+      <div class="plot-embed__bar">
+        <span class="plot-embed__label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg> ds_2010s.plot() &mdash; interactive output</span>
+        <a class="plot-embed__open" href="assets/plots/adding_plot3.html" target="_blank" rel="noopener">Open interactive <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+      </div>
+      <div class="plot-embed__image-wrap"><a href="assets/plots/adding_plot3.html" target="_blank" rel="noopener"><img src="assets/plots/adding_plot3.png" loading="lazy" alt="How much warmer the 2010s were than the 1910s"></a></div>
     </div>
 
     <h2 id="mismatched">Subtracting datasets of different resolution</h2>
@@ -102,7 +130,15 @@ climatology = ds.copy()
 climatology.tmean(<span class="tok-str">"month"</span>)   <span class="tok-com"># mean monthly climatology, 12 time steps</span>
 
 ds - climatology              <span class="tok-com"># NCToolkit reports it's subtracting a monthly time series</span>
-ds.spatial_mean()</pre>
+ds.spatial_mean()
+ds.plot()</pre>
+    </div>
+    <div class="plot-embed">
+      <div class="plot-embed__bar">
+        <span class="plot-embed__label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg> ds.plot() &mdash; interactive output</span>
+        <a class="plot-embed__open" href="assets/plots/adding_plot4.html" target="_blank" rel="noopener">Open interactive <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+      </div>
+      <div class="plot-embed__image-wrap"><a href="assets/plots/adding_plot4.html" target="_blank" rel="noopener"><img src="assets/plots/adding_plot4.png" loading="lazy" alt="Global mean monthly SST anomaly relative to the monthly climatology, 1850 to present"></a></div>
     </div>
     <p>NCToolkit tells you which alignment it inferred. Subtracting an annual climatology instead gives a different message, since NCToolkit recognizes it as annual rather than monthly data:</p>
     <div class="code-block">
@@ -144,8 +180,38 @@ ds.add(<span class="tok-num">273.15</span>)</pre>
     <p>Logical comparisons follow the same pattern, with the dataset on the left and a constant or compatible dataset on the right: <code>&gt;</code>, <code>&lt;</code>, <code>==</code>, <code>&gt;=</code>, <code>&lt;=</code>, <code>!=</code>.</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>ds > <span class="tok-num">10</span>                 <span class="tok-com"># where temperature exceeds 10C</span>
-ds_2010s > ds_1910s      <span class="tok-com"># where the 2010s were warmer than the 1910s</span></pre>
+      <pre>ds = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc"</span>)
+ds.subset(timestep=<span class="tok-num">0</span>)
+ds > <span class="tok-num">10</span>                 <span class="tok-com"># where temperature exceeds 10C</span>
+ds.plot()</pre>
+    </div>
+    <div class="plot-embed">
+      <div class="plot-embed__bar">
+        <span class="plot-embed__label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg> ds.plot() &mdash; interactive output</span>
+        <a class="plot-embed__open" href="assets/plots/adding_plot5.html" target="_blank" rel="noopener">Open interactive <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+      </div>
+      <div class="plot-embed__image-wrap"><a href="assets/plots/adding_plot5.html" target="_blank" rel="noopener"><img src="assets/plots/adding_plot5.png" loading="lazy" alt="Where sea surface temperature exceeds 10C"></a></div>
+    </div>
+    <p>The same works between two datasets &mdash; where the 2010s were warmer than the 1910s:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds_2010s = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc"</span>)
+ds_2010s.subset(years=range(<span class="tok-num">2010</span>, <span class="tok-num">2020</span>))
+ds_2010s.tmean()
+
+ds_1910s = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc"</span>)
+ds_1910s.subset(years=range(<span class="tok-num">1910</span>, <span class="tok-num">1920</span>))
+ds_1910s.tmean()
+
+ds_2010s > ds_1910s      <span class="tok-com"># where the 2010s were warmer than the 1910s</span>
+ds_2010s.plot()</pre>
+    </div>
+    <div class="plot-embed">
+      <div class="plot-embed__bar">
+        <span class="plot-embed__label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg> ds_2010s.plot() &mdash; interactive output</span>
+        <a class="plot-embed__open" href="assets/plots/adding_plot6.html" target="_blank" rel="noopener">Open interactive <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+      </div>
+      <div class="plot-embed__image-wrap"><a href="assets/plots/adding_plot6.html" target="_blank" rel="noopener"><img src="assets/plots/adding_plot6.png" loading="lazy" alt="Where the 2010s were warmer than the 1910s"></a></div>
     </div>
     <p>Combined with <a href="api.html#spatial_mean"><code>spatial_mean</code></a>, this is an easy way to calculate the fraction of the ocean meeting a condition &mdash; for the warming example above, over 95% of the world's oceans were warmer in the 2010s than the 1910s.</p>
   </div>
