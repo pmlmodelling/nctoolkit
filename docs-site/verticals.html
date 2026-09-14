@@ -155,19 +155,19 @@ ds.bottom()    <span class="tok-com"># select the sea-floor</span></pre>
     </div>
 
     <h2 id="more">Additional vertical methods</h2>
-    <p>Every vertical method, summarized below:</p>
+    <p>For quick reference, every vertical method NCToolkit provides:</p>
     <div class="table-wrap"><table>
       <thead><tr><th>Method</th><th>Description</th></tr></thead>
       <tbody>
         <tr><td><a href="api.html#top"><code>ds.top()</code></a></td><td>Extract the top/surface level.</td></tr>
-        <tr><td><a href="api.html#bottom"><code>ds.bottom()</code></a></td><td>Extract the bottom (deepest valid) level.</td></tr>
-        <tr><td><a href="api.html#vertical_interp"><code>ds.vertical_interp(levels=[...], fixed=True)</code></a></td><td>Interpolate to specific target vertical levels.</td></tr>
-        <tr><td><a href="api.html#vertical_mean"><code>ds.vertical_mean(fixed=True)</code></a></td><td>Depth-averaged mean, accounting for cell thickness where available.</td></tr>
+        <tr><td><a href="api.html#bottom"><code>ds.bottom(...)</code></a></td><td>Extract the bottom (deepest valid) level.</td></tr>
+        <tr><td><a href="api.html#vertical_interp"><code>ds.vertical_interp(...)</code></a></td><td>Interpolate to specific target vertical levels.</td></tr>
+        <tr><td><a href="api.html#vertical_mean"><code>ds.vertical_mean(...)</code></a></td><td>Depth-averaged mean, accounting for cell thickness where available.</td></tr>
         <tr><td><a href="api.html#vertical_min"><code>ds.vertical_min()</code></a></td><td>Vertical minimum at each grid cell and time step.</td></tr>
         <tr><td><a href="api.html#vertical_max"><code>ds.vertical_max()</code></a></td><td>Vertical maximum at each grid cell and time step.</td></tr>
         <tr><td><a href="api.html#vertical_range"><code>ds.vertical_range()</code></a></td><td>Vertical range (max &minus; min) at each grid cell and time step.</td></tr>
         <tr><td><a href="api.html#vertical_sum"><code>ds.vertical_sum()</code></a></td><td>Vertical sum at each grid cell and time step.</td></tr>
-        <tr><td><a href="api.html#vertical_integration"><code>ds.vertical_integration(fixed=True)</code></a></td><td>Vertically integrated total, accounting for cell thickness.</td></tr>
+        <tr><td><a href="api.html#vertical_integration"><code>ds.vertical_integration(...)</code></a></td><td>Vertically integrated total, accounting for cell thickness.</td></tr>
         <tr><td><a href="api.html#vertical_cumsum"><code>ds.vertical_cumsum()</code></a></td><td>Cumulative sum with depth/height.</td></tr>
         <tr><td><a href="api.html#invert_levels"><code>ds.invert_levels()</code></a></td><td>Reverse the order of the vertical levels.</td></tr>
         <tr><td><a href="api.html#bottom_mask"><code>ds.bottom_mask()</code></a></td><td>Mask identifying the deepest valid (non-missing) cell &mdash; e.g. the seabed.</td></tr>
