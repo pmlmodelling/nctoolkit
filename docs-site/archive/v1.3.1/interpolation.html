@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, follow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Interpolation &amp; Regridding — NCToolkit User Guide</title>
+<meta name="description" content="Horizontal regridding to regular grids or another dataset's grid, reusing regrid weights, resampling and infilling, and vertical interpolation in NCToolkit.">
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container nav">
+    <a class="brand" href="index.html">
+      <img src="assets/img/nctoolkit_wordmark.svg" alt="NCToolkit">
+      <span class="brand-version">v1.3.1 (archived)</span>
+    </a>
+    <nav class="nav-links" id="nav-links">
+      <a href="installing.html" data-page="installing.html">Install</a>
+      <a href="quickstart.html" data-page="quickstart.html">Quickstart</a>
+      <a href="guide.html" data-page="guide.html">Guide</a>
+      <a href="api.html" data-page="api.html">API</a>
+      <a href="data-formats.html" data-page="data-formats.html">Data supported</a>
+      <a href="qa.html" data-page="qa.html">Q&amp;A</a>
+      <a href="cheatsheet.html" data-page="cheatsheet.html">Cheat Sheet</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle" aria-expanded="false">About
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="nav-dropdown-menu">
+          <a href="about.html" data-page="about.html">About &amp; citation<small>Project background, how to cite</small></a>
+          <a href="../../version-history.html" data-page="version-history.html">Version history<small>Archived documentation snapshots</small></a>
+        </div>
+      </div>
+    </nav>
+    <div class="nav-actions">
+      <a class="icon-btn" href="https://github.com/pmlmodelling/nctoolkit" target="_blank" rel="noopener" aria-label="NCToolkit on GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 .5C5.73.5.5 5.74.5 12.09c0 5.08 3.29 9.38 7.86 10.9.57.1.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.56-.29-5.26-1.28-5.26-5.71 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.44-2.7 5.42-5.28 5.7.42.36.78 1.08.78 2.17 0 1.57-.01 2.83-.01 3.22 0 .3.21.66.8.55A10.6 10.6 0 0 0 23.5 12.1C23.5 5.74 18.27.5 12 .5Z"/></svg>
+      </a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+
+<div class="page-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="index.html">Home</a> / <a href="guide.html">User Guide</a> / Interpolation &amp; regridding</div>
+    <h1>Interpolation &amp; regridding</h1>
+  </div>
+</div>
+
+<div class="container docs-layout">
+  <aside class="docs-toc">
+    <div class="docs-toc-title">On this page</div>
+    <ul>
+      <li><a href="#start">Starting point</a></li>
+      <li><a href="#latlon">Regular lon/lat grids</a></li>
+      <li><a href="#another-grid">Another dataset's grid</a></li>
+      <li><a href="#recycle">Reusing regrid weights</a></li>
+      <li><a href="#coords">A set of coordinates</a></li>
+      <li><a href="#coarsen">Coarsening &amp; infilling</a></li>
+    </ul>
+  </aside>
+
+  <div class="docs-content">
+
+    <h2 id="start">Starting point</h2>
+    <p>The examples below regrid global sea-surface temperature from NOAA's COBE-SST 2, using NCToolkit's built-in horizontal and vertical interpolation methods. We'll speed things up by only interpolating the first timestep of data.</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc"</span>)
+ds.subset(time=<span class="tok-num">0</span>)
+ds.plot()</pre>
+    </div>
+    <div class="plot-embed">
+      <div class="plot-embed__bar">
+        <span class="plot-embed__label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg> ds.plot() &mdash; interactive output</span>
+        <a class="plot-embed__open" href="assets/plots/interpolate_plot1.html" target="_blank" rel="noopener">Open interactive <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+      </div>
+      <div class="plot-embed__image-wrap"><a href="assets/plots/interpolate_plot1.html" target="_blank" rel="noopener"><img src="assets/plots/interpolate_plot1.png" loading="lazy" alt="Global sea surface temperature, first time step"></a></div>
+    </div>
+
+    <h2 id="latlon">Regular lon/lat grids</h2>
+    <p><a href="api.html#interpolation"><code>to_latlon</code></a> regrids to a regular grid: give the extent (<code>lon</code>, <code>lat</code>) and resolution (<code>res</code>):</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.to_latlon(lon=[-79.5, 79.5], lat=[<span class="tok-num">0.75</span>, <span class="tok-num">89.75</span>], res=[<span class="tok-num">1</span>, <span class="tok-num">0.5</span>])</pre>
+    </div>
+    <div class="plot-embed">
+      <div class="plot-embed__bar">
+        <span class="plot-embed__label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg> ds.plot() &mdash; interactive output</span>
+        <a class="plot-embed__open" href="assets/plots/interpolate_plot2.html" target="_blank" rel="noopener">Open interactive <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+      </div>
+      <div class="plot-embed__image-wrap"><a href="assets/plots/interpolate_plot2.html" target="_blank" rel="noopener"><img src="assets/plots/interpolate_plot2.png" loading="lazy" alt="Regridded to a regular 1 x 0.5 degree lon/lat grid"></a></div>
+    </div>
+
+    <h2 id="another-grid">Another dataset's grid</h2>
+    <p><a href="api.html#regrid"><code>regrid</code></a> interpolates a dataset onto the grid of another dataset (or a netCDF file used purely as a grid template). Here, we first crop one dataset to the northern hemisphere to use as the target grid:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds1 = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc"</span>)
+ds1.subset(timestep=<span class="tok-num">0</span>)
+ds1.subset(lat=[<span class="tok-num">0</span>, <span class="tok-num">90</span>])
+ds1.plot()</pre>
+    </div>
+    <div class="plot-embed">
+      <div class="plot-embed__bar">
+        <span class="plot-embed__label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg> ds1.plot() &mdash; interactive output</span>
+        <a class="plot-embed__open" href="assets/plots/interpolate_plot3.html" target="_blank" rel="noopener">Open interactive <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+      </div>
+      <div class="plot-embed__image-wrap"><a href="assets/plots/interpolate_plot3.html" target="_blank" rel="noopener"><img src="assets/plots/interpolate_plot3.png" loading="lazy" alt="Northern hemisphere sea surface temperature, used as the target grid"></a></div>
+    </div>
+    <p>Now regrid the original file onto that northern-hemisphere grid &mdash; this also works with a plain netCDF file path as the target:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds2 = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc"</span>)
+ds2.subset(timestep=<span class="tok-num">0</span>)
+ds2.regrid(ds1)
+ds2.plot()</pre>
+    </div>
+    <div class="plot-embed">
+      <div class="plot-embed__bar">
+        <span class="plot-embed__label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg> ds2.plot() &mdash; interactive output</span>
+        <a class="plot-embed__open" href="assets/plots/interpolate_plot4.html" target="_blank" rel="noopener">Open interactive <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+      </div>
+      <div class="plot-embed__image-wrap"><a href="assets/plots/interpolate_plot4.html" target="_blank" rel="noopener"><img src="assets/plots/interpolate_plot4.png" loading="lazy" alt="Regridded onto the northern-hemisphere target grid"></a></div>
+    </div>
+
+    <h2 id="recycle">Reusing regrid weights</h2>
+    <p>Regridding generates a weights file first. If you're regridding many files onto the same target grid one after another &mdash; postprocessing a batch of files, say &mdash; set <code>recycle=True</code> on the first call so <a href="api.html#regrid"><code>regrid</code></a> can reuse those weights on later calls:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc"</span>)
+ds.subset(timestep=<span class="tok-num">0</span>)
+ds.to_latlon(lon=[-79.5, 79.5], lat=[-<span class="tok-num">0.75</span>, <span class="tok-num">89.75</span>], res=[<span class="tok-num">1</span>, <span class="tok-num">0.5</span>], recycle=<span class="tok-kw">True</span>)
+ds.plot()</pre>
+    </div>
+    <div class="plot-embed">
+      <div class="plot-embed__bar">
+        <span class="plot-embed__label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg> ds.plot() &mdash; interactive output</span>
+        <a class="plot-embed__open" href="assets/plots/interpolate_plot5.html" target="_blank" rel="noopener">Open interactive <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+      </div>
+      <div class="plot-embed__image-wrap"><a href="assets/plots/interpolate_plot5.html" target="_blank" rel="noopener"><img src="assets/plots/interpolate_plot5.png" loading="lazy" alt="Regridded with recycle=True, generating reusable weights"></a></div>
+    </div>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds1 = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc"</span>)
+ds1.subset(timestep=<span class="tok-num">0</span>)
+ds1.regrid(ds)   <span class="tok-com"># reuses the weights generated above</span>
+ds1.plot()</pre>
+    </div>
+    <div class="plot-embed">
+      <div class="plot-embed__bar">
+        <span class="plot-embed__label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg> ds1.plot() &mdash; interactive output</span>
+        <a class="plot-embed__open" href="assets/plots/interpolate_plot6.html" target="_blank" rel="noopener">Open interactive <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+      </div>
+      <div class="plot-embed__image-wrap"><a href="assets/plots/interpolate_plot6.html" target="_blank" rel="noopener"><img src="assets/plots/interpolate_plot6.png" loading="lazy" alt="A second dataset regridded using the recycled weights"></a></div>
+    </div>
+
+    <h2 id="coords">A set of coordinates</h2>
+    <p><a href="api.html#regrid"><code>regrid</code></a> also accepts a pandas dataframe of <code>lon</code>/<code>lat</code> columns, to interpolate onto specific points:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>coords = pd.DataFrame({<span class="tok-str">"lon"</span>: [-<span class="tok-num">30</span>], <span class="tok-str">"lat"</span>: [<span class="tok-num">50</span>]})
+ds.regrid(coords)</pre>
+    </div>
+
+    <h2 id="coarsen">Coarsening &amp; infilling</h2>
+    <p><a href="api.html#resample_grid"><code>resample_grid</code></a> makes data spatially coarser &mdash; here, keeping only every 10th cell of a 1&deg;&times;1&deg; dataset turns it into a 10&deg;&times;10&deg; one:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc"</span>)
+ds.subset(timestep=<span class="tok-num">0</span>)
+ds.resample_grid(<span class="tok-num">10</span>)
+ds.plot()</pre>
+    </div>
+    <div class="plot-embed">
+      <div class="plot-embed__bar">
+        <span class="plot-embed__label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg> ds.plot() &mdash; interactive output</span>
+        <a class="plot-embed__open" href="assets/plots/interpolate_plot7.html" target="_blank" rel="noopener">Open interactive <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+      </div>
+      <div class="plot-embed__image-wrap"><a href="assets/plots/interpolate_plot7.html" target="_blank" rel="noopener"><img src="assets/plots/interpolate_plot7.png" loading="lazy" alt="Grid resampled to every 10th cell"></a></div>
+    </div>
+    <p><a href="api.html#fill_na"><code>fill_na</code></a> replaces missing values with a distance-weighted average of nearby cells:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc"</span>)
+ds.subset(timestep=<span class="tok-num">0</span>)
+ds.fill_na(<span class="tok-num">1</span>)   <span class="tok-com"># distance-weighted infill using 1 nearest neighbour</span>
+ds.plot()</pre>
+    </div>
+    <div class="plot-embed">
+      <div class="plot-embed__bar">
+        <span class="plot-embed__label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg> ds.plot() &mdash; interactive output</span>
+        <a class="plot-embed__open" href="assets/plots/interpolate_plot8.html" target="_blank" rel="noopener">Open interactive <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+      </div>
+      <div class="plot-embed__image-wrap"><a href="assets/plots/interpolate_plot8.html" target="_blank" rel="noopener"><img src="assets/plots/interpolate_plot8.png" loading="lazy" alt="Missing values filled by distance-weighted infill"></a></div>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container footer-pml">
+    <a href="https://pml.ac.uk/" target="_blank" rel="noopener"><img src="assets/img/pml_logo.jpg" alt="Plymouth Marine Laboratory"></a>
+    <span>Developed by the <a href="https://pml.ac.uk/sciencetopics/environmental-intelligence/" target="_blank" rel="noopener">Environmental Intelligence group</a> at <a href="https://pml.ac.uk/" target="_blank" rel="noopener">Plymouth Marine Laboratory</a></span>
+  </div>
+  <div class="container footer-top">
+    <div class="footer-brand">
+      <img src="assets/img/nctoolkit_wordmark.svg" alt="NCToolkit">
+      <p>A comprehensive Python package for netCDF analysis and post-processing. Subset, compute, and visualize &mdash; in a few lines of code.</p>
+      <div class="footer-social">
+        <a href="https://github.com/pmlmodelling/nctoolkit" target="_blank" rel="noopener" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 .5C5.73.5.5 5.74.5 12.09c0 5.08 3.29 9.38 7.86 10.9.57.1.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.56-.29-5.26-1.28-5.26-5.71 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.44-2.7 5.42-5.28 5.7.42.36.78 1.08.78 2.17 0 1.57-.01 2.83-.01 3.22 0 .3.21.66.8.55A10.6 10.6 0 0 0 23.5 12.1C23.5 5.74 18.27.5 12 .5Z"/></svg>
+        </a>
+        <a href="mailto:rwi@pml.ac.uk" aria-label="Email">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Documentation</h4>
+      <ul>
+        <li><a href="installing.html">Installing</a></li>
+        <li><a href="quickstart.html">Quickstart</a></li>
+        <li><a href="guide.html">User Guide</a></li>
+        <li><a href="api.html">API reference</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Reference</h4>
+      <ul>
+        <li><a href="api.html">API reference</a></li>
+        <li><a href="data-formats.html">Supported data</a></li>
+        <li><a href="backends.html">CDO &amp; NCO backends</a></li>
+        <li><a href="qa.html">Q&amp;A</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Project</h4>
+      <ul>
+        <li><a href="about.html">About &amp; citation</a></li>
+        <li><a href="news.html">Changelog</a></li>
+        <li><a href="../../version-history.html">Version history</a></li>
+        <li><a href="https://github.com/pmlmodelling/nctoolkit" target="_blank" rel="noopener">GitHub repository</a></li>
+        <li><a href="https://github.com/pmlmodelling/nctoolkit/issues" target="_blank" rel="noopener">Report an issue</a></li>
+        <li><a href="https://anaconda.org/conda-forge/nctoolkit" target="_blank" rel="noopener">conda-forge package</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>&copy; 2026 <a href="https://pml.ac.uk/" target="_blank" rel="noopener">Plymouth Marine Laboratory</a>. Released under the GNU GPLv3 license.</span>
+    <span>Built by ocean and climate modellers, for netCDF users everywhere.</span>
+  </div>
+</footer>
+
+<button class="back-to-top" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+</button>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>

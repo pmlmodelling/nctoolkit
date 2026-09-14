@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, follow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Visualization — NCToolkit User Guide</title>
+<meta name="description" content="Interactive and publication-quality plotting of netCDF data in NCToolkit, with automatic maps, zonal profiles, heatmaps and time series.">
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container nav">
+    <a class="brand" href="index.html">
+      <img src="assets/img/nctoolkit_wordmark.svg" alt="NCToolkit">
+      <span class="brand-version">v1.3.1 (archived)</span>
+    </a>
+    <nav class="nav-links" id="nav-links">
+      <a href="installing.html" data-page="installing.html">Install</a>
+      <a href="quickstart.html" data-page="quickstart.html">Quickstart</a>
+      <a href="guide.html" data-page="guide.html">Guide</a>
+      <a href="api.html" data-page="api.html">API</a>
+      <a href="data-formats.html" data-page="data-formats.html">Data supported</a>
+      <a href="qa.html" data-page="qa.html">Q&amp;A</a>
+      <a href="cheatsheet.html" data-page="cheatsheet.html">Cheat Sheet</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle" aria-expanded="false">About
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="nav-dropdown-menu">
+          <a href="about.html" data-page="about.html">About &amp; citation<small>Project background, how to cite</small></a>
+          <a href="../../version-history.html" data-page="version-history.html">Version history<small>Archived documentation snapshots</small></a>
+        </div>
+      </div>
+    </nav>
+    <div class="nav-actions">
+      <a class="icon-btn" href="https://github.com/pmlmodelling/nctoolkit" target="_blank" rel="noopener" aria-label="NCToolkit on GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 .5C5.73.5.5 5.74.5 12.09c0 5.08 3.29 9.38 7.86 10.9.57.1.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.56-.29-5.26-1.28-5.26-5.71 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.44-2.7 5.42-5.28 5.7.42.36.78 1.08.78 2.17 0 1.57-.01 2.83-.01 3.22 0 .3.21.66.8.55A10.6 10.6 0 0 0 23.5 12.1C23.5 5.74 18.27.5 12 .5Z"/></svg>
+      </a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+
+<div class="page-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="index.html">Home</a> / <a href="guide.html">User Guide</a> / Visualization</div>
+    <h1>Visualization</h1>
+    <p class="lead">Automatic interactive plots for almost any netCDF file, plus publication-quality static figures with pub_plot.</p>
+  </div>
+</div>
+
+<div class="container docs-layout">
+  <aside class="docs-toc">
+    <div class="docs-toc-title">On this page</div>
+    <ul>
+      <li><a href="#plotting">Interactive plotting</a></li>
+      <li><a href="#pub-plot">Publication-quality plots</a></li>
+      <li><a href="#internals">Plotting internals</a></li>
+    </ul>
+  </aside>
+
+  <div class="docs-content">
+
+    <h2 id="plotting">Interactive plotting</h2>
+    <p>Call <a href="api.html#plot"><code>plot()</code></a> on a dataset for an automatic interactive plot, similar in spirit to the command-line tool <code>ncview</code> &mdash; but in Jupyter or a browser. Illustrated below with a sea-surface temperature dataset:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds = nc.open_data(<span class="tok-str">"sst.mon.mean.nc"</span>)
+ds.subset(year=<span class="tok-num">2000</span>)
+ds.plot()</pre>
+    </div>
+    <div class="plot-embed">
+      <div class="plot-embed__bar">
+        <span class="plot-embed__label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg> ds.plot() &mdash; interactive output</span>
+        <a class="plot-embed__open" href="assets/plots/visualization_plot1.html" target="_blank" rel="noopener">Open interactive <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+      </div>
+      <div class="plot-embed__image-wrap"><a href="assets/plots/visualization_plot1.html" target="_blank" rel="noopener"><img src="assets/plots/visualization_plot1.png" loading="lazy" alt="Mean sea surface temperature for 2000"></a></div>
+    </div>
+    <p>The plot type is chosen automatically from the shape of the data. A zonal mean gives a zonal profile:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds = nc.open_data(<span class="tok-str">"sst.mon.mean.nc"</span>)
+ds.subset(year=<span class="tok-num">2000</span>)
+ds.tmean()
+ds.zonal_mean()
+ds.plot()          <span class="tok-com"># zonal profile</span></pre>
+    </div>
+    <div class="plot-embed">
+      <div class="plot-embed__bar">
+        <span class="plot-embed__label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg> ds.plot() &mdash; interactive output</span>
+        <a class="plot-embed__open" href="assets/plots/visualization_plot2.html" target="_blank" rel="noopener">Open interactive <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+      </div>
+      <div class="plot-embed__image-wrap"><a href="assets/plots/visualization_plot2.html" target="_blank" rel="noopener"><img src="assets/plots/visualization_plot2.png" loading="lazy" alt="Zonal mean sea surface temperature"></a></div>
+    </div>
+    <p>A zonal mean tracked over time renders as a Hovm&ouml;ller-style heatmap &mdash; here, the change in zonal-mean temperature relative to an 1850&ndash;1869 baseline:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds = nc.open_data(<span class="tok-str">"sst.mon.mean.nc"</span>)
+ds.zonal_mean()
+ds.annual_anomaly(baseline=[<span class="tok-num">1850</span>, <span class="tok-num">1869</span>], window=<span class="tok-num">20</span>)
+ds.plot()</pre>
+    </div>
+    <div class="plot-embed">
+      <div class="plot-embed__bar">
+        <span class="plot-embed__label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg> ds.plot() &mdash; interactive output</span>
+        <a class="plot-embed__open" href="assets/plots/visualization_plot3.html" target="_blank" rel="noopener">Open interactive <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+      </div>
+      <div class="plot-embed__image-wrap"><a href="assets/plots/visualization_plot3.html" target="_blank" rel="noopener"><img src="assets/plots/visualization_plot3.png" loading="lazy" alt="Zonal-mean temperature anomaly over time"></a></div>
+    </div>
+    <p>Once the data has a single spatial value per time step (e.g. after <a href="api.html#spatial_mean"><code>spatial_mean()</code></a>), it plots as a time series &mdash; here, global mean sea surface temperature since 1850:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds = nc.open_data(<span class="tok-str">"sst.mon.mean.nc"</span>)
+ds.spatial_mean()
+ds.plot()          <span class="tok-com"># time series</span></pre>
+    </div>
+    <div class="plot-embed">
+      <div class="plot-embed__bar">
+        <span class="plot-embed__label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg> ds.plot() &mdash; interactive output</span>
+        <a class="plot-embed__open" href="assets/plots/visualization_plot4.html" target="_blank" rel="noopener">Open interactive <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+      </div>
+      <div class="plot-embed__image-wrap"><a href="assets/plots/visualization_plot4.html" target="_blank" rel="noopener"><img src="assets/plots/visualization_plot4.png" loading="lazy" alt="Global mean sea surface temperature time series since 1850"></a></div>
+    </div>
+
+    <h2 id="pub-plot">Publication-quality plots</h2>
+    <p><a href="api.html#pub_plot"><code>pub_plot</code></a> (introduced in v0.9.2) produces a static plot suitable for a paper or presentation, currently restricted to regular lon/lat grids with a limited set of customizations (such as the colour scale):</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.tmean()
+ds.pub_plot()</pre>
+    </div>
+    <p><img src="assets/plots/pub_plot1.png" alt="Publication-quality plot of mean sea surface temperature produced by pub_plot()" style="border:1px solid var(--line); border-radius: var(--radius-md); box-shadow: var(--shadow-sm);"></p>
+
+    <h2 id="internals">Plotting internals</h2>
+    <p>Interactive plotting is delegated to the companion <a href="https://github.com/pmlmodelling/ncplot" target="_blank" rel="noopener">ncplot</a> package, which inspects the dataset and picks a suitable plot built on <a href="https://hvplot.holoviz.org/" target="_blank" rel="noopener">hvplot</a>. It favours rapid exploratory analysis over deep customization, but most <a href="https://hvplot.holoviz.org/user_guide/Customization.html" target="_blank" rel="noopener">hvplot customization options</a> &mdash; <code>title</code>, <code>logz</code>, <code>clim</code>, and so on &mdash; can be passed straight to <a href="api.html#plot"><code>plot()</code></a> and are forwarded automatically.</p>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container footer-pml">
+    <a href="https://pml.ac.uk/" target="_blank" rel="noopener"><img src="assets/img/pml_logo.jpg" alt="Plymouth Marine Laboratory"></a>
+    <span>Developed by the <a href="https://pml.ac.uk/sciencetopics/environmental-intelligence/" target="_blank" rel="noopener">Environmental Intelligence group</a> at <a href="https://pml.ac.uk/" target="_blank" rel="noopener">Plymouth Marine Laboratory</a></span>
+  </div>
+  <div class="container footer-top">
+    <div class="footer-brand">
+      <img src="assets/img/nctoolkit_wordmark.svg" alt="NCToolkit">
+      <p>A comprehensive Python package for netCDF analysis and post-processing. Subset, compute, and visualize &mdash; in a few lines of code.</p>
+      <div class="footer-social">
+        <a href="https://github.com/pmlmodelling/nctoolkit" target="_blank" rel="noopener" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 .5C5.73.5.5 5.74.5 12.09c0 5.08 3.29 9.38 7.86 10.9.57.1.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.56-.29-5.26-1.28-5.26-5.71 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.44-2.7 5.42-5.28 5.7.42.36.78 1.08.78 2.17 0 1.57-.01 2.83-.01 3.22 0 .3.21.66.8.55A10.6 10.6 0 0 0 23.5 12.1C23.5 5.74 18.27.5 12 .5Z"/></svg>
+        </a>
+        <a href="mailto:rwi@pml.ac.uk" aria-label="Email">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Documentation</h4>
+      <ul>
+        <li><a href="installing.html">Installing</a></li>
+        <li><a href="quickstart.html">Quickstart</a></li>
+        <li><a href="guide.html">User Guide</a></li>
+        <li><a href="api.html">API reference</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Reference</h4>
+      <ul>
+        <li><a href="api.html">API reference</a></li>
+        <li><a href="data-formats.html">Supported data</a></li>
+        <li><a href="backends.html">CDO &amp; NCO backends</a></li>
+        <li><a href="qa.html">Q&amp;A</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Project</h4>
+      <ul>
+        <li><a href="about.html">About &amp; citation</a></li>
+        <li><a href="news.html">Changelog</a></li>
+        <li><a href="../../version-history.html">Version history</a></li>
+        <li><a href="https://github.com/pmlmodelling/nctoolkit" target="_blank" rel="noopener">GitHub repository</a></li>
+        <li><a href="https://github.com/pmlmodelling/nctoolkit/issues" target="_blank" rel="noopener">Report an issue</a></li>
+        <li><a href="https://anaconda.org/conda-forge/nctoolkit" target="_blank" rel="noopener">conda-forge package</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>&copy; 2026 <a href="https://pml.ac.uk/" target="_blank" rel="noopener">Plymouth Marine Laboratory</a>. Released under the GNU GPLv3 license.</span>
+    <span>Built by ocean and climate modellers, for netCDF users everywhere.</span>
+  </div>
+</footer>
+
+<button class="back-to-top" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+</button>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>

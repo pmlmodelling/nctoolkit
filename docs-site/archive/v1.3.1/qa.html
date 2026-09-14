@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, follow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Q&amp;A — NCToolkit</title>
+<meta name="description" content="Answers to common NCToolkit questions: installation, performance, method chaining, temporary files, data quirks and plotting.">
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container nav">
+    <a class="brand" href="index.html">
+      <img src="assets/img/nctoolkit_wordmark.svg" alt="NCToolkit">
+      <span class="brand-version">v1.3.1 (archived)</span>
+    </a>
+    <nav class="nav-links" id="nav-links">
+      <a href="installing.html" data-page="installing.html">Install</a>
+      <a href="quickstart.html" data-page="quickstart.html">Quickstart</a>
+      <a href="guide.html" data-page="guide.html">Guide</a>
+      <a href="api.html" data-page="api.html">API</a>
+      <a href="data-formats.html" data-page="data-formats.html">Data supported</a>
+      <a href="qa.html" data-page="qa.html">Q&amp;A</a>
+      <a href="cheatsheet.html" data-page="cheatsheet.html">Cheat Sheet</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle" aria-expanded="false">About
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="nav-dropdown-menu">
+          <a href="about.html" data-page="about.html">About &amp; citation<small>Project background, how to cite</small></a>
+          <a href="../../version-history.html" data-page="version-history.html">Version history<small>Archived documentation snapshots</small></a>
+        </div>
+      </div>
+    </nav>
+    <div class="nav-actions">
+      <a class="icon-btn" href="https://github.com/pmlmodelling/nctoolkit" target="_blank" rel="noopener" aria-label="NCToolkit on GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 .5C5.73.5.5 5.74.5 12.09c0 5.08 3.29 9.38 7.86 10.9.57.1.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.56-.29-5.26-1.28-5.26-5.71 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.44-2.7 5.42-5.28 5.7.42.36.78 1.08.78 2.17 0 1.57-.01 2.83-.01 3.22 0 .3.21.66.8.55A10.6 10.6 0 0 0 23.5 12.1C23.5 5.74 18.27.5 12 .5Z"/></svg>
+      </a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="page-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="index.html">Home</a> / Q&amp;A</div>
+    <h1>NCToolkit Q&amp;A</h1>
+    <p class="lead">Answers to the questions that come up most often. Can't find what you need? <a href="https://github.com/pmlmodelling/nctoolkit/discussions" target="_blank" rel="noopener">Ask on GitHub Discussions</a>.</p>
+  </div>
+</div>
+
+<div class="container docs-layout">
+  <aside class="docs-toc">
+    <div class="docs-toc-title">Categories</div>
+    <ul>
+      <li><a href="#install">Installation &amp; platforms</a></li>
+      <li><a href="#performance">Performance &amp; processing</a></li>
+      <li><a href="#usage">Usage patterns</a></li>
+      <li><a href="#data">Data &amp; plotting quirks</a></li>
+    </ul>
+  </aside>
+
+  <div class="docs-content">
+    <h2 id="install">Installation &amp; platforms</h2>
+
+    <div class="faq-item">
+      <button class="faq-question">Does NCToolkit work on Windows?<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-answer"><div>
+        <p>No, and it won't in future either &mdash; this is a hard limitation of NCToolkit's system dependencies (CDO, NCO), not something on the roadmap. Use Windows Subsystem for Linux (WSL) instead, and install as normal within it. See <a href="installing.html">Installing</a>.</p>
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">Coastlines or Jupyter plots stopped working after an update &mdash; why?<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-answer"><div>
+        <p>Recent releases of <code>geoviews</code> and <code>jupyter_bokeh</code> have caused issues for some existing NCToolkit environments. Pin them:</p>
+        <div class="code-block"><div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div><pre>conda install -c conda-forge geoviews=1.10.1
+conda install -c conda-forge jupyter_bokeh=3.0.7</pre></div>
+        <p>Fresh installs pin these automatically, so new environments shouldn't hit this. See <a href="installing.html#known-issues">Known issues</a>.</p>
+      </div></div>
+    </div>
+
+    <h2 id="performance">Performance &amp; processing</h2>
+
+    <div class="faq-item">
+      <button class="faq-question">How do I speed up processing a folder of files?<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-answer"><div>
+        <p>Raise the core count used for multi-file processing:</p>
+        <div class="code-block"><div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div><pre>nc.options(cores=<span class="tok-num">6</span>)</pre></div>
+        <p>It's almost always faster to process member files with a high core count <em>before</em> merging them with <a href="api.html#merge"><code>merge</code></a>, rather than the other way round. See <a href="ensembles.html">Ensembles &amp; multi-file datasets</a>.</p>
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">Can I use Python's multiprocessing with NCToolkit?<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-answer"><div>
+        <p>Yes &mdash; set <code>nc.options(parallel=True)</code> first, so NCToolkit switches to a process-safe internal file list, then use <code>multiprocessing</code> as normal. Reset with <code>nc.options(parallel=False)</code> once you're done, particularly in interactive sessions. See <a href="parallel.html">Parallel processing</a>.</p>
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">Why isn't anything happening when I call a method?<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-answer"><div>
+        <p>NCToolkit evaluates lazily by default &mdash; operations are queued, not run, until a result is actually needed (an attribute access, <a href="api.html#plot"><code>plot()</code></a>, or an explicit <a href="api.html#run"><code>ds.run()</code></a>). This lets a whole chain collapse into a single CDO command. See <a href="datasets.html#lazy">Lazy evaluation &amp; chaining</a>.</p>
+      </div></div>
+    </div>
+
+    <h2 id="usage">Usage patterns</h2>
+
+    <div class="faq-item">
+      <button class="faq-question">Can I chain methods like <code>ds.subset(...).tmean()</code>?<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-answer"><div>
+        <p>No &mdash; unlike pandas or xarray, NCToolkit's methods modify a dataset in place rather than returning a new object. Call them on separate lines:</p>
+        <div class="code-block"><div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div><pre>ds.subset(year=<span class="tok-num">2000</span>)
+ds.tmean()</pre></div>
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">Do I need to manage NCToolkit's temporary files myself?<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-answer"><div>
+        <p>No &mdash; they're created and deleted automatically as operations run. If you ever need to clear them manually (e.g. after an interrupted session), use <code>nctoolkit.cleanup()</code> for the current session or <code>nctoolkit.deep_clean()</code> for all sessions. If space is tight, point temporary files somewhere with more room using <code>nc.options(temp_dir="/foo")</code>.</p>
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">How do I see the CDO command NCToolkit actually ran?<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-answer"><div>
+        <p>After running (or forcing evaluation of) a chain of operations, check <a href="api.html#history"><code>ds.history</code></a>. This is handy for debugging, and for learning CDO if you're coming from that direction.</p>
+      </div></div>
+    </div>
+
+    <h2 id="data">Data &amp; plotting quirks</h2>
+
+    <div class="faq-item">
+      <button class="faq-question">A comparison like <code>x.temperature &gt; 30</code> gives strange results &mdash; why?<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-answer"><div>
+        <p>This usually means the variable is stored as an integer type in the source file, so an operation that should be evaluated as a float is being computed as an integer. Check with <a href="api.html#contents"><code>ds.contents</code></a>, then force a higher precision before calculating:</p>
+        <div class="code-block"><div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div><pre>ds.set_precision(<span class="tok-str">"F64"</span>)</pre></div>
+        <p>See <a href="troubleshoot.html">Troubleshooting</a>.</p>
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">My file opens fine elsewhere, but NCToolkit throws an error &mdash; what now?<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-answer"><div>
+        <p>Run <a href="api.html#check"><code>ds.check()</code></a> for a general diagnostic (integer types, integer time axis, CF-compliance, grid consistency) and <a href="api.html#is_corrupt"><code>ds.is_corrupt()</code></a> to rule out file corruption. If longitude/latitude were stored as plain variables rather than coordinates, fix that with <code>ds.assign_coords(lon_name=..., lat_name=...)</code>. See <a href="data-formats.html">Supported data</a> and <a href="troubleshoot.html">Troubleshooting</a>.</p>
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">Can I customize a plot produced by <a href="api.html#plot"><code>plot()</code></a>?<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-answer"><div>
+        <p>Yes, to an extent &mdash; because plotting is built on hvplot, arguments such as <code>title</code>, <code>logz</code> and <code>clim</code> can be passed straight to <a href="api.html#plot"><code>plot()</code></a> and are forwarded automatically. For a static, publication-ready figure instead, use <a href="api.html#pub_plot"><code>pub_plot()</code></a>. See <a href="visualization.html">Visualization</a>.</p>
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">Where do I report a bug or ask for a feature?<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-answer"><div>
+        <p>Open an issue on <a href="https://github.com/pmlmodelling/nctoolkit/issues" target="_blank" rel="noopener">GitHub</a>, or start a <a href="https://github.com/pmlmodelling/nctoolkit/discussions" target="_blank" rel="noopener">discussion</a> for anything more open-ended.</p>
+      </div></div>
+    </div>
+
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container footer-pml">
+    <a href="https://pml.ac.uk/" target="_blank" rel="noopener"><img src="assets/img/pml_logo.jpg" alt="Plymouth Marine Laboratory"></a>
+    <span>Developed by the <a href="https://pml.ac.uk/sciencetopics/environmental-intelligence/" target="_blank" rel="noopener">Environmental Intelligence group</a> at <a href="https://pml.ac.uk/" target="_blank" rel="noopener">Plymouth Marine Laboratory</a></span>
+  </div>
+  <div class="container footer-top">
+    <div class="footer-brand">
+      <img src="assets/img/nctoolkit_wordmark.svg" alt="NCToolkit">
+      <p>A comprehensive Python package for netCDF analysis and post-processing. Subset, compute, and visualize &mdash; in a few lines of code.</p>
+      <div class="footer-social">
+        <a href="https://github.com/pmlmodelling/nctoolkit" target="_blank" rel="noopener" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 .5C5.73.5.5 5.74.5 12.09c0 5.08 3.29 9.38 7.86 10.9.57.1.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.56-.29-5.26-1.28-5.26-5.71 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.44-2.7 5.42-5.28 5.7.42.36.78 1.08.78 2.17 0 1.57-.01 2.83-.01 3.22 0 .3.21.66.8.55A10.6 10.6 0 0 0 23.5 12.1C23.5 5.74 18.27.5 12 .5Z"/></svg>
+        </a>
+        <a href="mailto:rwi@pml.ac.uk" aria-label="Email">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Documentation</h4>
+      <ul>
+        <li><a href="installing.html">Installing</a></li>
+        <li><a href="quickstart.html">Quickstart</a></li>
+        <li><a href="guide.html">User Guide</a></li>
+        <li><a href="api.html">API reference</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Reference</h4>
+      <ul>
+        <li><a href="api.html">API reference</a></li>
+        <li><a href="data-formats.html">Supported data</a></li>
+        <li><a href="backends.html">CDO &amp; NCO backends</a></li>
+        <li><a href="qa.html">Q&amp;A</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Project</h4>
+      <ul>
+        <li><a href="about.html">About &amp; citation</a></li>
+        <li><a href="news.html">Changelog</a></li>
+        <li><a href="../../version-history.html">Version history</a></li>
+        <li><a href="https://github.com/pmlmodelling/nctoolkit" target="_blank" rel="noopener">GitHub repository</a></li>
+        <li><a href="https://github.com/pmlmodelling/nctoolkit/issues" target="_blank" rel="noopener">Report an issue</a></li>
+        <li><a href="https://anaconda.org/conda-forge/nctoolkit" target="_blank" rel="noopener">conda-forge package</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>&copy; 2026 <a href="https://pml.ac.uk/" target="_blank" rel="noopener">Plymouth Marine Laboratory</a>. Released under the GNU GPLv3 license.</span>
+    <span>Built by ocean and climate modellers, for netCDF users everywhere.</span>
+  </div>
+</footer>
+
+<button class="back-to-top" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+</button>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>

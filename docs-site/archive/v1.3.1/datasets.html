@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, follow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Datasets — NCToolkit User Guide</title>
+<meta name="description" content="Opening single and multi-file datasets, lazy evaluation and method chaining, and reading dataset attributes in NCToolkit.">
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container nav">
+    <a class="brand" href="index.html">
+      <img src="assets/img/nctoolkit_wordmark.svg" alt="NCToolkit">
+      <span class="brand-version">v1.3.1 (archived)</span>
+    </a>
+    <nav class="nav-links" id="nav-links">
+      <a href="installing.html" data-page="installing.html">Install</a>
+      <a href="quickstart.html" data-page="quickstart.html">Quickstart</a>
+      <a href="guide.html" data-page="guide.html">Guide</a>
+      <a href="api.html" data-page="api.html">API</a>
+      <a href="data-formats.html" data-page="data-formats.html">Data supported</a>
+      <a href="qa.html" data-page="qa.html">Q&amp;A</a>
+      <a href="cheatsheet.html" data-page="cheatsheet.html">Cheat Sheet</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle" aria-expanded="false">About
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="nav-dropdown-menu">
+          <a href="about.html" data-page="about.html">About &amp; citation<small>Project background, how to cite</small></a>
+          <a href="../../version-history.html" data-page="version-history.html">Version history<small>Archived documentation snapshots</small></a>
+        </div>
+      </div>
+    </nav>
+    <div class="nav-actions">
+      <a class="icon-btn" href="https://github.com/pmlmodelling/nctoolkit" target="_blank" rel="noopener" aria-label="NCToolkit on GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 .5C5.73.5.5 5.74.5 12.09c0 5.08 3.29 9.38 7.86 10.9.57.1.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.56-.29-5.26-1.28-5.26-5.71 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.44-2.7 5.42-5.28 5.7.42.36.78 1.08.78 2.17 0 1.57-.01 2.83-.01 3.22 0 .3.21.66.8.55A10.6 10.6 0 0 0 23.5 12.1C23.5 5.74 18.27.5 12 .5Z"/></svg>
+      </a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+
+<div class="page-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="index.html">Home</a> / <a href="guide.html">User Guide</a> / Datasets</div>
+    <h1>Datasets</h1>
+    <p class="lead">Opening data, understanding lazy evaluation and method chaining, and reading dataset attributes &mdash; the foundation everything else in NCToolkit builds on.</p>
+  </div>
+</div>
+
+<div class="container docs-layout">
+  <aside class="docs-toc">
+    <div class="docs-toc-title">On this page</div>
+    <ul>
+      <li><a href="#opening">Opening datasets</a></li>
+      <li><a href="#checking">Checking validity of source data</a></li>
+      <li><a href="#modifying">Modifying datasets</a></li>
+      <li><a href="#lazy">Lazy evaluation by default</a></li>
+      <li><a href="#chaining">Method chaining</a></li>
+      <li><a href="#attributes">Dataset attributes</a></li>
+    </ul>
+  </aside>
+
+  <div class="docs-content">
+
+    <h2 id="opening">Opening datasets</h2>
+    <p>NCToolkit requires netCDF data that follows the GDT, COARDS or CF conventions. Its computational backend is CDO, which can carry out most operations regardless of strict compliance &mdash; but if you're unsure whether your files are compliant, see <a href="data-formats.html">Supported data</a> for how to check.</p>
+    <p>There are three ways to create a dataset:</p>
+    <ul class="param-list">
+      <li><code class="param-name">open_data(path)</code><p>Opens local files. Accepts a single path, a list of paths, or a wildcard such as <code>"data/*.nc"</code>.</p></li>
+      <li><code class="param-name">open_url(url)</code><p>Downloads a file at a URL or ftp address to a temporary folder, then opens it.</p></li>
+      <li><code class="param-name">open_thredds(url)</code><p>Opens data served over a thredds server or OPeNDAP. The URL must end in <code>.nc</code>.</p></li>
+    </ul>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre><span class="tok-kw">import</span> nctoolkit <span class="tok-kw">as</span> nc
+
+ds = nc.open_data(infile)             <span class="tok-com"># a single file</span>
+ds = nc.open_data(file_list)          <span class="tok-com"># a list of files</span>
+ds = nc.open_data(<span class="tok-str">"data/*.nc"</span>)         <span class="tok-com"># a wildcard, i.e. a multi-file dataset</span></pre>
+    </div>
+    <p>When you open a multi-file dataset, standard methods apply to each member file individually; to combine members, see <a href="ensembles.html">Ensembles &amp; multi-file datasets</a>. For a quick overview of what's inside a dataset, check <a href="api.html#contents"><code>contents</code></a> &mdash; a dataframe of variables, units and long names:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.ltm.1981-2010.nc"</span>)
+ds.contents</pre>
+    </div>
+
+    <h2 id="checking">Checking validity of source data</h2>
+    <p>NCToolkit should work out of the box with most netCDF data. However, the format could be incompatible with the system libraries NCToolkit relies on, or the files could simply be corrupt. Run a general check on the data with <a href="api.html#check"><code>check</code></a>:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.check()</pre>
+    </div>
+    <p>This runs basic checks on data format compatibility. Install <a href="https://anaconda.org/conda-forge/cfchecker" target="_blank" rel="noopener">cfchecker</a> if you also want <a href="api.html#check"><code>check</code></a> to verify CF-compliance.</p>
+    <p>To check whether the files in a dataset are corrupt, use <a href="api.html#is_corrupt"><code>is_corrupt</code></a> &mdash; it reads and writes the source data to a temporary file, which is enough to catch corruption:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.is_corrupt()</pre>
+    </div>
+
+    <h2 id="modifying">Modifying datasets</h2>
+    <p>To modify a dataset, just use NCToolkit's built-in methods &mdash; they operate directly on the dataset itself. The example below selects the first time step of a sea-surface temperature dataset and plots it:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.ltm.1981-2010.nc"</span>)
+ds.subset(time=<span class="tok-num">0</span>)
+ds.plot()</pre>
+    </div>
+    <p>Underlying datasets are temporary files representing the current state of the dataset, accessible via the <a href="api.html#current"><code>current</code></a> attribute:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.current</pre>
+    </div>
+    <p>In this case, that's a single temporary file. Temporary files are generated and deleted automatically as needed &mdash; there's no need to manage them yourself.</p>
+
+    <h2 id="lazy">Lazy evaluation by default</h2>
+    <p>By default, NCToolkit evaluates lazily: operations are recorded, not run, until a result is actually needed. Look at the processing chain below &mdash; it carries out four operations, so we don't want a temporary file written at every step:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.ltm.1981-2010.nc"</span>)
+ds.assign(sst=<span class="tok-kw">lambda</span> x: x.sst + <span class="tok-num">273.15</span>)
+ds.subset(months=<span class="tok-num">1</span>)
+ds.subset(lon=[-<span class="tok-num">80</span>, <span class="tok-num">20</span>], lat=[<span class="tok-num">30</span>, <span class="tok-num">70</span>])
+ds.spatial_mean()</pre>
+    </div>
+    <p>NCToolkit has been told what to do to the dataset, but hasn't been told to actually do any of it. Checking <a href="api.html#current"><code>ds.current</code></a> at this point still shows the starting file. To evaluate the chain, use <a href="api.html#run"><code>run()</code></a> &mdash; or any method that needs a result, such as <a href="api.html#plot"><code>plot()</code></a>:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.run()
+ds.current</pre>
+    </div>
+    <p>This chaining ability comes from Climate Data Operators (CDO), NCToolkit's backend computational engine. You don't need to understand CDO to use NCToolkit, but if you want to see the underlying commands, use the <a href="api.html#history"><code>history</code></a> attribute &mdash; before running, it shows the four lines of Python queued up; after running, a single CDO command:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.history    <span class="tok-com"># before run() -- queued Python operations</span>
+ds.run()
+ds.history    <span class="tok-com"># after run() -- the single CDO command actually used</span></pre>
+    </div>
+
+    <h2 id="chaining">Method chaining</h2>
+    <p>NCToolkit does not allow method chaining the way pandas and xarray do &mdash; this <strong>will not work</strong>:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>(
+    ds
+    .tmean()
+    .spatial_mean()
+    .add(<span class="tok-num">1</span>)
+)</pre>
+    </div>
+    <p>This kind of chaining needs each method to return an object, but NCToolkit's methods generally don't return objects &mdash; they modify the dataset in place. Call them on separate lines instead:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.tmean()
+ds.spatial_mean()
+ds.add(<span class="tok-num">1</span>)</pre>
+    </div>
+
+    <h2 id="attributes">Dataset attributes</h2>
+    <p>Useful attributes for inspecting a dataset:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Attribute</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><a href="api.html#variables-attr"><code>ds.variables</code></a></td><td>Variable names in the dataset.</td></tr>
+          <tr><td><a href="api.html#contents"><code>ds.contents</code></a></td><td>A dataframe of variables with units, long names and other metadata.</td></tr>
+          <tr><td><a href="api.html#times"><code>ds.times</code></a> / <a href="api.html#years"><code>years</code></a> / <a href="api.html#months"><code>months</code></a></td><td>Time steps, years, or months present.</td></tr>
+          <tr><td><a href="api.html#levels"><code>ds.levels</code></a></td><td>Vertical levels present.</td></tr>
+          <tr><td><a href="api.html#current"><code>ds.current</code></a></td><td>The current temporary file(s) representing dataset state.</td></tr>
+          <tr><td><a href="api.html#history"><code>ds.history</code></a></td><td>The CDO command(s) generated by the operations run so far.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Temporary files are created and deleted automatically as needed &mdash; there's no need to manage them yourself. See <a href="qa.html">Q&amp;A</a> for cleaning them up manually if you ever need to.</p>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container footer-pml">
+    <a href="https://pml.ac.uk/" target="_blank" rel="noopener"><img src="assets/img/pml_logo.jpg" alt="Plymouth Marine Laboratory"></a>
+    <span>Developed by the <a href="https://pml.ac.uk/sciencetopics/environmental-intelligence/" target="_blank" rel="noopener">Environmental Intelligence group</a> at <a href="https://pml.ac.uk/" target="_blank" rel="noopener">Plymouth Marine Laboratory</a></span>
+  </div>
+  <div class="container footer-top">
+    <div class="footer-brand">
+      <img src="assets/img/nctoolkit_wordmark.svg" alt="NCToolkit">
+      <p>A comprehensive Python package for netCDF analysis and post-processing. Subset, compute, and visualize &mdash; in a few lines of code.</p>
+      <div class="footer-social">
+        <a href="https://github.com/pmlmodelling/nctoolkit" target="_blank" rel="noopener" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 .5C5.73.5.5 5.74.5 12.09c0 5.08 3.29 9.38 7.86 10.9.57.1.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.56-.29-5.26-1.28-5.26-5.71 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.44-2.7 5.42-5.28 5.7.42.36.78 1.08.78 2.17 0 1.57-.01 2.83-.01 3.22 0 .3.21.66.8.55A10.6 10.6 0 0 0 23.5 12.1C23.5 5.74 18.27.5 12 .5Z"/></svg>
+        </a>
+        <a href="mailto:rwi@pml.ac.uk" aria-label="Email">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Documentation</h4>
+      <ul>
+        <li><a href="installing.html">Installing</a></li>
+        <li><a href="quickstart.html">Quickstart</a></li>
+        <li><a href="guide.html">User Guide</a></li>
+        <li><a href="api.html">API reference</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Reference</h4>
+      <ul>
+        <li><a href="api.html">API reference</a></li>
+        <li><a href="data-formats.html">Supported data</a></li>
+        <li><a href="backends.html">CDO &amp; NCO backends</a></li>
+        <li><a href="qa.html">Q&amp;A</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Project</h4>
+      <ul>
+        <li><a href="about.html">About &amp; citation</a></li>
+        <li><a href="news.html">Changelog</a></li>
+        <li><a href="../../version-history.html">Version history</a></li>
+        <li><a href="https://github.com/pmlmodelling/nctoolkit" target="_blank" rel="noopener">GitHub repository</a></li>
+        <li><a href="https://github.com/pmlmodelling/nctoolkit/issues" target="_blank" rel="noopener">Report an issue</a></li>
+        <li><a href="https://anaconda.org/conda-forge/nctoolkit" target="_blank" rel="noopener">conda-forge package</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>&copy; 2026 <a href="https://pml.ac.uk/" target="_blank" rel="noopener">Plymouth Marine Laboratory</a>. Released under the GNU GPLv3 license.</span>
+    <span>Built by ocean and climate modellers, for netCDF users everywhere.</span>
+  </div>
+</footer>
+
+<button class="back-to-top" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+</button>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
