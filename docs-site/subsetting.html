@@ -70,7 +70,10 @@
     <div class="docs-toc-title">On this page</div>
     <ul>
       <li><a href="#variables">Variables</a></li>
-      <li><a href="#time">Years, months, seasons &amp; timesteps</a></li>
+      <li><a href="#years">Years</a></li>
+      <li><a href="#months">Months</a></li>
+      <li><a href="#seasons">Seasons</a></li>
+      <li><a href="#timesteps">Timesteps</a></li>
       <li><a href="#geographic">Geographic subsetting</a></li>
     </ul>
   </aside>
@@ -84,14 +87,41 @@
 ds.subset(variables=<span class="tok-str">"var1"</span>)</pre>
     </div>
 
-    <h2 id="time">Years, months, seasons &amp; timesteps</h2>
+    <h2 id="years">Years</h2>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds.subset(years=[<span class="tok-num">2000</span>, <span class="tok-num">2001</span>])
-ds.subset(years=range(<span class="tok-num">2000</span>, <span class="tok-num">2010</span>))
-ds.subset(months=[<span class="tok-num">1</span>,<span class="tok-num">2</span>,<span class="tok-num">3</span>,<span class="tok-num">4</span>])
-ds.subset(season=<span class="tok-str">"DJF"</span>)
-ds.subset(time=[<span class="tok-num">0</span>,<span class="tok-num">1</span>])          <span class="tok-com"># first two timesteps</span></pre>
+ds.subset(years=<span class="tok-num">2000</span>)               <span class="tok-com"># a single year works too</span>
+ds.subset(years=range(<span class="tok-num">2000</span>, <span class="tok-num">2010</span>))</pre>
+    </div>
+    <p><code>subset</code> allows partial matches for its arguments, so the following is equivalent to selecting <code>years=2000</code>:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.subset(year=<span class="tok-num">2000</span>)</pre>
+    </div>
+
+    <h2 id="months">Months</h2>
+    <p>Months can be selected the same way as years. The following all do the same thing:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.subset(months=[<span class="tok-num">1</span>,<span class="tok-num">2</span>,<span class="tok-num">3</span>,<span class="tok-num">4</span>])
+ds.subset(months=range(<span class="tok-num">1</span>,<span class="tok-num">5</span>))
+ds.subset(mon=[<span class="tok-num">1</span>,<span class="tok-num">2</span>,<span class="tok-num">3</span>,<span class="tok-num">4</span>])   <span class="tok-com"># partial match on "months"</span></pre>
+    </div>
+
+    <h2 id="seasons">Seasons</h2>
+    <p>To select winter:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.subset(season=<span class="tok-str">"DJF"</span>)</pre>
+    </div>
+
+    <h2 id="timesteps">Timesteps</h2>
+    <p>To select the first two timesteps in a dataset, either of the following work:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.subset(time=[<span class="tok-num">0</span>,<span class="tok-num">1</span>])
+ds.subset(time=range(<span class="tok-num">0</span>,<span class="tok-num">2</span>))</pre>
     </div>
 
     <h2 id="geographic">Geographic subsetting</h2>

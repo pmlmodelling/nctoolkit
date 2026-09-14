@@ -96,10 +96,28 @@
       </div>
       <p>Each call to <code>assign</code> currently needs to be written on one line &mdash; splitting the arguments across multiple lines will not parse correctly.</p>
     </div>
+    <p><code>assign</code> uses kwargs, so <code>drop</code> can go anywhere in the call &mdash; the following are equivalent:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.assign(new=<span class="tok-kw">lambda</span> x: x.var + <span class="tok-num">10</span>, drop=<span class="tok-kw">True</span>)
+ds.assign(drop=<span class="tok-kw">True</span>, new=<span class="tok-kw">lambda</span> x: x.var + <span class="tok-num">10</span>)</pre>
+    </div>
     <p>Multiple variables can be created in one call &mdash; each can reference the ones created before it. Here, <code>var2</code> is <code>var1</code> plus 1, and <code>diff</code> (which should be 1 everywhere) is the difference between them:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds.assign(var1=<span class="tok-kw">lambda</span> x: x.var + <span class="tok-num">1</span>, var2=<span class="tok-kw">lambda</span> x: x.var1 + <span class="tok-num">1</span>, diff=<span class="tok-kw">lambda</span> x: x.var2 - x.var1)</pre>
+    </div>
+    <p>The lambda is evaluated for every grid cell at every time step, so every part of the expression must evaluate to a number. A plain Python variable works fine as a constant:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>k = <span class="tok-num">273.15</span>
+ds.assign(drop=<span class="tok-kw">True</span>, sst_k=<span class="tok-kw">lambda</span> x: x.sst + k)</pre>
+    </div>
+    <p>But if that constant isn't actually a number, <code>assign</code> will throw an error:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>k = <span class="tok-str">"273.15"</span>   <span class="tok-com"># a string, not a number</span>
+ds.assign(drop=<span class="tok-kw">True</span>, sst_k=<span class="tok-kw">lambda</span> x: x.sst + k)   <span class="tok-com"># raises an error</span></pre>
     </div>
 
     <h2 id="functions">Mathematical functions</h2>
@@ -117,10 +135,20 @@ ds.assign(new=<span class="tok-kw">lambda</span> x: log10(x.old + <span class="t
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds.assign(temp_comp=<span class="tok-kw">lambda</span> x: x.temperature - spatial_mean(x.temperature), drop=<span class="tok-kw">True</span>)</pre>
     </div>
-    <p>Comparisons work too &mdash; here, identifying cells more than 3 degrees warmer than the global average:</p>
+    <p>Comparisons work too. Identify cells hotter than the global average:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.assign(temp_comp=<span class="tok-kw">lambda</span> x: x.temperature > spatial_mean(x.temperature), drop=<span class="tok-kw">True</span>)</pre>
+    </div>
+    <p>Or take it further &mdash; cells more than 3 degrees warmer than the global average:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds.assign(temp_comp=<span class="tok-kw">lambda</span> x: x.temperature > (spatial_mean(x.temperature) + <span class="tok-num">3</span>), drop=<span class="tok-kw">True</span>)</pre>
+    </div>
+    <p>Logical operators work in the standard Python way. To find cells with a value between 1 and 10:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.assign(one2ten=<span class="tok-kw">lambda</span> x: x.var > <span class="tok-num">1</span> & x.var < <span class="tok-num">10</span>, drop=<span class="tok-kw">True</span>)</pre>
     </div>
 
     <h2 id="arithmetic">Simple arithmetic &amp; comparisons</h2>

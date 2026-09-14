@@ -72,6 +72,7 @@
       <li><a href="#stats">Core statistics</a></li>
       <li><a href="#rolling">Rolling statistics</a></li>
       <li><a href="#anomalies">Anomalies</a></li>
+      <li><a href="#climatologies">Calculating climatologies</a></li>
       <li><a href="#cumsum">Cumulative sums</a></li>
     </ul>
   </aside>
@@ -93,7 +94,8 @@ ds.tmean(<span class="tok-str">"season"</span>)            <span class="tok-com"
     <p><code>rolling_mean</code>, <code>rolling_min</code>, <code>rolling_max</code>, <code>rolling_range</code> and <code>rolling_sum</code> compute a statistic over a moving window of time steps:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>ds.rolling_mean(<span class="tok-num">7</span>)   <span class="tok-com"># rolling weekly mean, for daily data</span></pre>
+      <pre>ds.rolling_mean(<span class="tok-num">7</span>)   <span class="tok-com"># rolling weekly mean, for daily data</span>
+ds.rolling_sum(<span class="tok-num">7</span>)    <span class="tok-com"># rolling weekly sum</span></pre>
     </div>
 
     <h2 id="anomalies">Anomalies</h2>
@@ -106,6 +108,24 @@ ds.annual_anomaly(baseline=[<span class="tok-num">1950</span>, <span class="tok-
 ds.monthly_anomaly(baseline=[<span class="tok-num">1950</span>, <span class="tok-num">1969</span>])</pre>
     </div>
     <p>By default the anomaly is an absolute difference from the baseline mean; <code>metric="relative"</code> gives a relative change instead.</p>
+
+    <h2 id="climatologies">Calculating climatologies</h2>
+    <p>Climatologies fall directly out of <code>tmean</code>. A seasonal climatology:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.tmean(<span class="tok-str">"season"</span>)</pre>
+    </div>
+    <p>These methods allow partial matches for the arguments, so you don't need to remember the precise argument each time &mdash; the following also calculates a seasonal climatology:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.tmean(<span class="tok-str">"Seas"</span>)</pre>
+    </div>
+    <p>A climatological monthly mean, or daily mean:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.tmean(<span class="tok-str">"month"</span>)
+ds.tmean(<span class="tok-str">"day"</span>)</pre>
+    </div>
 
     <h2 id="cumsum">Cumulative sums</h2>
     <div class="code-block">

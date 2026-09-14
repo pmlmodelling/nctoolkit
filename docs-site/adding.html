@@ -112,7 +112,15 @@ climatology.tmean(<span class="tok-str">"month"</span>)   <span class="tok-com">
 ds - climatology              <span class="tok-com"># NCToolkit reports it's subtracting a monthly time series</span>
 ds.spatial_mean()</pre>
     </div>
-    <p>NCToolkit will tell you which alignment it inferred &mdash; monthly vs. annual data on the right-hand side is handled automatically. The datasets must otherwise be consistent: subtracting an annual mean with a missing year, for example, from a monthly series that includes it, will raise an error rather than guess.</p>
+    <p>NCToolkit tells you which alignment it inferred. Subtracting an annual climatology instead gives a different message, since NCToolkit recognizes it as annual rather than monthly data:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>climatology = ds.copy()
+climatology.tmean(<span class="tok-str">"year"</span>)   <span class="tok-com"># annual mean instead of monthly</span>
+
+ds - climatology              <span class="tok-com"># NCToolkit reports it's subtracting an annual time series</span></pre>
+    </div>
+    <p>The datasets must otherwise be consistent: subtracting an annual mean with a missing year, for example, from a monthly series that includes it, will raise an error rather than guess.</p>
 
     <h2 id="table">Operator reference</h2>
     <div class="table-wrap">

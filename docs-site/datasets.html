@@ -70,7 +70,10 @@
     <div class="docs-toc-title">On this page</div>
     <ul>
       <li><a href="#opening">Opening datasets</a></li>
-      <li><a href="#lazy">Lazy evaluation &amp; chaining</a></li>
+      <li><a href="#checking">Checking validity of source data</a></li>
+      <li><a href="#modifying">Modifying datasets</a></li>
+      <li><a href="#lazy">Lazy evaluation by default</a></li>
+      <li><a href="#chaining">Method chaining</a></li>
       <li><a href="#attributes">Dataset attributes</a></li>
     </ul>
   </aside>
@@ -78,7 +81,8 @@
   <div class="docs-content">
 
     <h2 id="opening">Opening datasets</h2>
-    <p>NCToolkit can work with data on local file systems, at URLs, and over thredds/OPeNDAP servers. There are three ways to create a dataset:</p>
+    <p>NCToolkit requires netCDF data that follows the GDT, COARDS or CF conventions. Its computational backend is CDO, which can carry out most operations regardless of strict compliance &mdash; but if you're unsure whether your files are compliant, see <a href="data-formats.html">Supported data</a> for how to check.</p>
+    <p>There are three ways to create a dataset:</p>
     <ul class="param-list">
       <li><code class="param-name">open_data(path)</code><p>Opens local files. Accepts a single path, a list of paths, or a wildcard such as <code>"data/*.nc"</code>.</p></li>
       <li><code class="param-name">open_url(url)</code><p>Downloads a file at a URL or ftp address to a temporary folder, then opens it.</p></li>
@@ -92,30 +96,82 @@ ds = nc.open_data(infile)             <span class="tok-com"># a single file</spa
 ds = nc.open_data(file_list)          <span class="tok-com"># a list of files</span>
 ds = nc.open_data(<span class="tok-str">"data/*.nc"</span>)         <span class="tok-com"># a wildcard, i.e. a multi-file dataset</span></pre>
     </div>
-    <p>NCToolkit requires netCDF that follows the GDT, COARDS or CF conventions &mdash; see <a href="data-formats.html">Supported data</a> for details. When you open a multi-file dataset, standard methods apply to each member file individually; to combine members, see <a href="ensembles.html">Ensembles &amp; multi-file datasets</a>.</p>
-
-    <h2 id="lazy">Lazy evaluation &amp; method chaining</h2>
-    <p>By default, NCToolkit evaluates lazily: operations are recorded, not run, until a result is actually needed. This lets NCToolkit collapse a whole chain of calls into a single CDO command instead of writing a temporary file at every step.</p>
+    <p>When you open a multi-file dataset, standard methods apply to each member file individually; to combine members, see <a href="ensembles.html">Ensembles &amp; multi-file datasets</a>. For a quick overview of what's inside a dataset, check <code>contents</code> &mdash; a dataframe of variables, units and long names:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>ds = nc.open_data(<span class="tok-str">"sst.mon.mean.nc"</span>)
-ds.subset(year=<span class="tok-num">2000</span>)
-ds.tmean()
-ds.spatial_mean()
-<span class="tok-com"># nothing has run yet &mdash; ds.current still points at the original file</span></pre>
+      <pre>ds = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.ltm.1981-2010.nc"</span>)
+ds.contents</pre>
     </div>
-    <p>Calling <a href="api.html#evaluation"><code>run()</code></a>, or any method that needs a result &mdash; such as <code>plot()</code> or an attribute access &mdash; forces evaluation. Use <code>ds.history</code> after running to see the underlying CDO command NCToolkit generated.</p>
-    <div class="callout warn">
-      <div class="callout-title">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        No pandas-style method chaining
-      </div>
-      <p>NCToolkit methods modify a dataset in place rather than returning a new one, so <code>ds.subset(...).tmean()</code> will not work. Call methods on separate lines instead:</p>
-      <div class="code-block">
-        <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-        <pre>ds.subset(year=<span class="tok-num">2000</span>)
-ds.tmean()</pre>
-      </div>
+
+    <h2 id="checking">Checking validity of source data</h2>
+    <p>NCToolkit should work out of the box with most netCDF data. However, the format could be incompatible with the system libraries NCToolkit relies on, or the files could simply be corrupt. Run a general check on the data with <code>check</code>:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.check()</pre>
+    </div>
+    <p>This runs basic checks on data format compatibility. Install <a href="https://anaconda.org/conda-forge/cfchecker" target="_blank" rel="noopener">cfchecker</a> if you also want <code>check</code> to verify CF-compliance.</p>
+    <p>To check whether the files in a dataset are corrupt, use <code>is_corrupt</code> &mdash; it reads and writes the source data to a temporary file, which is enough to catch corruption:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.is_corrupt()</pre>
+    </div>
+
+    <h2 id="modifying">Modifying datasets</h2>
+    <p>To modify a dataset, just use NCToolkit's built-in methods &mdash; they operate directly on the dataset itself. The example below selects the first time step of a sea-surface temperature dataset and plots it:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.ltm.1981-2010.nc"</span>)
+ds.subset(time=<span class="tok-num">0</span>)
+ds.plot()</pre>
+    </div>
+    <p>Underlying datasets are temporary files representing the current state of the dataset, accessible via the <code>current</code> attribute:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.current</pre>
+    </div>
+    <p>In this case, that's a single temporary file. Temporary files are generated and deleted automatically as needed &mdash; there's no need to manage them yourself.</p>
+
+    <h2 id="lazy">Lazy evaluation by default</h2>
+    <p>By default, NCToolkit evaluates lazily: operations are recorded, not run, until a result is actually needed. Look at the processing chain below &mdash; it carries out four operations, so we don't want a temporary file written at every step:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.ltm.1981-2010.nc"</span>)
+ds.assign(sst=<span class="tok-kw">lambda</span> x: x.sst + <span class="tok-num">273.15</span>)
+ds.subset(months=<span class="tok-num">1</span>)
+ds.subset(lon=[-<span class="tok-num">80</span>, <span class="tok-num">20</span>], lat=[<span class="tok-num">30</span>, <span class="tok-num">70</span>])
+ds.spatial_mean()</pre>
+    </div>
+    <p>NCToolkit has been told what to do to the dataset, but hasn't been told to actually do any of it. Checking <code>ds.current</code> at this point still shows the starting file. To evaluate the chain, use <code>run()</code> &mdash; or any method that needs a result, such as <code>plot()</code>:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.run()
+ds.current</pre>
+    </div>
+    <p>This chaining ability comes from Climate Data Operators (CDO), NCToolkit's backend computational engine. You don't need to understand CDO to use NCToolkit, but if you want to see the underlying commands, use the <code>history</code> attribute &mdash; before running, it shows the four lines of Python queued up; after running, a single CDO command:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.history    <span class="tok-com"># before run() -- queued Python operations</span>
+ds.run()
+ds.history    <span class="tok-com"># after run() -- the single CDO command actually used</span></pre>
+    </div>
+
+    <h2 id="chaining">Method chaining</h2>
+    <p>NCToolkit does not allow method chaining the way pandas and xarray do &mdash; this <strong>will not work</strong>:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>(
+    ds
+    .tmean()
+    .spatial_mean()
+    .add(<span class="tok-num">1</span>)
+)</pre>
+    </div>
+    <p>This kind of chaining needs each method to return an object, but NCToolkit's methods generally don't return objects &mdash; they modify the dataset in place. Call them on separate lines instead:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.tmean()
+ds.spatial_mean()
+ds.add(<span class="tok-num">1</span>)</pre>
     </div>
 
     <h2 id="attributes">Dataset attributes</h2>

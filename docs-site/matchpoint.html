@@ -79,7 +79,16 @@
   <div class="docs-content">
 
     <h2 id="basics">Matching at specific locations</h2>
-    <p>Matching gridded data to point observations is handled by <a href="api.html#matchpoint"><code>match_points</code></a>. The dataframe of points must use column names from <code>lon</code>, <code>lat</code>, <code>depth</code>, <code>year</code>, <code>month</code> or <code>day</code>. Given a dataframe of coordinates and depths:</p>
+    <p>Matching gridded data to point observations is handled by <a href="api.html#matchpoint"><code>match_points</code></a>. We'll illustrate this with ocean nitrate from NOAA's <a href="https://www.ncei.noaa.gov/products/world-ocean-atlas" target="_blank" rel="noopener">World Ocean Atlas</a>, cropped to part of the North Atlantic:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre><span class="tok-kw">import</span> nctoolkit <span class="tok-kw">as</span> nc
+ds = nc.open_thredds(<span class="tok-str">"https://data.nodc.noaa.gov/thredds/dodsC/ncei/woa/nitrate/all/1.00/woa18_all_n01_01.nc"</span>, checks=<span class="tok-kw">False</span>)
+ds.crop(lon=[-<span class="tok-num">40</span>, <span class="tok-num">20</span>], lat=[<span class="tok-num">40</span>, <span class="tok-num">70</span>], nco=<span class="tok-kw">True</span>)
+ds.subset(variables=<span class="tok-str">"n_an"</span>)
+ds.plot()</pre>
+    </div>
+    <p>That covers nitrate from the sea surface to the sea floor. The dataframe of points must use column names from <code>lon</code>, <code>lat</code>, <code>depth</code>, <code>year</code>, <code>month</code> or <code>day</code>. Given a dataframe of coordinates and depths:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>df = pd.DataFrame({
@@ -108,7 +117,11 @@ df_matched = ds.match_points(df)</pre>
 
 df_matched = ds.match_points(df)</pre>
     </div>
-    <p><code>match_points</code> works like pandas' <code>merge</code>: specify only <code>year</code> and <code>month</code>, omitting <code>day</code>, and every day for those years and months is returned.</p>
+    <p><code>match_points</code> works like pandas' <code>merge</code>: specify only <code>year</code> and <code>month</code>, omitting <code>day</code>, and every day for those years and months is returned:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>df_matched = ds.match_points(df.drop(columns=<span class="tok-str">"day"</span>))</pre>
+    </div>
 
     <h2 id="options">Optional arguments</h2>
     <p>A handful of arguments refine the matchup process:</p>
