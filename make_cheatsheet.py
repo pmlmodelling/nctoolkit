@@ -72,6 +72,10 @@ PAGE_1 = [
         ("ds.plot()", "Plot all data in a dataset."),
         ('ds.plot("var")', "Plot a specific variable."),
     ]),
+    ("Merging methods", None, [
+        ('ds.merge("variable")', "Merge a dataset of files with different variables."),
+        ('ds.merge("time")', "Merge a dataset of files with different timesteps."),
+    ]),
     ("Rolling methods", "Rolling methods require a window to average over.", [
         ("ds.rolling_mean(20)", "Calculate rolling mean using a window of 20."),
         ("ds.rolling_min(10)", "Calculate rolling min using a window of 10."),
@@ -91,19 +95,6 @@ PAGE_1 = [
         ("ds.size", "Display dataset size."),
         ("ds.current", "Display dataset files."),
     ]),
-    ("Merging methods", None, [
-        ('ds.merge("variable")', "Merge a dataset of files with different variables."),
-        ('ds.merge("time")', "Merge a dataset of files with different timesteps."),
-    ]),
-    ("Copying a dataset", None, [
-        ("ds_copy = ds.copy()", "Copy a dataset."),
-    ]),
-    ("Global settings", None, [
-        ("nc.options(lazy=False)", "Set evaluation to eager/non-lazy."),
-        ('nc.options(temp_dir="/foo")', "Set the temporary directory to use in this session."),
-        ("nc.options(cores=6)", "Set the number of cores to use when processing multi-file datasets."),
-        ("nc.options(parallel=True)", "Tell NCToolkit multiple datasets will be processed in parallel."),
-    ]),
     ("Temporal methods",
      "Temporal averaging methods take a list specifying the time periods to "
      "average over &mdash; elements must be “year”, “month” or “day”. "
@@ -120,6 +111,9 @@ PAGE_1 = [
         ("ds.tcumsum()", "Temporal cumulative sum."),
         ("ds.first_above(0)", "Identify the 1st time step where values are positive."),
         ("ds.first_below(0)", "Identify the 1st time step where values are negative."),
+    ]),
+    ("Copying a dataset", None, [
+        ("ds_copy = ds.copy()", "Copy a dataset."),
     ]),
 ]
 
@@ -139,6 +133,12 @@ PAGE_2 = [
         ("ds.ensemble_max()", "Calculate the maximum across an ensemble."),
         ("ds.ensemble_min()", "Calculate the minimum across an ensemble."),
         ("ds.ensemble_range()", "Calculate the range across an ensemble."),
+    ]),
+    ("Global settings", None, [
+        ("nc.options(lazy=False)", "Set evaluation to eager/non-lazy."),
+        ('nc.options(temp_dir="/foo")', "Set the temporary directory to use in this session."),
+        ("nc.options(cores=6)", "Set the number of cores to use when processing multi-file datasets."),
+        ("nc.options(parallel=True)", "Tell NCToolkit multiple datasets will be processed in parallel."),
     ]),
     ("Spatial methods", "Spatial methods are calculated per time step.", [
         ("ds.spatial_mean()", "Calculate the spatial mean."),
@@ -195,14 +195,14 @@ REGRIDDING = (
 # a fixed 3-column flex row; sections are hand-balanced by entry count so no
 # column overflows a single landscape A4 page.
 PAGE_1_COLUMNS = [
-    [PAGE_1[0], PAGE_1[1], PAGE_1[2], PAGE_1[8]],  # Creating, Subsetting, Visualizing, Global settings
-    [PAGE_1[3], PAGE_1[4], PAGE_1[5], PAGE_1[6], PAGE_1[7]],  # Rolling, Exporting, Attributes, Merging, Copying
-    [PAGE_1[9]],                                    # Temporal methods (tall - its own column)
+    [PAGE_1[0], PAGE_1[1], PAGE_1[2], PAGE_1[3]],   # Creating, Subsetting, Visualizing, Merging
+    [PAGE_1[4], PAGE_1[5], PAGE_1[6]],              # Rolling, Exporting, Attributes
+    [PAGE_1[7], PAGE_1[8]],                         # Temporal methods (tall), Copying
 ]
 PAGE_2_COLUMNS = [
-    [PAGE_2[0], PAGE_2[1]],                         # Vertical, Ensemble
-    [PAGE_2[2], PAGE_2[3]],                         # Spatial, Multi-dataset
-    [PAGE_2[4], CREATING_VARIABLES, REGRIDDING],    # Random hacks, Creating variables, Regridding
+    [PAGE_2[0], PAGE_2[1], PAGE_2[2]],              # Vertical, Ensemble, Global settings
+    [PAGE_2[3], PAGE_2[4]],                         # Spatial, Multi-dataset
+    [PAGE_2[5], CREATING_VARIABLES, REGRIDDING],    # Random hacks, Creating variables, Regridding
 ]
 
 
