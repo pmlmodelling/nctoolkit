@@ -22,16 +22,7 @@
     <nav class="nav-links" id="nav-links">
       <a href="installing.html" data-page="installing.html">Install</a>
       <a href="quickstart.html" data-page="quickstart.html">Quickstart</a>
-      <div class="nav-dropdown">
-        <button class="nav-dropdown-toggle" aria-expanded="false">Guide
-          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-        </button>
-        <div class="nav-dropdown-menu">
-          <a href="guide-basics.html" data-page="guide-basics.html">Working with data<small>Opening, subsetting, exporting, settings</small></a>
-          <a href="guide-analysis.html" data-page="guide-analysis.html">Analysis &amp; statistics<small>Temporal, vertical, ensembles, regridding, math</small></a>
-          <a href="guide-advanced.html" data-page="guide-advanced.html">Visualization &amp; tips<small>Plotting, parallel processing, hacks, troubleshooting</small></a>
-        </div>
-      </div>
+      <a href="guide.html" data-page="guide.html">Guide</a>
       <a href="api.html" data-page="api.html">API</a>
       <div class="nav-dropdown">
         <button class="nav-dropdown-toggle" aria-expanded="false">Data
@@ -103,7 +94,7 @@
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds = nc.<a href="api.html#opening"><span class="tok-fn">open_thredds</span></a>(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.ltm.1991-2020.nc"</span>)
-ds.<a href="guide-advanced.html#visualization"><span class="tok-fn">plot</span></a>()</pre>
+ds.<a href="visualization.html"><span class="tok-fn">plot</span></a>()</pre>
     </div>
     <div class="plot-embed">
       <div class="plot-embed__bar">
@@ -114,7 +105,7 @@ ds.<a href="guide-advanced.html#visualization"><span class="tok-fn">plot</span><
     </div>
 
     <h2 id="subset">It lets you easily subset data</h2>
-    <p>To look at a particular region, use <a href="guide-basics.html#subsetting"><code>subset</code></a>. Here we select January and crop to a European box:</p>
+    <p>To look at a particular region, use <a href="subsetting.html"><code>subset</code></a>. Here we select January and crop to a European box:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.ltm.1991-2020.nc"</span>)
@@ -134,7 +125,7 @@ ds.plot()</pre>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.ltm.1991-2020.nc"</span>)
-ds.<a href="guide-analysis.html#temporal"><span class="tok-fn">tmean</span></a>(<span class="tok-str">"season"</span>)
+ds.<a href="temporals.html"><span class="tok-fn">tmean</span></a>(<span class="tok-str">"season"</span>)
 ds.plot()</pre>
     </div>
     <div class="plot-embed">
@@ -162,12 +153,12 @@ ds.plot()</pre>
     </div>
 
     <h2 id="assign">It lets you do mathematical operations</h2>
-    <p>The <a href="guide-analysis.html#math"><code>assign</code></a> method works like pandas' <code>assign</code>. Here's how much warmer each part of the ocean is than the global mean:</p>
+    <p>The <a href="variables.html"><code>assign</code></a> method works like pandas' <code>assign</code>. Here's how much warmer each part of the ocean is than the global mean:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.ltm.1991-2020.nc"</span>)
 ds.tmean()
-ds.<a href="guide-analysis.html#math"><span class="tok-fn">assign</span></a>(delta=<span class="tok-kw">lambda</span> x: x.sst - spatial_mean(x.sst), drop=<span class="tok-kw">True</span>)
+ds.<a href="variables.html"><span class="tok-fn">assign</span></a>(delta=<span class="tok-kw">lambda</span> x: x.sst - spatial_mean(x.sst), drop=<span class="tok-kw">True</span>)
 ds.plot()</pre>
     </div>
     <div class="plot-embed">
@@ -179,11 +170,11 @@ ds.plot()</pre>
     </div>
 
     <h2 id="regrid">It lets you regrid data</h2>
-    <p>Built-in methods handle horizontal and vertical interpolation. <a href="guide-analysis.html#interpolation"><code>to_latlon</code></a> regrids to a regular lon/lat grid &mdash; just give it the extent, resolution and method:</p>
+    <p>Built-in methods handle horizontal and vertical interpolation. <a href="interpolation.html"><code>to_latlon</code></a> regrids to a regular lon/lat grid &mdash; just give it the extent, resolution and method:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.ltm.1991-2020.nc"</span>)
-ds.<a href="guide-analysis.html#interpolation"><span class="tok-fn">to_latlon</span></a>(lon=[-13, 38], lat=[30, 67], res=<span class="tok-num">1</span>, method=<span class="tok-str">"bil"</span>)
+ds.<a href="interpolation.html"><span class="tok-fn">to_latlon</span></a>(lon=[-13, 38], lat=[30, 67], res=<span class="tok-num">1</span>, method=<span class="tok-str">"bil"</span>)
 ds.plot()</pre>
     </div>
     <div class="plot-embed">
@@ -212,8 +203,8 @@ ds.plot()</pre>
     <h2 id="next">Next steps</h2>
     <p>That's the shape of it: open a dataset, chain a few methods, and plot or export the result. From here:</p>
     <ul>
-      <li>Read the <a href="guide-basics.html">Working with data</a> guide for opening, subsetting, exporting and global settings.</li>
-      <li>Read <a href="guide-analysis.html">Analysis &amp; statistics</a> for temporal, vertical, ensemble and regridding methods.</li>
+      <li>Browse the <a href="guide.html">User Guide</a> for every topic, from datasets to troubleshooting.</li>
+      <li>Read <a href="datasets.html">Datasets</a> and <a href="subsetting.html">Subsetting data</a> for the basics of opening and selecting data.</li>
       <li>Browse the full <a href="api.html">API reference</a> for every method available.</li>
     </ul>
 
@@ -243,9 +234,8 @@ ds.plot()</pre>
       <ul>
         <li><a href="installing.html">Installing</a></li>
         <li><a href="quickstart.html">Quickstart</a></li>
-        <li><a href="guide-basics.html">Working with data</a></li>
-        <li><a href="guide-analysis.html">Analysis &amp; statistics</a></li>
-        <li><a href="guide-advanced.html">Visualization &amp; tips</a></li>
+        <li><a href="guide.html">User Guide</a></li>
+        <li><a href="api.html">API reference</a></li>
       </ul>
     </div>
     <div class="footer-col">

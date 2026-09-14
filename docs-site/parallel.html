@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Installing — NCToolkit</title>
-<meta name="description" content="How to install NCToolkit with conda, mamba or pip, plus the CDO/NCO system dependencies it needs and how to get publication-quality plots.">
+<title>Parallel Processing — NCToolkit User Guide</title>
+<meta name="description" content="Processing multi-file datasets in parallel with nc.options(cores=...), and running your own processing chains over many files with Python's multiprocessing.">
 <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -56,11 +56,12 @@
   </div>
 </header>
 
+
 <div class="page-hero">
   <div class="container">
-    <div class="breadcrumb"><a href="index.html">Home</a> / Installing</div>
-    <h1>Installing NCToolkit</h1>
-    <p class="lead">NCToolkit requires a Linux or macOS system. The easiest way to get everything working &mdash; including its system dependencies &mdash; is conda or mamba.</p>
+    <div class="breadcrumb"><a href="index.html">Home</a> / <a href="guide.html">User Guide</a> / Parallel processing</div>
+    <h1>Parallel processing</h1>
+    <p class="lead">NCToolkit is written to enable rapid processing of netCDF files, including two ways to process files in parallel.</p>
   </div>
 </div>
 
@@ -68,116 +69,62 @@
   <aside class="docs-toc">
     <div class="docs-toc-title">On this page</div>
     <ul>
-      <li><a href="#conda">Install with conda/mamba</a></li>
-      <li><a href="#pip">Install with pip</a></li>
-      <li><a href="#dev">Development version</a></li>
-      <li><a href="#system">System dependencies</a></li>
-      <li><a href="#plots">Better-looking plots</a></li>
-      <li><a href="#known-issues">Known issues</a></li>
+      <li><a href="#multifile">Multi-file datasets in parallel</a></li>
+      <li><a href="#multiprocessing">Using multiprocessing</a></li>
     </ul>
   </aside>
 
   <div class="docs-content">
 
-    <div class="callout warn">
-      <div class="callout-title">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        Linux and macOS only
-      </div>
-      <p>NCToolkit will not run on Windows, because of system dependency limitations in its computational backend. Use WSL if you're on Windows.</p>
-    </div>
+    <p>Two methods of parallel processing are available: carrying out operations on multi-file datasets in parallel, and defining a processing chain in NCToolkit and using Python's <code>multiprocessing</code> package to run it over many files.</p>
 
-    <h2 id="conda">Install with conda / mamba</h2>
-    <p>This is the recommended route: it installs NCToolkit and all of its system dependencies (CDO, NCO) in one go, and it just works out of the box.</p>
+    <h2 id="multifile">Multi-file datasets in parallel</h2>
+    <p>If you have a multi-file dataset, processing the files within it in parallel just needs a core count:</p>
     <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>conda install -c conda-forge nctoolkit
-mamba install -c conda-forge nctoolkit</pre>
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>nc.options(cores=<span class="tok-num">6</span>)</pre>
     </div>
-    <p>Conda can sometimes install an older version of NCToolkit than the latest release. Check the <a href="https://anaconda.org/conda-forge/nctoolkit" target="_blank" rel="noopener">conda-forge package page</a> for the current version, and pin a specific version if you need to:</p>
+    <p>NCToolkit will process the files in multi-file datasets in parallel using that many cores, capped at the number of cores available on your machine.</p>
+
+    <h2 id="multiprocessing">Using multiprocessing</h2>
+    <p>A common task is taking a folder of files, doing something to each, and saving a modified version of each into a new folder. Before using Python's <code>multiprocessing</code> package for this, change the global settings:</p>
     <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>conda install -c conda-forge nctoolkit=1.3.2</pre>
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre><span class="tok-kw">import</span> nctoolkit <span class="tok-kw">as</span> nc
+nc.options(parallel=<span class="tok-kw">True</span>)</pre>
     </div>
-
-    <h2 id="pip">Install with pip</h2>
-    <p>NCToolkit is also on the <a href="https://pypi.org/project/nctoolkit/" target="_blank" rel="noopener">Python Package Index</a>. This installs the core dependencies only &mdash; you'll then need to install the <a href="#system">system dependencies</a> yourself.</p>
+    <p>This tells NCToolkit it's about to run in parallel. Behind the scenes, NCToolkit constantly creates and deletes temporary files, tracked via a safe-list of files currently in use. Adding to that list from multiple processes at once needs a process-safe list type &mdash; this setting switches to one.</p>
+    <p>A worked example: convert a folder of files with temperature in Celsius to Kelvin, saving each output to a new directory. First, a function that processes one input file and writes the result to a new location:</p>
     <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>pip install nctoolkit</pre>
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre><span class="tok-kw">def</span> process_chain(infile):
+    <span class="tok-com"># converts temperature to Kelvin, saves the output in a new directory</span>
+    outfile = infile.replace(<span class="tok-str">"ensemble"</span>, <span class="tok-str">"new"</span>)
+    <span class="tok-kw">if not</span> os.path.exists(os.path.dirname(outfile)):
+        os.mkdir(os.path.dirname(outfile))
+    ds = nc.open_data(infile)
+    ds.assign(tos=<span class="tok-kw">lambda</span> x: x.sst + <span class="tok-num">273.15</span>)
+    ds.to_nc(outfile)</pre>
     </div>
-    <p>For slightly better default plots, install with the <code>complete</code> extra, which pulls in optional plotting dependencies:</p>
+    <p>Then loop through the files in the <code>ensemble</code> folder and apply it, using a pool of 3 worker processes:</p>
     <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>pip install nctoolkit[complete]</pre>
-    </div>
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ensemble = nc.create_ensemble(<span class="tok-str">"ensemble"</span>)
+<span class="tok-kw">import</span> multiprocessing <span class="tok-kw">as</span> mp
+<span class="tok-kw">import</span> os
 
-    <h2 id="dev">Development version</h2>
-    <p>To install the latest unreleased code straight from GitHub:</p>
+pool = mp.Pool(<span class="tok-num">3</span>)
+<span class="tok-kw">for</span> ff <span class="tok-kw">in</span> ensemble:
+    pool.apply_async(process_chain, [ff])
+pool.close()
+pool.join()</pre>
+    </div>
+    <p>Once parallel processing is done &mdash; especially in an interactive session or notebook &mdash; reset the setting:</p>
     <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>pip install git+https://github.com/pmlmodelling/nctoolkit.git</pre>
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>nc.options(parallel=<span class="tok-kw">False</span>)</pre>
     </div>
-
-    <h2 id="system">System dependencies</h2>
-    <p>NCToolkit relies on two command-line tools to do its heavy lifting:</p>
-    <ul class="param-list">
-      <li>
-        <code class="param-name">CDO</code><span class="param-tag">Required</span>
-        <p><a href="https://code.mpimet.mpg.de/projects/cdo/wiki" target="_blank" rel="noopener">Climate Data Operators</a> is the computational backend for almost every NCToolkit method. NCToolkit will not work without it.</p>
-      </li>
-      <li>
-        <code class="param-name">NCO</code><span class="param-tag">Optional</span>
-        <p><a href="http://nco.sourceforge.net/" target="_blank" rel="noopener">NetCDF Operators</a> is used by a handful of methods that offer it as an alternative backend to CDO, via <a href="backends.html#nco">nco_command</a>.</p>
-      </li>
-    </ul>
-    <p>The easiest way to install either is with conda or mamba:</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>conda install -c conda-forge cdo
-conda install -c conda-forge nco</pre>
-    </div>
-    <p>On Ubuntu, CDO is also available through apt:</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>sudo apt install cdo</pre>
-    </div>
-    <p>If you need to build CDO from source, bash installer scripts are available in the <a href="https://github.com/pmlmodelling/nctoolkit/tree/master/cdo_installers" target="_blank" rel="noopener"><code>cdo_installers</code></a> folder of the repository.</p>
-
-    <h2 id="plots">Getting better-looking plots</h2>
-    <p>If you installed the non-<code>complete</code> version from PyPI, install cartopy for nicer map plots. Cartopy has some extra system dependencies, so on conda/mamba installs specifically, prefer mamba &mdash; it resolves the environment far more reliably here than conda or pip:</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>mamba install -c conda-forge cartopy</pre>
-    </div>
-    <p>If you're not using mamba, see cartopy's own <a href="https://scitools.org.uk/cartopy/docs/latest/installing.html" target="_blank" rel="noopener">installation guide</a> for platform-specific notes.</p>
-
-    <h2 id="known-issues">Known issues</h2>
-    <div class="callout">
-      <div class="callout-title">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-        Pin geoviews and jupyter_bokeh if plots misbehave
-      </div>
-      <p>Recent dependency updates can cause issues with older NCToolkit installs. If coastlines disappear from plots, or plots stop rendering in Jupyter, pin these two packages:</p>
-      <div class="code-block">
-        <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-        <pre>conda install -c conda-forge geoviews=1.10.1
-conda install -c conda-forge jupyter_bokeh=3.0.7</pre>
-      </div>
-      <p>Fresh installs pin these automatically, so this should only affect environments installed some time ago.</p>
-    </div>
-
-    <h2>Python dependencies</h2>
-    <p>Installed automatically for you, whichever route you use: <code>numpy</code>, <code>pandas</code>, <code>xarray</code>, <code>netCDF4</code>, <code>ncplot</code>, <code>hvplot</code>, <code>holoviews</code>, <code>matplotlib</code>, <code>bokeh</code>, <code>panel</code>, <code>metpy</code> and <code>scipy</code>, on Python 3.8 or later.</p>
-
-    <div class="cta-banner" style="margin-top: 2.4rem;">
-      <h2>Installed? Start with the quickstart</h2>
-      <p>See NCToolkit's core features in action with a real sea-surface temperature dataset.</p>
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="quickstart.html">Read the quickstart</a>
-      </div>
-    </div>
-
+    <p>This matters because of how manually terminating commands interacts with the process-safe lists <code>multiprocessing</code> mode uses internally &mdash; an edge case that's hard to avoid entirely, so resetting afterwards is the safest habit.</p>
   </div>
 </div>
 

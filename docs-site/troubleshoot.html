@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Installing — NCToolkit</title>
-<meta name="description" content="How to install NCToolkit with conda, mamba or pip, plus the CDO/NCO system dependencies it needs and how to get publication-quality plots.">
+<title>Troubleshooting — NCToolkit User Guide</title>
+<meta name="description" content="Fixing common NCToolkit errors: integer data type issues, general dataset checks, corrupt file detection, and coordinates stored as variables.">
 <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -56,11 +56,12 @@
   </div>
 </header>
 
+
 <div class="page-hero">
   <div class="container">
-    <div class="breadcrumb"><a href="index.html">Home</a> / Installing</div>
-    <h1>Installing NCToolkit</h1>
-    <p class="lead">NCToolkit requires a Linux or macOS system. The easiest way to get everything working &mdash; including its system dependencies &mdash; is conda or mamba.</p>
+    <div class="breadcrumb"><a href="index.html">Home</a> / <a href="guide.html">User Guide</a> / Troubleshooting</div>
+    <h1>Troubleshooting</h1>
+    <p class="lead">Most errors trace back to a quirk in the source data. A few checks and fixes cover the majority of cases.</p>
   </div>
 </div>
 
@@ -68,116 +69,58 @@
   <aside class="docs-toc">
     <div class="docs-toc-title">On this page</div>
     <ul>
-      <li><a href="#conda">Install with conda/mamba</a></li>
-      <li><a href="#pip">Install with pip</a></li>
-      <li><a href="#dev">Development version</a></li>
-      <li><a href="#system">System dependencies</a></li>
-      <li><a href="#plots">Better-looking plots</a></li>
-      <li><a href="#known-issues">Known issues</a></li>
+      <li><a href="#types">Check data types</a></li>
+      <li><a href="#checks">General dataset checks</a></li>
+      <li><a href="#corrupt">Checking for corrupt files</a></li>
+      <li><a href="#coords">Coordinates stored as variables</a></li>
     </ul>
   </aside>
 
   <div class="docs-content">
 
-    <div class="callout warn">
-      <div class="callout-title">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        Linux and macOS only
-      </div>
-      <p>NCToolkit will not run on Windows, because of system dependency limitations in its computational backend. Use WSL if you're on Windows.</p>
-    </div>
-
-    <h2 id="conda">Install with conda / mamba</h2>
-    <p>This is the recommended route: it installs NCToolkit and all of its system dependencies (CDO, NCO) in one go, and it just works out of the box.</p>
+    <h2 id="types">Check data types</h2>
+    <p>Under the hood, NCToolkit uses Climate Data Operators (CDO) as its computational engine. By default, CDO uses the data type stored in the netCDF file, which is usually fine &mdash; but not always. Imagine calculating the fraction of time temperature exceeds 30 degrees, where the data is stored as an integer:</p>
     <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>conda install -c conda-forge nctoolkit
-mamba install -c conda-forge nctoolkit</pre>
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.assign(temperature=<span class="tok-kw">lambda</span> x: x.temperature > <span class="tok-num">30</span>)
+ds.tmean()</pre>
     </div>
-    <p>Conda can sometimes install an older version of NCToolkit than the latest release. Check the <a href="https://anaconda.org/conda-forge/nctoolkit" target="_blank" rel="noopener">conda-forge package page</a> for the current version, and pin a specific version if you need to:</p>
+    <p>If the data is integer-typed, you'll end up with only 0 or 1 in the data rather than a genuine fraction. Force a higher-precision type first:</p>
     <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>conda install -c conda-forge nctoolkit=1.3.2</pre>
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.set_precision(<span class="tok-str">"F64"</span>)
+ds.assign(temperature=<span class="tok-kw">lambda</span> x: x.temperature > <span class="tok-num">30</span>)
+ds.tmean()</pre>
     </div>
-
-    <h2 id="pip">Install with pip</h2>
-    <p>NCToolkit is also on the <a href="https://pypi.org/project/nctoolkit/" target="_blank" rel="noopener">Python Package Index</a>. This installs the core dependencies only &mdash; you'll then need to install the <a href="#system">system dependencies</a> yourself.</p>
+    <p>NCToolkit warns you if a dataset has integer data types when you open it. To check what type each variable is at any point:</p>
     <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>pip install nctoolkit</pre>
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.contents</pre>
     </div>
-    <p>For slightly better default plots, install with the <code>complete</code> extra, which pulls in optional plotting dependencies:</p>
+
+    <h2 id="checks">General dataset checks</h2>
+    <p>A built-in method checks whether a dataset's format is likely to be problematic:</p>
     <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>pip install nctoolkit[complete]</pre>
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.check()</pre>
     </div>
+    <p>This runs four checks: integer-typed variables, an integer-typed time dimension, CF-compliance, and whether all variables in the dataset share the same horizontal grid. Install <a href="https://anaconda.org/conda-forge/cfchecker" target="_blank" rel="noopener">cfchecker</a> for <code>check()</code> to also verify CF-compliance.</p>
 
-    <h2 id="dev">Development version</h2>
-    <p>To install the latest unreleased code straight from GitHub:</p>
+    <h2 id="corrupt">Checking for corrupt files</h2>
+    <p>A common problem with netCDF files is corruption &mdash; parts of the data become inaccessible. Check for it directly:</p>
     <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>pip install git+https://github.com/pmlmodelling/nctoolkit.git</pre>
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.is_corrupt()</pre>
     </div>
 
-    <h2 id="system">System dependencies</h2>
-    <p>NCToolkit relies on two command-line tools to do its heavy lifting:</p>
-    <ul class="param-list">
-      <li>
-        <code class="param-name">CDO</code><span class="param-tag">Required</span>
-        <p><a href="https://code.mpimet.mpg.de/projects/cdo/wiki" target="_blank" rel="noopener">Climate Data Operators</a> is the computational backend for almost every NCToolkit method. NCToolkit will not work without it.</p>
-      </li>
-      <li>
-        <code class="param-name">NCO</code><span class="param-tag">Optional</span>
-        <p><a href="http://nco.sourceforge.net/" target="_blank" rel="noopener">NetCDF Operators</a> is used by a handful of methods that offer it as an alternative backend to CDO, via <a href="backends.html#nco">nco_command</a>.</p>
-      </li>
-    </ul>
-    <p>The easiest way to install either is with conda or mamba:</p>
+    <h2 id="coords">Coordinates stored as variables</h2>
+    <p>Sometimes longitude and latitude are stored as plain variables rather than coordinates, which NCToolkit needs to work fully. Fix it with <code>assign_coords</code>:</p>
     <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>conda install -c conda-forge cdo
-conda install -c conda-forge nco</pre>
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.assign_coords(lon_name=<span class="tok-str">"lon"</span>, lat_name=<span class="tok-str">"lat"</span>)</pre>
     </div>
-    <p>On Ubuntu, CDO is also available through apt:</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>sudo apt install cdo</pre>
-    </div>
-    <p>If you need to build CDO from source, bash installer scripts are available in the <a href="https://github.com/pmlmodelling/nctoolkit/tree/master/cdo_installers" target="_blank" rel="noopener"><code>cdo_installers</code></a> folder of the repository.</p>
-
-    <h2 id="plots">Getting better-looking plots</h2>
-    <p>If you installed the non-<code>complete</code> version from PyPI, install cartopy for nicer map plots. Cartopy has some extra system dependencies, so on conda/mamba installs specifically, prefer mamba &mdash; it resolves the environment far more reliably here than conda or pip:</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>mamba install -c conda-forge cartopy</pre>
-    </div>
-    <p>If you're not using mamba, see cartopy's own <a href="https://scitools.org.uk/cartopy/docs/latest/installing.html" target="_blank" rel="noopener">installation guide</a> for platform-specific notes.</p>
-
-    <h2 id="known-issues">Known issues</h2>
-    <div class="callout">
-      <div class="callout-title">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-        Pin geoviews and jupyter_bokeh if plots misbehave
-      </div>
-      <p>Recent dependency updates can cause issues with older NCToolkit installs. If coastlines disappear from plots, or plots stop rendering in Jupyter, pin these two packages:</p>
-      <div class="code-block">
-        <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-        <pre>conda install -c conda-forge geoviews=1.10.1
-conda install -c conda-forge jupyter_bokeh=3.0.7</pre>
-      </div>
-      <p>Fresh installs pin these automatically, so this should only affect environments installed some time ago.</p>
-    </div>
-
-    <h2>Python dependencies</h2>
-    <p>Installed automatically for you, whichever route you use: <code>numpy</code>, <code>pandas</code>, <code>xarray</code>, <code>netCDF4</code>, <code>ncplot</code>, <code>hvplot</code>, <code>holoviews</code>, <code>matplotlib</code>, <code>bokeh</code>, <code>panel</code>, <code>metpy</code> and <code>scipy</code>, on Python 3.8 or later.</p>
-
-    <div class="cta-banner" style="margin-top: 2.4rem;">
-      <h2>Installed? Start with the quickstart</h2>
-      <p>See NCToolkit's core features in action with a real sea-surface temperature dataset.</p>
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="quickstart.html">Read the quickstart</a>
-      </div>
-    </div>
-
+    <p>where <code>lon_name</code> and <code>lat_name</code> are whatever the longitude and latitude variables are actually called in your file.</p>
+    <p>Still stuck? See the <a href="qa.html">Q&amp;A</a> page, or <a href="https://github.com/pmlmodelling/nctoolkit/discussions" target="_blank" rel="noopener">open a discussion on GitHub</a>.</p>
   </div>
 </div>
 

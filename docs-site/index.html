@@ -22,16 +22,7 @@
     <nav class="nav-links" id="nav-links">
       <a href="installing.html" data-page="installing.html">Install</a>
       <a href="quickstart.html" data-page="quickstart.html">Quickstart</a>
-      <div class="nav-dropdown">
-        <button class="nav-dropdown-toggle" aria-expanded="false">Guide
-          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-        </button>
-        <div class="nav-dropdown-menu">
-          <a href="guide-basics.html" data-page="guide-basics.html">Working with data<small>Opening, subsetting, exporting, settings</small></a>
-          <a href="guide-analysis.html" data-page="guide-analysis.html">Analysis &amp; statistics<small>Temporal, vertical, ensembles, regridding, math</small></a>
-          <a href="guide-advanced.html" data-page="guide-advanced.html">Visualization &amp; tips<small>Plotting, parallel processing, hacks, troubleshooting</small></a>
-        </div>
-      </div>
+      <a href="guide.html" data-page="guide.html">Guide</a>
       <a href="api.html" data-page="api.html">API</a>
       <div class="nav-dropdown">
         <button class="nav-dropdown-toggle" aria-expanded="false">Data
@@ -118,9 +109,9 @@
 ds = nc.<a href="api.html#opening"><span class="tok-fn">open_thredds</span></a>(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/"
                      "Datasets/COBE2/sst.mon.mean.nc"</span>)
 
-ds.<a href="guide-basics.html#subsetting"><span class="tok-fn">subset</span></a>(lon=[-13, 38], lat=[30, 67])
-ds.<a href="guide-analysis.html#temporal"><span class="tok-fn">tmean</span></a>(<span class="tok-str">"season"</span>)
-ds.<a href="guide-advanced.html#visualization"><span class="tok-fn">plot</span></a>()  <span class="tok-com"># -> interactive figure</span></pre>
+ds.<a href="subsetting.html"><span class="tok-fn">subset</span></a>(lon=[-13, 38], lat=[30, 67])
+ds.<a href="temporals.html"><span class="tok-fn">tmean</span></a>(<span class="tok-str">"season"</span>)
+ds.<a href="visualization.html"><span class="tok-fn">plot</span></a>()  <span class="tok-com"># -> interactive figure</span></pre>
       </div>
     </div>
   </div>
@@ -142,19 +133,19 @@ ds.<a href="guide-advanced.html#visualization"><span class="tok-fn">plot</span><
       <div class="step-card">
         <span class="step-num">1</span>
         <h3>Open your data</h3>
-        <p><a href="guide-basics.html#opening"><code>open_data()</code></a> handles single files, wildcards and lists. <code>open_url</code> and <code>open_thredds</code> handle remote and OPeNDAP data.</p>
+        <p><a href="datasets.html#opening"><code>open_data()</code></a> handles single files, wildcards and lists. <code>open_url</code> and <code>open_thredds</code> handle remote and OPeNDAP data.</p>
         <span class="step-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
       </div>
       <div class="step-card">
         <span class="step-num">2</span>
         <h3>Chain operations, lazily</h3>
-        <p>Calls to <a href="guide-basics.html#subsetting"><code>subset()</code></a>, <a href="guide-analysis.html#temporal"><code>tmean()</code></a>, <a href="guide-analysis.html#interpolation"><code>regrid()</code></a> and <a href="guide-analysis.html#math"><code>assign()</code></a> build up a single CDO pipeline instead of writing a file at every step.</p>
+        <p>Calls to <a href="subsetting.html"><code>subset()</code></a>, <a href="temporals.html"><code>tmean()</code></a>, <a href="interpolation.html"><code>regrid()</code></a> and <a href="variables.html"><code>assign()</code></a> build up a single CDO pipeline instead of writing a file at every step.</p>
         <span class="step-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
       </div>
       <div class="step-card">
         <span class="step-num">3</span>
         <h3>Export or visualize</h3>
-        <p>Write out with <a href="guide-basics.html#exporting"><code>to_nc()</code></a>, hand off to pandas or xarray, or call <a href="guide-advanced.html#visualization"><code>plot()</code></a> for an interactive figure.</p>
+        <p>Write out with <a href="exporting.html"><code>to_nc()</code></a>, hand off to pandas or xarray, or call <a href="visualization.html"><code>plot()</code></a> for an interactive figure.</p>
       </div>
     </div>
   </div>
@@ -208,8 +199,8 @@ ds.<a href="guide-advanced.html#visualization"><span class="tok-fn">plot</span><
       <div>
         <span class="kicker">See it in action</span>
         <h2>Automatic plots from a single method call</h2>
-        <p>Every <a href="guide-advanced.html#visualization"><code>plot()</code></a> call inspects the shape of your dataset and picks a sensible interactive chart — maps for gridded fields, time series for spatial means, heatmaps for Hovm&ouml;ller-style zonal data — built on hvplot.</p>
-        <a class="btn btn-outline" href="guide-advanced.html#visualization">
+        <p>Every <a href="visualization.html"><code>plot()</code></a> call inspects the shape of your dataset and picks a sensible interactive chart — maps for gridded fields, time series for spatial means, heatmaps for Hovm&ouml;ller-style zonal data — built on hvplot.</p>
+        <a class="btn btn-outline" href="visualization.html">
           Read about plotting
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
         </a>
@@ -252,9 +243,9 @@ conda install -c conda-forge nctoolkit
 <span class="tok-kw">import</span> nctoolkit <span class="tok-kw">as</span> nc
 
 ds = nc.<a href="api.html#opening"><span class="tok-fn">open_data</span></a>(<span class="tok-str">"data/*.nc"</span>)
-ds.<a href="guide-basics.html#subsetting"><span class="tok-fn">subset</span></a>(lon=[-80, 90], lat=[50, 80])
-ds.<a href="guide-analysis.html#temporal"><span class="tok-fn">tmean</span></a>(<span class="tok-str">"year"</span>)
-ds.<a href="guide-basics.html#exporting"><span class="tok-fn">to_nc</span></a>(<span class="tok-str">"annual_mean.nc"</span>)</pre>
+ds.<a href="subsetting.html"><span class="tok-fn">subset</span></a>(lon=[-80, 90], lat=[50, 80])
+ds.<a href="temporals.html"><span class="tok-fn">tmean</span></a>(<span class="tok-str">"year"</span>)
+ds.<a href="exporting.html"><span class="tok-fn">to_nc</span></a>(<span class="tok-str">"annual_mean.nc"</span>)</pre>
       </div>
       <div>
         <span class="kicker">Get started in minutes</span>
@@ -334,9 +325,8 @@ ds.<a href="guide-basics.html#exporting"><span class="tok-fn">to_nc</span></a>(<
       <ul>
         <li><a href="installing.html">Installing</a></li>
         <li><a href="quickstart.html">Quickstart</a></li>
-        <li><a href="guide-basics.html">Working with data</a></li>
-        <li><a href="guide-analysis.html">Analysis &amp; statistics</a></li>
-        <li><a href="guide-advanced.html">Visualization &amp; tips</a></li>
+        <li><a href="guide.html">User Guide</a></li>
+        <li><a href="api.html">API reference</a></li>
       </ul>
     </div>
     <div class="footer-col">

@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Visualization &amp; Tips — NCToolkit Guide</title>
-<meta name="description" content="Interactive and publication-quality plotting, parallel processing with multiprocessing, useful data hacks, and troubleshooting problem datasets in NCToolkit.">
+<title>Visualization — NCToolkit User Guide</title>
+<meta name="description" content="Interactive and publication-quality plotting of netCDF data in NCToolkit, with automatic maps, zonal profiles, heatmaps and time series.">
 <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,16 +22,7 @@
     <nav class="nav-links" id="nav-links">
       <a href="installing.html" data-page="installing.html">Install</a>
       <a href="quickstart.html" data-page="quickstart.html">Quickstart</a>
-      <div class="nav-dropdown">
-        <button class="nav-dropdown-toggle" aria-expanded="false">Guide
-          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-        </button>
-        <div class="nav-dropdown-menu">
-          <a href="guide-basics.html" data-page="guide-basics.html">Working with data<small>Opening, subsetting, exporting, settings</small></a>
-          <a href="guide-analysis.html" data-page="guide-analysis.html">Analysis &amp; statistics<small>Temporal, vertical, ensembles, regridding, math</small></a>
-          <a href="guide-advanced.html" data-page="guide-advanced.html">Visualization &amp; tips<small>Plotting, parallel processing, hacks, troubleshooting</small></a>
-        </div>
-      </div>
+      <a href="guide.html" data-page="guide.html">Guide</a>
       <a href="api.html" data-page="api.html">API</a>
       <div class="nav-dropdown">
         <button class="nav-dropdown-toggle" aria-expanded="false">Data
@@ -65,11 +56,12 @@
   </div>
 </header>
 
+
 <div class="page-hero">
   <div class="container">
-    <div class="breadcrumb"><a href="index.html">Home</a> / Guide / Visualization &amp; tips</div>
-    <h1>Visualization &amp; tips</h1>
-    <p class="lead">Interactive and publication-quality plotting, parallel processing with <code>multiprocessing</code>, handy data hacks, and troubleshooting problem datasets.</p>
+    <div class="breadcrumb"><a href="index.html">Home</a> / <a href="guide.html">User Guide</a> / Visualization</div>
+    <h1>Visualization</h1>
+    <p class="lead">Automatic interactive plots for almost any netCDF file, plus publication-quality static figures with pub_plot.</p>
   </div>
 </div>
 
@@ -77,16 +69,15 @@
   <aside class="docs-toc">
     <div class="docs-toc-title">On this page</div>
     <ul>
-      <li><a href="#visualization">Visualization</a></li>
-      <li><a href="#parallel">Parallel processing</a></li>
-      <li><a href="#hacks">Data hacks</a></li>
-      <li><a href="#troubleshooting">Troubleshooting</a></li>
+      <li><a href="#plotting">Interactive plotting</a></li>
+      <li><a href="#pub-plot">Publication-quality plots</a></li>
+      <li><a href="#internals">Plotting internals</a></li>
     </ul>
   </aside>
 
   <div class="docs-content">
 
-    <h2 id="visualization">Visualization</h2>
+    <h2 id="plotting">Interactive plotting</h2>
     <p>Call <code>plot()</code> on a dataset for an automatic interactive plot, similar in spirit to the command-line tool <code>ncview</code> &mdash; but in Jupyter or a browser. Illustrated below with a sea-surface temperature dataset:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
@@ -147,7 +138,7 @@ ds.plot()          <span class="tok-com"># time series</span></pre>
       <div class="plot-embed__image-wrap"><a href="assets/plots/visualization_plot4.html" target="_blank" rel="noopener"><img src="assets/plots/visualization_plot4.png" loading="lazy" alt="Global mean sea surface temperature time series since 1850"></a></div>
     </div>
 
-    <h3>Publication-quality plots</h3>
+    <h2 id="pub-plot">Publication-quality plots</h2>
     <p><code>pub_plot</code> (introduced in v0.9.2) produces a static plot suitable for a paper or presentation, currently restricted to regular lon/lat grids with a limited set of customizations (such as the colour scale):</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
@@ -156,104 +147,8 @@ ds.pub_plot()</pre>
     </div>
     <p><img src="assets/plots/pub_plot1.png" alt="Publication-quality plot of mean sea surface temperature produced by pub_plot()" style="border:1px solid var(--line); border-radius: var(--radius-md); box-shadow: var(--shadow-sm);"></p>
 
-    <h3>Plotting internals</h3>
+    <h2 id="internals">Plotting internals</h2>
     <p>Interactive plotting is delegated to the companion <a href="https://github.com/pmlmodelling/ncplot" target="_blank" rel="noopener">ncplot</a> package, which inspects the dataset and picks a suitable plot built on <a href="https://hvplot.holoviz.org/" target="_blank" rel="noopener">hvplot</a>. It favours rapid exploratory analysis over deep customization, but most <a href="https://hvplot.holoviz.org/user_guide/Customization.html" target="_blank" rel="noopener">hvplot customization options</a> &mdash; <code>title</code>, <code>logz</code>, <code>clim</code>, and so on &mdash; can be passed straight to <code>plot()</code> and are forwarded automatically.</p>
-
-    <h2 id="parallel">Parallel processing</h2>
-    <p>Two forms of parallelism are available. The simplest is processing files within a multi-file dataset in parallel:</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>nc.options(cores=<span class="tok-num">6</span>)</pre>
-    </div>
-    <p>The second is defining a processing chain and running it over many files yourself with Python's <code>multiprocessing</code>. Before doing this, tell NCToolkit it's about to run in parallel &mdash; this switches its internal safe-list of temporary files (used to avoid deleting files still in use) to a process-safe variant:</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>nc.options(parallel=<span class="tok-kw">True</span>)</pre>
-    </div>
-    <p>A worked example: convert a folder of files from Celsius to Kelvin, writing each result into a new folder, using 3 worker processes.</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre><span class="tok-kw">def</span> process_chain(infile):
-    outfile = infile.replace(<span class="tok-str">"ensemble"</span>, <span class="tok-str">"new"</span>)
-    <span class="tok-kw">if not</span> os.path.exists(os.path.dirname(outfile)):
-        os.mkdir(os.path.dirname(outfile))
-    ds = nc.open_data(infile)
-    ds.assign(tos=<span class="tok-kw">lambda</span> x: x.sst + <span class="tok-num">273.15</span>)
-    ds.to_nc(outfile)
-
-ensemble = nc.create_ensemble(<span class="tok-str">"ensemble"</span>)
-<span class="tok-kw">import</span> multiprocessing <span class="tok-kw">as</span> mp
-pool = mp.Pool(<span class="tok-num">3</span>)
-<span class="tok-kw">for</span> ff <span class="tok-kw">in</span> ensemble:
-    pool.apply_async(process_chain, [ff])
-pool.close()
-pool.join()</pre>
-    </div>
-    <p>Once parallel processing is done &mdash; especially in an interactive session or notebook &mdash; reset the setting:</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>nc.options(parallel=<span class="tok-kw">False</span>)</pre>
-    </div>
-
-    <h2 id="hacks">Data hacks</h2>
-    <h3>Missing values</h3>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>ds.as_missing(<span class="tok-num">0</span>)                  <span class="tok-com"># set zeroes to missing</span>
-ds.as_missing([-<span class="tok-num">1000</span>, <span class="tok-num">0</span>])         <span class="tok-com"># set a range to missing</span>
-ds.missing_as(-<span class="tok-num">9999.99</span>)           <span class="tok-com"># set missing values to a constant</span>
-ds.set_fill(-<span class="tok-num">9e38</span>)               <span class="tok-com"># change the netCDF fill value</span></pre>
-    </div>
-    <h3>Shifting time</h3>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>ds.shift(years=-<span class="tok-num">1</span>)   <span class="tok-com"># shift back one year</span>
-ds.shift(hours=<span class="tok-num">12</span>)   <span class="tok-com"># shift forward 12 hours</span></pre>
-    </div>
-    <h3>Cell areas, format, dimensions</h3>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>ds.cell_area()              <span class="tok-com"># add grid-cell area (m2)</span>
-ds.cell_area(join=<span class="tok-kw">False</span>)   <span class="tok-com"># dataset of cell areas only</span>
-ds.format(<span class="tok-str">"nc4"</span>)             <span class="tok-com"># nc1, nc2/nc, nc4, nc4c, nc5</span>
-ds.reduce_dims()            <span class="tok-com"># drop length-1 dimensions</span>
-ds.drop(month=<span class="tok-num">2</span>, day=<span class="tok-num">29</span>)        <span class="tok-com"># remove leap days</span>
-ds.rename({<span class="tok-str">"x"</span>: <span class="tok-str">"y"</span>})          <span class="tok-com"># rename a variable</span></pre>
-    </div>
-
-    <h2 id="troubleshooting">Troubleshooting</h2>
-    <p>Most errors trace back to a quirk in the source data. A few checks and fixes cover the majority of cases.</p>
-
-    <h3>Check data types</h3>
-    <p>CDO uses the data type stored in the file by default. If a variable is stored as an integer, a comparison like <code>x.temperature &gt; 30</code> can silently collapse to 0/1 in a way you don't want. See what NCToolkit sees:</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>ds.contents   <span class="tok-com"># shows the data type of every variable</span></pre>
-    </div>
-    <p>If needed, force floating point before doing arithmetic:</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>ds.set_precision(<span class="tok-str">"F64"</span>)
-ds.assign(temperature=<span class="tok-kw">lambda</span> x: x.temperature &gt; <span class="tok-num">30</span>)</pre>
-    </div>
-
-    <h3>General dataset checks</h3>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>ds.check()   <span class="tok-com"># integer-typed variables, integer time axis, CF-compliance, grid consistency</span>
-ds.is_corrupt()   <span class="tok-com"># reads/writes source files to a temp file to catch corruption</span></pre>
-    </div>
-    <p>Install <a href="https://anaconda.org/conda-forge/cfchecker" target="_blank" rel="noopener">cfchecker</a> to have <code>check()</code> also verify CF-compliance.</p>
-
-    <h3>Coordinates stored as variables</h3>
-    <p>If longitude/latitude were written as plain variables instead of coordinates, tell NCToolkit which ones they are:</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>ds.assign_coords(lon_name=<span class="tok-str">"lon"</span>, lat_name=<span class="tok-str">"lat"</span>)</pre>
-    </div>
-
-    <p>Still stuck? See the <a href="qa.html">Q&amp;A</a> page, or <a href="https://github.com/pmlmodelling/nctoolkit/discussions" target="_blank" rel="noopener">open a discussion on GitHub</a>.</p>
-
   </div>
 </div>
 
@@ -280,9 +175,8 @@ ds.is_corrupt()   <span class="tok-com"># reads/writes source files to a temp fi
       <ul>
         <li><a href="installing.html">Installing</a></li>
         <li><a href="quickstart.html">Quickstart</a></li>
-        <li><a href="guide-basics.html">Working with data</a></li>
-        <li><a href="guide-analysis.html">Analysis &amp; statistics</a></li>
-        <li><a href="guide-advanced.html">Visualization &amp; tips</a></li>
+        <li><a href="guide.html">User Guide</a></li>
+        <li><a href="api.html">API reference</a></li>
       </ul>
     </div>
     <div class="footer-col">

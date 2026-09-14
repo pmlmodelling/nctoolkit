@@ -22,16 +22,7 @@
     <nav class="nav-links" id="nav-links">
       <a href="installing.html" data-page="installing.html">Install</a>
       <a href="quickstart.html" data-page="quickstart.html">Quickstart</a>
-      <div class="nav-dropdown">
-        <button class="nav-dropdown-toggle" aria-expanded="false">Guide
-          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-        </button>
-        <div class="nav-dropdown-menu">
-          <a href="guide-basics.html" data-page="guide-basics.html">Working with data<small>Opening, subsetting, exporting, settings</small></a>
-          <a href="guide-analysis.html" data-page="guide-analysis.html">Analysis &amp; statistics<small>Temporal, vertical, ensembles, regridding, math</small></a>
-          <a href="guide-advanced.html" data-page="guide-advanced.html">Visualization &amp; tips<small>Plotting, parallel processing, hacks, troubleshooting</small></a>
-        </div>
-      </div>
+      <a href="guide.html" data-page="guide.html">Guide</a>
       <a href="api.html" data-page="api.html">API</a>
       <div class="nav-dropdown">
         <button class="nav-dropdown-toggle" aria-expanded="false">Data
@@ -109,12 +100,12 @@
     <p>Any CF-compliant time axis should work without issue. CDO requires exactly one time axis per file &mdash; if a file has multiple, NCToolkit (via CDO) will pick one. This is rarely a problem except with unusually idiosyncratic time axes.</p>
 
     <h2 id="types">Data types</h2>
-    <p>NCToolkit supports every data type CDO supports: 32- and 64-bit floating point, and 8-, 16- and 32-bit integers. By default, calculations use whichever data type the source file was stored in. This is usually fine, but integer-typed files can occasionally give surprising results for calculations that should be floating point &mdash; see <a href="guide-advanced.html#troubleshooting">Troubleshooting</a> for how to force a higher-precision type with <code>set_precision</code>.</p>
+    <p>NCToolkit supports every data type CDO supports: 32- and 64-bit floating point, and 8-, 16- and 32-bit integers. By default, calculations use whichever data type the source file was stored in. This is usually fine, but integer-typed files can occasionally give surprising results for calculations that should be floating point &mdash; see <a href="troubleshoot.html">Troubleshooting</a> for how to force a higher-precision type with <code>set_precision</code>.</p>
     <p>Poorly-defined netCDF files &mdash; for example ones with badly specified maximum/fill values &mdash; can occasionally cause computational errors even for otherwise simple calculations.</p>
 
     <h2 id="cf">Checking CF-compliance</h2>
     <p>If you're unsure whether your files are CF-compliant, run them through the <a href="http://cfconventions.org/compliance-checker.html" target="_blank" rel="noopener">CF checker</a>. An error there usually means CDO can't fully determine the file's structure, which will block some NCToolkit operations. Most such issues can be fixed with CDO or NCO directly &mdash; reach out if you get stuck.</p>
-    <p>NCToolkit's own <a href="api.html#misc"><code>check()</code></a> method runs a lighter version of this alongside checks for integer data types and time axes &mdash; see <a href="guide-advanced.html#troubleshooting">Troubleshooting</a>.</p>
+    <p>NCToolkit's own <a href="api.html#misc"><code>check()</code></a> method runs a lighter version of this alongside checks for integer data types and time axes &mdash; see <a href="troubleshoot.html">Troubleshooting</a>.</p>
 
   </div>
 </div>
@@ -142,9 +133,8 @@
       <ul>
         <li><a href="installing.html">Installing</a></li>
         <li><a href="quickstart.html">Quickstart</a></li>
-        <li><a href="guide-basics.html">Working with data</a></li>
-        <li><a href="guide-analysis.html">Analysis &amp; statistics</a></li>
-        <li><a href="guide-advanced.html">Visualization &amp; tips</a></li>
+        <li><a href="guide.html">User Guide</a></li>
+        <li><a href="api.html">API reference</a></li>
       </ul>
     </div>
     <div class="footer-col">

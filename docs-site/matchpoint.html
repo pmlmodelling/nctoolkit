@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Installing — NCToolkit</title>
-<meta name="description" content="How to install NCToolkit with conda, mamba or pip, plus the CDO/NCO system dependencies it needs and how to get publication-quality plots.">
+<title>Matchups with Point Data — NCToolkit User Guide</title>
+<meta name="description" content="Matching gridded netCDF data to sparse spatiotemporal point observations, at varying depths and times, with NCToolkit's match_points method.">
 <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -56,11 +56,12 @@
   </div>
 </header>
 
+
 <div class="page-hero">
   <div class="container">
-    <div class="breadcrumb"><a href="index.html">Home</a> / Installing</div>
-    <h1>Installing NCToolkit</h1>
-    <p class="lead">NCToolkit requires a Linux or macOS system. The easiest way to get everything working &mdash; including its system dependencies &mdash; is conda or mamba.</p>
+    <div class="breadcrumb"><a href="index.html">Home</a> / <a href="guide.html">User Guide</a> / Matchups with point data</div>
+    <h1>Matchups with point data</h1>
+    <p class="lead">A common challenge when working with netCDF data is matching it up with point observations &mdash; often sparse in space and time, and at varying depths.</p>
   </div>
 </div>
 
@@ -68,116 +69,55 @@
   <aside class="docs-toc">
     <div class="docs-toc-title">On this page</div>
     <ul>
-      <li><a href="#conda">Install with conda/mamba</a></li>
-      <li><a href="#pip">Install with pip</a></li>
-      <li><a href="#dev">Development version</a></li>
-      <li><a href="#system">System dependencies</a></li>
-      <li><a href="#plots">Better-looking plots</a></li>
-      <li><a href="#known-issues">Known issues</a></li>
+      <li><a href="#basics">Matching at specific locations</a></li>
+      <li><a href="#approach">Spatial matchup approach</a></li>
+      <li><a href="#time">Spatiotemporal matchups</a></li>
+      <li><a href="#options">Optional arguments</a></li>
     </ul>
   </aside>
 
   <div class="docs-content">
 
-    <div class="callout warn">
-      <div class="callout-title">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        Linux and macOS only
-      </div>
-      <p>NCToolkit will not run on Windows, because of system dependency limitations in its computational backend. Use WSL if you're on Windows.</p>
-    </div>
+    <h2 id="basics">Matching at specific locations</h2>
+    <p>Matching gridded data to point observations is handled by <a href="api.html#matchpoint"><code>match_points</code></a>. The dataframe of points must use column names from <code>lon</code>, <code>lat</code>, <code>depth</code>, <code>year</code>, <code>month</code> or <code>day</code>. Given a dataframe of coordinates and depths:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>df = pd.DataFrame({
+    <span class="tok-str">"lon"</span>: [-<span class="tok-num">30</span>, -<span class="tok-num">20</span>, -<span class="tok-num">10</span>, <span class="tok-num">0</span>],
+    <span class="tok-str">"lat"</span>: [<span class="tok-num">40</span>, <span class="tok-num">45</span>, <span class="tok-num">50</span>, <span class="tok-num">55</span>],
+    <span class="tok-str">"depth"</span>: [<span class="tok-num">0</span>, <span class="tok-num">50</span>, <span class="tok-num">100</span>, <span class="tok-num">200</span>],
+})
 
-    <h2 id="conda">Install with conda / mamba</h2>
-    <p>This is the recommended route: it installs NCToolkit and all of its system dependencies (CDO, NCO) in one go, and it just works out of the box.</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>conda install -c conda-forge nctoolkit
-mamba install -c conda-forge nctoolkit</pre>
+df_matched = ds.match_points(df)</pre>
     </div>
-    <p>Conda can sometimes install an older version of NCToolkit than the latest release. Check the <a href="https://anaconda.org/conda-forge/nctoolkit" target="_blank" rel="noopener">conda-forge package page</a> for the current version, and pin a specific version if you need to:</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>conda install -c conda-forge nctoolkit=1.3.2</pre>
-    </div>
+    <p>The <code>match_points</code> method returns a pandas dataframe with the matched-up values added. Watch for messages confirming assumptions NCToolkit made while matching &mdash; usually safe to ignore, except around depths, which are derived from the dataset unless you provide them explicitly.</p>
 
-    <h2 id="pip">Install with pip</h2>
-    <p>NCToolkit is also on the <a href="https://pypi.org/project/nctoolkit/" target="_blank" rel="noopener">Python Package Index</a>. This installs the core dependencies only &mdash; you'll then need to install the <a href="#system">system dependencies</a> yourself.</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>pip install nctoolkit</pre>
-    </div>
-    <p>For slightly better default plots, install with the <code>complete</code> extra, which pulls in optional plotting dependencies:</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>pip install nctoolkit[complete]</pre>
-    </div>
+    <h2 id="approach">Spatial matchup approach</h2>
+    <p>Data is first regridded horizontally using bilinear interpolation to the given lon/lat pairs. If depths are provided, the result is then interpolated vertically using 1D interpolation (via <a href="https://scipy.org/" target="_blank" rel="noopener">scipy</a>).</p>
 
-    <h2 id="dev">Development version</h2>
-    <p>To install the latest unreleased code straight from GitHub:</p>
+    <h2 id="time">Spatiotemporal matchups</h2>
+    <p>The same method handles matchups over time. Given a dataframe with <code>lon</code>, <code>lat</code>, <code>year</code> and <code>month</code> columns for two points at different times:</p>
     <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>pip install git+https://github.com/pmlmodelling/nctoolkit.git</pre>
-    </div>
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>df = pd.DataFrame({
+    <span class="tok-str">"lon"</span>: [-<span class="tok-num">30</span>, -<span class="tok-num">20</span>],
+    <span class="tok-str">"lat"</span>: [<span class="tok-num">40</span>, <span class="tok-num">45</span>],
+    <span class="tok-str">"year"</span>: [<span class="tok-num">1850</span>, <span class="tok-num">1900</span>],
+    <span class="tok-str">"month"</span>: [<span class="tok-num">1</span>, <span class="tok-num">6</span>],
+})
 
-    <h2 id="system">System dependencies</h2>
-    <p>NCToolkit relies on two command-line tools to do its heavy lifting:</p>
+df_matched = ds.match_points(df)</pre>
+    </div>
+    <p><code>match_points</code> works like pandas' <code>merge</code>: specify only <code>year</code> and <code>month</code>, omitting <code>day</code>, and every day for those years and months is returned.</p>
+
+    <h2 id="options">Optional arguments</h2>
+    <p>A handful of arguments refine the matchup process:</p>
     <ul class="param-list">
-      <li>
-        <code class="param-name">CDO</code><span class="param-tag">Required</span>
-        <p><a href="https://code.mpimet.mpg.de/projects/cdo/wiki" target="_blank" rel="noopener">Climate Data Operators</a> is the computational backend for almost every NCToolkit method. NCToolkit will not work without it.</p>
-      </li>
-      <li>
-        <code class="param-name">NCO</code><span class="param-tag">Optional</span>
-        <p><a href="http://nco.sourceforge.net/" target="_blank" rel="noopener">NetCDF Operators</a> is used by a handful of methods that offer it as an alternative backend to CDO, via <a href="backends.html#nco">nco_command</a>.</p>
-      </li>
+      <li><code class="param-name">variables</code><p>Restrict the matchup to a subset of variables.</p></li>
+      <li><code class="param-name">tmean</code><p>Apply <code>ds.tmean()</code> with the temporal grouping implied by the dataframe columns before matching &mdash; useful when point data is coarser than the dataset (e.g. monthly points, daily data). This is equivalent to running <code>ds.tmean(["year", "month"])</code> beforehand.</p></li>
+      <li><code class="param-name">top</code><p>When the dataset has multiple vertical levels but you only want the top one.</p></li>
+      <li><code class="param-name">nan</code><p>Values in the dataset that should be treated as missing.</p></li>
     </ul>
-    <p>The easiest way to install either is with conda or mamba:</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>conda install -c conda-forge cdo
-conda install -c conda-forge nco</pre>
-    </div>
-    <p>On Ubuntu, CDO is also available through apt:</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>sudo apt install cdo</pre>
-    </div>
-    <p>If you need to build CDO from source, bash installer scripts are available in the <a href="https://github.com/pmlmodelling/nctoolkit/tree/master/cdo_installers" target="_blank" rel="noopener"><code>cdo_installers</code></a> folder of the repository.</p>
-
-    <h2 id="plots">Getting better-looking plots</h2>
-    <p>If you installed the non-<code>complete</code> version from PyPI, install cartopy for nicer map plots. Cartopy has some extra system dependencies, so on conda/mamba installs specifically, prefer mamba &mdash; it resolves the environment far more reliably here than conda or pip:</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>mamba install -c conda-forge cartopy</pre>
-    </div>
-    <p>If you're not using mamba, see cartopy's own <a href="https://scitools.org.uk/cartopy/docs/latest/installing.html" target="_blank" rel="noopener">installation guide</a> for platform-specific notes.</p>
-
-    <h2 id="known-issues">Known issues</h2>
-    <div class="callout">
-      <div class="callout-title">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-        Pin geoviews and jupyter_bokeh if plots misbehave
-      </div>
-      <p>Recent dependency updates can cause issues with older NCToolkit installs. If coastlines disappear from plots, or plots stop rendering in Jupyter, pin these two packages:</p>
-      <div class="code-block">
-        <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-        <pre>conda install -c conda-forge geoviews=1.10.1
-conda install -c conda-forge jupyter_bokeh=3.0.7</pre>
-      </div>
-      <p>Fresh installs pin these automatically, so this should only affect environments installed some time ago.</p>
-    </div>
-
-    <h2>Python dependencies</h2>
-    <p>Installed automatically for you, whichever route you use: <code>numpy</code>, <code>pandas</code>, <code>xarray</code>, <code>netCDF4</code>, <code>ncplot</code>, <code>hvplot</code>, <code>holoviews</code>, <code>matplotlib</code>, <code>bokeh</code>, <code>panel</code>, <code>metpy</code> and <code>scipy</code>, on Python 3.8 or later.</p>
-
-    <div class="cta-banner" style="margin-top: 2.4rem;">
-      <h2>Installed? Start with the quickstart</h2>
-      <p>See NCToolkit's core features in action with a real sea-surface temperature dataset.</p>
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="quickstart.html">Read the quickstart</a>
-      </div>
-    </div>
-
   </div>
 </div>
 

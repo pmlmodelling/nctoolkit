@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Analysis &amp; Statistics — NCToolkit Guide</title>
-<meta name="description" content="Temporal statistics, vertical methods, horizontal and vertical interpolation, ensembles and multi-file datasets, mathematical operations, and matching to point observations.">
+<title>Interpolation &amp; Regridding — NCToolkit User Guide</title>
+<meta name="description" content="Horizontal regridding to regular grids or another dataset's grid, reusing regrid weights, resampling and infilling, and vertical interpolation in NCToolkit.">
 <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,16 +22,7 @@
     <nav class="nav-links" id="nav-links">
       <a href="installing.html" data-page="installing.html">Install</a>
       <a href="quickstart.html" data-page="quickstart.html">Quickstart</a>
-      <div class="nav-dropdown">
-        <button class="nav-dropdown-toggle" aria-expanded="false">Guide
-          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-        </button>
-        <div class="nav-dropdown-menu">
-          <a href="guide-basics.html" data-page="guide-basics.html">Working with data<small>Opening, subsetting, exporting, settings</small></a>
-          <a href="guide-analysis.html" data-page="guide-analysis.html">Analysis &amp; statistics<small>Temporal, vertical, ensembles, regridding, math</small></a>
-          <a href="guide-advanced.html" data-page="guide-advanced.html">Visualization &amp; tips<small>Plotting, parallel processing, hacks, troubleshooting</small></a>
-        </div>
-      </div>
+      <a href="guide.html" data-page="guide.html">Guide</a>
       <a href="api.html" data-page="api.html">API</a>
       <div class="nav-dropdown">
         <button class="nav-dropdown-toggle" aria-expanded="false">Data
@@ -65,11 +56,12 @@
   </div>
 </header>
 
+
 <div class="page-hero">
   <div class="container">
-    <div class="breadcrumb"><a href="index.html">Home</a> / Guide / Analysis &amp; statistics</div>
-    <h1>Analysis &amp; statistics</h1>
-    <p class="lead">Temporal and vertical statistics, horizontal and vertical interpolation, multi-file ensembles, mathematical operations, and matching to point observations.</p>
+    <div class="breadcrumb"><a href="index.html">Home</a> / <a href="guide.html">User Guide</a> / Interpolation &amp; regridding</div>
+    <h1>Interpolation &amp; regridding</h1>
+    <p class="lead">Built-in methods for horizontal and vertical interpolation, illustrated using global sea-surface temperature from NOAA's COBE-SST 2.</p>
   </div>
 </div>
 
@@ -77,79 +69,18 @@
   <aside class="docs-toc">
     <div class="docs-toc-title">On this page</div>
     <ul>
-      <li><a href="#temporal">Temporal statistics</a></li>
-      <li><a href="#vertical">Vertical methods</a></li>
-      <li><a href="#interpolation">Interpolation &amp; regridding</a></li>
-      <li><a href="#ensembles">Ensembles &amp; multi-file datasets</a></li>
-      <li><a href="#math">Mathematical operations</a></li>
-      <li><a href="#matchpoint">Matchups with point data</a></li>
+      <li><a href="#start">Starting point</a></li>
+      <li><a href="#latlon">Regular lon/lat grids</a></li>
+      <li><a href="#another-grid">Another dataset's grid</a></li>
+      <li><a href="#recycle">Reusing regrid weights</a></li>
+      <li><a href="#coords">A set of coordinates</a></li>
+      <li><a href="#coarsen">Coarsening &amp; infilling</a></li>
     </ul>
   </aside>
 
   <div class="docs-content">
 
-    <h2 id="temporal">Temporal statistics</h2>
-    <p>A family of methods prefixed with <code>t</code> calculates temporal statistics: <code>tmean</code>, <code>tmin</code>, <code>tmax</code>, <code>trange</code>, <code>tpercentile</code>, <code>tmedian</code>, <code>tvariance</code>, <code>tstdev</code> and <code>tcumsum</code>.</p>
-    <p>By default they average over all available time steps. Use <code>over</code> to average within groups &mdash; <code>"day"</code> (day of year), <code>"month"</code>, <code>"year"</code>, or <code>"season"</code>:</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>ds.tmean()                    <span class="tok-com"># mean over all time steps</span>
-ds.tmean(<span class="tok-str">"year"</span>)              <span class="tok-com"># annual mean</span>
-ds.tmax([<span class="tok-str">"month"</span>, <span class="tok-str">"year"</span>])    <span class="tok-com"># max in each month of each year</span>
-ds.tmean(<span class="tok-str">"season"</span>)            <span class="tok-com"># seasonal climatology</span></pre>
-    </div>
-
-    <h3>Rolling statistics</h3>
-    <p><code>rolling_mean</code>, <code>rolling_min</code>, <code>rolling_max</code>, <code>rolling_range</code> and <code>rolling_sum</code> compute a statistic over a moving window of time steps:</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>ds.rolling_mean(<span class="tok-num">7</span>)   <span class="tok-com"># rolling weekly mean, for daily data</span></pre>
-    </div>
-
-    <h3>Anomalies</h3>
-    <p><code>annual_anomaly</code> and <code>monthly_anomaly</code> both need a baseline period:</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>ds.annual_anomaly(baseline=[<span class="tok-num">1950</span>, <span class="tok-num">1969</span>])
-ds.annual_anomaly(baseline=[<span class="tok-num">1950</span>, <span class="tok-num">1969</span>], metric=<span class="tok-str">"relative"</span>)
-ds.annual_anomaly(baseline=[<span class="tok-num">1950</span>, <span class="tok-num">1969</span>], window=<span class="tok-num">10</span>)   <span class="tok-com"># smoothed, rolling</span>
-ds.monthly_anomaly(baseline=[<span class="tok-num">1950</span>, <span class="tok-num">1969</span>])</pre>
-    </div>
-    <p>By default the anomaly is an absolute difference from the baseline mean; <code>metric="relative"</code> gives a relative change instead.</p>
-
-    <h3>Cumulative sums</h3>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>ds.tcumsum()   <span class="tok-com"># over all time periods only; no `over` argument</span></pre>
-    </div>
-
-    <h2 id="vertical">Vertical methods</h2>
-    <p>NCToolkit handles files with either fixed or varying vertical levels &mdash; z-level ocean data and terrain-following coordinates alike. Vertical means account for cell thickness where it's available.</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>ds.vertical_mean(fixed=<span class="tok-kw">True</span>)     <span class="tok-com"># mean across all vertical levels</span>
-ds.top()                          <span class="tok-com"># select the surface level</span>
-ds.bottom()                       <span class="tok-com"># select the sea-floor level</span></pre>
-    </div>
-    <p>Other vertical methods: <code>vertical_min</code>, <code>vertical_max</code>, <code>vertical_range</code>, <code>vertical_cumsum</code> and <code>invert_levels</code>. For a full water-column total that accounts for cell thickness, use <code>vertical_integration</code>.</p>
-    <p><code>vertical_interp</code> interpolates to specific target levels &mdash; here, depth-resolved World Ocean Atlas temperature interpolated to 500m:</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>ds = nc.open_thredds(<span class="tok-str">"https://www.ncei.noaa.gov/thredds/dodsC/ncei/woa/temperature/decav/1.00/woa18_decav_t00_01.nc"</span>)
-ds.subset(timestep=<span class="tok-num">0</span>)
-ds.vertical_interp(levels=<span class="tok-num">500</span>, fixed=<span class="tok-kw">True</span>)
-ds.plot()</pre>
-    </div>
-    <div class="plot-embed">
-      <div class="plot-embed__bar">
-        <span class="plot-embed__label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg> ds.plot() &mdash; interactive output</span>
-        <a class="plot-embed__open" href="assets/plots/interpolate_plot9.html" target="_blank" rel="noopener">Open interactive <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
-      </div>
-      <div class="plot-embed__image-wrap"><a href="assets/plots/interpolate_plot9.html" target="_blank" rel="noopener"><img src="assets/plots/interpolate_plot9.png" loading="lazy" alt="Ocean temperature interpolated to 500m depth"></a></div>
-    </div>
-
-    <h2 id="interpolation">Interpolation &amp; regridding</h2>
-    <p>Illustrated below using global sea-surface temperature from NOAA's COBE-SST 2, starting from a single time step:</p>
+    <h2 id="start">Starting point</h2>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc"</span>)
@@ -164,7 +95,7 @@ ds.plot()</pre>
       <div class="plot-embed__image-wrap"><a href="assets/plots/interpolate_plot1.html" target="_blank" rel="noopener"><img src="assets/plots/interpolate_plot1.png" loading="lazy" alt="Global sea surface temperature, first time step"></a></div>
     </div>
 
-    <h3>Regular lon/lat grids</h3>
+    <h2 id="latlon">Regular lon/lat grids</h2>
     <p><a href="api.html#interpolation"><code>to_latlon</code></a> regrids to a regular grid: give the extent (<code>lon</code>, <code>lat</code>) and resolution (<code>res</code>):</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
@@ -178,7 +109,7 @@ ds.plot()</pre>
       <div class="plot-embed__image-wrap"><a href="assets/plots/interpolate_plot2.html" target="_blank" rel="noopener"><img src="assets/plots/interpolate_plot2.png" loading="lazy" alt="Regridded to a regular 1 x 0.5 degree lon/lat grid"></a></div>
     </div>
 
-    <h3>Another dataset's grid</h3>
+    <h2 id="another-grid">Another dataset's grid</h2>
     <p><code>regrid</code> interpolates a dataset onto the grid of another dataset (or a netCDF file used purely as a grid template). Here, we first crop one dataset to the northern hemisphere to use as the target grid:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
@@ -210,7 +141,7 @@ ds2.plot()</pre>
       <div class="plot-embed__image-wrap"><a href="assets/plots/interpolate_plot4.html" target="_blank" rel="noopener"><img src="assets/plots/interpolate_plot4.png" loading="lazy" alt="Regridded onto the northern-hemisphere target grid"></a></div>
     </div>
 
-    <h3>Reusing regrid weights</h3>
+    <h2 id="recycle">Reusing regrid weights</h2>
     <p>Regridding generates a weights file first. If you're regridding many files onto the same target grid one after another &mdash; postprocessing a batch of files, say &mdash; set <code>recycle=True</code> on the first call so <code>regrid</code> can reuse those weights on later calls:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
@@ -241,14 +172,15 @@ ds1.plot()</pre>
       <div class="plot-embed__image-wrap"><a href="assets/plots/interpolate_plot6.html" target="_blank" rel="noopener"><img src="assets/plots/interpolate_plot6.png" loading="lazy" alt="A second dataset regridded using the recycled weights"></a></div>
     </div>
 
-    <h3>A set of coordinates</h3>
+    <h2 id="coords">A set of coordinates</h2>
     <p><code>regrid</code> also accepts a pandas dataframe of <code>lon</code>/<code>lat</code> columns, to interpolate onto specific points:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>coords = pd.DataFrame({<span class="tok-str">"lon"</span>: [-<span class="tok-num">30</span>], <span class="tok-str">"lat"</span>: [<span class="tok-num">50</span>]})
 ds.regrid(coords)</pre>
     </div>
-    <h3>Coarsening &amp; infilling</h3>
+
+    <h2 id="coarsen">Coarsening &amp; infilling</h2>
     <p><code>resample_grid</code> makes data spatially coarser &mdash; here, keeping only every 10th cell of a 1&deg;&times;1&deg; dataset turns it into a 10&deg;&times;10&deg; one:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
@@ -279,86 +211,6 @@ ds.plot()</pre>
       </div>
       <div class="plot-embed__image-wrap"><a href="assets/plots/interpolate_plot8.html" target="_blank" rel="noopener"><img src="assets/plots/interpolate_plot8.png" loading="lazy" alt="Missing values filled by distance-weighted infill"></a></div>
     </div>
-
-    <h2 id="ensembles">Ensembles &amp; multi-file datasets</h2>
-    <p>Multi-file datasets are created the same way as single-file ones &mdash; a list of paths or a wildcard:</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>ds = nc.open_data(<span class="tok-str">"foo/*.nc"</span>)
-ds.tmean()   <span class="tok-com"># applied independently to each file in the ensemble</span></pre>
-    </div>
-    <h3>Merging</h3>
-    <p>Two merge strategies are available via <code>merge</code>:</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>ds.merge(<span class="tok-str">"time"</span>)       <span class="tok-com"># files share variables/grid, distinct times</span>
-ds.merge(<span class="tok-str">"variable"</span>)   <span class="tok-com"># files share time steps; this is the default</span></pre>
-    </div>
-    <h3>Ensemble statistics</h3>
-    <p>To calculate a statistic <em>across</em> ensemble members (e.g. across climate models) rather than within each one, use the ensemble methods: <code>ensemble_mean</code>, <code>ensemble_percentile</code>, <code>ensemble_stdev</code>, <code>ensemble_var</code>, <code>ensemble_max</code>, <code>ensemble_min</code>, <code>ensemble_range</code> and <code>ensemble_sum</code>.</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>ds.ensemble_mean()   <span class="tok-com"># e.g. monthly mean across 20 climate models</span></pre>
-    </div>
-    <h3>Speeding up multi-file processing</h3>
-    <p>Set the number of cores used for processing files in a multi-file dataset in parallel. It's almost always faster to process files with a high core count before merging, rather than merging first:</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>nc.options(cores=<span class="tok-num">6</span>)</pre>
-    </div>
-    <p>For processing an ensemble with your own Python function via <code>multiprocessing</code>, see <a href="guide-advanced.html#parallel">Parallel processing</a>.</p>
-
-    <h2 id="math">Mathematical operations</h2>
-    <h3>Creating new variables with <code>assign</code></h3>
-    <p><code>assign</code> works like pandas' <code>assign</code>, using lambda functions evaluated per grid cell, per time step:</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>ds.assign(new=<span class="tok-kw">lambda</span> x: x.var + <span class="tok-num">10</span>)
-ds.assign(new=<span class="tok-kw">lambda</span> x: x.var + <span class="tok-num">10</span>, drop=<span class="tok-kw">True</span>)   <span class="tok-com"># keep only the new variable</span></pre>
-    </div>
-    <div class="callout warn">
-      <div class="callout-title">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        Write assign on a single line
-      </div>
-      <p>Each call to <code>assign</code> currently needs to be written on one line &mdash; splitting the arguments across multiple lines will not parse correctly.</p>
-    </div>
-    <p>Numpy-style math functions and NCToolkit-specific helpers are available inside the lambda: <code>abs</code>, <code>floor</code>, <code>ceil</code>, <code>sqrt</code>, <code>exp</code>, <code>log10</code>, trig functions, plus <code>spatial_mean</code>, <code>spatial_max/min/sum</code>, <code>vertical_mean/max/min/sum</code>, <code>zonal_mean/max/min/sum</code>, <code>cell_area</code>, <code>latitude</code>, <code>longitude</code>, <code>level</code>, <code>year</code>, <code>month</code>, <code>day</code>, <code>hour</code> and <code>timestep</code>. See the full list on the <a href="api.html#assign-functions">API reference</a>.</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>ds.assign(temp_comp=<span class="tok-kw">lambda</span> x: x.temperature - spatial_mean(x.temperature), drop=<span class="tok-kw">True</span>)</pre>
-    </div>
-    <p>Multiple variables can be created in one call &mdash; each can reference the ones created before it:</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>ds.assign(var1=<span class="tok-kw">lambda</span> x: x.var + <span class="tok-num">1</span>, var2=<span class="tok-kw">lambda</span> x: x.var1 + <span class="tok-num">1</span>, diff=<span class="tok-kw">lambda</span> x: x.var2 - x.var1)</pre>
-    </div>
-
-    <h3>Simple arithmetic &amp; comparisons</h3>
-    <p>Standard Python operators work directly on datasets, using <code>add</code>, <code>subtract</code>, <code>multiply</code> and <code>divide</code> under the hood:</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>ds.add(<span class="tok-num">10</span>)          <span class="tok-com"># or: ds + 10</span>
-ds1.add(ds2)        <span class="tok-com"># or: ds1 + ds2</span>
-ds.compare(<span class="tok-str">">0"</span>)      <span class="tok-com"># or: ds > 0</span></pre>
-    </div>
-    <p>When one side has a single time step, or one dataset holds a monthly/annual climatology and the other a longer time series, NCToolkit automatically works out how to line the two up &mdash; and tells you which alignment it inferred.</p>
-
-    <h2 id="matchpoint">Matchups with point data</h2>
-    <p>Matching gridded data to sparse point observations &mdash; often at varying depths and times &mdash; is handled by <a href="api.html#matchpoint"><code>match_points</code></a>. The dataframe of points must use column names from <code>lon</code>, <code>lat</code>, <code>depth</code>, <code>year</code>, <code>month</code> or <code>day</code>.</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>df_matched = ds.match_points(df)</pre>
-    </div>
-    <p>Spatially, the data is regridded with bilinear interpolation to the given lon/lat pairs; if depths are supplied it is then interpolated vertically with 1D interpolation (via scipy). Omitting <code>day</code> (or <code>month</code>/<code>day</code>) returns every matching day (or month/day) for the years and months given &mdash; the same behaviour as a partial merge key in pandas.</p>
-    <p>Useful optional arguments:</p>
-    <ul class="param-list">
-      <li><code class="param-name">variables</code><p>Restrict the matchup to a subset of variables.</p></li>
-      <li><code class="param-name">tmean</code><p>Apply <code>ds.tmean()</code> with the temporal grouping implied by the dataframe columns before matching &mdash; useful when point data is coarser than the dataset (e.g. monthly points, daily data).</p></li>
-      <li><code class="param-name">top</code><p>When the dataset has multiple vertical levels but you only want the top one.</p></li>
-      <li><code class="param-name">nan</code><p>Values in the dataset that should be treated as missing.</p></li>
-    </ul>
-
   </div>
 </div>
 
@@ -385,9 +237,8 @@ ds.compare(<span class="tok-str">">0"</span>)      <span class="tok-com"># or: d
       <ul>
         <li><a href="installing.html">Installing</a></li>
         <li><a href="quickstart.html">Quickstart</a></li>
-        <li><a href="guide-basics.html">Working with data</a></li>
-        <li><a href="guide-analysis.html">Analysis &amp; statistics</a></li>
-        <li><a href="guide-advanced.html">Visualization &amp; tips</a></li>
+        <li><a href="guide.html">User Guide</a></li>
+        <li><a href="api.html">API reference</a></li>
       </ul>
     </div>
     <div class="footer-col">

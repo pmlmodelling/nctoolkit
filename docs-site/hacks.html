@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Installing — NCToolkit</title>
-<meta name="description" content="How to install NCToolkit with conda, mamba or pip, plus the CDO/NCO system dependencies it needs and how to get publication-quality plots.">
+<title>Data Hacks — NCToolkit User Guide</title>
+<meta name="description" content="Handling missing values, shifting time, adding cell areas, changing netCDF format, dropping single-value dimensions, removing leap days and renaming variables in NCToolkit.">
 <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -56,11 +56,12 @@
   </div>
 </header>
 
+
 <div class="page-hero">
   <div class="container">
-    <div class="breadcrumb"><a href="index.html">Home</a> / Installing</div>
-    <h1>Installing NCToolkit</h1>
-    <p class="lead">NCToolkit requires a Linux or macOS system. The easiest way to get everything working &mdash; including its system dependencies &mdash; is conda or mamba.</p>
+    <div class="breadcrumb"><a href="index.html">Home</a> / <a href="guide.html">User Guide</a> / Data hacks</div>
+    <h1>Data hacks</h1>
+    <p class="lead">A grab-bag of useful methods for tweaking data that doesn't quite fit the shape you need.</p>
   </div>
 </div>
 
@@ -68,116 +69,89 @@
   <aside class="docs-toc">
     <div class="docs-toc-title">On this page</div>
     <ul>
-      <li><a href="#conda">Install with conda/mamba</a></li>
-      <li><a href="#pip">Install with pip</a></li>
-      <li><a href="#dev">Development version</a></li>
-      <li><a href="#system">System dependencies</a></li>
-      <li><a href="#plots">Better-looking plots</a></li>
-      <li><a href="#known-issues">Known issues</a></li>
+      <li><a href="#missing">Missing values</a></li>
+      <li><a href="#time">Shifting time</a></li>
+      <li><a href="#cellarea">Cell areas</a></li>
+      <li><a href="#format">Changing format</a></li>
+      <li><a href="#dims">Dimensions with one value</a></li>
+      <li><a href="#leap">Removing leap days</a></li>
+      <li><a href="#rename">Renaming variables</a></li>
     </ul>
   </aside>
 
   <div class="docs-content">
 
-    <div class="callout warn">
-      <div class="callout-title">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        Linux and macOS only
-      </div>
-      <p>NCToolkit will not run on Windows, because of system dependency limitations in its computational backend. Use WSL if you're on Windows.</p>
-    </div>
-
-    <h2 id="conda">Install with conda / mamba</h2>
-    <p>This is the recommended route: it installs NCToolkit and all of its system dependencies (CDO, NCO) in one go, and it just works out of the box.</p>
+    <h2 id="missing">Handling missing values</h2>
+    <p>NCToolkit has built-in methods for setting or changing missing values: <code>as_missing</code>, <code>missing_as</code> and <code>set_fill</code>.</p>
+    <p>Change a value, or range of values, to missing with <code>as_missing</code> &mdash; here, zeroes, and then everything from -1000 to 0:</p>
     <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>conda install -c conda-forge nctoolkit
-mamba install -c conda-forge nctoolkit</pre>
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.as_missing(<span class="tok-num">0</span>)
+ds.as_missing([-<span class="tok-num">1000</span>, <span class="tok-num">0</span>])</pre>
     </div>
-    <p>Conda can sometimes install an older version of NCToolkit than the latest release. Check the <a href="https://anaconda.org/conda-forge/nctoolkit" target="_blank" rel="noopener">conda-forge package page</a> for the current version, and pin a specific version if you need to:</p>
+    <p>Change missing values to a constant with <code>missing_as</code>, or change the netCDF fill value itself with <code>set_fill</code> &mdash; handy when combining files that used different fill values:</p>
     <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>conda install -c conda-forge nctoolkit=1.3.2</pre>
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.missing_as(-<span class="tok-num">9999.99</span>)
+ds.set_fill(-<span class="tok-num">9e38</span>)</pre>
     </div>
 
-    <h2 id="pip">Install with pip</h2>
-    <p>NCToolkit is also on the <a href="https://pypi.org/project/nctoolkit/" target="_blank" rel="noopener">Python Package Index</a>. This installs the core dependencies only &mdash; you'll then need to install the <a href="#system">system dependencies</a> yourself.</p>
+    <h2 id="time">Shifting time</h2>
+    <p>If you're missing a year of data and want to reuse the prior year's values, you'll first need to shift its times forward by a year. <code>shift</code> moves time forward or backward by hours, days, months or years:</p>
     <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>pip install nctoolkit</pre>
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.shift(years=-<span class="tok-num">1</span>)   <span class="tok-com"># shift backward one year</span>
+ds.shift(hours=<span class="tok-num">12</span>)   <span class="tok-com"># shift forward 12 hours</span></pre>
     </div>
-    <p>For slightly better default plots, install with the <code>complete</code> extra, which pulls in optional plotting dependencies:</p>
+    <p>Arguments allow partial matches, so <code>hour</code>, <code>day</code>, <code>month</code> or <code>year</code> work just as well.</p>
+
+    <h2 id="cellarea">Adding cell areas</h2>
+    <p>Add grid-cell area (in square metres) to a dataset:</p>
     <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>pip install nctoolkit[complete]</pre>
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.cell_area()                <span class="tok-com"># adds cell area to the dataset</span>
+ds.cell_area(join=<span class="tok-kw">False</span>)   <span class="tok-com"># dataset of cell areas only</span></pre>
     </div>
+    <p>This only works where it's possible to calculate the area of each grid cell from the file's metadata.</p>
 
-    <h2 id="dev">Development version</h2>
-    <p>To install the latest unreleased code straight from GitHub:</p>
+    <h2 id="format">Changing netCDF format</h2>
+    <p><code>format</code> sets the netCDF format used for the files in a dataset:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Format</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>netCDF</td><td><code>"nc1"</code></td></tr>
+          <tr><td>netCDF version 2 (64-bit offset)</td><td><code>"nc2"</code> / <code>"nc"</code></td></tr>
+          <tr><td>netCDF4 (HDF5)</td><td><code>"nc4"</code></td></tr>
+          <tr><td>netCDF4-classic</td><td><code>"nc4c"</code></td></tr>
+          <tr><td>netCDF version 5 (64-bit data)</td><td><code>"nc5"</code></td></tr>
+        </tbody>
+      </table>
+    </div>
     <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>pip install git+https://github.com/pmlmodelling/nctoolkit.git</pre>
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.format(<span class="tok-str">"nc4"</span>)</pre>
     </div>
 
-    <h2 id="system">System dependencies</h2>
-    <p>NCToolkit relies on two command-line tools to do its heavy lifting:</p>
-    <ul class="param-list">
-      <li>
-        <code class="param-name">CDO</code><span class="param-tag">Required</span>
-        <p><a href="https://code.mpimet.mpg.de/projects/cdo/wiki" target="_blank" rel="noopener">Climate Data Operators</a> is the computational backend for almost every NCToolkit method. NCToolkit will not work without it.</p>
-      </li>
-      <li>
-        <code class="param-name">NCO</code><span class="param-tag">Optional</span>
-        <p><a href="http://nco.sourceforge.net/" target="_blank" rel="noopener">NetCDF Operators</a> is used by a handful of methods that offer it as an alternative backend to CDO, via <a href="backends.html#nco">nco_command</a>.</p>
-      </li>
-    </ul>
-    <p>The easiest way to install either is with conda or mamba:</p>
+    <h2 id="dims">Dimensions with only one value</h2>
+    <p>Drop a dimension that only has one value &mdash; a single leftover time step, say &mdash; with <code>reduce_dims</code>:</p>
     <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>conda install -c conda-forge cdo
-conda install -c conda-forge nco</pre>
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.reduce_dims()</pre>
     </div>
-    <p>On Ubuntu, CDO is also available through apt:</p>
+
+    <h2 id="leap">Removing leap days</h2>
     <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>sudo apt install cdo</pre>
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.drop(month=<span class="tok-num">2</span>, day=<span class="tok-num">29</span>)</pre>
     </div>
-    <p>If you need to build CDO from source, bash installer scripts are available in the <a href="https://github.com/pmlmodelling/nctoolkit/tree/master/cdo_installers" target="_blank" rel="noopener"><code>cdo_installers</code></a> folder of the repository.</p>
 
-    <h2 id="plots">Getting better-looking plots</h2>
-    <p>If you installed the non-<code>complete</code> version from PyPI, install cartopy for nicer map plots. Cartopy has some extra system dependencies, so on conda/mamba installs specifically, prefer mamba &mdash; it resolves the environment far more reliably here than conda or pip:</p>
+    <h2 id="rename">Renaming variables</h2>
+    <p>Use <code>rename</code> with a dictionary mapping original names to new ones:</p>
     <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>mamba install -c conda-forge cartopy</pre>
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.rename({<span class="tok-str">"x"</span>: <span class="tok-str">"y"</span>})</pre>
     </div>
-    <p>If you're not using mamba, see cartopy's own <a href="https://scitools.org.uk/cartopy/docs/latest/installing.html" target="_blank" rel="noopener">installation guide</a> for platform-specific notes.</p>
-
-    <h2 id="known-issues">Known issues</h2>
-    <div class="callout">
-      <div class="callout-title">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-        Pin geoviews and jupyter_bokeh if plots misbehave
-      </div>
-      <p>Recent dependency updates can cause issues with older NCToolkit installs. If coastlines disappear from plots, or plots stop rendering in Jupyter, pin these two packages:</p>
-      <div class="code-block">
-        <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-        <pre>conda install -c conda-forge geoviews=1.10.1
-conda install -c conda-forge jupyter_bokeh=3.0.7</pre>
-      </div>
-      <p>Fresh installs pin these automatically, so this should only affect environments installed some time ago.</p>
-    </div>
-
-    <h2>Python dependencies</h2>
-    <p>Installed automatically for you, whichever route you use: <code>numpy</code>, <code>pandas</code>, <code>xarray</code>, <code>netCDF4</code>, <code>ncplot</code>, <code>hvplot</code>, <code>holoviews</code>, <code>matplotlib</code>, <code>bokeh</code>, <code>panel</code>, <code>metpy</code> and <code>scipy</code>, on Python 3.8 or later.</p>
-
-    <div class="cta-banner" style="margin-top: 2.4rem;">
-      <h2>Installed? Start with the quickstart</h2>
-      <p>See NCToolkit's core features in action with a real sea-surface temperature dataset.</p>
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="quickstart.html">Read the quickstart</a>
-      </div>
-    </div>
-
   </div>
 </div>
 

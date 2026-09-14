@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Installing — NCToolkit</title>
-<meta name="description" content="How to install NCToolkit with conda, mamba or pip, plus the CDO/NCO system dependencies it needs and how to get publication-quality plots.">
+<title>Mathematical Operations — NCToolkit User Guide</title>
+<meta name="description" content="Creating new variables with assign, using mathematical functions and spatial statistics inside lambda functions, and simple arithmetic and comparisons in NCToolkit.">
 <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -56,11 +56,12 @@
   </div>
 </header>
 
+
 <div class="page-hero">
   <div class="container">
-    <div class="breadcrumb"><a href="index.html">Home</a> / Installing</div>
-    <h1>Installing NCToolkit</h1>
-    <p class="lead">NCToolkit requires a Linux or macOS system. The easiest way to get everything working &mdash; including its system dependencies &mdash; is conda or mamba.</p>
+    <div class="breadcrumb"><a href="index.html">Home</a> / <a href="guide.html">User Guide</a> / Mathematical operations</div>
+    <h1>Mathematical operations</h1>
+    <p class="lead">Create new variables with assign, use built-in math functions and spatial statistics inside lambda expressions, and do simple arithmetic directly on datasets.</p>
   </div>
 </div>
 
@@ -68,116 +69,85 @@
   <aside class="docs-toc">
     <div class="docs-toc-title">On this page</div>
     <ul>
-      <li><a href="#conda">Install with conda/mamba</a></li>
-      <li><a href="#pip">Install with pip</a></li>
-      <li><a href="#dev">Development version</a></li>
-      <li><a href="#system">System dependencies</a></li>
-      <li><a href="#plots">Better-looking plots</a></li>
-      <li><a href="#known-issues">Known issues</a></li>
+      <li><a href="#assign">Creating new variables</a></li>
+      <li><a href="#functions">Mathematical functions</a></li>
+      <li><a href="#spatial">Using spatial statistics</a></li>
+      <li><a href="#arithmetic">Simple arithmetic &amp; comparisons</a></li>
     </ul>
   </aside>
 
   <div class="docs-content">
 
+    <h2 id="assign">Creating new variables</h2>
+    <p>Variable creation is done with <code>assign</code>, which works in a similar way to the method available in pandas, using lambda functions evaluated per grid cell, per time step. Let's say we have a dataset with a variable <code>var</code> and want to add 10 to it, calling the new variable <code>new</code>:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.assign(new=<span class="tok-kw">lambda</span> x: x.var + <span class="tok-num">10</span>)</pre>
+    </div>
+    <p>The <code>x</code> after <code>lambda</code> represents the dataset; whatever follows the colon is the actual equation to evaluate, and <code>x.var</code> refers to <code>var</code> from the dataset. By default <code>assign</code> keeps the original variables &mdash; use <code>drop</code> to keep only the new one(s):</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.assign(new=<span class="tok-kw">lambda</span> x: x.var + <span class="tok-num">10</span>, drop=<span class="tok-kw">True</span>)</pre>
+    </div>
     <div class="callout warn">
       <div class="callout-title">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        Linux and macOS only
+        Write assign on a single line
       </div>
-      <p>NCToolkit will not run on Windows, because of system dependency limitations in its computational backend. Use WSL if you're on Windows.</p>
+      <p>Each call to <code>assign</code> currently needs to be written on one line &mdash; splitting the arguments across multiple lines will not parse correctly.</p>
     </div>
-
-    <h2 id="conda">Install with conda / mamba</h2>
-    <p>This is the recommended route: it installs NCToolkit and all of its system dependencies (CDO, NCO) in one go, and it just works out of the box.</p>
+    <p>Multiple variables can be created in one call &mdash; each can reference the ones created before it. Here, <code>var2</code> is <code>var1</code> plus 1, and <code>diff</code> (which should be 1 everywhere) is the difference between them:</p>
     <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>conda install -c conda-forge nctoolkit
-mamba install -c conda-forge nctoolkit</pre>
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.assign(var1=<span class="tok-kw">lambda</span> x: x.var + <span class="tok-num">1</span>, var2=<span class="tok-kw">lambda</span> x: x.var1 + <span class="tok-num">1</span>, diff=<span class="tok-kw">lambda</span> x: x.var2 - x.var1)</pre>
     </div>
-    <p>Conda can sometimes install an older version of NCToolkit than the latest release. Check the <a href="https://anaconda.org/conda-forge/nctoolkit" target="_blank" rel="noopener">conda-forge package page</a> for the current version, and pin a specific version if you need to:</p>
+
+    <h2 id="functions">Mathematical functions</h2>
+    <p>Standard mathematical functions, with the same names as their numpy equivalents, are available inside the lambda: <code>abs</code>, <code>floor</code>, <code>ceil</code>, <code>sqrt</code>, <code>exp</code>, <code>log10</code>, <code>sin</code>, <code>cos</code>, <code>tan</code>, <code>arcsin</code>, <code>arccos</code> and <code>arctan</code>.</p>
     <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>conda install -c conda-forge nctoolkit=1.3.2</pre>
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.assign(new=<span class="tok-kw">lambda</span> x: ceil(x.old))
+ds.assign(new=<span class="tok-kw">lambda</span> x: log10(x.old + <span class="tok-num">1</span>))</pre>
     </div>
 
-    <h2 id="pip">Install with pip</h2>
-    <p>NCToolkit is also on the <a href="https://pypi.org/project/nctoolkit/" target="_blank" rel="noopener">Python Package Index</a>. This installs the core dependencies only &mdash; you'll then need to install the <a href="#system">system dependencies</a> yourself.</p>
+    <h2 id="spatial">Using spatial statistics</h2>
+    <p><code>assign</code> carries out its calculations at each time step, and you can access spatial statistics for each time step while generating new variables: <code>spatial_mean</code>, <code>spatial_max</code>, <code>spatial_min</code>, <code>spatial_sum</code>, <code>vertical_mean</code>, <code>vertical_max</code>, <code>vertical_min</code>, <code>vertical_sum</code>, <code>zonal_mean</code>, <code>zonal_max</code>, <code>zonal_min</code> and <code>zonal_sum</code>. See the full list of helper functions on the <a href="api.html#assign-functions">API reference</a>.</p>
+    <p>For example, mapping how much warmer than the global mean each part of the ocean is:</p>
     <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>pip install nctoolkit</pre>
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.assign(temp_comp=<span class="tok-kw">lambda</span> x: x.temperature - spatial_mean(x.temperature), drop=<span class="tok-kw">True</span>)</pre>
     </div>
-    <p>For slightly better default plots, install with the <code>complete</code> extra, which pulls in optional plotting dependencies:</p>
+    <p>Comparisons work too &mdash; here, identifying cells more than 3 degrees warmer than the global average:</p>
     <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>pip install nctoolkit[complete]</pre>
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.assign(temp_comp=<span class="tok-kw">lambda</span> x: x.temperature > (spatial_mean(x.temperature) + <span class="tok-num">3</span>), drop=<span class="tok-kw">True</span>)</pre>
     </div>
 
-    <h2 id="dev">Development version</h2>
-    <p>To install the latest unreleased code straight from GitHub:</p>
+    <h2 id="arithmetic">Simple arithmetic &amp; comparisons</h2>
+    <p>For simple operations like adding or subtracting a constant, or combining two datasets, use <code>add</code>, <code>subtract</code>, <code>divide</code> and <code>multiply</code> &mdash; or the equivalent Python operators directly on datasets:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Operator</th><th>Method</th></tr></thead>
+        <tbody>
+          <tr><td><code>+</code></td><td><code>add</code></td></tr>
+          <tr><td><code>-</code></td><td><code>subtract</code></td></tr>
+          <tr><td><code>/</code></td><td><code>divide</code></td></tr>
+          <tr><td><code>*</code></td><td><code>multiply</code></td></tr>
+        </tbody>
+      </table>
+    </div>
     <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>pip install git+https://github.com/pmlmodelling/nctoolkit.git</pre>
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.add(<span class="tok-num">10</span>)          <span class="tok-com"># or: ds + 10</span>
+ds1.add(ds2)        <span class="tok-com"># or: ds1 + ds2</span></pre>
     </div>
-
-    <h2 id="system">System dependencies</h2>
-    <p>NCToolkit relies on two command-line tools to do its heavy lifting:</p>
-    <ul class="param-list">
-      <li>
-        <code class="param-name">CDO</code><span class="param-tag">Required</span>
-        <p><a href="https://code.mpimet.mpg.de/projects/cdo/wiki" target="_blank" rel="noopener">Climate Data Operators</a> is the computational backend for almost every NCToolkit method. NCToolkit will not work without it.</p>
-      </li>
-      <li>
-        <code class="param-name">NCO</code><span class="param-tag">Optional</span>
-        <p><a href="http://nco.sourceforge.net/" target="_blank" rel="noopener">NetCDF Operators</a> is used by a handful of methods that offer it as an alternative backend to CDO, via <a href="backends.html#nco">nco_command</a>.</p>
-      </li>
-    </ul>
-    <p>The easiest way to install either is with conda or mamba:</p>
+    <p>These methods require the datasets to be structured compatibly &mdash; each dimension must either match exactly, or one dataset must have a single value for that dimension (which is then applied to every matching step in the other). See <a href="adding.html">Simple arithmetic &amp; comparisons</a> for worked examples of subtracting a monthly or annual climatology from a longer time series.</p>
+    <p>Logical comparisons follow the same pattern &mdash; <code>compare</code>, or the Python operators directly:</p>
     <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>conda install -c conda-forge cdo
-conda install -c conda-forge nco</pre>
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.compare(<span class="tok-str">">0"</span>)      <span class="tok-com"># or: ds > 0</span>
+ds.compare(<span class="tok-str">"==0"</span>)     <span class="tok-com"># or: ds == 0</span></pre>
     </div>
-    <p>On Ubuntu, CDO is also available through apt:</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>sudo apt install cdo</pre>
-    </div>
-    <p>If you need to build CDO from source, bash installer scripts are available in the <a href="https://github.com/pmlmodelling/nctoolkit/tree/master/cdo_installers" target="_blank" rel="noopener"><code>cdo_installers</code></a> folder of the repository.</p>
-
-    <h2 id="plots">Getting better-looking plots</h2>
-    <p>If you installed the non-<code>complete</code> version from PyPI, install cartopy for nicer map plots. Cartopy has some extra system dependencies, so on conda/mamba installs specifically, prefer mamba &mdash; it resolves the environment far more reliably here than conda or pip:</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>mamba install -c conda-forge cartopy</pre>
-    </div>
-    <p>If you're not using mamba, see cartopy's own <a href="https://scitools.org.uk/cartopy/docs/latest/installing.html" target="_blank" rel="noopener">installation guide</a> for platform-specific notes.</p>
-
-    <h2 id="known-issues">Known issues</h2>
-    <div class="callout">
-      <div class="callout-title">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-        Pin geoviews and jupyter_bokeh if plots misbehave
-      </div>
-      <p>Recent dependency updates can cause issues with older NCToolkit installs. If coastlines disappear from plots, or plots stop rendering in Jupyter, pin these two packages:</p>
-      <div class="code-block">
-        <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-        <pre>conda install -c conda-forge geoviews=1.10.1
-conda install -c conda-forge jupyter_bokeh=3.0.7</pre>
-      </div>
-      <p>Fresh installs pin these automatically, so this should only affect environments installed some time ago.</p>
-    </div>
-
-    <h2>Python dependencies</h2>
-    <p>Installed automatically for you, whichever route you use: <code>numpy</code>, <code>pandas</code>, <code>xarray</code>, <code>netCDF4</code>, <code>ncplot</code>, <code>hvplot</code>, <code>holoviews</code>, <code>matplotlib</code>, <code>bokeh</code>, <code>panel</code>, <code>metpy</code> and <code>scipy</code>, on Python 3.8 or later.</p>
-
-    <div class="cta-banner" style="margin-top: 2.4rem;">
-      <h2>Installed? Start with the quickstart</h2>
-      <p>See NCToolkit's core features in action with a real sea-surface temperature dataset.</p>
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="quickstart.html">Read the quickstart</a>
-      </div>
-    </div>
-
   </div>
 </div>
 

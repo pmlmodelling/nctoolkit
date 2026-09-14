@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Installing — NCToolkit</title>
-<meta name="description" content="How to install NCToolkit with conda, mamba or pip, plus the CDO/NCO system dependencies it needs and how to get publication-quality plots.">
+<title>Simple Arithmetic &amp; Comparisons — NCToolkit User Guide</title>
+<meta name="description" content="Basic arithmetic and logical comparisons on netCDF datasets using standard Python operators, including subtracting climatologies of differing temporal resolution.">
 <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -56,11 +56,12 @@
   </div>
 </header>
 
+
 <div class="page-hero">
   <div class="container">
-    <div class="breadcrumb"><a href="index.html">Home</a> / Installing</div>
-    <h1>Installing NCToolkit</h1>
-    <p class="lead">NCToolkit requires a Linux or macOS system. The easiest way to get everything working &mdash; including its system dependencies &mdash; is conda or mamba.</p>
+    <div class="breadcrumb"><a href="index.html">Home</a> / <a href="guide.html">User Guide</a> / Simple arithmetic &amp; comparisons</div>
+    <h1>Simple arithmetic &amp; comparisons</h1>
+    <p class="lead">Basic arithmetic and logical comparisons can be carried out using the standard Python operators: +, -, *, /, &gt;, &lt;, &gt;=, &lt;=, == and !=.</p>
   </div>
 </div>
 
@@ -68,116 +69,85 @@
   <aside class="docs-toc">
     <div class="docs-toc-title">On this page</div>
     <ul>
-      <li><a href="#conda">Install with conda/mamba</a></li>
-      <li><a href="#pip">Install with pip</a></li>
-      <li><a href="#dev">Development version</a></li>
-      <li><a href="#system">System dependencies</a></li>
-      <li><a href="#plots">Better-looking plots</a></li>
-      <li><a href="#known-issues">Known issues</a></li>
+      <li><a href="#constants">Constants &amp; datasets</a></li>
+      <li><a href="#mismatched">Datasets of different resolution</a></li>
+      <li><a href="#table">Operator reference</a></li>
+      <li><a href="#comparisons">Comparisons</a></li>
     </ul>
   </aside>
 
   <div class="docs-content">
 
-    <div class="callout warn">
-      <div class="callout-title">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        Linux and macOS only
-      </div>
-      <p>NCToolkit will not run on Windows, because of system dependency limitations in its computational backend. Use WSL if you're on Windows.</p>
+    <h2 id="constants">Arithmetic with constants and datasets</h2>
+    <p>Illustrated using monthly sea surface temperature from 1850 to the present. The first time step is in Celsius &mdash; converting to Kelvin is as simple as adding a constant:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc"</span>)
+ds.subset(timestep=<span class="tok-num">0</span>)
+ds + <span class="tok-num">273.15</span></pre>
+    </div>
+    <p>The same works between two datasets. Here, working out how much warmer the 2010s were than the 1910s:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds_2010s = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc"</span>)
+ds_2010s.subset(years=range(<span class="tok-num">2010</span>, <span class="tok-num">2020</span>))
+ds_2010s.tmean()
+
+ds_1910s = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc"</span>)
+ds_1910s.subset(years=range(<span class="tok-num">1910</span>, <span class="tok-num">1920</span>))
+ds_1910s.tmean()
+
+ds_2010s - ds_1910s</pre>
     </div>
 
-    <h2 id="conda">Install with conda / mamba</h2>
-    <p>This is the recommended route: it installs NCToolkit and all of its system dependencies (CDO, NCO) in one go, and it just works out of the box.</p>
+    <h2 id="mismatched">Subtracting datasets of different resolution</h2>
+    <p>NCToolkit can figure out what it's subtracting from what, even when the two datasets have different temporal resolution. For example, to work out how much warmer or colder each month is than its long-term average, calculate the mean monthly climatology first:</p>
     <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>conda install -c conda-forge nctoolkit
-mamba install -c conda-forge nctoolkit</pre>
-    </div>
-    <p>Conda can sometimes install an older version of NCToolkit than the latest release. Check the <a href="https://anaconda.org/conda-forge/nctoolkit" target="_blank" rel="noopener">conda-forge package page</a> for the current version, and pin a specific version if you need to:</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>conda install -c conda-forge nctoolkit=1.3.2</pre>
-    </div>
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc"</span>)
 
-    <h2 id="pip">Install with pip</h2>
-    <p>NCToolkit is also on the <a href="https://pypi.org/project/nctoolkit/" target="_blank" rel="noopener">Python Package Index</a>. This installs the core dependencies only &mdash; you'll then need to install the <a href="#system">system dependencies</a> yourself.</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>pip install nctoolkit</pre>
-    </div>
-    <p>For slightly better default plots, install with the <code>complete</code> extra, which pulls in optional plotting dependencies:</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>pip install nctoolkit[complete]</pre>
-    </div>
+climatology = ds.copy()
+climatology.tmean(<span class="tok-str">"month"</span>)   <span class="tok-com"># mean monthly climatology, 12 time steps</span>
 
-    <h2 id="dev">Development version</h2>
-    <p>To install the latest unreleased code straight from GitHub:</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>pip install git+https://github.com/pmlmodelling/nctoolkit.git</pre>
+ds - climatology              <span class="tok-com"># NCToolkit reports it's subtracting a monthly time series</span>
+ds.spatial_mean()</pre>
     </div>
+    <p>NCToolkit will tell you which alignment it inferred &mdash; monthly vs. annual data on the right-hand side is handled automatically. The datasets must otherwise be consistent: subtracting an annual mean with a missing year, for example, from a monthly series that includes it, will raise an error rather than guess.</p>
 
-    <h2 id="system">System dependencies</h2>
-    <p>NCToolkit relies on two command-line tools to do its heavy lifting:</p>
-    <ul class="param-list">
-      <li>
-        <code class="param-name">CDO</code><span class="param-tag">Required</span>
-        <p><a href="https://code.mpimet.mpg.de/projects/cdo/wiki" target="_blank" rel="noopener">Climate Data Operators</a> is the computational backend for almost every NCToolkit method. NCToolkit will not work without it.</p>
-      </li>
-      <li>
-        <code class="param-name">NCO</code><span class="param-tag">Optional</span>
-        <p><a href="http://nco.sourceforge.net/" target="_blank" rel="noopener">NetCDF Operators</a> is used by a handful of methods that offer it as an alternative backend to CDO, via <a href="backends.html#nco">nco_command</a>.</p>
-      </li>
-    </ul>
-    <p>The easiest way to install either is with conda or mamba:</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>conda install -c conda-forge cdo
-conda install -c conda-forge nco</pre>
+    <h2 id="table">Operator reference</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Succinct</th><th>Verbose</th></tr></thead>
+        <tbody>
+          <tr><td><code>+</code></td><td><code>add</code></td></tr>
+          <tr><td><code>-</code></td><td><code>subtract</code></td></tr>
+          <tr><td><code>/</code></td><td><code>divide</code></td></tr>
+          <tr><td><code>*</code></td><td><code>multiply</code></td></tr>
+        </tbody>
+      </table>
     </div>
-    <p>On Ubuntu, CDO is also available through apt:</p>
+    <p>So the following are equivalent:</p>
     <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>sudo apt install cdo</pre>
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds + <span class="tok-num">273.15</span>
+ds.add(<span class="tok-num">273.15</span>)</pre>
     </div>
-    <p>If you need to build CDO from source, bash installer scripts are available in the <a href="https://github.com/pmlmodelling/nctoolkit/tree/master/cdo_installers" target="_blank" rel="noopener"><code>cdo_installers</code></a> folder of the repository.</p>
-
-    <h2 id="plots">Getting better-looking plots</h2>
-    <p>If you installed the non-<code>complete</code> version from PyPI, install cartopy for nicer map plots. Cartopy has some extra system dependencies, so on conda/mamba installs specifically, prefer mamba &mdash; it resolves the environment far more reliably here than conda or pip:</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-      <pre>mamba install -c conda-forge cartopy</pre>
-    </div>
-    <p>If you're not using mamba, see cartopy's own <a href="https://scitools.org.uk/cartopy/docs/latest/installing.html" target="_blank" rel="noopener">installation guide</a> for platform-specific notes.</p>
-
-    <h2 id="known-issues">Known issues</h2>
     <div class="callout">
       <div class="callout-title">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-        Pin geoviews and jupyter_bokeh if plots misbehave
+        Right-hand side must be monthly or annual
       </div>
-      <p>Recent dependency updates can cause issues with older NCToolkit installs. If coastlines disappear from plots, or plots stop rendering in Jupyter, pin these two packages:</p>
-      <div class="code-block">
-        <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
-        <pre>conda install -c conda-forge geoviews=1.10.1
-conda install -c conda-forge jupyter_bokeh=3.0.7</pre>
-      </div>
-      <p>Fresh installs pin these automatically, so this should only affect environments installed some time ago.</p>
+      <p>At present, <code>+</code>, <code>-</code>, <code>/</code> and <code>*</code> can only automatically handle monthly or annual data on the right-hand side of the operator. Support for subtracting a daily climatology from a multi-year daily series is planned.</p>
     </div>
 
-    <h2>Python dependencies</h2>
-    <p>Installed automatically for you, whichever route you use: <code>numpy</code>, <code>pandas</code>, <code>xarray</code>, <code>netCDF4</code>, <code>ncplot</code>, <code>hvplot</code>, <code>holoviews</code>, <code>matplotlib</code>, <code>bokeh</code>, <code>panel</code>, <code>metpy</code> and <code>scipy</code>, on Python 3.8 or later.</p>
-
-    <div class="cta-banner" style="margin-top: 2.4rem;">
-      <h2>Installed? Start with the quickstart</h2>
-      <p>See NCToolkit's core features in action with a real sea-surface temperature dataset.</p>
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="quickstart.html">Read the quickstart</a>
-      </div>
+    <h2 id="comparisons">Comparisons</h2>
+    <p>Logical comparisons follow the same pattern, with the dataset on the left and a constant or compatible dataset on the right: <code>&gt;</code>, <code>&lt;</code>, <code>==</code>, <code>&gt;=</code>, <code>&lt;=</code>, <code>!=</code>.</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds > <span class="tok-num">10</span>                 <span class="tok-com"># where temperature exceeds 10C</span>
+ds_2010s > ds_1910s      <span class="tok-com"># where the 2010s were warmer than the 1910s</span></pre>
     </div>
-
+    <p>Combined with <code>spatial_mean</code>, this is an easy way to calculate the fraction of the ocean meeting a condition &mdash; for the warming example above, over 95% of the world's oceans were warmer in the 2010s than the 1910s.</p>
   </div>
 </div>
 

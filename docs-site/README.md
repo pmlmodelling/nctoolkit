@@ -13,36 +13,59 @@ for a consistent look across PML's Marine Systems Modelling group tools.
 index.html            Landing page
 installing.html         \
 quickstart.html           \
-guide-basics.html           \
-guide-analysis.html           Documentation, mirrors docs/source/*.rst and
-guide-advanced.html            *.ipynb in the nctoolkit package, redesigned
-api.html                      /
-data-formats.html            /
-backends.html               /
-qa.html                    /
-about.html                /
+guide.html                  Card-grid index for the User Guide (17 topics)
+datasets.html                \
+exporting.html                 \
+visualization.html               \
+subsetting.html                    \
+interpolation.html                   \
+temporals.html                        User Guide subpages - one per topic,
+ensembles.html                         each mirroring one docs/source/*.rst
+matchpoint.html                         or *.ipynb file 1:1. Linked from
+variables.html                          guide.html's card grid, in this
+verticals.html                          order (matching the original
+adding.html                             Sphinx toctree) - see "Updating
+parallel.html                           content" below for the file mapping
+examples.html                          /
+hacks.html                           /
+globals.html                       /
+backends.html                    /   (also linked from the header's Data
+                                /      dropdown - it predates the User Guide)
+troubleshoot.html             /
+api.html                     |
+data-formats.html            |
+qa.html                      |
+about.html                   |
 news.html                 Release highlights; full history lives on GitHub
 version-history.html      Links to archive/vX.Y.Z/ snapshots - see "Archived
                            versions" below
 assets/
-  css/style.css      Design system (design tokens, components)
+  css/style.css      Design system (design tokens, components) - includes
+                      .guide-grid/.guide-card for the User Guide index
   js/main.js         Nav + dropdowns, copy-to-clipboard, FAQ accordion,
                       table search/filter, scrollspy
   img/               Wordmark (NC in ink, Toolkit in teal), PML logo, favicon
   plots/             Interactive HoloViews/Bokeh plot exports, embedded via
-                      <iframe> (.plot-embed in style.css) - see "Interactive
-                      plots" below
-archive/             Per-release snapshots of the twelve pages above (minus
+                      static PNG + "open interactive" link (.plot-embed in
+                      style.css) - see "Interactive plots" below
+archive/             Per-release snapshots of the pages above (minus
                       version-history.html itself) + assets/, written by
                       .github/workflows/docs-archive.yml. Don't hand-edit it.
 ```
 
+The header nav's "Guide" item is a single link to `guide.html`, not a
+dropdown — with 17 subpages a dropdown menu doesn't scale, so discovery goes
+through the card grid instead (and each subpage's breadcrumb reads
+`Home / User Guide / <page>`, linking back to `guide.html`). Only "Data" and
+"About" still use the `nav-dropdown` component (2-3 items each, where a
+dropdown still works fine).
+
 ## Interactive plots
 
-`quickstart.html`, and the interpolation/visualization sections of
-`guide-analysis.html` and `guide-advanced.html`, illustrate NCToolkit's
-output using the same plots the Sphinx build injects into the Read the Docs
-pages via `.. raw:: html :file: ...` (e.g. `docs/source/intro_plot1.html`,
+`quickstart.html`, `interpolation.html`, `verticals.html` and
+`visualization.html` illustrate NCToolkit's output using the same plots the
+Sphinx build injects into the Read the Docs pages via
+`.. raw:: html :file: ...` (e.g. `docs/source/intro_plot1.html`,
 `interpolate_plot3.html`, `visualization_plot2.html`). Those originals are
 full, standalone HTML documents (up to ~4.6MB each) that load
 Bokeh/Panel/GeoViews from CDN and render a chart client-side from embedded
@@ -85,10 +108,10 @@ filenames, so existing references keep working) and regenerate the matching
 
 Unlike OceanVal's docs site, this one *does* have an `index.html` landing
 page — NCToolkit is a general-purpose library with many more doc pages than
-OceanVal, so a proper landing page and grouped dropdown navigation (under
-"Guide", "Data" and "About") make sense here. Don't remove it by analogy
-with OceanVal; that omission was specific to OceanVal's report-output pages,
-not something to copy blindly.
+OceanVal, so a proper landing page (and the User Guide's card-grid index,
+`guide.html`) make sense here. Don't remove it by analogy with OceanVal;
+that omission was specific to OceanVal's report-output pages, not something
+to copy blindly.
 
 ## Previewing locally
 
@@ -160,8 +183,8 @@ exists (e.g. the workflow re-ran for some reason), it's left alone rather
 than overwritten.
 
 `version-history.html` itself is a normal hand-authored page (same header,
-nav, and footer as the rest of the site — keep it in sync with the other
-eleven if you change shared markup) with one auto-generated `<ul>` in the
+nav, and footer as the rest of the site — keep it in sync with the other 26
+pages if you change shared markup) with one auto-generated `<ul>` in the
 middle, plus a small "no archived snapshots yet" message that
 `assets/js/main.js` hides automatically once the list has entries. Don't
 hand-edit between the markers; everything else on the page is yours to edit
@@ -178,21 +201,47 @@ Page content is authored by hand to match the current nctoolkit docs
 no templating engine, so if the underlying package docs change, update the
 corresponding `.html` file(s) directly. Shared header/nav/footer markup is
 duplicated across pages (no static-site generator), so a nav or footer change
-should be applied to all twelve `.html` files (eleven content pages plus
-`version-history.html`).
+should be applied to all 27 `.html` files.
+
+The User Guide (`guide.html` plus its 17 subpages) mirrors the "User Guide"
+section of `docs/source/index.rst`'s toctree 1:1, same order, one page per
+topic — this was a deliberate rewrite from an earlier three-page
+`guide-basics.html` / `guide-analysis.html` / `guide-advanced.html` layout
+that consolidated too much per page relative to the original Read the Docs
+site. Don't re-consolidate them without being asked; the whole point was
+finer granularity, matching upstream page-for-page. If a new topic is added
+to that toctree, add both a new subpage (matching the existing page shell:
+copy an existing subpage's `<head>`, header, `page-hero`, `docs-layout`, and
+footer verbatim) and a new card to `guide.html`'s `.guide-grid` (pick an
+`icon()` entry from the small set already defined inline in that file, or
+add a new one following the same Feather-icon-style inline SVG paths).
 
 Rough mapping from Sphinx source to site pages:
 
-| `docs/source/*.rst` / `*.ipynb`                                              | `docs-site/*.html`   |
-| ------------------------------------------------------------------------------ | --------------------- |
-| `installing.rst`                                                               | `installing.html`     |
-| `introduction.rst`                                                             | `quickstart.html`     |
-| `datasets.ipynb`, `exporting.rst`, `subsetting.rst`, `globals.rst`             | `guide-basics.html`   |
-| `temporals.rst`, `verticals.ipynb`, `interpolation.rst`, `ensembles.rst`, `adding.ipynb`, `matchpoint.ipynb` | `guide-analysis.html` |
-| `plotting.ipynb`/`visualization.rst`, `parallel.rst`, `hacks.rst`, `troubleshoot.rst` | `guide-advanced.html` |
-| `api.rst`                                                                       | `api.html`             |
-| `supported.rst`                                                                 | `data-formats.html`   |
-| `backends.rst`                                                                  | `backends.html`        |
-| `troubleshoot.rst`, `hacks.rst` (as FAQs)                                       | `qa.html`               |
-| `info.rst`, `citation.rst`, `contributing.rst`                                 | `about.html`           |
-| `news.rst`                                                                      | `news.html`             |
+| `docs/source/*.rst` / `*.ipynb`                                    | `docs-site/*.html`     |
+| -------------------------------------------------------------------- | ------------------------ |
+| `installing.rst`                                                     | `installing.html`        |
+| `introduction.rst`                                                   | `quickstart.html`        |
+| `datasets.ipynb`                                                     | `datasets.html`          |
+| `exporting.rst`                                                      | `exporting.html`         |
+| `visualization.rst`                                                  | `visualization.html`     |
+| `subsetting.rst`                                                     | `subsetting.html`        |
+| `interpolation.rst`                                                  | `interpolation.html`     |
+| `temporals.rst`                                                      | `temporals.html`         |
+| `ensembles.rst`                                                      | `ensembles.html`         |
+| `matchpoint.ipynb`                                                   | `matchpoint.html`        |
+| `variables.rst`                                                      | `variables.html`         |
+| `verticals.ipynb`                                                    | `verticals.html`         |
+| `adding.ipynb`                                                       | `adding.html`            |
+| `parallel.rst`                                                       | `parallel.html`          |
+| `examples.ipynb`                                                     | `examples.html`          |
+| `hacks.rst`                                                          | `hacks.html`             |
+| `globals.rst`                                                        | `globals.html`           |
+| `backends.rst`                                                       | `backends.html`          |
+| `troubleshoot.rst`                                                   | `troubleshoot.html`      |
+| `api.rst`                                                            | `api.html`               |
+| `supported.rst`                                                      | `data-formats.html`      |
+| `troubleshoot.rst`, `hacks.rst` (as FAQs)                            | `qa.html`                 |
+| `info.rst`, `citation.rst`, `contributing.rst`                       | `about.html`              |
+| `news.rst`                                                           | `news.html`                |
+| (n/a — this site's own thing)                                       | `guide.html`                |

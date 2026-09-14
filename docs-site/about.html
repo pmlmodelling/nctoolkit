@@ -22,16 +22,7 @@
     <nav class="nav-links" id="nav-links">
       <a href="installing.html" data-page="installing.html">Install</a>
       <a href="quickstart.html" data-page="quickstart.html">Quickstart</a>
-      <div class="nav-dropdown">
-        <button class="nav-dropdown-toggle" aria-expanded="false">Guide
-          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-        </button>
-        <div class="nav-dropdown-menu">
-          <a href="guide-basics.html" data-page="guide-basics.html">Working with data<small>Opening, subsetting, exporting, settings</small></a>
-          <a href="guide-analysis.html" data-page="guide-analysis.html">Analysis &amp; statistics<small>Temporal, vertical, ensembles, regridding, math</small></a>
-          <a href="guide-advanced.html" data-page="guide-advanced.html">Visualization &amp; tips<small>Plotting, parallel processing, hacks, troubleshooting</small></a>
-        </div>
-      </div>
+      <a href="guide.html" data-page="guide.html">Guide</a>
       <a href="api.html" data-page="api.html">API</a>
       <div class="nav-dropdown">
         <button class="nav-dropdown-toggle" aria-expanded="false">Data
@@ -121,7 +112,7 @@
     <p>All contributions are understood to be under the same license as the project &mdash; see <a href="https://choosealicense.com/licenses/gpl-3.0/" target="_blank" rel="noopener">GNU GPLv3</a>.</p>
 
     <h3>A note on NCToolkit methods</h3>
-    <p>Dataset methods generally either modify a dataset (updating its temporary files) or analyze it (e.g. plotting). Methods should stay as lazy as possible, so NCToolkit can chain CDO commands together and avoid unnecessary I/O &mdash; see <a href="guide-basics.html#lazy">Lazy evaluation</a>. Where possible, new methods should call <a href="backends.html#cdo"><code>cdo_command</code></a> or reuse existing NCToolkit methods rather than reimplementing logic from scratch. A good starting example is <code>fill_na</code>, which is a thin wrapper around a single CDO call.</p>
+    <p>Dataset methods generally either modify a dataset (updating its temporary files) or analyze it (e.g. plotting). Methods should stay as lazy as possible, so NCToolkit can chain CDO commands together and avoid unnecessary I/O &mdash; see <a href="datasets.html#lazy">Lazy evaluation</a>. Where possible, new methods should call <a href="backends.html#cdo"><code>cdo_command</code></a> or reuse existing NCToolkit methods rather than reimplementing logic from scratch. A good starting example is <code>fill_na</code>, which is a thin wrapper around a single CDO call.</p>
 
     <h2 id="support">Bugs &amp; support</h2>
     <p>If you hit a bug or an issue with the package, raise it on <a href="https://github.com/pmlmodelling/nctoolkit/issues" target="_blank" rel="noopener">GitHub</a>, start a <a href="https://github.com/pmlmodelling/nctoolkit/discussions" target="_blank" rel="noopener">discussion</a>, or contact the package's creator directly at <a href="mailto:rwi@pml.ac.uk">rwi@pml.ac.uk</a>.</p>
@@ -152,9 +143,8 @@
       <ul>
         <li><a href="installing.html">Installing</a></li>
         <li><a href="quickstart.html">Quickstart</a></li>
-        <li><a href="guide-basics.html">Working with data</a></li>
-        <li><a href="guide-analysis.html">Analysis &amp; statistics</a></li>
-        <li><a href="guide-advanced.html">Visualization &amp; tips</a></li>
+        <li><a href="guide.html">User Guide</a></li>
+        <li><a href="api.html">API reference</a></li>
       </ul>
     </div>
     <div class="footer-col">

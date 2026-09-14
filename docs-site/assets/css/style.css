@@ -1020,6 +1020,67 @@ tbody tr.hidden-row { display: none; }
 .cta-banner p { color: rgba(255,255,255,0.78); max-width: 52ch; margin: 0 auto 1.8rem; position: relative; }
 .cta-banner .hero-actions { justify-content: center; position: relative; }
 
+/* ---------------------------- guide index cards ------------------------- */
+
+.guide-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.4rem;
+}
+.guide-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 1.6rem;
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  text-decoration: none !important;
+}
+.guide-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--teal-200);
+}
+.guide-card__top { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.8rem; }
+.guide-card__icon {
+  width: 42px; height: 42px;
+  border-radius: 11px;
+  background: var(--teal-50);
+  color: var(--teal-600);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.guide-card__icon svg { width: 21px; height: 21px; }
+.guide-card__num {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--muted-light);
+  letter-spacing: 0.04em;
+}
+.guide-card h3 { margin: 0; font-size: 1.05rem; color: var(--ink); }
+.guide-card p { margin: 0; font-size: 0.9rem; color: var(--muted); flex: 1; }
+.guide-card__go {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--teal-700);
+}
+.guide-card__go svg { width: 15px; height: 15px; transition: transform .15s ease; }
+.guide-card:hover .guide-card__go svg { transform: translateX(3px); }
+
+@media (max-width: 980px) {
+  .guide-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 620px) {
+  .guide-grid { grid-template-columns: 1fr; }
+}
+
 /* ---------------------------- footer ---------------------------- */
 
 .site-footer {

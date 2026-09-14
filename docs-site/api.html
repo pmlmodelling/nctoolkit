@@ -22,16 +22,7 @@
     <nav class="nav-links" id="nav-links">
       <a href="installing.html" data-page="installing.html">Install</a>
       <a href="quickstart.html" data-page="quickstart.html">Quickstart</a>
-      <div class="nav-dropdown">
-        <button class="nav-dropdown-toggle" aria-expanded="false">Guide
-          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-        </button>
-        <div class="nav-dropdown-menu">
-          <a href="guide-basics.html" data-page="guide-basics.html">Working with data<small>Opening, subsetting, exporting, settings</small></a>
-          <a href="guide-analysis.html" data-page="guide-analysis.html">Analysis &amp; statistics<small>Temporal, vertical, ensembles, regridding, math</small></a>
-          <a href="guide-advanced.html" data-page="guide-advanced.html">Visualization &amp; tips<small>Plotting, parallel processing, hacks, troubleshooting</small></a>
-        </div>
-      </div>
+      <a href="guide.html" data-page="guide.html">Guide</a>
       <a href="api.html" data-page="api.html">API</a>
       <div class="nav-dropdown">
         <button class="nav-dropdown-toggle" aria-expanded="false">Data
@@ -100,7 +91,7 @@
 
     <h2 id="options">Session options</h2>
     <div class="table-wrap"><table><tbody>
-      <tr><td><code>options(...)</code></td><td>Set global session settings &mdash; <code>cores</code>, <code>temp_dir</code>, <code>progress</code>, <code>lazy</code>, <code>parallel</code>. See <a href="guide-basics.html#settings">Global settings</a>.</td></tr>
+      <tr><td><code>options(...)</code></td><td>Set global session settings &mdash; <code>cores</code>, <code>temp_dir</code>, <code>progress</code>, <code>lazy</code>, <code>parallel</code>. See <a href="globals.html">Global settings</a>.</td></tr>
     </tbody></table></div>
 
     <h2 id="opening">Opening &amp; copying data</h2>
@@ -130,7 +121,7 @@
 
     <h2 id="subsetting">Subsetting &amp; time-based methods</h2>
     <div class="table-wrap"><table><tbody>
-      <tr><td><code>DataSet.subset(...)</code></td><td>Select variables, years, months, seasons, timesteps or a lon/lat box. See <a href="guide-basics.html#subsetting">Subsetting data</a>.</td></tr>
+      <tr><td><code>DataSet.subset(...)</code></td><td>Select variables, years, months, seasons, timesteps or a lon/lat box. See <a href="subsetting.html">Subsetting data</a>.</td></tr>
       <tr><td><code>DataSet.crop(...)</code></td><td>Geographic subsetting to a lon/lat box.</td></tr>
       <tr><td><code>DataSet.drop(...)</code></td><td>Drop specific times, e.g. leap days.</td></tr>
       <tr><td><code>DataSet.set_date(...)</code></td><td>Set/override the start date of a dataset.</td></tr>
@@ -139,7 +130,7 @@
     </tbody></table></div>
 
     <h2 id="statistics">Statistical methods</h2>
-    <p>Temporal statistics (prefixed <code>t</code>), each accepting an optional <code>over</code> grouping of <code>"day"</code>/<code>"month"</code>/<code>"year"</code>/<code>"season"</code> &mdash; see <a href="guide-analysis.html#temporal">Temporal statistics</a>:</p>
+    <p>Temporal statistics (prefixed <code>t</code>), each accepting an optional <code>over</code> grouping of <code>"day"</code>/<code>"month"</code>/<code>"year"</code>/<code>"season"</code> &mdash; see <a href="temporals.html">Temporal statistics</a>:</p>
     <div class="table-wrap"><table><tbody>
       <tr><td><code>DataSet.tmean / tmin / tmax / tmedian / tsum / trange / tstdev / tvar / tpercentile / tcumsum</code></td><td>Mean, min, max, median, sum, range, standard deviation, variance, percentile, or cumulative sum over time.</td></tr>
       <tr><td><code>DataSet.rolling_mean / rolling_min / rolling_max / rolling_sum / rolling_range / rolling_stdev / rolling_var</code></td><td>The same statistics over a moving window of time steps.</td></tr>
@@ -178,13 +169,13 @@
 
     <h2 id="matchpoint">Point matchups &amp; ecological methods</h2>
     <div class="table-wrap"><table><tbody>
-      <tr><td><code>DataSet.match_points(df, variables=None, tmean=False, top=False, nan=None)</code></td><td>Match gridded data to a dataframe of point observations (<code>lon</code>/<code>lat</code>/<code>depth</code>/<code>year</code>/<code>month</code>/<code>day</code>). See <a href="guide-analysis.html#matchpoint">Matchups with point data</a>.</td></tr>
+      <tr><td><code>DataSet.match_points(df, variables=None, tmean=False, top=False, nan=None)</code></td><td>Match gridded data to a dataframe of point observations (<code>lon</code>/<code>lat</code>/<code>depth</code>/<code>year</code>/<code>month</code>/<code>day</code>). See <a href="matchpoint.html">Matchups with point data</a>.</td></tr>
       <tr><td><code>DataSet.phenology(...)</code></td><td>Calculate phenological metrics (e.g. bloom timing) from a time series.</td></tr>
     </tbody></table></div>
 
     <h2 id="ensembles">Ensembles &amp; merging</h2>
     <div class="table-wrap"><table><tbody>
-      <tr><td><code>merge(datasets, ...)</code> / <code>DataSet.merge("time"|"variable")</code></td><td>Combine multiple files by matching time steps or by stacking variables. See <a href="guide-analysis.html#ensembles">Ensembles &amp; multi-file datasets</a>.</td></tr>
+      <tr><td><code>merge(datasets, ...)</code> / <code>DataSet.merge("time"|"variable")</code></td><td>Combine multiple files by matching time steps or by stacking variables. See <a href="ensembles.html">Ensembles &amp; multi-file datasets</a>.</td></tr>
       <tr><td><code>DataSet.split(...)</code></td><td>Split a dataset back out into separate files.</td></tr>
       <tr><td><code>DataSet.append(...) / remove(...)</code></td><td>Add or remove member files from a multi-file dataset.</td></tr>
       <tr><td><code>DataSet.ensemble_mean / ensemble_min / ensemble_max / ensemble_sum / ensemble_range / ensemble_stdev / ensemble_var / ensemble_percentile</code></td><td>Statistic calculated across ensemble members, e.g. across climate models.</td></tr>
@@ -200,7 +191,7 @@
     </tbody></table></div>
 
     <h2 id="assign-functions">Functions available inside <code>assign()</code></h2>
-    <p>These can be used inside the lambda functions passed to <a href="guide-analysis.html#math"><code>assign()</code></a>:</p>
+    <p>These can be used inside the lambda functions passed to <a href="variables.html"><code>assign()</code></a>:</p>
     <div class="table-wrap"><table>
       <thead><tr><th>Function</th><th>Description</th><th>Example</th></tr></thead>
       <tbody>
@@ -221,7 +212,7 @@
 
     <h2 id="variables">Variable &amp; attribute editing</h2>
     <div class="table-wrap"><table><tbody>
-      <tr><td><code>DataSet.assign(...)</code></td><td>Create new variables from lambda functions, pandas-style. See <a href="guide-analysis.html#math">Mathematical operations</a>.</td></tr>
+      <tr><td><code>DataSet.assign(...)</code></td><td>Create new variables from lambda functions, pandas-style. See <a href="variables.html">Mathematical operations</a>.</td></tr>
       <tr><td><code>DataSet.rename({old: new})</code></td><td>Rename one or more variables.</td></tr>
       <tr><td><code>DataSet.as_missing(...) / missing_as(...) / set_fill(...)</code></td><td>Set values to missing, replace missing values, or change the netCDF fill value.</td></tr>
       <tr><td><code>DataSet.set_longnames(...) / set_units(...)</code></td><td>Edit a variable's <code>long_name</code> or <code>units</code> netCDF attribute.</td></tr>
@@ -230,7 +221,7 @@
 
     <h2 id="visualization">Plotting</h2>
     <div class="table-wrap"><table><tbody>
-      <tr><td><code>DataSet.plot(...)</code></td><td>Automatic interactive plot &mdash; map, time series, or heatmap depending on the data's shape. See <a href="guide-advanced.html#visualization">Visualization</a>.</td></tr>
+      <tr><td><code>DataSet.plot(...)</code></td><td>Automatic interactive plot &mdash; map, time series, or heatmap depending on the data's shape. See <a href="visualization.html">Visualization</a>.</td></tr>
       <tr><td><code>DataSet.pub_plot(...)</code></td><td>Static, publication-quality plot for regular lon/lat grids.</td></tr>
     </tbody></table></div>
 
@@ -245,7 +236,7 @@
 
     <h2 id="evaluation">Evaluation &amp; cleanup</h2>
     <div class="table-wrap"><table><tbody>
-      <tr><td><code>DataSet.run()</code></td><td>Force evaluation of any pending lazy operations. See <a href="guide-basics.html#lazy">Lazy evaluation</a>.</td></tr>
+      <tr><td><code>DataSet.run()</code></td><td>Force evaluation of any pending lazy operations. See <a href="datasets.html#lazy">Lazy evaluation</a>.</td></tr>
       <tr><td><code>cleanup()</code></td><td>Remove NCToolkit's own temporary files from the current session.</td></tr>
       <tr><td><code>deep_clean()</code></td><td>Remove all NCToolkit temporary files, including from other sessions.</td></tr>
       <tr><td><code>DataSet.reset()</code></td><td>Reset a dataset back to its originally opened state.</td></tr>
@@ -253,7 +244,7 @@
 
     <h2 id="misc">Miscellaneous</h2>
     <div class="table-wrap"><table><tbody>
-      <tr><td><code>DataSet.check()</code></td><td>Run general sanity checks: integer types, integer time axis, CF-compliance, grid consistency. See <a href="guide-advanced.html#troubleshooting">Troubleshooting</a>.</td></tr>
+      <tr><td><code>DataSet.check()</code></td><td>Run general sanity checks: integer types, integer time axis, CF-compliance, grid consistency. See <a href="troubleshoot.html">Troubleshooting</a>.</td></tr>
       <tr><td><code>DataSet.is_corrupt()</code></td><td>Check whether the source file(s) are corrupt.</td></tr>
       <tr><td><code>DataSet.assign_coords(lon_name, lat_name)</code></td><td>Tell NCToolkit which variables to treat as longitude/latitude coordinates.</td></tr>
       <tr><td><code>DataSet.set_precision(dtype)</code></td><td>Change the numerical precision used for calculations, e.g. <code>"F64"</code>.</td></tr>
@@ -295,9 +286,8 @@
       <ul>
         <li><a href="installing.html">Installing</a></li>
         <li><a href="quickstart.html">Quickstart</a></li>
-        <li><a href="guide-basics.html">Working with data</a></li>
-        <li><a href="guide-analysis.html">Analysis &amp; statistics</a></li>
-        <li><a href="guide-advanced.html">Visualization &amp; tips</a></li>
+        <li><a href="guide.html">User Guide</a></li>
+        <li><a href="api.html">API reference</a></li>
       </ul>
     </div>
     <div class="footer-col">
