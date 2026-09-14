@@ -72,25 +72,6 @@
 
     <p>Illustrated below using depth-resolved ocean temperature from <a href="https://www.ncei.noaa.gov/products/world-ocean-atlas" target="_blank" rel="noopener">NOAA's World Ocean Atlas</a> for January, down to 1500 metres across 57 vertical levels.</p>
 
-    <p>All vertical methods at a glance:</p>
-    <div class="table-wrap"><table>
-      <thead><tr><th>Method</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td><a href="api.html#top"><code>ds.top()</code></a></td><td>Extract the top/surface level.</td></tr>
-        <tr><td><a href="api.html#bottom"><code>ds.bottom()</code></a></td><td>Extract the bottom (deepest valid) level.</td></tr>
-        <tr><td><a href="api.html#vertical_interp"><code>ds.vertical_interp(levels=[...], fixed=True)</code></a></td><td>Interpolate to specific target vertical levels.</td></tr>
-        <tr><td><a href="api.html#vertical_mean"><code>ds.vertical_mean(fixed=True)</code></a></td><td>Depth-averaged mean, accounting for cell thickness where available.</td></tr>
-        <tr><td><a href="api.html#vertical_min"><code>ds.vertical_min()</code></a></td><td>Vertical minimum at each grid cell and time step.</td></tr>
-        <tr><td><a href="api.html#vertical_max"><code>ds.vertical_max()</code></a></td><td>Vertical maximum at each grid cell and time step.</td></tr>
-        <tr><td><a href="api.html#vertical_range"><code>ds.vertical_range()</code></a></td><td>Vertical range (max &minus; min) at each grid cell and time step.</td></tr>
-        <tr><td><a href="api.html#vertical_sum"><code>ds.vertical_sum()</code></a></td><td>Vertical sum at each grid cell and time step.</td></tr>
-        <tr><td><a href="api.html#vertical_integration"><code>ds.vertical_integration(fixed=True)</code></a></td><td>Vertically integrated total, accounting for cell thickness.</td></tr>
-        <tr><td><a href="api.html#vertical_cumsum"><code>ds.vertical_cumsum()</code></a></td><td>Cumulative sum with depth/height.</td></tr>
-        <tr><td><a href="api.html#invert_levels"><code>ds.invert_levels()</code></a></td><td>Reverse the order of the vertical levels.</td></tr>
-        <tr><td><a href="api.html#bottom_mask"><code>ds.bottom_mask()</code></a></td><td>Mask identifying the deepest valid (non-missing) cell &mdash; e.g. the seabed.</td></tr>
-      </tbody>
-    </table></div>
-
     <h2 id="stats">Vertical statistics</h2>
     <p>Vertical means account for cell thickness where it's available &mdash; you must specify <code>fixed</code>, telling NCToolkit whether the vertical levels are consistent across space:</p>
     <div class="code-block">
@@ -174,6 +155,25 @@ ds_bottom.bottom()    <span class="tok-com"># select the sea-floor</span></pre>
     <h2 id="more">Additional vertical methods</h2>
     <p>Other vertical methods available: <a href="api.html#vertical_range"><code>vertical_range</code></a>, <a href="api.html#vertical_sum"><code>vertical_sum</code></a>, <a href="api.html#vertical_cumsum"><code>vertical_cumsum</code></a>, <a href="api.html#invert_levels"><code>invert_levels</code></a>, and <a href="api.html#bottom_mask"><code>bottom_mask</code></a>.</p>
     <p>For ocean data, <a href="api.html#vertical_integration"><code>vertical_integration</code></a> calculates an integrated water-column total, accounting for the thickness of each vertical cell.</p>
+
+    <p>All vertical methods at a glance:</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Method</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><a href="api.html#top"><code>ds.top()</code></a></td><td>Extract the top/surface level.</td></tr>
+        <tr><td><a href="api.html#bottom"><code>ds.bottom()</code></a></td><td>Extract the bottom (deepest valid) level.</td></tr>
+        <tr><td><a href="api.html#vertical_interp"><code>ds.vertical_interp(levels=[...], fixed=True)</code></a></td><td>Interpolate to specific target vertical levels.</td></tr>
+        <tr><td><a href="api.html#vertical_mean"><code>ds.vertical_mean(fixed=True)</code></a></td><td>Depth-averaged mean, accounting for cell thickness where available.</td></tr>
+        <tr><td><a href="api.html#vertical_min"><code>ds.vertical_min()</code></a></td><td>Vertical minimum at each grid cell and time step.</td></tr>
+        <tr><td><a href="api.html#vertical_max"><code>ds.vertical_max()</code></a></td><td>Vertical maximum at each grid cell and time step.</td></tr>
+        <tr><td><a href="api.html#vertical_range"><code>ds.vertical_range()</code></a></td><td>Vertical range (max &minus; min) at each grid cell and time step.</td></tr>
+        <tr><td><a href="api.html#vertical_sum"><code>ds.vertical_sum()</code></a></td><td>Vertical sum at each grid cell and time step.</td></tr>
+        <tr><td><a href="api.html#vertical_integration"><code>ds.vertical_integration(fixed=True)</code></a></td><td>Vertically integrated total, accounting for cell thickness.</td></tr>
+        <tr><td><a href="api.html#vertical_cumsum"><code>ds.vertical_cumsum()</code></a></td><td>Cumulative sum with depth/height.</td></tr>
+        <tr><td><a href="api.html#invert_levels"><code>ds.invert_levels()</code></a></td><td>Reverse the order of the vertical levels.</td></tr>
+        <tr><td><a href="api.html#bottom_mask"><code>ds.bottom_mask()</code></a></td><td>Mask identifying the deepest valid (non-missing) cell &mdash; e.g. the seabed.</td></tr>
+      </tbody>
+    </table></div>
   </div>
 </div>
 
