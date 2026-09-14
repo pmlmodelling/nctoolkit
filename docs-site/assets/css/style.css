@@ -751,6 +751,11 @@ tbody tr.hidden-row { display: none; }
    screenshot - these are the same standalone HTML files the Sphinx build
    injects with `.. raw:: html :file: ...`. */
 
+/* A static render of the plot is used rather than a live iframe: the
+   originals are standalone Bokeh/Panel/GeoViews apps (up to several MB each,
+   loading their JS from CDN) and embedding them live proved unreliable
+   across browsers/connections. Each links out to the original interactive
+   file so it's still explorable, just not embedded inline. */
 .plot-embed {
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
@@ -762,7 +767,8 @@ tbody tr.hidden-row { display: none; }
 .plot-embed__bar {
   display: flex;
   align-items: center;
-  gap: 0.5em;
+  justify-content: space-between;
+  gap: 0.8em;
   padding: 0.6em 1em;
   background: var(--bg-alt);
   border-bottom: 1px solid var(--line);
@@ -770,17 +776,25 @@ tbody tr.hidden-row { display: none; }
   font-size: 0.78rem;
   color: var(--muted);
 }
-.plot-embed__bar svg { width: 15px; height: 15px; color: var(--teal-600); flex-shrink: 0; }
-.plot-embed__frame-wrap { overflow-x: auto; background: #fff; }
-.plot-embed iframe {
+.plot-embed__label { display: flex; align-items: center; gap: 0.5em; min-width: 0; }
+.plot-embed__label svg { width: 15px; height: 15px; color: var(--teal-600); flex-shrink: 0; }
+.plot-embed__open {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  color: var(--teal-700);
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.plot-embed__open svg { width: 13px; height: 13px; }
+.plot-embed__image-wrap { overflow-x: auto; background: #fff; }
+.plot-embed__image-wrap a { display: block; text-decoration: none; }
+.plot-embed img {
   display: block;
   width: 100%;
-  min-width: 620px;
-  height: 480px;
-  border: none;
+  height: auto;
 }
-.plot-embed.is-tall iframe { height: 620px; }
-.plot-embed.is-short iframe { height: 360px; }
 
 /* ---------------------------- docs layout ---------------------------- */
 

@@ -40,22 +40,48 @@ archive/             Per-release snapshots of the twelve pages above (minus
 ## Interactive plots
 
 `quickstart.html`, and the interpolation/visualization sections of
-`guide-analysis.html` and `guide-advanced.html`, embed the same standalone
-interactive plot files the Sphinx build injects into the Read the Docs pages
-via `.. raw:: html :file: ...` (e.g. `docs/source/intro_plot1.html`,
-`interpolate_plot3.html`, `visualization_plot2.html`). These are full,
-self-contained HTML documents that load Bokeh/Panel/GeoViews from CDN and
-render a chart client-side from embedded JSON — they are **not** plain
-images, and copying only a `<pre>` code sample without the plot itself is
-how these went missing from the site the first time round.
+`guide-analysis.html` and `guide-advanced.html`, illustrate NCToolkit's
+output using the same plots the Sphinx build injects into the Read the Docs
+pages via `.. raw:: html :file: ...` (e.g. `docs/source/intro_plot1.html`,
+`interpolate_plot3.html`, `visualization_plot2.html`). Those originals are
+full, standalone HTML documents (up to ~4.6MB each) that load
+Bokeh/Panel/GeoViews from CDN and render a chart client-side from embedded
+JSON. Two things went wrong with them here, in order:
 
-Local copies live in `assets/plots/` (copied verbatim from
-`docs/source/*.html`, ~29MB total) and are embedded with
-`<iframe src="assets/plots/<name>.html">`, wrapped in a `.plot-embed` card
-for consistent styling. If the underlying notebooks/rst are ever
-regenerated with new plot exports, re-copy the relevant files from
-`docs/source/` into `assets/plots/` — the filenames are reused as-is, so
-existing `<iframe>` references keep working without edits.
+1. The first version of these pages carried over the code samples but not
+   the plots at all — a `<pre>` code sample was written without the
+   `.. raw:: html` output next to it, so there was nothing to show.
+2. Embedding the original files live via `<iframe>` (to fix (1)) rendered
+   inconsistently across browsers/screen sizes — reliable on a quick local
+   check, but broken (tiny/undersized frame, oversized fallback icon) for at
+   least one real user. Multi-megabyte third-party-JS-dependent iframes are
+   just a fragile thing to embed inline.
+
+The current approach: `assets/plots/*.png` are static renders of each
+`assets/plots/*.html` file (both live side by side — the `.html` files are
+kept as the interactive originals, only linked out to, not embedded), wrapped
+in a `.plot-embed` card that shows the image plus an "Open interactive ↗"
+link to the live version in a new tab. This is both more reliable (a `<img>`
+either loads or doesn't — no JS/CDN/cross-browser iframe-sizing behaviour to
+get wrong) and much lighter (each PNG is 60–420KB, versus 500KB–4.6MB for
+the HTML original).
+
+The PNGs were generated with Playwright/Chromium: load the local `.html`
+file, wait for it to render, find the bounding box of the rendered chart
+(`document.querySelectorAll('body *')`, unioned — these apps render inside a
+shadow-DOM host, so only the outermost element is visible to a plain
+`querySelector`), and screenshot that box at a 1100×device_scale_factor=2
+viewport (`/tmp` scratch scripts used to generate the current set are not
+checked in; re-derive similarly if the plots ever need regenerating — the
+`document.querySelectorAll('body *')` bounding-box trick is the part worth
+keeping, plain "screenshot the whole page" includes a lot of surrounding
+whitespace since these apps size themselves responsively but keep a fixed
+height).
+
+If the underlying notebooks/rst are ever regenerated with new plot exports,
+re-copy the relevant files from `docs/source/` into `assets/plots/` (same
+filenames, so existing references keep working) and regenerate the matching
+`.png` files the same way.
 
 Unlike OceanVal's docs site, this one *does* have an `index.html` landing
 page — NCToolkit is a general-purpose library with many more doc pages than
