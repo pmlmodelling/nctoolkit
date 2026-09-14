@@ -797,6 +797,24 @@ tbody tr.hidden-row { display: none; }
   height: auto;
 }
 
+/* PDF cheat sheet: displayed inline via iframe, sized to an A4-landscape
+   aspect ratio so it reads at a sensible size instead of a tall default
+   iframe box. Falls back to a direct-download link for browsers (mostly
+   mobile) that can't render a PDF inside an iframe. */
+.pdf-frame-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 297 / 210;
+  background: var(--bg-alt);
+}
+.pdf-frame-wrap iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
 /* ---------------------------- docs layout ---------------------------- */
 
 .page-hero {

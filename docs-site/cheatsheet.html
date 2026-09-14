@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>About &amp; Citation — NCToolkit</title>
-<meta name="description" content="The story behind NCToolkit, how to cite it in a publication, how to contribute, and where to get support.">
+<title>Cheat Sheet — NCToolkit</title>
+<meta name="description" content="A quick two-page overview of NCToolkit's most-used methods, viewable inline or as a downloadable PDF.">
 <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -59,67 +59,33 @@
 
 <div class="page-hero">
   <div class="container">
-    <div class="breadcrumb"><a href="index.html">Home</a> / About / About &amp; citation</div>
-    <h1>About NCToolkit</h1>
-    <p class="lead">The story behind the package, how to cite it, and how to get involved.</p>
+    <div class="breadcrumb"><a href="index.html">Home</a> / Cheat Sheet</div>
+    <h1>Cheat Sheet</h1>
+    <p class="lead">A quick two-page overview of NCToolkit's most-used methods &mdash; opening data, subsetting, temporal and spatial statistics, regridding, and more. Generated straight from the current release; see it below or grab the PDF.</p>
   </div>
 </div>
 
-<div class="container docs-layout">
-  <aside class="docs-toc">
-    <div class="docs-toc-title">On this page</div>
-    <ul>
-      <li><a href="#background">Background</a></li>
-      <li><a href="#citation">How to cite NCToolkit</a></li>
-      <li><a href="#published">Publications using NCToolkit</a></li>
-      <li><a href="#contributing">Contributing</a></li>
-      <li><a href="#support">Bugs &amp; support</a></li>
-    </ul>
-  </aside>
-
-  <div class="docs-content">
-
-    <h2 id="background">Background</h2>
-    <p>NCToolkit was created by Robert Wilson at Plymouth Marine Laboratory (PML), and is developed as open source software by PML's <a href="https://pml.ac.uk/science/Marine-Systems-Modelling/" target="_blank" rel="noopener">Marine Systems Modelling group</a>. Its core codebase was developed with funding from the NERC Climate Linked Atlantic Sector Science programme (<a href="https://gtr.ukri.org/projects?ref=NE%2FR015953%2F1" target="_blank" rel="noopener">NE/R015953/1</a>) and a combination of UK Research and Innovation (UKRI) and European Research Council (ERC) funded research projects.</p>
-    <p>The package is under active development, with new features added most months &mdash; there's plenty of scope left, especially around atmospheric data. See <a href="#contributing">Contributing</a> if you'd like to help shape that.</p>
-
-    <h2 id="citation">How to cite NCToolkit</h2>
-    <p>If you've used NCToolkit in a scientific publication, please cite:</p>
-    <div class="callout">
-      <p style="margin:0;">Wilson, R.J., Artioli, Y., (2023). nctoolkit: A Python package for netCDF analysis and post-processing. <em>Journal of Open Source Software</em>, 8(88), 5494. <a href="https://doi.org/10.21105/joss.05494" target="_blank" rel="noopener">https://doi.org/10.21105/joss.05494</a></p>
+<section class="section section-tight">
+  <div class="container" style="max-width: 1040px;">
+    <div class="plot-embed" style="margin: 0;">
+      <div class="plot-embed__bar">
+        <span class="plot-embed__label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          nctoolkit_cheatsheet.pdf &mdash; 2 pages
+        </span>
+        <a class="plot-embed__open" href="assets/cheatsheet/nctoolkit_cheatsheet.pdf" target="_blank" rel="noopener">Download PDF
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        </a>
+      </div>
+      <div class="pdf-frame-wrap">
+        <iframe src="assets/cheatsheet/nctoolkit_cheatsheet.pdf" title="NCToolkit cheat sheet PDF" loading="lazy"></iframe>
+      </div>
     </div>
-
-    <h2 id="published">Publications using NCToolkit</h2>
-    <ul>
-      <li>Cordes, Erik E., et al. "A Global View of the Cold-Water Coral Reefs of the World." <em>Cold-Water Coral Reefs of the World.</em> Cham: Springer International Publishing, 2023. 1&ndash;30.</li>
-      <li>Fatolahzadeh Gheysari, Ali, et al. "Reliability of ERA5 and ERA5-Land reanalysis data in the Canadian Prairies." <em>Theoretical and Applied Climatology</em> (2023): 1&ndash;12.</li>
-    </ul>
-
-    <h2 id="contributing">Contributing</h2>
-    <p>Contributions are welcome, including bug reports, bug fixes, new features, documentation, examples, tutorials and tests. NCToolkit is currently developed by marine scientists &mdash; input from other fields, especially atmospheric sciences, would be particularly valuable.</p>
-
-    <h3>Reporting bugs</h3>
-    <p>Bugs are tracked as <a href="https://github.com/pmlmodelling/nctoolkit/issues" target="_blank" rel="noopener">GitHub issues</a>. Before opening one, check whether it's already been raised or already fixed on the latest code. A good report includes a reproducible example, your OS and Python version, and the NCToolkit version you're using.</p>
-
-    <h3>Suggesting or building a feature</h3>
-    <p>Open an issue or a <a href="https://github.com/pmlmodelling/nctoolkit/discussions" target="_blank" rel="noopener">discussion</a> first, so the feature can be discussed before you write code. To contribute code:</p>
-    <ol>
-      <li>Fork the repo and branch from <code>master</code>.</li>
-      <li>Add tests for any new code.</li>
-      <li>Update the documentation if you've changed an API.</li>
-      <li>Make sure the test suite passes and your code lints.</li>
-      <li>Open a pull request.</li>
-    </ol>
-    <p>All contributions are understood to be under the same license as the project &mdash; see <a href="https://choosealicense.com/licenses/gpl-3.0/" target="_blank" rel="noopener">GNU GPLv3</a>.</p>
-
-    <h3>A note on NCToolkit methods</h3>
-    <p>Dataset methods generally either modify a dataset (updating its temporary files) or analyze it (e.g. plotting). Methods should stay as lazy as possible, so NCToolkit can chain CDO commands together and avoid unnecessary I/O &mdash; see <a href="datasets.html#lazy">Lazy evaluation</a>. Where possible, new methods should call <a href="backends.html#cdo"><code>cdo_command</code></a> or reuse existing NCToolkit methods rather than reimplementing logic from scratch. A good starting example is <code>fill_na</code>, which is a thin wrapper around a single CDO call.</p>
-
-    <h2 id="support">Bugs &amp; support</h2>
-    <p>If you hit a bug or an issue with the package, raise it on <a href="https://github.com/pmlmodelling/nctoolkit/issues" target="_blank" rel="noopener">GitHub</a>, start a <a href="https://github.com/pmlmodelling/nctoolkit/discussions" target="_blank" rel="noopener">discussion</a>, or contact the package's creator directly at <a href="mailto:rwi@pml.ac.uk">rwi@pml.ac.uk</a>.</p>
-
+    <p style="text-align:center; margin-top: 1.2rem; font-size: 0.88rem; color: var(--muted-light);">
+      Preview not showing? <a href="assets/cheatsheet/nctoolkit_cheatsheet.pdf" target="_blank" rel="noopener">Open the PDF directly</a> instead &mdash; some mobile browsers don't render embedded PDFs.
+    </p>
   </div>
-</div>
+</section>
 
 <footer class="site-footer">
   <div class="container footer-pml">
@@ -155,6 +121,7 @@
         <li><a href="data-formats.html">Supported data</a></li>
         <li><a href="backends.html">CDO &amp; NCO backends</a></li>
         <li><a href="qa.html">Q&amp;A</a></li>
+        <li><a href="cheatsheet.html">Cheat Sheet</a></li>
       </ul>
     </div>
     <div class="footer-col">
