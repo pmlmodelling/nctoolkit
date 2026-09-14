@@ -29,10 +29,33 @@ assets/
   js/main.js         Nav + dropdowns, copy-to-clipboard, FAQ accordion,
                       table search/filter, scrollspy
   img/               Wordmark (NC in ink, Toolkit in teal), PML logo, favicon
+  plots/             Interactive HoloViews/Bokeh plot exports, embedded via
+                      <iframe> (.plot-embed in style.css) - see "Interactive
+                      plots" below
 archive/             Per-release snapshots of the twelve pages above (minus
                       version-history.html itself) + assets/, written by
                       .github/workflows/docs-archive.yml. Don't hand-edit it.
 ```
+
+## Interactive plots
+
+`quickstart.html`, and the interpolation/visualization sections of
+`guide-analysis.html` and `guide-advanced.html`, embed the same standalone
+interactive plot files the Sphinx build injects into the Read the Docs pages
+via `.. raw:: html :file: ...` (e.g. `docs/source/intro_plot1.html`,
+`interpolate_plot3.html`, `visualization_plot2.html`). These are full,
+self-contained HTML documents that load Bokeh/Panel/GeoViews from CDN and
+render a chart client-side from embedded JSON — they are **not** plain
+images, and copying only a `<pre>` code sample without the plot itself is
+how these went missing from the site the first time round.
+
+Local copies live in `assets/plots/` (copied verbatim from
+`docs/source/*.html`, ~29MB total) and are embedded with
+`<iframe src="assets/plots/<name>.html">`, wrapped in a `.plot-embed` card
+for consistent styling. If the underlying notebooks/rst are ever
+regenerated with new plot exports, re-copy the relevant files from
+`docs/source/` into `assets/plots/` — the filenames are reused as-is, so
+existing `<iframe>` references keep working without edits.
 
 Unlike OceanVal's docs site, this one *does* have an `index.html` landing
 page — NCToolkit is a general-purpose library with many more doc pages than

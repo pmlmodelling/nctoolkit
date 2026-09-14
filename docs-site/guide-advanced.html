@@ -87,22 +87,64 @@
   <div class="docs-content">
 
     <h2 id="visualization">Visualization</h2>
-    <p>Call <code>plot()</code> on a dataset for an automatic interactive plot, similar in spirit to the command-line tool <code>ncview</code> &mdash; but in Jupyter or a browser:</p>
+    <p>Call <code>plot()</code> on a dataset for an automatic interactive plot, similar in spirit to the command-line tool <code>ncview</code> &mdash; but in Jupyter or a browser. Illustrated below with a sea-surface temperature dataset:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds = nc.open_data(<span class="tok-str">"sst.mon.mean.nc"</span>)
 ds.subset(year=<span class="tok-num">2000</span>)
 ds.plot()</pre>
     </div>
-    <p>The plot type is chosen automatically from the shape of the data: a map for a gridded spatial field, a time series once the data has a single spatial value per time step (e.g. after <code>spatial_mean()</code>), and a Hovm&ouml;ller-style heatmap for zonal-mean-over-time data.</p>
+    <div class="plot-embed">
+      <div class="plot-embed__bar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        ds.plot() &mdash; interactive output
+      </div>
+      <div class="plot-embed__frame-wrap"><iframe src="assets/plots/visualization_plot1.html" loading="lazy" title="Mean sea surface temperature for 2000"></iframe></div>
+    </div>
+    <p>The plot type is chosen automatically from the shape of the data. A zonal mean gives a zonal profile:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>ds.zonal_mean()
-ds.plot()          <span class="tok-com"># zonal profile</span>
-
-ds2 = nc.open_data(<span class="tok-str">"sst.mon.mean.nc"</span>)
-ds2.spatial_mean()
-ds2.plot()          <span class="tok-com"># time series</span></pre>
+      <pre>ds = nc.open_data(<span class="tok-str">"sst.mon.mean.nc"</span>)
+ds.subset(year=<span class="tok-num">2000</span>)
+ds.tmean()
+ds.zonal_mean()
+ds.plot()          <span class="tok-com"># zonal profile</span></pre>
+    </div>
+    <div class="plot-embed is-short">
+      <div class="plot-embed__bar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        ds.plot() &mdash; interactive output
+      </div>
+      <div class="plot-embed__frame-wrap"><iframe src="assets/plots/visualization_plot2.html" loading="lazy" title="Zonal mean sea surface temperature"></iframe></div>
+    </div>
+    <p>A zonal mean tracked over time renders as a Hovm&ouml;ller-style heatmap &mdash; here, the change in zonal-mean temperature relative to an 1850&ndash;1869 baseline:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds = nc.open_data(<span class="tok-str">"sst.mon.mean.nc"</span>)
+ds.zonal_mean()
+ds.annual_anomaly(baseline=[<span class="tok-num">1850</span>, <span class="tok-num">1869</span>], window=<span class="tok-num">20</span>)
+ds.plot()</pre>
+    </div>
+    <div class="plot-embed">
+      <div class="plot-embed__bar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        ds.plot() &mdash; interactive output
+      </div>
+      <div class="plot-embed__frame-wrap"><iframe src="assets/plots/visualization_plot3.html" loading="lazy" title="Zonal-mean temperature anomaly over time"></iframe></div>
+    </div>
+    <p>Once the data has a single spatial value per time step (e.g. after <code>spatial_mean()</code>), it plots as a time series &mdash; here, global mean sea surface temperature since 1850:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds = nc.open_data(<span class="tok-str">"sst.mon.mean.nc"</span>)
+ds.spatial_mean()
+ds.plot()          <span class="tok-com"># time series</span></pre>
+    </div>
+    <div class="plot-embed is-short">
+      <div class="plot-embed__bar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        ds.plot() &mdash; interactive output
+      </div>
+      <div class="plot-embed__frame-wrap"><iframe src="assets/plots/visualization_plot4.html" loading="lazy" title="Global mean sea surface temperature time series since 1850"></iframe></div>
     </div>
 
     <h3>Publication-quality plots</h3>
@@ -112,6 +154,7 @@ ds2.plot()          <span class="tok-com"># time series</span></pre>
       <pre>ds.tmean()
 ds.pub_plot()</pre>
     </div>
+    <p><img src="assets/plots/pub_plot1.png" alt="Publication-quality plot of mean sea surface temperature produced by pub_plot()" style="border:1px solid var(--line); border-radius: var(--radius-md); box-shadow: var(--shadow-sm);"></p>
 
     <h3>Plotting internals</h3>
     <p>Interactive plotting is delegated to the companion <a href="https://github.com/pmlmodelling/ncplot" target="_blank" rel="noopener">ncplot</a> package, which inspects the dataset and picks a suitable plot built on <a href="https://hvplot.holoviz.org/" target="_blank" rel="noopener">hvplot</a>. It favours rapid exploratory analysis over deep customization, but most <a href="https://hvplot.holoviz.org/user_guide/Customization.html" target="_blank" rel="noopener">hvplot customization options</a> &mdash; <code>title</code>, <code>logz</code>, <code>clim</code>, and so on &mdash; can be passed straight to <code>plot()</code> and are forwarded automatically.</p>

@@ -128,26 +128,119 @@ ds.monthly_anomaly(baseline=[<span class="tok-num">1950</span>, <span class="tok
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds.vertical_mean(fixed=<span class="tok-kw">True</span>)     <span class="tok-com"># mean across all vertical levels</span>
-ds.vertical_interp(levels=<span class="tok-num">1000</span>, fixed=<span class="tok-kw">True</span>)   <span class="tok-com"># interpolate to 1000m depth</span>
 ds.top()                          <span class="tok-com"># select the surface level</span>
 ds.bottom()                       <span class="tok-com"># select the sea-floor level</span></pre>
     </div>
     <p>Other vertical methods: <code>vertical_min</code>, <code>vertical_max</code>, <code>vertical_range</code>, <code>vertical_cumsum</code> and <code>invert_levels</code>. For a full water-column total that accounts for cell thickness, use <code>vertical_integration</code>.</p>
+    <p><code>vertical_interp</code> interpolates to specific target levels &mdash; here, depth-resolved World Ocean Atlas temperature interpolated to 500m:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds = nc.open_thredds(<span class="tok-str">"https://www.ncei.noaa.gov/thredds/dodsC/ncei/woa/temperature/decav/1.00/woa18_decav_t00_01.nc"</span>)
+ds.subset(timestep=<span class="tok-num">0</span>)
+ds.vertical_interp(levels=<span class="tok-num">500</span>, fixed=<span class="tok-kw">True</span>)
+ds.plot()</pre>
+    </div>
+    <div class="plot-embed">
+      <div class="plot-embed__bar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        ds.plot() &mdash; interactive output
+      </div>
+      <div class="plot-embed__frame-wrap"><iframe src="assets/plots/interpolate_plot9.html" loading="lazy" title="Ocean temperature interpolated to 500m depth"></iframe></div>
+    </div>
 
     <h2 id="interpolation">Interpolation &amp; regridding</h2>
+    <p>Illustrated below using global sea-surface temperature from NOAA's COBE-SST 2, starting from a single time step:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc"</span>)
+ds.subset(time=<span class="tok-num">0</span>)
+ds.plot()</pre>
+    </div>
+    <div class="plot-embed">
+      <div class="plot-embed__bar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        ds.plot() &mdash; interactive output
+      </div>
+      <div class="plot-embed__frame-wrap"><iframe src="assets/plots/interpolate_plot1.html" loading="lazy" title="Global sea surface temperature, first time step"></iframe></div>
+    </div>
+
     <h3>Regular lon/lat grids</h3>
     <p><a href="api.html#interpolation"><code>to_latlon</code></a> regrids to a regular grid: give the extent (<code>lon</code>, <code>lat</code>) and resolution (<code>res</code>):</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds.to_latlon(lon=[-79.5, 79.5], lat=[<span class="tok-num">0.75</span>, <span class="tok-num">89.75</span>], res=[<span class="tok-num">1</span>, <span class="tok-num">0.5</span>])</pre>
     </div>
+    <div class="plot-embed">
+      <div class="plot-embed__bar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        ds.plot() &mdash; interactive output
+      </div>
+      <div class="plot-embed__frame-wrap"><iframe src="assets/plots/interpolate_plot2.html" loading="lazy" title="Regridded to a regular 1 x 0.5 degree lon/lat grid"></iframe></div>
+    </div>
+
     <h3>Another dataset's grid</h3>
-    <p><code>regrid</code> interpolates a dataset onto the grid of another dataset (or a netCDF file used purely as a grid template):</p>
+    <p><code>regrid</code> interpolates a dataset onto the grid of another dataset (or a netCDF file used purely as a grid template). Here, we first crop one dataset to the northern hemisphere to use as the target grid:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>ds2.regrid(ds1)</pre>
+      <pre>ds1 = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc"</span>)
+ds1.subset(timestep=<span class="tok-num">0</span>)
+ds1.subset(lat=[<span class="tok-num">0</span>, <span class="tok-num">90</span>])
+ds1.plot()</pre>
     </div>
-    <p>Regridding first generates a weights file. If you're regridding many files onto the same target grid one after another, set <code>recycle=True</code> on the first call to reuse the weights on subsequent calls to <code>regrid</code>.</p>
+    <div class="plot-embed">
+      <div class="plot-embed__bar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        ds1.plot() &mdash; interactive output
+      </div>
+      <div class="plot-embed__frame-wrap"><iframe src="assets/plots/interpolate_plot3.html" loading="lazy" title="Northern hemisphere sea surface temperature, used as the target grid"></iframe></div>
+    </div>
+    <p>Now regrid the original file onto that northern-hemisphere grid &mdash; this also works with a plain netCDF file path as the target:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds2 = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc"</span>)
+ds2.subset(timestep=<span class="tok-num">0</span>)
+ds2.regrid(ds1)
+ds2.plot()</pre>
+    </div>
+    <div class="plot-embed">
+      <div class="plot-embed__bar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        ds2.plot() &mdash; interactive output
+      </div>
+      <div class="plot-embed__frame-wrap"><iframe src="assets/plots/interpolate_plot4.html" loading="lazy" title="Regridded onto the northern-hemisphere target grid"></iframe></div>
+    </div>
+
+    <h3>Reusing regrid weights</h3>
+    <p>Regridding generates a weights file first. If you're regridding many files onto the same target grid one after another &mdash; postprocessing a batch of files, say &mdash; set <code>recycle=True</code> on the first call so <code>regrid</code> can reuse those weights on later calls:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc"</span>)
+ds.subset(timestep=<span class="tok-num">0</span>)
+ds.to_latlon(lon=[-79.5, 79.5], lat=[-<span class="tok-num">0.75</span>, <span class="tok-num">89.75</span>], res=[<span class="tok-num">1</span>, <span class="tok-num">0.5</span>], recycle=<span class="tok-kw">True</span>)
+ds.plot()</pre>
+    </div>
+    <div class="plot-embed">
+      <div class="plot-embed__bar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        ds.plot() &mdash; interactive output
+      </div>
+      <div class="plot-embed__frame-wrap"><iframe src="assets/plots/interpolate_plot5.html" loading="lazy" title="Regridded with recycle=True, generating reusable weights"></iframe></div>
+    </div>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds1 = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc"</span>)
+ds1.subset(timestep=<span class="tok-num">0</span>)
+ds1.regrid(ds)   <span class="tok-com"># reuses the weights generated above</span>
+ds1.plot()</pre>
+    </div>
+    <div class="plot-embed">
+      <div class="plot-embed__bar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        ds1.plot() &mdash; interactive output
+      </div>
+      <div class="plot-embed__frame-wrap"><iframe src="assets/plots/interpolate_plot6.html" loading="lazy" title="A second dataset regridded using the recycled weights"></iframe></div>
+    </div>
+
     <h3>A set of coordinates</h3>
     <p><code>regrid</code> also accepts a pandas dataframe of <code>lon</code>/<code>lat</code> columns, to interpolate onto specific points:</p>
     <div class="code-block">
@@ -156,10 +249,35 @@ ds.bottom()                       <span class="tok-com"># select the sea-floor l
 ds.regrid(coords)</pre>
     </div>
     <h3>Coarsening &amp; infilling</h3>
+    <p><code>resample_grid</code> makes data spatially coarser &mdash; here, keeping only every 10th cell of a 1&deg;&times;1&deg; dataset turns it into a 10&deg;&times;10&deg; one:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>ds.resample_grid(<span class="tok-num">10</span>)   <span class="tok-com"># keep every 10th grid cell, north-south and east-west</span>
-ds.fill_na(<span class="tok-num">1</span>)          <span class="tok-com"># distance-weighted infill using 1 nearest neighbour</span></pre>
+      <pre>ds = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc"</span>)
+ds.subset(timestep=<span class="tok-num">0</span>)
+ds.resample_grid(<span class="tok-num">10</span>)
+ds.plot()</pre>
+    </div>
+    <div class="plot-embed">
+      <div class="plot-embed__bar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        ds.plot() &mdash; interactive output
+      </div>
+      <div class="plot-embed__frame-wrap"><iframe src="assets/plots/interpolate_plot7.html" loading="lazy" title="Grid resampled to every 10th cell"></iframe></div>
+    </div>
+    <p><code>fill_na</code> replaces missing values with a distance-weighted average of nearby cells:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc"</span>)
+ds.subset(timestep=<span class="tok-num">0</span>)
+ds.fill_na(<span class="tok-num">1</span>)   <span class="tok-com"># distance-weighted infill using 1 nearest neighbour</span>
+ds.plot()</pre>
+    </div>
+    <div class="plot-embed">
+      <div class="plot-embed__bar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        ds.plot() &mdash; interactive output
+      </div>
+      <div class="plot-embed__frame-wrap"><iframe src="assets/plots/interpolate_plot8.html" loading="lazy" title="Missing values filled by distance-weighted infill"></iframe></div>
     </div>
 
     <h2 id="ensembles">Ensembles &amp; multi-file datasets</h2>

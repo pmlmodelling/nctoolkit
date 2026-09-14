@@ -745,6 +745,43 @@ tbody tr.hidden-row { display: none; }
 .recipe-detail__inner { padding: 1.2rem 1.4rem 1.6rem; }
 .recipe-detail__inner p:last-child { margin-bottom: 0; }
 
+/* ---------------------------- interactive plot embeds ------------------- */
+/* NCToolkit's docs embed real interactive HoloViews/Bokeh output (generated
+   alongside docs/source/*.ipynb and *.rst) via iframe, rather than a static
+   screenshot - these are the same standalone HTML files the Sphinx build
+   injects with `.. raw:: html :file: ...`. */
+
+.plot-embed {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin: 1.4em 0;
+  box-shadow: var(--shadow-sm);
+  background: #fff;
+}
+.plot-embed__bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.6em 1em;
+  background: var(--bg-alt);
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+.plot-embed__bar svg { width: 15px; height: 15px; color: var(--teal-600); flex-shrink: 0; }
+.plot-embed__frame-wrap { overflow-x: auto; background: #fff; }
+.plot-embed iframe {
+  display: block;
+  width: 100%;
+  min-width: 620px;
+  height: 480px;
+  border: none;
+}
+.plot-embed.is-tall iframe { height: 620px; }
+.plot-embed.is-short iframe { height: 360px; }
+
 /* ---------------------------- docs layout ---------------------------- */
 
 .page-hero {

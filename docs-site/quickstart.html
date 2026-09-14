@@ -105,6 +105,13 @@
       <pre>ds = nc.<a href="api.html#opening"><span class="tok-fn">open_thredds</span></a>(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.ltm.1991-2020.nc"</span>)
 ds.<a href="guide-advanced.html#visualization"><span class="tok-fn">plot</span></a>()</pre>
     </div>
+    <div class="plot-embed">
+      <div class="plot-embed__bar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        ds.plot() &mdash; interactive output
+      </div>
+      <div class="plot-embed__frame-wrap"><iframe src="assets/plots/intro_plot1.html" loading="lazy" title="Mean historical sea surface temperature"></iframe></div>
+    </div>
 
     <h2 id="subset">It lets you easily subset data</h2>
     <p>To look at a particular region, use <a href="guide-basics.html#subsetting"><code>subset</code></a>. Here we select January and crop to a European box:</p>
@@ -113,6 +120,13 @@ ds.<a href="guide-advanced.html#visualization"><span class="tok-fn">plot</span><
       <pre>ds = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.ltm.1991-2020.nc"</span>)
 ds.subset(month=<span class="tok-num">1</span>, lon=[-13, 38], lat=[30, 67])
 ds.plot()</pre>
+    </div>
+    <div class="plot-embed">
+      <div class="plot-embed__bar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        ds.plot() &mdash; interactive output
+      </div>
+      <div class="plot-embed__frame-wrap"><iframe src="assets/plots/intro_plot4.html" loading="lazy" title="January sea surface temperature over Europe"></iframe></div>
     </div>
 
     <h2 id="average">It lets you calculate temporal averages</h2>
@@ -123,6 +137,13 @@ ds.plot()</pre>
 ds.<a href="guide-analysis.html#temporal"><span class="tok-fn">tmean</span></a>(<span class="tok-str">"season"</span>)
 ds.plot()</pre>
     </div>
+    <div class="plot-embed">
+      <div class="plot-embed__bar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        ds.plot() &mdash; interactive output
+      </div>
+      <div class="plot-embed__frame-wrap"><iframe src="assets/plots/intro_plot6.html" loading="lazy" title="Seasonal climatology of sea surface temperature"></iframe></div>
+    </div>
     <p>And spatial averages are just as simple:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
@@ -131,6 +152,13 @@ ds.subset(variables=<span class="tok-str">"sst"</span>)
 ds.subset(lon=[-13, 38], lat=[30, 67])
 ds.<a href="api.html#statistics"><span class="tok-fn">spatial_mean</span></a>()
 ds.plot()</pre>
+    </div>
+    <div class="plot-embed">
+      <div class="plot-embed__bar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        ds.plot() &mdash; interactive output
+      </div>
+      <div class="plot-embed__frame-wrap"><iframe src="assets/plots/intro_plot2.html" loading="lazy" title="Spatial mean sea surface temperature over Europe"></iframe></div>
     </div>
 
     <h2 id="assign">It lets you do mathematical operations</h2>
@@ -142,6 +170,13 @@ ds.tmean()
 ds.<a href="guide-analysis.html#math"><span class="tok-fn">assign</span></a>(delta=<span class="tok-kw">lambda</span> x: x.sst - spatial_mean(x.sst), drop=<span class="tok-kw">True</span>)
 ds.plot()</pre>
     </div>
+    <div class="plot-embed">
+      <div class="plot-embed__bar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        ds.plot() &mdash; interactive output
+      </div>
+      <div class="plot-embed__frame-wrap"><iframe src="assets/plots/intro_plot3.html" loading="lazy" title="Temperature difference from the global mean"></iframe></div>
+    </div>
 
     <h2 id="regrid">It lets you regrid data</h2>
     <p>Built-in methods handle horizontal and vertical interpolation. <a href="guide-analysis.html#interpolation"><code>to_latlon</code></a> regrids to a regular lon/lat grid &mdash; just give it the extent, resolution and method:</p>
@@ -151,6 +186,13 @@ ds.plot()</pre>
 ds.<a href="guide-analysis.html#interpolation"><span class="tok-fn">to_latlon</span></a>(lon=[-13, 38], lat=[30, 67], res=<span class="tok-num">1</span>, method=<span class="tok-str">"bil"</span>)
 ds.plot()</pre>
     </div>
+    <div class="plot-embed">
+      <div class="plot-embed__bar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        ds.plot() &mdash; interactive output
+      </div>
+      <div class="plot-embed__frame-wrap"><iframe src="assets/plots/intro_plot5.html" loading="lazy" title="Sea surface temperature regridded to a regular lon/lat grid"></iframe></div>
+    </div>
 
     <h2 id="zonal">It lets you calculate zonal averages</h2>
     <div class="code-block">
@@ -158,6 +200,13 @@ ds.plot()</pre>
       <pre>ds = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.ltm.1991-2020.nc"</span>)
 ds.<a href="api.html#statistics"><span class="tok-fn">zonal_mean</span></a>()
 ds.plot()</pre>
+    </div>
+    <div class="plot-embed">
+      <div class="plot-embed__bar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        ds.plot() &mdash; interactive output
+      </div>
+      <div class="plot-embed__frame-wrap"><iframe src="assets/plots/intro_plot8.html" loading="lazy" title="Zonal mean sea surface temperature"></iframe></div>
     </div>
 
     <h2 id="next">Next steps</h2>
