@@ -195,7 +195,7 @@ df</pre>
   </tbody>
 </table>
 </div>
-    <p><code>match_points</code> returns a pandas dataframe with the matched-up values added. Watch for messages confirming assumptions NCToolkit made while matching &mdash; usually safe to ignore, except around depths, which are derived from the dataset unless you provide them explicitly. For the example above, NCToolkit reports:</p>
+    <p><a href="api.html#match_points"><code>match_points</code></a> returns a pandas dataframe with the matched-up values added. Watch for messages confirming assumptions NCToolkit made while matching &mdash; usually safe to ignore, except around depths, which are derived from the dataset unless you provide them explicitly. For the example above, NCToolkit reports:</p>
     <div class="callout">
       <div class="callout-title">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
@@ -288,7 +288,7 @@ df_match</pre>
   </tbody>
 </table>
 </div>
-    <p>As expected, a dataframe with surface air temperature for the locations and times specified. <code>match_points</code> works like pandas' <code>merge</code>: specify only <code>year</code> and <code>month</code>, omitting <code>day</code>, and every day for those years and months is returned:</p>
+    <p>As expected, a dataframe with surface air temperature for the locations and times specified. <a href="api.html#match_points"><code>match_points</code></a> works like pandas' <code>merge</code>: specify only <code>year</code> and <code>month</code>, omitting <code>day</code>, and every day for those years and months is returned:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>df_match = ds.match_points(df.drop(columns=<span class="tok-str">"day"</span>))
@@ -414,14 +414,14 @@ df_match</pre>
     <p>We now have every day for the given times.</p>
 
     <h2 id="options">Optional arguments</h2>
-    <p>A handful of arguments refine the matchup process: <code>variables</code>, <code>tmean</code>, <code>top</code> and <code>nan</code>.</p>
+    <p>A handful of arguments refine the matchup process: <code>variables</code>, <a href="api.html#tmean"><code>tmean</code></a>, <code>top</code> and <code>nan</code>.</p>
     <ul class="param-list">
       <li><code class="param-name">variables</code><p>Restrict the matchup to a subset of variables, e.g. <code>ds.match_points(df, variables="tas")</code>.</p></li>
-      <li><code class="param-name">tmean</code><p>Apply <code>ds.tmean()</code> with the temporal grouping implied by the dataframe columns before matching &mdash; useful when point data is coarser than the dataset (e.g. monthly points, daily data). This is equivalent to running <code>ds.tmean(["year", "month"])</code> beforehand.</p></li>
+      <li><code class="param-name">tmean</code><p>Apply <a href="api.html#tmean"><code>ds.tmean()</code></a> with the temporal grouping implied by the dataframe columns before matching &mdash; useful when point data is coarser than the dataset (e.g. monthly points, daily data). This is equivalent to running <code>ds.tmean(["year", "month"])</code> beforehand.</p></li>
       <li><code class="param-name">top</code><p>When the dataset has multiple vertical levels but you only want the top one.</p></li>
       <li><code class="param-name">nan</code><p>Values in the dataset that should be treated as missing.</p></li>
     </ul>
-    <p>Using <code>tmean</code> with monthly points against the daily dataset above:</p>
+    <p>Using <a href="api.html#tmean"><code>tmean</code></a> with monthly points against the daily dataset above:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>df = pd.DataFrame({<span class="tok-str">"lon"</span>: [<span class="tok-num">50</span>, <span class="tok-num">60</span>], <span class="tok-str">"lat"</span>: [<span class="tok-num">50</span>, <span class="tok-num">45</span>], <span class="tok-str">"year"</span>:[<span class="tok-num">1850</span>, <span class="tok-num">1852</span>], <span class="tok-str">"month"</span>:[<span class="tok-num">1</span>, <span class="tok-num">3</span>]})

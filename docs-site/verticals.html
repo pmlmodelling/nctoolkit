@@ -81,7 +81,7 @@ ds_mean = ds.copy()
 ds_mean.vertical_mean(fixed=<span class="tok-kw">True</span>)
 ds_mean.plot()</pre>
     </div>
-    <p><code>vertical_max</code> and <code>vertical_min</code> work the same way:</p>
+    <p><a href="api.html#vertical_max"><code>vertical_max</code></a> and <a href="api.html#vertical_min"><code>vertical_min</code></a> work the same way:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds_max = ds.copy()
@@ -94,7 +94,7 @@ ds_min.plot()</pre>
     </div>
 
     <h2 id="interp">Vertical interpolation</h2>
-    <p><code>vertical_interp</code> interpolates to specific target levels &mdash; here, to a single depth of 1000m:</p>
+    <p><a href="api.html#vertical_interp"><code>vertical_interp</code></a> interpolates to specific target levels &mdash; here, to a single depth of 1000m:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds = nc.open_thredds(<span class="tok-str">"https://www.ncei.noaa.gov/thredds/dodsC/ncei/woa/temperature/decav/1.00/woa18_decav_t00_01.nc"</span>)
@@ -119,8 +119,8 @@ ds.bottom()    <span class="tok-com"># select the sea-floor</span></pre>
     </div>
 
     <h2 id="more">Additional vertical methods</h2>
-    <p>Other vertical methods available: <code>vertical_min</code>, <code>vertical_range</code>, <code>vertical_cumsum</code>, and <code>invert_levels</code>.</p>
-    <p>For ocean data, <code>vertical_integration</code> calculates an integrated water-column total, accounting for the thickness of each vertical cell.</p>
+    <p>Other vertical methods available: <a href="api.html#vertical_min"><code>vertical_min</code></a>, <a href="api.html#vertical_range"><code>vertical_range</code></a>, <a href="api.html#vertical_cumsum"><code>vertical_cumsum</code></a>, and <a href="api.html#invert_levels"><code>invert_levels</code></a>.</p>
+    <p>For ocean data, <a href="api.html#vertical_integration"><code>vertical_integration</code></a> calculates an integrated water-column total, accounting for the thickness of each vertical cell.</p>
   </div>
 </div>
 

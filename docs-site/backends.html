@@ -68,7 +68,7 @@
   <div class="docs-content">
 
     <h2 id="cdo">Using CDO commands</h2>
-    <p>The <code>cdo_command</code> method lets you apply a CDO command directly in NCToolkit &mdash; just strip the leading <code>cdo</code> and the input/output file names. A typical CDO command:</p>
+    <p>The <a href="api.html#cdo_command"><code>cdo_command</code></a> method lets you apply a CDO command directly in NCToolkit &mdash; just strip the leading <code>cdo</code> and the input/output file names. A typical CDO command:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
       <pre>cdo yearmean infile.nc outfile.nc</pre>
@@ -91,7 +91,7 @@
     <p>If you use CDO and NCToolkit together and find something in CDO that isn't yet wrapped as a proper NCToolkit method, <a href="https://github.com/pmlmodelling/nctoolkit/issues" target="_blank" rel="noopener">open an issue</a>.</p>
 
     <h2 id="nco">Using NCO commands</h2>
-    <p><a href="http://nco.sourceforge.net/" target="_blank" rel="noopener">NetCDF Operators</a> (NCO) is an optional backend, available through <code>nco_command</code>. Strip the two file names from the command you want to apply. So:</p>
+    <p><a href="http://nco.sourceforge.net/" target="_blank" rel="noopener">NetCDF Operators</a> (NCO) is an optional backend, available through <a href="api.html#nco_command"><code>nco_command</code></a>. Strip the two file names from the command you want to apply. So:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
       <pre>ncks -v kd_490 -d lat,40.0,70.0 -d lon,-20.0,15.0 infile.nc outfile.nc</pre>
@@ -101,7 +101,7 @@
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds.nco_command(<span class="tok-str">"ncks -v kd_490 -d lat,40.0,70.0 -d lon,-20.0,15.0"</span>)</pre>
     </div>
-    <p>NCO is optional &mdash; NCToolkit will work without it unless you specifically call <code>nco_command</code>. See <a href="installing.html#system">System dependencies</a> for installation.</p>
+    <p>NCO is optional &mdash; NCToolkit will work without it unless you specifically call <a href="api.html#nco_command"><code>nco_command</code></a>. See <a href="installing.html#system">System dependencies</a> for installation.</p>
 
   </div>
 </div>

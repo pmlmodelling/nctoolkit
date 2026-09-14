@@ -94,7 +94,7 @@ conda install -c conda-forge jupyter_bokeh=3.0.7</pre></div>
       <div class="faq-answer"><div>
         <p>Raise the core count used for multi-file processing:</p>
         <div class="code-block"><div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div><pre>nc.options(cores=<span class="tok-num">6</span>)</pre></div>
-        <p>It's almost always faster to process member files with a high core count <em>before</em> merging them with <code>merge</code>, rather than the other way round. See <a href="ensembles.html">Ensembles &amp; multi-file datasets</a>.</p>
+        <p>It's almost always faster to process member files with a high core count <em>before</em> merging them with <a href="api.html#merge"><code>merge</code></a>, rather than the other way round. See <a href="ensembles.html">Ensembles &amp; multi-file datasets</a>.</p>
       </div></div>
     </div>
 
@@ -108,7 +108,7 @@ conda install -c conda-forge jupyter_bokeh=3.0.7</pre></div>
     <div class="faq-item">
       <button class="faq-question">Why isn't anything happening when I call a method?<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
       <div class="faq-answer"><div>
-        <p>NCToolkit evaluates lazily by default &mdash; operations are queued, not run, until a result is actually needed (an attribute access, <code>plot()</code>, or an explicit <code>ds.run()</code>). This lets a whole chain collapse into a single CDO command. See <a href="datasets.html#lazy">Lazy evaluation &amp; chaining</a>.</p>
+        <p>NCToolkit evaluates lazily by default &mdash; operations are queued, not run, until a result is actually needed (an attribute access, <a href="api.html#plot"><code>plot()</code></a>, or an explicit <a href="api.html#run"><code>ds.run()</code></a>). This lets a whole chain collapse into a single CDO command. See <a href="datasets.html#lazy">Lazy evaluation &amp; chaining</a>.</p>
       </div></div>
     </div>
 
@@ -133,7 +133,7 @@ ds.tmean()</pre></div>
     <div class="faq-item">
       <button class="faq-question">How do I see the CDO command NCToolkit actually ran?<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
       <div class="faq-answer"><div>
-        <p>After running (or forcing evaluation of) a chain of operations, check <code>ds.history</code>. This is handy for debugging, and for learning CDO if you're coming from that direction.</p>
+        <p>After running (or forcing evaluation of) a chain of operations, check <a href="api.html#history"><code>ds.history</code></a>. This is handy for debugging, and for learning CDO if you're coming from that direction.</p>
       </div></div>
     </div>
 
@@ -142,7 +142,7 @@ ds.tmean()</pre></div>
     <div class="faq-item">
       <button class="faq-question">A comparison like <code>x.temperature &gt; 30</code> gives strange results &mdash; why?<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
       <div class="faq-answer"><div>
-        <p>This usually means the variable is stored as an integer type in the source file, so an operation that should be evaluated as a float is being computed as an integer. Check with <code>ds.contents</code>, then force a higher precision before calculating:</p>
+        <p>This usually means the variable is stored as an integer type in the source file, so an operation that should be evaluated as a float is being computed as an integer. Check with <a href="api.html#contents"><code>ds.contents</code></a>, then force a higher precision before calculating:</p>
         <div class="code-block"><div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div><pre>ds.set_precision(<span class="tok-str">"F64"</span>)</pre></div>
         <p>See <a href="troubleshoot.html">Troubleshooting</a>.</p>
       </div></div>
@@ -151,14 +151,14 @@ ds.tmean()</pre></div>
     <div class="faq-item">
       <button class="faq-question">My file opens fine elsewhere, but NCToolkit throws an error &mdash; what now?<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
       <div class="faq-answer"><div>
-        <p>Run <code>ds.check()</code> for a general diagnostic (integer types, integer time axis, CF-compliance, grid consistency) and <code>ds.is_corrupt()</code> to rule out file corruption. If longitude/latitude were stored as plain variables rather than coordinates, fix that with <code>ds.assign_coords(lon_name=..., lat_name=...)</code>. See <a href="data-formats.html">Supported data</a> and <a href="troubleshoot.html">Troubleshooting</a>.</p>
+        <p>Run <a href="api.html#check"><code>ds.check()</code></a> for a general diagnostic (integer types, integer time axis, CF-compliance, grid consistency) and <a href="api.html#is_corrupt"><code>ds.is_corrupt()</code></a> to rule out file corruption. If longitude/latitude were stored as plain variables rather than coordinates, fix that with <code>ds.assign_coords(lon_name=..., lat_name=...)</code>. See <a href="data-formats.html">Supported data</a> and <a href="troubleshoot.html">Troubleshooting</a>.</p>
       </div></div>
     </div>
 
     <div class="faq-item">
-      <button class="faq-question">Can I customize a plot produced by <code>plot()</code>?<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <button class="faq-question">Can I customize a plot produced by <a href="api.html#plot"><code>plot()</code></a>?<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
       <div class="faq-answer"><div>
-        <p>Yes, to an extent &mdash; because plotting is built on hvplot, arguments such as <code>title</code>, <code>logz</code> and <code>clim</code> can be passed straight to <code>plot()</code> and are forwarded automatically. For a static, publication-ready figure instead, use <code>pub_plot()</code>. See <a href="visualization.html">Visualization</a>.</p>
+        <p>Yes, to an extent &mdash; because plotting is built on hvplot, arguments such as <code>title</code>, <code>logz</code> and <code>clim</code> can be passed straight to <a href="api.html#plot"><code>plot()</code></a> and are forwarded automatically. For a static, publication-ready figure instead, use <a href="api.html#pub_plot"><code>pub_plot()</code></a>. See <a href="visualization.html">Visualization</a>.</p>
       </div></div>
     </div>
 

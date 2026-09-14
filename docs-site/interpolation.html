@@ -102,7 +102,7 @@ ds.plot()</pre>
     </div>
 
     <h2 id="another-grid">Another dataset's grid</h2>
-    <p><code>regrid</code> interpolates a dataset onto the grid of another dataset (or a netCDF file used purely as a grid template). Here, we first crop one dataset to the northern hemisphere to use as the target grid:</p>
+    <p><a href="api.html#regrid"><code>regrid</code></a> interpolates a dataset onto the grid of another dataset (or a netCDF file used purely as a grid template). Here, we first crop one dataset to the northern hemisphere to use as the target grid:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds1 = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc"</span>)
@@ -134,7 +134,7 @@ ds2.plot()</pre>
     </div>
 
     <h2 id="recycle">Reusing regrid weights</h2>
-    <p>Regridding generates a weights file first. If you're regridding many files onto the same target grid one after another &mdash; postprocessing a batch of files, say &mdash; set <code>recycle=True</code> on the first call so <code>regrid</code> can reuse those weights on later calls:</p>
+    <p>Regridding generates a weights file first. If you're regridding many files onto the same target grid one after another &mdash; postprocessing a batch of files, say &mdash; set <code>recycle=True</code> on the first call so <a href="api.html#regrid"><code>regrid</code></a> can reuse those weights on later calls:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc"</span>)
@@ -165,7 +165,7 @@ ds1.plot()</pre>
     </div>
 
     <h2 id="coords">A set of coordinates</h2>
-    <p><code>regrid</code> also accepts a pandas dataframe of <code>lon</code>/<code>lat</code> columns, to interpolate onto specific points:</p>
+    <p><a href="api.html#regrid"><code>regrid</code></a> also accepts a pandas dataframe of <code>lon</code>/<code>lat</code> columns, to interpolate onto specific points:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>coords = pd.DataFrame({<span class="tok-str">"lon"</span>: [-<span class="tok-num">30</span>], <span class="tok-str">"lat"</span>: [<span class="tok-num">50</span>]})
@@ -173,7 +173,7 @@ ds.regrid(coords)</pre>
     </div>
 
     <h2 id="coarsen">Coarsening &amp; infilling</h2>
-    <p><code>resample_grid</code> makes data spatially coarser &mdash; here, keeping only every 10th cell of a 1&deg;&times;1&deg; dataset turns it into a 10&deg;&times;10&deg; one:</p>
+    <p><a href="api.html#resample_grid"><code>resample_grid</code></a> makes data spatially coarser &mdash; here, keeping only every 10th cell of a 1&deg;&times;1&deg; dataset turns it into a 10&deg;&times;10&deg; one:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc"</span>)
@@ -188,7 +188,7 @@ ds.plot()</pre>
       </div>
       <div class="plot-embed__image-wrap"><a href="assets/plots/interpolate_plot7.html" target="_blank" rel="noopener"><img src="assets/plots/interpolate_plot7.png" loading="lazy" alt="Grid resampled to every 10th cell"></a></div>
     </div>
-    <p><code>fill_na</code> replaces missing values with a distance-weighted average of nearby cells:</p>
+    <p><a href="api.html#fill_na"><code>fill_na</code></a> replaces missing values with a distance-weighted average of nearby cells:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc"</span>)

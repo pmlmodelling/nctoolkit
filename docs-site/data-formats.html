@@ -82,7 +82,7 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
         Missing cell-area metadata
       </div>
-      <p><code>spatial_mean</code> and similar methods need to calculate grid-cell area, but some data providers omit that metadata. When this happens NCToolkit prints a warning &mdash; reach out if you need help getting an accurate answer for such a file.</p>
+      <p><a href="api.html#spatial_mean"><code>spatial_mean</code></a> and similar methods need to calculate grid-cell area, but some data providers omit that metadata. When this happens NCToolkit prints a warning &mdash; reach out if you need help getting an accurate answer for such a file.</p>
     </div>
 
     <h2 id="vertical">Vertical grids</h2>
@@ -92,7 +92,7 @@
     <p>Any CF-compliant time axis should work without issue. CDO requires exactly one time axis per file &mdash; if a file has multiple, NCToolkit (via CDO) will pick one. This is rarely a problem except with unusually idiosyncratic time axes.</p>
 
     <h2 id="types">Data types</h2>
-    <p>NCToolkit supports every data type CDO supports: 32- and 64-bit floating point, and 8-, 16- and 32-bit integers. By default, calculations use whichever data type the source file was stored in. This is usually fine, but integer-typed files can occasionally give surprising results for calculations that should be floating point &mdash; see <a href="troubleshoot.html">Troubleshooting</a> for how to force a higher-precision type with <code>set_precision</code>.</p>
+    <p>NCToolkit supports every data type CDO supports: 32- and 64-bit floating point, and 8-, 16- and 32-bit integers. By default, calculations use whichever data type the source file was stored in. This is usually fine, but integer-typed files can occasionally give surprising results for calculations that should be floating point &mdash; see <a href="troubleshoot.html">Troubleshooting</a> for how to force a higher-precision type with <a href="api.html#set_precision"><code>set_precision</code></a>.</p>
     <p>Poorly-defined netCDF files &mdash; for example ones with badly specified maximum/fill values &mdash; can occasionally cause computational errors even for otherwise simple calculations.</p>
 
     <h2 id="cf">Checking CF-compliance</h2>

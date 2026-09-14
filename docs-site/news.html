@@ -64,7 +64,7 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M2 12h20"/></svg>
         v1.1.0
       </h3>
-      <p>Requires CDO 2.0.5 or above &mdash; support for CDO 1.9.10 and below was dropped, as its maintenance cost had grown relative to its remaining user base. Adds <code>invert</code> for inverting vertical levels and latitude, and improves the default diverging colour scale used by <code>pub_plot</code>.</p>
+      <p>Requires CDO 2.0.5 or above &mdash; support for CDO 1.9.10 and below was dropped, as its maintenance cost had grown relative to its remaining user base. Adds <code>invert</code> for inverting vertical levels and latitude, and improves the default diverging colour scale used by <a href="api.html#pub_plot"><code>pub_plot</code></a>.</p>
     </div>
 
     <div class="info-card" style="margin-bottom:1.4rem;">
@@ -72,7 +72,7 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M2 12h20"/></svg>
         v1.0.0
       </h3>
-      <p>Major release with breaking changes. Accessing a dataset attribute (e.g. <code>ds.times</code>) now forces evaluation, matching what most users would expect. <code>cdo_command</code> no longer validates commands before calling CDO by default &mdash; opt back in with its <code>check</code> argument. Internal improvements to <code>pub_plot</code>.</p>
+      <p>Major release with breaking changes. Accessing a dataset attribute (e.g. <a href="api.html#times"><code>ds.times</code></a>) now forces evaluation, matching what most users would expect. <a href="api.html#cdo_command"><code>cdo_command</code></a> no longer validates commands before calling CDO by default &mdash; opt back in with its <a href="api.html#check"><code>check</code></a> argument. Internal improvements to <a href="api.html#pub_plot"><code>pub_plot</code></a>.</p>
     </div>
 
     <div class="info-card" style="margin-bottom:1.4rem;">
@@ -80,7 +80,7 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M2 12h20"/></svg>
         v0.9.2
       </h3>
-      <p>Introduces <code>pub_plot</code>, a method for producing publication-quality static plots &mdash; core code contributed by Yuri Artioli (PML). Adds <code>set</code>, for renaming variables and changing units/long names more easily.</p>
+      <p>Introduces <a href="api.html#pub_plot"><code>pub_plot</code></a>, a method for producing publication-quality static plots &mdash; core code contributed by Yuri Artioli (PML). Adds <code>set</code>, for renaming variables and changing units/long names more easily.</p>
     </div>
 
     <div class="info-card" style="margin-bottom:1.4rem;">
@@ -88,7 +88,7 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M2 12h20"/></svg>
         v0.9.1
       </h3>
-      <p>Quick release fixing breaking changes to the arithmetic (<code>add</code>/<code>subtract</code>/etc.) methods caused by the release of pandas 2.0.0.</p>
+      <p>Quick release fixing breaking changes to the arithmetic (<a href="api.html#add"><code>add</code></a>/<a href="api.html#subtract"><code>subtract</code></a>/etc.) methods caused by the release of pandas 2.0.0.</p>
     </div>
 
     <div class="info-card" style="margin-bottom:1.4rem;">
@@ -104,7 +104,7 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M2 12h20"/></svg>
         v0.8.6
       </h3>
-      <p><code>regrid</code> and <code>to_latlon</code> gain a <code>one_grid</code> argument: when every file in a multi-file dataset shares a grid, only the first file needs checking, which is significantly faster. Fixes a confusing <code>TypeError</code> raised by parallel multi-file processing on Python 3.8/3.9.</p>
+      <p><a href="api.html#regrid"><code>regrid</code></a> and <a href="api.html#to_latlon"><code>to_latlon</code></a> gain a <code>one_grid</code> argument: when every file in a multi-file dataset shares a grid, only the first file needs checking, which is significantly faster. Fixes a confusing <code>TypeError</code> raised by parallel multi-file processing on Python 3.8/3.9.</p>
     </div>
 
     <div class="info-card">

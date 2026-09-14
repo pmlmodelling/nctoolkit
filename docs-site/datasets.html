@@ -88,7 +88,7 @@ ds = nc.open_data(infile)             <span class="tok-com"># a single file</spa
 ds = nc.open_data(file_list)          <span class="tok-com"># a list of files</span>
 ds = nc.open_data(<span class="tok-str">"data/*.nc"</span>)         <span class="tok-com"># a wildcard, i.e. a multi-file dataset</span></pre>
     </div>
-    <p>When you open a multi-file dataset, standard methods apply to each member file individually; to combine members, see <a href="ensembles.html">Ensembles &amp; multi-file datasets</a>. For a quick overview of what's inside a dataset, check <code>contents</code> &mdash; a dataframe of variables, units and long names:</p>
+    <p>When you open a multi-file dataset, standard methods apply to each member file individually; to combine members, see <a href="ensembles.html">Ensembles &amp; multi-file datasets</a>. For a quick overview of what's inside a dataset, check <a href="api.html#contents"><code>contents</code></a> &mdash; a dataframe of variables, units and long names:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.ltm.1981-2010.nc"</span>)
@@ -96,13 +96,13 @@ ds.contents</pre>
     </div>
 
     <h2 id="checking">Checking validity of source data</h2>
-    <p>NCToolkit should work out of the box with most netCDF data. However, the format could be incompatible with the system libraries NCToolkit relies on, or the files could simply be corrupt. Run a general check on the data with <code>check</code>:</p>
+    <p>NCToolkit should work out of the box with most netCDF data. However, the format could be incompatible with the system libraries NCToolkit relies on, or the files could simply be corrupt. Run a general check on the data with <a href="api.html#check"><code>check</code></a>:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds.check()</pre>
     </div>
-    <p>This runs basic checks on data format compatibility. Install <a href="https://anaconda.org/conda-forge/cfchecker" target="_blank" rel="noopener">cfchecker</a> if you also want <code>check</code> to verify CF-compliance.</p>
-    <p>To check whether the files in a dataset are corrupt, use <code>is_corrupt</code> &mdash; it reads and writes the source data to a temporary file, which is enough to catch corruption:</p>
+    <p>This runs basic checks on data format compatibility. Install <a href="https://anaconda.org/conda-forge/cfchecker" target="_blank" rel="noopener">cfchecker</a> if you also want <a href="api.html#check"><code>check</code></a> to verify CF-compliance.</p>
+    <p>To check whether the files in a dataset are corrupt, use <a href="api.html#is_corrupt"><code>is_corrupt</code></a> &mdash; it reads and writes the source data to a temporary file, which is enough to catch corruption:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds.is_corrupt()</pre>
@@ -116,7 +116,7 @@ ds.contents</pre>
 ds.subset(time=<span class="tok-num">0</span>)
 ds.plot()</pre>
     </div>
-    <p>Underlying datasets are temporary files representing the current state of the dataset, accessible via the <code>current</code> attribute:</p>
+    <p>Underlying datasets are temporary files representing the current state of the dataset, accessible via the <a href="api.html#current"><code>current</code></a> attribute:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds.current</pre>
@@ -133,13 +133,13 @@ ds.subset(months=<span class="tok-num">1</span>)
 ds.subset(lon=[-<span class="tok-num">80</span>, <span class="tok-num">20</span>], lat=[<span class="tok-num">30</span>, <span class="tok-num">70</span>])
 ds.spatial_mean()</pre>
     </div>
-    <p>NCToolkit has been told what to do to the dataset, but hasn't been told to actually do any of it. Checking <code>ds.current</code> at this point still shows the starting file. To evaluate the chain, use <code>run()</code> &mdash; or any method that needs a result, such as <code>plot()</code>:</p>
+    <p>NCToolkit has been told what to do to the dataset, but hasn't been told to actually do any of it. Checking <a href="api.html#current"><code>ds.current</code></a> at this point still shows the starting file. To evaluate the chain, use <a href="api.html#run"><code>run()</code></a> &mdash; or any method that needs a result, such as <a href="api.html#plot"><code>plot()</code></a>:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds.run()
 ds.current</pre>
     </div>
-    <p>This chaining ability comes from Climate Data Operators (CDO), NCToolkit's backend computational engine. You don't need to understand CDO to use NCToolkit, but if you want to see the underlying commands, use the <code>history</code> attribute &mdash; before running, it shows the four lines of Python queued up; after running, a single CDO command:</p>
+    <p>This chaining ability comes from Climate Data Operators (CDO), NCToolkit's backend computational engine. You don't need to understand CDO to use NCToolkit, but if you want to see the underlying commands, use the <a href="api.html#history"><code>history</code></a> attribute &mdash; before running, it shows the four lines of Python queued up; after running, a single CDO command:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds.history    <span class="tok-com"># before run() -- queued Python operations</span>
@@ -172,12 +172,12 @@ ds.add(<span class="tok-num">1</span>)</pre>
       <table>
         <thead><tr><th>Attribute</th><th>Description</th></tr></thead>
         <tbody>
-          <tr><td><code>ds.variables</code></td><td>Variable names in the dataset.</td></tr>
-          <tr><td><code>ds.contents</code></td><td>A dataframe of variables with units, long names and other metadata.</td></tr>
-          <tr><td><code>ds.times</code> / <code>years</code> / <code>months</code></td><td>Time steps, years, or months present.</td></tr>
-          <tr><td><code>ds.levels</code></td><td>Vertical levels present.</td></tr>
-          <tr><td><code>ds.current</code></td><td>The current temporary file(s) representing dataset state.</td></tr>
-          <tr><td><code>ds.history</code></td><td>The CDO command(s) generated by the operations run so far.</td></tr>
+          <tr><td><a href="api.html#variables-attr"><code>ds.variables</code></a></td><td>Variable names in the dataset.</td></tr>
+          <tr><td><a href="api.html#contents"><code>ds.contents</code></a></td><td>A dataframe of variables with units, long names and other metadata.</td></tr>
+          <tr><td><a href="api.html#times"><code>ds.times</code></a> / <a href="api.html#years"><code>years</code></a> / <a href="api.html#months"><code>months</code></a></td><td>Time steps, years, or months present.</td></tr>
+          <tr><td><a href="api.html#levels"><code>ds.levels</code></a></td><td>Vertical levels present.</td></tr>
+          <tr><td><a href="api.html#current"><code>ds.current</code></a></td><td>The current temporary file(s) representing dataset state.</td></tr>
+          <tr><td><a href="api.html#history"><code>ds.history</code></a></td><td>The CDO command(s) generated by the operations run so far.</td></tr>
         </tbody>
       </table>
     </div>

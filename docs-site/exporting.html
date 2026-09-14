@@ -81,7 +81,7 @@
       <pre><span class="tok-kw">import</span> nctoolkit <span class="tok-kw">as</span> nc
 ds = nc.open_data(infile)</pre>
     </div>
-    <p><code>open_data</code> can also import multiple files, either as a list, or using a wildcard over a folder:</p>
+    <p><a href="api.html#open_data"><code>open_data</code></a> can also import multiple files, either as a list, or using a wildcard over a folder:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds = nc.open_data(file_list)
@@ -89,21 +89,21 @@ ds = nc.open_data(<span class="tok-str">"data/*.nc"</span>)</pre>
     </div>
 
     <h2 id="opening-url">Opening files from urls/ftp</h2>
-    <p>To work with a file available at a url or ftp address, use <code>open_url</code>. This downloads the file to a temporary folder first, then opens it:</p>
+    <p>To work with a file available at a url or ftp address, use <a href="api.html#open_url"><code>open_url</code></a>. This downloads the file to a temporary folder first, then opens it:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds = nc.open_url(<span class="tok-str">"www.foo.nc"</span>)</pre>
     </div>
 
     <h2 id="opening-thredds">Opening data over thredds servers or OPeNDAP</h2>
-    <p>To work with data available over a thredds server or OPeNDAP, use <code>open_thredds</code>. The url must end with <code>.nc</code>:</p>
+    <p>To work with data available over a thredds server or OPeNDAP, use <a href="api.html#open_thredds"><code>open_thredds</code></a>. The url must end with <code>.nc</code>:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds = nc.open_thredds(<span class="tok-str">"www.foo.nc"</span>)</pre>
     </div>
 
     <h2 id="exporting">Save as netCDF</h2>
-    <p>The method <code>to_nc</code> lets you export a dataset to a netCDF file. Use <code>zip</code> first if you want a compressed file:</p>
+    <p>The method <a href="api.html#to_nc"><code>to_nc</code></a> lets you export a dataset to a netCDF file. Use <a href="api.html#zip"><code>zip</code></a> first if you want a compressed file:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds = nc.open_data(infile)
@@ -113,7 +113,7 @@ ds.<a href="api.html#exporting"><span class="tok-fn">to_nc</span></a>(outfile)</
     </div>
 
     <h2 id="pandas-xarray">pandas &amp; xarray</h2>
-    <p><code>to_dataframe</code> exports to a pandas dataframe, and <code>to_xarray</code>/<code>from_xarray</code> move a dataset to and from xarray:</p>
+    <p><a href="api.html#to_dataframe"><code>to_dataframe</code></a> exports to a pandas dataframe, and <a href="api.html#to_xarray"><code>to_xarray</code></a>/<a href="api.html#from_xarray"><code>from_xarray</code></a> move a dataset to and from xarray:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds = nc.open_data(infile)
@@ -125,7 +125,7 @@ ds2 = nc.<a href="api.html#opening"><span class="tok-fn">from_xarray</span></a>(
     </div>
 
     <h2 id="subset-export">Exporting a subset</h2>
-    <p>Pass <a href="subsetting.html"><code>subset</code></a> arguments straight to <code>to_nc</code>, <code>to_xarray</code> or <code>to_dataframe</code> to export only part of a dataset:</p>
+    <p>Pass <a href="subsetting.html"><code>subset</code></a> arguments straight to <a href="api.html#to_nc"><code>to_nc</code></a>, <a href="api.html#to_xarray"><code>to_xarray</code></a> or <a href="api.html#to_dataframe"><code>to_dataframe</code></a> to export only part of a dataset:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds.to_xarray(year=<span class="tok-num">2000</span>)

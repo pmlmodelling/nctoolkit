@@ -71,12 +71,12 @@
   <div class="docs-content">
 
     <h2 id="assign">Creating new variables</h2>
-    <p>Variable creation is done with <code>assign</code>, which works in a similar way to the method available in pandas, using lambda functions evaluated per grid cell, per time step. Let's say we have a dataset with a variable <code>var</code> and want to add 10 to it, calling the new variable <code>new</code>:</p>
+    <p>Variable creation is done with <a href="api.html#assign"><code>assign</code></a>, which works in a similar way to the method available in pandas, using lambda functions evaluated per grid cell, per time step. Let's say we have a dataset with a variable <code>var</code> and want to add 10 to it, calling the new variable <code>new</code>:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds.assign(new=<span class="tok-kw">lambda</span> x: x.var + <span class="tok-num">10</span>)</pre>
     </div>
-    <p>The <code>x</code> after <code>lambda</code> represents the dataset; whatever follows the colon is the actual equation to evaluate, and <code>x.var</code> refers to <code>var</code> from the dataset. By default <code>assign</code> keeps the original variables &mdash; use <code>drop</code> to keep only the new one(s):</p>
+    <p>The <code>x</code> after <code>lambda</code> represents the dataset; whatever follows the colon is the actual equation to evaluate, and <code>x.var</code> refers to <code>var</code> from the dataset. By default <a href="api.html#assign"><code>assign</code></a> keeps the original variables &mdash; use <code>drop</code> to keep only the new one(s):</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds.assign(new=<span class="tok-kw">lambda</span> x: x.var + <span class="tok-num">10</span>, drop=<span class="tok-kw">True</span>)</pre>
@@ -86,9 +86,9 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         Write assign on a single line
       </div>
-      <p>Each call to <code>assign</code> currently needs to be written on one line &mdash; splitting the arguments across multiple lines will not parse correctly.</p>
+      <p>Each call to <a href="api.html#assign"><code>assign</code></a> currently needs to be written on one line &mdash; splitting the arguments across multiple lines will not parse correctly.</p>
     </div>
-    <p><code>assign</code> uses kwargs, so <code>drop</code> can go anywhere in the call &mdash; the following are equivalent:</p>
+    <p><a href="api.html#assign"><code>assign</code></a> uses kwargs, so <code>drop</code> can go anywhere in the call &mdash; the following are equivalent:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds.assign(new=<span class="tok-kw">lambda</span> x: x.var + <span class="tok-num">10</span>, drop=<span class="tok-kw">True</span>)
@@ -105,7 +105,7 @@ ds.assign(drop=<span class="tok-kw">True</span>, new=<span class="tok-kw">lambda
       <pre>k = <span class="tok-num">273.15</span>
 ds.assign(drop=<span class="tok-kw">True</span>, sst_k=<span class="tok-kw">lambda</span> x: x.sst + k)</pre>
     </div>
-    <p>But if that constant isn't actually a number, <code>assign</code> will throw an error:</p>
+    <p>But if that constant isn't actually a number, <a href="api.html#assign"><code>assign</code></a> will throw an error:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>k = <span class="tok-str">"273.15"</span>   <span class="tok-com"># a string, not a number</span>
@@ -121,7 +121,7 @@ ds.assign(new=<span class="tok-kw">lambda</span> x: log10(x.old + <span class="t
     </div>
 
     <h2 id="spatial">Using spatial statistics</h2>
-    <p><code>assign</code> carries out its calculations at each time step, and you can access spatial statistics for each time step while generating new variables: <code>spatial_mean</code>, <code>spatial_max</code>, <code>spatial_min</code>, <code>spatial_sum</code>, <code>vertical_mean</code>, <code>vertical_max</code>, <code>vertical_min</code>, <code>vertical_sum</code>, <code>zonal_mean</code>, <code>zonal_max</code>, <code>zonal_min</code> and <code>zonal_sum</code>. See the full list of helper functions on the <a href="api.html#assign-functions">API reference</a>.</p>
+    <p><a href="api.html#assign"><code>assign</code></a> carries out its calculations at each time step, and you can access spatial statistics for each time step while generating new variables: <code>spatial_mean</code>, <code>spatial_max</code>, <code>spatial_min</code>, <code>spatial_sum</code>, <code>vertical_mean</code>, <code>vertical_max</code>, <code>vertical_min</code>, <code>vertical_sum</code>, <code>zonal_mean</code>, <code>zonal_max</code>, <code>zonal_min</code> and <code>zonal_sum</code>. See the full list of helper functions on the <a href="api.html#assign-functions">API reference</a>.</p>
     <p>For example, mapping how much warmer than the global mean each part of the ocean is:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
@@ -144,15 +144,15 @@ ds.assign(new=<span class="tok-kw">lambda</span> x: log10(x.old + <span class="t
     </div>
 
     <h2 id="arithmetic">Simple arithmetic &amp; comparisons</h2>
-    <p>For simple operations like adding or subtracting a constant, or combining two datasets, use <code>add</code>, <code>subtract</code>, <code>divide</code> and <code>multiply</code> &mdash; or the equivalent Python operators directly on datasets:</p>
+    <p>For simple operations like adding or subtracting a constant, or combining two datasets, use <a href="api.html#add"><code>add</code></a>, <a href="api.html#subtract"><code>subtract</code></a>, <a href="api.html#divide"><code>divide</code></a> and <a href="api.html#multiply"><code>multiply</code></a> &mdash; or the equivalent Python operators directly on datasets:</p>
     <div class="table-wrap">
       <table>
         <thead><tr><th>Operator</th><th>Method</th></tr></thead>
         <tbody>
-          <tr><td><code>+</code></td><td><code>add</code></td></tr>
-          <tr><td><code>-</code></td><td><code>subtract</code></td></tr>
-          <tr><td><code>/</code></td><td><code>divide</code></td></tr>
-          <tr><td><code>*</code></td><td><code>multiply</code></td></tr>
+          <tr><td><code>+</code></td><td><a href="api.html#add"><code>add</code></a></td></tr>
+          <tr><td><code>-</code></td><td><a href="api.html#subtract"><code>subtract</code></a></td></tr>
+          <tr><td><code>/</code></td><td><a href="api.html#divide"><code>divide</code></a></td></tr>
+          <tr><td><code>*</code></td><td><a href="api.html#multiply"><code>multiply</code></a></td></tr>
         </tbody>
       </table>
     </div>
@@ -162,7 +162,7 @@ ds.assign(new=<span class="tok-kw">lambda</span> x: log10(x.old + <span class="t
 ds1.add(ds2)        <span class="tok-com"># or: ds1 + ds2</span></pre>
     </div>
     <p>These methods require the datasets to be structured compatibly &mdash; each dimension must either match exactly, or one dataset must have a single value for that dimension (which is then applied to every matching step in the other). See <a href="adding.html">Simple arithmetic &amp; comparisons</a> for worked examples of subtracting a monthly or annual climatology from a longer time series.</p>
-    <p>Logical comparisons follow the same pattern &mdash; <code>compare</code>, or the Python operators directly:</p>
+    <p>Logical comparisons follow the same pattern &mdash; <a href="api.html#compare"><code>compare</code></a>, or the Python operators directly:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds.compare(<span class="tok-str">">0"</span>)      <span class="tok-com"># or: ds > 0</span>

@@ -74,14 +74,14 @@
   <div class="docs-content">
 
     <h2 id="missing">Handling missing values</h2>
-    <p>NCToolkit has built-in methods for setting or changing missing values: <code>as_missing</code>, <code>missing_as</code> and <code>set_fill</code>.</p>
-    <p>Change a value, or range of values, to missing with <code>as_missing</code> &mdash; here, zeroes, and then everything from -1000 to 0:</p>
+    <p>NCToolkit has built-in methods for setting or changing missing values: <a href="api.html#as_missing"><code>as_missing</code></a>, <a href="api.html#missing_as"><code>missing_as</code></a> and <a href="api.html#set_fill"><code>set_fill</code></a>.</p>
+    <p>Change a value, or range of values, to missing with <a href="api.html#as_missing"><code>as_missing</code></a> &mdash; here, zeroes, and then everything from -1000 to 0:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds.as_missing(<span class="tok-num">0</span>)
 ds.as_missing([-<span class="tok-num">1000</span>, <span class="tok-num">0</span>])</pre>
     </div>
-    <p>Change missing values to a constant with <code>missing_as</code>, or change the netCDF fill value itself with <code>set_fill</code> &mdash; handy when combining files that used different fill values:</p>
+    <p>Change missing values to a constant with <a href="api.html#missing_as"><code>missing_as</code></a>, or change the netCDF fill value itself with <a href="api.html#set_fill"><code>set_fill</code></a> &mdash; handy when combining files that used different fill values:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds.missing_as(-<span class="tok-num">9999.99</span>)
@@ -89,7 +89,7 @@ ds.set_fill(-<span class="tok-num">9e38</span>)</pre>
     </div>
 
     <h2 id="time">Shifting time</h2>
-    <p>If you're missing a year of data and want to reuse the prior year's values, you'll first need to shift its times forward by a year. <code>shift</code> moves time forward or backward by hours, days, months or years:</p>
+    <p>If you're missing a year of data and want to reuse the prior year's values, you'll first need to shift its times forward by a year. <a href="api.html#shift"><code>shift</code></a> moves time forward or backward by hours, days, months or years:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds.shift(years=-<span class="tok-num">1</span>)   <span class="tok-com"># shift backward one year</span>
@@ -107,7 +107,7 @@ ds.cell_area(join=<span class="tok-kw">False</span>)   <span class="tok-com"># d
     <p>This only works where it's possible to calculate the area of each grid cell from the file's metadata.</p>
 
     <h2 id="format">Changing netCDF format</h2>
-    <p><code>format</code> sets the netCDF format used for the files in a dataset:</p>
+    <p><a href="api.html#format"><code>format</code></a> sets the netCDF format used for the files in a dataset:</p>
     <div class="table-wrap">
       <table>
         <thead><tr><th>Format</th><th>Value</th></tr></thead>
@@ -126,7 +126,7 @@ ds.cell_area(join=<span class="tok-kw">False</span>)   <span class="tok-com"># d
     </div>
 
     <h2 id="dims">Dimensions with only one value</h2>
-    <p>Drop a dimension that only has one value &mdash; a single leftover time step, say &mdash; with <code>reduce_dims</code>:</p>
+    <p>Drop a dimension that only has one value &mdash; a single leftover time step, say &mdash; with <a href="api.html#reduce_dims"><code>reduce_dims</code></a>:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds.reduce_dims()</pre>
@@ -139,7 +139,7 @@ ds.cell_area(join=<span class="tok-kw">False</span>)   <span class="tok-com"># d
     </div>
 
     <h2 id="rename">Renaming variables</h2>
-    <p>Use <code>rename</code> with a dictionary mapping original names to new ones:</p>
+    <p>Use <a href="api.html#rename"><code>rename</code></a> with a dictionary mapping original names to new ones:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds.rename({<span class="tok-str">"x"</span>: <span class="tok-str">"y"</span>})</pre>

@@ -53,7 +53,7 @@
   <div class="container">
     <div class="breadcrumb"><a href="index.html">Home</a> / <a href="guide.html">User Guide</a> / Subsetting data</div>
     <h1>Subsetting data</h1>
-    <p class="lead">The main method for selecting parts of a dataset is <code>subset</code>. Its arguments allow partial matches &mdash; <code>year</code> works the same as <code>years</code>.</p>
+    <p class="lead">The main method for selecting parts of a dataset is <a href="api.html#subset"><code>subset</code></a>. Its arguments allow partial matches &mdash; <code>year</code> works the same as <code>years</code>.</p>
   </div>
 </div>
 
@@ -86,7 +86,7 @@ ds.subset(variables=<span class="tok-str">"var1"</span>)</pre>
 ds.subset(years=<span class="tok-num">2000</span>)               <span class="tok-com"># a single year works too</span>
 ds.subset(years=range(<span class="tok-num">2000</span>, <span class="tok-num">2010</span>))</pre>
     </div>
-    <p><code>subset</code> allows partial matches for its arguments, so the following is equivalent to selecting <code>years=2000</code>:</p>
+    <p><a href="api.html#subset"><code>subset</code></a> allows partial matches for its arguments, so the following is equivalent to selecting <code>years=2000</code>:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds.subset(year=<span class="tok-num">2000</span>)</pre>

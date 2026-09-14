@@ -72,7 +72,7 @@
   <div class="docs-content">
 
     <h2 id="stats">Core statistics</h2>
-    <p>A family of methods prefixed with <code>t</code> calculates temporal statistics: <code>tmean</code>, <code>tmin</code>, <code>tmax</code>, <code>trange</code>, <code>tpercentile</code>, <code>tmedian</code>, <code>tvariance</code>, <code>tstdev</code> and <code>tcumsum</code>.</p>
+    <p>A family of methods prefixed with <code>t</code> calculates temporal statistics: <a href="api.html#tmean"><code>tmean</code></a>, <a href="api.html#tmin"><code>tmin</code></a>, <a href="api.html#tmax"><code>tmax</code></a>, <a href="api.html#trange"><code>trange</code></a>, <a href="api.html#tpercentile"><code>tpercentile</code></a>, <a href="api.html#tmedian"><code>tmedian</code></a>, <code>tvariance</code>, <a href="api.html#tstdev"><code>tstdev</code></a> and <a href="api.html#tcumsum"><code>tcumsum</code></a>.</p>
     <p>By default they average over all available time steps. Use <code>over</code> to average within groups &mdash; <code>"day"</code> (day of year), <code>"month"</code>, <code>"year"</code>, or <code>"season"</code>:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
@@ -83,7 +83,7 @@ ds.tmean(<span class="tok-str">"season"</span>)            <span class="tok-com"
     </div>
 
     <h2 id="rolling">Rolling statistics</h2>
-    <p><code>rolling_mean</code>, <code>rolling_min</code>, <code>rolling_max</code>, <code>rolling_range</code> and <code>rolling_sum</code> compute a statistic over a moving window of time steps:</p>
+    <p><a href="api.html#rolling_mean"><code>rolling_mean</code></a>, <a href="api.html#rolling_min"><code>rolling_min</code></a>, <a href="api.html#rolling_max"><code>rolling_max</code></a>, <a href="api.html#rolling_range"><code>rolling_range</code></a> and <a href="api.html#rolling_sum"><code>rolling_sum</code></a> compute a statistic over a moving window of time steps:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds.rolling_mean(<span class="tok-num">7</span>)   <span class="tok-com"># rolling weekly mean, for daily data</span>
@@ -91,7 +91,7 @@ ds.rolling_sum(<span class="tok-num">7</span>)    <span class="tok-com"># rollin
     </div>
 
     <h2 id="anomalies">Anomalies</h2>
-    <p><code>annual_anomaly</code> and <code>monthly_anomaly</code> both need a baseline period:</p>
+    <p><a href="api.html#annual_anomaly"><code>annual_anomaly</code></a> and <a href="api.html#monthly_anomaly"><code>monthly_anomaly</code></a> both need a baseline period:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds.annual_anomaly(baseline=[<span class="tok-num">1950</span>, <span class="tok-num">1969</span>])
@@ -102,7 +102,7 @@ ds.monthly_anomaly(baseline=[<span class="tok-num">1950</span>, <span class="tok
     <p>By default the anomaly is an absolute difference from the baseline mean; <code>metric="relative"</code> gives a relative change instead.</p>
 
     <h2 id="climatologies">Calculating climatologies</h2>
-    <p>Climatologies fall directly out of <code>tmean</code>. A seasonal climatology:</p>
+    <p>Climatologies fall directly out of <a href="api.html#tmean"><code>tmean</code></a>. A seasonal climatology:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds.tmean(<span class="tok-str">"season"</span>)</pre>

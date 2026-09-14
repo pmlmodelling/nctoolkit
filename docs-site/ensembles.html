@@ -80,7 +80,7 @@ ds.tmean()   <span class="tok-com"># applied independently to each file in the e
     <p>This operation only applies to individual members of the multi-file dataset &mdash; to calculate statistics <em>across</em> the ensemble, see <a href="#stats">Ensemble statistics</a> below.</p>
 
     <h2 id="merging">Merging</h2>
-    <p>Two merge strategies are available via <code>merge</code>:</p>
+    <p>Two merge strategies are available via <a href="api.html#merge"><code>merge</code></a>:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds.merge(<span class="tok-str">"time"</span>)       <span class="tok-com"># files share variables/grid, distinct times</span>
@@ -89,7 +89,7 @@ ds.merge(<span class="tok-str">"variable"</span>)   <span class="tok-com"># file
     <p>Merge by time when files have the same variables and grids but distinct times. Merge by variable when files share time steps, or one file has at most one time step.</p>
 
     <h2 id="stats">Ensemble statistics</h2>
-    <p>To calculate a statistic <em>across</em> ensemble members (e.g. across climate models) rather than within each one, use the ensemble methods: <code>ensemble_mean</code>, <code>ensemble_percentile</code>, <code>ensemble_stdev</code>, <code>ensemble_var</code>, <code>ensemble_max</code>, <code>ensemble_min</code>, <code>ensemble_range</code> and <code>ensemble_sum</code>.</p>
+    <p>To calculate a statistic <em>across</em> ensemble members (e.g. across climate models) rather than within each one, use the ensemble methods: <a href="api.html#ensemble_mean"><code>ensemble_mean</code></a>, <a href="api.html#ensemble_percentile"><code>ensemble_percentile</code></a>, <a href="api.html#ensemble_stdev"><code>ensemble_stdev</code></a>, <a href="api.html#ensemble_var"><code>ensemble_var</code></a>, <a href="api.html#ensemble_max"><code>ensemble_max</code></a>, <a href="api.html#ensemble_min"><code>ensemble_min</code></a>, <a href="api.html#ensemble_range"><code>ensemble_range</code></a> and <a href="api.html#ensemble_sum"><code>ensemble_sum</code></a>.</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds.ensemble_mean()   <span class="tok-com"># e.g. monthly mean across 20 climate models</span></pre>
