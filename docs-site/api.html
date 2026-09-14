@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>API Reference — NCToolkit</title>
-<meta name="description" content="Full method reference for NCToolkit's DataSet class and module-level functions, grouped by category: opening data, subsetting, statistics, interpolation, plotting, and more.">
+<meta name="description" content="Complete function and method reference for NCToolkit, with full parameter details for every entry, grouped by category: opening data, subsetting, statistics, interpolation, plotting, and more.">
 <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -53,7 +53,7 @@
   <div class="container">
     <div class="breadcrumb"><a href="index.html">Home</a> / API reference</div>
     <h1>API reference</h1>
-    <p class="lead">Every method NCToolkit exposes, grouped by what it does. Unless noted otherwise, methods are called on a <code>DataSet</code> object (what <code>open_data()</code> and friends return).</p>
+    <p class="lead">Every function and method NCToolkit exposes, grouped by what it does, with full parameter details. Unless shown as <code>nc.</code>, calls are methods on a <code>DataSet</code> object (what <code>open_data()</code> and friends return) &mdash; expand "Parameters" on any entry for the complete argument list.</p>
   </div>
 </div>
 
@@ -64,11 +64,11 @@
       <li><a href="#options">Session options</a></li>
       <li><a href="#opening">Opening &amp; copying data</a></li>
       <li><a href="#attributes">Accessing attributes</a></li>
-      <li><a href="#subsetting">Subsetting &amp; time</a></li>
-      <li><a href="#statistics">Statistics</a></li>
+      <li><a href="#subsetting">Subsetting &amp; time-based methods</a></li>
+      <li><a href="#statistics">Statistical methods</a></li>
       <li><a href="#vertical">Vertical methods</a></li>
-      <li><a href="#interpolation">Interpolation &amp; matching</a></li>
-      <li><a href="#matchpoint">Point matchups &amp; ecology</a></li>
+      <li><a href="#interpolation">Interpolation, matching &amp; resampling</a></li>
+      <li><a href="#matchpoint">Point matchups &amp; ecological methods</a></li>
       <li><a href="#ensembles">Ensembles &amp; merging</a></li>
       <li><a href="#arithmetic">Arithmetic &amp; comparisons</a></li>
       <li><a href="#assign-functions">Functions for assign()</a></li>
@@ -81,109 +81,1520 @@
   </aside>
 
   <div class="docs-content">
+    <span class="kicker" id="options">Session options</span>
 
-    <h2 id="options">Session options</h2>
-    <div class="table-wrap"><table><tbody>
-      <tr><td><code>options(...)</code></td><td>Set global session settings &mdash; <code>cores</code>, <code>temp_dir</code>, <code>progress</code>, <code>lazy</code>, <code>parallel</code>. See <a href="globals.html">Global settings</a>.</td></tr>
-    </tbody></table></div>
+    <div class="api-card" id="options-fn">
+      <div class="api-card__head"><div class="sig">nc.options(**kwargs)</div></div>
+      <div class="api-card__body">
+        <p>Define session options.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">kwargs</code><p>Define options using key/value pairs. Set <code>thread_safe=True</code> if HDF5 was built to be thread-safe. Set <code>lazy=False</code> if you want methods to evaluate non-lazily. Set <code>cores=n</code> to process the individual files in a multi-file dataset in parallel &mdash; only affects multi-file datasets. Set <code>temp_dir="/foo"</code> to change the directory NCToolkit uses to save temporary files. Set <code>progress</code> to <code>"on"</code> or <code>"off"</code> to always or never show a progress bar for multi-file processing; defaults to <code>"auto"</code>.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
 
-    <h2 id="opening">Opening &amp; copying data</h2>
-    <div class="table-wrap"><table><tbody>
-      <tr><td><code>open_data(path)</code></td><td>Open one or more local netCDF files. Accepts a path, list, or wildcard.</td></tr>
-      <tr><td><code>open_url(url)</code></td><td>Download a file from a URL or ftp address, then open it.</td></tr>
-      <tr><td><code>open_thredds(url)</code></td><td>Open data served over a thredds/OPeNDAP endpoint (must end in <code>.nc</code>).</td></tr>
-      <tr><td><code>open_geotiff(path)</code></td><td>Open a GeoTIFF file as a dataset.</td></tr>
-      <tr><td><code>from_xarray(ds)</code></td><td>Create a dataset from an existing xarray Dataset.</td></tr>
-      <tr><td><code>create_ensemble(dir)</code></td><td>List the files in a directory as an ensemble, for use with <code>open_data</code> or parallel processing.</td></tr>
-      <tr><td><code>DataSet.copy()</code></td><td>Return an independent copy of a dataset.</td></tr>
-    </tbody></table></div>
+    <hr class="divider">
 
-    <h2 id="attributes">Accessing attributes</h2>
-    <div class="table-wrap"><table><tbody>
-      <tr><td><code>DataSet.variables</code></td><td>Variable names in the dataset.</td></tr>
-      <tr><td><code>DataSet.contents</code></td><td>Dataframe of variables, units, long names and data types.</td></tr>
-      <tr><td><code>DataSet.times</code> / <code>years</code> / <code>months</code></td><td>Time steps / years / months present.</td></tr>
-      <tr><td><code>DataSet.levels</code></td><td>Vertical levels present.</td></tr>
-      <tr><td><code>DataSet.size</code></td><td>Size of the dataset's temporary file(s).</td></tr>
-      <tr><td><code>DataSet.current</code></td><td>Current temporary file(s) representing dataset state.</td></tr>
-      <tr><td><code>DataSet.history</code></td><td>CDO command(s) generated by operations run so far.</td></tr>
-      <tr><td><code>DataSet.start</code></td><td>Start date of the dataset.</td></tr>
-      <tr><td><code>DataSet.calendar</code></td><td>Calendar type used by the time axis.</td></tr>
-      <tr><td><code>DataSet.ncformat</code></td><td>netCDF format of the underlying file(s).</td></tr>
-    </tbody></table></div>
+    <span class="kicker" id="opening">Opening &amp; copying data</span>
 
-    <h2 id="subsetting">Subsetting &amp; time-based methods</h2>
-    <div class="table-wrap"><table><tbody>
-      <tr><td><code>DataSet.subset(...)</code></td><td>Select variables, years, months, seasons, timesteps or a lon/lat box. See <a href="subsetting.html">Subsetting data</a>.</td></tr>
-      <tr><td><code>DataSet.crop(...)</code></td><td>Geographic subsetting to a lon/lat box.</td></tr>
-      <tr><td><code>DataSet.drop(...)</code></td><td>Drop specific times, e.g. leap days.</td></tr>
-      <tr><td><code>DataSet.set_date(...)</code></td><td>Set/override the start date of a dataset.</td></tr>
-      <tr><td><code>DataSet.set_day(...)</code></td><td>Set the day-of-month used for time steps.</td></tr>
-      <tr><td><code>DataSet.shift(...)</code></td><td>Shift time forward or backward by hours, days, months or years.</td></tr>
-    </tbody></table></div>
+    <div class="api-card" id="open_data">
+      <div class="api-card__head"><div class="sig">nc.open_data(x=[], checks=True, **kwargs)</div></div>
+      <div class="api-card__body">
+        <p>Read netCDF data as a Dataset object</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">x</code><p>A string or list of netCDF files or a single url. The function will check the files exist. If x is not a list, but an iterable it will be converted to a list. If a *.nc style wildcard is supplied, open_data will use all files available. By default an empty dataset is created, ie. using open_data() will create an empty dataset that can then be expanded using append.</p></li>
+            <li><code class="param-name">checks</code><p>Do you want basic checks to ensure cdo can read files? Default to True. Setting to False can result in a minor speed up.</p></li>
+            <li><code class="param-name">kwargs</code><p>Optional arguments for internal use by open_thredds and open_url.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
 
-    <h2 id="statistics">Statistical methods</h2>
-    <p>Temporal statistics (prefixed <code>t</code>), each accepting an optional <code>over</code> grouping of <code>"day"</code>/<code>"month"</code>/<code>"year"</code>/<code>"season"</code> &mdash; see <a href="temporals.html">Temporal statistics</a>:</p>
-    <div class="table-wrap"><table><tbody>
-      <tr><td><code>DataSet.tmean / tmin / tmax / tmedian / tsum / trange / tstdev / tvar / tpercentile / tcumsum</code></td><td>Mean, min, max, median, sum, range, standard deviation, variance, percentile, or cumulative sum over time.</td></tr>
-      <tr><td><code>DataSet.rolling_mean / rolling_min / rolling_max / rolling_sum / rolling_range / rolling_stdev / rolling_var</code></td><td>The same statistics over a moving window of time steps.</td></tr>
-      <tr><td><code>DataSet.annual_anomaly / monthly_anomaly</code></td><td>Anomaly relative to a baseline period, absolute or relative, optionally smoothed with a rolling window.</td></tr>
-    </tbody></table></div>
-    <p>Spatial and zonal statistics:</p>
-    <div class="table-wrap"><table><tbody>
-      <tr><td><code>DataSet.spatial_mean / spatial_min / spatial_max / spatial_sum / spatial_range / spatial_stdev / spatial_var / spatial_percentile</code></td><td>Statistic across the horizontal domain at each time step.</td></tr>
-      <tr><td><code>DataSet.zonal_mean / zonal_min / zonal_max / zonal_range / zonal_sum</code></td><td>Statistic along lines of latitude.</td></tr>
-      <tr><td><code>DataSet.meridonial_mean / meridonial_min / meridonial_max / meridonial_range</code></td><td>Statistic along lines of longitude.</td></tr>
-      <tr><td><code>DataSet.centre()</code></td><td>Centre a variable by removing its spatial mean.</td></tr>
-      <tr><td><code>DataSet.cor_space(...) / cor_time(...)</code></td><td>Spatial or temporal correlation between variables or datasets.</td></tr>
-    </tbody></table></div>
+    <div class="api-card" id="open_url">
+      <div class="api-card__head"><div class="sig">nc.open_url(x=None, ftp_details=None, wait=None, file_stop=None)</div></div>
+      <div class="api-card__body">
+        <p>Read netCDF data from a url as a DataSet object</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <p>Required:</p>
+          <ul class="param-list">
+            <li><code class="param-name">x</code><span class="param-tag">required</span><p>A string with a url. Prior to processing data will be downloaded to a temp folder.</p></li>
+          </ul>
+          <p>Optional:</p>
+          <ul class="param-list">
+            <li><code class="param-name">ftp_details</code><p>A dictionary giving the user name and password combination for ftp downloads: {<code>"user"</code>:user, <code>"password"</code>:pass}</p></li>
+            <li><code class="param-name">wait</code><p>Time to wait, in seconds, for data to download. A minimum of 3 attempts will be made to download the data.</p></li>
+            <li><code class="param-name">file_stop</code><p>Time limit, in minutes, for individual attempts at downloading data. This is useful to get around download freezes.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
 
-    <h2 id="vertical">Vertical methods</h2>
-    <div class="table-wrap"><table><tbody>
-      <tr><td><code>DataSet.top() / bottom()</code></td><td>Select the surface (or sea-floor) vertical level.</td></tr>
-      <tr><td><code>DataSet.vertical_interp(levels, fixed)</code></td><td>Interpolate to specified vertical levels.</td></tr>
-      <tr><td><code>DataSet.vertical_mean / vertical_min / vertical_max / vertical_range / vertical_sum</code></td><td>Statistic across vertical levels, thickness-weighted where available.</td></tr>
-      <tr><td><code>DataSet.vertical_integration()</code></td><td>Full water-column total, accounting for cell thickness.</td></tr>
-      <tr><td><code>DataSet.vertical_cumsum()</code></td><td>Cumulative sum with depth/height.</td></tr>
-      <tr><td><code>DataSet.invert_levels()</code></td><td>Reverse the order of vertical levels.</td></tr>
-      <tr><td><code>DataSet.bottom_mask()</code></td><td>Mask indicating the deepest valid level at each point.</td></tr>
-    </tbody></table></div>
+    <div class="api-card" id="open_thredds">
+      <div class="api-card__head"><div class="sig">nc.open_thredds(x=None, wait=None, checks=False)</div></div>
+      <div class="api-card__body">
+        <p>Read thredds data as a Dataset object</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <p>Required:</p>
+          <ul class="param-list">
+            <li><code class="param-name">x</code><span class="param-tag">required</span><p>A string or list of thredds urls, which must end with .nc.</p></li>
+          </ul>
+          <p>Optional:</p>
+          <ul class="param-list">
+            <li><code class="param-name">checks</code><p>Do you want to check if data is available over thredds?</p></li>
+            <li><code class="param-name">wait</code><p>Time to wait for thredds server to be checked. Limitless if not supplied.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
 
-    <h2 id="interpolation">Interpolation, matching &amp; resampling</h2>
-    <div class="table-wrap"><table><tbody>
-      <tr><td><code>DataSet.regrid(target, recycle=False)</code></td><td>Regrid onto another dataset's grid, a netCDF file's grid, or a dataframe of lon/lat coordinates.</td></tr>
-      <tr><td><code>DataSet.to_latlon(lon, lat, res, method)</code></td><td>Regrid to a regular lon/lat grid with a given extent and resolution.</td></tr>
-      <tr><td><code>DataSet.resample_grid(n)</code></td><td>Coarsen the horizontal grid by keeping every <em>n</em>th cell.</td></tr>
-      <tr><td><code>DataSet.fill_na(n)</code></td><td>Distance-weighted infilling of missing values using <em>n</em> nearest neighbours.</td></tr>
-      <tr><td><code>DataSet.time_interp(...) / timestep_interp(...)</code></td><td>Interpolate onto a new time axis, by date or by timestep.</td></tr>
-      <tr><td><code>DataSet.box_mean / box_max / box_min / box_sum / box_range</code></td><td>Statistic within a set of geographic boxes.</td></tr>
-      <tr><td><code>DataSet.mask_box(...)</code></td><td>Mask a dataset outside a geographic box.</td></tr>
-    </tbody></table></div>
+    <div class="api-card" id="open_geotiff">
+      <div class="api-card__head"><div class="sig">nc.open_geotiff(x=[])</div></div>
+      <div class="api-card__body">
+        <p>Open a geotiff and convert to a Dataset. This requires rioxarray to be installed.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">x</code><p>A string or list of geotiff files or a single url. This requires rioxarray to be installed.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
 
-    <h2 id="matchpoint">Point matchups &amp; ecological methods</h2>
-    <div class="table-wrap"><table><tbody>
-      <tr><td><code>DataSet.match_points(df, variables=None, tmean=False, top=False, nan=None)</code></td><td>Match gridded data to a dataframe of point observations (<code>lon</code>/<code>lat</code>/<code>depth</code>/<code>year</code>/<code>month</code>/<code>day</code>). See <a href="matchpoint.html">Matchups with point data</a>.</td></tr>
-      <tr><td><code>DataSet.phenology(...)</code></td><td>Calculate phenological metrics (e.g. bloom timing) from a time series.</td></tr>
-    </tbody></table></div>
+    <div class="api-card" id="from_xarray">
+      <div class="api-card__head"><div class="sig">nc.from_xarray(ds)</div></div>
+      <div class="api-card__body">
+        <p>Convert an xarray dataset to an nctoolkit dataset. This will first save the xarray dataset as a temporary netCDF file.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">ds</code><span class="param-tag">required</span><p>xarray dataset you want to convert to nctoolkit DataSet.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
 
-    <h2 id="ensembles">Ensembles &amp; merging</h2>
-    <div class="table-wrap"><table><tbody>
-      <tr><td><code>merge(datasets, ...)</code> / <code>DataSet.merge("time"|"variable")</code></td><td>Combine multiple files by matching time steps or by stacking variables. See <a href="ensembles.html">Ensembles &amp; multi-file datasets</a>.</td></tr>
-      <tr><td><code>DataSet.split(...)</code></td><td>Split a dataset back out into separate files.</td></tr>
-      <tr><td><code>DataSet.append(...) / remove(...)</code></td><td>Add or remove member files from a multi-file dataset.</td></tr>
-      <tr><td><code>DataSet.ensemble_mean / ensemble_min / ensemble_max / ensemble_sum / ensemble_range / ensemble_stdev / ensemble_var / ensemble_percentile</code></td><td>Statistic calculated across ensemble members, e.g. across climate models.</td></tr>
-    </tbody></table></div>
+    <div class="api-card" id="copy">
+      <div class="api-card__head"><div class="sig">ds.copy()</div></div>
+      <div class="api-card__body">
+        <p>Make a deep copy of an DataSet object. Note: This will not make disk copies of the temporary files underlying datasets, so it will be disk-space efficient.</p>
+      </div>
+    </div>
 
-    <h2 id="arithmetic">Arithmetic &amp; comparisons</h2>
-    <div class="table-wrap"><table><tbody>
-      <tr><td><code>DataSet.add / subtract / multiply / divide</code></td><td>Elementwise arithmetic against a constant or another dataset. Also available as <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>.</td></tr>
-      <tr><td><code>DataSet.abs / exp / log / log10 / sqrt / square / power(n)</code></td><td>Elementwise mathematical transforms.</td></tr>
-      <tr><td><code>DataSet.compare("&gt;0")</code></td><td>Elementwise logical comparison against a constant or dataset; also available as <code>&gt;</code>, <code>&lt;</code>, <code>==</code>, <code>&gt;=</code>, <code>&lt;=</code>, <code>!=</code>.</td></tr>
-      <tr><td><code>DataSet.gt(...) / lt(...)</code></td><td>Explicit greater-than / less-than comparisons.</td></tr>
-      <tr><td><code>DataSet.sum_all()</code></td><td>Sum all variables in a dataset into one.</td></tr>
-    </tbody></table></div>
+    <div class="api-card" id="create_ensemble">
+      <div class="api-card__head"><div class="sig">nc.create_ensemble(path='', recursive=True)</div></div>
+      <div class="api-card__body">
+        <p>Generate an ensemble of files from a directory.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <p>Required:</p>
+          <ul class="param-list">
+            <li><code class="param-name">path</code><span class="param-tag">required</span><p>The directory to search for netCDF files</p></li>
+          </ul>
+          <p>Optional:</p>
+          <ul class="param-list">
+            <li><code class="param-name">recursive</code><p>True/False depending on whether you want to search the path recursively. Defaults to True.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
 
-    <h2 id="assign-functions">Functions available inside <code>assign()</code></h2>
+    <hr class="divider">
+
+    <span class="kicker" id="attributes">Accessing attributes</span>
+
+    <div class="api-card" id="variables-attr">
+      <div class="api-card__head"><div class="sig">ds.variables</div></div>
+      <div class="api-card__body">
+        <p>List variables contained in a dataset</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="contents">
+      <div class="api-card__head"><div class="sig">ds.contents</div></div>
+      <div class="api-card__body">
+        <p>Detailed list of variables contained in a dataset. This will only display the variables in the first file of an ensemble.</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="times">
+      <div class="api-card__head"><div class="sig">ds.times</div></div>
+      <div class="api-card__body">
+        <p>List times contained in a dataset</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="years">
+      <div class="api-card__head"><div class="sig">ds.years</div></div>
+      <div class="api-card__body">
+        <p>List years contained in a dataset</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="months">
+      <div class="api-card__head"><div class="sig">ds.months</div></div>
+      <div class="api-card__body">
+        <p>List months contained in a dataset</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="levels">
+      <div class="api-card__head"><div class="sig">ds.levels</div></div>
+      <div class="api-card__body">
+        <p>List levels contained in a dataset</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="size">
+      <div class="api-card__head"><div class="sig">ds.size</div></div>
+      <div class="api-card__body">
+        <p>The size of an object. This will print the number of files, total size, and smallest and largest files in an DataSet object.</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="current">
+      <div class="api-card__head"><div class="sig">ds.current</div></div>
+      <div class="api-card__body">
+        <p>The current file or files in the DataSet object</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="history">
+      <div class="api-card__head"><div class="sig">ds.history</div></div>
+      <div class="api-card__body">
+        <p>The history of operations on the DataSet</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="start">
+      <div class="api-card__head"><div class="sig">ds.start</div></div>
+      <div class="api-card__body">
+        <p>The starting file or files of the DataSet object</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="calendar">
+      <div class="api-card__head"><div class="sig">ds.calendar</div></div>
+      <div class="api-card__body">
+        <p>List calendars of dataset files</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="ncformat">
+      <div class="api-card__head"><div class="sig">ds.ncformat</div></div>
+      <div class="api-card__body">
+        <p>List formats of files contained in a dataset</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <span class="kicker" id="subsetting">Subsetting &amp; time-based methods</span>
+
+    <div class="api-card" id="subset">
+      <div class="api-card__head"><div class="sig">ds.subset(**kwargs)</div></div>
+      <div class="api-card__body">
+        <p>A method for subsetting datasets to specific variables, years, longitudes etc. Operations are applied in the order supplied.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <p>All arguments are optional keywords, applied in the order supplied. NCToolkit matches on partial names, so <code>year</code>, <code>month</code>, <code>var</code> etc. also work.</p>
+          <ul class="param-list">
+            <li><code class="param-name">variables</code><p>A variable or list of variables to select. Accepts wildcards, e.g. <code>"var*"</code> selects every variable starting with <code>var</code>.</p></li>
+            <li><code class="param-name">years</code><p>Year(s) to select, as a list, range or int.</p></li>
+            <li><code class="param-name">months</code><p>Month(s) to select, as a list, range or int.</p></li>
+            <li><code class="param-name">days</code><p>Day(s) to select, as a list, range or int.</p></li>
+            <li><code class="param-name">hours</code><p>Hour(s) to select, as a list, range or int.</p></li>
+            <li><code class="param-name">seasons</code><p>Season(s) to select: <code>"DJF"</code>, <code>"MAM"</code>, <code>"JJA"</code> or <code>"SON"</code>.</p></li>
+            <li><code class="param-name">timesteps</code><p>Time step(s) to select by index, e.g. <code>0</code> for the first time step.</p></li>
+            <li><code class="param-name">range</code><p>A <code>[date_min, date_max]</code> list selecting times on or after <code>date_min</code> and before <code>date_max</code>. Dates can be datetime objects or <code>"DD/MM/YYYY"</code>-style strings.</p></li>
+            <li><code class="param-name">lon</code><p>Longitude range to select, as <code>[lon_min, lon_max]</code> between -180 and 180.</p></li>
+            <li><code class="param-name">lat</code><p>Latitude range to select, as <code>[lat_min, lat_max]</code> between -90 and 90.</p></li>
+            <li><code class="param-name">levels</code><p>Vertical level/depth range to select, as <code>[min_level, max_level]</code>.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="crop">
+      <div class="api-card__head"><div class="sig">ds.crop(lon=[-180, 180], lat=[-90, 90], nco=False, nco_vars=None)</div></div>
+      <div class="api-card__body">
+        <p>Crop to a rectangular longitude and latitude box</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">lon</code><p>The longitude range to select. This must be two variables, between -180 and 180 when nco = False.</p></li>
+            <li><code class="param-name">lat</code><p>The latitude range to select. This must be two variables, between -90 and 90 when nco = False.</p></li>
+            <li><code class="param-name">nco</code><p>Do you want this to use NCO for cropping? Defaults to False, and uses CDO. Set to True if you want to call NCO. NCO is typically better at handling very large horizontal grids.</p></li>
+            <li><code class="param-name">nco_vars</code><span class="param-tag">if nco=True</span><p>If using NCO, the variables you want to select</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="drop">
+      <div class="api-card__head"><div class="sig">ds.drop(**kwargs)</div></div>
+      <div class="api-card__body">
+        <p>Remove variables, days, months, years or time steps from a dataset. This will remove stated variables from files in the dataset.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <p>All arguments are optional keywords, applied in the order supplied. NCToolkit matches on partial names, so <code>year</code>, <code>month</code>, <code>variable</code> etc. also work.</p>
+          <ul class="param-list">
+            <li><code class="param-name">var</code><p>A variable or list of variables to drop. Accepts wildcards, e.g. <code>"var*"</code>.</p></li>
+            <li><code class="param-name">year</code><p>Year(s) to drop.</p></li>
+            <li><code class="param-name">month</code><p>Month(s) to drop.</p></li>
+            <li><code class="param-name">day</code><p>Day(s) to drop.</p></li>
+            <li><code class="param-name">time</code><p>Time step(s) to drop by index. Negative indices are accepted.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="set_date">
+      <div class="api-card__head"><div class="sig">ds.set_date(year=None, month=None, day=None, base_year=1900)</div></div>
+      <div class="api-card__body">
+        <p>Set the date in a dataset. You should only do this if you have to fix/change a dataset with a single, not multiple dates.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <p>Required:</p>
+          <ul class="param-list">
+            <li><code class="param-name">year</code><span class="param-tag">required</span><p>The year</p></li>
+            <li><code class="param-name">month</code><span class="param-tag">required</span><p>The month</p></li>
+            <li><code class="param-name">day</code><span class="param-tag">required</span><p>The day</p></li>
+          </ul>
+          <p>Optional:</p>
+          <ul class="param-list">
+            <li><code class="param-name">base_year</code><p>The base year for time creation in the netCDF. Defaults to 1900.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="set_day">
+      <div class="api-card__head"><div class="sig">ds.set_day(x)</div></div>
+      <div class="api-card__body">
+        <p>Set the day for each time step in a dataset</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">x</code><span class="param-tag">required</span><p>Day to set dataset to</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="shift">
+      <div class="api-card__head"><div class="sig">ds.shift(**kwargs)</div></div>
+      <div class="api-card__body">
+        <p>Shift times in dataset by a number of hours, days, months, or years. Operations are applied in the order supplied.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">kwargs</code><p>hours maps to shift_hours days maps to shift_days months maps to shift_months years maps to shift_years. Note: this uses partial matches. So hour, day, month, year will also work.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <span class="kicker" id="statistics">Statistical methods</span>
+
+    <div class="api-card" id="cor_time-fn">
+      <div class="api-card__head"><div class="sig">nc.cor_time(x=None, y=None)</div></div>
+      <div class="api-card__body">
+        <p>Calculate the temporal correlation coefficient between two datasets. This will calculate the temporal correlation coefficient, for each time step, between two datasets. The datasets must either have the same variables or only have one variable.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">x</code><span class="param-tag">required</span><p>First dataset to use</p></li>
+            <li><code class="param-name">y</code><span class="param-tag">required</span><p>Second dataset to use</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="cor_space-fn">
+      <div class="api-card__head"><div class="sig">nc.cor_space(x=None, y=None)</div></div>
+      <div class="api-card__body">
+        <p>Calculate the spatial correlation coefficient between two datasets. This will calculate the spatial correlation coefficient, for each time step, between two datasets. The datasets must either have the same variables or only have one variable.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">x</code><span class="param-tag">required</span><p>First dataset to use</p></li>
+            <li><code class="param-name">y</code><span class="param-tag">required</span><p>Second dataset to use</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="rolling_mean">
+      <div class="api-card__head"><div class="sig">ds.rolling_mean(window=None, align='right')</div></div>
+      <div class="api-card__body">
+        <p>Calculate a rolling mean based on a window</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <p>Required:</p>
+          <ul class="param-list">
+            <li><code class="param-name">window</code><span class="param-tag">required</span><p>The size of the window for the calculation of the rolling mean</p></li>
+          </ul>
+          <p>Optional:</p>
+          <ul class="param-list">
+            <li><code class="param-name">align</code><p>This determines whether the output time is at the left, centre or right hand side of the time window. Options are <code>"left"</code>, <code>"centre"</code> and <code>"right"</code></p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="rolling_min">
+      <div class="api-card__head"><div class="sig">ds.rolling_min(window=None, align='right')</div></div>
+      <div class="api-card__body">
+        <p>Calculate a rolling minimum based on a window</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <p>Required:</p>
+          <ul class="param-list">
+            <li><code class="param-name">window</code><span class="param-tag">required</span><p>The size of the window for the calculation of the rolling minimum</p></li>
+          </ul>
+          <p>Optional:</p>
+          <ul class="param-list">
+            <li><code class="param-name">align</code><p>This determines whether the output time is at the left, centre or right hand side of the time window. Options are <code>"left"</code>, <code>"centre"</code> and <code>"right"</code></p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="rolling_max">
+      <div class="api-card__head"><div class="sig">ds.rolling_max(window=None, align='right')</div></div>
+      <div class="api-card__body">
+        <p>Calculate a rolling maximum based on a window</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <p>Required:</p>
+          <ul class="param-list">
+            <li><code class="param-name">window</code><span class="param-tag">required</span><p>The size of the window for the calculation of the rolling maximum</p></li>
+          </ul>
+          <p>Optional:</p>
+          <ul class="param-list">
+            <li><code class="param-name">align</code><p>This determines whether the output time is at the left, centre or right hand side of the time window. Options are <code>"left"</code>, <code>"centre"</code> and <code>"right"</code></p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="rolling_sum">
+      <div class="api-card__head"><div class="sig">ds.rolling_sum(window=None, align='right')</div></div>
+      <div class="api-card__body">
+        <p>Calculate a rolling sum based on a window</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <p>Required:</p>
+          <ul class="param-list">
+            <li><code class="param-name">window</code><span class="param-tag">required</span><p>The size of the window for the calculation of the rolling sum</p></li>
+          </ul>
+          <p>Optional:</p>
+          <ul class="param-list">
+            <li><code class="param-name">align</code><p>This determines whether the output time is at the left, centre or right hand side of the time window. Options are <code>"left"</code>, <code>"centre"</code> and <code>"right"</code></p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="rolling_range">
+      <div class="api-card__head"><div class="sig">ds.rolling_range(window=None, align='right')</div></div>
+      <div class="api-card__body">
+        <p>Calculate a rolling range based on a window</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <p>Required:</p>
+          <ul class="param-list">
+            <li><code class="param-name">window</code><span class="param-tag">required</span><p>The size of the window for the calculation of the rolling range</p></li>
+          </ul>
+          <p>Optional:</p>
+          <ul class="param-list">
+            <li><code class="param-name">align</code><p>This determines whether the output time is at the left, centre or right hand side of the time window. Options are <code>"left"</code>, <code>"centre"</code> and <code>"right"</code></p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="rolling_stdev">
+      <div class="api-card__head"><div class="sig">ds.rolling_stdev(window=None, align='right')</div></div>
+      <div class="api-card__body">
+        <p>Calculate a rolling standard deviation based on a window</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <p>Required:</p>
+          <ul class="param-list">
+            <li><code class="param-name">window</code><span class="param-tag">required</span><p>The size of the window for the calculation of the rolling standard deviation</p></li>
+          </ul>
+          <p>Optional:</p>
+          <ul class="param-list">
+            <li><code class="param-name">align</code><p>This determines whether the output time is at the left, centre or right hand side of the time window. Options are <code>"left"</code>, <code>"centre"</code> and <code>"right"</code></p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="rolling_var">
+      <div class="api-card__head"><div class="sig">ds.rolling_var(window=None, align='right')</div></div>
+      <div class="api-card__body">
+        <p>Calculate a rolling variance based on a window</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <p>Required:</p>
+          <ul class="param-list">
+            <li><code class="param-name">window</code><span class="param-tag">required</span><p>The size of the window for the calculation of the rolling variance</p></li>
+          </ul>
+          <p>Optional:</p>
+          <ul class="param-list">
+            <li><code class="param-name">align</code><p>This determines whether the output time is at the left, centre or right hand side of the time window. Options are <code>"left"</code>, <code>"centre"</code> and <code>"right"</code></p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="annual_anomaly">
+      <div class="api-card__head"><div class="sig">ds.annual_anomaly(baseline=None, metric='absolute', window=1, align='right')</div></div>
+      <div class="api-card__body">
+        <p>Calculate annual anomalies for each variable based on a baseline period. The anomaly is derived by first calculating the climatological annual mean for the given baseline period. Annual means are then calculated for each year and the anomaly is calculated compared with the baseline mean. This will be calculated on a per-file basis in a multi-file dataset.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <p>Required:</p>
+          <ul class="param-list">
+            <li><code class="param-name">baseline</code><span class="param-tag">required</span><p>Baseline years. This needs to be the first and last year of the climatological period. Example: a baseline of [1980,1999] will result in anomalies against the 20 year climatology from 1980 to 1999.</p></li>
+          </ul>
+          <p>Optional:</p>
+          <ul class="param-list">
+            <li><code class="param-name">metric</code><p>Set to <code>"absolute"</code> or <code>"relative"</code>, depending on whether you want the absolute or relative anomaly to be calculated.</p></li>
+            <li><code class="param-name">window</code><p>A window for the anomaly. By default window = 1, i.e. the annual anomaly is calculated. If, for example, window = 20, the 20 year rolling means will be used to calculate the anomalies.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="monthly_anomaly">
+      <div class="api-card__head"><div class="sig">ds.monthly_anomaly(baseline=None)</div></div>
+      <div class="api-card__body">
+        <p>monthly:anomaly: Calculate monthly anomalies based on a baseline period. The anomaly is derived by first calculating the climatological monthly mean for the given baseline period. Monthly means are then calculated for each year and the anomaly is calculated compared with the baseline mean. This is calculated separately for each file in a multi-file dataset.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">baseline</code><span class="param-tag">required</span><p>Baseline years. This needs to be the first and last year of the climatological period. Example: a baseline of [1985,2005] will result in anomolies against 20 year climatology from 1986 to 2005.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="tmean">
+      <div class="api-card__head"><div class="sig">ds.tmean(over='time', align='right', window=None)</div></div>
+      <div class="api-card__body">
+        <p>Calculate the temporal mean of all variables. Useful for: monthly mean, annual/yearly mean, seasonal mean, daily mean, daily climatology, monthly climatology, seasonal climatology</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">over</code><p>Time periods to average over. Options are 'year', 'month', 'day'. This operates in a similar way to the groupby method in pandas or the tidyverse in R.</p></li>
+            <li><code class="param-name">align</code><p>This determines whether the output time is at the left, centre or right hand side of the time window. Options are <code>"left"</code>, <code>"centre"</code> and <code>"right"</code></p></li>
+            <li><code class="param-name">window</code><p>This determines the number of time steps to calculate the mean over to calculate over, on a non-rolling basis. This is useful if you need to calculate the mean every 5 days, for example.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="tmin">
+      <div class="api-card__head"><div class="sig">ds.tmin(over='time', align='right', window=None)</div></div>
+      <div class="api-card__body">
+        <p>Calculate the temporal minimum of all variables. Useful for: monthly minimum, annual/yearly minimum, seasonal minimum, daily minimum, daily climatology, monthly climatology, seasonal climatology</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">over</code><p>Time periods to average over. Options are 'year', 'month', 'day'. This operates in a similar way to the groupby method in pandas or the tidyverse in R, with over acting as the grouping.</p></li>
+            <li><code class="param-name">align</code><p>This determines whether the output time is at the left, centre or right hand side of the time window. Options are <code>"left"</code>, <code>"centre"</code> and <code>"right"</code></p></li>
+            <li><code class="param-name">window</code><p>This determines the number of time steps to calculate the minimum over to calculate over, on a non-rolling basis. This is useful if you need to calculate the minimum every 5 days, for example.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="tmedian">
+      <div class="api-card__head"><div class="sig">ds.tmedian(over='time', align='right')</div></div>
+      <div class="api-card__body">
+        <p>Calculate the temporal median of all variables. Useful for: monthly median, annual/yearly median, seasonal median, daily median, daily climatology, monthly climatology, seasonal climatology</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">over</code><p>Time periods to average over. Options are 'year', 'month', 'day'. This operates in a similar way to the groupby method in pandas or the tidyverse in R, with over acting as the grouping.</p></li>
+            <li><code class="param-name">align</code><p>This determines whether the output time is at the left, centre or right hand side of the time window. Options are <code>"left"</code>, <code>"centre"</code> and <code>"right"</code></p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="tpercentile">
+      <div class="api-card__head"><div class="sig">ds.tpercentile(p=None, over='time', align='right')</div></div>
+      <div class="api-card__body">
+        <p>Calculate the temporal percentile of all variables. Useful for monthly percentile, annual/yearly percentile, seasonal percentile, daily percentile, daily climatology, monthly climatology, seasonal climatology</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <p>Required:</p>
+          <ul class="param-list">
+            <li><code class="param-name">p</code><span class="param-tag">required</span><p>Percentile to calculate</p></li>
+          </ul>
+          <p>Optional:</p>
+          <ul class="param-list">
+            <li><code class="param-name">over</code><p>Time periods to average over. Options are 'year', 'month', 'day'. This operates in a similar way to the groupby method in pandas or the tidyverse in R, with over acting as the grouping.</p></li>
+            <li><code class="param-name">align</code><p>This determines whether the output time is at the left, centre or right hand side of the time window. Options are <code>"left"</code>, <code>"centre"</code> and <code>"right"</code></p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="tmax">
+      <div class="api-card__head"><div class="sig">ds.tmax(over='time', align='right', window=None)</div></div>
+      <div class="api-card__body">
+        <p>Calculate the temporal maximum of all variables. Useful for: monthly maximum, annual/yearly maximum, seasonal maximum, daily maximum, daily climatology, monthly climatology, seasonal climatology</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">over</code><p>Time periods to average over. Options are 'year', 'month', 'day'. This operates in a similar way to the groupby method in pandas or the tidyverse in R, with over acting as the grouping.</p></li>
+            <li><code class="param-name">align</code><p>This determines whether the output time is at the left, centre or right hand side of the time window. Options are <code>"left"</code>, <code>"centre"</code> and <code>"right"</code></p></li>
+            <li><code class="param-name">window</code><p>This determines the number of time steps to calculate the maximum over to calculate over, on a non-rolling basis. This is useful if you need to calculate the maximum every 5 days, for example.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="tsum">
+      <div class="api-card__head"><div class="sig">ds.tsum(over='time', align='right', window=None)</div></div>
+      <div class="api-card__body">
+        <p>Calculate the temporal sum of all variables.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">align</code><p>This determines whether the output time is at the left, centre or right hand side of the time window. Options are <code>"left"</code>, <code>"centre"</code> and <code>"right"</code></p></li>
+            <li><code class="param-name">over</code><p>Time periods to count the sum over. Options are 'year', 'month', 'day'. This operates in a similar way to the groupby method in pandas or the tidyverse in R, so you can supply combinations of these to get the sum over each year, month or day.</p></li>
+            <li><code class="param-name">window</code><p>This determines the number of time steps to sum over, on a non-rolling basis. This is useful if you need to calculate the sum every 5 days, for example.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="trange">
+      <div class="api-card__head"><div class="sig">ds.trange(over='time', align='right', window=None)</div></div>
+      <div class="api-card__body">
+        <p>Calculate the temporal range of all variables. Useful for: monthly range, annual/yearly range, seasonal range, daily range, daily climatology, monthly climatology, seasonal climatology</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">over</code><p>Time periods to average over. Options are 'year', 'month', 'day'. This operates in a similar way to the groupby method in pandas or the tidyverse in R, with over acting as the grouping.</p></li>
+            <li><code class="param-name">align</code><p>This determines whether the output time is at the left, centre or right hand side of the time window. Options are <code>"left"</code>, <code>"centre"</code> and <code>"right"</code></p></li>
+            <li><code class="param-name">window</code><p>This determines the number of time steps to calculate the range over to calculate over, on a non-rolling basis. This is useful if you need to calculate the range every 5 days, for example.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="tstdev">
+      <div class="api-card__head"><div class="sig">ds.tstdev(over='time', align='right', window=None)</div></div>
+      <div class="api-card__body">
+        <p>Calculate the temporal standard deviation of all variables. Useful for: monthly standard deviation, annual/yearly standard deviation, seasonal standard deviation, daily standard deviation, daily climatology, monthly climatology, seasonal climatology</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">over</code><p>Time periods to average over. Options are 'year', 'month', 'day'. This operates in a similar way to the groupby method in pandas or the tidyverse in R, with over acting as the grouping.</p></li>
+            <li><code class="param-name">align</code><p>This determines whether the output time is at the left, centre or right hand side of the time window. Options are <code>"left"</code>, <code>"centre"</code> and <code>"right"</code></p></li>
+            <li><code class="param-name">window</code><p>This determines the number of time steps to calculate the standard deviation over to calculate over, on a non-rolling basis. This is useful if you need to calculate the standard deviation every 5 days, for example.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="tcumsum">
+      <div class="api-card__head"><div class="sig">ds.tcumsum(align='right')</div></div>
+      <div class="api-card__body">
+        <p>Calculate the temporal cumulative sum of all variables</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">align</code><p>This determines whether the output time is at the left, centre or right hand side of the time window. Options are <code>"left"</code>, <code>"centre"</code> and <code>"right"</code></p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="tvar">
+      <div class="api-card__head"><div class="sig">ds.tvar(over='time', align='right', window=None)</div></div>
+      <div class="api-card__body">
+        <p>Calculate the temporal variance of all variables. Useful for: monthly variance, annual/yearly variance, seasonal variance, daily variance, daily climatology, monthly climatology, seasonal climatology</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">over</code><p>Time periods to average over. Options are 'year', 'month', 'day'. This operates in a similar way to the groupby method in pandas or the tidyverse in R, with over acting as the grouping.</p></li>
+            <li><code class="param-name">align</code><p>This determines whether the output time is at the left, centre or right hand side of the time window. Options are <code>"left"</code>, <code>"centre"</code> and <code>"right"</code></p></li>
+            <li><code class="param-name">window</code><p>This determines the number of time steps to calculate the variance over to calculate over, on a non-rolling basis. This is useful if you need to calculate the variance every 5 days, for example.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="cor_space">
+      <div class="api-card__head"><div class="sig">ds.cor_space(var1=None, var2=None)</div></div>
+      <div class="api-card__body">
+        <p>Calculate the correlation correct between two variables in space. This is calculated for each time step. The correlation coefficient coefficient is calculated using values in all grid cells, ignoring missing values. This calculates the Pearson correlation coefficient.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">var1</code><span class="param-tag">required</span><p>The first variable</p></li>
+            <li><code class="param-name">var2</code><span class="param-tag">required</span><p>The second variable</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="cor_time">
+      <div class="api-card__head"><div class="sig">ds.cor_time(var1=None, var2=None)</div></div>
+      <div class="api-card__body">
+        <p>Calculate the correlation correct in time between two variables. The correlation is calculated for each grid cell, ignoring missing values. This calculates the Pearson correlation coefficient.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">var1</code><span class="param-tag">required</span><p>The first variable</p></li>
+            <li><code class="param-name">var2</code><span class="param-tag">required</span><p>The second variable</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="spatial_mean">
+      <div class="api-card__head"><div class="sig">ds.spatial_mean()</div></div>
+      <div class="api-card__body">
+        <p>Calculate the area weighted spatial mean for all variables. This is performed for each time step.</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="spatial_min">
+      <div class="api-card__head"><div class="sig">ds.spatial_min()</div></div>
+      <div class="api-card__body">
+        <p>Calculate the spatial minimum for all variables. This is performed for each time step.</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="spatial_max">
+      <div class="api-card__head"><div class="sig">ds.spatial_max()</div></div>
+      <div class="api-card__body">
+        <p>Calculate the spatial maximum for all variables. This is performed for each time step.</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="spatial_percentile">
+      <div class="api-card__head"><div class="sig">ds.spatial_percentile(p=None)</div></div>
+      <div class="api-card__body">
+        <p>Calculate the spatial percentile for all variables. This is performed for each time step.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">p</code><span class="param-tag">required</span><p>Percentile to calculate. 0&lt;=p&lt;=100.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="spatial_range">
+      <div class="api-card__head"><div class="sig">ds.spatial_range()</div></div>
+      <div class="api-card__body">
+        <p>Calculate the spatial range for all variables. This is performed for each time step.</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="spatial_sum">
+      <div class="api-card__head"><div class="sig">ds.spatial_sum(by_area=False)</div></div>
+      <div class="api-card__body">
+        <p>Calculate the spatial sum for all variables. This is performed for each time step.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">by_area</code><p>Set to True if you want to multiply the values by the grid cell area before summing over space. Default is False.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="spatial_stdev">
+      <div class="api-card__head"><div class="sig">ds.spatial_stdev()</div></div>
+      <div class="api-card__body">
+        <p>Calculate the spatial standard deviation for all variables. This is performed for each time step.</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="spatial_var">
+      <div class="api-card__head"><div class="sig">ds.spatial_var()</div></div>
+      <div class="api-card__body">
+        <p>Calculate the spatial variance for all variables. This is performed for each time step.</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="centre">
+      <div class="api-card__head"><div class="sig">ds.centre(by='latitude', by_area=False)</div></div>
+      <div class="api-card__body">
+        <p>Calculate the latitudinal or longitudinal centre for each year/month combination in files. This applies to each file in an ensemble.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">by</code><p>Set to 'latitude' if you want the latitudinal centre calculated. 'longitude' for longitudinal.</p></li>
+            <li><code class="param-name">by_area</code><p>If the variable is a value/m2 type variable, set to True, otherwise set to False.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="zonal_mean">
+      <div class="api-card__head"><div class="sig">ds.zonal_mean()</div></div>
+      <div class="api-card__body">
+        <p>Calculate the zonal mean for each time step</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="zonal_min">
+      <div class="api-card__head"><div class="sig">ds.zonal_min()</div></div>
+      <div class="api-card__body">
+        <p>Calculate the zonal minimum for each time step</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="zonal_max">
+      <div class="api-card__head"><div class="sig">ds.zonal_max()</div></div>
+      <div class="api-card__body">
+        <p>Calculate the zonal maximum for each time step</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="zonal_range">
+      <div class="api-card__head"><div class="sig">ds.zonal_range()</div></div>
+      <div class="api-card__body">
+        <p>Calculate the zonal range for each time step</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="zonal_sum">
+      <div class="api-card__head"><div class="sig">ds.zonal_sum(by_area=False)</div></div>
+      <div class="api-card__body">
+        <p>Calculate the zonal sum for each time step</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">by_area</code><p>Set to True if you want the cell value to be multiplied by the cell area prior to summing</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="meridonial_mean">
+      <div class="api-card__head"><div class="sig">ds.meridonial_mean()</div></div>
+      <div class="api-card__body">
+        <p>Calculate the meridonial mean for each year/month combination in files. This applies to each file in an ensemble.</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="meridonial_min">
+      <div class="api-card__head"><div class="sig">ds.meridonial_min()</div></div>
+      <div class="api-card__body">
+        <p>Calculate the meridonial minimum for each year/month combination in files. This applies to each file in an ensemble.</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="meridonial_max">
+      <div class="api-card__head"><div class="sig">ds.meridonial_max()</div></div>
+      <div class="api-card__body">
+        <p>Calculate the meridonial maximum for each year/month combination in files. This applies to each file in an ensemble.</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="meridonial_range">
+      <div class="api-card__head"><div class="sig">ds.meridonial_range()</div></div>
+      <div class="api-card__body">
+        <p>Calculate the meridonial range for each year/month combination in files. This applies to each file in an ensemble.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <span class="kicker" id="vertical">Vertical methods</span>
+
+    <div class="api-card" id="top">
+      <div class="api-card__head"><div class="sig">ds.top()</div></div>
+      <div class="api-card__body">
+        <p>Extract the top/surface level from a dataset. This extracts the first vertical level from each file in a dataset. This method is most useful for things like oceanic data, where this method will extract the sea surface. You may need to double check that the first vertical level is the surface, as this is not always the case.</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="bottom">
+      <div class="api-card__head"><div class="sig">ds.bottom(choice='level')</div></div>
+      <div class="api-card__body">
+        <p>Extract the bottom level or value from a dataset. This extracts the bottom level or value from each netCDF file. Please note that for ensembles, it uses the first file to derive the index of the bottom level.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">choice</code><p>Set to 'level' to extract the bottom level, or 'value' to extract the bottommost non-missing value.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="vertical_interp">
+      <div class="api-card__head"><div class="sig">ds.vertical_interp(levels=None, fixed=None, thickness=None, depths=None, surface=None)</div></div>
+      <div class="api-card__body">
+        <p>Verticaly interpolate a dataset based on given vertical levels. Vertical interpolation is calculated for each time step and grid cell</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <p>Required:</p>
+          <ul class="param-list">
+            <li><code class="param-name">levels</code><span class="param-tag">required</span><p>list of vertical levels, for example depths for an ocean model, to vertically interpolate to. These must be floats or ints.</p></li>
+            <li><code class="param-name">fixed</code><span class="param-tag">required</span><p>Define whether the vertical levels are the same in all spatial locations. Set to True if they are, e.g. you have z-levels. If you have the likes of sigma-coordinates, set this to False.</p></li>
+          </ul>
+          <p>Optional:</p>
+          <ul class="param-list">
+            <li><code class="param-name">thickness</code><span class="param-tag">if fixed=False</span><p>This or depths must be supplied if fixed is False, otherwise vertical thickness/depth cannot be known. Option argument when vertical levels vary in space. One of: a variable, in the dataset, which contains the variable thicknesses; a .nc file which contains the thicknesses; or a Dataset that contains the thicknesses. Note: the .nc file or Dataset must only contain one variable. Thickness should be in metres. Vertical interpolation will take the value from the mid-point of the level.</p></li>
+            <li><code class="param-name">depths</code><span class="param-tag">if fixed=False</span><p>This or thickness must be supplied if fixed is False, otherwise vertical thickness/depth cannot be known. Option argument when vertical levels vary in space. One of: a variable, in the dataset, which contains the variable depths; a .nc file which contains the depths; or a Dataset that contains the depths. Note: the .nc file or Dataset must only contain one variable. Depths should be in metres, and be the mid-point of the level.</p></li>
+            <li><code class="param-name">surface</code><span class="param-tag">if thickness given</span><p>If thickness is supplied you must also supply this to identify whether the top or bottom of the level is the surface, i.e. the lowest level. This must be one of 'top' or 'bottom'.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="vertical_mean">
+      <div class="api-card__head"><div class="sig">ds.vertical_mean(thickness=None, depth_range=None, fixed=None)</div></div>
+      <div class="api-card__body">
+        <p>Calculate the depth-averaged mean for each variable. This is calculated for each time step and grid cell.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <p>Required:</p>
+          <ul class="param-list">
+            <li><code class="param-name">fixed</code><span class="param-tag">required</span><p>Define whether the vertical levels are the same in all spatial locations. Set to True if they are, e.g. you have z-levels. If you have the likes of sigma-coordinates, set this to True.</p></li>
+          </ul>
+          <p>Optional:</p>
+          <ul class="param-list">
+            <li><code class="param-name">thickness</code><span class="param-tag">if fixed=False</span><p>This must be supplied when vertical levels vary in space, i.e. fixed=False. One of: a variable, in the dataset, which contains the variable thicknesses; a .nc file which contains the thicknesses; or a Dataset that contains the thicknesses. Note: the .nc file or Dataset must only contain one variable.</p></li>
+            <li><code class="param-name">depth_range</code><p>Only use when vertical levels vary in space. Set a depth range if desired. Should be of the form [min_depth, max_depth].</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="vertical_min">
+      <div class="api-card__head"><div class="sig">ds.vertical_min()</div></div>
+      <div class="api-card__body">
+        <p>Calculate the vertical minimum of variable values. This is calculated for each time step and grid cell.</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="vertical_max">
+      <div class="api-card__head"><div class="sig">ds.vertical_max()</div></div>
+      <div class="api-card__body">
+        <p>Calculate the vertical maximum of variable values. This is calculated for each time step and grid cell.</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="vertical_range">
+      <div class="api-card__head"><div class="sig">ds.vertical_range()</div></div>
+      <div class="api-card__body">
+        <p>Calculate the vertical range of variable values. This is calculated for each time step and grid cell.</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="vertical_sum">
+      <div class="api-card__head"><div class="sig">ds.vertical_sum()</div></div>
+      <div class="api-card__body">
+        <p>Calculate the vertical sum of variable values. This is calculated for each time step and grid cell.</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="vertical_integration">
+      <div class="api-card__head"><div class="sig">ds.vertical_integration(thickness=None, depth_range=None, fixed=None)</div></div>
+      <div class="api-card__body">
+        <p>Calculate the vertically integrated sum over the water column. This calculates the sum of the variable multiplied by the cell thickness</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <p>Required:</p>
+          <ul class="param-list">
+            <li><code class="param-name">fixed</code><span class="param-tag">required</span><p>Define whether the vertical levels are the same in all spatial locations. Set to True if they are, e.g. you have z-levels. If you have the likes of sigma-coordinates, set this to True.</p></li>
+          </ul>
+          <p>Optional:</p>
+          <ul class="param-list">
+            <li><code class="param-name">thickness</code><span class="param-tag">if fixed=False</span><p>This must be supplied when vertical levels vary spatially. One of: a variable, in the dataset, which contains the variable thicknesses; a .nc file which contains the thicknesses; or a Dataset that contains the thicknesses. Note: the .nc file or DataSet must only contain one variable.</p></li>
+            <li><code class="param-name">depth_range</code><p>Set a depth range if desired. Should be of the form [min_depth, max_depth].</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="vertical_cumsum">
+      <div class="api-card__head"><div class="sig">ds.vertical_cumsum()</div></div>
+      <div class="api-card__body">
+        <p>Calculate the vertical sum of variable values. This is calculated for each time step and grid cell.</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="invert_levels">
+      <div class="api-card__head"><div class="sig">ds.invert_levels()</div></div>
+      <div class="api-card__body">
+        <p>Invert the levels of 3D variables. This is calculated for each time step and grid cell.</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="bottom_mask">
+      <div class="api-card__head"><div class="sig">ds.bottom_mask()</div></div>
+      <div class="api-card__body">
+        <p>Create a mask identifying the deepest cell without missing values.. This converts a dataset to a mask identifying which cell represents the bottom, for example the seabed. 1 identifies the deepest cell with non-missing values. Everything else is 0, or missing.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <span class="kicker" id="interpolation">Interpolation, matching &amp; resampling</span>
+
+    <div class="api-card" id="regrid">
+      <div class="api-card__head"><div class="sig">ds.regrid(grid=None, method='bil', recycle=False, one_grid=False, **kwargs)</div></div>
+      <div class="api-card__body">
+        <p>Regrid a dataset to a target grid. Horizontal interpolation</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <p>Required:</p>
+          <ul class="param-list">
+            <li><code class="param-name">grid</code><span class="param-tag">required</span><p>The grid to remap to</p></li>
+          </ul>
+          <p>Optional:</p>
+          <ul class="param-list">
+            <li><code class="param-name">method</code><p>Remapping method. Defaults to <code>"bil"</code>. Methods available are: bilinear - <code>"bil"</code>; nearest neighbour - <code>"nn"</code> - <code>"nearest neighbour"</code> bicubic interpolation - <code>"bic"</code>. Distance-weighted average - <code>"dis"</code>. First order conservative remapping - <code>"con"</code>. Second order conservative remapping - <code>"con2"</code>. Large area fraction remapping - <code>"laf"</code></p></li>
+            <li><code class="param-name">recycle</code><p>Set to True if you want to re-use the remapping weights when you are regridding another dataset.</p></li>
+            <li><code class="param-name">one_grid</code><p>Set to True if all files in multi-file dataset have the same grid, to speed things up.</p></li>
+            <li><code class="param-name">kwargs</code><p>Instead of supplying a grid using 'grid', you can supply `lon` and `lat`. These must be equally lengthed lists or arrays that will be used to generate the grid. If you want to regrid to a single location you can just supply a float to lon and lat.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="to_latlon">
+      <div class="api-card__head"><div class="sig">ds.to_latlon(lon=None, lat=None, res=None, method='bil', recycle=False, one_grid=False)</div></div>
+      <div class="api-card__body">
+        <p>Regrid a dataset to a regular latlon grid</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <p>Required:</p>
+          <ul class="param-list">
+            <li><code class="param-name">lon</code><span class="param-tag">required</span><p>2 element list giving minimum and maximum longitude of target grid</p></li>
+            <li><code class="param-name">lat</code><span class="param-tag">required</span><p>2 element list giving minimum and maximum latitude of target grid</p></li>
+            <li><code class="param-name">res</code><span class="param-tag">required</span><p>If float or int given, this will be the horizontal and vertical resolution of the target grid. If 2 element list is given, the first element is the longitudinal resolution and the second is the latitudinal resolution.</p></li>
+          </ul>
+          <p>Optional:</p>
+          <ul class="param-list">
+            <li><code class="param-name">method</code><p>Remapping method. Defaults to <code>"bil"</code>. Methods available are: bilinear - <code>"bil"</code>; nearest neighbour - <code>"nn"</code> - <code>"nearest neighbour"</code> bicubic interpolation - <code>"bic"</code>. Distance-weighted average - <code>"dis"</code>. First order conservative remapping - <code>"con"</code>. Second order conservative remapping - <code>"con2"</code>. Large area fraction remapping - <code>"laf"</code></p></li>
+            <li><code class="param-name">recycle</code><p>Do you want the grid and weights to be available for recycling and use in regrid? Defaults to False</p></li>
+            <li><code class="param-name">one_grid</code><p>Set to True if all files in multi-file dataset have the same grid, to speed things up.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="resample_grid">
+      <div class="api-card__head"><div class="sig">ds.resample_grid(factor=None)</div></div>
+      <div class="api-card__body">
+        <p>Resample the horizontal grid of a dataset</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">factor</code><span class="param-tag">required</span><p>The resampling factor. Must be a positive integer. No interpolation occurs. Example: factor of 2 will sample every other grid cell</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="time_interp">
+      <div class="api-card__head"><div class="sig">ds.time_interp(start=None, end=None, resolution='monthly')</div></div>
+      <div class="api-card__body">
+        <p>Temporally interpolate variables based on date range and time resolution</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <p>Required:</p>
+          <ul class="param-list">
+            <li><code class="param-name">start</code><span class="param-tag">required</span><p>Start date for interpolation. Needs to be of the form YYYY/MM/DD or YYYY-MM-DD.</p></li>
+          </ul>
+          <p>Optional:</p>
+          <ul class="param-list">
+            <li><code class="param-name">end</code><p>End date for interpolation. Needs to be of the form YYYY/MM/DD or YYYY-MM-DD. If end is not given interpolation will be to the final available time in the dataset.</p></li>
+            <li><code class="param-name">resolution</code><p>Time steps used for interpolation. Needs to be <code>"daily"</code>, <code>"weekly"</code>, <code>"monthly"</code> or <code>"yearly"</code>. Defaults to monthly.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="timestep_interp">
+      <div class="api-card__head"><div class="sig">ds.timestep_interp(steps=None)</div></div>
+      <div class="api-card__body">
+        <p>Temporally interpolate a dataset to given number of time steps between existing time steps</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">steps</code><span class="param-tag">required</span><p>Number of time steps to interpolate between existing time steps. For example, if you wanted to go from daily to hourly data you would set steps=24.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="fill_na">
+      <div class="api-card__head"><div class="sig">ds.fill_na(n=1)</div></div>
+      <div class="api-card__body">
+        <p>Fill missing values with a distance-weighted average. This carries out infilling for each time step and vertical level. Filling only uses horizontal neighbours, not vertical.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">n</code><p>Number of nearest neighbours to use. Defaults to 1. To</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="box_mean">
+      <div class="api-card__head"><div class="sig">ds.box_mean(x=1, y=1)</div></div>
+      <div class="api-card__body">
+        <p>Calculate the grid box mean for all variables. This is performed for each time step.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">x</code><p>Number of boxes in the x, e.g. east-west direction</p></li>
+            <li><code class="param-name">y</code><p>Number of boxes in the y, e.g. north-south direction</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="box_max">
+      <div class="api-card__head"><div class="sig">ds.box_max(x=1, y=1)</div></div>
+      <div class="api-card__body">
+        <p>Calculate the grid box max for all variables. This is performed for each time step.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">x</code><p>Number of boxes in the x, e.g. east-west direction</p></li>
+            <li><code class="param-name">y</code><p>Number of boxes in the y, e.g. north-south direction</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="box_min">
+      <div class="api-card__head"><div class="sig">ds.box_min(x=1, y=1)</div></div>
+      <div class="api-card__body">
+        <p>Calculate the grid box min for all variables. This is performed for each time step.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">x</code><p>Number of boxes in the x, e.g. east-west direction</p></li>
+            <li><code class="param-name">y</code><p>Number of boxes in the y, e.g. north-south direction</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="box_sum">
+      <div class="api-card__head"><div class="sig">ds.box_sum(x=1, y=1)</div></div>
+      <div class="api-card__body">
+        <p>Calculate the grid box sum for all variables. This is performed for each time step.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">x</code><p>Number of boxes in the x, e.g. east-west direction</p></li>
+            <li><code class="param-name">y</code><p>Number of boxes in the y, e.g. north-south direction</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="box_range">
+      <div class="api-card__head"><div class="sig">ds.box_range(x=1, y=1)</div></div>
+      <div class="api-card__body">
+        <p>Calculate the grid box range for all variables. This is performed for each time step.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">x</code><p>Number of boxes in the x, e.g. east-west direction</p></li>
+            <li><code class="param-name">y</code><p>Number of boxes in the y, e.g. north-south direction</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="mask_box">
+      <div class="api-card__head"><div class="sig">ds.mask_box(lon=[-180, 180], lat=[-90, 90])</div></div>
+      <div class="api-card__body">
+        <p>Mask a lon/lat box</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">lon</code><p>Longitude range to mask. Must be of the form: [lon_min, lon_max]</p></li>
+            <li><code class="param-name">lat</code><p>Latitude range to mask. Must be of the form: [lat_min, lat_max]</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <span class="kicker" id="matchpoint">Point matchups &amp; ecological methods</span>
+
+    <div class="api-card" id="match_points">
+      <div class="api-card__head"><div class="sig">ds.match_points(df=None, variables=None, depths=None, tmean=False, top=False, nan=None, regrid='bil', max_extrap=5, quiet=False, **kwargs)</div></div>
+      <div class="api-card__body">
+        <p>Match dataset to a spatiotemporal points dataframe</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <p>Required:</p>
+          <ul class="param-list">
+            <li><code class="param-name">df</code><span class="param-tag">required</span><p>The column names must be made up of a subset of <code>"lon"</code>, <code>"lat"</code>, <code>"year"</code>, <code>"month"</code>, <code>"day"</code> and <code>"depth"</code>. Pressure (in dbars), named <code>"pressure"</code>, can also be used instead of <code>"depth"</code>, which will require the optional dependency seawater to be installed.</p></li>
+          </ul>
+          <p>Optional:</p>
+          <ul class="param-list">
+            <li><code class="param-name">variables</code><p>Str or list of variables. All variables are matched up if this is not supplied. This can include variables generated by assign using kwargs.</p></li>
+            <li><code class="param-name">depths</code><p>If each cell has different vertical levels, this must be provided as a dataset. If each cell has the same vertical levels, provide it as a list. If this is not supplied nctoolkit will try to figure out what they are. Only required if carrying out vertical matchups.</p></li>
+            <li><code class="param-name">tmean</code><p>Set to True or False, depending on whether you want temporal averaging at the temporal resolution given by df. For example, if you only had months in df, but had daily data in ds, you might want to calculate a daily average in the monthly dataset. This is equivalent to apply `ds.tmean(..)` to the dataset.</p></li>
+            <li><code class="param-name">top</code><p>Set to True if you want only the top/surface level of the dataset to be selected for matching.</p></li>
+            <li><code class="param-name">nan</code><p>Value or range of values to set to nan. Defaults to 0. Only required if values in dataset need changed to missing</p></li>
+            <li><code class="param-name">regrid</code><p>Regridding method. Defaults to <code>"bil"</code>. Options available are those in nctoolkit regrid method. <code>"nn"</code> for nearest neighbour.</p></li>
+            <li><code class="param-name">max_extrap</code><p>Maximum distance for extrapolation. Defaults to 5.</p></li>
+            <li><code class="param-name">quiet</code><p>Set to True to suppress output</p></li>
+            <li><code class="param-name">kwargs</code><p>Additional arguments to send to assign</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="phenology">
+      <div class="api-card__head"><div class="sig">ds.phenology(var=None, metric=None, p=None)</div></div>
+      <div class="api-card__body">
+        <p>Calculate phenologies from a dataset. Each file in an ensemble must only cover a single year, and ideally have all days. The method assumes datasets have daily resolution.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <p>Required:</p>
+          <ul class="param-list">
+            <li><code class="param-name">var</code><span class="param-tag">required</span><p>Variable to analyze.</p></li>
+            <li><code class="param-name">metric</code><span class="param-tag">required</span><p>Must be peak, middle, start or end. Peak is defined as the day of the maximum value. Middle is the day when the cumulative total of the variable first exceeds the cumulative total for the entire year. Start or end is defined as the first day when the cumulative total exceeds a percentile p of the maximum cumulative total.</p></li>
+          </ul>
+          <p>Optional:</p>
+          <ul class="param-list">
+            <li><code class="param-name">p</code><span class="param-tag">for metric='start'/'end'</span><p>Percentile to use for start or end.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <span class="kicker" id="ensembles">Ensembles &amp; merging</span>
+
+    <div class="api-card" id="merge-fn">
+      <div class="api-card__head"><div class="sig">nc.merge(*datasets, match=['day', 'year', 'month'])</div></div>
+      <div class="api-card__body">
+        <p>Merge datasets</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">datasets</code><p>Datasets to merge.</p></li>
+            <li><code class="param-name">match</code><p>Temporal matching criteria. This is a list which must be made up of a subset of day, year, month. This checks that the datasets have compatible times. For example, if you want to ensure the datasets have the same years, then use match = [<code>"year"</code>].</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="append">
+      <div class="api-card__head"><div class="sig">ds.append(x=None)</div></div>
+      <div class="api-card__body">
+        <p>Add new file(s) to a dataset.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">x</code><span class="param-tag">required</span><p>File path(s) to add to the dataset</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="remove">
+      <div class="api-card__head"><div class="sig">ds.remove(x=None)</div></div>
+      <div class="api-card__body">
+        <p>Remove file(s) from a dataset</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">x</code><span class="param-tag">required</span><p>File path(s) to remove from a dataset</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="ensemble_mean">
+      <div class="api-card__head"><div class="sig">ds.ensemble_mean(nco=False, ignore_time=False)</div></div>
+      <div class="api-card__body">
+        <p>Calculate an ensemble mean. This operates on a grid cell by grid cell basis.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">nco</code><p>Do you want to use NCO for the calculation? Default is False, i.e. CDO is used. Modify default if run time is an issue.</p></li>
+            <li><code class="param-name">ignore_time</code><p>If True the mean is calculated over all time steps. If False, the ensemble mean is calculated for each time steps; for example, if the ensemble is made up of monthly files the mean for each month will be calculated.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="ensemble_min">
+      <div class="api-card__head"><div class="sig">ds.ensemble_min(nco=False, ignore_time=False)</div></div>
+      <div class="api-card__body">
+        <p>Calculate an ensemble minimum. This operates on a grid cell by grid cell basis.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">nco</code><p>Do you want to use NCO for the calculation? Default is False, i.e. CDO is used. Modify default if run time is an issue.</p></li>
+            <li><code class="param-name">ignore_time</code><p>If True the min is calculated over all time steps. If False, the ensemble min is calculated for each time steps; for example, if the ensemble is made up of monthly files the min for each month will be calculated.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="ensemble_max">
+      <div class="api-card__head"><div class="sig">ds.ensemble_max(nco=False, ignore_time=False)</div></div>
+      <div class="api-card__body">
+        <p>Calculate an ensemble maximum. This operates on a grid cell by grid cell basis.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">nco</code><p>Do you want to use NCO for the calculation? Default is False, i.e. CDO is used. Modify default if run time is an issue.</p></li>
+            <li><code class="param-name">ignore_time</code><p>If True the max is calculated over all time steps. If False, the ensemble max is calculated for each time steps; for example, if the ensemble is made up of monthly files the max for each month will be calculated.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="ensemble_percentile">
+      <div class="api-card__head"><div class="sig">ds.ensemble_percentile(p=None)</div></div>
+      <div class="api-card__body">
+        <p>Calculate an ensemble percentile. This will calculate the percentiles for each time step in the files. For example, if you had an ensemble of files where each file included 12 months of data, it would calculate the percentile for each month. This operates on a grid cell by grid cell basis.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">p</code><span class="param-tag">required</span><p>percentile to calculate. 0&lt;=p&lt;=100.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="ensemble_range">
+      <div class="api-card__head"><div class="sig">ds.ensemble_range()</div></div>
+      <div class="api-card__body">
+        <p>Calculate an ensemble range. The range is calculated for each time step; for example, if each file in the ensemble has 12 months of data the statistic will be calculated for each month. This operates on a grid cell by grid cell basis.</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="ensemble_stdev">
+      <div class="api-card__head"><div class="sig">ds.ensemble_stdev()</div></div>
+      <div class="api-card__body">
+        <p>Calculate an ensemble standard deviation. The ensemble standard deviation is calculated for each time steps; for example, if the ensemble is made up of monthly files the standard deviation for each month will be calculated. This operates on a grid cell by grid cell basis.</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="ensemble_sum">
+      <div class="api-card__head"><div class="sig">ds.ensemble_sum()</div></div>
+      <div class="api-card__body">
+        <p>Calculate an ensemble sum. The sum is calculated for each time step; for example, if each file in the ensemble has 12 months of data the statistic will be calculated for each month. This operates on a grid cell by grid cell basis.</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="ensemble_var">
+      <div class="api-card__head"><div class="sig">ds.ensemble_var()</div></div>
+      <div class="api-card__body">
+        <p>Calculate an ensemble variance. The ensemble variance is calculated for each time steps; for example, if the ensemble is made up of monthly files the standard deviation for each month will be calculated. This operates on a grid cell by grid cell basis.</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="merge">
+      <div class="api-card__head"><div class="sig">ds.merge(join='variables', match=['year', 'month', 'day'], check=True)</div></div>
+      <div class="api-card__body">
+        <p>Merge a multi-file ensemble into a single file. 2 methods are available. 1) merging files with different variables, but the same time steps. 2) merging files with the same variables, with different times.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">join</code><p>This defines the type of merging to carry out. <code>"variables"</code>: this will merge by variable, so that an ensemble with different variables, but the same number of time steps is merged to a single file. <code>"time"</code>: this will merge files with the same variables, but different times to a single file, into a single file with ordered times. join defaults to <code>"variables"</code>, and uses partial matches, so <code>"var"</code> will give variable based merging.</p></li>
+            <li><code class="param-name">match</code><p>Optional argument when join = 'variables'. A list or str stating what must match in the netCDF files. Defaults to year/month/day. This list must be some combination of year/month/day. An error will be thrown if the elements of time in match do not match across all netCDF files. The only exception is if there is a single date file in the ensemble.</p></li>
+            <li><code class="param-name">check</code><p>By default nctoolkit out checks in case files do not have the same variables etc. Set check to False if you are confident merging will be problem free. If you are unsure if files have the same variables, set check to True to find out. Note: if you do not explicitly provide check and there are more than 30 files in a dataset, checks will be turned off.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="split">
+      <div class="api-card__head"><div class="sig">ds.split(by=None)</div></div>
+      <div class="api-card__body">
+        <p>Split the dataset. Each file in the ensemble will be separated into new files based on the splitting argument.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">by</code><span class="param-tag">required</span><p>Available by arguments are 'year', 'month', 'yearmonth', 'season', 'day' 'name', <code>"timestep"</code>. year will split files by year, month will split files by month, yearmonth will split files by year and month; season will split files by year, day will split files by day. Using <code>"timestep"</code> will split files by timestep. 'name' will split by variable name</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <span class="kicker" id="arithmetic">Arithmetic &amp; comparisons</span>
+
+    <div class="api-card" id="abs">
+      <div class="api-card__head"><div class="sig">ds.abs()</div></div>
+      <div class="api-card__body">
+        <p>Method to get the absolute value of variables</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="add">
+      <div class="api-card__head"><div class="sig">ds.add(x=None, var=None)</div></div>
+      <div class="api-card__body">
+        <p>Add to a dataset. This will add a constant, another dataset or a netCDF file to the dataset. nctoolkit will automatically determine the appropriate comparison required.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <p>Required:</p>
+          <ul class="param-list">
+            <li><code class="param-name">x</code><span class="param-tag">required</span><p>An int, float, single file dataset or netCDF file to add to the dataset. If a dataset or netCDF file is supplied, this must have only one variable, unless var is provided. The grids must be the same.</p></li>
+          </ul>
+          <p>Optional:</p>
+          <ul class="param-list">
+            <li><code class="param-name">var</code><p>A variable in the x to use for the operation</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="assign">
+      <div class="api-card__head"><div class="sig">ds.assign(drop=False, **kwargs)</div></div>
+      <div class="api-card__body">
+        <p>Create new variables using mathematical operations on existing variables. Existing columns that are re-assigned will be overwritten. This method operators in a similar fashion to the pandas assign method.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">drop</code><p>Set to True if you want existing variables to be removed once the new ones have been created. Defaults to False.</p></li>
+            <li><code class="param-name">kwargs</code><p>New variable names are keywords. All terms in the equation given by the lambda function should evaluate to a numeric. New variables are calculated for each grid cell and time step.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="exp">
+      <div class="api-card__head"><div class="sig">ds.exp()</div></div>
+      <div class="api-card__body">
+        <p>Method to get the exponential of variables</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="log">
+      <div class="api-card__head"><div class="sig">ds.log()</div></div>
+      <div class="api-card__body">
+        <p>Method to get the natural log, ln, of variables</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="log10">
+      <div class="api-card__head"><div class="sig">ds.log10()</div></div>
+      <div class="api-card__body">
+        <p>Method to get the base 10 log, log10, of variables</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="multiply">
+      <div class="api-card__head"><div class="sig">ds.multiply(x=None, var=None)</div></div>
+      <div class="api-card__body">
+        <p>Multiply a dataset. This will multiply a dataset by a constant, another dataset or a netCDF file.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <p>Required:</p>
+          <ul class="param-list">
+            <li><code class="param-name">x</code><span class="param-tag">required</span><p>An int, float, single file dataset or netCDF file to multiply the dataset by. If multiplying by a dataset or single file there must only be a single variable in it, unless var is supplied. The grids must be the same.</p></li>
+          </ul>
+          <p>Optional:</p>
+          <ul class="param-list">
+            <li><code class="param-name">var</code><p>A variable in the x to multiply the dataset by</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="power">
+      <div class="api-card__head"><div class="sig">ds.power(x=None)</div></div>
+      <div class="api-card__body">
+        <p>Powers of variables in dataset</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">x</code><span class="param-tag">required</span><p>An int or float to take the variables to the power of</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="sqrt">
+      <div class="api-card__head"><div class="sig">ds.sqrt()</div></div>
+      <div class="api-card__body">
+        <p>Method to get the square root of variables</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="square">
+      <div class="api-card__head"><div class="sig">ds.square()</div></div>
+      <div class="api-card__body">
+        <p>Method to get the square of variables</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="subtract">
+      <div class="api-card__head"><div class="sig">ds.subtract(x=None, var=None)</div></div>
+      <div class="api-card__body">
+        <p>Subtract from a dataset. This will subtract a constant, another dataset or a netCDF file from the dataset.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <p>Required:</p>
+          <ul class="param-list">
+            <li><code class="param-name">x</code><span class="param-tag">required</span><p>An int, float, single file dataset or netCDF file to subtract from the dataset. If a dataset or netCDF is supplied this must only have one variable, unless var is provided. The grids must be the same.</p></li>
+          </ul>
+          <p>Optional:</p>
+          <ul class="param-list">
+            <li><code class="param-name">var</code><p>A variable in the x to use for the operation</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="divide">
+      <div class="api-card__head"><div class="sig">ds.divide(x=None, var=None)</div></div>
+      <div class="api-card__body">
+        <p>Divide the data. This will divide the dataset by a constant, another dataset or a netCDF file.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <p>Required:</p>
+          <ul class="param-list">
+            <li><code class="param-name">x</code><span class="param-tag">required</span><p>An int, float, single file dataset or netCDF file to divide the dataset by. If a dataset or netCDF file is supplied, this must have only one variable, unless var is provided. The grids must be the same.</p></li>
+          </ul>
+          <p>Optional:</p>
+          <ul class="param-list">
+            <li><code class="param-name">var</code><p>A variable in the x to use for the operation</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <span class="kicker" id="assign-functions">Functions available inside assign()</span>
+
     <p>These can be used inside the lambda functions passed to <a href="variables.html"><code>assign()</code></a>:</p>
     <div class="table-wrap"><table>
       <thead><tr><th>Function</th><th>Description</th><th>Example</th></tr></thead>
@@ -203,56 +1614,579 @@
       </tbody>
     </table></div>
 
-    <h2 id="variables">Variable &amp; attribute editing</h2>
-    <div class="table-wrap"><table><tbody>
-      <tr><td><code>DataSet.assign(...)</code></td><td>Create new variables from lambda functions, pandas-style. See <a href="variables.html">Mathematical operations</a>.</td></tr>
-      <tr><td><code>DataSet.rename({old: new})</code></td><td>Rename one or more variables.</td></tr>
-      <tr><td><code>DataSet.as_missing(...) / missing_as(...) / set_fill(...)</code></td><td>Set values to missing, replace missing values, or change the netCDF fill value.</td></tr>
-      <tr><td><code>DataSet.set_longnames(...) / set_units(...)</code></td><td>Edit a variable's <code>long_name</code> or <code>units</code> netCDF attribute.</td></tr>
-      <tr><td><code>DataSet.strip_variables(...)</code></td><td>Remove non-essential variables from the dataset.</td></tr>
-    </tbody></table></div>
+    <hr class="divider">
 
-    <h2 id="visualization">Plotting</h2>
-    <div class="table-wrap"><table><tbody>
-      <tr><td><code>DataSet.plot(...)</code></td><td>Automatic interactive plot &mdash; map, time series, or heatmap depending on the data's shape. See <a href="visualization.html">Visualization</a>.</td></tr>
-      <tr><td><code>DataSet.pub_plot(...)</code></td><td>Static, publication-quality plot for regular lon/lat grids.</td></tr>
-    </tbody></table></div>
+    <span class="kicker" id="variables">Variable &amp; attribute editing</span>
 
-    <h2 id="exporting">Output &amp; formatting</h2>
-    <div class="table-wrap"><table><tbody>
-      <tr><td><code>DataSet.to_nc(path)</code></td><td>Write the dataset to a netCDF file.</td></tr>
-      <tr><td><code>DataSet.to_dataframe()</code></td><td>Convert the dataset to a pandas dataframe.</td></tr>
-      <tr><td><code>DataSet.to_xarray()</code></td><td>Convert the dataset to an xarray Dataset.</td></tr>
-      <tr><td><code>DataSet.zip()</code></td><td>Mark the dataset to be written as a compressed netCDF file on export.</td></tr>
-      <tr><td><code>DataSet.format(fmt)</code></td><td>Set the netCDF format: <code>nc1</code>, <code>nc2</code>/<code>nc</code>, <code>nc4</code>, <code>nc4c</code>, <code>nc5</code>.</td></tr>
-    </tbody></table></div>
+    <div class="api-card" id="rename">
+      <div class="api-card__head"><div class="sig">ds.rename(newnames=None, **kwargs)</div></div>
+      <div class="api-card__body">
+        <p>Rename variables in a dataset</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">newnames</code><p>Dictionary with key-value pairs being original and new variable names * kwargs. Alternative method for renaming</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
 
-    <h2 id="evaluation">Evaluation &amp; cleanup</h2>
-    <div class="table-wrap"><table><tbody>
-      <tr><td><code>DataSet.run()</code></td><td>Force evaluation of any pending lazy operations. See <a href="datasets.html#lazy">Lazy evaluation</a>.</td></tr>
-      <tr><td><code>cleanup()</code></td><td>Remove NCToolkit's own temporary files from the current session.</td></tr>
-      <tr><td><code>deep_clean()</code></td><td>Remove all NCToolkit temporary files, including from other sessions.</td></tr>
-      <tr><td><code>DataSet.reset()</code></td><td>Reset a dataset back to its originally opened state.</td></tr>
-    </tbody></table></div>
+    <div class="api-card" id="as_missing">
+      <div class="api-card__head"><div class="sig">ds.as_missing(value=None)</div></div>
+      <div class="api-card__body">
+        <p>Change a range or individual value to missing.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">value</code><span class="param-tag">required</span><p>If int/float is provided, the missing value will be set to that. If a list is provided, values between the two values (inclusive) of the list are set to missing.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
 
-    <h2 id="misc">Miscellaneous</h2>
-    <div class="table-wrap"><table><tbody>
-      <tr><td><code>DataSet.check()</code></td><td>Run general sanity checks: integer types, integer time axis, CF-compliance, grid consistency. See <a href="troubleshoot.html">Troubleshooting</a>.</td></tr>
-      <tr><td><code>DataSet.is_corrupt()</code></td><td>Check whether the source file(s) are corrupt.</td></tr>
-      <tr><td><code>DataSet.assign_coords(lon_name, lat_name)</code></td><td>Tell NCToolkit which variables to treat as longitude/latitude coordinates.</td></tr>
-      <tr><td><code>DataSet.set_precision(dtype)</code></td><td>Change the numerical precision used for calculations, e.g. <code>"F64"</code>.</td></tr>
-      <tr><td><code>DataSet.set_gridtype(...) / fix_nemo_ersem_grid(...)</code></td><td>Correct grid-type metadata, including a helper for NEMO-ERSEM output.</td></tr>
-      <tr><td><code>DataSet.reduce_dims() / reduce_grid(...)</code></td><td>Drop length-1 dimensions, or reduce an unnecessarily large grid.</td></tr>
-      <tr><td><code>DataSet.surface_mask(...)</code></td><td>Generate a land/sea mask from the surface level.</td></tr>
-      <tr><td><code>DataSet.no_leaps()</code></td><td>Remove leap days from the time axis.</td></tr>
-      <tr><td><code>DataSet.as_double() / as_type(dtype)</code></td><td>Cast the dataset to double precision, or a specific data type.</td></tr>
-      <tr><td><code>DataSet.na_count() / na_frac()</code></td><td>Count, or fraction, of missing values.</td></tr>
-      <tr><td><code>DataSet.first_above(...) / first_below(...) / last_above(...) / last_below(...)</code></td><td>First/last time step crossing a threshold.</td></tr>
-      <tr><td><code>DataSet.distribute(...) / collect(...)</code></td><td>Split processing across, then gather results back from, worker files.</td></tr>
-      <tr><td><code>DataSet.cell_area(join=True)</code></td><td>Add (or return only) grid-cell area in m&sup2;.</td></tr>
-      <tr><td><code>DataSet.cdo_command(cmd, ensemble=False) / nco_command(cmd)</code></td><td>Run a raw CDO or NCO command. See <a href="backends.html">CDO &amp; NCO backends</a>.</td></tr>
-    </tbody></table></div>
+    <div class="api-card" id="missing_as">
+      <div class="api-card__head"><div class="sig">ds.missing_as(value=None)</div></div>
+      <div class="api-card__body">
+        <p>Convert missing values to a constant</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">value</code><span class="param-tag">required</span><p>If int/float is provided, the missing value will be converted to that.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
 
+    <div class="api-card" id="set_fill">
+      <div class="api-card__head"><div class="sig">ds.set_fill(value=None)</div></div>
+      <div class="api-card__body">
+        <p>Set the fill value</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">value</code><span class="param-tag">required</span><p>The fill value to set.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="sum_all">
+      <div class="api-card__head"><div class="sig">ds.sum_all(drop=True, new_name=None)</div></div>
+      <div class="api-card__body">
+        <p>Calculate the sum of all variables for each time step</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">drop</code><p>Do you want to keep variables?</p></li>
+            <li><code class="param-name">new_name</code><p>If you want to name the output of sum_all to a specific name</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="set_longnames">
+      <div class="api-card__head"><div class="sig">ds.set_longnames(name_dict=None, **kwargs)</div></div>
+      <div class="api-card__body">
+        <p>Set the long names of variables</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">name_dict</code><p>Dictionary with key, value pairs representing the variable names and their long names * kwargs. Alternative method for setting units</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="set_units">
+      <div class="api-card__head"><div class="sig">ds.set_units(unit_dict=None, **kwargs)</div></div>
+      <div class="api-card__body">
+        <p>Set the units for variables</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">unit_dict</code><p>A dictionary where the key-value pairs are the variables and new units respectively. * kwargs. Alternative method for setting units using direct assignment</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <span class="kicker" id="visualization">Plotting</span>
+
+    <div class="api-card" id="plot">
+      <div class="api-card__head"><div class="sig">ds.plot(vars=None, autoscale=True, out=None, coast=None, **kwargs)</div></div>
+      <div class="api-card__body">
+        <p>Automatically plot a dataset.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">vars</code><p>A string or list of the variables to plot</p></li>
+            <li><code class="param-name">autoscale</code><p>Set to True if you want the colorbar to be scaled to the min/max of the data. Default is True</p></li>
+            <li><code class="param-name">out</code><p>Name of output file if you want to save as html. Defaults to None.</p></li>
+            <li><code class="param-name">coast</code><p>Set to True if you want a coastline to show up on spatial map. Default is True if a working version of cartopy is available. It is False otherwise.</p></li>
+            <li><code class="param-name">kwargs</code><p>Optional args to be sent to hvplot</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="pub_plot">
+      <div class="api-card__head"><div class="sig">ds.pub_plot(var=None, extent=None, title=None, legend=None, size='auto', land='auto', colours='auto', norm=None, limits=None, projection='auto', coast='auto', scale='auto', grid=True, grid_colour='auto', legend_position='auto', robust=False, out=None, breaks=None, dpi='figure', font=None, **kwargs)</div></div>
+      <div class="api-card__body">
+        <p>Static plotting. This requires datasets to have regular latlon grids. Plots a static map, and requires only one variable, time step and vertical level</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <p>Required:</p>
+          <ul class="param-list">
+            <li><code class="param-name">var</code><span class="param-tag">required</span><p>Variable to plot</p></li>
+          </ul>
+          <p>Optional:</p>
+          <ul class="param-list">
+            <li><code class="param-name">ds</code><p>Dataset to plot</p></li>
+            <li><code class="param-name">extent</code><p>List with [lon_min, lon_max, lat_min, lat_max] for plotting extent</p></li>
+            <li><code class="param-name">title</code><p>Character string with plot title</p></li>
+            <li><code class="param-name">legend</code><p>Character string with legend title</p></li>
+            <li><code class="param-name">size</code><p>List with [xsize, ysize] for plotting size</p></li>
+            <li><code class="param-name">land</code><p>Character string with colour required for land. Set to None if you do not want land to show.</p></li>
+            <li><code class="param-name">colours</code><p>Character string with colour map to use. Set to None if you do not want to use a colour map.</p></li>
+            <li><code class="param-name">norm</code><p>Norm to use for colour bar</p></li>
+            <li><code class="param-name">limits</code><p>List with [min, max] for colour bar limits. Please note that if the colour scale passes through zero, the colour scale will be symmetrical around zero. So the limits will be reset to the maximum absolute value of the data.</p></li>
+            <li><code class="param-name">projection</code><p>Cartopy projection to use.</p></li>
+            <li><code class="param-name">coast</code><p>Set to <code>"coarse"</code>, <code>"low"</code>, <code>"intermediate"</code>, <code>"high"</code> or <code>"full"</code> if you want to use GSHHS coastlines</p></li>
+            <li><code class="param-name">scale</code><p><code>"low"</code>, <code>"medium"</code> or <code>"high"</code></p></li>
+            <li><code class="param-name">grid</code><p>Set to False if you do not want grid lines.</p></li>
+            <li><code class="param-name">legend_position</code><p>= <code>"auto"</code></p></li>
+            <li><code class="param-name">robust</code><p>Whether to use robust statistics for the colour scale or not</p></li>
+            <li><code class="param-name">out</code><p>Output file name</p></li>
+            <li><code class="param-name">breaks</code><p>List of breaks for the colour bar</p></li>
+            <li><code class="param-name">dpi</code><p>DPI for output file. Default is <code>"figure"</code>.</p></li>
+            <li><code class="param-name">kwargs</code><p>kwargs to allow slight misspelling of arguments -------------</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <span class="kicker" id="exporting">Output &amp; formatting</span>
+
+    <div class="api-card" id="to_nc">
+      <div class="api-card__head"><div class="sig">ds.to_nc(out, zip=True, overwrite=False, **kwargs)</div></div>
+      <div class="api-card__body">
+        <p>Save a dataset to a named file. This will only work with single file datasets.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <p>Required:</p>
+          <ul class="param-list">
+            <li><code class="param-name">out</code><span class="param-tag">required</span><p>Output file name.</p></li>
+          </ul>
+          <p>Optional:</p>
+          <ul class="param-list">
+            <li><code class="param-name">zip</code><p>True/False depending on whether you want to zip the file. Default is True.</p></li>
+            <li><code class="param-name">overwrite</code><p>If out file exists, do you want to overwrite it? Default is False.</p></li>
+            <li><code class="param-name">kwargs</code><p>Optional arguments to be sent to subset.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="to_xarray">
+      <div class="api-card__head"><div class="sig">ds.to_xarray(decode_times=True, **kwargs)</div></div>
+      <div class="api-card__body">
+        <p>Open a dataset as an xarray object</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">decode_times</code><p>Set to False if you do not want xarray to decode the times. Default is True. If xarray cannot decode times, CDO will be used.</p></li>
+            <li><code class="param-name">kwargs</code><p>Optional arguments to be sent to subset.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="to_dataframe">
+      <div class="api-card__head"><div class="sig">ds.to_dataframe(decode_times=True, drop_bnds=True, **kwargs)</div></div>
+      <div class="api-card__body">
+        <p>Convert a dataset to a pandas data frame</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">decode_times</code><p>Set to False if you do not want xarray to decode the times prior to conversion to data frame. Default is True.</p></li>
+            <li><code class="param-name">drop_bnds</code><p>Set to False if you do not want to drop the bounds from the data frame. Variables/coordinates with '_bnds' in their names will be dropped. Default is True.</p></li>
+            <li><code class="param-name">kwargs</code><p>Optional arguments to be sent to subset.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="zip">
+      <div class="api-card__head"><div class="sig">ds.zip()</div></div>
+      <div class="api-card__body">
+        <p>Zip the dataset. This will compress the files within the dataset. This will occur lazily, so will only occur after everything has been evaluated.</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="format">
+      <div class="api-card__head"><div class="sig">ds.format(ext=None)</div></div>
+      <div class="api-card__body">
+        <p>Change the netCDF format of a dataset. This will compress the files within the dataset. This works lazily.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">ext</code><span class="param-tag">required</span><p>New format. Must be one of <code>"nc"</code>, <code>"nc1"</code>, <code>"nc2"</code>, <code>"nc4"</code> and <code>"nc5"</code> . netCDF = nc1 netCDF version 2 (64-bit offset) = nc2/nc netCDF4 (HDF5) = nc4 netCDF4-classi = nc4c netCDF version 5 (64-bit data) = nc5</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <span class="kicker" id="evaluation">Evaluation &amp; cleanup</span>
+
+    <div class="api-card" id="run">
+      <div class="api-card__head"><div class="sig">ds.run()</div></div>
+      <div class="api-card__body">
+        <p>Run all stored commands in a dataset</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="cleanup">
+      <div class="api-card__head"><div class="sig">nc.cleanup()</div></div>
+      <div class="api-card__body">
+        <p>Temp file cleaner. Remove all files created during the session that are now out of use</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="deep_clean">
+      <div class="api-card__head"><div class="sig">nc.deep_clean()</div></div>
+      <div class="api-card__body">
+        <p>Deep temp file cleaner. Remove all temporary files ever created by nctoolkit across all previous and current sesions</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <span class="kicker" id="misc">Miscellaneous</span>
+
+    <div class="api-card" id="na_count">
+      <div class="api-card__head"><div class="sig">ds.na_count(over='time', align='right', window=None)</div></div>
+      <div class="api-card__body">
+        <p>Calculate the number of missing values.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">over</code><p>Time periods to to the count over over. Options are 'time', 'year', 'month', 'day'.</p></li>
+            <li><code class="param-name">align</code><p>This determines whether the output time is at the left, centre or right hand side of the time window. Options are <code>"left"</code>, <code>"centre"</code> and <code>"right"</code></p></li>
+            <li><code class="param-name">window</code><p>This determines the number of time steps to calculate, on a non-rolling basis. This is useful if you need to calculate the sum every 5 days, for example.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="na_frac">
+      <div class="api-card__head"><div class="sig">ds.na_frac(over='time', align='right', window=None)</div></div>
+      <div class="api-card__body">
+        <p>Calculate the fraction of missing values in each grid cell across all time steps.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">over</code><p>Time periods to to the count over over. Options are 'time', 'year', 'month', 'day'.</p></li>
+            <li><code class="param-name">align</code><p>This determines whether the output time is at the left, centre or right hand side of the time window. Options are <code>"left"</code>, <code>"centre"</code> and <code>"right"</code></p></li>
+            <li><code class="param-name">window</code><p>This determines the number of time steps to calculate over, on a non-rolling basis. This is useful if you need to calculate the fraction for every non-overlapping 5 day periods, for example.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="distribute">
+      <div class="api-card__head"><div class="sig">ds.distribute(m=1, n=1)</div></div>
+      <div class="api-card__body">
+        <p>Split the dataset into multiple evenly sized horizontal and vertical new files</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">m</code><p>Number of rows</p></li>
+            <li><code class="param-name">n</code><p>Number of columns</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="collect">
+      <div class="api-card__head"><div class="sig">ds.collect()</div></div>
+      <div class="api-card__body">
+        <p>Collect a dataset that has been split using distribute</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="cell_area">
+      <div class="api-card__head"><div class="sig">ds.cell_area(join=True)</div></div>
+      <div class="api-card__body">
+        <p>Calculate the area of grid cells. Area of grid cells is given in square meters.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">join</code><p>Set to False if you only want the cell areas to be in the output. join=True adds the areas as a variable to the dataset. Defaults to True.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="first_above">
+      <div class="api-card__head"><div class="sig">ds.first_above(x=None)</div></div>
+      <div class="api-card__body">
+        <p>Identify the time step when a value is first above a threshold. This will do the comparison with either a number, a Dataset or a netCDF file.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">x</code><span class="param-tag">required</span><p>An int, float, single file dataset or netCDF file to use for the threshold(s). If comparing with a dataset or single file there must only be a single variable in it. The grids must be the same.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="first_below">
+      <div class="api-card__head"><div class="sig">ds.first_below(x=None)</div></div>
+      <div class="api-card__body">
+        <p>Identify the time step when a value is first below a threshold. This will do the comparison with either a number, a Dataset or a netCDF file.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">x</code><span class="param-tag">required</span><p>An int, float, single file dataset or netCDF file to use for the threshold(s). If comparing with a dataset or single file there must only be a single variable in it. The grids must be the same.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="last_above">
+      <div class="api-card__head"><div class="sig">ds.last_above(x=None)</div></div>
+      <div class="api-card__body">
+        <p>Identify the final time step when a value is above a threshold. This will do the comparison with either a number, a Dataset or a netCDF file.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">x</code><span class="param-tag">required</span><p>An int, float, single file dataset or netCDF file to use for the threshold(s). If comparing with a dataset or single file there must only be a single variable in it. The grids must be the same.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="last_below">
+      <div class="api-card__head"><div class="sig">ds.last_below(x=None)</div></div>
+      <div class="api-card__body">
+        <p>Identify the last time step when a value is below a threshold. This will do the comparison with either a number, a Dataset or a netCDF file.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">x</code><span class="param-tag">required</span><p>An int, float, single file dataset or netCDF file to use for the threshold(s). If comparing with a dataset or single file there must only be a single variable in it. The grids must be the same.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="cdo_command">
+      <div class="api-card__head"><div class="sig">ds.cdo_command(command=None, ensemble=False, check=False)</div></div>
+      <div class="api-card__body">
+        <p>Apply a cdo command</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <p>Required:</p>
+          <ul class="param-list">
+            <li><code class="param-name">command</code><span class="param-tag">required</span><p>cdo command to call. This command must be such that "cdo {command} infile outfile" will run.</p></li>
+          </ul>
+          <p>Optional:</p>
+          <ul class="param-list">
+            <li><code class="param-name">ensemble</code><p>Is this an ensemble method command? For example ensmean, mergetime, etc.</p></li>
+            <li><code class="param-name">check</code><p>Check whether the command is valid</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="nco_command">
+      <div class="api-card__head"><div class="sig">ds.nco_command(command=None, ensemble=False)</div></div>
+      <div class="api-card__body">
+        <p>Apply an nco command</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <p>Required:</p>
+          <ul class="param-list">
+            <li><code class="param-name">command</code><span class="param-tag">required</span><p>nco command to call. This must be of a form such that "nco {command} infile outfile" will run.</p></li>
+          </ul>
+          <p>Optional:</p>
+          <ul class="param-list">
+            <li><code class="param-name">ensemble</code><p>Set to True if you want the command to take all of the files as input. This is useful for ensemble methods.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="compare">
+      <div class="api-card__head"><div class="sig">ds.compare(expression=None)</div></div>
+      <div class="api-card__body">
+        <p>Compare all variables to a constant</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">expression</code><span class="param-tag">required</span><p>This a regular comparison such as "&lt;0<code>", "</code>&gt;0<code>", "</code>==0"</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="gt">
+      <div class="api-card__head"><div class="sig">ds.gt(x)</div></div>
+      <div class="api-card__body">
+        <p>Method to calculate if variable in dataset is greater than that in another file or dataset. This currently only works with single file datasets</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">x</code><span class="param-tag">required</span><p>File path or nctoolkit dataset</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="lt">
+      <div class="api-card__head"><div class="sig">ds.lt(x)</div></div>
+      <div class="api-card__body">
+        <p>Method to calculate if variable in dataset is less than that in another file or dataset. This currently only works with single file datasets</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">x</code><span class="param-tag">required</span><p>File path or nctoolkit dataset</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="reduce_dims">
+      <div class="api-card__head"><div class="sig">ds.reduce_dims()</div></div>
+      <div class="api-card__body">
+        <p>Reduce dimensions of data. This will remove any dimensions with only one value. For example, if only selecting one vertical level, the vertical dimension will be removed.</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="reduce_grid">
+      <div class="api-card__head"><div class="sig">ds.reduce_grid(mask=None)</div></div>
+      <div class="api-card__body">
+        <p>Reduce the dataset to non-zero locations in a mask</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">mask</code><span class="param-tag">required</span><p>single variable dataset or path to .nc file. The mask must have an identical grid to the dataset.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="set_precision">
+      <div class="api-card__head"><div class="sig">ds.set_precision(x)</div></div>
+      <div class="api-card__body">
+        <p>Set the precision in a dataset</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">x</code><span class="param-tag">required</span><p>The precision. One of 'I8', 'I16', 'I32', 'F32', 'F64'.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="check">
+      <div class="api-card__head"><div class="sig">ds.check()</div></div>
+      <div class="api-card__body">
+        <p>Check contents of files for common data problems.</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="is_corrupt">
+      <div class="api-card__head"><div class="sig">ds.is_corrupt()</div></div>
+      <div class="api-card__body">
+        <p>Check if files are corrupt</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="fix_nemo_ersem_grid">
+      <div class="api-card__head"><div class="sig">ds.fix_nemo_ersem_grid()</div></div>
+      <div class="api-card__body">
+        <p>A quick hack to change the grid file in North West European shelf Nemo grids.</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="set_gridtype">
+      <div class="api-card__head"><div class="sig">ds.set_gridtype(grid)</div></div>
+      <div class="api-card__body">
+        <p>Set the grid type. Only use this if, for example, the grid is "generic" when it should be lonlat.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">grid</code><span class="param-tag">required</span><p>Grid type. Needs to be one of <code>"curvilinear"</code>, <code>"unstructured"</code>, <code>"dereference"</code>, <code>"regular"</code>, <code>"regularnn"</code> or <code>"lonlat"</code>.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="surface_mask">
+      <div class="api-card__head"><div class="sig">ds.surface_mask()</div></div>
+      <div class="api-card__body">
+        <p>Create a mask identifying the shallowest cell without missing values. This converts a dataset to a mask identifying which cell represents top level, for example the sea surface. 1 identifies the shallowest cell with non-missing values. Everything else is 0, or missing. At present this method only uses the first available variable from netCDF files, so it may not be suitable for all data</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="strip_variables">
+      <div class="api-card__head"><div class="sig">ds.strip_variables(vars=None)</div></div>
+      <div class="api-card__body">
+        <p>Remove any variables, such as bnds etc., from variables. This should probably only be done at the end of a processing chain before converting to a dataframe etc., as it is stripping away critical info for netCDF operations.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">vars</code><p>individual or list of variables to select and strip. All variables will be stripped if this is not defined.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="no_leaps">
+      <div class="api-card__head"><div class="sig">ds.no_leaps()</div></div>
+      <div class="api-card__body">
+        <p>Remove leap years. This uses an undocumented CDO feature to remove Feb 29 and sets the calendar to leap year free</p>
+      </div>
+    </div>
+
+    <div class="api-card" id="as_double">
+      <div class="api-card__head"><div class="sig">ds.as_double(x)</div></div>
+      <div class="api-card__body">
+        <p>Set a variable/dimension to double. This is mostly useful for cases when time is stored as an int, but you need a double</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">x</code><span class="param-tag">required</span><p>A list of variable/dimensions you want to convert to floats</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="as_type">
+      <div class="api-card__head"><div class="sig">ds.as_type(x)</div></div>
+      <div class="api-card__body">
+        <p>Cast one or more variables/dimensions to a specific numeric type.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <ul class="param-list">
+            <li><code class="param-name">x</code><span class="param-tag">required</span><p>A dictionary mapping variables to type. Values in dict must be one of 'int', 'float32' and 'float64'.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="reset">
+      <div class="api-card__head"><div class="sig">ds.reset()</div></div>
+      <div class="api-card__body">
+        <p>Simple method to fully reset a datset</p>
+      </div>
+    </div>
   </div>
 </div>
 

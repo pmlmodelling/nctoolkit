@@ -529,6 +529,7 @@ li { margin-bottom: 0.45em; }
   padding: 0.35em 0.9em;
   border-radius: 999px;
   margin-bottom: 1rem;
+  scroll-margin-top: 96px;
 }
 
 .section-head p { font-size: 1.05rem; }
