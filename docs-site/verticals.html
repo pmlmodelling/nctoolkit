@@ -77,13 +77,12 @@
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds = nc.open_thredds(<span class="tok-str">"https://www.ncei.noaa.gov/thredds/dodsC/ncei/woa/temperature/decav/1.00/woa18_decav_t00_01.nc"</span>)
-ds_mean = ds.copy()
-ds_mean.vertical_mean(fixed=<span class="tok-kw">True</span>)
-ds_mean.plot()</pre>
+ds.vertical_mean(fixed=<span class="tok-kw">True</span>)
+ds.plot()</pre>
     </div>
     <div class="plot-embed">
       <div class="plot-embed__bar">
-        <span class="plot-embed__label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg> ds_mean.plot() &mdash; interactive output</span>
+        <span class="plot-embed__label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg> ds.plot() &mdash; interactive output</span>
         <a class="plot-embed__open" href="assets/plots/vertical_mean_plot1.html" target="_blank" rel="noopener">Open interactive <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
       </div>
       <div class="plot-embed__image-wrap"><a href="assets/plots/vertical_mean_plot1.html" target="_blank" rel="noopener"><img src="assets/plots/vertical_mean_plot1.png" loading="lazy" alt="Depth-averaged mean ocean temperature"></a></div>
@@ -91,26 +90,26 @@ ds_mean.plot()</pre>
     <p><a href="api.html#vertical_max"><code>vertical_max</code></a> and <a href="api.html#vertical_min"><code>vertical_min</code></a> work the same way:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>ds_max = ds.copy()
-ds_max.vertical_max()
-ds_max.plot()</pre>
+      <pre>ds = nc.open_thredds(<span class="tok-str">"https://www.ncei.noaa.gov/thredds/dodsC/ncei/woa/temperature/decav/1.00/woa18_decav_t00_01.nc"</span>)
+ds.vertical_max()
+ds.plot()</pre>
     </div>
     <div class="plot-embed">
       <div class="plot-embed__bar">
-        <span class="plot-embed__label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg> ds_max.plot() &mdash; interactive output</span>
+        <span class="plot-embed__label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg> ds.plot() &mdash; interactive output</span>
         <a class="plot-embed__open" href="assets/plots/vertical_max_plot1.html" target="_blank" rel="noopener">Open interactive <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
       </div>
       <div class="plot-embed__image-wrap"><a href="assets/plots/vertical_max_plot1.html" target="_blank" rel="noopener"><img src="assets/plots/vertical_max_plot1.png" loading="lazy" alt="Vertical maximum ocean temperature"></a></div>
     </div>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>ds_min = ds.copy()
-ds_min.vertical_min()
-ds_min.plot()</pre>
+      <pre>ds = nc.open_thredds(<span class="tok-str">"https://www.ncei.noaa.gov/thredds/dodsC/ncei/woa/temperature/decav/1.00/woa18_decav_t00_01.nc"</span>)
+ds.vertical_min()
+ds.plot()</pre>
     </div>
     <div class="plot-embed">
       <div class="plot-embed__bar">
-        <span class="plot-embed__label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg> ds_min.plot() &mdash; interactive output</span>
+        <span class="plot-embed__label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg> ds.plot() &mdash; interactive output</span>
         <a class="plot-embed__open" href="assets/plots/vertical_min_plot1.html" target="_blank" rel="noopener">Open interactive <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
       </div>
       <div class="plot-embed__image-wrap"><a href="assets/plots/vertical_min_plot1.html" target="_blank" rel="noopener"><img src="assets/plots/vertical_min_plot1.png" loading="lazy" alt="Vertical minimum ocean temperature"></a></div>
@@ -134,22 +133,25 @@ ds.plot()</pre>
     </div>
 
     <h2 id="topbottom">Top &amp; bottom levels</h2>
-    <p>Select the surface or sea-floor vertical level directly with <a href="api.html#top"><code>top</code></a> and <a href="api.html#bottom"><code>bottom</code></a>:</p>
+    <p>Select the surface vertical level directly with <a href="api.html#top"><code>top</code></a>:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>ds_top = ds.copy()
-ds_top.top()       <span class="tok-com"># select the sea-surface</span>
-ds_top.plot()
-
-ds_bottom = ds.copy()
-ds_bottom.bottom()    <span class="tok-com"># select the sea-floor</span></pre>
+      <pre>ds = nc.open_thredds(<span class="tok-str">"https://www.ncei.noaa.gov/thredds/dodsC/ncei/woa/temperature/decav/1.00/woa18_decav_t00_01.nc"</span>)
+ds.top()       <span class="tok-com"># select the sea-surface</span>
+ds.plot()</pre>
     </div>
     <div class="plot-embed">
       <div class="plot-embed__bar">
-        <span class="plot-embed__label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg> ds_top.plot() &mdash; interactive output</span>
+        <span class="plot-embed__label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg> ds.plot() &mdash; interactive output</span>
         <a class="plot-embed__open" href="assets/plots/vertical_top_plot1.html" target="_blank" rel="noopener">Open interactive <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
       </div>
       <div class="plot-embed__image-wrap"><a href="assets/plots/vertical_top_plot1.html" target="_blank" rel="noopener"><img src="assets/plots/vertical_top_plot1.png" loading="lazy" alt="Sea-surface ocean temperature, selected with top()"></a></div>
+    </div>
+    <p><a href="api.html#bottom"><code>bottom</code></a> works the same way, selecting the sea-floor level instead:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds = nc.open_thredds(<span class="tok-str">"https://www.ncei.noaa.gov/thredds/dodsC/ncei/woa/temperature/decav/1.00/woa18_decav_t00_01.nc"</span>)
+ds.bottom()    <span class="tok-com"># select the sea-floor</span></pre>
     </div>
 
     <h2 id="more">Additional vertical methods</h2>
