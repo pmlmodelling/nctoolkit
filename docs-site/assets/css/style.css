@@ -270,6 +270,20 @@ li { margin-bottom: 0.45em; }
    related pages are grouped under a click/hover dropdown instead. */
 
 .nav-dropdown { position: relative; }
+/* Invisible hover bridge: without it, moving the pointer from the toggle
+   down into the menu crosses the 14px gap below (not part of any
+   hoverable box), which drops :hover and the menu snaps shut before the
+   pointer arrives - forcing a click instead of a simple hover. */
+.nav-dropdown::before {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  height: 14px;
+  z-index: 110;
+}
 
 .nav-dropdown-toggle {
   display: inline-flex;
@@ -353,6 +367,7 @@ li { margin-bottom: 0.45em; }
   .nav-actions .btn-outline-text { display: none; }
 
   .nav-dropdown { width: 100%; }
+  .nav-dropdown::before { content: none; }
   .nav-dropdown-toggle { width: 100%; justify-content: space-between; padding: 0.85em 0; border-bottom: 1px solid var(--line-soft); }
   .nav-dropdown-menu {
     position: static;
