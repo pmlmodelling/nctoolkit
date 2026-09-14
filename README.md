@@ -1,11 +1,14 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+<p align="center">
+  <img src="docs-site/assets/img/nctoolkit_wordmark.svg" alt="NCToolkit" width="320">
+</p>
+
 [![pypi](https://img.shields.io/pypi/v/nctoolkit.svg)](https://pypi.python.org/pypi/nctoolkit/)
 [![Conda Latest Release](https://anaconda.org/conda-forge/nctoolkit/badges/version.svg)](https://anaconda.org/conda-forge/nctoolkit/)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/pmlmodelling/nctoolkit/issues) 
 [![codecov](https://codecov.io/gh/pmlmodelling/nctoolkit/branch/master/graph/badge.svg)](https://codecov.io/gh/pmlmodelling/nctoolkit)
-![GitHub Testing](https://github.com/pmlmodelling/nctoolkit/actions/workflows/python-app-macos.yml/badge.svg)
 ![GitHub Testing](https://github.com/pmlmodelling/nctoolkit/actions/workflows/python-app-linux.yml/badge.svg)
 [![Documentation Status](https://readthedocs.org/projects/nctoolkit/badge/?version=latest)](https://nctoolkit.readthedocs.io/en/latest/?badge=latest)
 [![DOI](https://joss.theoj.org/papers/10.21105/joss.05494/status.svg)](https://doi.org/10.21105/joss.05494)
@@ -15,9 +18,9 @@
 
 
 
-# nctoolkit - A Python package for netCDF analysis and post-processing 
+# NCToolkit - A Python package for netCDF analysis and post-processing 
 
-nctoolkit is a comprehensive Python (3.8 and above) package for analyzing netCDF data on Linux.
+NCToolkit is a comprehensive Python (3.8 and above) package for analyzing netCDF data on Linux.
 
 Core abilities include:
    - Clipping to spatial regions
@@ -40,13 +43,13 @@ Core abilities include:
 
 ## Installation
 
-The easiest way to install the package is using conda or mamba. This will install nctoolkit and all system dependencies.
+The easiest way to install the package is using conda or mamba. This will install NCToolkit and all system dependencies.
 ```sh
 conda install -c conda-forge nctoolkit
 mamba install -c conda-forge nctoolkit
 ```
 
-If you install using conda, please be aware that conda can install a very old version of nctoolkit. Consider setting it to a more recent version.
+If you install using conda, please be aware that conda can install a very old version of NCToolkit. Consider setting it to a more recent version.
 
 Install through [PyPI](https://pypi.org/project/nctoolkit/) using pip:
 ```sh
@@ -72,7 +75,7 @@ conda install -c conda-forge nco
 
 If you want to install CDO from source, bash scripts are available [here](https://github.com/pmlmodelling/nctoolkit/tree/master/cdo_installers).
  
-nctoolkit is tested with continuous integration using Circle CI (for Linux) and GitHub actions (for Mac OS). It will not work on Windows platforms today or in future, because of system dependency limitations. 
+NCToolkit is tested with continuous integration using Circle CI and GitHub Actions (both for Linux). It will not work on Windows platforms today or in future, because of system dependency limitations. 
 
 
 ## Reference and tutorials
@@ -83,11 +86,11 @@ A full API reference, in depth tutorials and a how-to guide are available at [re
 
 ## Contributing
 
-If you are interesting in contributing to nctoolkit feel free to read the [Contributing page](https://nctoolkit.readthedocs.io/en/latest/contributing.html).
+If you are interesting in contributing to NCToolkit feel free to read the [Contributing page](https://nctoolkit.readthedocs.io/en/latest/contributing.html).
 
-## Got questions about nctoolkit? 
+## Got questions about NCToolkit? 
 
-- If you have a question about how to use nctoolkit, please ask on 
+- If you have a question about how to use NCToolkit, please ask on 
     [GitHub Discussions](https://github.com/pmlmodelling/nctoolkit/discussions).
 - Report any bugs, suggest new features or view the source code [on
     GitHub](https://github.com/pmlmodelling/nctoolkit).
