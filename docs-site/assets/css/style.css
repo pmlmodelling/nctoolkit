@@ -1044,7 +1044,6 @@ tbody tr.hidden-row { display: none; }
   box-shadow: var(--shadow-md);
   border-color: var(--teal-200);
 }
-.guide-card__top { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.8rem; }
 .guide-card__icon {
   width: 42px; height: 42px;
   border-radius: 11px;
@@ -1054,13 +1053,6 @@ tbody tr.hidden-row { display: none; }
   flex-shrink: 0;
 }
 .guide-card__icon svg { width: 21px; height: 21px; }
-.guide-card__num {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: var(--muted-light);
-  letter-spacing: 0.04em;
-}
 .guide-card h3 { margin: 0; font-size: 1.05rem; color: var(--ink); }
 .guide-card p { margin: 0; font-size: 0.9rem; color: var(--muted); flex: 1; }
 .guide-card__go {
