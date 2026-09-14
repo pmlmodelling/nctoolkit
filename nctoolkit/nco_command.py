@@ -45,6 +45,7 @@ def nco_command(self, command=None, ensemble=False):
 
     if (
         command.startswith("ncea ")
+        or command.startswith("ncwa ")
         or command.startswith("ncra ")
         or command.startswith("ncap ")
         or command.startswith("ncap2 ")
