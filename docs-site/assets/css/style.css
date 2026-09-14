@@ -717,6 +717,7 @@ thead th {
 }
 tbody td { padding: 0.95em 1.1em; border-bottom: 1px solid var(--line-soft); vertical-align: top; color: var(--ink-soft); }
 tbody tr:last-child td { border-bottom: none; }
+tbody td.idx { color: var(--muted-light); font-family: var(--font-mono); font-size: 0.86em; }
 tbody tr.recipe-row { cursor: pointer; transition: background .12s ease; }
 tbody tr.recipe-row:hover { background: var(--teal-50); }
 tbody tr.hidden-row { display: none; }

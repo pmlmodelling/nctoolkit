@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CDO &amp; NCO Backends — NCToolkit</title>
+<title>Using CDO &amp; NCO Commands — NCToolkit</title>
 <meta name="description" content="How NCToolkit uses Climate Data Operators (CDO) under the hood, and how to run raw CDO or NCO commands directly with cdo_command and nco_command.">
 <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,7 +30,7 @@
         </button>
         <div class="nav-dropdown-menu">
           <a href="data-formats.html" data-page="data-formats.html">Supported data<small>Grids, time axes, CF-compliance</small></a>
-          <a href="backends.html" data-page="backends.html">CDO &amp; NCO backends<small>Using raw commands directly</small></a>
+          <a href="backends.html" data-page="backends.html">Using CDO &amp; NCO commands<small>Drop down to raw commands directly</small></a>
         </div>
       </div>
       <a href="qa.html" data-page="qa.html">Q&amp;A</a>
@@ -58,8 +58,8 @@
 
 <div class="page-hero">
   <div class="container">
-    <div class="breadcrumb"><a href="index.html">Home</a> / Data / CDO &amp; NCO backends</div>
-    <h1>CDO &amp; NCO backends</h1>
+    <div class="breadcrumb"><a href="index.html">Home</a> / Data / Using CDO &amp; NCO commands</div>
+    <h1>Using CDO &amp; NCO commands</h1>
     <p class="lead">NCToolkit is a stand-alone package &mdash; no CDO knowledge is required to use it. But if you already know CDO or NCO, you can call them directly.</p>
   </div>
 </div>
@@ -75,10 +75,8 @@
 
   <div class="docs-content">
 
-    <p>NCToolkit relies on <a href="https://code.mpimet.mpg.de/projects/cdo/" target="_blank" rel="noopener">Climate Data Operators</a> (CDO) as its computational backend &mdash; a high-powered command-line tool for manipulating and analyzing climate model data. Users don't need to know CDO to use NCToolkit, but if you do, <code>cdo_command</code> lets you drop down to it directly.</p>
-
     <h2 id="cdo">Using CDO commands</h2>
-    <p>To apply a CDO command in NCToolkit, strip the leading <code>cdo</code> and the input/output file names. A typical CDO command:</p>
+    <p>The <code>cdo_command</code> method lets you apply a CDO command directly in NCToolkit &mdash; just strip the leading <code>cdo</code> and the input/output file names. A typical CDO command:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
       <pre>cdo yearmean infile.nc outfile.nc</pre>
@@ -88,7 +86,12 @@
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds.cdo_command(<span class="tok-str">"yearmean"</span>)</pre>
     </div>
-    <p>If the command is an ensemble method that takes multiple files as input and produces one output, tell NCToolkit that explicitly:</p>
+    <p>If the command is an ensemble method that takes multiple files as input and produces one output, the stripping works the same way &mdash; drop <code>cdo</code> and every file name. So:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">shell</span></div>
+      <pre>cdo ensmean infile1.nc infile2.nc infile3.nc outfile.nc</pre>
+    </div>
+    <p>becomes, with <code>ensemble=True</code> telling NCToolkit to treat it as a many-files-in, one-file-out command:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds.cdo_command(<span class="tok-str">"ensmean"</span>, ensemble=<span class="tok-kw">True</span>)</pre>
@@ -143,7 +146,7 @@
       <ul>
         <li><a href="api.html">API reference</a></li>
         <li><a href="data-formats.html">Supported data</a></li>
-        <li><a href="backends.html">CDO &amp; NCO backends</a></li>
+        <li><a href="backends.html">Using CDO &amp; NCO commands</a></li>
         <li><a href="qa.html">Q&amp;A</a></li>
       </ul>
     </div>
