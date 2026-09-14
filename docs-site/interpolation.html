@@ -72,7 +72,7 @@
   <div class="docs-content">
 
     <h2 id="start">Starting point</h2>
-    <p>The examples below regrid global sea-surface temperature from NOAA's COBE-SST 2, using NCToolkit's built-in horizontal and vertical interpolation methods.</p>
+    <p>The examples below regrid global sea-surface temperature from NOAA's COBE-SST 2, using NCToolkit's built-in horizontal and vertical interpolation methods. We'll speed things up by only interpolating the first timestep of data.</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ds = nc.open_thredds(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc"</span>)
