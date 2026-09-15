@@ -447,9 +447,6 @@ li { margin-bottom: 0.45em; }
   position: relative;
 }
 
-.wave-divider { display: block; margin-top: -2px; }
-.wave-divider svg { display: block; width: 100%; height: auto; }
-
 /* ---------------------------- code card ---------------------------- */
 
 .code-card {
