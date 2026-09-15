@@ -1,5 +1,0 @@
-pandas
-numpydoc
-nbsphinx>=0.8.6
-
-

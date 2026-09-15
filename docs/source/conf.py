@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 import os
+import re
 import sys
-#import nctoolkit
 sys.path.insert(0, os.path.abspath('../..'))
 
 # -- Project information -----------------------------------------------------
@@ -13,7 +13,16 @@ author = 'Robert Wilson'
 
 # The short X.Y version
 # The full version, including alpha/beta/rc tags
-version = '1.2.5'
+#
+# Read directly from setup.py rather than hardcoding it here, so this
+# doesn't quietly go stale after a release (as it previously did - this
+# was still '1.2.5' well after the package had moved past 1.3).
+try:
+    _setup_py = os.path.join(os.path.abspath('../..'), 'setup.py')
+    with open(_setup_py) as _f:
+        version = re.search(r"version\s*=\s*'([^']+)'", _f.read()).group(1)
+except Exception:
+    version = '0.0.0'
 
 # -- General configuration ---------------------------------------------------
 
@@ -33,7 +42,7 @@ extensions = [
     "sphinx.ext.napoleon",
     'sphinx.ext.todo',
     'sphinx.ext.githubpages',
-    'jupyter_sphinx.execute',
+    'jupyter_sphinx',
     # nbsphinx
     'nbsphinx'
 
@@ -73,7 +82,7 @@ master_doc = 'index'
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = 'en'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.

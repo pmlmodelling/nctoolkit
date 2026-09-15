@@ -1,6 +1,15 @@
 # .readthedocs.yaml
 # Read the Docs configuration file
 # See https://docs.readthedocs.io/en/stable/config-file/v2.html for details
+#
+# Kept identical to .readthedocs.yaml on purpose: Read the Docs only reads
+# one config file (by documented precedence, .readthedocs.yaml wins), but
+# this repo had both drifted out of sync - this one pointed at the stale
+# docs/conf.py and docs/rtd_requirements.txt, which never installs the
+# nctoolkit package itself, causing autosummary's `import nctoolkit` to
+# fail on every build. Keep both files in sync rather than deleting this
+# one, in case the project's Read the Docs admin settings pin the
+# configuration file path explicitly.
 
 # Required
 version: 2
@@ -13,10 +22,12 @@ build:
 
 # Build documentation in the docs/ directory with Sphinx
 sphinx:
-  configuration: docs/conf.py
+  configuration: docs/source/conf.py
 
 # We recommend specifying your dependencies to enable reproducible builds:
 # https://docs.readthedocs.io/en/stable/guides/reproducible-builds.html
 python:
   install:
-  - requirements: docs/rtd_requirements.txt
+  - requirements: docs/requirements.txt
+  - method: pip
+    path: .
