@@ -1,0 +1,93 @@
+# Regenerates the cheat sheet PDF whenever a GitHub Release is created, so
+# the copy served by the website (docs-site/assets/cheatsheet/
+# nctoolkit_cheatsheet.pdf) always shows the version number of the latest
+# release rather than whatever version happened to be in setup.py the last
+# time someone remembered to run make_cheatsheet.py by hand.
+#
+# This workflow pushes to master using the default GITHUB_TOKEN, which does
+# NOT trigger other workflows via the push event - so it explicitly
+# dispatches pages.yml afterwards rather than relying on that push to do it.
+#
+# docs-archive.yml also pushes to master on the same `release: created`
+# event, in a separate parallel job - so the push step here retries with a
+# rebase if it loses that race, instead of just failing.
+name: Update cheat sheet on release
+
+on:
+  release:
+    types: [created]
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  update-cheatsheet:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v4
+        with:
+          ref: master
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install WeasyPrint's system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            libpango-1.0-0 libpangocairo-1.0-0 libpangoft2-1.0-0 \
+            libgdk-pixbuf2.0-0 libcairo2 shared-mime-info
+
+      - name: Install WeasyPrint
+        run: pip install weasyprint
+
+      - name: Regenerate the cheat sheet
+        run: python3 make_cheatsheet.py
+
+      - name: Commit and push the updated PDF
+        id: commit
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add docs-site/assets/cheatsheet/nctoolkit_cheatsheet.pdf
+          if git diff --cached --quiet; then
+            echo "Cheat sheet PDF unchanged, nothing to commit."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          version=$(grep -oP "version='\K[^']+" setup.py)
+          git commit -m "Update cheat sheet for v${version}"
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+          for attempt in 1 2 3 4 5; do
+            if git push origin master; then
+              exit 0
+            fi
+            echo "Push rejected (attempt ${attempt}/5) - docs-archive.yml likely pushed first. Rebasing and retrying..."
+            git fetch origin master
+            git rebase origin/master
+            sleep $((attempt * 3))
+          done
+          echo "Failed to push after 5 attempts" >&2
+          exit 1
+
+      - name: Trigger the Pages deploy
+        # A GITHUB_TOKEN push doesn't itself trigger pages.yml's push
+        # trigger, so ask it to run directly instead.
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          curl -sf -X POST \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/pages.yml/dispatches" \
+            -d '{"ref":"master"}'
