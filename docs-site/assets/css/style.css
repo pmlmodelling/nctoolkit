@@ -202,7 +202,7 @@ li { margin-bottom: 0.45em; }
 .brand {
   display: flex;
   align-items: center;
-  gap: 0;
+  gap: 0.4rem;
   flex-shrink: 0;
 }
 .brand img { height: 28px; width: auto; }
