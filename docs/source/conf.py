@@ -55,6 +55,12 @@ html_theme = "sphinx_rtd_theme"
 html_static_path = ['_static']
 html_logo = "_static/nctoolkit_logo.jpg"
 
+# Banner pointing readers at the new docs site (this readthedocs.org site is
+# archived) - added as a JS file rather than a theme template override so it
+# shows on every page regardless of whether it was built from a .rst file or
+# a notebook. See _static/archived_banner.js.
+html_js_files = ['archived_banner.js']
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
