@@ -1,11 +1,17 @@
-# Snapshots docs-site/ into docs-site/archive/vX.Y.Z/ whenever a GitHub
-# Release is created, so old docs stay browsable after newer releases move
-# the "latest" docs on. X.Y.Z is read from setup.py (the source of truth for
-# the version being released), not from the release's tag name.
+# Snapshots docs-site/api.html into docs-site/archive/vX.Y.Z/ whenever a
+# GitHub Release is created, so the API reference stays browsable as it
+# stood at old releases even after newer releases move the "latest" docs
+# on. X.Y.Z is read from setup.py (the source of truth for the version
+# being released), not from the release's tag name.
 #
-# example-report/ doesn't exist for this site, but if a similar large,
-# not-version-specific asset directory is ever added, exclude it here the
-# same way OceanVal's docs-archive.yml excludes docs-site/example-report/.
+# Only that one page is archived - the rest of the site (installing,
+# quickstart, the User Guide subpages, data-formats, backends, qa, about,
+# the cheat sheet, etc.) isn't meaningfully version-specific, and archiving
+# every page of every release indefinitely doesn't scale. The snapshot's
+# nav is simplified to just a "Version history" link, and any link to a
+# page that isn't archived (including index.html and version-history.html
+# itself, neither of which is version-specific) is rewritten to point at
+# the live copy instead of 404ing inside the snapshot.
 #
 # This workflow pushes to master using the default GITHUB_TOKEN, which does
 # NOT trigger other workflows via the push event - so it explicitly
@@ -55,15 +61,48 @@ jobs:
           fi
 
           mkdir -p "$dest"
-          cp docs-site/*.html "$dest"/
+          # Only the API reference is archived - see the file-level comment
+          # above for why.
+          cp docs-site/api.html "$dest"/
           cp -r docs-site/assets "$dest"/
 
-          # version-history.html isn't part of the snapshot (it's a live
-          # index of every archived version) - point archived pages at the
-          # current, shared copy instead of a link that would 404 inside
-          # the snapshot, then drop the now-unlinked local copy.
-          sed -i 's#href="version-history.html"#href="../../version-history.html"#g' "$dest"/*.html
-          rm -f "$dest"/version-history.html
+          # Simplify the nav down to just "Version history" (every other
+          # page it used to link to isn't in this snapshot), and repoint any
+          # link to one of them - including index.html and
+          # version-history.html, neither of which is version-specific - at
+          # the live copy instead of leaving a link that would 404 here.
+          python3 - "$dest" <<'PY'
+          import re
+          import sys
+          from pathlib import Path
+
+          dest = Path(sys.argv[1])
+          live_only_pages = [
+              "index.html", "about.html", "adding.html", "backends.html",
+              "cheatsheet.html", "data-formats.html", "datasets.html",
+              "ensembles.html", "exporting.html", "globals.html", "guide.html",
+              "hacks.html", "installing.html", "interpolation.html",
+              "matchpoint.html", "news.html", "parallel.html", "qa.html",
+              "quickstart.html", "subsetting.html", "temporals.html",
+              "troubleshoot.html", "variables.html", "verticals.html",
+              "visualization.html", "version-history.html",
+          ]
+          nav_re = re.compile(r'<nav class="nav-links" id="nav-links">.*?</nav>', re.S)
+          simplified_nav = (
+              '<nav class="nav-links" id="nav-links">\n'
+              '      <a href="version-history.html" data-page="version-history.html">Version history</a>\n'
+              '    </nav>'
+          )
+
+          for page in dest.glob("*.html"):
+              html = page.read_text()
+              html, n = nav_re.subn(simplified_nav, html)
+              if n != 1:
+                  raise SystemExit(f"Expected one nav-links block in {page}, found {n}")
+              for name in live_only_pages:
+                  html = html.replace(f'href="{name}', f'href="../../{name}')
+              page.write_text(html)
+          PY
 
           # Freeze the header version badge: it must keep showing v${version}
           # forever, not pick up whatever the live PyPI version becomes later
@@ -96,9 +135,17 @@ jobs:
               versions.insert(0, version)
           versions_path.write_text(json.dumps(versions, indent=2) + "\n")
 
-          items = "\n".join(
-              f'      <li><a href="archive/v{v}/index.html">v{v}</a></li>' for v in versions
-          )
+          if versions:
+              items = "\n".join(
+                  f'      <li><a href="archive/v{v}/api.html">v{v}</a></li>' for v in versions
+              )
+              body = f'    <ul class="version-history-list">\n{items}\n    </ul>'
+          else:
+              body = (
+                  '    <p style="text-align:center; color:var(--muted-light);">'
+                  "No versions are archived yet &mdash; check back after the "
+                  "next release.</p>"
+              )
 
           page_path = pathlib.Path("docs-site/version-history.html")
           page = page_path.read_text()
@@ -109,7 +156,7 @@ jobs:
           )
           replacement = (
               f"{start_marker}: regenerated by .github/workflows/docs-archive.yml, "
-              f"don't hand-edit between these markers -->\n{items}\n      {end_marker}"
+              f"don't hand-edit between these markers -->\n{body}\n    {end_marker}"
           )
           new_page, n = pattern.subn(replacement, page)
           if n != 1:
