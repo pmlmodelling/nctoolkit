@@ -5,12 +5,13 @@
   <img src="docs-site/assets/img/nctoolkit_wordmark.svg" alt="NCToolkit" width="320">
 </p>
 
+<p align="center"><strong>From raw netCDF to answers, fast &mdash; <a href="https://pmlmodelling.github.io/nctoolkit/">see the full docs, quickstart and API reference</a></strong></p>
+
 [![pypi](https://img.shields.io/pypi/v/nctoolkit.svg)](https://pypi.python.org/pypi/nctoolkit/)
 [![Conda Latest Release](https://anaconda.org/conda-forge/nctoolkit/badges/version.svg)](https://anaconda.org/conda-forge/nctoolkit/)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/pmlmodelling/nctoolkit/issues) 
 [![codecov](https://codecov.io/gh/pmlmodelling/nctoolkit/branch/master/graph/badge.svg)](https://codecov.io/gh/pmlmodelling/nctoolkit)
 ![GitHub Testing](https://github.com/pmlmodelling/nctoolkit/actions/workflows/python-app-linux.yml/badge.svg)
-[![Documentation Status](https://readthedocs.org/projects/nctoolkit/badge/?version=latest)](https://nctoolkit.readthedocs.io/en/latest/?badge=latest)
 [![DOI](https://joss.theoj.org/papers/10.21105/joss.05494/status.svg)](https://doi.org/10.21105/joss.05494)
 
 
@@ -80,13 +81,13 @@ NCToolkit is tested with continuous integration using Circle CI and GitHub Actio
 
 ## Reference and tutorials
 
-A full API reference, in depth tutorials and a how-to guide are available at [readthedocs](https://nctoolkit.readthedocs.io/en/latest/).
+A full API reference, in depth tutorials and a how-to guide are available at [pmlmodelling.github.io/nctoolkit](https://pmlmodelling.github.io/nctoolkit/).
 
 
 
 ## Contributing
 
-If you are interesting in contributing to NCToolkit feel free to read the [Contributing page](https://nctoolkit.readthedocs.io/en/latest/contributing.html).
+If you're interested in contributing to NCToolkit, feel free to open an issue or start a [discussion](https://github.com/pmlmodelling/nctoolkit/discussions) on GitHub.
 
 ## Got questions about NCToolkit? 
 
