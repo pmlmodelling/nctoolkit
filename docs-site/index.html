@@ -108,35 +108,7 @@ ds.<a href="visualization.html"><span class="tok-fn">plot</span></a>()  <span cl
   </div>
 </section>
 
-<section class="section">
-  <div class="container">
-    <div class="section-head">
-      <span class="kicker">How it works</span>
-      <h2>Open, chain, and export</h2>
-    </div>
-    <div class="steps">
-      <div class="step-card">
-        <span class="step-num">1</span>
-        <h3>Open your data</h3>
-        <p><a href="datasets.html#opening"><code>open_data()</code></a> handles single files, wildcards and lists. <a href="api.html#open_url"><code>open_url</code></a> and <a href="api.html#open_thredds"><code>open_thredds</code></a> handle remote and OPeNDAP data.</p>
-        <span class="step-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
-      </div>
-      <div class="step-card">
-        <span class="step-num">2</span>
-        <h3>Chain operations, lazily</h3>
-        <p>Calls to methods such as <a href="subsetting.html"><code>subset()</code></a>, <a href="temporals.html"><code>tmean()</code></a>, <a href="interpolation.html"><code>regrid()</code></a> and <a href="variables.html"><code>assign()</code></a> build up a single pipeline, which is executed when needed, not at every step.</p>
-        <span class="step-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
-      </div>
-      <div class="step-card">
-        <span class="step-num">3</span>
-        <h3>Export or visualize</h3>
-        <p>Write out with <a href="exporting.html"><code>to_nc()</code></a>, hand off to pandas or xarray, or call <a href="visualization.html"><code>plot()</code></a> for an interactive figure.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section section-alt section-tight">
+<section class="section section-tight">
   <div class="container">
     <div class="features-grid">
       <div class="feature-card">
@@ -168,6 +140,34 @@ ds.<a href="visualization.html"><span class="tok-fn">plot</span></a>()  <span cl
         <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
         <h3>Works with your data</h3>
         <p>CF-compliant structured grids, with limited support for unstructured grids too.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-head">
+      <span class="kicker">How it works</span>
+      <h2>Open, chain, and export</h2>
+    </div>
+    <div class="steps">
+      <div class="step-card">
+        <span class="step-num">1</span>
+        <h3>Open your data</h3>
+        <p><a href="datasets.html#opening"><code>open_data()</code></a> handles single files, wildcards and lists. <a href="api.html#open_url"><code>open_url</code></a> and <a href="api.html#open_thredds"><code>open_thredds</code></a> handle remote and OPeNDAP data.</p>
+        <span class="step-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+      </div>
+      <div class="step-card">
+        <span class="step-num">2</span>
+        <h3>Chain operations, lazily</h3>
+        <p>Calls to methods such as <a href="subsetting.html"><code>subset()</code></a>, <a href="temporals.html"><code>tmean()</code></a>, <a href="interpolation.html"><code>regrid()</code></a> and <a href="variables.html"><code>assign()</code></a> build up a single pipeline, which is executed when needed, not at every step.</p>
+        <span class="step-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+      </div>
+      <div class="step-card">
+        <span class="step-num">3</span>
+        <h3>Export or visualize</h3>
+        <p>Write out with <a href="exporting.html"><code>to_nc()</code></a>, hand off to pandas or xarray, or call <a href="visualization.html"><code>plot()</code></a> for an interactive figure.</p>
       </div>
     </div>
   </div>
