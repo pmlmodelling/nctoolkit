@@ -1254,7 +1254,6 @@ tbody tr.hidden-row { display: none; }
 
 @media (max-width: 980px) {
   .hero-grid { grid-template-columns: 1fr; }
-  .hero-panel { order: -1; }
   .steps { grid-template-columns: 1fr; }
   .step-arrow { display: none; }
   .features-grid { grid-template-columns: repeat(2, 1fr); }
