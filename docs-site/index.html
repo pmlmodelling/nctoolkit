@@ -173,120 +173,15 @@ ds.<a href="visualization.html"><span class="tok-fn">plot</span></a>()  <span cl
       <div class="feature-card">
         <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
         <h3>Works with your data</h3>
-        <p>GDT, COARDS and CF-compliant structured grids, with limited support for unstructured grids too.</p>
+        <p>CF-compliant structured grids, with limited support for unstructured grids too.</p>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section">
-  <div class="container">
-    <div class="preview-panel">
-      <div>
-        <span class="kicker">See it in action</span>
-        <h2>Automatic plots from a single method call</h2>
-        <p>Every <a href="visualization.html"><code>plot()</code></a> call inspects the shape of your dataset and picks a sensible interactive chart — maps for gridded fields, time series for spatial means, heatmaps for Hovm&ouml;ller-style zonal data — built on hvplot.</p>
-        <a class="btn btn-outline" href="visualization.html">
-          Read about plotting
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-        </a>
-      </div>
-      <div class="browser-mock">
-        <div class="browser-mock__bar">
-          <span></span><span></span><span></span>
-          <div class="browser-mock__url">sst.mon.mean.nc &mdash; spatial_mean().plot()</div>
-        </div>
-        <div class="browser-mock__body">
-          <div class="fake-title"></div>
-          <div class="mock-stat-row">
-            <div class="mock-stat"><span>Variable</span><strong>sst</strong></div>
-            <div class="mock-stat"><span>Time steps</span><strong>2,112</strong></div>
-            <div class="mock-stat"><span>Grid</span><strong>1&deg; &times; 1&deg;</strong></div>
-          </div>
-          <div class="mock-chart">
-            <svg viewBox="0 0 400 130" preserveAspectRatio="none">
-              <polyline points="0,100 40,96 80,92 120,90 160,80 200,72 240,60 280,55 320,42 360,34 400,24" fill="none" stroke="#087f8c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<section class="section section-alt">
-  <div class="container">
-    <div class="sample">
-      <div class="code-card">
-        <div class="code-card__bar">
-          <div class="code-card__dots"><span></span><span></span><span></span></div>
-          <span class="code-card__label">terminal</span>
-        </div>
-        <pre><span class="tok-com"># install</span>
-conda install -c conda-forge nctoolkit
 
-<span class="tok-com"># from a Python or Jupyter session</span>
-<span class="tok-kw">import</span> nctoolkit <span class="tok-kw">as</span> nc
 
-ds = nc.<a href="api.html#opening"><span class="tok-fn">open_data</span></a>(<span class="tok-str">"data/*.nc"</span>)
-ds.<a href="subsetting.html"><span class="tok-fn">subset</span></a>(lon=[-80, 90], lat=[50, 80])
-ds.<a href="temporals.html"><span class="tok-fn">tmean</span></a>(<span class="tok-str">"year"</span>)
-ds.<a href="exporting.html"><span class="tok-fn">to_nc</span></a>(<span class="tok-str">"annual_mean.nc"</span>)</pre>
-      </div>
-      <div>
-        <span class="kicker">Get started in minutes</span>
-        <h2>From raw netCDF to analysis-ready output</h2>
-        <p>Install with conda and go from a folder of raw files to a subset, statistic or plot in a handful of lines. NCToolkit handles the CDO calls, temporary files and method chaining for you.</p>
-        <ul>
-          <li>Works with single files, wildcards, lists, URLs and thredds/OPeNDAP servers.</li>
-          <li>Evaluation is lazy by default — nothing runs until you need a result.</li>
-          <li>Process multi-file ensembles in parallel by setting <code>nc.options(cores=6)</code>.</li>
-        </ul>
-        <a class="btn btn-primary" href="quickstart.html">
-          Read the quickstart
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="container">
-    <div class="section-head">
-      <span class="kicker">Fits your stack</span>
-      <h2>Works alongside the tools you already use</h2>
-      <p>NCToolkit is a stand-alone package with no knowledge of CDO required to use it, but it plays nicely with the rest of the scientific Python ecosystem.</p>
-    </div>
-    <ul class="pill-list" style="justify-content:center;">
-      <li>Climate Data Operators (CDO)</li>
-      <li>NetCDF Operators (NCO)</li>
-      <li>xarray</li>
-      <li>pandas</li>
-      <li>Jupyter notebooks</li>
-      <li>cartopy &amp; hvplot</li>
-    </ul>
-    <div style="text-align:center; margin-top:1.6rem;">
-      <a class="btn btn-outline" href="data-formats.html">
-        See supported data &amp; backends
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-      </a>
-    </div>
-  </div>
-</section>
-
-<section class="section section-tight">
-  <div class="container">
-    <div class="cta-banner">
-      <h2>Ready to analyze your netCDF data?</h2>
-      <p>Install NCToolkit from conda-forge or PyPI and go from raw files to processed, plotted output today.</p>
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="installing.html">Install NCToolkit</a>
-        <a class="btn btn-ghost" href="https://github.com/pmlmodelling/nctoolkit" target="_blank" rel="noopener">Star on GitHub</a>
-      </div>
-    </div>
-  </div>
-</section>
 
 <footer class="site-footer">
   <div class="container footer-pml">
