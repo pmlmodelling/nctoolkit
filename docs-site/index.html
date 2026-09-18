@@ -125,7 +125,7 @@ ds.<a href="visualization.html"><span class="tok-fn">plot</span></a>()  <span cl
       <div class="step-card">
         <span class="step-num">2</span>
         <h3>Chain operations, lazily</h3>
-        <p>Calls to <a href="subsetting.html"><code>subset()</code></a>, <a href="temporals.html"><code>tmean()</code></a>, <a href="interpolation.html"><code>regrid()</code></a> and <a href="variables.html"><code>assign()</code></a> build up a single CDO pipeline instead of writing a file at every step.</p>
+        <p>Calls to methods such as <a href="subsetting.html"><code>subset()</code></a>, <a href="temporals.html"><code>tmean()</code></a>, <a href="interpolation.html"><code>regrid()</code></a> and <a href="variables.html"><code>assign()</code></a> build up a single pipeline, which is executed when needed, not at every step.</p>
         <span class="step-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
       </div>
       <div class="step-card">
