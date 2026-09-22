@@ -1759,7 +1759,37 @@
             <li><code class="param-name">dpi</code><p>Resolution of the saved file in dots per inch, as an integer, e.g. <code>dpi=300</code> for print. Only used with <code>out</code>. Default <code>"figure"</code>: the figure's own resolution (matplotlib's default is 100).</p></li>
             <li><code class="param-name">font</code><p>Font size for the title and colourbar label: a number in points, e.g. <code>font=14</code>, or a matplotlib size name such as <code>"small"</code>, <code>"large"</code> or <code>"x-large"</code>. Tick labels are unchanged. Default: matplotlib's default.</p></li>
             <li><code class="param-name">grid_labels</code><p><code>True</code> or <code>False</code>: whether to show the lon/lat labels around the edges of the map. Set to <code>False</code> to hide them. Default <code>True</code>.</p></li>
-            <li><code class="param-name">kwargs</code><p><code>fig</code> and <code>gs</code>: draw into an existing matplotlib figure, and optionally a GridSpec cell, to build multi-panel figures. <code>gs</code> requires <code>fig</code>. For example: <code>fig = plt.figure(figsize=[12, 5])</code>, <code>gs = fig.add_gridspec(1, 2)</code>, then <code>ds1.pub_plot(fig=fig, gs=gs[0])</code> and <code>ds2.pub_plot(fig=fig, gs=gs[1])</code>.</p><p><code>relief=True</code>: add a shaded-relief background, visible where the data are missing.</p><p>Aliases and close misspellings are accepted: <code>colors</code> for <code>colours</code>, <code>trans</code> for <code>norm</code>, and names starting with <code>proj</code> or <code>var</code> for <code>projection</code> and <code>var</code>. Any other unrecognised argument raises an error suggesting the closest valid name.</p></li>
+            <li><code class="param-name">kwargs</code><p><code>fig</code> and <code>gs</code>: draw into an existing matplotlib figure, and optionally a GridSpec cell, to build multi-panel figures. <code>gs</code> requires <code>fig</code>. For example: <code>fig = plt.figure(figsize=[12, 5])</code>, <code>gs = fig.add_gridspec(1, 2)</code>, then <code>ds1.pub_plot(fig=fig, gs=gs[0])</code> and <code>ds2.pub_plot(fig=fig, gs=gs[1])</code>. For a grid of maps with one shared colour bar, use <a href="#panel_plot"><code>nc.panel_plot</code></a> instead.</p><p><code>relief=True</code>: add a shaded-relief background, visible where the data are missing.</p><p>Aliases and close misspellings are accepted: <code>colors</code> for <code>colours</code>, <code>trans</code> for <code>norm</code>, and names starting with <code>proj</code> or <code>var</code> for <code>projection</code> and <code>var</code>. Any other unrecognised argument raises an error suggesting the closest valid name.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="panel_plot">
+      <div class="api-card__head"><div class="sig">nc.panel_plot(panels, ncol=None, nrow=None, var=None, extent=None, legend=None, size='auto', land='auto', colours='auto', norm=None, limits=None, projection='auto', coast='auto', scale='auto', grid=True, grid_colour='auto', grid_labels=True, legend_position='auto', robust=False, out=None, breaks=None, dpi='figure', font=None, **kwargs)</div></div>
+      <div class="api-card__body">
+        <p>A grid of <a href="#pub_plot"><code>pub_plot</code></a>-style maps sharing one colour scale and one colour bar, so the panels can be compared directly. The colour limits are worked out from the data of every panel together. For example: <code>nc.panel_plot({"1990s": ds1, "2000s": ds2, "2010s": ds3}, ncol=3)</code>.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <p>Required:</p>
+          <ul class="param-list">
+            <li><code class="param-name">panels</code><span class="param-tag">required</span><p>A dictionary with the panel titles as keys and nctoolkit datasets as values, e.g. <code>{"January": ds1, "July": ds2}</code>. Panels are drawn row by row in the order of the dictionary. Each dataset must contain one variable (or select one with <code>var</code>), one time step and one vertical level.</p></li>
+          </ul>
+          <p>Optional:</p>
+          <ul class="param-list">
+            <li><code class="param-name">ncol</code><p>Number of panel columns, as an integer.</p></li>
+            <li><code class="param-name">nrow</code><p>Number of panel rows, as an integer. With neither <code>ncol</code> nor <code>nrow</code>, the grid is as close to square as possible, e.g. 2 &times; 2 for 4 panels and 3 &times; 2 for 6. With one of them, the other is worked out. <code>ncol</code> &times; <code>nrow</code> must be at least the number of panels; spare cells are left empty.</p></li>
+            <li><code class="param-name">size</code><p>A list of two numbers, <code>[width, height]</code>, giving the size of the whole figure in inches. Default <code>"auto"</code>: about 3 inches of map per row, with the width matched to the maps' aspect ratio and room for titles, labels and the colour bar.</p></li>
+            <li><code class="param-name">limits</code><p>A list of two values, <code>[min, max]</code>, setting the shared colour scale, in the same formats as <code>pub_plot</code>: numbers, <code>None</code> or percentile strings such as <code>"2%"</code>. <code>None</code> and percentiles are worked out from all panels together. Default: the minimum and maximum across all panels.</p></li>
+            <li><code class="param-name">robust</code><p><code>True</code> or <code>False</code>. If <code>True</code>, the shared colour limits are set to the 2nd and 98th percentiles of all panels together. Overrides <code>limits</code>. Default <code>False</code>.</p></li>
+            <li><code class="param-name">legend</code><p>Label of the shared colour bar, as a string. Default: built from the first dataset's long name and units. Use <code>legend=""</code> for no label.</p></li>
+            <li><code class="param-name">legend_position</code><p><code>"right"</code> (default; <code>"auto"</code> is the same) or <code>"bottom"</code> for the shared colour bar, or <code>None</code> for no colour bar.</p></li>
+            <li><code class="param-name">breaks</code><p>A list of numbers giving the tick positions on the shared colour bar, e.g. <code>breaks=[0, 10, 20, 30]</code>.</p></li>
+            <li><code class="param-name">out</code><p>File name to save the whole figure to, e.g. <code>out="panels.png"</code>. The format comes from the extension. Default: the figure is only displayed.</p></li>
+            <li><code class="param-name">dpi</code><p>Resolution of the saved file in dots per inch, as an integer, e.g. <code>dpi=300</code>. Only used with <code>out</code>. Default <code>"figure"</code>.</p></li>
+            <li><code class="param-name">font</code><p>Font size for the panel titles and the colour bar label: a number in points, e.g. <code>font=14</code>, or a matplotlib size name such as <code>"large"</code>.</p></li>
+            <li><code class="param-name">var, extent, land, colours, norm, projection, coast, scale, grid, grid_colour, grid_labels</code><p>Applied to every panel. See <a href="#pub_plot"><code>pub_plot</code></a> for the formats and options.</p></li>
+            <li><code class="param-name">kwargs</code><p>Passed to every panel, e.g. <code>relief=True</code>. See <a href="#pub_plot"><code>pub_plot</code></a>.</p></li>
           </ul>
         </details>
       </div>

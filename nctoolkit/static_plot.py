@@ -28,7 +28,7 @@ def similar(a, b):
     return SequenceMatcher(None, a, b).ratio()
 
 
-from math import radians, sin, cos, asin, sqrt
+from math import radians, sin, cos, asin, sqrt, ceil
 
 
 def haversine(lon1, lat1, lon2, lat2):
@@ -71,6 +71,19 @@ def fix_label(x):
     if new_x == "(degC)":
         new_x = "(°C)"
     return new_x[1:-1]
+
+
+def _legend_label(ds):
+    """Colourbar label from a single-variable dataset's long name and units"""
+    ds_contents = ds.contents
+    try:
+        label = fix_long(ds_contents.long_name.values[0])
+        if ds_contents.unit.values[0] is not None:
+            label = label + " (" + fix_label(ds_contents.unit.values[0]) + ")"
+    except:
+        print("Unable to parse legend from dataset contents. Check long names and units")
+        label = ""
+    return label
 
 
 def pub_plot(
@@ -298,6 +311,9 @@ def pub_plot(
         kwargs.pop("v")
     else:
         quiver = False
+
+    # internal: used by panel_plot to get the axes and mappable back
+    panel = kwargs.pop("_panel", False)
 
     for kk in kwargs:
         fixed = False
@@ -837,17 +853,7 @@ def pub_plot(
         if legend is not None:
             label = legend
         else:
-            ds_contents = ds1.contents
-            try:
-                label = fix_long(ds_contents.long_name.values[0])
-                if ds_contents.unit.values[0] is not None:
-                    label = label + " (" + fix_label(ds_contents.unit.values[0]) + ")"
-            except:
-                print(
-                    "Unable to parse legend from dataset contents. Check long names and units"
-                )
-                label = ""
-            # label may need some slight tidying
+            label = _legend_label(ds1)
 
             if l_location == "bottom":
                 label = "\n".join(wrap(label, 120))
@@ -869,10 +875,18 @@ def pub_plot(
                  ax.get_xticklabels() + ax.get_yticklabels()):
             item.set_fontsize(font)
 
+    # cartopy only creates the lon/lat labels while drawing, so draw once for the
+    # title to be placed above them when the figure is shown
+    if title is not None and not panel:
+        fig.canvas.draw()
+
     if out is not None:
         print("saving as file")
         plt.savefig(out, dpi = dpi)
         plt.savefig(out, dpi = dpi)
+
+    if panel:
+        return ax, im
 
 
 def quiver_plot(ds, u=None, v=None, **kwargs):
@@ -930,3 +944,268 @@ def quiver_plot(ds, u=None, v=None, **kwargs):
         raise ValueError("v not in dataset")
 
     pub_plot(ds, quiver=True, u=u, v=v, **kwargs)
+
+
+def panel_plot(
+    panels,
+    ncol=None,
+    nrow=None,
+    var=None,
+    extent=None,
+    legend=None,
+    size="auto",
+    land="auto",
+    colours="auto",
+    norm=None,
+    limits=None,
+    projection="auto",
+    coast="auto",
+    scale="auto",
+    grid=True,
+    grid_colour="auto",
+    grid_labels=True,
+    legend_position="auto",
+    robust=False,
+    out=None,
+    breaks=None,
+    dpi="figure",
+    font=None,
+    **kwargs,
+):
+    """
+    panel_plot: Grid of pub_plot maps sharing one colour scale and colour bar.
+
+    Each dataset is drawn as one panel, in pub_plot style. All panels use the
+    same colour limits, worked out from the data of every panel together, so
+    the panels can be compared directly.
+
+    Parameters
+    -------------
+    panels: dict
+        Panel titles as keys and nctoolkit datasets as values, e.g.
+        {"1990s": ds1, "2000s": ds2}. Panels are drawn row by row in the
+        order of the dict. Each dataset must contain one variable (or select
+        one with var), one time step and one vertical level.
+    ncol: int
+        Number of panel columns. Default: chosen automatically.
+    nrow: int
+        Number of panel rows. Default: chosen automatically. With neither
+        ncol nor nrow, the grid is as close to square as possible, e.g. 2 x 2
+        for 4 panels and 3 x 2 for 6. With one of them, the other is derived.
+        ncol x nrow must be at least the number of panels.
+    size: list
+        [width, height] of the whole figure in inches. Default "auto": about
+        3 inches of map per row, with the width matched to the maps' aspect
+        ratio and room for titles, labels and the colour bar.
+    limits: list
+        [min, max] limits of the shared colour scale, in the same formats as
+        pub_plot: numbers, None or percentile strings such as "2%".
+        None and percentiles are worked out from all panels together.
+        Default: the minimum and maximum across all panels.
+    robust: bool
+        If True, set the shared colour limits to the 2nd and 98th percentiles
+        of all panels together. Overrides limits. Default False.
+    legend: str
+        Label of the shared colour bar. Default: built from the first
+        dataset's long name and units. Use legend="" for no label.
+    legend_position: str
+        "right" (default; "auto" is the same) or "bottom" for the shared
+        colour bar, or None for no colour bar.
+    breaks: list
+        Tick positions on the shared colour bar, e.g. [0, 10, 20, 30].
+    out: str
+        File to save the whole figure to, e.g. "panels.png". The format comes
+        from the extension. Default: display only.
+    dpi: int
+        Resolution of the saved file in dots per inch, e.g. 300. Only used
+        with out. Default "figure".
+    font: float or str
+        Font size for the panel titles and colour bar label, in points or as
+        a matplotlib size name such as "large".
+    var, extent, land, colours, norm, projection, coast, scale, grid,
+    grid_colour, grid_labels:
+        Passed to every panel. See pub_plot.
+    **kwargs:
+        Passed to every panel, e.g. relief=True. See pub_plot.
+    """
+    from nctoolkit.api import DataSet
+
+    if "static_plot" in session_info.keys():
+        raise ValueError("Unable to import cartopy properly")
+
+    if not isinstance(panels, dict):
+        raise TypeError("panels must be a dict of {title: dataset}")
+    if len(panels) == 0:
+        raise ValueError("panels is empty")
+    for key, ds in panels.items():
+        if not isinstance(ds, DataSet):
+            raise TypeError(f"Panel '{key}' is not an nctoolkit dataset")
+
+    for arg in ["fig", "gs", "title"]:
+        if arg in kwargs:
+            raise ValueError(f"{arg} cannot be used with panel_plot")
+
+    if legend_position not in ["auto", "right", "bottom", None]:
+        raise ValueError("legend_position must be one of right/bottom or None")
+
+    if limits is not None and len(limits) != 2:
+        raise ValueError("limits must be a list of [min, max]")
+
+    n = len(panels)
+    for name, value in [("ncol", ncol), ("nrow", nrow)]:
+        if value is not None:
+            if isinstance(value, bool) or not isinstance(value, (int, np.integer)) or value < 1:
+                raise ValueError(f"{name} must be a positive integer")
+    if ncol is None and nrow is None:
+        ncol = ceil(sqrt(n))
+    if ncol is None:
+        ncol = ceil(n / nrow)
+    if nrow is None:
+        nrow = ceil(n / ncol)
+    if ncol * nrow < n:
+        raise ValueError(f"A {nrow} x {ncol} grid cannot hold {n} panels")
+
+    # check every panel and pool the values, before drawing anything
+    pooled = []
+    first = None
+    for key, ds in panels.items():
+        ds1 = ds.copy()
+        if var is not None:
+            ds1.subset(variables=var)
+        ds1.run()
+        if len(ds1.variables) > 1:
+            raise ValueError(
+                f"Panel '{key}' has more than one variable. Select one with var"
+            )
+        if len(ds1.times) > 1:
+            raise ValueError(f"Panel '{key}' has more than one time step")
+        ds_xr = ds1.to_xarray(decode_times=False)
+        values = np.asarray(ds_xr[ds1.variables[0]].values, dtype=float)
+        pooled.append(values[np.isfinite(values)])
+        if first is None:
+            first = (ds1, ds_xr)
+
+    pooled = np.concatenate(pooled)
+    if pooled.size == 0:
+        raise ValueError("The panels contain no valid data")
+
+    def resolve(end, default):
+        if end is None:
+            return default
+        if isinstance(end, str) and "%" in end:
+            return np.percentile(pooled, float(end.split("%")[0]))
+        return end
+
+    if robust:
+        shared = [np.percentile(pooled, 2), np.percentile(pooled, 98)]
+    elif limits is None:
+        shared = [pooled.min(), pooled.max()]
+    else:
+        shared = [resolve(limits[0], pooled.min()), resolve(limits[1], pooled.max())]
+    shared = [float(x) for x in shared]
+
+    if size == "auto":
+        aspect = 1.5
+        ds_xr = first[1]
+        try:
+            if extent is not None:
+                lon_span = extent[1] - extent[0]
+                lat_span = extent[3] - extent[2]
+                mid_lat = 0.5 * (extent[2] + extent[3])
+            else:
+                lon = np.asarray(ds_xr[[x for x in ds_xr.coords if "lon" in x][0]])
+                lat = np.asarray(ds_xr[[x for x in ds_xr.coords if "lat" in x][0]])
+                lon_span = np.nanmax(lon) - np.nanmin(lon)
+                lat_span = np.nanmax(lat) - np.nanmin(lat)
+                mid_lat = 0.5 * (np.nanmax(lat) + np.nanmin(lat))
+            if lon_span > 340 and lat_span > 160:
+                aspect = 2.0
+            else:
+                aspect = lon_span * cos(radians(mid_lat)) / lat_span
+            aspect = min(max(aspect, 0.6), 2.5)
+        except Exception:
+            pass
+        # map height plus room around each map for its title and lon/lat labels
+        map_height = 3.0
+        extra_w = 0.8 if grid_labels else 0.2
+        extra_h = 0.9 if grid_labels else 0.4
+        size = [
+            ncol * (map_height * aspect + extra_w),
+            nrow * (map_height + extra_h),
+        ]
+        if legend_position in ["auto", "right"]:
+            size[0] += 1.2
+        if legend_position == "bottom":
+            size[1] += 0.9
+
+    # constrained layout leaves room for the lon/lat labels and the lifted titles
+    fig = plt.figure(figsize=size, layout="constrained")
+    gs = fig.add_gridspec(nrow, ncol)
+
+    axes = []
+    for i, (key, ds) in enumerate(panels.items()):
+        ax, im = pub_plot(
+            ds,
+            var=var,
+            extent=extent,
+            title=str(key),
+            legend="",
+            land=land,
+            colours=colours,
+            norm=norm,
+            limits=list(shared),
+            projection=projection,
+            coast=coast,
+            scale=scale,
+            grid=grid,
+            grid_colour=grid_colour,
+            grid_labels=grid_labels,
+            legend_position=None,
+            robust=False,
+            font=font,
+            fig=fig,
+            gs=gs[i // ncol, i % ncol],
+            _panel=True,
+            **kwargs,
+        )
+        axes.append(ax)
+
+    if legend_position is not None:
+        location = "bottom" if legend_position == "bottom" else "right"
+        vmin, vmax = im.get_clim()
+        below = vmin is not None and pooled.min() < vmin
+        above = vmax is not None and pooled.max() > vmax
+        if below and above:
+            extend = "both"
+        elif below:
+            extend = "min"
+        elif above:
+            extend = "max"
+        else:
+            extend = "neither"
+
+        cb = fig.colorbar(
+            im,
+            ax=axes,
+            location=location,
+            extend=extend,
+            shrink=0.8 if location == "right" else 0.6,
+            pad=0.05 if location == "right" else 0.08,
+        )
+
+        if breaks is not None:
+            cb.set_ticks(breaks)
+            cb.set_ticklabels(breaks)
+
+        label = legend if legend is not None else _legend_label(first[0])
+        if location == "bottom":
+            cb.ax.set_xlabel("\n".join(wrap(label, 120)), fontsize=font)
+        else:
+            cb.ax.set_ylabel("\n".join(wrap(label, 40)), fontsize=font)
+
+    # cartopy only creates the lon/lat labels while drawing, so draw once for the
+    # layout and title placement in the final render to see them
+    fig.canvas.draw()
+
+    if out is not None:
+        fig.savefig(out, dpi=dpi)

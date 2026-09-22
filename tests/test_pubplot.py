@@ -145,3 +145,71 @@ class TestCrop:
 
         with pytest.raises(TypeError):
             ds.pub_plot(grid_labels = "no")
+
+    def test_panel_plot(self):
+        import matplotlib.pyplot as plt
+        import matplotlib.image as mpimg
+
+        def month(t):
+            ds = nc.open_data(ff, checks = False)
+            ds.subset(time = t)
+            return ds
+
+        panels = {"Jan": month(0), "Feb": month(1), "Mar": month(2)}
+
+        def map_axes():
+            return [a for a in plt.gcf().axes if hasattr(a, "projection")]
+
+        def grid_shape(axes):
+            gs = axes[0].get_subplotspec().get_gridspec()
+            return gs.nrows, gs.ncols
+
+        nc.panel_plot(panels)
+        axes = map_axes()
+        assert [a.get_title() for a in axes] == ["Jan", "Feb", "Mar"]
+        assert grid_shape(axes) == (2, 2)
+        # one shared colour bar
+        assert len(plt.gcf().axes) == 4
+
+        # every panel shares one colour scale, set from all panels together
+        clims = {a.collections[0].get_clim() for a in axes}
+        assert len(clims) == 1
+        pooled = np.concatenate([
+            ds.to_xarray().sst.values.ravel() for ds in panels.values()
+        ])
+        lo, hi = np.nanmin(pooled), np.nanmax(pooled)
+        # the scale spans zero, so it is symmetric around zero
+        assert np.isclose(clims.pop()[1], max(abs(lo), abs(hi)))
+        plt.close("all")
+
+        nc.panel_plot(panels, nrow = 1)
+        assert grid_shape(map_axes()) == (1, 3)
+        plt.close("all")
+
+        nc.panel_plot(panels, ncol = 1)
+        assert grid_shape(map_axes()) == (3, 1)
+        plt.close("all")
+
+        nc.panel_plot(panels, legend_position = "bottom", legend = "SST")
+        cbax = [a for a in plt.gcf().axes if not hasattr(a, "projection")][0]
+        assert cbax.get_xlabel() == "SST"
+        assert cbax.bbox.width > cbax.bbox.height
+        plt.close("all")
+
+        out_file = "panel_plot_test.png"
+        nc.panel_plot(panels, size = [10, 6], out = out_file, dpi = 50)
+        assert mpimg.imread(out_file).shape[0] == 6 * 50
+        os.remove(out_file)
+        plt.close("all")
+
+        with pytest.raises(TypeError):
+            nc.panel_plot([month(0)])
+        with pytest.raises(ValueError):
+            nc.panel_plot({})
+        with pytest.raises(TypeError):
+            nc.panel_plot({"a": "not a dataset"})
+        with pytest.raises(ValueError, match = "cannot hold"):
+            nc.panel_plot(panels, nrow = 1, ncol = 1)
+        with pytest.raises(ValueError, match = "time step"):
+            nc.panel_plot({"all": nc.open_data(ff, checks = False)})
+        plt.close("all")
