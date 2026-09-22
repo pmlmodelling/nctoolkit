@@ -224,6 +224,34 @@ class TestCrop:
         with pytest.raises(TypeError):
             nc.panel_plot(panels, shared_colourbar = "no")
 
+        # per-panel values with separate colour bars; single values still apply to all
+        nc.panel_plot(
+            unshared,
+            shared_colourbar = False,
+            limits = [[0, 10], [5, 20]],
+            colours = ["viridis", "plasma"],
+            land = "grey",
+        )
+        ims = [a.collections[0] for a in map_axes()]
+        assert [im.get_clim() for im in ims] == [(0, 10), (5, 20)]
+        assert [im.get_cmap().name for im in ims] == ["viridis", "plasma"]
+        plt.close("all")
+
+        # per-panel var with a shared colour bar
+        tos = month(6)
+        tos.rename({"sst": "tos"})
+        nc.panel_plot({"sst": month(0), "tos": tos}, var = ["sst", "tos"])
+        assert len({a.collections[0].get_clim() for a in map_axes()}) == 1
+        plt.close("all")
+
+        with pytest.raises(ValueError, match = "but there are 2 panels"):
+            nc.panel_plot(unshared, land = ["grey"])
+        with pytest.raises(ValueError, match = "single value"):
+            nc.panel_plot(unshared, colours = ["viridis", "plasma"])
+        with pytest.raises(ValueError, match = "but there are 2 panels"):
+            nc.panel_plot(unshared, shared_colourbar = False, limits = [[0, 10]])
+        plt.close("all")
+
         with pytest.raises(TypeError):
             nc.panel_plot([month(0)])
         with pytest.raises(ValueError):

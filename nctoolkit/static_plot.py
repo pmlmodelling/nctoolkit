@@ -984,6 +984,16 @@ def panel_plot(
     shared_colourbar=False to give each panel its own colour scale and colour
     bar instead.
 
+    Per-panel values: each pub_plot argument can be one value, which applies to
+    every panel, or a list with one value per panel, in the order of panels,
+    e.g. land=["grey", "tan"]. Arguments that are already lists in pub_plot
+    (extent, limits, breaks) take a list of lists, e.g.
+    limits=[[0, 10], [5, 20]], with None for a panel that should use the
+    default. With a shared colour bar, the colour bar arguments (colours, norm,
+    limits, robust, legend, legend_position, breaks, font) must be single
+    values; set shared_colourbar=False to vary them per panel. size, out and
+    dpi always apply to the whole figure.
+
     Parameters
     -------------
     panels: dict
@@ -1001,8 +1011,7 @@ def panel_plot(
     shared_colourbar: bool
         True (default): all panels share one colour scale and one colour bar.
         False: each panel gets its own colour scale and colour bar, as in
-        pub_plot, and limits, robust, legend, legend_position and breaks apply
-        to each panel separately.
+        pub_plot, and the colour bar arguments can be given per panel.
     size: list
         [width, height] of the whole figure in inches. Default "auto": about
         3 inches of map per row, with the width matched to the maps' aspect
@@ -1035,9 +1044,11 @@ def panel_plot(
     font: float or str
         Font size for the panel titles and colour bar label, in points or as
         a matplotlib size name such as "large".
-    var, extent, land, colours, norm, projection, coast, scale, grid,
-    grid_colour, grid_labels:
-        Passed to every panel. See pub_plot.
+    colours, norm:
+        Colour map and colour normalisation. See pub_plot.
+    var, extent, land, projection, coast, scale, grid, grid_colour, grid_labels:
+        One value for every panel, or a list of one value per panel, with a
+        shared colour bar or without, e.g. var=["chl", "chlor_a"]. See pub_plot.
     **kwargs:
         Passed to every panel, e.g. relief=True. See pub_plot.
     """
@@ -1061,13 +1072,69 @@ def panel_plot(
     if not isinstance(shared_colourbar, bool):
         raise TypeError("shared_colourbar must be True or False")
 
-    if legend_position not in ["auto", "right", "bottom", None]:
-        raise ValueError("legend_position must be one of right/bottom or None")
-
-    if limits is not None and len(limits) != 2:
-        raise ValueError("limits must be a list of [min, max]")
-
     n = len(panels)
+
+    # Each argument is one value for every panel, or a list of one value per panel.
+    # extent, limits and breaks are already lists, so theirs are lists of lists.
+    colourbar_args = [
+        "colours", "norm", "limits", "robust", "legend", "legend_position", "breaks", "font"
+    ]
+
+    def per_panel(name, value):
+        if name == "limits":
+            # a single [min, max] can contain None, so only nested lists are per panel
+            is_list = isinstance(value, (list, tuple)) and any(
+                isinstance(x, (list, tuple)) for x in value
+            )
+        elif name in ["extent", "breaks"]:
+            is_list = isinstance(value, (list, tuple)) and any(
+                x is None or isinstance(x, (list, tuple)) for x in value
+            )
+        else:
+            is_list = isinstance(value, (list, tuple))
+        if not is_list:
+            return [value] * n
+        if shared_colourbar and name in colourbar_args:
+            raise ValueError(
+                f"{name} must be a single value when shared_colourbar=True. "
+                "Set shared_colourbar=False for per-panel values"
+            )
+        if len(value) != n:
+            values = "value" if len(value) == 1 else "values"
+            raise ValueError(f"{name} has {len(value)} {values} but there are {n} panels")
+        return list(value)
+
+    args = {
+        name: per_panel(name, value)
+        for name, value in [
+            ("var", var),
+            ("extent", extent),
+            ("land", land),
+            ("colours", colours),
+            ("norm", norm),
+            ("limits", limits),
+            ("projection", projection),
+            ("coast", coast),
+            ("scale", scale),
+            ("grid", grid),
+            ("grid_colour", grid_colour),
+            ("grid_labels", grid_labels),
+            ("legend", legend),
+            ("legend_position", legend_position),
+            ("robust", robust),
+            ("breaks", breaks),
+            ("font", font),
+        ]
+    }
+
+    for position in args["legend_position"]:
+        if position not in ["auto", "right", "bottom", None]:
+            raise ValueError("legend_position must be one of right/bottom or None")
+
+    for panel_limits in args["limits"]:
+        if panel_limits is not None and len(panel_limits) != 2:
+            raise ValueError("limits must be a list of [min, max]")
+
     for name, value in [("ncol", ncol), ("nrow", nrow)]:
         if value is not None:
             if isinstance(value, bool) or not isinstance(value, (int, np.integer)) or value < 1:
@@ -1084,10 +1151,10 @@ def panel_plot(
     # check every panel and pool the values, before drawing anything
     pooled = []
     first = None
-    for key, ds in panels.items():
+    for i, (key, ds) in enumerate(panels.items()):
         ds1 = ds.copy()
-        if var is not None:
-            ds1.subset(variables=var)
+        if args["var"][i] is not None:
+            ds1.subset(variables=args["var"][i])
         ds1.run()
         if len(ds1.variables) > 1:
             raise ValueError(
@@ -1124,11 +1191,12 @@ def panel_plot(
     if size == "auto":
         aspect = 1.5
         ds_xr = first[1]
+        first_extent = args["extent"][0]
         try:
-            if extent is not None:
-                lon_span = extent[1] - extent[0]
-                lat_span = extent[3] - extent[2]
-                mid_lat = 0.5 * (extent[2] + extent[3])
+            if first_extent is not None:
+                lon_span = first_extent[1] - first_extent[0]
+                lat_span = first_extent[3] - first_extent[2]
+                mid_lat = 0.5 * (first_extent[2] + first_extent[3])
             else:
                 lon = np.asarray(ds_xr[[x for x in ds_xr.coords if "lon" in x][0]])
                 lat = np.asarray(ds_xr[[x for x in ds_xr.coords if "lat" in x][0]])
@@ -1144,56 +1212,51 @@ def panel_plot(
             pass
         # map height plus room around each map for its title and lon/lat labels
         map_height = 3.0
-        extra_w = 0.8 if grid_labels else 0.2
-        extra_h = 0.9 if grid_labels else 0.4
+        extra_w = 0.8 if any(args["grid_labels"]) else 0.2
+        extra_h = 0.9 if any(args["grid_labels"]) else 0.4
         size = [
             ncol * (map_height * aspect + extra_w),
             nrow * (map_height + extra_h),
         ]
         # one colour bar for the figure, or one per column/row of panels
-        if legend_position in ["auto", "right"]:
+        positions = args["legend_position"]
+        if any(p in ["auto", "right"] for p in positions):
             size[0] += 1.2 if shared_colourbar else 1.0 * ncol
-        if legend_position == "bottom":
+        if "bottom" in positions:
             size[1] += 0.9 if shared_colourbar else 0.8 * nrow
 
     # constrained layout leaves room for the lon/lat labels and the lifted titles
     fig = plt.figure(figsize=size, layout="constrained")
     gs = fig.add_gridspec(nrow, ncol)
 
-    if shared_colourbar:
-        # panels draw no colour bar of their own; one is added for all below
-        scale_args = dict(
-            limits=list(shared), robust=False, legend="", legend_position=None
-        )
-    else:
-        scale_args = dict(
-            limits=limits,
-            robust=robust,
-            legend=legend,
-            legend_position=legend_position,
-            breaks=breaks,
-        )
-
     axes = []
     for i, (key, ds) in enumerate(panels.items()):
-        # pub_plot modifies limits in place, so give each panel its own copy
-        if scale_args["limits"] is not None:
-            scale_args["limits"] = list(scale_args["limits"])
+        panel_args = {
+            name: args[name][i]
+            for name in [
+                "var", "extent", "land", "colours", "norm", "projection", "coast",
+                "scale", "grid", "grid_colour", "grid_labels", "font",
+            ]
+        }
+        if shared_colourbar:
+            # panels draw no colour bar of their own; one is added for all below
+            scale_args = dict(
+                limits=list(shared), robust=False, legend="", legend_position=None
+            )
+        else:
+            panel_limits = args["limits"][i]
+            scale_args = dict(
+                # pub_plot modifies limits in place, so give each panel its own copy
+                limits=None if panel_limits is None else list(panel_limits),
+                robust=args["robust"][i],
+                legend=args["legend"][i],
+                legend_position=args["legend_position"][i],
+                breaks=args["breaks"][i],
+            )
         ax, im = pub_plot(
             ds,
-            var=var,
-            extent=extent,
             title=str(key),
-            land=land,
-            colours=colours,
-            norm=norm,
-            projection=projection,
-            coast=coast,
-            scale=scale,
-            grid=grid,
-            grid_colour=grid_colour,
-            grid_labels=grid_labels,
-            font=font,
+            **panel_args,
             **scale_args,
             fig=fig,
             gs=gs[i // ncol, i % ncol],
