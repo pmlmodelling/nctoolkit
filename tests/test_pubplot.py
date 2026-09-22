@@ -121,3 +121,27 @@ class TestCrop:
         ds.pub_plot(legend = "Temp", legend_position = "bottom")
         assert plt.gcf().axes[1].get_xlabel() == "Temp"
         plt.close("all")
+
+        from cartopy.mpl.gridliner import Gridliner
+
+        def n_grid_labels():
+            fig = plt.gcf()
+            fig.canvas.draw()
+            gls = [a for a in fig.axes[0].artists if isinstance(a, Gridliner)]
+            return sum(a.get_visible() for gl in gls for a in gl.label_artists)
+
+        ds.pub_plot()
+        assert n_grid_labels() > 0
+        plt.close("all")
+
+        ds.pub_plot(grid_labels = False)
+        assert n_grid_labels() == 0
+        plt.close("all")
+
+        # global Robinson maps also label the curved edges
+        ds_global.pub_plot(grid_labels = False)
+        assert n_grid_labels() == 0
+        plt.close("all")
+
+        with pytest.raises(TypeError):
+            ds.pub_plot(grid_labels = "no")

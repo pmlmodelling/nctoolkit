@@ -95,6 +95,7 @@ def pub_plot(
     breaks=None,
     dpi = "figure",
     font = None,
+    grid_labels = True,
     **kwargs,
 ):
     """
@@ -177,8 +178,8 @@ def pub_plot(
         also switches the coastline to GSHHS, with the resolution chosen
         automatically.
     grid: bool
-        Draw dashed lon/lat grid lines. Default True. Lon/lat labels on the
-        top and left edges are shown either way.
+        Draw dashed lon/lat grid lines. Default True. Lon/lat labels are
+        controlled separately by grid_labels.
     grid_colour: str
         Colour of the grid lines, as any matplotlib colour, e.g. "grey".
         Default "auto": black, with a white dashed overlay when most of the map
@@ -207,6 +208,9 @@ def pub_plot(
         Font size for the title and colourbar label, in points (e.g. 14) or
         as a matplotlib size name ("small", "large", "x-large"). Tick labels
         are unchanged. Default: matplotlib's default.
+    grid_labels: bool
+        Show the lon/lat labels around the edges of the map. Set to False to
+        hide them. Default True.
     **kwargs:
         fig and gs: draw into an existing matplotlib figure, and optionally a
         GridSpec cell, to build multi-panel figures, e.g.
@@ -243,6 +247,9 @@ def pub_plot(
         if not isinstance(land, str):
             raise TypeError("land must be str")
 
+    if not isinstance(grid_labels, bool):
+        raise TypeError("grid_labels must be True or False")
+
     if scale not in ["auto", "low", "medium", "high"]:
         text = ",".join(["low", "medium", "high", "auto"])
         raise ValueError(f"scale is '{scale}'. It should be one of {text}!")
@@ -270,6 +277,7 @@ def pub_plot(
         "projection",
         "grid",
         "grid_colour",
+        "grid_labels",
         "legend_position",
     ]
 
@@ -726,10 +734,12 @@ def pub_plot(
             y_inline=False,
         )
 
-        gl.top_labels = True
+        gl.top_labels = grid_labels
         gl.bottom_labels = False
         gl.right_labels = False
-        gl.left_labels = True
+        gl.left_labels = grid_labels
+        # labels on curved map edges, e.g. Robinson
+        gl.geo_labels = grid_labels
 
         if grid_colour == "auto":
             gl = ax.gridlines(
