@@ -202,6 +202,18 @@ class TestCrop:
         os.remove(out_file)
         plt.close("all")
 
+        # one colour bar and colour scale per panel
+        unshared = {"Jan": month(0), "Jul": month(6)}
+        nc.panel_plot(unshared, shared_colourbar = False)
+        axes = map_axes()
+        assert len(plt.gcf().axes) == 4
+        clims = [a.collections[0].get_clim() for a in axes]
+        assert clims[0] != clims[1]
+        plt.close("all")
+
+        with pytest.raises(TypeError):
+            nc.panel_plot(panels, shared_colourbar = "no")
+
         with pytest.raises(TypeError):
             nc.panel_plot([month(0)])
         with pytest.raises(ValueError):

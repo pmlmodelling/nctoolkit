@@ -950,6 +950,7 @@ def panel_plot(
     panels,
     ncol=None,
     nrow=None,
+    shared_colourbar=True,
     var=None,
     extent=None,
     legend=None,
@@ -973,11 +974,13 @@ def panel_plot(
     **kwargs,
 ):
     """
-    panel_plot: Grid of pub_plot maps sharing one colour scale and colour bar.
+    panel_plot: Grid of pub_plot maps, sharing one colour scale and colour bar by default.
 
-    Each dataset is drawn as one panel, in pub_plot style. All panels use the
-    same colour limits, worked out from the data of every panel together, so
-    the panels can be compared directly.
+    Each dataset is drawn as one panel, in pub_plot style. By default all
+    panels use the same colour limits, worked out from the data of every panel
+    together, so the panels can be compared directly. Set
+    shared_colourbar=False to give each panel its own colour scale and colour
+    bar instead.
 
     Parameters
     -------------
@@ -993,26 +996,34 @@ def panel_plot(
         ncol nor nrow, the grid is as close to square as possible, e.g. 2 x 2
         for 4 panels and 3 x 2 for 6. With one of them, the other is derived.
         ncol x nrow must be at least the number of panels.
+    shared_colourbar: bool
+        True (default): all panels share one colour scale and one colour bar.
+        False: each panel gets its own colour scale and colour bar, as in
+        pub_plot, and limits, robust, legend, legend_position and breaks apply
+        to each panel separately.
     size: list
         [width, height] of the whole figure in inches. Default "auto": about
         3 inches of map per row, with the width matched to the maps' aspect
-        ratio and room for titles, labels and the colour bar.
+        ratio and room for titles, labels and the colour bar(s).
     limits: list
-        [min, max] limits of the shared colour scale, in the same formats as
-        pub_plot: numbers, None or percentile strings such as "2%".
-        None and percentiles are worked out from all panels together.
-        Default: the minimum and maximum across all panels.
+        [min, max] colour scale limits, in the same formats as pub_plot:
+        numbers, None or percentile strings such as "2%". With a shared colour
+        bar, None and percentiles are worked out from all panels together.
+        Default: the minimum and maximum across all panels (or of each panel
+        with shared_colourbar=False).
     robust: bool
-        If True, set the shared colour limits to the 2nd and 98th percentiles
-        of all panels together. Overrides limits. Default False.
+        If True, set the colour limits to the 2nd and 98th percentiles of all
+        panels together (or of each panel with shared_colourbar=False).
+        Overrides limits. Default False.
     legend: str
-        Label of the shared colour bar. Default: built from the first
-        dataset's long name and units. Use legend="" for no label.
+        Colour bar label. Default: built from the first dataset's long name
+        and units (each panel's own with shared_colourbar=False). Use
+        legend="" for no label.
     legend_position: str
-        "right" (default; "auto" is the same) or "bottom" for the shared
-        colour bar, or None for no colour bar.
+        "right" (default; "auto" is the same) or "bottom" for the colour
+        bar(s), or None for no colour bar.
     breaks: list
-        Tick positions on the shared colour bar, e.g. [0, 10, 20, 30].
+        Tick positions on the colour bar(s), e.g. [0, 10, 20, 30].
     out: str
         File to save the whole figure to, e.g. "panels.png". The format comes
         from the extension. Default: display only.
@@ -1044,6 +1055,9 @@ def panel_plot(
     for arg in ["fig", "gs", "title"]:
         if arg in kwargs:
             raise ValueError(f"{arg} cannot be used with panel_plot")
+
+    if not isinstance(shared_colourbar, bool):
+        raise TypeError("shared_colourbar must be True or False")
 
     if legend_position not in ["auto", "right", "bottom", None]:
         raise ValueError("legend_position must be one of right/bottom or None")
@@ -1096,13 +1110,14 @@ def panel_plot(
             return np.percentile(pooled, float(end.split("%")[0]))
         return end
 
-    if robust:
-        shared = [np.percentile(pooled, 2), np.percentile(pooled, 98)]
-    elif limits is None:
-        shared = [pooled.min(), pooled.max()]
-    else:
-        shared = [resolve(limits[0], pooled.min()), resolve(limits[1], pooled.max())]
-    shared = [float(x) for x in shared]
+    if shared_colourbar:
+        if robust:
+            shared = [np.percentile(pooled, 2), np.percentile(pooled, 98)]
+        elif limits is None:
+            shared = [pooled.min(), pooled.max()]
+        else:
+            shared = [resolve(limits[0], pooled.min()), resolve(limits[1], pooled.max())]
+        shared = [float(x) for x in shared]
 
     if size == "auto":
         aspect = 1.5
@@ -1133,36 +1148,51 @@ def panel_plot(
             ncol * (map_height * aspect + extra_w),
             nrow * (map_height + extra_h),
         ]
+        # one colour bar for the figure, or one per column/row of panels
         if legend_position in ["auto", "right"]:
-            size[0] += 1.2
+            size[0] += 1.2 if shared_colourbar else 1.0 * ncol
         if legend_position == "bottom":
-            size[1] += 0.9
+            size[1] += 0.9 if shared_colourbar else 0.8 * nrow
 
     # constrained layout leaves room for the lon/lat labels and the lifted titles
     fig = plt.figure(figsize=size, layout="constrained")
     gs = fig.add_gridspec(nrow, ncol)
 
+    if shared_colourbar:
+        # panels draw no colour bar of their own; one is added for all below
+        scale_args = dict(
+            limits=list(shared), robust=False, legend="", legend_position=None
+        )
+    else:
+        scale_args = dict(
+            limits=limits,
+            robust=robust,
+            legend=legend,
+            legend_position=legend_position,
+            breaks=breaks,
+        )
+
     axes = []
     for i, (key, ds) in enumerate(panels.items()):
+        # pub_plot modifies limits in place, so give each panel its own copy
+        if scale_args["limits"] is not None:
+            scale_args["limits"] = list(scale_args["limits"])
         ax, im = pub_plot(
             ds,
             var=var,
             extent=extent,
             title=str(key),
-            legend="",
             land=land,
             colours=colours,
             norm=norm,
-            limits=list(shared),
             projection=projection,
             coast=coast,
             scale=scale,
             grid=grid,
             grid_colour=grid_colour,
             grid_labels=grid_labels,
-            legend_position=None,
-            robust=False,
             font=font,
+            **scale_args,
             fig=fig,
             gs=gs[i // ncol, i % ncol],
             _panel=True,
@@ -1170,7 +1200,7 @@ def panel_plot(
         )
         axes.append(ax)
 
-    if legend_position is not None:
+    if shared_colourbar and legend_position is not None:
         location = "bottom" if legend_position == "bottom" else "right"
         vmin, vmax = im.get_clim()
         below = vmin is not None and pooled.min() < vmin
