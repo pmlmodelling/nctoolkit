@@ -87,3 +87,37 @@ class TestCrop:
             ds.pub_plot(lands = "grey")
 
         os.remove(out_file)
+
+    def test_pub_plot_options(self):
+        import matplotlib.pyplot as plt
+        import matplotlib.image as mpimg
+        import cartopy.crs as ccrs
+
+        out_file = "pubplot_options_test.png"
+
+        ds = nc.open_data(ff, checks = False)
+        ds.subset(time = 0)
+
+        ds.pub_plot(out = out_file, dpi = 50)
+        # auto size is 5 inches tall
+        assert mpimg.imread(out_file).shape[0] == 5 * 50
+        os.remove(out_file)
+        plt.close("all")
+
+        ds.pub_plot(coast = None)
+        plt.close("all")
+
+        ds_global = nc.open_data("data/sst.mon.ltm.1981-2010.nc", checks = False)
+        ds_global.subset(time = 0, variables = "sst")
+
+        ds_global.pub_plot()
+        assert isinstance(plt.gcf().axes[0].projection, ccrs.Robinson)
+        plt.close("all")
+
+        ds_global.pub_plot(projection = ccrs.PlateCarree())
+        assert isinstance(plt.gcf().axes[0].projection, ccrs.PlateCarree)
+        plt.close("all")
+
+        ds.pub_plot(legend = "Temp", legend_position = "bottom")
+        assert plt.gcf().axes[1].get_xlabel() == "Temp"
+        plt.close("all")

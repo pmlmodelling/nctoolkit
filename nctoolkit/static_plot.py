@@ -98,58 +98,127 @@ def pub_plot(
     **kwargs,
 ):
     """
-    pub_plot: Static plotting. This requires datasets to have regular latlon grids.
+    pub_plot: Static, publication-quality map of a single variable.
 
-    Plots a static map, and requires only one variable, time step and vertical level
+    Drawn with matplotlib and cartopy (cartopy must be installed). The dataset
+    must contain one variable (or select one with var), one time step and one
+    vertical level, on a regular lon/lat grid. The figure is displayed inline
+    in Jupyter; use out to save it to a file.
 
     Parameters
     -------------
-    ds: nctoolkit dataset
-        Dataset to plot
     var: str
-        Variable to plot
+        Variable to plot, e.g. var="sst". Only needed if the dataset contains
+        more than one variable.
     extent: list
-        List with [lon_min, lon_max, lat_min, lat_max] for plotting extent
+        [lon_min, lon_max, lat_min, lat_max] in degrees, e.g. [-15, 10, 45, 62].
+        Default: the full extent of the data (the whole globe for global data).
     title: str
-        Character string with plot title
+        Plot title. Supports matplotlib mathtext, e.g. "CO$_2$ flux".
+        Default: no title.
     legend: str
-        Character string with legend title
+        Colourbar label. Supports matplotlib mathtext. Default: built from the
+        variable's long name and units, with common units tidied up (e.g. degC
+        becomes °C, /m^3 becomes m^-3, umol becomes µmol) and wrapped onto
+        several lines. Use legend="" for no label.
     size: list
-        List with [xsize, ysize] for plotting size
+        [width, height] of the figure in inches, e.g. [8, 6]. Default "auto":
+        5 inches tall, with the width matched to the map's aspect ratio
+        (8 x 8 for polar stereographic projections, 12 x 8 for azimuthal
+        equidistant). Ignored when drawing into an existing figure with fig.
     land: str
-        Character string with colour required for land. Set to None if you do not want land to show.
-    colours: str
-        Character string with colour map to use. Set to None if you do not want to use a colour map.
-    norm: str or matplotlib.colors norm
-         Norm to use for colour bar
+        Colour to fill land with, as any matplotlib colour: a name such as
+        "grey", "lightgrey" or "tan", or a hex code such as "#d9d9d9". Land is
+        drawn over the data, so it hides values on land. Resolution is set by
+        scale. Default "auto": no land fill, except on NEMO model grids, which
+        use light grey. None: no land fill.
+    colours: str or matplotlib Colormap
+        Matplotlib colour map, e.g. "viridis", "plasma", "cividis" or "RdBu_r".
+        Add "_r" to reverse any colour map. See
+        https://matplotlib.org/stable/gallery/color/colormap_reference.html
+        Default "auto": "viridis", or the diverging "RdBu_r" when the colour
+        scale spans zero.
+    norm: str or matplotlib.colors normalisation
+        "log" (or "log10") for a logarithmic colour scale, or any
+        matplotlib.colors normalisation object, e.g.
+        matplotlib.colors.PowerNorm(gamma=0.5, vmin=0, vmax=10). Log scales need
+        strictly positive values: if the data contain zeros, set a positive
+        lower limit, e.g. limits=[0.01, None]. limits is not applied to norm
+        objects, so set vmin and vmax on the object itself. Default: linear.
     limits: list
-        List with [min, max] for colour bar limits.
-        Please note that if the colour scale passes through zero, the colour scale will be symmetrical around zero.
-        So the limits will be reset to the maximum absolute value of the data.
-
+        [min, max] limits of the colour scale. Each end can be a number, e.g.
+        [0, 30]; None, to use the data minimum or maximum, e.g. [0, None]; or a
+        percentile string, e.g. ["2%", "98%"]. Values outside the limits take
+        the end colours, and the colourbar gets an arrow at that end. If the
+        range spans zero, the scale is made symmetric around zero using the
+        larger absolute limit, so [-1, 5] becomes [-5, 5], and a diverging
+        colour map is used by default. Default: the data minimum and maximum.
+        Ignored when robust=True.
     projection: cartopy projection
-        Cartopy projection to use.
+        A cartopy CRS, e.g. ccrs.Robinson(), ccrs.Mollweide(),
+        ccrs.NorthPolarStereo() or
+        ccrs.Orthographic(central_longitude=-20, central_latitude=50), after
+        import cartopy.crs as ccrs. See
+        https://scitools.org.uk/cartopy/docs/latest/reference/projections.html
+        Default "auto": Robinson for global data; plain lon/lat (PlateCarree)
+        if the data cross the equator or span more than 200 degrees of
+        longitude; otherwise Lambert conformal, centred on the data.
+        None: plain lon/lat.
     coast: str
-        Set to "coarse", "low", "intermediate", "high" or "full" if you want to use GSHHS coastlines
+        "auto" (default): Natural Earth coastline, with the level of detail
+        chosen automatically for the map extent. "coarse", "low",
+        "intermediate", "high" or "full": GSHHS coastline at that resolution,
+        from least to most detailed. "full" can be slow over large areas.
+        cartopy downloads GSHHS data on first use. None: no coastline.
     scale: str
-        "low", "medium" or "high"
+        Resolution of the land fill, used when land is set: "low" (1:110m),
+        "medium" (1:50m) or "high" (1:10m) Natural Earth polygons.
+        Default "auto", the same as "medium". If coast is "auto", setting scale
+        also switches the coastline to GSHHS, with the resolution chosen
+        automatically.
     grid: bool
-        Set to False if you do not want grid lines.
-    legend_position = "auto"
-    robust :    bool
-        Whether to use robust statistics for the colour scale or not
-    out : str
-        Output file name
-    breaks : list
-        List of breaks for the colour bar
-    dpi : int
-        DPI for output file. Default is "figure".
-
-
-    *kwargs:
-        kwargs to allow slight misspelling of arguments
-
-    -------------
+        Draw dashed lon/lat grid lines. Default True. Lon/lat labels on the
+        top and left edges are shown either way.
+    grid_colour: str
+        Colour of the grid lines, as any matplotlib colour, e.g. "grey".
+        Default "auto": black, with a white dashed overlay when most of the map
+        sits at the low (dark) end of the colour scale.
+    legend_position: str
+        "right" (default; "auto" is the same) for a vertical colourbar,
+        "bottom" for a horizontal colourbar under the map, or None for no
+        colourbar.
+    robust: bool
+        If True, set the colour limits to the 2nd and 98th percentiles of the
+        data, so a few extreme values don't wash out the scale. Overrides
+        limits. Default False.
+    out: str
+        File to save the figure to, e.g. "sst.png". The format comes from the
+        extension: .png, .pdf, .svg, .jpg, .eps or any other format matplotlib
+        supports. Default: display only.
+    breaks: list
+        Tick positions on the colourbar, e.g. [0, 10, 20, 30]. Labels show
+        exactly these values. This only sets the ticks; colours stay continuous.
+        Default: automatic ticks.
+    dpi: int
+        Resolution of the saved file in dots per inch, e.g. 300 for print. Only
+        used with out. Default "figure": the figure's own resolution
+        (matplotlib's default is 100).
+    font: float or str
+        Font size for the title and colourbar label, in points (e.g. 14) or
+        as a matplotlib size name ("small", "large", "x-large"). Tick labels
+        are unchanged. Default: matplotlib's default.
+    **kwargs:
+        fig and gs: draw into an existing matplotlib figure, and optionally a
+        GridSpec cell, to build multi-panel figures, e.g.
+        fig = plt.figure(figsize=[12, 5]); gs = fig.add_gridspec(1, 2);
+        ds1.pub_plot(fig=fig, gs=gs[0]); ds2.pub_plot(fig=fig, gs=gs[1]).
+        gs requires fig.
+        relief=True: add a shaded-relief background, visible where the data
+        are missing.
+        Aliases and close misspellings are accepted: colors for colours, trans
+        for norm, and names starting with "proj" or "var" for projection and
+        var. Any other unrecognised argument raises an error suggesting the
+        closest valid name.
     """
     mid_point = None
 
@@ -183,9 +252,9 @@ def pub_plot(
     if "static_plot" in session_info.keys():
         raise ValueError("Unable to import cartopy properly")
 
-    if coast not in ["auto", "coarse", "low", "intermediate", "high", "full"]:
+    if coast not in ["auto", "coarse", "low", "intermediate", "high", "full", None]:
         the_options = ",".join(
-            ["auto", "coarse", "low", "intermediate", "high", "full"]
+            ["auto", "coarse", "low", "intermediate", "high", "full", "None"]
         )
         raise ValueError(f"coast must be one of {the_options}")
 
@@ -211,8 +280,6 @@ def pub_plot(
         fig = None
     if "gs" not in kwargs.keys():
         gs = None
-    if "dpi" not in kwargs.keys():
-        dpi = "figure"
 
     if "quiver" in kwargs:
         quiver = True
@@ -230,9 +297,6 @@ def pub_plot(
         if kk == "fig":
             fig = kwargs[kk]
             fixed = True
-        if kk == "dpi":
-            fixed = True
-            dpi = kwargs[kk]
 
         if kk == "gs":
             gs = kwargs[kk]
@@ -385,7 +449,7 @@ def pub_plot(
         proj = projection
     data_crs = ccrs.PlateCarree()
 
-    if globe:
+    if globe and projection == "auto":
         proj = ccrs.Robinson()
 
     if projection == None:
@@ -756,18 +820,12 @@ def pub_plot(
         if coast == "auto" and scale == "auto":
             ax.add_feature(cfeature.COASTLINE, linewidth=0.5)
         else:
-            if scale == "high":
-                g_scale = "high"
-            if scale == "medium":
-                g_scale = "intermediate"
-            if scale == "low":
-                g_scale = "low"
-            g_scale = "auto"
+            g_scale = "auto" if coast == "auto" else coast
             ax.add_feature(cfeature.GSHHSFeature(scale=g_scale), linewidth=0.5)
 
     if not quiver:
         if legend is not None:
-            cbax.set_ylabel(legend)
+            label = legend
         else:
             ds_contents = ds1.contents
             try:
@@ -786,10 +844,10 @@ def pub_plot(
             else:
                 label = "\n".join(wrap(label, 30))
 
-            if l_location == "bottom":
-                cbax.set_xlabel(label)
-            else:
-                cbax.set_ylabel(label)
+        if l_location == "bottom":
+            cbax.set_xlabel(label)
+        else:
+            cbax.set_ylabel(label)
 
         if legend_position is None:
             cb.remove()
