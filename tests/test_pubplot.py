@@ -202,6 +202,16 @@ class TestCrop:
         os.remove(out_file)
         plt.close("all")
 
+        # "~" in out is expanded to the home directory
+        import tempfile, shutil
+        home = os.path.expanduser("~")
+        tmp_dir = tempfile.mkdtemp(dir = home)
+        tilde_out = "~/" + os.path.relpath(tmp_dir, home) + "/panels.png"
+        nc.panel_plot(panels, out = tilde_out)
+        assert os.path.exists(os.path.join(tmp_dir, "panels.png"))
+        shutil.rmtree(tmp_dir)
+        plt.close("all")
+
         # one colour bar and colour scale per panel
         unshared = {"Jan": month(0), "Jul": month(6)}
         nc.panel_plot(unshared, shared_colourbar = False)

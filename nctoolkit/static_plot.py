@@ -1,3 +1,5 @@
+import os
+
 from nctoolkit.session import session_info
 
 try:
@@ -1238,4 +1240,4 @@ def panel_plot(
     fig.canvas.draw()
 
     if out is not None:
-        fig.savefig(out, dpi=dpi)
+        fig.savefig(os.path.expanduser(out), dpi=dpi)
