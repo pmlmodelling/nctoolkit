@@ -827,12 +827,63 @@ tbody tr.hidden-row { display: none; }
   background: #fff;
   box-shadow: var(--shadow-sm);
 }
+/* the heading doubles as a disclosure for the option's accepted values */
+.option-card .option-help { margin: 0; }
+.option-card .option-help > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6em;
+  padding: 0.75em 1em;
+  border-bottom: 1px solid var(--line);
+  cursor: pointer;
+  list-style: none;
+}
+.option-card .option-help > summary::-webkit-details-marker { display: none; }
+.option-card .option-help > summary:hover { background: var(--bg-alt); }
 .docs-content .option-card h3 {
   margin: 0;
   padding: 0.75em 1em;
   font-size: 0.95rem;
   border-bottom: 1px solid var(--line);
 }
+.docs-content .option-card .option-help h3 {
+  padding: 0;
+  border-bottom: 0;
+}
+.option-help__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--teal-700);
+  background: var(--teal-50);
+  padding: 0.25em 0.55em;
+  border-radius: 5px;
+}
+.option-help__tag::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+  border-right: 2px solid var(--teal-600);
+  border-bottom: 2px solid var(--teal-600);
+  transform: rotate(45deg) translate(-1px, -1px);
+  transition: transform 0.15s ease;
+}
+.option-help[open] > summary .option-help__tag::after {
+  transform: rotate(-135deg) translate(-2px, -2px);
+}
+.option-help__body {
+  padding: 0.85em 1em;
+  background: var(--bg-alt);
+  border-bottom: 1px solid var(--line);
+  font-size: 0.85rem;
+}
+.option-help__body p { margin: 0 0 0.45em; }
+.option-help__body p:last-child { margin-bottom: 0; }
 .option-card .code-block {
   margin: 0;
   border-radius: 0;

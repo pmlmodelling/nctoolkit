@@ -172,62 +172,149 @@ ds.pub_plot()</pre>
 
     <div class="option-gallery">
       <div class="option-card">
-        <h3>Adding a title</h3>
+        <details class="option-help">
+          <summary><h3>Adding a title</h3><span class="option-help__tag">title</span></summary>
+          <div class="option-help__body">
+        <p>Any string. Supports matplotlib mathtext, e.g. <code>"CO$_2$ flux"</code>.</p>
+        <p>Default: no title.</p>
+        <p><a href="api.html#pub_plot">Full details</a></p>
+          </div>
+        </details>
         <div class="code-block"><pre>ds.<span class="tok-fn">pub_plot</span>(title=<span class="tok-str">"Mean sea surface temperature"</span>)</pre></div>
         <img src="assets/plots/pub_plot_title.png" loading="lazy" alt="Sea surface temperature map with a title above it">
       </div>
       <div class="option-card">
-        <h3>Labelling the colour bar</h3>
+        <details class="option-help">
+          <summary><h3>Labelling the colour bar</h3><span class="option-help__tag">legend</span></summary>
+          <div class="option-help__body">
+        <p>Any string. Supports matplotlib mathtext. Use <code>""</code> for no label.</p>
+        <p>Default: built from the variable's long name and units.</p>
+        <p><a href="api.html#pub_plot">Full details</a></p>
+          </div>
+        </details>
         <div class="code-block"><pre>ds.<span class="tok-fn">pub_plot</span>(legend=<span class="tok-str">"Sea surface temperature (°C)"</span>)</pre></div>
         <img src="assets/plots/pub_plot_legend.png" loading="lazy" alt="Sea surface temperature map with a custom colour bar label">
       </div>
       <div class="option-card">
-        <h3>Changing the colour map</h3>
+        <details class="option-help">
+          <summary><h3>Changing the colour map</h3><span class="option-help__tag">colours</span></summary>
+          <div class="option-help__body">
+        <p>Any <a href="https://matplotlib.org/stable/gallery/color/colormap_reference.html" target="_blank" rel="noopener">matplotlib colour map</a> name, e.g. <code>"viridis"</code>, <code>"plasma"</code> or <code>"RdBu_r"</code>, or a <code>Colormap</code> object. Add <code>"_r"</code> to reverse any of them.</p>
+        <p>Default: <code>"viridis"</code>, or the diverging <code>"RdBu_r"</code> when the colour scale spans zero.</p>
+        <p><a href="api.html#pub_plot">Full details</a></p>
+          </div>
+        </details>
         <div class="code-block"><pre>ds.<span class="tok-fn">pub_plot</span>(colours=<span class="tok-str">"viridis"</span>)</pre></div>
         <img src="assets/plots/pub_plot_colours.png" loading="lazy" alt="Sea surface temperature map drawn with the viridis colour map">
       </div>
       <div class="option-card">
-        <h3>Setting the colour limits</h3>
+        <details class="option-help">
+          <summary><h3>Setting the colour limits</h3><span class="option-help__tag">limits</span></summary>
+          <div class="option-help__body">
+        <p><code>[min, max]</code>. Each end can be a number, <code>None</code> for the data minimum or maximum, or a percentile string such as <code>"2%"</code>.</p>
+        <p>A range spanning zero is made symmetric, so <code>[-1, 5]</code> becomes <code>[-5, 5]</code>.</p>
+        <p>Default: the data minimum and maximum.</p>
+        <p><a href="api.html#pub_plot">Full details</a></p>
+          </div>
+        </details>
         <div class="code-block"><pre>ds.<span class="tok-fn">pub_plot</span>(limits=[<span class="tok-num">-20</span>, <span class="tok-num">20</span>])</pre></div>
         <img src="assets/plots/pub_plot_limits.png" loading="lazy" alt="Sea surface temperature map with the colour scale fixed between -20 and 20">
       </div>
       <div class="option-card">
-        <h3>Ignoring outliers</h3>
+        <details class="option-help">
+          <summary><h3>Ignoring outliers</h3><span class="option-help__tag">robust</span></summary>
+          <div class="option-help__body">
+        <p><code>True</code> &mdash; colour limits set to the 2nd and 98th percentiles, overriding <code>limits</code>.</p>
+        <p><code>False</code> &mdash; the full data range (default).</p>
+        <p><a href="api.html#pub_plot">Full details</a></p>
+          </div>
+        </details>
         <div class="code-block"><pre>ds.<span class="tok-fn">pub_plot</span>(robust=<span class="tok-kw">True</span>)</pre></div>
         <img src="assets/plots/pub_plot_robust.png" loading="lazy" alt="Sea surface temperature map with the colour scale set to the 2nd and 98th percentiles">
       </div>
       <div class="option-card">
-        <h3>Choosing the colour bar ticks</h3>
+        <details class="option-help">
+          <summary><h3>Choosing the colour bar ticks</h3><span class="option-help__tag">breaks</span></summary>
+          <div class="option-help__body">
+        <p>A list of numbers, e.g. <code>[0, 10, 20, 30]</code>. Sets the tick positions only; the colours stay continuous.</p>
+        <p>Default: ticks chosen automatically.</p>
+        <p><a href="api.html#pub_plot">Full details</a></p>
+          </div>
+        </details>
         <div class="code-block"><pre>ds.<span class="tok-fn">pub_plot</span>(breaks=[<span class="tok-num">-30</span>, <span class="tok-num">-15</span>, <span class="tok-num">0</span>, <span class="tok-num">15</span>, <span class="tok-num">30</span>])</pre></div>
         <img src="assets/plots/pub_plot_breaks.png" loading="lazy" alt="Sea surface temperature map with colour bar ticks at fixed values">
       </div>
       <div class="option-card">
-        <h3>Moving the colour bar</h3>
+        <details class="option-help">
+          <summary><h3>Moving the colour bar</h3><span class="option-help__tag">legend_position</span></summary>
+          <div class="option-help__body">
+        <p><code>"right"</code> &mdash; vertical colour bar (default).</p>
+        <p><code>"bottom"</code> &mdash; horizontal colour bar under the map.</p>
+        <p><code>None</code> &mdash; no colour bar.</p>
+        <p><a href="api.html#pub_plot">Full details</a></p>
+          </div>
+        </details>
         <div class="code-block"><pre>ds.<span class="tok-fn">pub_plot</span>(legend_position=<span class="tok-str">"bottom"</span>)</pre></div>
         <img src="assets/plots/pub_plot_legend_position.png" loading="lazy" alt="Sea surface temperature map with the colour bar underneath">
       </div>
       <div class="option-card">
-        <h3>Filling in the land</h3>
+        <details class="option-help">
+          <summary><h3>Filling in the land</h3><span class="option-help__tag">land</span></summary>
+          <div class="option-help__body">
+        <p>Any matplotlib colour: a name such as <code>"grey"</code>, <code>"tan"</code> or <code>"lightgrey"</code>, or a hex code such as <code>"#d9d9d9"</code>. <code>None</code> leaves the land unfilled.</p>
+        <p>The level of detail comes from <code>scale</code>: <code>"low"</code>, <code>"medium"</code> or <code>"high"</code>.</p>
+        <p><a href="api.html#pub_plot">Full details</a></p>
+          </div>
+        </details>
         <div class="code-block"><pre>ds.<span class="tok-fn">pub_plot</span>(land=<span class="tok-str">"grey"</span>)</pre></div>
         <img src="assets/plots/pub_plot_land.png" loading="lazy" alt="Sea surface temperature map with grey land">
       </div>
       <div class="option-card">
-        <h3>Removing the grid lines</h3>
+        <details class="option-help">
+          <summary><h3>Removing the grid lines</h3><span class="option-help__tag">grid</span></summary>
+          <div class="option-help__body">
+        <p><code>True</code> &mdash; dashed lon/lat grid lines (default).</p>
+        <p><code>False</code> &mdash; no grid lines. The labels are separate, see <code>grid_labels</code>.</p>
+        <p><code>grid_colour</code> sets the colour of the lines.</p>
+        <p><a href="api.html#pub_plot">Full details</a></p>
+          </div>
+        </details>
         <div class="code-block"><pre>ds.<span class="tok-fn">pub_plot</span>(grid=<span class="tok-kw">False</span>)</pre></div>
         <img src="assets/plots/pub_plot_grid.png" loading="lazy" alt="Sea surface temperature map without grid lines">
       </div>
       <div class="option-card">
-        <h3>Hiding the coordinate labels</h3>
+        <details class="option-help">
+          <summary><h3>Hiding the coordinate labels</h3><span class="option-help__tag">grid_labels</span></summary>
+          <div class="option-help__body">
+        <p><code>True</code> &mdash; lon/lat labels around the map (default).</p>
+        <p><code>False</code> &mdash; no labels. The grid lines are separate, see <code>grid</code>.</p>
+        <p><a href="api.html#pub_plot">Full details</a></p>
+          </div>
+        </details>
         <div class="code-block"><pre>ds.<span class="tok-fn">pub_plot</span>(grid_labels=<span class="tok-kw">False</span>)</pre></div>
         <img src="assets/plots/pub_plot_grid_labels.png" loading="lazy" alt="Sea surface temperature map without lon/lat labels">
       </div>
       <div class="option-card">
-        <h3>Changing the projection</h3>
+        <details class="option-help">
+          <summary><h3>Changing the projection</h3><span class="option-help__tag">projection</span></summary>
+          <div class="option-help__body">
+        <p>Any <a href="https://scitools.org.uk/cartopy/docs/latest/reference/projections.html" target="_blank" rel="noopener">cartopy projection</a>, e.g. <code>ccrs.Robinson()</code>, <code>ccrs.Mollweide()</code> or <code>ccrs.NorthPolarStereo()</code>. <code>None</code> gives plain lon/lat.</p>
+        <p>Default: chosen from the extent of the data.</p>
+        <p><a href="api.html#pub_plot">Full details</a></p>
+          </div>
+        </details>
         <div class="code-block"><pre>ds.<span class="tok-fn">pub_plot</span>(projection=ccrs.<span class="tok-fn">Mollweide</span>())</pre></div>
         <img src="assets/plots/pub_plot_projection.png" loading="lazy" alt="Sea surface temperature drawn on a Mollweide projection">
       </div>
       <div class="option-card">
-        <h3>Zooming in on a region</h3>
+        <details class="option-help">
+          <summary><h3>Zooming in on a region</h3><span class="option-help__tag">extent</span></summary>
+          <div class="option-help__body">
+        <p><code>[lon_min, lon_max, lat_min, lat_max]</code> in degrees, e.g. <code>[-80, 20, 20, 70]</code>.</p>
+        <p>Default: the full extent of the data.</p>
+        <p><a href="api.html#pub_plot">Full details</a></p>
+          </div>
+        </details>
         <div class="code-block"><pre>ds.<span class="tok-fn">pub_plot</span>(extent=[<span class="tok-num">-80</span>, <span class="tok-num">20</span>, <span class="tok-num">20</span>, <span class="tok-num">70</span>])</pre></div>
         <img src="assets/plots/pub_plot_extent.png" loading="lazy" alt="Sea surface temperature over the North Atlantic only">
       </div>
