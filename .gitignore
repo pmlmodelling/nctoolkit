@@ -12,3 +12,6 @@ nctoolkit/.ipynb_checkpoints/
 docs/source/*ipynb_checkpoints/
 docs/source/generated/
 tests/__pycache__/
+
+# local scripts that regenerate figures for docs-site
+website-scripts/

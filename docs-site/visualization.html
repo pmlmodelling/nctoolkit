@@ -63,6 +63,7 @@
     <ul>
       <li><a href="#plotting">Interactive plotting</a></li>
       <li><a href="#pub-plot">Publication-quality plots</a></li>
+      <li><a href="#panel-plot">Panel plots</a></li>
       <li><a href="#internals">Plotting internals</a></li>
     </ul>
   </aside>
@@ -138,6 +139,50 @@ ds.plot()          <span class="tok-com"># time series</span></pre>
 ds.pub_plot()</pre>
     </div>
     <p><img src="assets/plots/pub_plot1.png" alt="Publication-quality plot of mean sea surface temperature produced by pub_plot()" style="border:1px solid var(--line); border-radius: var(--radius-md); box-shadow: var(--shadow-sm);"></p>
+
+    <h2 id="panel-plot">Panel plots</h2>
+    <p><a href="api.html#panel_plot"><code>nc.panel_plot</code></a> draws a grid of <code>pub_plot</code>-style maps from a dictionary of datasets, with the keys as the panel titles. Every panel shares one colour scale and one colour bar by default, worked out from the data of all of them, so they can be compared directly. The examples below use monthly <a href="https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc.html" target="_blank" rel="noopener">COBE-SST2</a> sea surface temperature, opened straight from a THREDDS server.</p>
+    <p>A seasonal climatology, two panels per row:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds = nc.<span class="tok-fn">open_thredds</span>(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc"</span>)
+
+panels = {}
+<span class="tok-kw">for</span> season <span class="tok-kw">in</span> [<span class="tok-str">"DJF"</span>, <span class="tok-str">"MAM"</span>, <span class="tok-str">"JJA"</span>, <span class="tok-str">"SON"</span>]:
+    seasonal = ds.copy()
+    seasonal.subset(years=<span class="tok-fn">range</span>(<span class="tok-num">1991</span>, <span class="tok-num">2021</span>), seasons=season)
+    seasonal.tmean()
+    panels[season] = seasonal
+
+nc.<span class="tok-fn">panel_plot</span>(panels, ncol=<span class="tok-num">2</span>, limits=[<span class="tok-num">0</span>, <span class="tok-num">30</span>], legend=<span class="tok-str">"Sea surface temperature (°C)"</span>)</pre>
+    </div>
+    <p><img src="assets/plots/panel_plot1.png" loading="lazy" alt="Four panels of seasonal mean sea surface temperature sharing one colour bar" style="border:1px solid var(--line); border-radius: var(--radius-md); box-shadow: var(--shadow-sm);"></p>
+
+    <p>Panels do not have to share a scale. With <code>shared_colourbar=False</code> each panel gets its own colour bar, and the plotting options can be given as a list with one value per panel &mdash; useful when a map of values sits beside a map of differences:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>early = ds.copy()
+early.subset(years=<span class="tok-fn">range</span>(<span class="tok-num">1850</span>, <span class="tok-num">1880</span>))
+early.tmean()
+
+recent = ds.copy()
+recent.subset(years=<span class="tok-fn">range</span>(<span class="tok-num">1995</span>, <span class="tok-num">2025</span>))
+recent.tmean()
+
+change = recent.copy()
+change.subtract(early)
+
+nc.<span class="tok-fn">panel_plot</span>(
+    {<span class="tok-str">"Mean SST, 1995-2024"</span>: recent, <span class="tok-str">"Change since 1850-1879"</span>: change},
+    ncol=<span class="tok-num">2</span>,
+    shared_colourbar=<span class="tok-kw">False</span>,
+    colours=[<span class="tok-str">"viridis"</span>, <span class="tok-str">"RdBu_r"</span>],
+    limits=[[<span class="tok-num">0</span>, <span class="tok-num">30</span>], [<span class="tok-num">-2</span>, <span class="tok-num">2</span>]],
+    legend=[<span class="tok-str">"Sea surface temperature (°C)"</span>, <span class="tok-str">"Temperature change (°C)"</span>],
+    legend_position=<span class="tok-str">"bottom"</span>,
+)</pre>
+    </div>
+    <p><img src="assets/plots/panel_plot2.png" loading="lazy" alt="Mean sea surface temperature beside the change since 1850-1879, each with its own colour bar" style="border:1px solid var(--line); border-radius: var(--radius-md); box-shadow: var(--shadow-sm);"></p>
 
     <h2 id="internals">Plotting internals</h2>
     <p>Interactive plotting is delegated to the companion <a href="https://github.com/pmlmodelling/ncplot" target="_blank" rel="noopener">ncplot</a> package, which inspects the dataset and picks a suitable plot built on <a href="https://hvplot.holoviz.org/" target="_blank" rel="noopener">hvplot</a>. It favours rapid exploratory analysis over deep customization, but most <a href="https://hvplot.holoviz.org/user_guide/Customization.html" target="_blank" rel="noopener">hvplot customization options</a> &mdash; <code>title</code>, <code>logz</code>, <code>clim</code>, and so on &mdash; can be passed straight to <a href="api.html#plot"><code>plot()</code></a> and are forwarded automatically.</p>
