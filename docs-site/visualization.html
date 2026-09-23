@@ -62,8 +62,8 @@
     <div class="docs-toc-title">On this page</div>
     <ul>
       <li><a href="#plotting">Interactive plotting</a></li>
-      <li><a href="#pub-plot">Publication-quality plots</a></li>
-      <li><a href="#panel-plot">Panel plots</a></li>
+      <li><a href="#pub-plot">Publication-quality plots with pub_plot</a></li>
+      <li><a href="#panel-plot">Panel plots with panel_plot</a></li>
       <li><a href="#internals">Plotting internals</a></li>
     </ul>
   </aside>
@@ -131,7 +131,7 @@ ds.plot()          <span class="tok-com"># time series</span></pre>
       <div class="plot-embed__image-wrap"><a href="assets/plots/visualization_plot4.html" target="_blank" rel="noopener"><img src="assets/plots/visualization_plot4.png" loading="lazy" alt="Global mean sea surface temperature time series since 1850"></a></div>
     </div>
 
-    <h2 id="pub-plot">Publication-quality plots</h2>
+    <h2 id="pub-plot">Publication-quality plots with pub_plot</h2>
     <p><a href="api.html#pub_plot"><code>pub_plot</code></a> (introduced in v0.9.2) produces a static plot suitable for a paper or presentation, currently restricted to regular lon/lat grids with a limited set of customizations (such as the colour scale):</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
@@ -140,7 +140,7 @@ ds.pub_plot()</pre>
     </div>
     <p><img src="assets/plots/pub_plot1.png" alt="Publication-quality plot of mean sea surface temperature produced by pub_plot()" style="border:1px solid var(--line); border-radius: var(--radius-md); box-shadow: var(--shadow-sm);"></p>
 
-    <h2 id="panel-plot">Panel plots</h2>
+    <h2 id="panel-plot">Panel plots with panel_plot</h2>
     <p><a href="api.html#panel_plot"><code>nc.panel_plot</code></a> draws a grid of <code>pub_plot</code>-style maps from a dictionary of datasets, with the keys as the panel titles. Every panel shares one colour scale and one colour bar by default, worked out from the data of all of them, so they can be compared directly. The examples below use monthly <a href="https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc.html" target="_blank" rel="noopener">COBE-SST2</a> sea surface temperature, opened straight from a THREDDS server.</p>
     <p>A seasonal climatology, two panels per row:</p>
     <div class="code-block">
