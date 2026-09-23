@@ -810,6 +810,49 @@ tbody tr.hidden-row { display: none; }
   height: auto;
 }
 
+/* option gallery: one card per plotting option, each showing the call and
+   the figure it produces */
+.option-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.4rem;
+  margin: 1.6em 0;
+}
+.option-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+}
+.docs-content .option-card h3 {
+  margin: 0;
+  padding: 0.75em 1em;
+  font-size: 0.95rem;
+  border-bottom: 1px solid var(--line);
+}
+.option-card .code-block {
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.option-card .code-block pre {
+  padding: 0.85em 1em;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+.option-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-top: 1px solid var(--line);
+}
+@media (max-width: 980px) {
+  .option-gallery { grid-template-columns: 1fr; }
+}
+
 /* PDF cheat sheet: displayed inline via iframe, sized to an A4-landscape
    aspect ratio so it reads at a sensible size instead of a tall default
    iframe box. Falls back to a direct-download link for browsers (mostly

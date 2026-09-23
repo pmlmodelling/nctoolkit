@@ -140,6 +140,99 @@ ds.pub_plot()</pre>
     </div>
     <p><img src="assets/plots/pub_plot1.png" alt="Publication-quality plot of mean sea surface temperature produced by pub_plot()" style="border:1px solid var(--line); border-radius: var(--radius-md); box-shadow: var(--shadow-sm);"></p>
 
+    <details class="param-details">
+      <summary>All pub_plot options</summary>
+      <ul class="param-list">
+        <li><code class="param-name">var</code><p>Variable to plot. Only needed when the dataset has more than one.</p></li>
+        <li><code class="param-name">extent</code><p><code>[lon_min, lon_max, lat_min, lat_max]</code> in degrees, to plot part of the map.</p></li>
+        <li><code class="param-name">title</code><p>Plot title.</p></li>
+        <li><code class="param-name">legend</code><p>Colour bar label. Built from the variable's long name and units by default.</p></li>
+        <li><code class="param-name">size</code><p><code>[width, height]</code> of the figure in inches.</p></li>
+        <li><code class="param-name">land</code><p>Colour to fill the land with, e.g. <code>"grey"</code>.</p></li>
+        <li><code class="param-name">colours</code><p>Colour map, e.g. <code>"viridis"</code>. Add <code>"_r"</code> to reverse it.</p></li>
+        <li><code class="param-name">norm</code><p><code>"log"</code> for a logarithmic colour scale, or a matplotlib normalisation.</p></li>
+        <li><code class="param-name">limits</code><p><code>[min, max]</code> of the colour scale. Each end can be a number, <code>None</code> or a percentile such as <code>"2%"</code>.</p></li>
+        <li><code class="param-name">projection</code><p>A cartopy projection, e.g. <code>ccrs.Mollweide()</code>.</p></li>
+        <li><code class="param-name">coast</code><p>Coastline detail: <code>"auto"</code>, or GSHHS coastlines from <code>"coarse"</code> to <code>"full"</code>. <code>None</code> draws none.</p></li>
+        <li><code class="param-name">scale</code><p>Resolution of the land fill: <code>"low"</code>, <code>"medium"</code> or <code>"high"</code>.</p></li>
+        <li><code class="param-name">grid</code><p>Whether to draw the dashed grid lines. Default <code>True</code>.</p></li>
+        <li><code class="param-name">grid_colour</code><p>Colour of the grid lines.</p></li>
+        <li><code class="param-name">grid_labels</code><p>Whether to show the lon/lat labels around the map. Default <code>True</code>.</p></li>
+        <li><code class="param-name">legend_position</code><p><code>"right"</code> or <code>"bottom"</code> for the colour bar, or <code>None</code> to drop it.</p></li>
+        <li><code class="param-name">robust</code><p>Set the colour limits to the 2nd and 98th percentiles, so outliers don't wash out the scale.</p></li>
+        <li><code class="param-name">breaks</code><p>Tick positions on the colour bar.</p></li>
+        <li><code class="param-name">font</code><p>Font size for the title and colour bar label.</p></li>
+        <li><code class="param-name">out</code><p>File to save the figure to, e.g. <code>"sst.png"</code>.</p></li>
+        <li><code class="param-name">dpi</code><p>Resolution of the saved file, e.g. <code>300</code> for print.</p></li>
+      </ul>
+      <p>See the <a href="api.html#pub_plot">API reference</a> for the formats, defaults and remaining options.</p>
+    </details>
+
+    <p>Each example below changes one of those options. Everything else is left at its default, and <code>projection</code> needs <code>import cartopy.crs as ccrs</code>.</p>
+
+    <div class="option-gallery">
+      <div class="option-card">
+        <h3>Adding a title</h3>
+        <div class="code-block"><pre>ds.<span class="tok-fn">pub_plot</span>(title=<span class="tok-str">"Mean sea surface temperature"</span>)</pre></div>
+        <img src="assets/plots/pub_plot_title.png" loading="lazy" alt="Sea surface temperature map with a title above it">
+      </div>
+      <div class="option-card">
+        <h3>Labelling the colour bar</h3>
+        <div class="code-block"><pre>ds.<span class="tok-fn">pub_plot</span>(legend=<span class="tok-str">"Sea surface temperature (°C)"</span>)</pre></div>
+        <img src="assets/plots/pub_plot_legend.png" loading="lazy" alt="Sea surface temperature map with a custom colour bar label">
+      </div>
+      <div class="option-card">
+        <h3>Changing the colour map</h3>
+        <div class="code-block"><pre>ds.<span class="tok-fn">pub_plot</span>(colours=<span class="tok-str">"viridis"</span>)</pre></div>
+        <img src="assets/plots/pub_plot_colours.png" loading="lazy" alt="Sea surface temperature map drawn with the viridis colour map">
+      </div>
+      <div class="option-card">
+        <h3>Setting the colour limits</h3>
+        <div class="code-block"><pre>ds.<span class="tok-fn">pub_plot</span>(limits=[<span class="tok-num">-20</span>, <span class="tok-num">20</span>])</pre></div>
+        <img src="assets/plots/pub_plot_limits.png" loading="lazy" alt="Sea surface temperature map with the colour scale fixed between -20 and 20">
+      </div>
+      <div class="option-card">
+        <h3>Ignoring outliers</h3>
+        <div class="code-block"><pre>ds.<span class="tok-fn">pub_plot</span>(robust=<span class="tok-kw">True</span>)</pre></div>
+        <img src="assets/plots/pub_plot_robust.png" loading="lazy" alt="Sea surface temperature map with the colour scale set to the 2nd and 98th percentiles">
+      </div>
+      <div class="option-card">
+        <h3>Choosing the colour bar ticks</h3>
+        <div class="code-block"><pre>ds.<span class="tok-fn">pub_plot</span>(breaks=[<span class="tok-num">-30</span>, <span class="tok-num">-15</span>, <span class="tok-num">0</span>, <span class="tok-num">15</span>, <span class="tok-num">30</span>])</pre></div>
+        <img src="assets/plots/pub_plot_breaks.png" loading="lazy" alt="Sea surface temperature map with colour bar ticks at fixed values">
+      </div>
+      <div class="option-card">
+        <h3>Moving the colour bar</h3>
+        <div class="code-block"><pre>ds.<span class="tok-fn">pub_plot</span>(legend_position=<span class="tok-str">"bottom"</span>)</pre></div>
+        <img src="assets/plots/pub_plot_legend_position.png" loading="lazy" alt="Sea surface temperature map with the colour bar underneath">
+      </div>
+      <div class="option-card">
+        <h3>Filling in the land</h3>
+        <div class="code-block"><pre>ds.<span class="tok-fn">pub_plot</span>(land=<span class="tok-str">"grey"</span>)</pre></div>
+        <img src="assets/plots/pub_plot_land.png" loading="lazy" alt="Sea surface temperature map with grey land">
+      </div>
+      <div class="option-card">
+        <h3>Removing the grid lines</h3>
+        <div class="code-block"><pre>ds.<span class="tok-fn">pub_plot</span>(grid=<span class="tok-kw">False</span>)</pre></div>
+        <img src="assets/plots/pub_plot_grid.png" loading="lazy" alt="Sea surface temperature map without grid lines">
+      </div>
+      <div class="option-card">
+        <h3>Hiding the coordinate labels</h3>
+        <div class="code-block"><pre>ds.<span class="tok-fn">pub_plot</span>(grid_labels=<span class="tok-kw">False</span>)</pre></div>
+        <img src="assets/plots/pub_plot_grid_labels.png" loading="lazy" alt="Sea surface temperature map without lon/lat labels">
+      </div>
+      <div class="option-card">
+        <h3>Changing the projection</h3>
+        <div class="code-block"><pre>ds.<span class="tok-fn">pub_plot</span>(projection=ccrs.<span class="tok-fn">Mollweide</span>())</pre></div>
+        <img src="assets/plots/pub_plot_projection.png" loading="lazy" alt="Sea surface temperature drawn on a Mollweide projection">
+      </div>
+      <div class="option-card">
+        <h3>Zooming in on a region</h3>
+        <div class="code-block"><pre>ds.<span class="tok-fn">pub_plot</span>(extent=[<span class="tok-num">-80</span>, <span class="tok-num">20</span>, <span class="tok-num">20</span>, <span class="tok-num">70</span>])</pre></div>
+        <img src="assets/plots/pub_plot_extent.png" loading="lazy" alt="Sea surface temperature over the North Atlantic only">
+      </div>
+    </div>
+
     <h2 id="panel-plot">Panel plots with panel_plot</h2>
     <p><a href="api.html#panel_plot"><code>nc.panel_plot</code></a> draws a grid of <code>pub_plot</code>-style maps from a dictionary of datasets, with the keys as the panel titles. Every panel shares one colour scale and one colour bar by default, worked out from the data of all of them, so they can be compared directly. The examples below use monthly <a href="https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc.html" target="_blank" rel="noopener">COBE-SST2</a> sea surface temperature, opened straight from a THREDDS server.</p>
     <p>A seasonal climatology, two panels per row:</p>
