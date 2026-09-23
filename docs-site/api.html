@@ -23,6 +23,7 @@
       <a href="installing.html" data-page="installing.html">Install</a>
       <a href="quickstart.html" data-page="quickstart.html">Quickstart</a>
       <a href="guide.html" data-page="guide.html">Guide</a>
+      <a href="gallery.html" data-page="gallery.html">Gallery</a>
       <a href="api.html" data-page="api.html">API</a>
       <a href="data-formats.html" data-page="data-formats.html">Data supported</a>
       <a href="qa.html" data-page="qa.html">Q&amp;A</a>
@@ -1072,6 +1073,26 @@
             <li><code class="param-name">recycle</code><p>Set to True if you want to re-use the remapping weights when you are regridding another dataset.</p></li>
             <li><code class="param-name">one_grid</code><p>Set to True if all files in multi-file dataset have the same grid, to speed things up.</p></li>
             <li><code class="param-name">kwargs</code><p>Instead of supplying a grid using 'grid', you can supply `lon` and `lat`. These must be equally lengthed lists or arrays that will be used to generate the grid. If you want to regrid to a single location you can just supply a float to lon and lat.</p></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="api-card" id="to_transect">
+      <div class="api-card__head"><div class="sig">ds.to_transect(start=None, end=None, nsteps=None, method='bil')</div></div>
+      <div class="api-card__body">
+        <p>Extract a straight-line transect between two points. Generates <code>nsteps</code> points along a straight line (in lon/lat space) between <code>start</code> and <code>end</code>, then regrids the dataset onto those points. Worked example: <a href="gallery-transects.html">Working with transects</a>.</p>
+        <details class="param-details">
+          <summary>Parameters</summary>
+          <p>Required:</p>
+          <ul class="param-list">
+            <li><code class="param-name">start</code><span class="param-tag">required</span><p><code>[lon, lat]</code> of the start of the transect</p></li>
+            <li><code class="param-name">end</code><span class="param-tag">required</span><p><code>[lon, lat]</code> of the end of the transect</p></li>
+            <li><code class="param-name">nsteps</code><span class="param-tag">required</span><p>Number of points in the transect, including start and end. Must be at least 2.</p></li>
+          </ul>
+          <p>Optional:</p>
+          <ul class="param-list">
+            <li><code class="param-name">method</code><p>Remapping method, passed to <a href="#regrid"><code>regrid</code></a>. Defaults to <code>"bil"</code>. Methods available are: bilinear - <code>"bil"</code>; nearest neighbour - <code>"nn"</code>; bicubic interpolation - <code>"bic"</code>; distance-weighted average - <code>"dis"</code>; first order conservative remapping - <code>"con"</code>; second order conservative remapping - <code>"con2"</code>; large area fraction remapping - <code>"laf"</code></p></li>
           </ul>
         </details>
       </div>
@@ -2245,6 +2266,7 @@
         <li><a href="installing.html">Installing</a></li>
         <li><a href="quickstart.html">Quickstart</a></li>
         <li><a href="guide.html">User Guide</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
         <li><a href="api.html">API reference</a></li>
       </ul>
     </div>

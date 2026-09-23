@@ -31,6 +31,9 @@ globals.html                       /
 backends.html                    /   (also linked from the header's Data
                                 /      dropdown - it predates the User Guide)
 troubleshoot.html             /
+gallery.html               Card-grid index for the Gallery - see "Gallery" below
+gallery-transects.html        \  Gallery example pages, one per
+gallery-ocean-temperature.html /   worked example
 api.html                     |
 data-formats.html            |
 qa.html                      |
@@ -58,6 +61,36 @@ through the card grid instead (and each subpage's breadcrumb reads
 `Home / User Guide / <page>`, linking back to `guide.html`). Only "Data" and
 "About" still use the `nav-dropdown` component (2-3 items each, where a
 dropdown still works fine).
+
+## Gallery
+
+`gallery.html` is a card-grid index, reusing the `.guide-grid`/`.guide-card`
+components `guide.html` uses, with one subpage per worked example. Where the
+User Guide covers one topic at a time and mirrors `docs/source/*.rst` 1:1, a
+gallery page is a single end-to-end example that cuts across topics: a real
+question, the code that answers it, and the figures it produces. Gallery pages
+have no upstream Sphinx equivalent — they are this site's own thing.
+
+To add an example:
+
+1. Write a generator script in `website-scripts/` that saves its figures into
+   `assets/plots/`, following the conventions of the existing ones
+   (`transect_example.py` is the closest model: it inserts the repo at
+   `sys.path[0]` so it documents the working copy rather than whatever
+   nctoolkit is installed, uses the `Agg` backend, and reads a local download
+   of the dataset the page opens over THREDDS). Note that `website-scripts/`
+   is gitignored, so these scripts stay local — they hardcode an absolute path
+   to a large local download. Only the PNGs they produce are committed.
+2. Add the subpage, copying an existing gallery page's shell (`<head>`, header,
+   `page-hero`, `docs-layout`, footer) verbatim.
+3. Add a `.guide-card` to `gallery.html`'s `.guide-grid`, with a
+   Feather-icon-style inline SVG matching the others.
+
+Gallery figures are static matplotlib output, so they use the plain bordered
+`<img>` pattern (`border:1px solid var(--line)` + `--radius-md` + `--shadow-sm`)
+that `visualization.html` uses for its `pub_plot` figures — **not** the
+`.plot-embed` wrapper, which exists specifically for the interactive Bokeh
+exports described below and carries an "Open interactive" link.
 
 ## Interactive plots
 
@@ -243,3 +276,5 @@ Rough mapping from Sphinx source to site pages:
 | `info.rst`, `citation.rst`, `contributing.rst`                       | `about.html`              |
 | `news.rst`                                                           | `news.html`                |
 | (n/a — this site's own thing)                                       | `guide.html`                |
+| (n/a — this site's own thing)                                       | `gallery.html`, `gallery-*.html` |
+| `examples.ipynb`                                                     | `gallery-ocean-temperature.html` |

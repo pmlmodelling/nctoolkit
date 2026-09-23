@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Working with transects &mdash; NCToolkit</title>
+<meta name="description" content="Extract a straight-line transect through the Atlantic with to_transect, then map it and chart it against latitude and time.">
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container nav">
+    <a class="brand" href="index.html">
+      <img src="assets/img/nctoolkit_wordmark.svg" alt="NCToolkit">
+      <span id="nctoolkit-docs-version" class="brand-version">v&hellip;</span>
+    </a>
+    <nav class="nav-links" id="nav-links">
+      <a href="installing.html" data-page="installing.html">Install</a>
+      <a href="quickstart.html" data-page="quickstart.html">Quickstart</a>
+      <a href="guide.html" data-page="guide.html">Guide</a>
+      <a href="gallery.html" data-page="gallery.html">Gallery</a>
+      <a href="api.html" data-page="api.html">API</a>
+      <a href="data-formats.html" data-page="data-formats.html">Data supported</a>
+      <a href="qa.html" data-page="qa.html">Q&amp;A</a>
+      <a href="cheatsheet.html" data-page="cheatsheet.html">Cheat Sheet</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle" aria-expanded="false">About
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="nav-dropdown-menu">
+          <a href="about.html" data-page="about.html">About &amp; citation<small>Project background, how to cite</small></a>
+          <a href="version-history.html" data-page="version-history.html">Version history<small>Archived documentation snapshots</small></a>
+        </div>
+      </div>
+    </nav>
+    <div class="nav-actions">
+      <a class="icon-btn" href="https://github.com/pmlmodelling/nctoolkit" target="_blank" rel="noopener" aria-label="NCToolkit on GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 .5C5.73.5.5 5.74.5 12.09c0 5.08 3.29 9.38 7.86 10.9.57.1.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.56-.29-5.26-1.28-5.26-5.71 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.44-2.7 5.42-5.28 5.7.42.36.78 1.08.78 2.17 0 1.57-.01 2.83-.01 3.22 0 .3.21.66.8.55A10.6 10.6 0 0 0 23.5 12.1C23.5 5.74 18.27.5 12 .5Z"/></svg>
+      </a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="page-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="index.html">Home</a> / <a href="gallery.html">Gallery</a> / Working with transects</div>
+    <h1>Working with transects</h1>
+    <p class="lead">Cut a straight south&ndash;north line down the middle of the Atlantic, and watch sea surface temperature change along it through the year.</p>
+  </div>
+</div>
+
+<div class="container docs-layout">
+  <aside class="docs-toc">
+    <div class="docs-toc-title">On this page</div>
+    <ul>
+      <li><a href="#data">The data</a></li>
+      <li><a href="#transect">Extracting the transect</a></li>
+      <li><a href="#map">Where the transect runs</a></li>
+      <li><a href="#heatmap">Latitude against time</a></li>
+    </ul>
+  </aside>
+
+  <div class="docs-content">
+
+    <div class="callout warn">
+      <div class="callout-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Development version only
+      </div>
+      <p><code>to_transect()</code> is not yet in a conda release. Install the development version from GitHub to try it:</p>
+      <div class="code-block">
+        <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">bash</span></div>
+        <pre>pip install git+https://github.com/pmlmodelling/nctoolkit.git</pre>
+      </div>
+    </div>
+
+    <h2 id="data">The data</h2>
+    <p>This example uses monthly sea surface temperature from <a href="https://psl.noaa.gov/data/gridded/data.cobe2.html" target="_blank" rel="noopener">COBE-SST2</a>, the same dataset used throughout the <a href="visualization.html">visualization guide</a>. It is served over THREDDS, so there is nothing to download:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre><span class="tok-kw">import</span> nctoolkit <span class="tok-kw">as</span> nc
+
+ds = nc.<span class="tok-fn">open_thredds</span>(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc"</span>)
+ds.<span class="tok-fn">subset</span>(year=<span class="tok-num">2000</span>)</pre>
+    </div>
+    <p>That leaves twelve monthly time steps on a regular 1&deg; lon/lat grid &mdash; one global field per month of 2000.</p>
+
+    <h2 id="transect">Extracting the transect</h2>
+    <p><a href="api.html#to_transect"><code>to_transect()</code></a> takes a start point, an end point and a number of steps. It spaces that many points evenly along the straight line between the two, then regrids the dataset onto them:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>ds.<span class="tok-fn">to_transect</span>(start=[<span class="tok-num">-30</span>, <span class="tok-num">0</span>], end=[<span class="tok-num">-30</span>, <span class="tok-num">65</span>], nsteps=<span class="tok-num">66</span>)</pre>
+    </div>
+    <p>Both points sit on the 30&deg;W meridian, so this is a straight south&ndash;north line from the equator up to the Denmark Strait, sampled every degree of latitude. That line stays in open water the whole way &mdash; a useful property to check before you commit to a route, since a transect that clips land or sea ice comes back with gaps.</p>
+    <p>The dataset now holds those 66 points for each of the twelve months, in place of the global fields it started with.</p>
+
+    <div class="callout">
+      <div class="callout-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> A transect is a regridding operation</div>
+      <p>Values along the line are interpolated from the source grid, bilinearly by default. Pass <code>method</code> to change that &mdash; <code>"nn"</code> for nearest neighbour, <code>"con"</code> for first-order conservative, and so on, exactly as in <a href="api.html#regrid"><code>regrid()</code></a>.</p>
+      <p>Asking for steps much finer than the source grid will not add detail that was never there: here the data is on a 1&deg; grid, so <code>nsteps=66</code> over 65&deg; of latitude samples it at roughly its native resolution.</p>
+    </div>
+
+    <h2 id="map">Where the transect runs</h2>
+    <p>Before looking at the numbers, it is worth seeing where the line falls &mdash; here it is drawn over the annual mean sea surface temperature for 2000:</p>
+    <p><img src="assets/plots/transect_map.png" alt="Annual mean sea surface temperature for 2000 across the North Atlantic, with the 30 degrees west transect drawn from the equator to 65 degrees north" style="border:1px solid var(--line); border-radius: var(--radius-md); box-shadow: var(--shadow-sm);"></p>
+    <p>The line runs dead straight because the map above is drawn on a plate carr&eacute;e projection, where a line of constant longitude is exactly vertical.</p>
+
+    <h2 id="heatmap">Latitude against time</h2>
+    <p>Because both endpoints share a longitude, the transect comes back as a regular grid one cell wide with a genuine latitude dimension &mdash; so it pivots straight into a latitude-by-month table:</p>
+    <p><img src="assets/plots/transect_heatmap.png" alt="Heatmap of sea surface temperature along the 30 degrees west transect, latitude against month of 2000" style="border:1px solid var(--line); border-radius: var(--radius-md); box-shadow: var(--shadow-sm);"></p>
+
+    <details class="param-details">
+      <summary>Show the plotting code</summary>
+      <div class="code-block">
+        <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+        <pre><span class="tok-kw">import</span> matplotlib.pyplot <span class="tok-kw">as</span> plt
+
+df = ds.<span class="tok-fn">to_dataframe</span>().<span class="tok-fn">reset_index</span>()
+grid = df.<span class="tok-fn">pivot_table</span>(index=<span class="tok-str">"lat"</span>, columns=<span class="tok-str">"time"</span>, values=<span class="tok-str">"sst"</span>)
+
+months = [<span class="tok-str">"Jan"</span>, <span class="tok-str">"Feb"</span>, <span class="tok-str">"Mar"</span>, <span class="tok-str">"Apr"</span>, <span class="tok-str">"May"</span>, <span class="tok-str">"Jun"</span>,
+          <span class="tok-str">"Jul"</span>, <span class="tok-str">"Aug"</span>, <span class="tok-str">"Sep"</span>, <span class="tok-str">"Oct"</span>, <span class="tok-str">"Nov"</span>, <span class="tok-str">"Dec"</span>]
+
+fig, ax = plt.<span class="tok-fn">subplots</span>(figsize=(<span class="tok-num">8</span>, <span class="tok-num">5</span>))
+mesh = ax.<span class="tok-fn">pcolormesh</span>(<span class="tok-fn">range</span>(<span class="tok-fn">len</span>(grid.columns)), grid.index, grid.values,
+                     cmap=<span class="tok-str">"RdYlBu_r"</span>, vmin=<span class="tok-num">0</span>, vmax=<span class="tok-num">30</span>, shading=<span class="tok-str">"nearest"</span>)
+
+ax.<span class="tok-fn">set_xticks</span>(<span class="tok-fn">range</span>(<span class="tok-fn">len</span>(grid.columns)))
+ax.<span class="tok-fn">set_xticklabels</span>(months)
+ax.<span class="tok-fn">set_ylabel</span>(<span class="tok-str">"Latitude (°N)"</span>)
+ax.<span class="tok-fn">set_xlabel</span>(<span class="tok-str">"Month of 2000"</span>)
+ax.<span class="tok-fn">set_title</span>(<span class="tok-str">"Sea surface temperature along 30°W"</span>, fontsize=<span class="tok-num">12</span>)
+
+bar = fig.<span class="tok-fn">colorbar</span>(mesh, ax=ax, pad=<span class="tok-num">0.02</span>)
+bar.<span class="tok-fn">set_label</span>(<span class="tok-str">"Sea surface temperature (°C)"</span>)
+
+fig.<span class="tok-fn">savefig</span>(<span class="tok-str">"transect_heatmap.png"</span>, dpi=<span class="tok-num">110</span>, bbox_inches=<span class="tok-str">"tight"</span>)</pre>
+      </div>
+    </details>
+    <p>The map and the heatmap share a colour map and a 0&ndash;30&nbsp;&deg;C scale, so the two can be read against one another. The tropical end of the line barely moves across the year, while north of about 40&deg;N the seasonal swing is large &mdash; the warm surface water reaching furthest north in late summer, and retreating again by winter.</p>
+
+    <div class="callout">
+      <div class="callout-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> Diagonal transects</div>
+      <p>A transect between two points that differ in <em>both</em> longitude and latitude comes back on an unstructured grid instead &mdash; a single run of points rather than a lon/lat grid. It still exports cleanly with <a href="api.html#to_dataframe"><code>to_dataframe()</code></a>, with <code>lon</code> and <code>lat</code> as columns in transect order, but you would plot it against distance or point number rather than pivoting on latitude.</p>
+    </div>
+
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container footer-pml">
+    <a href="https://pml.ac.uk/" target="_blank" rel="noopener"><img src="assets/img/pml_logo.jpg" alt="Plymouth Marine Laboratory"></a>
+    <span>Developed by the <a href="https://pml.ac.uk/sciencetopics/environmental-intelligence/" target="_blank" rel="noopener">Environmental Intelligence group</a> at <a href="https://pml.ac.uk/" target="_blank" rel="noopener">Plymouth Marine Laboratory</a></span>
+  </div>
+  <div class="container footer-top">
+    <div class="footer-brand">
+      <img src="assets/img/nctoolkit_wordmark.svg" alt="NCToolkit">
+      <p>A comprehensive Python package for netCDF analysis and post-processing. Subset, compute, and visualize &mdash; in a few lines of code.</p>
+      <div class="footer-social">
+        <a href="https://github.com/pmlmodelling/nctoolkit" target="_blank" rel="noopener" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 .5C5.73.5.5 5.74.5 12.09c0 5.08 3.29 9.38 7.86 10.9.57.1.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.56-.29-5.26-1.28-5.26-5.71 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.44-2.7 5.42-5.28 5.7.42.36.78 1.08.78 2.17 0 1.57-.01 2.83-.01 3.22 0 .3.21.66.8.55A10.6 10.6 0 0 0 23.5 12.1C23.5 5.74 18.27.5 12 .5Z"/></svg>
+        </a>
+        <a href="mailto:rwi@pml.ac.uk" aria-label="Email">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Documentation</h4>
+      <ul>
+        <li><a href="installing.html">Installing</a></li>
+        <li><a href="quickstart.html">Quickstart</a></li>
+        <li><a href="guide.html">User Guide</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="api.html">API reference</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Reference</h4>
+      <ul>
+        <li><a href="api.html">API reference</a></li>
+        <li><a href="data-formats.html">Supported data</a></li>
+        <li><a href="backends.html">CDO &amp; NCO backends</a></li>
+        <li><a href="qa.html">Q&amp;A</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Project</h4>
+      <ul>
+        <li><a href="about.html">About &amp; citation</a></li>
+        <li><a href="news.html">Changelog</a></li>
+        <li><a href="version-history.html">Version history</a></li>
+        <li><a href="https://github.com/pmlmodelling/nctoolkit" target="_blank" rel="noopener">GitHub repository</a></li>
+        <li><a href="https://github.com/pmlmodelling/nctoolkit/issues" target="_blank" rel="noopener">Report an issue</a></li>
+        <li><a href="https://anaconda.org/conda-forge/nctoolkit" target="_blank" rel="noopener">conda-forge package</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>&copy; 2026 <a href="https://pml.ac.uk/" target="_blank" rel="noopener">Plymouth Marine Laboratory</a>. Released under the GNU GPLv3 license.</span>
+    <span>Built by ocean and climate modellers, for netCDF users everywhere.</span>
+  </div>
+</footer>
+
+<button class="back-to-top" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+</button>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>

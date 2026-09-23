@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Subsetting Data — NCToolkit User Guide</title>
-<meta name="description" content="Selecting variables, years, months, seasons, timesteps and geographic regions from a dataset with NCToolkit's subset method.">
+<title>Gallery &mdash; NCToolkit</title>
+<meta name="description" content="Worked NCToolkit examples, end to end: the code, the data, and the figures it produces.">
 <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -49,83 +49,49 @@
   </div>
 </header>
 
-
 <div class="page-hero">
   <div class="container">
-    <div class="breadcrumb"><a href="index.html">Home</a> / <a href="guide.html">User Guide</a> / Subsetting data</div>
-    <h1>Subsetting data</h1>
+    <div class="breadcrumb"><a href="index.html">Home</a> / Gallery</div>
+    <h1>Gallery</h1>
+    <p class="lead">Worked examples, start to finish &mdash; a real question, the NCToolkit code that answers it, and the figures that come out. Where the User Guide covers one topic at a time, these cut across them.</p>
   </div>
 </div>
 
-<div class="container docs-layout">
-  <aside class="docs-toc">
-    <div class="docs-toc-title">On this page</div>
-    <ul>
-      <li><a href="#variables">Variables</a></li>
-      <li><a href="#years">Years</a></li>
-      <li><a href="#months">Months</a></li>
-      <li><a href="#seasons">Seasons</a></li>
-      <li><a href="#timesteps">Timesteps</a></li>
-      <li><a href="#geographic">Geographic subsetting</a></li>
-    </ul>
-  </aside>
-
-  <div class="docs-content">
-
-    <p>The main method for selecting parts of a dataset is <a href="api.html#subset"><code>subset</code></a>. Its arguments allow partial matches &mdash; <code>year</code> works the same as <code>years</code>.</p>
-
-    <h2 id="variables">Variables</h2>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>ds.subset(variables=[<span class="tok-str">"var1"</span>, <span class="tok-str">"var2"</span>])
-ds.subset(variables=<span class="tok-str">"var1"</span>)</pre>
-    </div>
-
-    <h2 id="years">Years</h2>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>ds.subset(years=[<span class="tok-num">2000</span>, <span class="tok-num">2001</span>])
-ds.subset(years=<span class="tok-num">2000</span>)               <span class="tok-com"># a single year works too</span>
-ds.subset(years=range(<span class="tok-num">2000</span>, <span class="tok-num">2010</span>))</pre>
-    </div>
-    <p><a href="api.html#subset"><code>subset</code></a> allows partial matches for its arguments, so the following is equivalent to selecting <code>years=2000</code>:</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>ds.subset(year=<span class="tok-num">2000</span>)</pre>
-    </div>
-
-    <h2 id="months">Months</h2>
-    <p>Months can be selected the same way as years. The following all do the same thing:</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>ds.subset(months=[<span class="tok-num">1</span>,<span class="tok-num">2</span>,<span class="tok-num">3</span>,<span class="tok-num">4</span>])
-ds.subset(months=range(<span class="tok-num">1</span>,<span class="tok-num">5</span>))
-ds.subset(mon=[<span class="tok-num">1</span>,<span class="tok-num">2</span>,<span class="tok-num">3</span>,<span class="tok-num">4</span>])   <span class="tok-com"># partial match on "months"</span></pre>
-    </div>
-
-    <h2 id="seasons">Seasons</h2>
-    <p>To select winter:</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>ds.subset(season=<span class="tok-str">"DJF"</span>)</pre>
-    </div>
-
-    <h2 id="timesteps">Timesteps</h2>
-    <p>To select the first two timesteps in a dataset, either of the following work:</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>ds.subset(time=[<span class="tok-num">0</span>,<span class="tok-num">1</span>])
-ds.subset(time=range(<span class="tok-num">0</span>,<span class="tok-num">2</span>))</pre>
-    </div>
-
-    <h2 id="geographic">Geographic subsetting</h2>
-    <p>Crop to a longitude/latitude box by giving the minimum and maximum of each:</p>
-    <div class="code-block">
-      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>ds.subset(lon=[-80, 90], lat=[50, 80])</pre>
+<section class="section section-tight">
+  <div class="container">
+    <div class="guide-grid">
+      <a class="guide-card" href="gallery-transects.html">
+        <div class="guide-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="19" r="2.6"/><circle cx="18" cy="5" r="2.6"/><line x1="7.8" y1="17.1" x2="16.2" y2="6.9"/></svg></div>
+        <h3>Working with transects</h3>
+        <p>Cut a straight south&ndash;north line through the Atlantic with to_transect, map it, and chart how it changes through the year.</p>
+        <span class="guide-card__go">Read more
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </a>
+      <a class="guide-card" href="gallery-ocean-temperature.html">
+        <div class="guide-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg></div>
+        <h3>Tracking ocean temperatures</h3>
+        <p>Reduce 170 years of global sea surface temperature to one clear signal, then map where the warming actually happened.</p>
+        <span class="guide-card__go">Read more
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </a>
     </div>
   </div>
-</div>
+</section>
+
+<section class="section section-tight">
+  <div class="container">
+    <div class="cta-banner">
+      <h2>Looking for something else?</h2>
+      <p>The User Guide works through NCToolkit one topic at a time, and the API reference documents every method in full.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="guide.html">Read the User Guide</a>
+        <a class="btn btn-ghost" href="api.html">Browse the API reference</a>
+      </div>
+    </div>
+  </div>
+</section>
 
 <footer class="site-footer">
   <div class="container footer-pml">
