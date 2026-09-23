@@ -1985,6 +1985,8 @@ class DataSet(object):
 
     from nctoolkit.to_nc import to_nc
 
+    from nctoolkit.transect import to_transect
+
     from nctoolkit.toxarray import to_xarray
     from nctoolkit.toxarray import to_dataframe
 
