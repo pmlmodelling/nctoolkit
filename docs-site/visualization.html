@@ -161,11 +161,11 @@ nc.<span class="tok-fn">panel_plot</span>(panels, ncol=<span class="tok-num">2</
     <p>Panels do not have to share a scale. With <code>shared_colourbar=False</code> each panel gets its own colour bar, and the plotting options can be given as a list with one value per panel &mdash; useful when a map of values sits beside a map of differences:</p>
     <div class="code-block">
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
-      <pre>early = ds.copy()
+      <pre>early = nc.<span class="tok-fn">open_thredds</span>(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc"</span>)
 early.subset(years=<span class="tok-fn">range</span>(<span class="tok-num">1850</span>, <span class="tok-num">1880</span>))
 early.tmean()
 
-recent = ds.copy()
+recent = nc.<span class="tok-fn">open_thredds</span>(<span class="tok-str">"https://psl.noaa.gov/thredds/dodsC/Datasets/COBE2/sst.mon.mean.nc"</span>)
 recent.subset(years=<span class="tok-fn">range</span>(<span class="tok-num">1995</span>, <span class="tok-num">2025</span>))
 recent.tmean()
 
