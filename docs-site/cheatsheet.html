@@ -79,6 +79,583 @@
   </div>
 </section>
 
+<!-- HOWTO_START: one-line examples, each checked against the test data in data/ -->
+<div class="container docs-layout">
+  <aside class="docs-toc">
+    <div class="docs-toc-title">How to</div>
+    <ul>
+      <li><a href="#howto-opening">Opening data</a></li>
+      <li><a href="#howto-attributes">Checking what is in a dataset</a></li>
+      <li><a href="#howto-subsetting">Subsetting</a></li>
+      <li><a href="#howto-temporal">Statistics over time</a></li>
+      <li><a href="#howto-spatial">Statistics over space</a></li>
+      <li><a href="#howto-vertical">Depth</a></li>
+      <li><a href="#howto-regridding">Regridding &amp; interpolation</a></li>
+      <li><a href="#howto-arithmetic">Arithmetic &amp; new variables</a></li>
+      <li><a href="#howto-editing">Editing variables &amp; metadata</a></li>
+      <li><a href="#howto-ensembles">Ensembles &amp; merging</a></li>
+      <li><a href="#howto-plotting">Plotting</a></li>
+      <li><a href="#howto-exporting">Exporting</a></li>
+      <li><a href="#howto-diagnostics">Diagnostics &amp; file management</a></li>
+      <li><a href="#howto-settings">Evaluation &amp; settings</a></li>
+    </ul>
+  </aside>
+
+  <div class="docs-content">
+    <h2 id="how-to">How to</h2>
+    <p>Common tasks, one line of code each. Every example assumes <code>import nctoolkit as nc</code> and a dataset <code>ds</code> opened with <a href="api.html#open_data"><code>nc.open_data()</code></a>. The tag on each card links to the method's full entry in the <a href="api.html">API reference</a>.</p>
+
+    <h3 id="howto-opening">Opening data</h3>
+    <div class="option-gallery howto-gallery">
+      <div class="option-card">
+        <div class="option-card__head"><h4>Opening a file</h4><a class="option-card__api" href="api.html#open_data">open_data</a></div>
+        <div class="code-block"><pre>ds = nc.<span class="tok-fn">open_data</span>(<span class="tok-str">"foo.nc"</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Opening several files as one dataset</h4><a class="option-card__api" href="api.html#open_data">open_data</a></div>
+        <div class="code-block"><pre>ds = nc.<span class="tok-fn">open_data</span>([<span class="tok-str">"foo1.nc"</span>, <span class="tok-str">"foo2.nc"</span>])</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Opening every file that matches a pattern</h4><a class="option-card__api" href="api.html#open_data">open_data</a></div>
+        <div class="code-block"><pre>ds = nc.<span class="tok-fn">open_data</span>(<span class="tok-str">"data/*.nc"</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Opening a file on a THREDDS server</h4><a class="option-card__api" href="api.html#open_thredds">open_thredds</a></div>
+        <div class="code-block"><pre>ds = nc.<span class="tok-fn">open_thredds</span>(<span class="tok-str">"https://foo.nc"</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Downloading a file and opening it</h4><a class="option-card__api" href="api.html#open_url">open_url</a></div>
+        <div class="code-block"><pre>ds = nc.<span class="tok-fn">open_url</span>(<span class="tok-str">"https://foo.nc"</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Converting an xarray dataset</h4><a class="option-card__api" href="api.html#from_xarray">from_xarray</a></div>
+        <div class="code-block"><pre>ds = nc.<span class="tok-fn">from_xarray</span>(xr_ds)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Copying a dataset</h4><a class="option-card__api" href="api.html#copy">copy</a></div>
+        <div class="code-block"><pre>ds2 = ds.<span class="tok-fn">copy</span>()</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Opening a GeoTIFF</h4><a class="option-card__api" href="api.html#open_geotiff">open_geotiff</a></div>
+        <div class="code-block"><pre>ds = nc.<span class="tok-fn">open_geotiff</span>(<span class="tok-str">"foo.tif"</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Listing every netCDF file in a directory</h4><a class="option-card__api" href="api.html#create_ensemble">create_ensemble</a></div>
+        <div class="code-block"><pre>files = nc.<span class="tok-fn">glob</span>(<span class="tok-str">"data/foo"</span>)</pre></div>
+      </div>
+    </div>
+    <h3 id="howto-attributes">Checking what is in a dataset</h3>
+    <div class="option-gallery howto-gallery">
+      <div class="option-card">
+        <div class="option-card__head"><h4>Listing the variables</h4><a class="option-card__api" href="api.html#variables-attr">variables-attr</a></div>
+        <div class="code-block"><pre>ds.variables</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Summarising the contents</h4><a class="option-card__api" href="api.html#contents">contents</a></div>
+        <div class="code-block"><pre>ds.contents</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Listing the years</h4><a class="option-card__api" href="api.html#years">years</a></div>
+        <div class="code-block"><pre>ds.years</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Listing the time steps</h4><a class="option-card__api" href="api.html#times">times</a></div>
+        <div class="code-block"><pre>ds.times</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Listing the depth levels</h4><a class="option-card__api" href="api.html#levels">levels</a></div>
+        <div class="code-block"><pre>ds.levels</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Listing the files behind a dataset</h4><a class="option-card__api" href="api.html#current">current</a></div>
+        <div class="code-block"><pre>ds.current</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Listing the commands run so far</h4><a class="option-card__api" href="api.html#history">history</a></div>
+        <div class="code-block"><pre>ds.history</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Checking a dataset&#x27;s file size</h4><a class="option-card__api" href="api.html#size">size</a></div>
+        <div class="code-block"><pre>ds.size</pre></div>
+      </div>
+    </div>
+    <h3 id="howto-subsetting">Subsetting</h3>
+    <div class="option-gallery howto-gallery">
+      <div class="option-card">
+        <div class="option-card__head"><h4>Subsetting to a single month</h4><a class="option-card__api" href="api.html#subset">subset</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">subset</span>(month=<span class="tok-num">6</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Subsetting to a range of years</h4><a class="option-card__api" href="api.html#subset">subset</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">subset</span>(years=<span class="tok-fn">range</span>(<span class="tok-num">1980</span>, <span class="tok-num">1990</span>))</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Subsetting to a season</h4><a class="option-card__api" href="api.html#subset">subset</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">subset</span>(season=<span class="tok-str">"DJF"</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Selecting the first time step</h4><a class="option-card__api" href="api.html#subset">subset</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">subset</span>(time=<span class="tok-num">0</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Selecting variables</h4><a class="option-card__api" href="api.html#subset">subset</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">subset</span>(variables=[<span class="tok-str">"var1"</span>, <span class="tok-str">"var2"</span>])</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Removing a variable</h4><a class="option-card__api" href="api.html#drop">drop</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">drop</span>(variables=<span class="tok-str">"var1"</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Cropping to a lon/lat box</h4><a class="option-card__api" href="api.html#subset">subset</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">subset</span>(lon=[<span class="tok-num">-10</span>, <span class="tok-num">10</span>], lat=[<span class="tok-num">45</span>, <span class="tok-num">60</span>])</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Masking everything outside a box</h4><a class="option-card__api" href="api.html#mask_box">mask_box</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">mask_box</span>(lon=[<span class="tok-num">-10</span>, <span class="tok-num">10</span>], lat=[<span class="tok-num">45</span>, <span class="tok-num">60</span>])</pre></div>
+      </div>
+    </div>
+    <h3 id="howto-temporal">Statistics over time</h3>
+    <div class="option-gallery howto-gallery">
+      <div class="option-card">
+        <div class="option-card__head"><h4>Averaging over all time steps</h4><a class="option-card__api" href="api.html#tmean">tmean</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">tmean</span>()</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Calculating annual means</h4><a class="option-card__api" href="api.html#tmean">tmean</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">tmean</span>(<span class="tok-str">"year"</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Calculating a monthly climatology</h4><a class="option-card__api" href="api.html#tmean">tmean</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">tmean</span>(<span class="tok-str">"month"</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Averaging each month of each year</h4><a class="option-card__api" href="api.html#tmean">tmean</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">tmean</span>([<span class="tok-str">"year"</span>, <span class="tok-str">"month"</span>])</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Finding the maximum over time</h4><a class="option-card__api" href="api.html#tmax">tmax</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">tmax</span>()</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Finding the range over time</h4><a class="option-card__api" href="api.html#trange">trange</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">trange</span>()</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Calculating a percentile over time</h4><a class="option-card__api" href="api.html#tpercentile">tpercentile</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">tpercentile</span>(<span class="tok-num">90</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Calculating the standard deviation over time</h4><a class="option-card__api" href="api.html#tstdev">tstdev</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">tstdev</span>()</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Calculating a cumulative sum over time</h4><a class="option-card__api" href="api.html#tcumsum">tcumsum</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">tcumsum</span>()</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Calculating a rolling mean</h4><a class="option-card__api" href="api.html#rolling_mean">rolling_mean</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">rolling_mean</span>(<span class="tok-num">10</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Calculating annual anomalies</h4><a class="option-card__api" href="api.html#annual_anomaly">annual_anomaly</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">annual_anomaly</span>(baseline=[<span class="tok-num">1970</span>, <span class="tok-num">1979</span>])</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Calculating monthly anomalies</h4><a class="option-card__api" href="api.html#monthly_anomaly">monthly_anomaly</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">monthly_anomaly</span>(baseline=[<span class="tok-num">1970</span>, <span class="tok-num">1979</span>])</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Shifting times back by an hour</h4><a class="option-card__api" href="api.html#shift">shift</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">shift</span>(hours=<span class="tok-num">-1</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Finding the minimum over time</h4><a class="option-card__api" href="api.html#tmin">tmin</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">tmin</span>()</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Calculating a rolling maximum</h4><a class="option-card__api" href="api.html#rolling_max">rolling_max</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">rolling_max</span>(<span class="tok-num">10</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Correlating two variables over time</h4><a class="option-card__api" href="api.html#cor_time">cor_time</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">cor_time</span>(var1=<span class="tok-str">"var1"</span>, var2=<span class="tok-str">"var2"</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Correlating two datasets over time</h4><a class="option-card__api" href="api.html#cor_time-fn">cor_time-fn</a></div>
+        <div class="code-block"><pre>nc.<span class="tok-fn">cor_time</span>(x=ds1, y=ds2)</pre></div>
+      </div>
+    </div>
+    <h3 id="howto-spatial">Statistics over space</h3>
+    <div class="option-gallery howto-gallery">
+      <div class="option-card">
+        <div class="option-card__head"><h4>Calculating the spatial mean</h4><a class="option-card__api" href="api.html#spatial_mean">spatial_mean</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">spatial_mean</span>()</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Calculating an area-weighted spatial sum</h4><a class="option-card__api" href="api.html#spatial_sum">spatial_sum</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">spatial_sum</span>(by_area=<span class="tok-kw">True</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Finding the spatial maximum</h4><a class="option-card__api" href="api.html#spatial_max">spatial_max</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">spatial_max</span>()</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Calculating the zonal mean</h4><a class="option-card__api" href="api.html#zonal_mean">zonal_mean</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">zonal_mean</span>()</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Calculating the meridional mean</h4><a class="option-card__api" href="api.html#meridonial_mean">meridonial_mean</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">meridonial_mean</span>()</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Averaging over boxes of grid cells</h4><a class="option-card__api" href="api.html#box_mean">box_mean</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">box_mean</span>(x=<span class="tok-num">2</span>, y=<span class="tok-num">2</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Calculating grid-cell areas</h4><a class="option-card__api" href="api.html#cell_area">cell_area</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">cell_area</span>()</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Finding the spatial minimum</h4><a class="option-card__api" href="api.html#spatial_min">spatial_min</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">spatial_min</span>()</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Finding the zonal maximum</h4><a class="option-card__api" href="api.html#zonal_max">zonal_max</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">zonal_max</span>()</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Finding the meridional maximum</h4><a class="option-card__api" href="api.html#meridonial_max">meridonial_max</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">meridonial_max</span>()</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Finding the maximum over boxes of grid cells</h4><a class="option-card__api" href="api.html#box_max">box_max</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">box_max</span>(x=<span class="tok-num">2</span>, y=<span class="tok-num">2</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Correlating two variables over space</h4><a class="option-card__api" href="api.html#cor_space">cor_space</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">cor_space</span>(var1=<span class="tok-str">"var1"</span>, var2=<span class="tok-str">"var2"</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Correlating two datasets over space</h4><a class="option-card__api" href="api.html#cor_space-fn">cor_space-fn</a></div>
+        <div class="code-block"><pre>nc.<span class="tok-fn">cor_space</span>(x=ds1, y=ds2)</pre></div>
+      </div>
+    </div>
+    <h3 id="howto-vertical">Depth</h3>
+    <div class="option-gallery howto-gallery">
+      <div class="option-card">
+        <div class="option-card__head"><h4>Selecting the surface level</h4><a class="option-card__api" href="api.html#top">top</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">top</span>()</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Selecting the bottom level</h4><a class="option-card__api" href="api.html#bottom">bottom</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">bottom</span>()</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Calculating the depth-averaged mean</h4><a class="option-card__api" href="api.html#vertical_mean">vertical_mean</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">vertical_mean</span>(fixed=<span class="tok-kw">True</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Finding the range over depth</h4><a class="option-card__api" href="api.html#vertical_range">vertical_range</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">vertical_range</span>()</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Interpolating to set depths</h4><a class="option-card__api" href="api.html#vertical_interp">vertical_interp</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">vertical_interp</span>(levels=[<span class="tok-num">10</span>, <span class="tok-num">50</span>, <span class="tok-num">100</span>], fixed=<span class="tok-kw">True</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Calculating a cumulative sum down the water column</h4><a class="option-card__api" href="api.html#vertical_cumsum">vertical_cumsum</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">vertical_cumsum</span>()</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Summing down the water column</h4><a class="option-card__api" href="api.html#vertical_sum">vertical_sum</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">vertical_sum</span>()</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Integrating down the water column</h4><a class="option-card__api" href="api.html#vertical_integration">vertical_integration</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">vertical_integration</span>(fixed=<span class="tok-kw">True</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Flipping the order of depth levels</h4><a class="option-card__api" href="api.html#invert_levels">invert_levels</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">invert_levels</span>()</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Masking everything except the seabed</h4><a class="option-card__api" href="api.html#bottom_mask">bottom_mask</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">bottom_mask</span>()</pre></div>
+      </div>
+    </div>
+    <h3 id="howto-regridding">Regridding &amp; interpolation</h3>
+    <div class="option-gallery howto-gallery">
+      <div class="option-card">
+        <div class="option-card__head"><h4>Regridding to another dataset&#x27;s grid</h4><a class="option-card__api" href="api.html#regrid">regrid</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">regrid</span>(ds2)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Regridding with nearest neighbour</h4><a class="option-card__api" href="api.html#regrid">regrid</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">regrid</span>(ds2, method=<span class="tok-str">"nn"</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Regridding to a regular 2° grid</h4><a class="option-card__api" href="api.html#to_latlon">to_latlon</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">to_latlon</span>(lon=[<span class="tok-num">-180</span>, <span class="tok-num">180</span>], lat=[<span class="tok-num">-90</span>, <span class="tok-num">90</span>], res=<span class="tok-num">2</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Interpolating to a single location</h4><a class="option-card__api" href="api.html#regrid">regrid</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">regrid</span>(lon=<span class="tok-num">-4.1</span>, lat=<span class="tok-num">50.3</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Interpolating to a list of locations</h4><a class="option-card__api" href="api.html#regrid">regrid</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">regrid</span>(lon=[<span class="tok-num">-4.1</span>, <span class="tok-num">-5.5</span>], lat=[<span class="tok-num">50.3</span>, <span class="tok-num">50.0</span>])</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Extracting a straight-line transect (development version)</h4><a class="option-card__api" href="api.html#to_transect">to_transect</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">to_transect</span>(start=[<span class="tok-num">-30</span>, <span class="tok-num">0</span>], end=[<span class="tok-num">-30</span>, <span class="tok-num">60</span>], nsteps=<span class="tok-num">61</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Keeping every other grid cell</h4><a class="option-card__api" href="api.html#resample_grid">resample_grid</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">resample_grid</span>(<span class="tok-num">2</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Filling in missing values</h4><a class="option-card__api" href="api.html#fill_na">fill_na</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">fill_na</span>()</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Interpolating to daily time steps</h4><a class="option-card__api" href="api.html#time_interp">time_interp</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">time_interp</span>(start=<span class="tok-str">"1990/01/01"</span>, end=<span class="tok-str">"1990/12/31"</span>, resolution=<span class="tok-str">"daily"</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Interpolating to a set number of time steps</h4><a class="option-card__api" href="api.html#timestep_interp">timestep_interp</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">timestep_interp</span>(steps=<span class="tok-num">6</span>)</pre></div>
+      </div>
+    </div>
+    <h3 id="howto-arithmetic">Arithmetic &amp; new variables</h3>
+    <div class="option-gallery howto-gallery">
+      <div class="option-card">
+        <div class="option-card__head"><h4>Creating a new variable</h4><a class="option-card__api" href="api.html#assign">assign</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">assign</span>(sst_k=<span class="tok-kw">lambda</span> x: x.sst + <span class="tok-num">273.15</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Keeping only the new variable</h4><a class="option-card__api" href="api.html#assign">assign</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">assign</span>(sst_k=<span class="tok-kw">lambda</span> x: x.sst + <span class="tok-num">273.15</span>, drop=<span class="tok-kw">True</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Adding a constant</h4><a class="option-card__api" href="api.html#add">add</a></div>
+        <div class="code-block"><pre>ds + <span class="tok-num">273.15</span>
+ds.<span class="tok-fn">add</span>(<span class="tok-num">273.15</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Multiplying by a constant</h4><a class="option-card__api" href="api.html#multiply">multiply</a></div>
+        <div class="code-block"><pre>ds * <span class="tok-num">100</span>
+ds.<span class="tok-fn">multiply</span>(<span class="tok-num">100</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Subtracting another dataset</h4><a class="option-card__api" href="api.html#subtract">subtract</a></div>
+        <div class="code-block"><pre>ds - ds2
+ds.<span class="tok-fn">subtract</span>(ds2)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Dividing by another dataset</h4><a class="option-card__api" href="api.html#divide">divide</a></div>
+        <div class="code-block"><pre>ds / ds2
+ds.<span class="tok-fn">divide</span>(ds2)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Taking absolute values</h4><a class="option-card__api" href="api.html#abs">abs</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">abs</span>()</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Marking where values exceed a threshold</h4><a class="option-card__api" href="api.html#compare">compare</a></div>
+        <div class="code-block"><pre>ds &gt; <span class="tok-num">20</span>
+ds.<span class="tok-fn">compare</span>(<span class="tok-str">"&gt;20"</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Taking the exponential</h4><a class="option-card__api" href="api.html#exp">exp</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">exp</span>()</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Taking the square root</h4><a class="option-card__api" href="api.html#sqrt">sqrt</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">sqrt</span>()</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Squaring values</h4><a class="option-card__api" href="api.html#square">square</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">square</span>()</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Raising to a power</h4><a class="option-card__api" href="api.html#power">power</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">power</span>(<span class="tok-num">2</span>)</pre></div>
+      </div>
+    </div>
+    <h3 id="howto-editing">Editing variables &amp; metadata</h3>
+    <div class="option-gallery howto-gallery">
+      <div class="option-card">
+        <div class="option-card__head"><h4>Renaming a variable</h4><a class="option-card__api" href="api.html#rename">rename</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">rename</span>({<span class="tok-str">"old"</span>: <span class="tok-str">"new"</span>})</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Setting units</h4><a class="option-card__api" href="api.html#set_units">set_units</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">set_units</span>({<span class="tok-str">"sst"</span>: <span class="tok-str">"degC"</span>})</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Setting a long name</h4><a class="option-card__api" href="api.html#set_longnames">set_longnames</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">set_longnames</span>({<span class="tok-str">"sst"</span>: <span class="tok-str">"Sea surface temperature"</span>})</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Treating a range of values as missing</h4><a class="option-card__api" href="api.html#as_missing">as_missing</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">as_missing</span>([<span class="tok-num">-5</span>, <span class="tok-num">0</span>])</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Replacing missing values with a number</h4><a class="option-card__api" href="api.html#missing_as">missing_as</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">missing_as</span>(<span class="tok-num">0</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Setting the fill value</h4><a class="option-card__api" href="api.html#set_fill">set_fill</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">set_fill</span>(<span class="tok-num">-999</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Removing a temporary variable</h4><a class="option-card__api" href="api.html#strip_variables">strip_variables</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">strip_variables</span>(vars=<span class="tok-str">"sst2"</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Summing every variable into one</h4><a class="option-card__api" href="api.html#sum_all">sum_all</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">sum_all</span>()</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Setting the grid type</h4><a class="option-card__api" href="api.html#set_gridtype">set_gridtype</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">set_gridtype</span>(<span class="tok-str">"lonlat"</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Setting the numeric precision</h4><a class="option-card__api" href="api.html#set_precision">set_precision</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">set_precision</span>(<span class="tok-str">"F64"</span>)</pre></div>
+      </div>
+    </div>
+    <h3 id="howto-ensembles">Ensembles &amp; merging</h3>
+    <div class="option-gallery howto-gallery">
+      <div class="option-card">
+        <div class="option-card__head"><h4>Averaging across files</h4><a class="option-card__api" href="api.html#ensemble_mean">ensemble_mean</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">ensemble_mean</span>()</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Averaging across files with different time steps</h4><a class="option-card__api" href="api.html#ensemble_mean">ensemble_mean</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">ensemble_mean</span>(ignore_time=<span class="tok-kw">True</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Finding the range across files</h4><a class="option-card__api" href="api.html#ensemble_range">ensemble_range</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">ensemble_range</span>()</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Merging files that hold different time steps</h4><a class="option-card__api" href="api.html#merge">merge</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">merge</span>(<span class="tok-str">"time"</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Merging datasets that hold different variables</h4><a class="option-card__api" href="api.html#merge-fn">merge</a></div>
+        <div class="code-block"><pre>ds3 = nc.<span class="tok-fn">merge</span>(ds1, ds2)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Splitting into one file per year</h4><a class="option-card__api" href="api.html#split">split</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">split</span>(<span class="tok-str">"year"</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Adding a file to an ensemble</h4><a class="option-card__api" href="api.html#append">append</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">append</span>(<span class="tok-str">"foo.nc"</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Removing a file from an ensemble</h4><a class="option-card__api" href="api.html#remove">remove</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">remove</span>(<span class="tok-str">"foo.nc"</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Consolidating an ensemble of files covering subareas into one large dataset</h4><a class="option-card__api" href="api.html#collect">collect</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">collect</span>()</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Splitting the grid into multiple subareas</h4><a class="option-card__api" href="api.html#distribute">distribute</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">distribute</span>(m=<span class="tok-num">2</span>, n=<span class="tok-num">2</span>)</pre></div>
+      </div>
+    </div>
+    <h3 id="howto-plotting">Plotting</h3>
+    <div class="option-gallery howto-gallery">
+      <div class="option-card">
+        <div class="option-card__head"><h4>Plotting interactively</h4><a class="option-card__api" href="api.html#plot">plot</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">plot</span>()</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Making a publication-quality map</h4><a class="option-card__api" href="api.html#pub_plot">pub_plot</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">pub_plot</span>()</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Saving a map at print resolution</h4><a class="option-card__api" href="api.html#pub_plot">pub_plot</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">pub_plot</span>(out=<span class="tok-str">"map.png"</span>, dpi=<span class="tok-num">300</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Plotting several datasets as one figure</h4><a class="option-card__api" href="api.html#panel_plot">panel_plot</a></div>
+        <div class="code-block"><pre>nc.<span class="tok-fn">panel_plot</span>({<span class="tok-str">"a"</span>: ds1, <span class="tok-str">"b"</span>: ds2})</pre></div>
+      </div>
+    </div>
+    <h3 id="howto-exporting">Exporting</h3>
+    <div class="option-gallery howto-gallery">
+      <div class="option-card">
+        <div class="option-card__head"><h4>Saving to netCDF</h4><a class="option-card__api" href="api.html#to_nc">to_nc</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">to_nc</span>(<span class="tok-str">"out.nc"</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Converting to xarray</h4><a class="option-card__api" href="api.html#to_xarray">to_xarray</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">to_xarray</span>()</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Converting to a pandas data frame</h4><a class="option-card__api" href="api.html#to_dataframe">to_dataframe</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">to_dataframe</span>()</pre></div>
+      </div>
+    </div>
+    <h3 id="howto-diagnostics">Diagnostics &amp; file management</h3>
+    <div class="option-gallery howto-gallery">
+      <div class="option-card">
+        <div class="option-card__head"><h4>Zipping the output</h4><a class="option-card__api" href="api.html#zip">zip</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">zip</span>()</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Changing the netCDF format</h4><a class="option-card__api" href="api.html#format">format</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">format</span>(<span class="tok-str">"nc4"</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Checking a dataset for problems</h4><a class="option-card__api" href="api.html#check">check</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">check</span>()</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Checking if a file is corrupt</h4><a class="option-card__api" href="api.html#is_corrupt">is_corrupt</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">is_corrupt</span>()</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Counting missing values over time</h4><a class="option-card__api" href="api.html#na_count">na_count</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">na_count</span>()</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Calculating the fraction of missing values</h4><a class="option-card__api" href="api.html#na_frac">na_frac</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">na_frac</span>()</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Removing 29 February from a calendar</h4><a class="option-card__api" href="api.html#no_leaps">no_leaps</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">no_leaps</span>()</pre></div>
+      </div>
+    </div>
+    <h3 id="howto-settings">Evaluation &amp; settings</h3>
+    <div class="option-gallery howto-gallery">
+      <div class="option-card">
+        <div class="option-card__head"><h4>Running all pending commands</h4><a class="option-card__api" href="api.html#run">run</a></div>
+        <div class="code-block"><pre>ds.<span class="tok-fn">run</span>()</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Switching off lazy evaluation</h4><a class="option-card__api" href="api.html#options-fn">options-fn</a></div>
+        <div class="code-block"><pre>nc.<span class="tok-fn">options</span>(lazy=<span class="tok-kw">False</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Using more cores for multi-file datasets</h4><a class="option-card__api" href="api.html#options-fn">options-fn</a></div>
+        <div class="code-block"><pre>nc.<span class="tok-fn">options</span>(cores=<span class="tok-num">6</span>)</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Removing temporary files</h4><a class="option-card__api" href="api.html#deep_clean">deep_clean</a></div>
+        <div class="code-block"><pre>nc.<span class="tok-fn">deep_clean</span>()</pre></div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- HOWTO_END -->
+
 <footer class="site-footer">
   <div class="container footer-pml">
     <a href="https://pml.ac.uk/" target="_blank" rel="noopener"><img src="assets/img/pml_logo.jpg" alt="Plymouth Marine Laboratory"></a>

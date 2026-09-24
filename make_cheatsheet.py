@@ -70,7 +70,7 @@ PAGE_1 = [
     ]),
     ("Visualizing data", None, [
         ("ds.plot()", "Plot all data in a dataset."),
-        ('ds.plot("var")', "Plot a specific variable."),
+        ("ds.pub_plot()", "Create a publication-quality static map."),
     ]),
     ("Merging methods", None, [
         ('ds.merge("variable")', "Merge a dataset of files with different variables."),
@@ -147,6 +147,7 @@ PAGE_2 = [
         ("ds.spatial_sum()", "Calculate the spatial sum."),
         ("ds.zonal_mean()", "Calculate the zonal mean."),
         ("ds.meridonial_mean()", "Calculate the meridonial mean."),
+        ("ds.to_transect(start=[lon1, lat1],\n               end=[lon2, lat2], nsteps=100)", "Extract a straight-line transect between two points."),
     ]),
     ("Multi-dataset methods",
      "Add, subtract or compare one dataset with another, so long as their "

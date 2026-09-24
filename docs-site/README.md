@@ -32,8 +32,9 @@ backends.html                    /   (also linked from the header's Data
                                 /      dropdown - it predates the User Guide)
 troubleshoot.html             /
 gallery.html               Card-grid index for the Gallery - see "Gallery" below
-gallery-transects.html        \  Gallery example pages, one per
-gallery-ocean-temperature.html /   worked example
+gallery-transects.html          \
+gallery-ocean-temperature.html   Gallery example pages, one per
+gallery-nitrate.html            /  worked example
 api.html                     |
 data-formats.html            |
 qa.html                      |

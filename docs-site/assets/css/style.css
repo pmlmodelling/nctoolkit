@@ -900,6 +900,36 @@ tbody tr.hidden-row { display: none; }
   height: auto;
   border-top: 1px solid var(--line);
 }
+/* one-line "How to" cards on cheatsheet.html: a title, a link to the method's
+   API entry, and a single line of code, with no figure */
+.option-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6em;
+  padding: 0.7em 1em;
+  border-bottom: 1px solid var(--line);
+}
+.docs-content .option-card__head h4 {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.35;
+  color: var(--ink);
+}
+.option-card__api {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--teal-700);
+  background: var(--teal-50);
+  padding: 0.25em 0.55em;
+  border-radius: 5px;
+  text-decoration: none;
+}
+.option-card__api:hover { background: var(--teal-100); color: var(--teal-700); }
+.howto-gallery { margin: 1rem 0 0.5rem; }
+.howto-gallery .code-block { flex: 1; }
+.howto-gallery .code-block pre { white-space: pre-wrap; overflow-wrap: anywhere; }
 @media (max-width: 980px) {
   .option-gallery { grid-template-columns: 1fr; }
 }

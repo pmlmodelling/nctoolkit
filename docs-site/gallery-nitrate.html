@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Understanding the vertical profile of ocean nitrate &mdash; NCToolkit</title>
+<meta name="description" content="Explore how nitrate changes with depth in the World Ocean Atlas with NCToolkit: vertical and zonal means, a transect and a single-point profile.">
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container nav">
+    <a class="brand" href="index.html">
+      <img src="assets/img/nctoolkit_wordmark.svg" alt="NCToolkit">
+      <span id="nctoolkit-docs-version" class="brand-version">v&hellip;</span>
+    </a>
+    <nav class="nav-links" id="nav-links">
+      <a href="installing.html" data-page="installing.html">Install</a>
+      <a href="quickstart.html" data-page="quickstart.html">Quickstart</a>
+      <a href="guide.html" data-page="guide.html">Guide</a>
+      <a href="gallery.html" data-page="gallery.html">Gallery</a>
+      <a href="api.html" data-page="api.html">API</a>
+      <a href="data-formats.html" data-page="data-formats.html">Data supported</a>
+      <a href="qa.html" data-page="qa.html">Q&amp;A</a>
+      <a href="cheatsheet.html" data-page="cheatsheet.html">Cheat Sheet</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle" aria-expanded="false">About
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="nav-dropdown-menu">
+          <a href="about.html" data-page="about.html">About &amp; citation<small>Project background, how to cite</small></a>
+          <a href="version-history.html" data-page="version-history.html">Version history<small>Archived documentation snapshots</small></a>
+        </div>
+      </div>
+    </nav>
+    <div class="nav-actions">
+      <a class="icon-btn" href="https://github.com/pmlmodelling/nctoolkit" target="_blank" rel="noopener" aria-label="NCToolkit on GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 .5C5.73.5.5 5.74.5 12.09c0 5.08 3.29 9.38 7.86 10.9.57.1.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.56-.29-5.26-1.28-5.26-5.71 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.44-2.7 5.42-5.28 5.7.42.36.78 1.08.78 2.17 0 1.57-.01 2.83-.01 3.22 0 .3.21.66.8.55A10.6 10.6 0 0 0 23.5 12.1C23.5 5.74 18.27.5 12 .5Z"/></svg>
+      </a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="page-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="index.html">Home</a> / <a href="gallery.html">Gallery</a> / Understanding the vertical profile of ocean nitrate</div>
+    <h1>Understanding the vertical profile of ocean nitrate</h1>
+    <p class="lead">Average, section and sample the World Ocean Atlas through the water column, using January nitrate as the example.</p>
+  </div>
+</div>
+
+<div class="container docs-layout">
+  <aside class="docs-toc">
+    <div class="docs-toc-title">On this page</div>
+    <ul>
+      <li><a href="#data">The data</a></li>
+      <li><a href="#vertical">Vertical averaging</a></li>
+      <li><a href="#depth">Nitrate at 200 m</a></li>
+      <li><a href="#zonal">Zonal averaging</a></li>
+      <li><a href="#transect">A transect down the Atlantic</a></li>
+      <li><a href="#profile">A single profile</a></li>
+    </ul>
+  </aside>
+
+  <div class="docs-content">
+
+    <div class="callout warn">
+      <div class="callout-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Development version only
+      </div>
+      <p><code>to_transect()</code> is not yet in a conda release. Install the development version from GitHub to try it:</p>
+      <div class="code-block">
+        <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">bash</span></div>
+        <pre>pip install git+https://github.com/pmlmodelling/nctoolkit.git</pre>
+      </div>
+    </div>
+
+    <h2 id="data">The data</h2>
+    <p>This example uses January nitrate from the <a href="https://www.ncei.noaa.gov/products/world-ocean-atlas" target="_blank" rel="noopener">World Ocean Atlas 2023</a>, NOAA's climatology of ocean properties, on a 1&deg; grid. NOAA serves each month as a separate file over OPeNDAP, so this opens just the January one:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre><span class="tok-kw">import</span> nctoolkit <span class="tok-kw">as</span> nc
+
+ds = nc.<span class="tok-fn">open_thredds</span>(<span class="tok-str">"https://www.ncei.noaa.gov/thredds-ocean/dodsC/woa23/DATA/nitrate/netcdf/all/1.00/woa23_all_n01_01.nc"</span>)
+ds.<span class="tok-fn">subset</span>(variables=<span class="tok-str">"n_an"</span>)
+ds.<span class="tok-fn">run</span>()</pre>
+    </div>
+    <p>Each monthly file covers the top 800&nbsp;m on 43 standard depth levels. Along with the objectively analysed mean, <code>n_an</code>, the file carries other statistics such as the plain mean and the number of observations, and <a href="api.html#subset"><code>subset()</code></a> keeps only the analysed field.</p>
+    <p><a href="api.html#run"><code>run()</code></a> then fetches that field once. Every analysis below starts from a <a href="api.html#copy"><code>copy()</code></a> of <code>ds</code>, so they all work from the local copy instead of each going back to the server.</p>
+
+    <h2 id="vertical">Vertical averaging</h2>
+    <p><a href="api.html#vertical_mean"><code>vertical_mean()</code></a> collapses the water column into one value per grid cell. <code>fixed=True</code> tells it that the depth levels are the same everywhere, which is true of a z-level product like this. <a href="api.html#pub_plot"><code>pub_plot</code></a> then maps the result:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>vm = ds.<span class="tok-fn">copy</span>()
+vm.<span class="tok-fn">vertical_mean</span>(fixed=<span class="tok-kw">True</span>)
+vm.<span class="tok-fn">pub_plot</span>(colours=<span class="tok-str">"viridis"</span>, limits=[<span class="tok-num">0</span>, <span class="tok-num">40</span>],
+            legend=<span class="tok-str">"Nitrate, 0–800 m mean (µmol/kg)"</span>)</pre>
+    </div>
+    <p><img src="assets/plots/nitrate_vertical_mean.png" loading="lazy" alt="World map of January nitrate averaged over the top 800 metres, high in the Southern Ocean, the North Pacific and the eastern tropical Pacific, and low in the subtropical gyres" style="border:1px solid var(--line); border-radius: var(--radius-md); box-shadow: var(--shadow-sm);"></p>
+
+    <div class="callout">
+      <div class="callout-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> The mean is weighted by layer thickness</div>
+      <p>The depth levels are packed close together near the surface &mdash; each is 5&nbsp;m apart down to 100&nbsp;m, but 50&nbsp;m apart below 500&nbsp;m. <code>vertical_mean()</code> weights each level by the thickness of water it stands for, using the depth bounds stored in the file. That matters: at the point in the <a href="#profile">last section</a>, the thickness-weighted mean is 10.7&nbsp;&micro;mol/kg, while a plain average of the 43 levels would give 6.6, because it over-counts the crowded surface levels.</p>
+      <p>Where the seafloor is shallower than 800&nbsp;m, the mean covers only the water that is there.</p>
+    </div>
+
+    <h2 id="depth">Nitrate at 200&nbsp;m</h2>
+    <p>An average merges every depth into one number. To see a single depth instead, use <a href="api.html#vertical_interp"><code>vertical_interp()</code></a>, which interpolates every grid cell to the depths you ask for. As with <code>vertical_mean()</code>, <code>fixed=True</code> says the levels are the same everywhere:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>d200 = ds.<span class="tok-fn">copy</span>()
+d200.<span class="tok-fn">vertical_interp</span>(levels=<span class="tok-num">200</span>, fixed=<span class="tok-kw">True</span>)
+d200.<span class="tok-fn">pub_plot</span>(colours=<span class="tok-str">"viridis"</span>, limits=[<span class="tok-num">0</span>, <span class="tok-num">40</span>],
+              legend=<span class="tok-str">"Nitrate at 200 m (µmol/kg)"</span>)</pre>
+    </div>
+    <p><img src="assets/plots/nitrate_200m.png" loading="lazy" alt="World map of January nitrate at 200 metres, near zero across the subtropical gyres and high in the North Pacific, the Southern Ocean and the eastern tropical Pacific" style="border:1px solid var(--line); border-radius: var(--radius-md); box-shadow: var(--shadow-sm);"></p>
+
+    <div class="callout">
+      <div class="callout-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> 200&nbsp;m is one of the atlas's standard depths</div>
+      <p>The World Ocean Atlas already has a level at exactly 200&nbsp;m, so here <code>vertical_interp()</code> returns that level unchanged. It does real work at a depth between two levels: ask for 110&nbsp;m, and each cell is interpolated linearly between the 100&nbsp;m and 125&nbsp;m levels. To get several depths at once, pass a list, such as <code>levels=[50, 110, 200]</code>.</p>
+    </div>
+
+    <h2 id="zonal">Zonal averaging</h2>
+    <p><a href="api.html#zonal_mean"><code>zonal_mean()</code></a> averages around each line of latitude instead, which keeps depth intact and gives a latitude-by-depth section of the whole ocean:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>zm = ds.<span class="tok-fn">copy</span>()
+zm.<span class="tok-fn">zonal_mean</span>()</pre>
+    </div>
+    <p><img src="assets/plots/nitrate_zonal_mean.png" loading="lazy" alt="Latitude by depth section of zonal mean January nitrate, low near the surface in the subtropics and high at depth near the equator and in the Southern Ocean" style="border:1px solid var(--line); border-radius: var(--radius-md); box-shadow: var(--shadow-sm);"></p>
+    <details class="param-details">
+      <summary>Show the plotting code</summary>
+      <div class="code-block">
+        <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+        <pre><span class="tok-kw">import</span> matplotlib.pyplot <span class="tok-kw">as</span> plt
+
+<span class="tok-kw">def</span> <span class="tok-fn">style</span>(ax):
+    ax.spines[<span class="tok-str">"top"</span>].<span class="tok-fn">set_visible</span>(<span class="tok-kw">False</span>)
+    ax.spines[<span class="tok-str">"right"</span>].<span class="tok-fn">set_visible</span>(<span class="tok-kw">False</span>)
+    ax.spines[<span class="tok-str">"left"</span>].<span class="tok-fn">set_color</span>(<span class="tok-str">"#c9d6da"</span>)
+    ax.spines[<span class="tok-str">"bottom"</span>].<span class="tok-fn">set_color</span>(<span class="tok-str">"#c9d6da"</span>)
+    ax.<span class="tok-fn">tick_params</span>(colors=<span class="tok-str">"#56717d"</span>, labelsize=<span class="tok-num">9</span>)
+
+<span class="tok-com"># a latitude-by-depth section, reused for the transect below</span>
+<span class="tok-kw">def</span> <span class="tok-fn">section</span>(df, title):
+    grid = df.<span class="tok-fn">pivot_table</span>(index=<span class="tok-str">"depth"</span>, columns=<span class="tok-str">"lat"</span>, values=<span class="tok-str">"n_an"</span>)
+
+    fig, ax = plt.<span class="tok-fn">subplots</span>(figsize=(<span class="tok-num">9</span>, <span class="tok-num">4.5</span>))
+    <span class="tok-com"># anywhere without ocean, such as below the seafloor, shows as grey</span>
+    ax.<span class="tok-fn">set_facecolor</span>(<span class="tok-str">"#d9dee0"</span>)
+    mesh = ax.<span class="tok-fn">pcolormesh</span>(grid.columns, grid.index, grid.values, cmap=<span class="tok-str">"viridis"</span>,
+                         vmin=<span class="tok-num">0</span>, vmax=<span class="tok-num">40</span>, shading=<span class="tok-str">"nearest"</span>)
+    ax.<span class="tok-fn">invert_yaxis</span>()
+    <span class="tok-fn">style</span>(ax)
+    ax.<span class="tok-fn">set_xlabel</span>(<span class="tok-str">"Latitude (°N)"</span>)
+    ax.<span class="tok-fn">set_ylabel</span>(<span class="tok-str">"Depth (m)"</span>)
+    ax.<span class="tok-fn">set_title</span>(title, fontsize=<span class="tok-num">12</span>)
+    fig.<span class="tok-fn">colorbar</span>(mesh, ax=ax, pad=<span class="tok-num">0.02</span>).<span class="tok-fn">set_label</span>(<span class="tok-str">"Nitrate (µmol/kg)"</span>)
+    <span class="tok-kw">return</span> fig
+
+fig = <span class="tok-fn">section</span>(zm.<span class="tok-fn">to_dataframe</span>().<span class="tok-fn">reset_index</span>(), <span class="tok-str">"Zonal mean nitrate, January"</span>)
+fig.<span class="tok-fn">savefig</span>(<span class="tok-str">"nitrate_zonal_mean.png"</span>, dpi=<span class="tok-num">110</span>, bbox_inches=<span class="tok-str">"tight"</span>)</pre>
+      </div>
+    </details>
+
+    <h2 id="transect">A transect down the Atlantic</h2>
+    <p>To look at one basin on its own, <a href="api.html#to_transect"><code>to_transect()</code></a> cuts a line through it. This is the same 30&deg;W meridian as the <a href="gallery-transects.html">transects example</a>, extended south to 60&deg;S, and because the dataset has depth levels, the transect keeps them:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>tr = ds.<span class="tok-fn">copy</span>()
+tr.<span class="tok-fn">to_transect</span>(start=[<span class="tok-num">-30</span>, <span class="tok-num">-60</span>], end=[<span class="tok-num">-30</span>, <span class="tok-num">65</span>], nsteps=<span class="tok-num">126</span>)</pre>
+    </div>
+    <p><img src="assets/plots/nitrate_transect.png" loading="lazy" alt="Latitude by depth section of January nitrate along 30 degrees west from 60 south to 65 north" style="border:1px solid var(--line); border-radius: var(--radius-md); box-shadow: var(--shadow-sm);"></p>
+    <details class="param-details">
+      <summary>Show the plotting code</summary>
+      <div class="code-block">
+        <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+        <pre><span class="tok-com"># section() is defined in the zonal mean plotting code above</span>
+fig = <span class="tok-fn">section</span>(tr.<span class="tok-fn">to_dataframe</span>().<span class="tok-fn">reset_index</span>(), <span class="tok-str">"Nitrate along 30°W, January"</span>)
+fig.<span class="tok-fn">savefig</span>(<span class="tok-str">"nitrate_transect.png"</span>, dpi=<span class="tok-num">110</span>, bbox_inches=<span class="tok-str">"tight"</span>)</pre>
+      </div>
+    </details>
+    <p>Every point along this line, at every depth, has data. Most nearby meridians have gaps, where the line crosses the Azores or runs into shallow water near land.</p>
+
+    <h2 id="profile">A single profile</h2>
+    <p>Finally, <a href="api.html#regrid"><code>regrid()</code></a> with a single <code>lon</code> and <code>lat</code> interpolates the dataset to one location. Here that is 35&deg;W, 40&deg;N, in the middle of the North Atlantic, and the result is a vertical profile. A <code>vertical_mean()</code> of that profile gives the value the map above shows at the same place:</p>
+    <div class="code-block">
+      <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+      <pre>pt = ds.<span class="tok-fn">copy</span>()
+pt.<span class="tok-fn">regrid</span>(lon=<span class="tok-num">-35</span>, lat=<span class="tok-num">40</span>)
+
+pt_mean = pt.<span class="tok-fn">copy</span>()
+pt_mean.<span class="tok-fn">vertical_mean</span>(fixed=<span class="tok-kw">True</span>)</pre>
+    </div>
+    <p><img src="assets/plots/nitrate_profile.png" loading="lazy" alt="Vertical profile of January nitrate at 35 degrees west, 40 north, rising from under 2 micromoles per kilogram at the surface to almost 20 at 800 metres, with the 0 to 800 metre mean of 10.7 marked as a dashed line" style="border:1px solid var(--line); border-radius: var(--radius-md); box-shadow: var(--shadow-sm);"></p>
+    <details class="param-details">
+      <summary>Show the plotting code</summary>
+      <div class="code-block">
+        <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
+        <pre>df = pt.<span class="tok-fn">to_dataframe</span>().<span class="tok-fn">reset_index</span>()
+mean = pt_mean.<span class="tok-fn">to_dataframe</span>().n_an.values[<span class="tok-num">0</span>]
+
+fig, ax = plt.<span class="tok-fn">subplots</span>(figsize=(<span class="tok-num">5</span>, <span class="tok-num">6</span>))
+ax.<span class="tok-fn">plot</span>(df.n_an, df.depth, color=<span class="tok-str">"#087f8c"</span>, linewidth=<span class="tok-num">2.4</span>, marker=<span class="tok-str">"o"</span>,
+        markersize=<span class="tok-num">3</span>)
+ax.<span class="tok-fn">axvline</span>(mean, color=<span class="tok-str">"#d76b45"</span>, linestyle=<span class="tok-str">"--"</span>, linewidth=<span class="tok-num">1.6</span>,
+           label=<span class="tok-str">f"0–800 m mean: {mean:.1f} µmol/kg"</span>)
+ax.<span class="tok-fn">set_ylim</span>(<span class="tok-num">810</span>, <span class="tok-num">-10</span>)
+<span class="tok-fn">style</span>(ax)
+ax.<span class="tok-fn">grid</span>(color=<span class="tok-str">"#e5eef0"</span>, linewidth=<span class="tok-num">0.8</span>)
+ax.<span class="tok-fn">set_axisbelow</span>(<span class="tok-kw">True</span>)
+ax.<span class="tok-fn">set_xlabel</span>(<span class="tok-str">"Nitrate (µmol/kg)"</span>)
+ax.<span class="tok-fn">set_ylabel</span>(<span class="tok-str">"Depth (m)"</span>)
+ax.<span class="tok-fn">set_title</span>(<span class="tok-str">"Nitrate at 35°W, 40°N, January"</span>, fontsize=<span class="tok-num">12</span>)
+ax.<span class="tok-fn">legend</span>(fontsize=<span class="tok-num">9</span>, loc=<span class="tok-str">"lower left"</span>, facecolor=<span class="tok-str">"white"</span>, edgecolor=<span class="tok-str">"none"</span>,
+          framealpha=<span class="tok-num">1</span>)
+fig.<span class="tok-fn">savefig</span>(<span class="tok-str">"nitrate_profile.png"</span>, dpi=<span class="tok-num">110</span>, bbox_inches=<span class="tok-str">"tight"</span>)</pre>
+      </div>
+    </details>
+
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container footer-pml">
+    <a href="https://pml.ac.uk/" target="_blank" rel="noopener"><img src="assets/img/pml_logo.jpg" alt="Plymouth Marine Laboratory"></a>
+    <span>Developed by the <a href="https://pml.ac.uk/sciencetopics/environmental-intelligence/" target="_blank" rel="noopener">Environmental Intelligence group</a> at <a href="https://pml.ac.uk/" target="_blank" rel="noopener">Plymouth Marine Laboratory</a></span>
+  </div>
+  <div class="container footer-top">
+    <div class="footer-brand">
+      <img src="assets/img/nctoolkit_wordmark.svg" alt="NCToolkit">
+      <p>A comprehensive Python package for netCDF analysis and post-processing. Subset, compute, and visualize &mdash; in a few lines of code.</p>
+      <div class="footer-social">
+        <a href="https://github.com/pmlmodelling/nctoolkit" target="_blank" rel="noopener" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 .5C5.73.5.5 5.74.5 12.09c0 5.08 3.29 9.38 7.86 10.9.57.1.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.56-.29-5.26-1.28-5.26-5.71 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.44-2.7 5.42-5.28 5.7.42.36.78 1.08.78 2.17 0 1.57-.01 2.83-.01 3.22 0 .3.21.66.8.55A10.6 10.6 0 0 0 23.5 12.1C23.5 5.74 18.27.5 12 .5Z"/></svg>
+        </a>
+        <a href="mailto:rwi@pml.ac.uk" aria-label="Email">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Documentation</h4>
+      <ul>
+        <li><a href="installing.html">Installing</a></li>
+        <li><a href="quickstart.html">Quickstart</a></li>
+        <li><a href="guide.html">User Guide</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="api.html">API reference</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Reference</h4>
+      <ul>
+        <li><a href="api.html">API reference</a></li>
+        <li><a href="data-formats.html">Supported data</a></li>
+        <li><a href="backends.html">CDO &amp; NCO backends</a></li>
+        <li><a href="qa.html">Q&amp;A</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Project</h4>
+      <ul>
+        <li><a href="about.html">About &amp; citation</a></li>
+        <li><a href="news.html">Changelog</a></li>
+        <li><a href="version-history.html">Version history</a></li>
+        <li><a href="https://github.com/pmlmodelling/nctoolkit" target="_blank" rel="noopener">GitHub repository</a></li>
+        <li><a href="https://github.com/pmlmodelling/nctoolkit/issues" target="_blank" rel="noopener">Report an issue</a></li>
+        <li><a href="https://anaconda.org/conda-forge/nctoolkit" target="_blank" rel="noopener">conda-forge package</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>&copy; 2026 <a href="https://pml.ac.uk/" target="_blank" rel="noopener">Plymouth Marine Laboratory</a>. Released under the GNU GPLv3 license.</span>
+    <span>Built by ocean and climate modellers, for netCDF users everywhere.</span>
+  </div>
+</footer>
+
+<button class="back-to-top" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+</button>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
