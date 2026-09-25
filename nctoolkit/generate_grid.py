@@ -41,11 +41,7 @@ def generate_grid(coords):
         else:
             grid_type = "unstructured"
 
-        if (
-            np.array_equal(x, lon_unique)
-            is False | np.array_equal(y, lat_unique)
-            is False
-        ):
+        if not (np.array_equal(x, lon_unique) and np.array_equal(y, lat_unique)):
             grid_type = "unstructured"
     else:
         grid_type = "unstructured"
