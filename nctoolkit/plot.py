@@ -96,6 +96,9 @@ def plot(self, vars=None, autoscale=True, out=None, coast=None, **kwargs):
         if set(vars_1) != set(vars_2):  
             raise ValueError("Unable to plot multi-file datasets when variables differ across files.") 
 
+    # a single file is passed as a path, as older versions of ncplot cannot handle lists
+    to_plot = self.current if len(self) > 1 else self[0]
+
     if vars is None:
         if len(set(self.contents.nlevels)) > 1:
             raise ValueError(
@@ -135,7 +138,7 @@ def plot(self, vars=None, autoscale=True, out=None, coast=None, **kwargs):
                 )
         else:
             return view(
-                self.current, vars=vars, autoscale=autoscale, out=out, coast=coast, **kwargs
+                to_plot, vars=vars, autoscale=autoscale, out=out, coast=coast, **kwargs
             )
 
-    return view(self.current, vars=vars, autoscale=autoscale, out=out, coast=coast, **kwargs)
+    return view(to_plot, vars=vars, autoscale=autoscale, out=out, coast=coast, **kwargs)
