@@ -119,7 +119,7 @@ def annual_anomaly(self, baseline=None, metric="absolute", window=1, align="righ
     if start_parallel is False:
         options(parallel=True)
 
-    nc_safe_par_start = list(nc_safe_par)
+    nc_safe_par_start = nc_safe_par[:]
     pool = None
     try:
         # loop over the files and calculate the anomaly in parallel

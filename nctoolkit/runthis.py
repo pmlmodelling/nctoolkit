@@ -16,7 +16,8 @@ from nctoolkit.session import (
     append_safe,
     remove_safe,
     get_protected,
-    session_warnings
+    get_warnings,
+    session_warnings,
 )
 from nctoolkit.temp_file import temp_file
 
@@ -296,7 +297,7 @@ def run_this(os_command, self, output="one", out_file=None, suppress=False):
                         if progress_bar:
                             if not suppress:
                                 pbar.update(1)
-                    for mm in session_warnings:
+                    for mm in get_warnings():
                         warnings.warn(mm)
                         if mm in session_warnings:
                             session_warnings.remove(mm)
@@ -321,7 +322,7 @@ def run_this(os_command, self, output="one", out_file=None, suppress=False):
 
                 self._format = None
 
-                for mm in session_warnings:
+                for mm in get_warnings():
                     warnings.warn(mm)
                     if mm in session_warnings:
                         session_warnings.remove(mm)
@@ -433,7 +434,7 @@ def run_this(os_command, self, output="one", out_file=None, suppress=False):
                     target = run_cdo(
                         os_command, target, out_file, precision=self._precision
                     )
-                for mm in session_warnings:
+                for mm in get_warnings():
                     warnings.warn(mm)
                     if mm in session_warnings:
                         session_warnings.remove(mm)

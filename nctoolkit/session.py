@@ -38,7 +38,7 @@ def get_safe():
     Function to get the safe list
     """
     if session_info["parallel"]:
-        return list(nc_safe_par)
+        return nc_safe_par[:]
     else:
         return nc_safe
 
@@ -70,7 +70,7 @@ def get_protected():
     Function to return the protected list
     """
     if session_info["parallel"]:
-        return nc_protected_par
+        return nc_protected_par[:]
     else:
         return nc_protected
 
@@ -97,13 +97,25 @@ def get_tempdirs():
     Function to return the tempdirs in use
     """
     if session_info["parallel"]:
-        return temp_dirs_par
+        return temp_dirs_par[:]
     else:
         return temp_dirs
 
 
 nc_protected = list()
-session_warnings = Manager().list() 
+session_warnings = Manager().list()
+
+
+def get_warnings():
+    """
+    Function to return a snapshot of the pending warnings
+
+    Manager list proxies have no __iter__, so iterating one runs until the
+    manager raises IndexError. On Python 3.12 that exception forms a
+    reference cycle that keeps the calling frames, and so DataSets, alive.
+    Slicing gives a plain list without that problem.
+    """
+    return session_warnings[:]
 
 
 def session_files():
