@@ -153,6 +153,20 @@ append_tempdirs("/tmp")
 append_tempdirs("/var/tmp")
 
 
+def _move_all(source, target):
+    """
+    Move every item from one session list to another.
+
+    The lists can be plain lists or multiprocessing list proxies. Items are copied
+    and then the source is emptied, rather than removing items while looping over
+    the source, which would skip every other item.
+    """
+    items = list(source)
+    if len(items) > 0:
+        target.extend(items)
+        del source[:]
+
+
 def update_options(kwargs):
     valid_keys = [
         "thread_safe",
@@ -257,34 +271,18 @@ def update_options(kwargs):
 
             # update safe-lists etc. if running in parallel
             if kwargs[key] and key == "parallel" and find:
-                if len(temp_dirs) > 0:
-                    for ff in temp_dirs:
-                        append_tempdirs(ff)
+                for ff in list(temp_dirs):
+                    append_tempdirs(ff)
 
-                if len(nc_safe) > 0:
-                    for ff in nc_safe:
-                        nc_safe_par.append(ff)
-                        nc_safe.remove(ff)
-
-                if len(nc_protected) > 0:
-                    for ff in nc_protected:
-                        nc_protected_par.append(ff)
-                        nc_protected.remove(ff)
+                _move_all(nc_safe, nc_safe_par)
+                _move_all(nc_protected, nc_protected_par)
 
             if (kwargs[key] is False) and key == "parallel" and find:
-                if len(temp_dirs_par) > 0:
-                    for ff in temp_dirs_par:
-                        append_tempdirs(ff)
+                for ff in list(temp_dirs_par):
+                    append_tempdirs(ff)
 
-                if len(nc_safe_par) > 0:
-                    for ff in nc_safe_par:
-                        nc_safe.append(ff)
-                        nc_safe_par.remove(ff)
-
-                if len(nc_protected_par) > 0:
-                    for ff in nc_protected_par:
-                        nc_protected.append(ff)
-                        nc_protected_par.remove(ff)
+                _move_all(nc_safe_par, nc_safe)
+                _move_all(nc_protected_par, nc_protected)
 
 
 def options(**kwargs):

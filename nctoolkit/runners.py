@@ -27,10 +27,11 @@ def ignore_warning(x):
         return True
     return False
 
-def ann_anomaly(
-    ff, baseline, metric, window, align, precision, new_files, new_commands, nc_safe):
+def ann_anomaly(ff, baseline, metric, window, align, precision, nc_safe):
     """
     Function to calculate the anomaly for a single file
+
+    Returns the new file and the command that created it, or the exception if it failed.
     """
     # throw error if baseline is not valid
     orig_safe = copy.deepcopy(nc_safe)
@@ -62,9 +63,7 @@ def ann_anomaly(
         if target not in nc_safe:
             nc_safe.append(target)
 
-        # update the new files and commands
-        new_files.append(target)
-        new_commands.append(cdo_command)
+        return target, cdo_command
     except BaseException as e:
         try:
             nc_safe.remove(target)

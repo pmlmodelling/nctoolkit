@@ -14,9 +14,6 @@ import multiprocessing as mp
 #start = mp.get_start_method()
 #if start != "spawn":
 #    mp.set_start_method("spawn")
-from multiprocessing import Manager
-
-manager = Manager()
 
 
 
@@ -116,64 +113,51 @@ def annual_anomaly(self, baseline=None, metric="absolute", window=1, align="righ
             raise ValueError("Check that the years in baseline are in the dataset!")
 
     # calculate the anomalies for each file
-    # this is not parallelized yet
-    # list of new files created
-    new_files = manager.list()
-    # list of new commands
-    new_commands = manager.list()
-
     # keep track of whether we started parallel, so it can be reset
     start_parallel = session_info["parallel"]
 
     if start_parallel is False:
-        options(parallel =  True)
+        options(parallel=True)
 
-    nc_safe_par_start = copy.deepcopy(nc_safe_par)
+    nc_safe_par_start = list(nc_safe_par)
+    pool = None
     try:
         # loop over the files and calculate the anomaly in parallel
         cores = session_info["cores"]
 
-        target_list = []
-        results = dict()
-
-        pool = mp.get_context('fork').Pool(cores)
+        pool = mp.get_context("fork").Pool(cores)
         precision = copy.deepcopy(self._precision)
-        for ff in self:
-            results[ff] = pool.apply_async(
+        results = [
+            pool.apply_async(
                 ann_anomaly,
-                [
-                    ff,
-                    baseline,
-                    metric,
-                    window,
-                    align,
-                    precision,
-                    new_files,
-                    new_commands,
-                    nc_safe_par,
-                ],
+                [ff, baseline, metric, window, align, precision, nc_safe_par],
             )
-        for k, v in results.items():
+            for ff in self
+        ]
+
+        # results are collected in the order of the input files
+        new_files = []
+        new_commands = []
+        for v in results:
             out = v.get()
-            if "Check that the years in baseline are in the dataset!" in str(out):
-                raise ValueError("Check that the years in baseline are in the dataset!")
+            if isinstance(out, BaseException):
+                if "Check that the years in baseline are in the dataset!" in str(out):
+                    raise ValueError(
+                        "Check that the years in baseline are in the dataset!"
+                    )
+                raise out
+            new_files.append(out[0])
+            new_commands.append(out[1])
 
-        #pool.close()
-        #pool.join()
+        pool.close()
+        pool.join()
 
-        self.history += list(new_commands)
+        self.history += new_commands
         self._hold_history = copy.deepcopy(self.history)
 
+        # switching back moves everything in nc_safe_par into nc_safe
         if start_parallel is False:
-            #update_options({"parallel": False})
-            options(parallel = False)
-            while True:
-                for ff in nc_safe_par:
-                    if ff not in nc_safe:
-                        nc_safe.append(ff)
-                    nc_safe_par.remove(ff)
-                if len(nc_safe_par) == 0:
-                    break
+            options(parallel=False)
 
         self.current = list(new_files)
 
@@ -202,19 +186,22 @@ def annual_anomaly(self, baseline=None, metric="absolute", window=1, align="righ
 
         self.disk_clean()
     except BaseException as e:
+        # stop any workers still running, so they cannot add to the safe lists
+        # after the session has been switched back
+        if pool is not None:
+            pool.terminate()
+            pool.join()
+
         if start_parallel is False:
-            #update_options({"parallel": False})
-            options(parallel = False)
-        if start_parallel:
-            for ff in nc_safe_par:
-                if ff not in nc_safe_par_start:
-                    nc_safe_par.remove(ff)
+            options(parallel=False)
+            safe_list = nc_safe
         else:
-            for ff in nc_safe:
-                if ff not in nc_safe_par_start:
-                    nc_safe.remove(ff)
-            for ff in nc_safe_par:
-                nc_safe_par.remove(ff)
+            safe_list = nc_safe_par
+
+        # forget files created during this call; they were not kept
+        for ff in [ff for ff in safe_list if ff not in nc_safe_par_start]:
+            while ff in safe_list:
+                safe_list.remove(ff)
 
         raise e
 
