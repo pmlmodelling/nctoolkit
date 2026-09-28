@@ -2,7 +2,18 @@ import glob
 import os
 
 session_info = dict()
-from multiprocessing import Manager
+import multiprocessing as mp
+
+# Pin to the "fork" start method explicitly. These Manager() servers are
+# created at bare import time, so on Python 3.14+ (where the Linux default
+# start method changed from "fork" to "forkserver") using the default
+# context would require re-importing/re-running the __main__ script to
+# bootstrap the forkserver -- which re-triggers these same Manager() calls
+# recursively and raises RuntimeError before the bootstrap even finishes.
+# "fork" never needs that re-import, so it stays safe regardless of how
+# nctoolkit is invoked (as a library, or as/from a __main__ script).
+_mp_fork_ctx = mp.get_context("fork")
+Manager = _mp_fork_ctx.Manager
 
 nc_safe_par = Manager().list()
 temp_dirs_par = Manager().list()

@@ -69,8 +69,10 @@ if True:
 
         if platform.system() == "Linux":
             import multiprocessing as mp
+            mp_ctx = mp.get_context("fork")
         else:
            import multiprocess as mp
+           mp_ctx = mp
         nc.options(parallel = True)
         n_cores = mp.cpu_count()
         ensemble = nc.open_data("data/ensemble/*.nc")
@@ -78,7 +80,7 @@ if True:
         ensemble = nc.create_ensemble("data/ensemble")
         target_list = []
         results = dict()
-        pool = mp.Pool(n_cores)
+        pool = mp_ctx.Pool(n_cores)
         for ff in ensemble:
             temp = pool.apply_async(process_chain, [ff])
             results[ff] = temp
@@ -96,7 +98,8 @@ if True:
         nc.options(cores = 1)
 
 
-test_parallel()
+if __name__ == "__main__":
+    test_parallel()
 
 
 

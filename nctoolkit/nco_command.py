@@ -58,7 +58,7 @@ def nco_command(self, command=None, ensemble=False):
     new_commands = []
 
     if cores > 1:
-        pool = multiprocessing.Pool(cores)
+        pool = multiprocessing.get_context("fork").Pool(cores)
         target_list = []
         results = dict()
     else:
