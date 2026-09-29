@@ -33,8 +33,8 @@ def nc_times(ff):
         return cdo_result
     except:
         try:
-            ds = xr.open_dataset(ff) 
-            times = list(ds.time.values)
+            with xr.open_dataset(ff) as ds:
+                times = list(ds.time.values)
             return times
         except:
             return cdo_result

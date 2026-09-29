@@ -75,15 +75,15 @@ def check(self):
     try:
         the_warns = []
         for ff in self:
-            dataset = Dataset(ff)
-            times = [x for x in dataset.variables.keys() if "time" in x]
-            if len(times) > 0:
-                for tt in times:
-                    time_var = dataset.variables[tt][:]
-                    if "int" in str(time_var.dtype):
-                        the_warns.append(
-                            f"{tt} has integer data type. Consider setting it to double using as_double"
-                        )
+            with Dataset(ff) as dataset:
+                times = [x for x in dataset.variables.keys() if "time" in x]
+                if len(times) > 0:
+                    for tt in times:
+                        time_var = dataset.variables[tt][:]
+                        if "int" in str(time_var.dtype):
+                            the_warns.append(
+                                f"{tt} has integer data type. Consider setting it to double using as_double"
+                            )
 
         if len(the_warns) > 0:
             the_warns = list(set(the_warns))
@@ -110,11 +110,11 @@ def check(self):
             for ff in self:
                 version = ""
                 try:
-                    ds = xr.open_dataset(ff, decode_times=False)
-                    if "Conventions" not in list(ds.attrs.keys()):
-                        print(f"No CF-conventions in {ff}")
-                    else:
-                        version = ds.attrs["Conventions"].split("-")[1]
+                    with xr.open_dataset(ff, decode_times=False) as ds:
+                        if "Conventions" not in list(ds.attrs.keys()):
+                            print(f"No CF-conventions in {ff}")
+                        else:
+                            version = ds.attrs["Conventions"].split("-")[1]
                 except:
                     warnings.warn(
                         "Note: there are issues opening this file using xarray. You may want to look closely to see if there are formatting issues that will have negative downstream impacts!"

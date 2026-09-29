@@ -383,8 +383,8 @@ def as_type(self, x):
     if not isinstance(x, dict):
         raise ValueError("Please provide a dictionary")
 
-    ds = xr.open_dataset(self[0])
-    the_vars = ds.variables
+    with xr.open_dataset(self[0]) as ds:
+        the_vars = list(ds.variables)
 
     for xx in x.keys():
         if xx not in the_vars:

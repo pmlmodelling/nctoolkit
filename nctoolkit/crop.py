@@ -120,7 +120,8 @@ def crop(self, lon=[-180, 180], lat=[-90, 90], nco=False, nco_vars=None):
 
         # figure out if the unit is degrees east
 
-        max_lon = xr.open_dataset(ff, decode_times=False)[lon_name].values.max()
+        with xr.open_dataset(ff, decode_times=False) as ds_lon:
+            max_lon = ds_lon[lon_name].values.max()
 
         if lon != [-180, 180] and max_lon > 180:
             if lon[0] < 0:

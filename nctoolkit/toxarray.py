@@ -67,9 +67,11 @@ def to_xarray(self, decode_times=True, **kwargs):
     if cdo_times is False:
         try:
             if len(self1) == 1:
-                test = xr.open_dataset(self1.current[0], decode_times=decode_times)
+                with xr.open_dataset(self1.current[0], decode_times=decode_times):
+                    pass
             else:
-                test = xr.open_mfdataset(self1.current, decode_times=decode_times)
+                with xr.open_mfdataset(self1.current, decode_times=decode_times):
+                    pass
         except Exception as e:
             cdo_times = True
 

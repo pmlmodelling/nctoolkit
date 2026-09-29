@@ -440,12 +440,11 @@ def pub_plot(
     # set data projection
     # here a Lambert conformal is used, more projections can be found here https://scitools.org.uk/cartopy/docs/v0.15/crs/projections.html
 
-    input_file = Dataset(ds1[0])
-
     # read the coordinates
     if not mesh:
-        lat = input_file.variables[lat_name][:]
-        lon = input_file.variables[lon_name][:]
+        with Dataset(ds1[0]) as input_file:
+            lat = input_file.variables[lat_name][:]
+            lon = input_file.variables[lon_name][:]
     else:
         lon = ds_xr["nav_lon"].values
         lat = ds_xr["nav_lat"].values
@@ -527,14 +526,16 @@ def pub_plot(
 
     # read the values. the array is squeezed to remove the temporal dimension that has length 1
     if quiver:
-        u = input_file.variables[u][:].squeeze()
-        v = input_file.variables[v][:].squeeze()
+        with Dataset(ds1[0]) as input_file:
+            u = input_file.variables[u][:].squeeze()
+            v = input_file.variables[v][:].squeeze()
 
     if limits is None:
         limits = [None, None]
 
     if not quiver:
-        values = input_file.variables[ds1.variables[0]][:].squeeze()
+        with Dataset(ds1[0]) as input_file:
+            values = input_file.variables[ds1.variables[0]][:].squeeze()
 
         if limits is not None:
             if limits[0] is None:
