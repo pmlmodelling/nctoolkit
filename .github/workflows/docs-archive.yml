@@ -62,9 +62,12 @@ jobs:
 
           mkdir -p "$dest"
           # Only the API reference is archived - see the file-level comment
-          # above for why.
+          # above for why. Copy just the assets that page uses (css, js,
+          # img); assets/plots alone is ~80 MB and assets/cheatsheet isn't
+          # linked from it, so neither belongs in every snapshot.
           cp docs-site/api.html "$dest"/
-          cp -r docs-site/assets "$dest"/
+          mkdir -p "$dest/assets"
+          cp -r docs-site/assets/css docs-site/assets/js docs-site/assets/img "$dest/assets/"
 
           # Simplify the nav down to just "Version history" (every other
           # page it used to link to isn't in this snapshot), and repoint any
