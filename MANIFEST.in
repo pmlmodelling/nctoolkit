@@ -1,28 +1,30 @@
-include MANIFEST.in
 include LICENSE
 include README.md
+include requirements.txt
 include setup.py
-include requirements.txt 
-exclude .gitattributes 
-exclude build-conda-package 
-#
-#
-#graft nctoolkit
-#
-#
-global-exclude *.bz2
-recursive-exclude docs *
-recursive-exclude tests *
-recursive-exclude tutorials *
-recursive-exclude nctoolkit.egg-info *
-recursive-exclude .github *
-global-exclude docs/*
+include pyproject.toml
+
+# Only the package itself belongs in the sdist. Everything else in the repo
+# (docs, the versioned docs archive, example data, tests, ...) is excluded so
+# the sdist stays far below PyPI's 100 MiB file size limit.
+prune docs
+prune docs-site
+prune data
+prune testing
+prune tests
+prune benchmarks
+prune analytics
+prune cheatsheet
+prune checklists
+prune cdo_installers
+prune conda.recipe
+prune website-scripts
+prune build
+prune .github
+prune .circleci
+prune nctoolkit.egg-info
 global-exclude *.nc
-global-exclude *.sh
-global-exclude *.rst
-global-exclude *.yml
-global-exclude *.yaml
-global-exclude *.txt
-global-exclude .coveragerc
-global-exclude .gitignore
-include requirements.txt 
+global-exclude *.ipynb
+global-exclude *.bz2
+global-exclude __pycache__
+global-exclude *.py[cod]

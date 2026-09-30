@@ -46,21 +46,20 @@ extras_require["complete"] = ["geoviews", "rioxarray", "cfchecker", "geocube", "
 REQUIREMENTS = [i.strip() for i in open("requirements.txt").readlines()]
 
 setup(name='nctoolkit',
-      version='1.3.5',
+      version='1.3.6',
       description=DESCRIPTION,
-      description_content_type='text/plain',
       long_description=LONG_DESCRIPTION,
       long_description_content_type='text/plain',
-      python_requires='>=3.6.1',
+      python_requires='>=3.10',
       classifiers=[
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Operating System :: POSIX :: Linux",
         "Operating System :: MacOS",
-        'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',
         'Programming Language :: Python :: 3.12',
+        'Programming Language :: Python :: 3.13',
+        'Programming Language :: Python :: 3.14',
     ],
 
       project_urls=PROJECT_URLS,
@@ -70,11 +69,6 @@ setup(name='nctoolkit',
       author_email='rwi@pml.ac.uk',
 
       packages = ["nctoolkit"],
-      setup_requires=[
-        'setuptools',
-        'setuptools-git',
-        'wheel',
-    ],
       install_requires = REQUIREMENTS,
       extras_require = extras_require,
       zip_safe=False)
