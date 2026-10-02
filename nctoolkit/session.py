@@ -129,6 +129,26 @@ def get_warnings():
     return session_warnings[:]
 
 
+# cdo processes currently running on behalf of this process, so they can be
+# killed if nctoolkit is terminated rather than left running (and writing to
+# temp files) after Python has gone
+active_cdo = set()
+
+
+def kill_active_cdo():
+    """
+    Function to kill any cdo processes started by this process
+    """
+    import signal
+
+    for proc in list(active_cdo):
+        try:
+            os.killpg(proc.pid, signal.SIGKILL)
+        except (OSError, ProcessLookupError):
+            pass
+    active_cdo.clear()
+
+
 def session_files():
     """
     Function to return the session files

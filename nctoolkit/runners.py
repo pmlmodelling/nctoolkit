@@ -15,7 +15,8 @@ from nctoolkit.session import (
     append_safe,
     remove_safe,
     get_protected,
-    session_warnings
+    session_warnings,
+    active_cdo,
 )
 from nctoolkit.temp_file import temp_file
 
@@ -120,14 +121,7 @@ def run_nco(command, target, out_file=None, overwrite=False):
                 target = new_target
                 append_safe(target)
 
-    out = subprocess.Popen(
-        command,
-        shell=True,
-        stdin=subprocess.PIPE,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-    )
-    result, ignore = out.communicate()
+    out, result = run_shell(command)
 
     if "(Abort)" in str(result):
         raise ValueError(
@@ -142,14 +136,7 @@ def run_nco(command, target, out_file=None, overwrite=False):
             remove_safe(target)
             target = new_target
 
-            out = subprocess.Popen(
-                command,
-                shell=True,
-                stdin=subprocess.PIPE,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-            )
-            result1, ignore = out.communicate()
+            out, result1 = run_shell(command)
             if "ERROR" in str(result1):
                 remove_safe(target)
                 raise ValueError(
@@ -176,6 +163,38 @@ def run_nco(command, target, out_file=None, overwrite=False):
         session_info["latest_size"] = os.path.getsize(target)
 
     return target
+
+
+def run_shell(command):
+    """
+    Run a cdo command in its own process group and return (process, output)
+
+    The process group is registered in session.active_cdo while it runs. If
+    anything interrupts the wait (KeyboardInterrupt, an exception, or the
+    SIGTERM handler via clean_all) the whole group is killed, so cdo can't
+    keep running - and keep writing a temp file - after nctoolkit has stopped.
+    """
+    out = subprocess.Popen(
+        command,
+        shell=True,
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        start_new_session=True,
+    )
+    active_cdo.add(out)
+    try:
+        result, ignore = out.communicate()
+    except BaseException:
+        try:
+            os.killpg(out.pid, signal.SIGKILL)
+        except (OSError, ProcessLookupError):
+            pass
+        out.wait()
+        raise
+    finally:
+        active_cdo.discard(out)
+    return out, result
 
 
 def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision=None):
@@ -221,15 +240,7 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
         raise ValueError("The command does not start with cdo!")
 
     append_safe(target)
-    out = subprocess.Popen(
-        command,
-        shell=True,
-        stdin=subprocess.PIPE,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-    )
-    out.wait()
-    result, ignore = out.communicate()
+    out, result = run_shell(command)
 
     # If it is a generic grid, it's better to not throw the CDO error which might be confusing.
     if "generic" in result.decode("utf-8").lower():
@@ -267,15 +278,7 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
         command = command.replace(target, new_target)
         target = new_target
 
-        out = subprocess.Popen(
-            command,
-            shell=True,
-            stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-        )
-        out.wait()
-        result, ignore = out.communicate()
+        out, result = run_shell(command)
 
     if "Use the CDO option -b F32" in (result.decode("utf-8")):
         command_chunks = command.split(" ")
@@ -293,15 +296,7 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
             command = command.replace("cdo ", "cdo -b F64 ")
         command
 
-        out = subprocess.Popen(
-            command,
-            shell=True,
-            stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-        )
-        out.wait()
-        result, ignore = out.communicate()
+        out, result = run_shell(command)
 
     if out_file is not None:
         if "HDF5 library version mismatched error" in str(result):
@@ -490,15 +485,7 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
                     "HDF error when running CDO. Check if files are corrupt using the is_corrupt method, and consider running the check method"
                 )
 
-            out = subprocess.Popen(
-                command,
-                shell=True,
-                stdin=subprocess.PIPE,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-            )
-            out.wait()
-            result1, ignore = out.communicate()
+            out, result1 = run_shell(command)
             if (
                 (str(result1).startswith("b'Error"))
                 or ("HDF error" in str(result1))

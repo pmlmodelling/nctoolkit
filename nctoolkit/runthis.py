@@ -124,6 +124,7 @@ def run_this(os_command, self, output="one", out_file=None, suppress=False):
     self._ncommands += 1
 
     cores = session_info["cores"]
+    pool = None
 
     # if len(self) == 1:
     #     if cores > 1:
@@ -154,11 +155,7 @@ def run_this(os_command, self, output="one", out_file=None, suppress=False):
                     os_command = os_command.replace("  ", " ")
 
                 if cores > 1:
-                    original_sigint_handler = signal.signal(
-                        signal.SIGTERM, signal.SIG_IGN
-                    )
                     pool = mp.get_context('fork').Pool(cores)
-                    signal.signal(signal.SIGTERM, original_sigint_handler)
 
                     target_list = []
                     results = dict()
@@ -297,6 +294,9 @@ def run_this(os_command, self, output="one", out_file=None, suppress=False):
                         if progress_bar:
                             if not suppress:
                                 pbar.update(1)
+                    pool.close()
+                    pool.join()
+                    pool = None
                     for mm in get_warnings():
                         warnings.warn(mm)
                         if mm in session_warnings:
@@ -457,5 +457,7 @@ def run_this(os_command, self, output="one", out_file=None, suppress=False):
 
                 self._format = None
     except Exception as e:
+        if pool is not None:
+            pool.terminate()
         self.reset()
         raise ValueError(e)
