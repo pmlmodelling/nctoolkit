@@ -264,6 +264,36 @@ li { margin-bottom: 0.45em; }
 }
 .icon-btn:hover { border-color: var(--teal-500); color: var(--teal-600); }
 .icon-btn svg { width: 18px; height: 18px; }
+button.icon-btn { background: none; cursor: pointer; padding: 0; font: inherit; }
+button.icon-btn[hidden] { display: none; }
+
+/* ---------------------------- site search (Pagefind) -------------------- */
+.search-dialog {
+  width: min(680px, calc(100vw - 2rem));
+  max-height: 80vh;
+  margin: 10vh auto auto;
+  padding: 1.25rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md, 12px);
+  background: var(--bg);
+  box-shadow: 0 20px 50px rgba(11, 37, 48, 0.25);
+  overflow: auto;
+  --pagefind-ui-scale: 0.95;
+  --pagefind-ui-primary: var(--teal-600);
+  --pagefind-ui-text: var(--ink-soft);
+  --pagefind-ui-background: var(--bg);
+  --pagefind-ui-border: var(--line);
+  --pagefind-ui-tag: var(--teal-50);
+  --pagefind-ui-border-width: 1px;
+  --pagefind-ui-border-radius: 8px;
+  --pagefind-ui-font: Inter, system-ui, sans-serif;
+}
+.search-dialog::backdrop { background: rgba(8, 34, 42, 0.55); }
+.search-dialog .pagefind-ui__result-excerpt mark,
+.search-dialog .pagefind-ui__result-title mark { background: var(--teal-100); color: var(--ink); border-radius: 2px; }
+.search-dialog .pagefind-ui__search-input { border-color: var(--line); color: var(--ink); font-weight: 500; }
+.search-dialog .pagefind-ui__search-input:focus { border-color: var(--teal-500); outline: 2px solid var(--teal-200); }
+.search-dialog .pagefind-ui__search-clear { color: var(--teal-700); border-color: var(--line); background: var(--bg); }
 
 /* ---------------------------- nav dropdown (mega-menu) ------------------ */
 /* NCToolkit's docs cover a lot more ground than a flat nav row can hold, so

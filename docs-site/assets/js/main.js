@@ -191,6 +191,94 @@
     versionHistoryEmpty.hidden = versionHistoryList.children.length > 0;
   }
 
+  /* ---------- site search (Pagefind) ----------
+     The index is built in CI (see .github/workflows/pages.yml) and is not
+     committed, so the button only appears once pagefind/ is actually being
+     served. Archived snapshots under /archive/ have no index of their own. */
+  var navActions = document.querySelector(".nav-actions");
+  var mainScript = document.querySelector('script[src$="assets/js/main.js"]');
+  if (navActions && mainScript && location.pathname.indexOf("/archive/") === -1) {
+    var pagefindBase = new URL("../../pagefind/", mainScript.src).href;
+    var searchDialog = null;
+    var searchReady = false;
+
+    var searchBtn = document.createElement("button");
+    searchBtn.type = "button";
+    searchBtn.className = "icon-btn search-btn";
+    searchBtn.hidden = true;
+    searchBtn.setAttribute("aria-label", "Search the docs");
+    searchBtn.title = "Search (press /)";
+    searchBtn.innerHTML =
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>';
+    navActions.insertBefore(searchBtn, navActions.firstChild);
+
+    var loadPagefindUI = function () {
+      return new Promise(function (resolve, reject) {
+        var css = document.createElement("link");
+        css.rel = "stylesheet";
+        css.href = pagefindBase + "pagefind-ui.css";
+        document.head.appendChild(css);
+        var js = document.createElement("script");
+        js.src = pagefindBase + "pagefind-ui.js";
+        js.onload = resolve;
+        js.onerror = reject;
+        document.head.appendChild(js);
+      });
+    };
+
+    var buildDialog = function () {
+      if (!searchDialog) {
+        searchDialog = document.createElement("dialog");
+        searchDialog.className = "search-dialog";
+        searchDialog.innerHTML = '<div id="search-ui"></div>';
+        document.body.appendChild(searchDialog);
+        searchDialog.addEventListener("click", function (e) {
+          if (e.target === searchDialog) searchDialog.close();
+        });
+        new PagefindUI({
+          element: "#search-ui",
+          showImages: false,
+          showSubResults: true,
+          resetStyles: false,
+          pageSize: 8
+        });
+      }
+    };
+
+    var openSearch = function () {
+      var ready = window.PagefindUI ? Promise.resolve() : loadPagefindUI();
+      ready.then(function () {
+        buildDialog();
+        searchDialog.showModal();
+        var input = searchDialog.querySelector("input");
+        if (input) input.focus();
+      });
+    };
+
+    searchBtn.addEventListener("click", function () {
+      if (searchReady) openSearch();
+    });
+
+    document.addEventListener("keydown", function (e) {
+      var tag = (e.target.tagName || "").toLowerCase();
+      var typing = tag === "input" || tag === "textarea" || e.target.isContentEditable;
+      var wantsSearch = (e.key === "/" && !typing) ||
+        ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k");
+      if (wantsSearch && searchReady) {
+        e.preventDefault();
+        openSearch();
+      }
+    });
+
+    fetch(pagefindBase + "pagefind-entry.json", { method: "HEAD" })
+      .then(function (res) {
+        if (!res.ok) throw new Error("no search index");
+        searchReady = true;
+        searchBtn.hidden = false;
+      })
+      .catch(function () { /* no index (e.g. local preview): leave search off */ });
+  }
+
   /* ---------- back to top ---------- */
   var backToTop = document.querySelector(".back-to-top");
   if (backToTop) {

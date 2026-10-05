@@ -15,3 +15,6 @@ tests/__pycache__/
 
 # local scripts that regenerate figures for docs-site
 website-scripts/
+
+# generated search index (built in CI by pages.yml)
+docs-site/pagefind/

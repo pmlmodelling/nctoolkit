@@ -2,7 +2,8 @@
 
 Source for the NCToolkit marketing/documentation site (`docs-site/` in the
 main nctoolkit repository), published to GitHub Pages. Plain static
-HTML/CSS/JS — no build step, no dependencies. Layout, theming and the
+HTML/CSS/JS — no build step to author or preview it (the only generated
+artifact is the search index, built in CI - see "Search" below). Layout, theming and the
 archiving approach are carried over from the sister project
 [OceanVal's docs site](https://github.com/pmlmodelling/oceanVal/tree/main/docs-site),
 for a consistent look across PML's Marine Systems Modelling group tools.
@@ -146,6 +147,31 @@ OceanVal, so a proper landing page (and the User Guide's card-grid index,
 that omission was specific to OceanVal's report-output pages, not something
 to copy blindly.
 
+## Search
+
+Site search uses [Pagefind](https://pagefind.app): a static, client-side
+index, so there's no server or third-party service involved. The index lives
+in `pagefind/` (gitignored) and is built by a step in
+`.github/workflows/pages.yml` right before the site is uploaded:
+
+```sh
+npx -y pagefind@1.5.2 --site docs-site --glob "*.html" \
+  --exclude-selectors ".docs-toc" --exclude-selectors ".back-to-top"
+```
+
+- `--glob "*.html"` indexes only the top-level pages. `archive/` snapshots
+  (stale copies of `api.html`) and the multi-MB `assets/plots/*.html` exports
+  are deliberately left out.
+- Pagefind skips `<nav>`, `<header>` and `<footer>` by default; the extra
+  selectors drop the in-page TOC and the back-to-top button.
+- The search button isn't in the page markup. `assets/js/main.js` injects it
+  into `.nav-actions` (so a header change doesn't need a 27-file edit), and
+  only if `pagefind/pagefind-entry.json` is actually being served. It also
+  opens with `/` or Ctrl/Cmd+K, loads Pagefind's UI lazily on first use, and
+  does nothing under `/archive/`.
+- Styling is the `.search-dialog` block in `style.css` (Pagefind's UI
+  variables mapped onto the site's design tokens).
+
 ## Previewing locally
 
 ```sh
@@ -153,6 +179,10 @@ cd docs-site
 python3 -m http.server 8000
 # then open http://localhost:8000
 ```
+
+The search button stays hidden in a plain preview because the index doesn't
+exist yet. To try search, build it first (from the repo root, the command in
+"Search" above), then serve as above.
 
 ## Deploying to GitHub Pages
 

@@ -40,6 +40,17 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v5
+      - name: Build search index
+        # Writes docs-site/pagefind/ (client-side search index + UI).
+        # --glob "*.html" indexes only the top-level pages: not the
+        # archive/ snapshots (stale duplicates of api.html) nor the huge
+        # Bokeh exports in assets/plots/.
+        run: >
+          npx -y pagefind@1.5.2
+          --site docs-site
+          --glob "*.html"
+          --exclude-selectors ".docs-toc"
+          --exclude-selectors ".back-to-top"
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
