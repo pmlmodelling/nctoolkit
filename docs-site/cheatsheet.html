@@ -152,7 +152,42 @@
       </div>
       <div class="option-card">
         <div class="option-card__head"><h4>Summarising the contents</h4><a class="option-card__api" href="api.html#contents">contents</a></div>
-        <div class="code-block"><pre>ds.contents</pre></div>
+        <div class="code-block"><pre>ds.contents
+<span class="tok-com"># a table with one row per variable and columns:
+# variable, ntimes, npoints, nlevels,
+# long_name, unit, data_type, fill_value</span></pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Listing the long names of the variables</h4><a class="option-card__api" href="api.html#contents">contents</a></div>
+        <div class="code-block"><pre>ds.contents.long_name</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Listing the units of the variables</h4><a class="option-card__api" href="api.html#contents">contents</a></div>
+        <div class="code-block"><pre>ds.contents.unit</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Listing the variable names and long names together</h4><a class="option-card__api" href="api.html#contents">contents</a></div>
+        <div class="code-block"><pre>ds.contents[[<span class="tok-str">"variable"</span>, <span class="tok-str">"long_name"</span>]]</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Listing the data types of the variables</h4><a class="option-card__api" href="api.html#contents">contents</a></div>
+        <div class="code-block"><pre>ds.contents.data_type</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Listing the number of time steps in each variable</h4><a class="option-card__api" href="api.html#contents">contents</a></div>
+        <div class="code-block"><pre>ds.contents.ntimes</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Listing the number of grid points in each variable</h4><a class="option-card__api" href="api.html#contents">contents</a></div>
+        <div class="code-block"><pre>ds.contents.npoints</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Listing the number of levels in each variable</h4><a class="option-card__api" href="api.html#contents">contents</a></div>
+        <div class="code-block"><pre>ds.contents.nlevels</pre></div>
+      </div>
+      <div class="option-card">
+        <div class="option-card__head"><h4>Listing the fill values of the variables</h4><a class="option-card__api" href="api.html#contents">contents</a></div>
+        <div class="code-block"><pre>ds.contents.fill_value</pre></div>
       </div>
       <div class="option-card">
         <div class="option-card__head"><h4>Listing the years</h4><a class="option-card__api" href="api.html#years">years</a></div>
