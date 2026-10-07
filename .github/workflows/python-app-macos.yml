@@ -1,5 +1,5 @@
-# This workflow will install Python dependencies, run tests and lint with a single version of Python
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+# Runs the repo's tests against the released nctoolkit 1.2.7 from conda-forge
+# (not the code in this checkout).
 
 name: macOS tests
 
@@ -24,27 +24,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: mamba-org/setup-micromamba@v1
-      # - uses: mamba-org/provision-with-micromamba@v15
-        env:
-          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
         with:
           micromamba-version: '1.4.5-0'
           environment-name: foo
-          create-args: nctoolkit=1.2.7 cdo=2.4.0 nco cartopy python=3.11
+          # nctoolkit's conda package pulls in nco, cartopy, pandas, xarray etc.
+          # rioxarray is only needed by the open_geotiff test.
+          create-args: nctoolkit=1.2.7 cdo=2.4.0 pytest rioxarray python=3.11
           init-shell: >-
             bash
           cache-environment: true
           post-cleanup: 'all'
-      - name: Install test dependencies
-        # nctoolkit itself comes from conda-forge (create-args above), so
-        # there is deliberately no `pip install .` here.
-        shell: bash -l {0}
-        run: |
-          pip install numpy
-          pip install dask
-          pip install pandas
-          pip install rioxarray
-          pip install pytest
 
       - name: Check the conda-forge release is the one under test
         # Run from outside the checkout, so the repo's nctoolkit/ source
@@ -54,11 +43,9 @@ jobs:
           python -c "import nctoolkit, sys; print(nctoolkit.__version__, nctoolkit.__file__); assert nctoolkit.__version__ == '1.2.7'; assert 'site-packages' in nctoolkit.__file__"
 
       - name: Test with pytest
-        # Plain `pytest`, not `python -m pytest` / `coverage run -m pytest`:
-        # `-m` puts the current directory on sys.path, which would import
-        # the checkout's nctoolkit/ source instead of the conda-forge
-        # package. No coverage/Codecov step either, since it would report
-        # on 1.2.7 rather than the code in the repo.
+        # Plain `pytest`, not `python -m pytest`: `-m` puts the current
+        # directory on sys.path, which would import the checkout's nctoolkit/
+        # source instead of the conda-forge package.
         run: |
           python testing/test_parallel.py
           pytest tests/test*.py
