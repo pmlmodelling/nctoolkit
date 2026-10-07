@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import xarray as xr
 import os, pytest
+import platform
 import re
 
 
@@ -146,6 +147,7 @@ class TestCrop:
         with pytest.raises(TypeError):
             ds.pub_plot(grid_labels = "no")
 
+    @pytest.mark.skipif(platform.system() == "Darwin", reason="panel_plot tests are not relevant on macOS")
     def test_panel_plot(self):
         import matplotlib.pyplot as plt
         import matplotlib.image as mpimg
