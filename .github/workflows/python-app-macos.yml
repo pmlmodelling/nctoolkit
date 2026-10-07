@@ -16,7 +16,10 @@ on:
 jobs:
   build:
 
-    runs-on: "macos-latest"
+    # conda-forge only has an Intel (osx-64) build of nctoolkit 1.2.7; the
+    # osx-arm64 channel stops at 0.2.2, so macos-latest (Apple Silicon) can't
+    # install it.
+    runs-on: "macos-15-intel"
 
     steps:
       - uses: actions/checkout@v4
@@ -27,39 +30,35 @@ jobs:
         with:
           micromamba-version: '1.4.5-0'
           environment-name: foo
-          create-args: cdo=2.4.0 nco cartopy python=3.11
+          create-args: nctoolkit=1.2.7 cdo=2.4.0 nco cartopy python=3.11
           init-shell: >-
             bash
           cache-environment: true
           post-cleanup: 'all'
-      - name: Install dependencies
+      - name: Install test dependencies
+        # nctoolkit itself comes from conda-forge (create-args above), so
+        # there is deliberately no `pip install .` here.
         shell: bash -l {0}
         run: |
-          pip install numpy 
+          pip install numpy
           pip install dask
-          python -m pip install .
-          # pip install .
           pip install pandas
           pip install rioxarray
           pip install pytest
-          #pip install textract
-          pip install pytest-cov
-          #pip install pytest-xdist
-          #pip install pytest-cov
-          pip install coverage 
+
+      - name: Check the conda-forge release is the one under test
+        # Run from outside the checkout, so the repo's nctoolkit/ source
+        # directory can't shadow the installed package.
+        working-directory: ${{ runner.temp }}
+        run: |
+          python -c "import nctoolkit, sys; print(nctoolkit.__version__, nctoolkit.__file__); assert nctoolkit.__version__ == '1.2.7'; assert 'site-packages' in nctoolkit.__file__"
 
       - name: Test with pytest
-        #shell: bash -l {0}
+        # Plain `pytest`, not `python -m pytest` / `coverage run -m pytest`:
+        # `-m` puts the current directory on sys.path, which would import
+        # the checkout's nctoolkit/ source instead of the conda-forge
+        # package. No coverage/Codecov step either, since it would report
+        # on 1.2.7 rather than the code in the repo.
         run: |
           python testing/test_parallel.py
-          #coverage run -m pytest -n auto tests/test*.py
-          coverage run -m pytest tests/test*.py
-          coverage report
-          coverage xml
-
-
-      - name: Upload Coverage to Codecov
-        uses: codecov/codecov-action@v5
-        env: 
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-
+          pytest tests/test*.py
