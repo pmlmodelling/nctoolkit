@@ -1,12 +1,17 @@
 import copy
-import multiprocessing
 import warnings
 
 from nctoolkit.cleanup import cleanup
 from nctoolkit.flatten import str_flatten
 from nctoolkit.runthis import run_nco
 from nctoolkit.temp_file import temp_file
-from nctoolkit.session import remove_safe, session_info, append_safe, get_safe
+from nctoolkit.session import (
+    remove_safe,
+    session_info,
+    append_safe,
+    get_safe,
+    fork_pool,
+)
 
 
 def nco_command(self, command=None, ensemble=False):
@@ -57,26 +62,34 @@ def nco_command(self, command=None, ensemble=False):
     new_files = []
     new_commands = []
 
-    if cores > 1:
-        pool = multiprocessing.get_context("fork").Pool(cores)
-        target_list = []
-        results = dict()
-    else:
-        target_list = []
+    target_list = []
 
     if (ensemble is False) or (len(self) == 1):
         if cores > 1:
-            for ff in self:
-                target = temp_file(".nc")
+            targets = []
+            try:
+                with fork_pool(cores) as pool:
+                    results = []
+                    for ff in self:
+                        target = temp_file(".nc")
 
-                append_safe(target)
+                        append_safe(target)
+                        targets.append(target)
 
-                the_command = f"{command} {ff} {target}"
-                the_command = the_command.replace("  ", " ")
+                        the_command = f"{command} {ff} {target}"
+                        the_command = the_command.replace("  ", " ")
 
-                temp = pool.apply_async(run_nco, [the_command, target])
-                results[ff] = temp
-                new_commands.append(the_command)
+                        results.append(
+                            pool.apply_async(run_nco, [the_command, target])
+                        )
+                        new_commands.append(the_command)
+
+                    for v in results:
+                        target_list.append(v.get())
+            except BaseException:
+                for target in targets:
+                    remove_safe(target)
+                raise
 
         else:
             for ff in self:
@@ -123,11 +136,6 @@ def nco_command(self, command=None, ensemble=False):
         self._hold_history = copy.deepcopy(self.history)
 
     if cores > 1 and ensemble is False:
-        pool.close()
-        pool.close()
-        for k, v in results.items():
-            target_list.append(v.get())
-
         self.current = copy.deepcopy(target_list)
         for cc in new_commands:
             self.history.append(cc)

@@ -15,6 +15,29 @@ import multiprocessing as mp
 _mp_fork_ctx = mp.get_context("fork")
 Manager = _mp_fork_ctx.Manager
 
+
+from contextlib import contextmanager
+
+
+@contextmanager
+def fork_pool(cores):
+    """
+    Context manager giving a fork Pool that is always shut down and joined
+
+    A pool left to the garbage collector is terminated and then joined with no
+    timeout, which hangs for ever if a worker survives SIGTERM. The stdlib
+    `with Pool()` only terminates, so close/join explicitly here.
+    """
+    pool = _mp_fork_ctx.Pool(cores)
+    try:
+        yield pool
+    except BaseException:
+        pool.terminate()
+        pool.join()
+        raise
+    pool.close()
+    pool.join()
+
 nc_safe_par = Manager().list()
 temp_dirs_par = Manager().list()
 nc_protected_par = Manager().list()

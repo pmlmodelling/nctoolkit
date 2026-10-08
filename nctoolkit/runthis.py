@@ -459,5 +459,13 @@ def run_this(os_command, self, output="one", out_file=None, suppress=False):
     except Exception as e:
         if pool is not None:
             pool.terminate()
+            pool.join()
+            pool = None
         self.reset()
         raise ValueError(e)
+    finally:
+        # anything not handled above (e.g. KeyboardInterrupt) must not leave
+        # the pool to the garbage collector
+        if pool is not None:
+            pool.terminate()
+            pool.join()
