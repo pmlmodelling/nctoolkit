@@ -12,6 +12,7 @@
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/pmlmodelling/nctoolkit/issues) 
 [![codecov](https://codecov.io/gh/pmlmodelling/nctoolkit/branch/master/graph/badge.svg)](https://codecov.io/gh/pmlmodelling/nctoolkit)
 ![GitHub Testing](https://github.com/pmlmodelling/nctoolkit/actions/workflows/python-app-linux.yml/badge.svg)
+![GitHub Testing macOS](https://github.com/pmlmodelling/nctoolkit/actions/workflows/python-app-macos.yml/badge.svg)
 [![DOI](https://joss.theoj.org/papers/10.21105/joss.05494/status.svg)](https://doi.org/10.21105/joss.05494)
 
 
@@ -21,7 +22,7 @@
 
 # NCToolkit - A Python package for netCDF analysis and post-processing 
 
-NCToolkit is a comprehensive Python (3.8 and above) package for analyzing netCDF data on Linux.
+NCToolkit is a comprehensive Python (3.8 and above) package for analyzing netCDF data on Linux and macOS.
 
 Core abilities include:
    - Clipping to spatial regions
@@ -76,7 +77,7 @@ conda install -c conda-forge nco
 
 If you want to install CDO from source, bash scripts are available [here](https://github.com/pmlmodelling/nctoolkit/tree/master/cdo_installers).
  
-NCToolkit is tested with continuous integration using Circle CI and GitHub Actions (both for Linux). It will not work on Windows platforms today or in future, because of system dependency limitations. 
+NCToolkit is tested with continuous integration using Circle CI and GitHub Actions (on both Linux and macOS). It will not work on Windows platforms today or in future, because of system dependency limitations. 
 
 
 ## Reference and tutorials

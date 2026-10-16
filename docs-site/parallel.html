@@ -69,7 +69,7 @@
 
   <div class="docs-content">
 
-    <p>Two methods of parallel processing are available: carrying out operations on multi-file datasets in parallel, and defining a processing chain in NCToolkit and using Python's <code>multiprocessing</code> package to run it over many files.</p>
+    <p>Two methods of parallel processing are available: carrying out operations on multi-file datasets in parallel, and defining a processing chain in NCToolkit and using Python's <code>multiprocessing</code> package (or <code>multiprocess</code> on macOS) to run it over many files.</p>
 
     <h2 id="multifile">Multi-file datasets in parallel</h2>
     <p>If you have a multi-file dataset, processing the files within it in parallel just needs a core count:</p>
@@ -104,6 +104,8 @@ nc.options(parallel=<span class="tok-kw">True</span>)</pre>
       <div class="code-card__bar"><div class="code-card__dots"><span></span><span></span><span></span></div><span class="code-card__label">python</span></div>
       <pre>ensemble = nc.create_ensemble(<span class="tok-str">"ensemble"</span>)
 <span class="tok-kw">import</span> multiprocessing <span class="tok-kw">as</span> mp
+<span class="tok-com"># on macOS, use:</span>
+<span class="tok-com"># import multiprocess as mp</span>
 <span class="tok-kw">import</span> os
 
 pool = mp.Pool(<span class="tok-num">3</span>)

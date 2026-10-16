@@ -6,7 +6,7 @@ Installation
 How to install nctoolkit
 ---------------------
 
-You will need a Linux operating system for nctoolkit to work. It will not work on Windows or macOS due to system requirements. 
+You will need a Linux or Mac operating system for nctoolkit to work. It will not work on Windows due to system requirements. 
 
 The best and easiest way to install nctoolkit is to use conda. This will install all system dependencies, and nctoolkit will just work out of the box. This can be done as follows::
 

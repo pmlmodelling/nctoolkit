@@ -6,7 +6,8 @@ files, and this includes the ability to process in parallel. Two methods
 of parallel processing are available. First is the ability to carry out
 operations on multi-file datasets in parallel. Second is the ability to
 define a processing chain in nctoolkit, and then use the multiprocessing or multiprocess
-package to process files in parallel using that chain. 
+package to process files in parallel using that chain. The multiprocessing package should
+be used on Linux and the multiprocess package on macOS.
 
 Parallel processing of multi-file datasets
 ------------------------------------------
@@ -29,7 +30,7 @@ Parallel processing using multiprocessing or multiprocess
 A common task is taking a bunch of files in a folder, doing things to
 them, and then saving a modified version of each file in a new folder.
 We want to be able to parallelize that, and we can using the
-multiprocessing package in the usual way.
+multiprocessing package on Linux, or the multiprocess package on macOS, in the usual way.
 
 But first, we need to change the global settings:
 
@@ -83,6 +84,8 @@ function to them and then save the results in a new folder called new.
     # identify files in the ensemble directory 
     ensemble = nc.create_ensemble("ensemble")
     import multiprocessing as mp
+    # on macOS, use:
+    # import multiprocess as mp
     import os
     # create a pool of workers
     pool = mp.Pool(3)
