@@ -2,6 +2,7 @@ import signal
 
 from contextlib import contextmanager
 from nctoolkit.session import session_info
+from nctoolkit.show import nc_variables
 
 def coast_check():
     try:
@@ -90,8 +91,8 @@ def plot(self, vars=None, autoscale=True, out=None, coast=None, **kwargs):
 
 
     if len(self) > 1:
-        vars_1 = nc.nc_variables(self[0] )
-        vars_2 = nc.nc_variables(self[1] )
+        vars_1 = nc_variables(self[0])
+        vars_2 = nc_variables(self[1])
         # check if they have the same variables
         if set(vars_1) != set(vars_2):  
             raise ValueError("Unable to plot multi-file datasets when variables differ across files.") 
