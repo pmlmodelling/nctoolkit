@@ -2,7 +2,15 @@ import glob
 import os
 
 session_info = dict()
-import multiprocessing as mp
+import platform
+
+# macOS needs the `multiprocess` package: the stdlib `multiprocessing` does not
+# work with nctoolkit's internals there. Every other module that needs a pool
+# or a Manager takes `mp` from here, so the choice is made in one place.
+if platform.system() == "Darwin":
+    import multiprocess as mp
+else:
+    import multiprocessing as mp
 
 # Pin to the "fork" start method explicitly. These Manager() servers are
 # created at bare import time, so on Python 3.14+ (where the Linux default

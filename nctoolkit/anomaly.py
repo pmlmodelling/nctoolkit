@@ -6,14 +6,9 @@ from nctoolkit.cleanup import cleanup
 from nctoolkit.runthis import run_cdo, tidy_command
 from nctoolkit.show import nc_years
 from nctoolkit.temp_file import temp_file
-from nctoolkit.session import remove_safe, session_info, nc_safe_par, nc_safe
+from nctoolkit.session import remove_safe, session_info, nc_safe_par, nc_safe, mp
 from nctoolkit.api import options
 from nctoolkit.runners import ann_anomaly
-
-import multiprocessing as mp
-#start = mp.get_start_method()
-#if start != "spawn":
-#    mp.set_start_method("spawn")
 
 
 

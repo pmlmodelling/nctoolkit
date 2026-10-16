@@ -43,9 +43,9 @@ def _stop_workers():
     Terminate multiprocessing children (e.g. ensemble workers) so the cdo
     processes they are running die with them, before temp files are removed
     """
-    import multiprocessing
+    from nctoolkit.session import mp
 
-    children = multiprocessing.active_children()
+    children = mp.active_children()
     for child in children:
         try:
             child.terminate()

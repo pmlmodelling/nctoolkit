@@ -29,10 +29,11 @@ def temp_file(ext=""):
     actual_temp = actual_temp + "/"
     actual_temp = actual_temp.replace("//", "/")
 
+    # The stamp goes on the file name itself, rather than being swapped into
+    # the directory path: tempfile's directory isn't /tmp/ on macOS, so a
+    # path-based replace would silently skip the stamp there.
     target = tempfile.NamedTemporaryFile().name
-    target = target.replace("tmp/", "tmp/" + session_info["stamp"])
-
-    target = actual_temp + os.path.basename(target)
+    target = actual_temp + session_info["stamp"] + os.path.basename(target)
     if not isinstance(ext, str):
         raise TypeError("Extension supplied is not a str")
     if ext.startswith("."):

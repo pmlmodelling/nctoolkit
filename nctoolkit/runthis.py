@@ -5,8 +5,6 @@ import subprocess
 import warnings
 from unittest.mock import patch
 
-import multiprocessing as mp
-
 import signal
 
 from nctoolkit.cleanup import cleanup
@@ -18,6 +16,7 @@ from nctoolkit.session import (
     get_protected,
     get_warnings,
     session_warnings,
+    mp,
 )
 from nctoolkit.temp_file import temp_file
 
