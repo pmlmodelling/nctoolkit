@@ -833,8 +833,9 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
         # detect regex pattern, based on above
         
     for ww in w:
-        if ww.message not in session_warnings:
-            if ignore_warning(str(ww.message)) is False:
-                session_warnings.append(ww.message)
+        item = (ww.category, str(ww.message))
+        if item not in session_warnings:
+            if ignore_warning(item[1]) is False:
+                session_warnings.append(item)
 
     return target

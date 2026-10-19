@@ -1,5 +1,6 @@
 import glob
 import os
+import warnings
 
 session_info = dict()
 import platform
@@ -158,6 +159,21 @@ def get_warnings():
     Slicing gives a plain list without that problem.
     """
     return session_warnings[:]
+
+
+def replay_warnings():
+    """
+    Issue the queued warnings in this process, and remove them from the queue
+
+    Queue items are (category, text) tuples, not Warning instances: those
+    compare by identity, which never survives the pickling that a Manager
+    proxy does. Only the items in the snapshot are deleted, so a warning
+    appended by a pool worker while this runs is kept for the next replay.
+    """
+    pending = get_warnings()
+    del session_warnings[: len(pending)]
+    for category, text in dict.fromkeys(pending):
+        warnings.warn(text, category, stacklevel=2)
 
 
 # cdo processes currently running on behalf of this process, so they can be

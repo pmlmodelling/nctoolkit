@@ -14,8 +14,7 @@ from nctoolkit.session import (
     append_safe,
     remove_safe,
     get_protected,
-    get_warnings,
-    session_warnings,
+    replay_warnings,
     mp,
 )
 from nctoolkit.temp_file import temp_file
@@ -296,10 +295,7 @@ def run_this(os_command, self, output="one", out_file=None, suppress=False):
                     pool.close()
                     pool.join()
                     pool = None
-                    for mm in get_warnings():
-                        warnings.warn(mm)
-                        if mm in session_warnings:
-                            session_warnings.remove(mm)
+                    replay_warnings()
 
                 self.history = copy.deepcopy(new_history)
                 self.current = copy.deepcopy(target_list)
@@ -321,10 +317,7 @@ def run_this(os_command, self, output="one", out_file=None, suppress=False):
 
                 self._format = None
 
-                for mm in get_warnings():
-                    warnings.warn(mm)
-                    if mm in session_warnings:
-                        session_warnings.remove(mm)
+                replay_warnings()
 
                 return None
 
@@ -433,10 +426,7 @@ def run_this(os_command, self, output="one", out_file=None, suppress=False):
                     target = run_cdo(
                         os_command, target, out_file, precision=self._precision
                     )
-                for mm in get_warnings():
-                    warnings.warn(mm)
-                    if mm in session_warnings:
-                        session_warnings.remove(mm)
+                replay_warnings()
 
                 remove_safe(target)
 
