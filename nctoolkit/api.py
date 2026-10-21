@@ -160,8 +160,13 @@ def _move_all(source, target):
     The lists can be plain lists or multiprocessing list proxies. Items are copied
     and then the source is emptied, rather than removing items while looping over
     the source, which would skip every other item.
+
+    Slicing is used to copy, not list(): a multiprocessing list proxy has no
+    __iter__, so list() runs until the manager raises IndexError, and that
+    exception forms a reference cycle which keeps the calling frames, and so
+    DataSets and their temp files, alive until the cyclic collector runs.
     """
-    items = list(source)
+    items = source[:]
     if len(items) > 0:
         target.extend(items)
         del source[:]
@@ -278,7 +283,7 @@ def update_options(kwargs):
                 _move_all(nc_protected, nc_protected_par)
 
             if (kwargs[key] is False) and key == "parallel" and find:
-                for ff in list(temp_dirs_par):
+                for ff in temp_dirs_par[:]:
                     append_tempdirs(ff)
 
                 _move_all(nc_safe_par, nc_safe)
