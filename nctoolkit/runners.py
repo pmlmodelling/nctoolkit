@@ -242,6 +242,23 @@ def run_cdo(command=None, target=None, out_file=None, overwrite=False, precision
     append_safe(target)
     out, result = run_shell(command)
 
+    # CDO 2.6.5 cannot write a history attribute that is too long (roughly over
+    # 32 KB, e.g. when merging hundreds of files). It fails with a nonsensical
+    # allocation size, so retry without a history update.
+    if "resizeBuf" in result.decode("utf-8") and "--no_history" not in command:
+        if os.path.exists(target) and out_file is None:
+            os.remove(target)
+        remove_safe(target)
+
+        new_target = temp_file("nc")
+        append_safe(new_target)
+        command = command.replace(target, new_target).replace(
+            "cdo ", "cdo --no_history ", 1
+        )
+        target = new_target
+
+        out, result = run_shell(command)
+
     # If it is a generic grid, it's better to not throw the CDO error which might be confusing.
     if "generic" in result.decode("utf-8").lower():
         if "unsupported" in result.decode("utf-8").lower():
