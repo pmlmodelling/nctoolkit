@@ -46,7 +46,8 @@ class TestApi2:
         assert tracker.contents.long_name[0] == 'Monthly Means of Global Sea Surface Temperature'
         tracker.assign(sst2 = lambda x: x.sst + 283)
         tracker.run()
-        assert str(tracker.contents.long_name[1]) == "nan"
+        # the missing value is None or nan, depending on the pandas version
+        assert pd.isna(tracker.contents.long_name[1])
 
 
         # check wildcard
