@@ -26,7 +26,9 @@ class TestToxar:
 
         ds = nc.open_data("data/woa18_decav_t01_01.nc", checks = False)
         x = ds.to_xarray().time.values[0]
-        assert str(x) == '1986-01-16T12:00:00.000000'
+        # older xarray/pandas decode times to ns and newer ones to us, so the
+        # number of fractional digits differs
+        assert str(x).startswith('1986-01-16T12:00:00')
 
 
     def test_xarray3(self):
