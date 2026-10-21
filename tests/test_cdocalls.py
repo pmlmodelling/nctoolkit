@@ -3,6 +3,7 @@ import pandas as pd
 import xarray as xr
 import os, pytest
 import subprocess
+from nctoolkit.session import session_info
 
 nc.options(lazy=True)
 
@@ -488,8 +489,13 @@ class TestCalls:
             assert data.history[0] == "cdo -fldsum"
 
             data = nc.open_data(ff, checks = False)
-            data.spatial_percentile(1)
-            assert data.history[0] == "cdo -fldpctl,1"
+            if session_info["cdo"] == "2.6.1":
+                # fldpctl is wrong in CDO 2.6.1, so nctoolkit refuses to use it
+                with pytest.raises(ValueError, match="downgrade CDO"):
+                    data.spatial_percentile(1)
+            else:
+                data.spatial_percentile(1)
+                assert data.history[0] == "cdo -fldpctl,1"
 
         data = nc.open_data(ff, checks = False)
         data.cor_time("sst", "sst")
@@ -677,11 +683,12 @@ class TestCalls:
 
         data = nc.open_data(ff1, checks=False)
         data.vertical_min()
-        assert data.history[0] == "cdo -vertmin"
+        # missing values are swapped for a value valid for the float32 and int32 variables
+        assert data.history[0] == "cdo -setctomiss,2147483647 -vertmin -setmisstoc,2147483647"
 
         data = nc.open_data(ff1, checks=False)
         data.vertical_max()
-        assert data.history[0] == "cdo -vertmax"
+        assert data.history[0] == "cdo -setctomiss,-2147483647 -vertmax -setmisstoc,-2147483647"
 
         data = nc.open_data(ff1, checks=False)
         data.vertical_range()
