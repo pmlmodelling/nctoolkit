@@ -1,3 +1,25 @@
+def check_date(x):
+    """
+    Raise an error if x is not of the form YYYY-MM-DD or YYYY/MM/DD
+
+    Only month and day ranges are checked, as days such as 30 February are
+    valid in some CDO calendars. CDO versions before 2.6.1 silently accepted
+    out of range values, e.g. month 31.
+    """
+    if not isinstance(x, str):
+        raise TypeError(f"{x} is not a str!")
+    parts = x.replace("/", "-").split("-")
+    if (
+        len(parts) != 3
+        or not all(y.isdigit() for y in parts)
+        or not 1 <= int(parts[1]) <= 12
+        or not 1 <= int(parts[2]) <= 31
+    ):
+        raise ValueError(
+            f"{x} is not a valid date. Dates need to be of the form YYYY/MM/DD or YYYY-MM-DD"
+        )
+
+
 def time_interp(self, start=None, end=None, resolution="monthly"):
     """
     time_interp: Temporally interpolate variables based on date range and time resolution
@@ -47,6 +69,10 @@ def time_interp(self, start=None, end=None, resolution="monthly"):
 
     if start is None:
         raise ValueError("No start data supplied")
+
+    check_date(start)
+    if end is not None:
+        check_date(end)
 
     start = start.replace("/", "-")
 

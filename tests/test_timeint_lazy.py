@@ -30,7 +30,7 @@ class TestTimeint:
         if cdo_version() not in ["1.9.4"]:
             tracker = nc.open_data(ff, checks = False)
             tracker.time_interp(
-                start="1990/01/01", end="1990/31/01", resolution="daily"
+                start="1990/01/01", end="1990/12/31", resolution="daily"
             )
             tracker.run()
 
@@ -44,7 +44,7 @@ class TestTimeint:
         if cdo_version() not in ["1.9.4"]:
             tracker = nc.open_data(ff, checks = False)
             tracker.time_interp(
-                start="1991/01/01", end="1991/31/01", resolution="weekly"
+                start="1991/01/01", end="1991/12/31", resolution="weekly"
             )
             tracker.run()
 
@@ -58,7 +58,7 @@ class TestTimeint:
         if cdo_version() not in ["1.9.4"]:
             tracker = nc.open_data(ff, checks = False)
             tracker.time_interp(
-                start="1990/01/01", end="1990/31/01", resolution="monthly"
+                start="1990/01/01", end="1990/12/31", resolution="monthly"
             )
             tracker.run()
 
@@ -125,3 +125,18 @@ class TestTimeint:
         y = len(tracker.times)
 
         assert (x * 2 - 1) == y
+
+
+class TestTimeintDates:
+    def test_bad_end(self):
+        tracker = nc.open_data(ff, checks=False)
+        with pytest.raises(ValueError, match="not a valid date"):
+            tracker.time_interp(start="1990/01/01", end="1990/31/01", resolution="daily")
+        assert tracker.history == []
+
+    def test_bad_start(self):
+        tracker = nc.open_data(ff, checks=False)
+        with pytest.raises(ValueError, match="not a valid date"):
+            tracker.time_interp(start="1990/13/01", resolution="daily")
+        with pytest.raises(ValueError, match="not a valid date"):
+            tracker.time_interp(start="1990/01", resolution="daily")
