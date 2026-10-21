@@ -121,8 +121,10 @@ class TestLazy:
     def test_seasonal_clim1(self):
         ff = "data/sst.mon.mean.nc"
         tracker = nc.open_data(ff, checks = False)
+        # select DJF first: the month that cdo stamps on the DJF climatology
+        # differs between cdo versions
+        tracker.subset(seasons="DJF")
         tracker.tmean("season")
-        tracker.subset(months=2)
         tracker.spatial_mean()
         tracker.run()
         x = tracker.to_xarray().sst.values[0][0][0].astype("float")
