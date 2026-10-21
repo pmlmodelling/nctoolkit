@@ -27,25 +27,12 @@ def test_spatial_percentile_allowed_on_other_versions(cdo_version):
     assert any("fldpctl" in x for x in ds._hold_history + ds.history)
 
 
-def test_vertical_max_blocked_on_cdo_250(cdo_version):
-    session_info["cdo"] = "2.5.0"
-    ds = nc.open_data("data/woa18_decav_t01_01.nc", checks=False)
-    with pytest.raises(ValueError, match="downgrade CDO to version 2.4.1 to use vertical_max"):
-        ds.vertical_max()
-    assert ds.history == []
-
-
-def test_vertical_max_in_assign_blocked_on_cdo_250(cdo_version):
-    session_info["cdo"] = "2.5.0"
-    ds = nc.open_data("data/woa18_decav_t01_01.nc", checks=False)
-    with pytest.raises(ValueError, match="downgrade CDO to version 2.4.1 to use vertical_max"):
-        ds.assign(new=lambda x: x.t_an - vertical_max(x.t_an))
-
-
 def test_other_methods_not_blocked_on_cdo_250(cdo_version):
     session_info["cdo"] = "2.5.0"
     ds = nc.open_data("data/woa18_decav_t01_01.nc", checks=False)
     ds.vertical_min()
+    ds.vertical_max()
+    ds.assign(new=lambda x: x.t_an - vertical_max(x.t_an))
     ds1 = nc.open_data("data/sst.mon.mean.nc", checks=False)
     ds1.spatial_percentile(50)
 

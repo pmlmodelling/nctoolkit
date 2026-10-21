@@ -1,3 +1,4 @@
+import re
 import subprocess
 from dateutil.parser import parse
 import xarray as xr
@@ -109,6 +110,29 @@ def nc_years(ff):
             ]
         )
     )
+
+
+def nc_dtypes(ff):
+    """
+    Function to get the CDO data types, e.g. F32 or I16, of the variables in a netCDF file
+    """
+
+    cdo_result = subprocess.run(
+        f"cdo -s sinfon {ff}",
+        shell=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+
+    # variable lines look like: "     1 : unknown  unknown  v instant  4  1  30  1  F32  : t"
+    return [
+        m.group(1)
+        for m in (
+            re.match(r"^\s*\d+ : .*\s([A-Z]\d+)\s+: \S+\s*$", x)
+            for x in cdo_result.stdout.decode("utf-8").split("\n")
+        )
+        if m is not None
+    ]
 
 
 def nc_variables(ff):

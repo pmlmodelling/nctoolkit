@@ -4,7 +4,7 @@ import copy
 from nctoolkit.cleanup import cleanup
 from nctoolkit.api import open_data
 from nctoolkit.flatten import str_flatten
-from nctoolkit.utils import cdo_version_blocked
+from nctoolkit.show import nc_dtypes
 import nctoolkit.api as api
 
 # method to generate level bounds
@@ -219,9 +219,48 @@ def vertical_interp(
     self.cdo_command(cdo_command, ensemble=False)
 
 
+# Magnitude of the value used to stand in for missing values, by CDO data type.
+# Each is within the range of its type, i.e. both plus and minus the value can be
+# stored. Unsigned types are left out, as they cannot hold a negative value.
+MISSING_STAND_IN = {
+    "F32": 1e38,  # float32 goes to about 3.4e38
+    "F64": 1e38,
+    "I8": 127,
+    "I16": 32767,
+    "I32": 2147483647,
+}
+
+
+def missing_stand_in(dtypes):
+    """
+    Get the magnitude of the value to swap missing values for, so that the value is
+    valid for every data type in dtypes. This is None if the swap is not needed,
+    which is the case unless there is a float32 variable, or not possible.
+    """
+    if "F32" not in dtypes or not set(dtypes) <= set(MISSING_STAND_IN):
+        return None
+    return min(MISSING_STAND_IN[x] for x in dtypes)
+
+
 def vertstat(self, stat="mean"):
     """Method to calculate the vertical mean from a function"""
     cdo_command = f"-vert{stat}"
+
+    if stat in ["max", "min"]:
+        # CDO's vertmax and vertmin segfault for float32 variables with grid cells
+        # that are missing at every level, e.g. land in ocean data. Other data
+        # types are not affected. So for such data, missing values are swapped for
+        # a value that is far below (max) or above (min) any real value, and swapped
+        # back afterwards.
+        self.run()
+        dtypes = set()
+        for ff in self:
+            dtypes.update(nc_dtypes(ff))
+        stand_in = missing_stand_in(dtypes)
+        if stand_in is not None:
+            stand_in = -stand_in if stat == "max" else stand_in
+            cdo_command = f"-setctomiss,{stand_in} -vert{stat} -setmisstoc,{stand_in}"
+
     self.cdo_command(cdo_command, ensemble=False)
 
 
@@ -395,8 +434,6 @@ def vertical_max(self):
     >>> ds.vertical_max()
 
     """
-    # vertmax does not work in CDO 2.5.0
-    cdo_version_blocked("vertical_max", "2.5.0")
     vertstat(self, stat="max")
 
 
