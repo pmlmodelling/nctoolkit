@@ -4,6 +4,7 @@ import copy
 from nctoolkit.cleanup import cleanup
 from nctoolkit.api import open_data
 from nctoolkit.flatten import str_flatten
+from nctoolkit.utils import cdo_version_blocked
 import nctoolkit.api as api
 
 # method to generate level bounds
@@ -394,6 +395,8 @@ def vertical_max(self):
     >>> ds.vertical_max()
 
     """
+    # vertmax does not work in CDO 2.5.0
+    cdo_version_blocked("vertical_max", "2.5.0")
     vertstat(self, stat="max")
 
 

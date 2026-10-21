@@ -4,7 +4,7 @@ import inspect
 import numpy as np
 
 from nctoolkit.session import session_info
-from nctoolkit.utils import version_below
+from nctoolkit.utils import version_below, cdo_version_blocked
 
 
 def split_equation(mystr):
@@ -703,6 +703,10 @@ def assign(self, drop=False, **kwargs):
         start = start.replace(" lambda ", " ").replace(" ", "")
 
         # We need to fix pow functions potentially. Though, it might be better to stick with ^
+
+        # vertmax does not work in CDO 2.5.0
+        if "vertical_max(" in start:
+            cdo_version_blocked("vertical_max", "2.5.0")
 
         # translate numpy style functions to cdo functions
         for key in translation:

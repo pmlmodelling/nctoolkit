@@ -4,6 +4,7 @@ from nctoolkit.cleanup import cleanup
 from nctoolkit.runthis import run_cdo, tidy_command
 from nctoolkit.temp_file import temp_file
 from nctoolkit.session import remove_safe
+from nctoolkit.utils import cdo_version_blocked
 
 
 def boxstat(self, stat="mean", x=1, y=1):
@@ -367,6 +368,9 @@ def spatial_percentile(self, p=None):
         raise ValueError(f"{str(p)} is not a valid percentile")
     if (p < 0) or (p > 100):
         raise ValueError(f"p: {str(p)} is not between 0 and 100!")
+
+    # fldpctl gives incorrect results in CDO 2.6.1
+    cdo_version_blocked("spatial_percentile", "2.6.1")
 
     cdo_command = f"-fldpctl,{str(p)}"
 

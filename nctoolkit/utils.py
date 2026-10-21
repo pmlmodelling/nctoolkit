@@ -1,6 +1,8 @@
 import re
 import subprocess
 
+from nctoolkit.session import session_info
+
 
 def name_check(x):
     """
@@ -49,6 +51,17 @@ def is_curvilinear(ff):
         )
         > 0
     )
+
+
+def cdo_version_blocked(method, bad_version, good_version="2.4.1"):
+    """
+    Raise an error if the installed CDO version gives wrong results for a method
+    """
+    if session_info["cdo"] == bad_version:
+        raise ValueError(
+            f"Please downgrade CDO to version {good_version} to use {method}: "
+            "https://anaconda.org/channels/conda-forge/packages/cdo/overview"
+        )
 
 
 def version_below(x, y):
