@@ -4,6 +4,7 @@ nc.options(lazy=True)
 import pandas as pd
 import xarray as xr
 import os, pytest
+from nctoolkit.session import session_info
 
 
 ff = "data/sst.mon.mean.nc"
@@ -170,6 +171,14 @@ class TestFldsta:
         ff = "data/sst.mon.mean.nc"
         data = nc.open_data(ff, checks = False)
         data.subset(timesteps=0)
+
+        if session_info["cdo"] == "2.6.1":
+            # fldpctl gives incorrect results in CDO 2.6.1, so nctoolkit refuses to use it
+            with pytest.raises(ValueError, match="downgrade CDO to version 2.4.1 to use spatial_percentile"):
+                data.spatial_percentile(p=60)
+            assert len(nc.session_files()) == 0
+            return
+
         data.spatial_percentile(p=60)
 
         x = data.to_dataframe().sst.values[0].astype("float")
