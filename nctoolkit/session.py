@@ -1,5 +1,7 @@
 import glob
 import os
+import threading
+import time
 import warnings
 
 session_info = dict()
@@ -10,8 +12,10 @@ import platform
 # or a Manager takes `mp` from here, so the choice is made in one place.
 if platform.system() == "Darwin":
     import multiprocess as mp
+    from multiprocess.managers import SyncManager
 else:
     import multiprocessing as mp
+    from multiprocessing.managers import SyncManager
 
 # Pin to the "fork" start method explicitly. These Manager() servers are
 # created at bare import time, so on Python 3.14+ (where the Linux default
@@ -22,7 +26,24 @@ else:
 # "fork" never needs that re-import, so it stays safe regardless of how
 # nctoolkit is invoked (as a library, or as/from a __main__ script).
 _mp_fork_ctx = mp.get_context("fork")
-Manager = _mp_fork_ctx.Manager
+
+
+def _exit_with(parent):
+    """In a Manager's server: exit once the process that started it is gone
+    (a crash or SIGKILL runs no atexit, so nothing else would stop it)."""
+
+    def watch():
+        while os.getppid() == parent:
+            time.sleep(1)
+        os._exit(0)
+
+    threading.Thread(target=watch, daemon=True).start()
+
+
+def Manager():
+    manager = SyncManager(ctx=_mp_fork_ctx)
+    manager.start(initializer=_exit_with, initargs=(os.getpid(),))
+    return manager
 
 
 from contextlib import contextmanager
